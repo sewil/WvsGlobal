@@ -150,6 +150,11 @@
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="RedisBackend.cs" />
     <Compile Include="RollingTextBox.cs">
       <SubType>Component</SubType>
@@ -181,6 +186,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
     <None Include="SemVer.MSBuild.props" />
   </ItemGroup>
   <ItemGroup>
