@@ -190,7 +190,11 @@ namespace WvsBeta.Center
             Program.MainForm.LogAppend("Starting CTC acceptor on port {0}", CTCPort);
             CenterToCenterAcceptor = new CenterToCenterAcceptor(CTCPort);
             CharacterDatabase.RunQuery(
-                "DELETE FROM servers WHERE configname = 'Center' AND world_id = @worldId; " +
+                "DELETE FROM servers WHERE configname = 'Center' AND world_id = @worldId;",
+                "@worldId", World.ID,
+                "@ip", PrivateIP
+            );
+            CharacterDatabase.RunQuery(
                 "INSERT INTO servers VALUES ('Center', @worldId, @ip);",
                 "@worldId", World.ID,
                 "@ip", PrivateIP
