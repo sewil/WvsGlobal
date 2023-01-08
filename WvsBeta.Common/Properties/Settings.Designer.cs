@@ -26,9 +26,27 @@ namespace WvsBeta.Common.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool MEMORY_CRC_ENABLED {
+        public bool MemoryCRCEnabled {
             get {
-                return ((bool)(this["MEMORY_CRC_ENABLED"]));
+                return ((bool)(this["MemoryCRCEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShandaEnabled {
+            get {
+                return ((bool)(this["ShandaEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BlockCipherEnabled {
+            get {
+                return ((bool)(this["BlockCipherEnabled"]));
             }
         }
     }

@@ -91,7 +91,7 @@ namespace WvsBeta.Common.Sessions
         private static Random rnd = new Random();
         protected void SendMemoryRegions()
         {
-            if (IsConnectedAsClient || !Settings.Default.MEMORY_CRC_ENABLED) return;
+            if (IsConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
 
             var packet = new Packet(ServerMessages.SECURITY_SOMETHING);
             packet.WriteByte(0);
@@ -165,7 +165,7 @@ namespace WvsBeta.Common.Sessions
                         ScheduleDisconnect();
                         return;
                     }
-                    else if (Settings.Default.MEMORY_CRC_ENABLED)
+                    else if (Settings.Default.MemoryCRCEnabled)
                     {
                         // Check for expected CRC packet
                         if ((BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0)
@@ -224,7 +224,7 @@ namespace WvsBeta.Common.Sessions
 
         public override void SendPacket(Packet pPacket)
         {
-            while (IsConnectedAsClient && Settings.Default.MEMORY_CRC_ENABLED && (BitConverter.ToUInt16(_encryptIV, 0) % 31) == 0)
+            while (IsConnectedAsClient && Settings.Default.MemoryCRCEnabled && (BitConverter.ToUInt16(_encryptIV, 0) % 31) == 0)
             {
                 var p = new Packet((byte)ClientMessages.CLIENT_HASH);
                 p.WriteByte(1);

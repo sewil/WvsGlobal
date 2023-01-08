@@ -14,6 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Org.BouncyCastle.Crypto.Modes;
 using WvsBeta.Common.Crypto.Cryptography.Engines;
+using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common.Sessions
 {
@@ -82,8 +83,6 @@ namespace WvsBeta.Common.Sessions
 
         #endregion
 
-        private static readonly bool shandaEnabled = false;
-        private static readonly bool blockCipherEnabled = true;
         private IBufferedCipher _encryptCipher;
         private IBufferedCipher _decryptCipher;
 
@@ -414,7 +413,7 @@ namespace WvsBeta.Common.Sessions
 
         private void initCipher()
         {
-            if (blockCipherEnabled)
+            if (Settings.Default.BlockCipherEnabled)
             {
                 _encryptCipher = GetCipher();
                 _encryptCipher.Init(true, new ParametersWithIV(_keyParameter, new byte[16]));
@@ -597,7 +596,7 @@ namespace WvsBeta.Common.Sessions
         /// <returns>Encrypted data (with header!)</returns>
         private byte[] Encrypt(byte[] pData, int pLength, byte[] iv)
         {
-            if (blockCipherEnabled)
+            if (Settings.Default.BlockCipherEnabled)
             {
                 var qiv = QuadIv(iv);
                 MakeBufferList(pLength, b =>
@@ -619,7 +618,7 @@ namespace WvsBeta.Common.Sessions
 
             }
 
-            if (shandaEnabled)
+            if (Settings.Default.ShandaEnabled)
                 EncryptMSCrypto(pData, pLength);
             
             //Trace.WriteLine("Encrypted: " + BitConverter.ToString(cfgEncrypted));
@@ -637,10 +636,10 @@ namespace WvsBeta.Common.Sessions
         /// <returns>Decrypted data</returns>
         private byte[] Decrypt(byte[] pData, int pLength, byte[] iv)
         {
-            if (shandaEnabled)
+            if (Settings.Default.ShandaEnabled)
                 DecryptMSCrypto(pData, pLength);
 
-            if (blockCipherEnabled)
+            if (Settings.Default.BlockCipherEnabled)
             {
                 var qiv = QuadIv(iv);
                 MakeBufferList(pLength, b =>
