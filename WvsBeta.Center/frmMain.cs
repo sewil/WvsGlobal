@@ -99,7 +99,7 @@ namespace WvsBeta.Center
                     60000
                 );
 
-                Pinger.Init(Program.MainForm.LogAppend, Program.MainForm.LogAppend);
+                Pinger.Init(Program.MainForm.LogAppend);
             }
             catch (Exception ex)
             {

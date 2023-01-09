@@ -28,7 +28,7 @@ namespace WvsBeta.Login
         public LoginState State { get; set; } = LoginState.LoginScreen;
         public byte World { get; set; }
         public byte Channel { get; set; }
-        public ClientSocket Socket { get; set; }
+        public ClientSession Socket { get; set; }
         public string SessionHash { get; set; }
 
         public Dictionary<int, string> Characters { get; } = new Dictionary<int, string>();

@@ -6,11 +6,11 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    public class CenterSocket : AbstractConnection
+    public class CenterSocket : ConnectionSession
     {
         private bool disconnectExpected = false;
         public CenterSocket()
-            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort)
+            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true)
         {
 
         }

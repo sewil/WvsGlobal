@@ -10,11 +10,11 @@ using WvsBeta.Game.Events.PartyQuests;
 
 namespace WvsBeta.Game
 {
-    public partial class CenterSocket : AbstractConnection
+    public partial class CenterSession : ConnectionSession
     {
         private bool disconnectExpected;
-        public CenterSocket()
-            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort)
+        public CenterSession()
+            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true)
         {
 
         }

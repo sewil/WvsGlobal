@@ -134,8 +134,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server Data\CenterServer.cs" />
     <Compile Include="Server Data\CenterToCenterAcceptor.cs" />
-    <Compile Include="Server Data\CenterToCenterConnection.cs" />
-    <Compile Include="Server Data\LocalConnection.cs" />
+    <Compile Include="Server Data\CenterToCenterSession.cs" />
+    <Compile Include="Server Data\LocalSession.cs" />
     <Compile Include="Server Data\LocalServer.cs" />
     <Compile Include="Server Data\ServerConnectionAcceptor.cs" />
     <Compile Include="Server Data\WorldServer.cs" />

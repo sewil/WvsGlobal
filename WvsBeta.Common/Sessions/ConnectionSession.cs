@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Linq;
 using log4net;
 using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common.Sessions
 {
-    public abstract class AbstractConnection : Session
+    public abstract class ConnectionSession : Session
     {
         private static ILog log = LogManager.GetLogger("AbstractConnection");
 
-        public bool gotPong = true;
+        public bool gotPong = false;
         public bool sentPing = false;
         public bool sentSecondPing = false;
 
@@ -20,22 +21,22 @@ namespace WvsBeta.Common.Sessions
         public bool UseMemoryCRC { get; protected set; }
         private bool _ignoredWrongCRC = false;
 
-        private bool IsConnectedAsClient { get; }
+        private readonly bool isConnectedAsClient;
 
         public int pings { get; set; }
 
-        protected AbstractConnection(System.Net.Sockets.Socket pSocket)
+        protected ConnectionSession(System.Net.Sockets.Socket pSocket, bool isConnectedAsClient)
             : base(pSocket, "")
         {
             pings = 0;
-            IsConnectedAsClient = false;
+            this.isConnectedAsClient = isConnectedAsClient;
         }
 
-        protected AbstractConnection(string pIP, ushort pPort)
+        protected ConnectionSession(string pIP, ushort pPort, bool isConnectedAsClient)
             : base(pIP, pPort, "")
         {
             pings = 0;
-            IsConnectedAsClient = true;
+            this.isConnectedAsClient = isConnectedAsClient;
         }
 
         public virtual void StartLogging()
@@ -91,7 +92,7 @@ namespace WvsBeta.Common.Sessions
         private static Random rnd = new Random();
         protected void SendMemoryRegions()
         {
-            if (IsConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
+            if (isConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
 
             var packet = new Packet(ServerMessages.SECURITY_SOMETHING);
             packet.WriteByte(0);
@@ -139,6 +140,7 @@ namespace WvsBeta.Common.Sessions
 
         public override void OnPacketInbound(Packet pPacket)
         {
+            Trace.WriteLine($"[{this}] OnPacketInbound {pPacket}");
             if (pPacket.Length == 0)
                 return;
             StartLogging();
@@ -146,7 +148,7 @@ namespace WvsBeta.Common.Sessions
             {
                 byte header = pPacket.ReadByte();
 
-                if (IsConnectedAsClient)
+                if (isConnectedAsClient)
                 {
                     if (header == (byte)ServerMessages.PING)
                     {
@@ -199,6 +201,7 @@ namespace WvsBeta.Common.Sessions
 
                             if (disconnect)
                             {
+                                Console.WriteLine("DC");
                                 Disconnect();
                                 return;
                             }
@@ -224,7 +227,7 @@ namespace WvsBeta.Common.Sessions
 
         public override void SendPacket(Packet pPacket)
         {
-            while (IsConnectedAsClient && Settings.Default.MemoryCRCEnabled && (BitConverter.ToUInt16(_encryptIV, 0) % 31) == 0)
+            while (isConnectedAsClient && Settings.Default.MemoryCRCEnabled && (BitConverter.ToUInt16(_encryptIV, 0) % 31) == 0)
             {
                 var p = new Packet((byte)ClientMessages.CLIENT_HASH);
                 p.WriteByte(1);

@@ -9,7 +9,7 @@ namespace WvsBeta.Center
 
         public override void OnAccept(Socket pSocket)
         {
-            LocalConnection connection = new LocalConnection(pSocket);
+            LocalSession connection = new LocalSession(pSocket);
             connection.Init();
         }
     }

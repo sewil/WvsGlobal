@@ -6,13 +6,13 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    public class ClientSocket : AbstractConnection
+    public class ClientSocket : ConnectionSession
     {
         public Player Player { get; set; }
         public bool Loaded { get; set; }
 
         public ClientSocket(System.Net.Sockets.Socket pSocket)
-            : base(pSocket)
+            : base(pSocket, false)
         {
             Loaded = false;
             Init();

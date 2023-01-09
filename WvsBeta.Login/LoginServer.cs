@@ -32,7 +32,7 @@ namespace WvsBeta.Login
 
         private LoginAcceptor LoginAcceptor { get; set; }
         public LoginToLoginAcceptor LoginToLoginAcceptor { get; set; }
-        public LoginToLoginConnection LoginToLoginConnection { get; set; }
+        public LoginToLoginSession LoginToLoginConnection { get; set; }
 
         public DiscordReporter ServerTraceDiscordReporter { get; private set; }
 
@@ -137,7 +137,7 @@ namespace WvsBeta.Login
                     try
                     {
                         bool wasConnected = false;
-                        LoginToLoginConnection = new LoginToLoginConnection(privateIp, LTLPort);
+                        LoginToLoginConnection = new LoginToLoginSession(privateIp, LTLPort);
                         for (var i = 0; i < 10; i++)
                         {
                             System.Threading.Thread.Sleep(100);

@@ -9,15 +9,14 @@ using WvsBeta.Game.Handlers;
 
 namespace WvsBeta.Game
 {
-    public class ClientSocket : AbstractConnection
+    public class ClientSocket : ConnectionSession
     {
         private static ILog log = LogManager.GetLogger("ClientSocket");
         public Player Player { get; }
         public bool Loaded { get; set; }
 
 
-        public ClientSocket(Socket pSocket)
-            : base(pSocket)
+        public ClientSocket(Socket pSocket) : base(pSocket, false)
         {
             Loaded = false;
 

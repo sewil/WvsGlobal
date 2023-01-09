@@ -11,7 +11,7 @@ namespace WvsBeta.Login
 
         public override void OnAccept(Socket pSocket)
         {
-            Server.Instance.LoginToLoginConnection = new LoginToLoginConnection(pSocket);
+            Server.Instance.LoginToLoginConnection = new LoginToLoginSession(pSocket);
             this.Stop();
         }
     }

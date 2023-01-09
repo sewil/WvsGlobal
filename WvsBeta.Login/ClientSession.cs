@@ -13,7 +13,7 @@ using log4net.Appender;
 
 namespace WvsBeta.Login
 {
-    public class ClientSocket : AbstractConnection
+    public class ClientSession : ConnectionSession
     {
         private static ILog log = LogManager.GetLogger("LoginLogic");
 
@@ -23,8 +23,7 @@ namespace WvsBeta.Login
         private byte? autoSelectChar = null;
         public bool IsCCing { get; private set; }
 
-        public ClientSocket(System.Net.Sockets.Socket pSocket)
-            : base(pSocket)
+        public ClientSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false)
         {
             Player = new Player()
             {
@@ -638,11 +637,8 @@ namespace WvsBeta.Login
 
         public struct LoginLoggingStruct
         {
-            public string localUserId { get; set; }
-            public string uniqueId { get; set; }
-            public string osVersion { get; set; }
-            public bool adminClient { get; set; }
-            public bool possibleUniqueIdBypass { get; set; }
+            public int localUserId { get; set; }
+            public int uniqueId { get; set; }
             public string username { get; set; }
         }
 
@@ -671,43 +667,31 @@ namespace WvsBeta.Login
                 autoSelectChar = b;
                 username = username.Remove(username.Length - 2);
             }
-
-            string machineID = string.Join("", packet.ReadBytes(16).Select(x => x.ToString("X2")));
+            /*
+             01                     op code
+             05 00                  username length
+             73 65 77 69 6C         username
+             05 00                  pass length
+             31 32 33 34 35         pass
+             00 00 00 00 00 00      machine id?
+             2B 10 1D DE            start up thingy
+             00 00 00 00            local user id
+             CD 73 00 00            unique id
+             00 00                  patch version
+             */
+            string machineID = string.Join("", packet.ReadBytes(6).Select(x => x.ToString("X2")));
             this.machineID = machineID;
             int startupThingy = packet.ReadInt();
 
-            int localUserIdLength = packet.ReadShort();
-            string localUserId = string.Join("", packet.ReadBytes(localUserIdLength).Select(x => x.ToString("X2")));
-
-
-            bool possibleHack = packet.ReadBool();
-
-
-            int uniqueIDLength = packet.ReadShort();
-            string uniqueID = string.Join("", packet.ReadBytes(uniqueIDLength).Select(x => x.ToString("X2")));
-
-            bool adminClient = packet.ReadBool();
-
-            int magicWord = 0;
-
-            if (adminClient)
-            {
-                magicWord = packet.ReadInt();
-            }
-
-            string osVersionString = packet.ReadString();
-
+            int localUserId = packet.ReadInt();
+            int uniqueID = packet.ReadInt();
             short patchVersion = packet.ReadShort();
-
 
             void writeLoginInfo()
             {
                 log.Info(new LoginLoggingStruct
                 {
-                    adminClient = adminClient,
                     localUserId = localUserId,
-                    osVersion = osVersionString,
-                    possibleUniqueIdBypass = possibleHack,
                     uniqueId = uniqueID,
                     username = username
                 });
@@ -735,21 +719,7 @@ namespace WvsBeta.Login
                 }
             }
 
-            // Okay, packet parsed
-            if (adminClient)
-            {
-                if (AssertError(magicWord != 0x1BADD00D, $"Account '{username}' tried to login with an admin client! Magic word: {magicWord:X8}, IP: {IP}. Disconnecting."))
-                {
-                    writeLoginInfo();
-                    Disconnect();
-                    return;
-                }
-            }
-
-
-
             byte result = 9;
-
             string dbpass = String.Empty;
             bool updateDBPass = false;
             byte banReason = 0;
@@ -893,7 +863,7 @@ namespace WvsBeta.Login
                 var (maxMachineBanCount, maxUniqueBanCount, maxIpBanCount) =
                     Server.Instance.UsersDatabase.GetUserBanRecordLimit(Player.ID);
                 (machineBanCount, uniqueBanCount, ipBanCount) =
-                    Server.Instance.UsersDatabase.GetBanRecord(machineID, uniqueID, IP);
+                    Server.Instance.UsersDatabase.GetBanRecord(machineID, uniqueID.ToString(), IP);
 
                 // Do not use MachineID banning, as its not unique enough
                 if (ipBanCount >= maxIpBanCount ||
@@ -979,8 +949,6 @@ namespace WvsBeta.Login
                     crashLogTmp = null;
                     Server.Instance.ServerTraceDiscordReporter.Enqueue($"Saving crashlog to {crashlogName}");
                 }
-
-                AssertWarning(Player.IsGM == false && adminClient, $"[{username}] Logged in on an admin client while not being admin!!");
 
                 Player.LoggedOn = true;
                 Player.State = Player.Gender == 10 ? Player.LoginState.SetupGender : Player.LoginState.PinCheck;

@@ -31,7 +31,7 @@ namespace WvsBeta.Center
 
         public ServerConnectionAcceptor ConnectionAcceptor { get; set; }
         public CenterToCenterAcceptor CenterToCenterAcceptor { get; private set; }
-        public CenterToCenterConnection CenterToCenterConnection { get; set; }
+        public CenterToCenterSession CenterToCenterConnection { get; set; }
 
         public List<Character> CharacterStore { get; } = new List<Character>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
@@ -136,7 +136,7 @@ namespace WvsBeta.Center
                     try
                     {
                         bool wasConnected = false;
-                        CenterToCenterConnection = new CenterToCenterConnection(privateIp, CTCPort);
+                        CenterToCenterConnection = new CenterToCenterSession(privateIp, CTCPort);
                         for (var i = 0; i < 10; i++)
                         {
                             System.Threading.Thread.Sleep(100);

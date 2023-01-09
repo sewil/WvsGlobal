@@ -6,12 +6,11 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login
 {
-    public class CenterSocket : AbstractConnection
+    public class CenterSession : ConnectionSession
     {
         private Center _center;
 
-        public CenterSocket(string ip, ushort port, Center center)
-            : base(ip, port)
+        public CenterSession(string ip, ushort port, Center center) : base(ip, port, true)
         {
             _center = center;
         }

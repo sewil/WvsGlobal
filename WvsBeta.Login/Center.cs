@@ -16,13 +16,13 @@ namespace WvsBeta.Login
 
         public int[] UserNo { get; set; }
 
-        public CenterSocket Connection { get; private set; }
+        public CenterSession Connection { get; private set; }
 
         public bool IsConnected => Connection != null && !Connection.Disconnected;
 
         public void Connect()
         {
-            Connection = new CenterSocket(IP.ToString(), Port, this);
+            Connection = new CenterSession(IP.ToString(), Port, this);
         }
     }
 

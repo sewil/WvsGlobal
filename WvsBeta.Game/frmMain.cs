@@ -92,7 +92,7 @@ namespace WvsBeta.Game
                     Server.Instance.CenterConnection.SendPacket(pw);
                 }
 
-                Pinger.Init(x => Program.MainForm.LogAppend(x), x => Program.MainForm.LogAppend(x));
+                Pinger.Init(x => Program.MainForm.LogAppend(x));
             }
             catch (Exception ex)
             {

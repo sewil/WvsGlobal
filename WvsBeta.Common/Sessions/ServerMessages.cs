@@ -15,46 +15,43 @@
 
         // 5 does not exist
 
-        // Pin Codes
-        PIN_OPERATION = 6, // Not Implemented
-        PIN_ASSIGNED = 7, // Not Implemented
+        PIN_OPERATION = 255, // Not Implemented
+        PIN_ASSIGNED = 254, // Not Implemented
 
-        WORLD_INFORMATION = 8,
+        WORLD_INFORMATION = 6,
 
         //Confusing naming by Nexon, is select channel in selected world
-        SELECT_WORLD_RESULT = 9,
+        SELECT_WORLD_RESULT = 7,
         //Confusing naming, basically connect to server header :)
-        SELECT_CHARACTER_RESULT = 10,
-        CHECK_CHARACTER_NAME_AVAILABLE = 11,
-        CREATE_NEW_CHARACTER_RESULT = 12,
-        DELETE_CHARACTER_RESULT = 13,
+        SELECT_CHARACTER_RESULT = 8,
+        CHECK_CHARACTER_NAME_AVAILABLE = 9,
+        CREATE_NEW_CHARACTER_RESULT = 10,
+        DELETE_CHARACTER_RESULT = 11,
 
-        CHANGE_CHANNEL = 14,
-        PING = 15,
-        AUTHEN_CODE_CHANGED = 16,
-        SECURITY_SOMETHING = 17, // Either read a buffer (passed to GG?) or a set of ints. Looks like CRC info.
-        ___END_SOCKET = 18,
+        CHANGE_CHANNEL = 12,
+        PING = 13,
+        AUTHEN_CODE_CHANGED = 14,
+        SECURITY_SOMETHING = 15, // Either read a buffer (passed to GG?) or a set of ints. Looks like CRC info.
+        ___END_SOCKET = 16,
 
-        ___START_CHARACTERDATA = 19,
-        INVENTORY_OPERATION = 20,
-        INVENTORY_GROW = 21,
-        STAT_CHANGED = 22,
-        FORCED_STAT_SET = 23,
-        FORCED_STAT_RESET = 24,
-        CHANGE_SKILL_RECORD_RESULT = 25,
-        SKILL_USE_RESULT = 26,
-        GIVE_POPULARITY_RESULT = 27,
-        SHOW_STATUS_INFO = 28, // Called 'Message'
-        MEMO_RESULT = 29,
-        MAP_TRANSFER_RESULT = 30,
-        SUE_CHARACTER_RESULT = 31,
-        // 32 does not exist, possibly ClaimServer stuff
-        // 33 does not exist
-        CHARACTER_INFO = 34,
-        PARTY_RESULT = 35,
-        FRIEND_RESULT = 36,
-        TOWN_PORTAL = 37,
-        BROADCAST_MSG = 38,
+        ___START_CHARACTERDATA = 17,
+        INVENTORY_OPERATION = 18,
+        INVENTORY_GROW = 19,
+        STAT_CHANGED = 20,
+        FORCED_STAT_SET = 21,
+        FORCED_STAT_RESET = 22,
+        CHANGE_SKILL_RECORD_RESULT = 23,
+        SKILL_USE_RESULT = 24,
+        GIVE_POPULARITY_RESULT = 25,
+        SHOW_STATUS_INFO = 26, // Called 'Message'
+        MEMO_RESULT = 27,
+        MAP_TRANSFER_RESULT = 28,
+        SUE_CHARACTER_RESULT = 29,
+        CHARACTER_INFO = 32,
+        PARTY_RESULT = 33,
+        FRIEND_RESULT = 34,
+        TOWN_PORTAL = 35,
+        BROADCAST_MSG = 36,
         ___END_CHARACTEDATA = 39,
 
         ___START_STAGE = 40,

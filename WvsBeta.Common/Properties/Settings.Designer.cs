@@ -34,7 +34,7 @@ namespace WvsBeta.Common.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ShandaEnabled {
             get {
                 return ((bool)(this["ShandaEnabled"]));
@@ -43,10 +43,19 @@ namespace WvsBeta.Common.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool BlockCipherEnabled {
             get {
                 return ((bool)(this["BlockCipherEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("15000")]
+        public int PingInterval {
+            get {
+                return ((int)(this["PingInterval"]));
             }
         }
     }

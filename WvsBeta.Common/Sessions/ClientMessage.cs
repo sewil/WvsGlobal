@@ -9,17 +9,17 @@
         LOGIN_WORLD_SELECT = 3,
         LOGIN_EULA = 4,
         LOGIN_SET_GENDER = 5,
-        LOGIN_CHECK_PIN = 6,
-        LOGIN_UPDATE_PIN = 7,
-        LOGIN_WORLD_INFO_REQUEST = 8,
-        LOGIN_SELECT_CHARACTER = 9,
-        MIGRATE_IN = 10,
-        LOGIN_CHECK_CHARACTER_NAME = 11,
-        LOGIN_CREATE_CHARACTER = 12,
-        LOGIN_DELETE_CHARACTER = 13,
+        LOGIN_CHECK_PIN = 255,  // Not Implemented
+        LOGIN_UPDATE_PIN = 254, // Not Implemented
+        LOGIN_WORLD_INFO_REQUEST = 6,
+        LOGIN_SELECT_CHARACTER = 7,
+        MIGRATE_IN = 8,
+        LOGIN_CHECK_CHARACTER_NAME = 9,
+        LOGIN_CREATE_CHARACTER = 10,
+        LOGIN_DELETE_CHARACTER = 11,
 
         // Client Communication Headers
-        PONG = 14,
+        PONG = 12,
         CLIENT_CRASH_REPORT = 15,
         CLIENT_HASH = 16,
         // Game Headers

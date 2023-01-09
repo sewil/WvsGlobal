@@ -9,16 +9,16 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center
 {
-    public class LocalConnection : AbstractConnection
+    public class LocalSession : ConnectionSession
     {
-        private static ILog _log = LogManager.GetLogger("LocalConnection");
+        private static ILog _log = LogManager.GetLogger("LocalSession");
 
         public static WorldServer World => CenterServer.Instance.World;
 
         public LocalServer Server { get; set; }
         public static List<Messenger> MessengerRooms { get; set; }
 
-        public LocalConnection(System.Net.Sockets.Socket pSocket) : base(pSocket) { }
+        public LocalSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false) { }
 
         public void Init()
         {

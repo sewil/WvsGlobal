@@ -98,7 +98,7 @@
   <ItemGroup>
     <Compile Include="BuffDataProvider.cs" />
     <Compile Include="CenterSocket Packets.cs" />
-    <Compile Include="CenterSocket.cs" />
+    <Compile Include="CenterSession.cs" />
     <Compile Include="Characters\Character Hack Logic.cs" />
     <Compile Include="Characters\Character log structs.cs" />
     <Compile Include="Characters\Character Modifiers.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="Characters\CharacterStorage.cs" />
     <Compile Include="Characters\CharacterSummons.cs" />
     <Compile Include="Characters\CharacterVariables.cs" />
-    <Compile Include="Characters\ClientSocket.cs" />
+    <Compile Include="ClientSocket.cs" />
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />

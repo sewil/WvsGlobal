@@ -6,7 +6,7 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
-    public partial class CenterSocket
+    public partial class CenterSession
     {
 
         public void CreateParty(int cid)

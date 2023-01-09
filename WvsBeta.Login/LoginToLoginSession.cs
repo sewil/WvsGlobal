@@ -4,14 +4,14 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login
 {
-    class LoginToLoginConnection : AbstractConnection
+    class LoginToLoginSession : ConnectionSession
     {
-        public LoginToLoginConnection(Socket pSocket) : base(pSocket)
+        public LoginToLoginSession(Socket pSocket) : base(pSocket, false)
         {
             SendHandshake(9994, "CenterToCenter", 99);
         }
 
-        public LoginToLoginConnection(string pIP, ushort pPort) : base(pIP, pPort)
+        public LoginToLoginSession(string pIP, ushort pPort) : base(pIP, pPort, true)
         {
         }
 

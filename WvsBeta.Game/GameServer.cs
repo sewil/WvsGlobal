@@ -43,7 +43,7 @@ namespace WvsBeta.Game
         public IPAddress PublicIP { get; set; }
         public IPAddress PrivateIP { get; set; }
 
-        public CenterSocket CenterConnection { get; set; }
+        public CenterSession CenterConnection { get; set; }
 
         public int GetOnlineId() => RedisBackend.GetOnlineId(WorldID, ID);
 
@@ -291,7 +291,7 @@ namespace WvsBeta.Game
         public void ConnectToCenter()
         {
             if (CenterConnection?.Disconnected == false) return;
-            CenterConnection = new CenterSocket();
+            CenterConnection = new CenterSession();
         }
 
         private void LoadDBConfig(string configFile)

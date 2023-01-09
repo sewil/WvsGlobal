@@ -83,9 +83,7 @@ namespace WvsBeta.Common.Sessions
 
         #endregion
 
-        private IBufferedCipher _encryptCipher;
-        private IBufferedCipher _decryptCipher;
-
+        private BlockCipher blockCipher;
 
         /// <summary>
         /// Creates a new instance of Session.
@@ -132,7 +130,7 @@ namespace WvsBeta.Common.Sessions
             }
             catch (Exception ex)
             {
-                ////Console.WriteLine(TypeName + " [ERROR] Could not connect to server: {0}", ex.Message);
+                Console.WriteLine(TypeName + " [ERROR] Could not connect to server: {0}", ex.Message);
                 return;
             }
             if (PreventConnectFromSucceeding)
@@ -153,7 +151,7 @@ namespace WvsBeta.Common.Sessions
                 }
                 return;
             }
-            ////Console.WriteLine(TypeName + " Connected with server!");
+            Console.WriteLine(TypeName + " Connected with server!");
             _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.KeepAlive, 5000);
             Disconnected = false;
             StartReading(2, true);
@@ -248,10 +246,10 @@ namespace WvsBeta.Common.Sessions
 
             try
             {
-
                 // Check if we got all data. There is _no_ way we would have received more bytes than needed. Period.
                 if (_bufferpos == _bufferlen)
                 {
+
                     // It seems we have all data we need
                     // Now check if we got a header
                     if (_header)
@@ -306,7 +304,7 @@ namespace WvsBeta.Common.Sessions
                                 }
                                 catch (Exception ex)
                                 {
-                                    ////Console.WriteLine("Handling Packet Error: {0}", ex.ToString());
+                                    Console.WriteLine("Handling Packet Error: {0}", ex.ToString());
                                 }
                             }, "Packet handling opcode: " + opcode);
                         }
@@ -322,7 +320,6 @@ namespace WvsBeta.Common.Sessions
                             _mapleLocale = packet.ReadByte();
 
                             StartSendAndEncryptLoop();
-                            initCipher();
                             packet.Reset();
 
                             DoAction((date) =>
@@ -333,7 +330,7 @@ namespace WvsBeta.Common.Sessions
                                 }
                                 catch (Exception ex)
                                 {
-                                    ////Console.WriteLine("Handling Packet Error: {0}", ex.ToString());
+                                    Trace.WriteLine($"Handling Packet Error: {ex}");
                                 }
                             }, "Handshake handling");
                         }
@@ -383,7 +380,7 @@ namespace WvsBeta.Common.Sessions
         static Random rnd = new Random();
         public void SendHandshake(ushort pVersion, string pPatchLocation, byte pLocale)
         {
-            Trace.WriteLine("Got connection, sending handshake");
+            Trace.WriteLine($"[{this}] Got connection, sending handshake");
 
             _encryptIV = new byte[4];
             _decryptIV = new byte[4];
@@ -394,7 +391,6 @@ namespace WvsBeta.Common.Sessions
             _maplePatchLocation = pPatchLocation;
             _mapleLocale = pLocale;
 
-            initCipher();
             StartSendAndEncryptLoop();
 
             Packet packet = new Packet();
@@ -406,42 +402,14 @@ namespace WvsBeta.Common.Sessions
             SendData(packet.ToArray());
         }
 
-        internal static IBufferedCipher GetCipher()
-        {
-            return new CtsBlockCipher(new CbcBlockCipher(new NopEngine()));
-        }
-
-        private void initCipher()
-        {
-            if (Settings.Default.BlockCipherEnabled)
-            {
-                _encryptCipher = GetCipher();
-                _encryptCipher.Init(true, new ParametersWithIV(_keyParameter, new byte[16]));
-
-                _decryptCipher = GetCipher();
-                _decryptCipher.Init(false, new ParametersWithIV(_keyParameter, new byte[16]));
-            }
-        }
-
-        private byte[] QuadIv(byte[] iv)
-        {
-            return new byte[16]
-            {
-                iv[0], iv[1], iv[2], iv[3],
-                iv[0], iv[1], iv[2], iv[3],
-                iv[0], iv[1], iv[2], iv[3],
-                iv[0], iv[1], iv[2], iv[3],
-            };
-        }
-
         public virtual void OnPacketInbound(Packet pPacket)
         {
-            ////Console.WriteLine(TypeName + " No Handler for 0x{0:X4}", pPacket.ReadUShort());
+            Console.WriteLine(TypeName + " No Handler for 0x{0:X4}", pPacket.ReadUShort());
         }
 
         public virtual void OnHandshakeInbound(Packet pPacket)
         {
-            ////Console.WriteLine(TypeName + " No Handshake Handler.");
+            Console.WriteLine(TypeName + " No Handshake Handler.");
         }
 
         private void OnDisconnectINTERNAL(string reason)
@@ -449,6 +417,7 @@ namespace WvsBeta.Common.Sessions
             if (Disconnected) return;
             Disconnected = true;
             StopSendAndEncryptLoop();
+            Trace.WriteLine($"OnDisconnectINTERNAL: {reason}");
 
             ////Console.WriteLine(TypeName + " Called by:");
             ////Console.WriteLine(Environment.StackTrace);
@@ -484,6 +453,9 @@ namespace WvsBeta.Common.Sessions
 
         private void StartSendAndEncryptLoop()
         {
+            if (Settings.Default.BlockCipherEnabled)
+                blockCipher = new BlockCipher();
+
             _encryptAndSendThread = new Thread(x =>
             {
                 Trace.WriteLine("Starting encryption loop");
@@ -567,28 +539,6 @@ namespace WvsBeta.Common.Sessions
             0x84, 0x7F, 0x61, 0x1E, 0xCF, 0xC5, 0xD1, 0x56, 0x3D, 0xCA, 0xF4, 0x05, 0xC6, 0xE5, 0x08, 0x49
         };
 
-
-        private static readonly KeyParameter _keyParameter = new KeyParameter(new byte[16]
-        {
-            sShiftKey[0], sShiftKey[1], sShiftKey[2], sShiftKey[3],
-            sShiftKey[4], sShiftKey[5], sShiftKey[6], sShiftKey[7],
-            sShiftKey[8], sShiftKey[9], sShiftKey[10], sShiftKey[11],
-            sShiftKey[12], sShiftKey[13], sShiftKey[14], sShiftKey[15]
-        });
-
-        private void MakeBufferList(int length, Action<(int Offset, int Length)> handler)
-        {
-            int chunkSize = 1456;
-            int offset = 0;
-            do
-            {
-                handler((offset, Math.Min(length - offset, chunkSize)));
-                offset += chunkSize;
-                chunkSize = 1460;
-            } while (offset < length);
-
-        }
-
         /// <summary>
         /// Encrypts the given data, and updates the Encrypt IV
         /// </summary>
@@ -597,37 +547,16 @@ namespace WvsBeta.Common.Sessions
         private byte[] Encrypt(byte[] pData, int pLength, byte[] iv)
         {
             if (Settings.Default.BlockCipherEnabled)
-            {
-                var qiv = QuadIv(iv);
-                MakeBufferList(pLength, b =>
-                {
-                    var blobLen = b.Length;
-                    if (blobLen > 16)
-                    {
-                        _encryptCipher.Init(true, new ParametersWithIV(null, qiv));
-                        _encryptCipher.DoFinal(pData, b.Offset, blobLen, pData, b.Offset);
-                    }
-                    else
-                    {
-                        for (var i = 0; i < blobLen; i++)
-                        {
-                            pData[b.Offset + i] ^= qiv[i % 16];
-                        }
-                    }
-                });
-
-            }
+                blockCipher.Encrypt(pData, pLength, iv);
 
             if (Settings.Default.ShandaEnabled)
-                EncryptMSCrypto(pData, pLength);
+                Shanda.Encrypt(pData, pLength);
             
             //Trace.WriteLine("Encrypted: " + BitConverter.ToString(cfgEncrypted));
 
             NextIV(iv);
             return pData;
         }
-
-
 
         /// <summary>
         /// Decrypts given data, and updates the Decrypt IV
@@ -637,140 +566,15 @@ namespace WvsBeta.Common.Sessions
         private byte[] Decrypt(byte[] pData, int pLength, byte[] iv)
         {
             if (Settings.Default.ShandaEnabled)
-                DecryptMSCrypto(pData, pLength);
+                Shanda.Decrypt(pData, pLength);
 
             if (Settings.Default.BlockCipherEnabled)
-            {
-                var qiv = QuadIv(iv);
-                MakeBufferList(pLength, b =>
-                {
-                    var blobLen = b.Length;
-
-                    if (blobLen > 16)
-                    {
-                        _decryptCipher.Init(false, new ParametersWithIV(null, qiv));
-                        _decryptCipher.DoFinal(pData, b.Offset, blobLen, pData, b.Offset);
-                    }
-                    else
-                    {
-                        for (var i = 0; i < blobLen; i++)
-                        {
-                            pData[b.Offset + i] ^= qiv[i % 16];
-                        }
-                    }
-                });
-            }
+                blockCipher.Decrypt(pData, pLength, iv);
 
             NextIV(iv);
             return pData;
         }
 
-        /// <summary>
-        /// Rolls the value left. Port from NLS (C++) _rotl8
-        /// </summary>
-        /// <param name="value">Value to be shifted</param>
-        /// <param name="shift">Position to shift to</param>
-        /// <returns>Shifted value</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static byte RollLeft(byte value, int shift)
-        {
-            uint overflow = ((uint)value) << (shift % 8);
-            return (byte)((overflow & 0xFF) | (overflow >> 8));
-        }
-
-        /// <summary>
-        /// Rolls the value right. Port from NLS (C++) _rotr8
-        /// </summary>
-        /// <param name="value">Value to be shifted</param>
-        /// <param name="shift">Position to shift to</param>
-        /// <returns>Shifted value</returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static byte RollRight(byte value, int shift)
-        {
-            uint overflow = (((uint)value) << 8) >> (shift % 8);
-            return (byte)((overflow & 0xFF) | (overflow >> 8));
-        }
-
-        /// <summary>
-        /// Encrypts given data with the MapleStory cryptography
-        /// </summary>
-        /// <param name="pData">Unencrypted data</param>
-        private static void EncryptMSCrypto(byte[] pData, int pLength)
-        {
-            int length = pLength, j;
-            byte a, c;
-            for (var i = 0; i < 3; i++)
-            {
-                a = 0;
-                for (j = length; j > 0; j--)
-                {
-                    c = pData[length - j];
-                    c = RollLeft(c, 3);
-                    c = (byte)(c + j);
-                    c ^= a;
-                    a = c;
-                    c = RollRight(a, j);
-                    c ^= 0xFF;
-                    c += 0x48;
-                    pData[length - j] = c;
-                }
-                a = 0;
-                for (j = length; j > 0; j--)
-                {
-                    c = pData[j - 1];
-                    c = RollLeft(c, 4);
-                    c = (byte)(c + j);
-                    c ^= a;
-                    a = c;
-                    c ^= 0x13;
-                    c = RollRight(c, 3);
-                    pData[j - 1] = c;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Decrypts given data with the MapleStory cryptography
-        /// </summary>
-        /// <param name="pData"></param>
-        private static void DecryptMSCrypto(byte[] pData, int pLength)
-        {
-            int length = pLength, j;
-            byte a, b, c;
-            for (var i = 0; i < 3; i++)
-            {
-                a = 0;
-                b = 0;
-                for (j = length; j > 0; j--)
-                {
-                    c = pData[j - 1];
-                    c = RollLeft(c, 3);
-                    c ^= 0x13;
-                    a = c;
-                    c ^= b;
-                    c = (byte)(c - j);
-                    c = RollRight(c, 4);
-                    b = a;
-                    pData[j - 1] = c;
-                }
-                a = 0;
-                b = 0;
-                for (j = length; j > 0; j--)
-                {
-                    c = pData[length - j];
-                    c -= 0x48;
-                    c ^= 0xFF;
-                    c = RollLeft(c, j);
-                    a = c;
-                    c ^= b;
-                    c = (byte)(c - j);
-                    c = RollRight(c, 3);
-                    b = a;
-                    pData[length - j] = c;
-                }
-            }
-        }
-        
         /// <summary>
         /// Generates a new IV code for AES and header generation. It will reset the oldIV with the newIV automatically.
         /// </summary>

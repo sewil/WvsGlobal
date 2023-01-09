@@ -8,7 +8,7 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center
 {
-    public class CenterToCenterConnection : AbstractConnection
+    public class CenterToCenterSession : ConnectionSession
     {
         private const ushort CTCMapleVersion = 9994;
         private const byte CTCMapleLocale = 99;
@@ -19,14 +19,14 @@ namespace WvsBeta.Center
 
         public bool IsNewServer { get; }
 
-        public CenterToCenterConnection(Socket pSocket) : base(pSocket)
+        public CenterToCenterSession(Socket pSocket) : base(pSocket, false)
         {
             IsDone = false;
             IsNewServer = false;
             SendHandshake(CTCMapleVersion, CTCMaplePatchLocation, CTCMapleLocale);
         }
 
-        public CenterToCenterConnection(string pIP, ushort pPort) : base(pIP, pPort)
+        public CenterToCenterSession(string pIP, ushort pPort) : base(pIP, pPort, true)
         {
             IsNewServer = true;
         }
