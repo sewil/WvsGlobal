@@ -140,7 +140,10 @@ namespace WvsBeta.Common.Sessions
 
         public override void OnPacketInbound(Packet pPacket)
         {
-            Trace.WriteLine($"[{this}] OnPacketInbound {pPacket}");
+            if (GetType().ToString() == "WvsBeta.Login.ClientSession")
+            {
+                Console.WriteLine("[Client->Server] " + pPacket);
+            }
             if (pPacket.Length == 0)
                 return;
             StartLogging();

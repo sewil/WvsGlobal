@@ -105,6 +105,11 @@
     <Compile Include="LoginServer.cs" />
     <Compile Include="LoginToLoginAcceptor.cs" />
     <Compile Include="LoginToLoginSession.cs" />
+    <Compile Include="LogExtensions.cs" />
+    <Compile Include="PacketHandlers\CheckPasswordHandler.cs" />
+    <Compile Include="PacketHandlers\ConfirmEULAHandler.cs" />
+    <Compile Include="PacketHandlers\WorldInfoHandler.cs" />
+    <Compile Include="Packets\CheckPasswordResultPacket.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

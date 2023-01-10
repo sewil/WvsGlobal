@@ -11,7 +11,7 @@
         LOGIN_SET_GENDER = 5,
         LOGIN_CHECK_PIN = 255,  // Not Implemented
         LOGIN_UPDATE_PIN = 254, // Not Implemented
-        LOGIN_WORLD_INFO_REQUEST = 6,
+        LOGIN_WORLD_INFO_REQUEST = 6, // Unused
         LOGIN_SELECT_CHARACTER = 7,
         MIGRATE_IN = 8,
         LOGIN_CHECK_CHARACTER_NAME = 9,
