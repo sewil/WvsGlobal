@@ -148,7 +148,7 @@ namespace WvsBeta.Login
                         case ClientMessages.LOGIN_CHECK_PASSWORD: break;
 
                         case ClientMessages.LOGIN_SELECT_CHANNEL:
-                            OnChannelSelect(packet);
+                            new ChannelSelectHandler(this, log, packet);
                             break;
                         //case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
                         //    new WorldInfoHandler(this, log);
@@ -160,7 +160,7 @@ namespace WvsBeta.Login
                             OnCharNamecheck(packet);
                             break;
                         case ClientMessages.LOGIN_SELECT_CHARACTER:
-                            OnSelectCharacter(packet);
+                            new CharacterSelectHandler(this, log, packet);
                             break;
                         case ClientMessages.LOGIN_SET_GENDER:
                             new SetGenderHandler(this, log, packet);
@@ -245,28 +245,6 @@ namespace WvsBeta.Login
             pw.WriteUShort(port);
             pw.WriteInt(charid);
             pw.WriteByte(bit);
-            SendPacket(pw);
-        }
-
-        public void OnSelectCharacter(Packet packet)
-        {
-            if (log.AssertWarning(
-                Player.State != Player.LoginState.CharacterSelect &&
-                Player.State != Player.LoginState.CharacterCreation, "Trying to select character while not in character select screen.")) return;
-            int charid = packet.ReadInt();
-
-            if (log.AssertWarning(Player.HasCharacterWithID(charid) == false, "Trying to select a character that the player doesnt have. ID: " + charid)) return;
-            
-            if (Server.Instance.GetWorld(Player.World, out Center center))
-            {
-                center.Connection.RequestCharacterConnectToWorld(Player.SessionHash, charid, Player.World, Player.Channel);
-                return;
-            }
-
-            // Server is offline
-            var pw = new Packet(ServerMessages.SELECT_CHARACTER_RESULT);
-            pw.WriteByte(6); // Connection failed due to system error
-            pw.WriteByte(0);
             SendPacket(pw);
         }
 
@@ -477,28 +455,6 @@ namespace WvsBeta.Login
                 pack.WriteBool(true);
             }
             Player.Socket.SendPacket(pack);
-        }
-
-        public void OnChannelSelect(Packet packet)
-        {
-            if (log.AssertWarning(Player.State != Player.LoginState.ChannelSelect,
-                "Tried to select channel while not in channel select.")) return;
-
-            var worldId = packet.ReadByte();
-            var channelId = packet.ReadByte();
-
-
-            if (worldId != Player.World ||
-                !Server.Instance.GetWorld(Player.World, out Center center) ||
-                channelId >= center.Channels)
-            {
-                var p = new Packet(ServerMessages.SELECT_WORLD_RESULT);
-                p.WriteByte(8);
-                SendPacket(p);
-                return;
-            }
-
-            center.Connection?.RequestCharacterIsChannelOnline(Player.SessionHash, Player.World, channelId, Player.ID);
         }
 
         public void HandleChannelSelectResult(Packet packet)

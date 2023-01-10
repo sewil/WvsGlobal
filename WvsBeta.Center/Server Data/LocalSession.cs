@@ -452,7 +452,7 @@ namespace WvsBeta.Center
 
                             try
                             {
-                                var ids = CharacterDBAccessor.GetCharacterIdList(accountId).ToList();
+                                var ids = CharacterDBAccessor.GetCharacterIdList(accountId, world).ToList();
                                 pw.WriteByte((byte)ids.Count);
 
                                 foreach (var id in ids)

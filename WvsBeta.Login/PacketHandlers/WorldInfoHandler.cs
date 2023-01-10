@@ -19,12 +19,12 @@ namespace WvsBeta.Login.PacketHandlers
                 worldInfo.WriteString(world.Name);
                 worldInfo.WriteByte(world.Channels); //last channel
 
-                for (byte i = 0; i < world.Channels; i++)
+                for (byte channelID = 0; channelID < world.Channels; channelID++)
                 {
-                    worldInfo.WriteString(world.Name + "-" + (i + 1));
-                    worldInfo.WriteInt(world.UserNo[i] * 10);
+                    worldInfo.WriteString(world.Name + "-" + (channelID + 1));
+                    worldInfo.WriteInt(world.UserNo[channelID] * 10);
                     worldInfo.WriteByte(world.ID);
-                    worldInfo.WriteByte(i);
+                    worldInfo.WriteByte(channelID);
                     worldInfo.WriteBool(world.BlockCharacterCreation);
                 }
 
