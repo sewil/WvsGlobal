@@ -112,7 +112,7 @@
     <Compile Include="Characters\CharacterStorage.cs" />
     <Compile Include="Characters\CharacterSummons.cs" />
     <Compile Include="Characters\CharacterVariables.cs" />
-    <Compile Include="ClientSocket.cs" />
+    <Compile Include="ClientSession.cs" />
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />

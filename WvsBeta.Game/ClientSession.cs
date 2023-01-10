@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net.Sockets;
 using log4net;
 using WvsBeta.Common;
@@ -9,14 +10,14 @@ using WvsBeta.Game.Handlers;
 
 namespace WvsBeta.Game
 {
-    public class ClientSocket : ConnectionSession
+    public class ClientSession : ConnectionSession
     {
-        private static ILog log = LogManager.GetLogger("ClientSocket");
+        private static ILog log = LogManager.GetLogger("ClientSession");
         public Player Player { get; }
         public bool Loaded { get; set; }
 
 
-        public ClientSocket(Socket pSocket) : base(pSocket, false)
+        public ClientSession(Socket pSocket) : base(pSocket, false)
         {
             Loaded = false;
 
@@ -147,6 +148,7 @@ namespace WvsBeta.Game
             try
             {
                 header = (ClientMessages)packet.ReadByte();
+                Trace.WriteLine($"[Client->GameServer] {header} - {packet}");
 
                 if (!Loaded || Player?.Character == null)
                 {
@@ -613,6 +615,12 @@ namespace WvsBeta.Game
 
             Server.Instance.CCIngPlayerList.Remove(characterId);
             Disconnect();
+        }
+
+        public override void SendPacket(Packet pPacket)
+        {
+            Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            base.SendPacket(pPacket);
         }
     }
 }

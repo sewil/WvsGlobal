@@ -104,15 +104,14 @@ namespace WvsBeta.Login
 
         private string crashLogTmp = null;
 
-        private static HashSet<ClientMessages> logIgnore = new HashSet<ClientMessages>() { ClientMessages.CLIENT_HASH, ClientMessages.PONG, ClientMessages.LOGIN_CHECK_PASSWORD, ClientMessages.LOGIN_CHECK_PIN, ClientMessages.LOGIN_WORLD_INFO_REQUEST, ClientMessages.LOGIN_SELECT_CHANNEL };
+        private static HashSet<ClientMessages> logIgnore = new HashSet<ClientMessages>() { ClientMessages.CLIENT_HASH, ClientMessages.PONG, ClientMessages.LOGIN_CHECK_PASSWORD, ClientMessages.LOGIN_WORLD_INFO_REQUEST, ClientMessages.LOGIN_SELECT_CHANNEL };
 
         public override void AC_OnPacketInbound(Packet packet)
         {
             try
             {
                 ClientMessages header = (ClientMessages)packet.ReadByte();
-                //Trace.WriteLine($"[Client->Server] {header} Loaded:{Loaded} - {packet}");
-
+                Trace.WriteLine($"[Client->LoginServer] {header} - {packet}");
                 if (!logIgnore.Contains(header))
                     Common.Tracking.PacketLog.ReceivedPacket(packet, (byte)header, Server.Instance.Name, this.IP);
 
@@ -164,9 +163,6 @@ namespace WvsBeta.Login
                             break;
                         case ClientMessages.LOGIN_SET_GENDER:
                             new SetGenderHandler(this, log, packet);
-                            break;
-                        case ClientMessages.LOGIN_CHECK_PIN:
-                            OnPinCheck(packet);
                             break;
                         case ClientMessages.LOGIN_CREATE_CHARACTER:
                             OnCharCreation(packet);
@@ -530,20 +526,6 @@ namespace WvsBeta.Login
             public string username { get; set; }
         }
 
-        public void OnPinCheck(Packet packet)
-        {
-            if (log.AssertWarning(Player.State != Player.LoginState.PinCheck,
-                "Tried to do a pin check while not in pin check state")) return;
-
-            //PINs currently disabled. TODO when we update. Just send successful auth packet for now.
-            Packet pack = new Packet(ServerMessages.PIN_OPERATION);
-            pack.WriteByte(0);
-
-            SendPacket(pack);
-
-            Player.State = Player.LoginState.WorldSelect;
-        }
-
         public void BackToLogin()
         {
             Player.State = Player.LoginState.LoginScreen;
@@ -556,7 +538,7 @@ namespace WvsBeta.Login
 
         public override void SendPacket(Packet pPacket)
         {
-            Console.WriteLine($"[Server->Client] {(ServerMessages)pPacket.Opcode} {pPacket}");
+            Console.WriteLine($"[LoginServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
             base.SendPacket(pPacket);
         }
     }

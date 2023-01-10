@@ -119,7 +119,7 @@ namespace WvsBeta.Game
 
         public void UnregisterCharacter(int charid, bool cc)
         {
-            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterPlayer);
+            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterCharacter);
             packet.WriteInt(charid);
             packet.WriteBool(false);
             packet.WriteBool(cc);
@@ -128,7 +128,7 @@ namespace WvsBeta.Game
 
         public void RegisterCharacter(int charid, string name, short job, byte level, byte gm)
         {
-            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterPlayer);
+            Packet packet = new Packet(ISClientMessages.ServerRegisterRegisterCharacter);
             packet.WriteInt(charid);
             packet.WriteBool(true);
             packet.WriteString(name);

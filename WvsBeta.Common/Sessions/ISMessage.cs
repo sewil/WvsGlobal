@@ -8,9 +8,10 @@
 
         ServerRequestAllocation,
         ServerSetConnectionsValue,
-        ServerRegisterUnregisterPlayer,
+        ServerRegisterUnregisterCharacter = 133,
+        ServerRegisterRegisterCharacter = 134,
 
-        PlayerChangeServer,
+        PlayerChangeServer = 34,
         PlayerQuitCashShop,
         PlayerRequestWorldLoad,
         PlayerRequestWorldList,

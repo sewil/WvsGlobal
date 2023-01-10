@@ -304,7 +304,8 @@ namespace WvsBeta.Center
                                 break;
                             }
 
-                        case ISClientMessages.ServerRegisterUnregisterPlayer: // Register/unregister character
+                        case ISClientMessages.ServerRegisterRegisterCharacter:
+                        case ISClientMessages.ServerRegisterUnregisterCharacter:
                             {
                                 int charid = packet.ReadInt();
                                 bool add = packet.ReadBool();
