@@ -163,7 +163,7 @@ namespace WvsBeta.Login
                             OnSelectCharacter(packet);
                             break;
                         case ClientMessages.LOGIN_SET_GENDER:
-                            OnSetGender(packet);
+                            new SetGenderHandler(this, log, packet);
                             break;
                         case ClientMessages.LOGIN_CHECK_PIN:
                             OnPinCheck(packet);
@@ -572,36 +572,6 @@ namespace WvsBeta.Login
             public int localUserId { get; set; }
             public int uniqueId { get; set; }
             public string username { get; set; }
-        }
-
-        public void OnSetGender(Packet packet)
-        {
-            if (log.AssertWarning(Player.State != Player.LoginState.SetupGender,
-                "Tried to set gender while not in setup gender state")) return;
-
-            if (packet.ReadBool() == false)
-            {
-                // 'back' to login
-                BackToLogin();
-                return;
-            }
-
-            bool isFemale = packet.ReadBool();
-
-            Server.Instance.UsersDatabase.RunQuery(
-                "UPDATE users SET gender = @gender WHERE ID = @id",
-                "@id", Player.ID,
-                "@gender", isFemale ? 1 : 0
-            );
-
-            Player.Gender = (byte)(isFemale ? 1 : 0);
-            Player.State = Player.LoginState.PinCheck;
-
-            var pack = new Packet(ServerMessages.SET_ACCOUNT_RESULT);
-            pack.WriteBool(isFemale);
-            pack.WriteByte(1);
-
-            SendPacket(pack);
         }
 
         public void OnPinCheck(Packet packet)
