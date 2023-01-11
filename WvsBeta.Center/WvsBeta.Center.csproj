@@ -183,6 +183,10 @@
       <Project>{5BC0C38A-D121-42C1-B2EF-888477C6D8FA}</Project>
       <Name>WvsBeta.Logger</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WvsBeta.Login\WvsBeta.Login.csproj">
+      <Project>{362AA7B0-1CD1-4629-BB1D-834DE2F06AD3}</Project>
+      <Name>WvsBeta.Login</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WvsBeta.MasterThread\WvsBeta.MasterThread.csproj">
       <Project>{84164D2F-36B3-4D56-AF4A-BD12C37F71F5}</Project>
       <Name>WvsBeta.MasterThread</Name>

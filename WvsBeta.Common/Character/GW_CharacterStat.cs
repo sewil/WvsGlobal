@@ -96,11 +96,6 @@ namespace WvsBeta.Common.Character
 
             pPacket.WriteInt(MapID);
             pPacket.WriteByte(MapPosition);
-
-
-            pPacket.WriteLong(0); // I have still no idea what these are
-            pPacket.WriteInt(0);
-            pPacket.WriteInt(0);
         }
 
         public void EncodeMoney(Packet pPacket)
@@ -138,11 +133,6 @@ namespace WvsBeta.Common.Character
 
             MapID = pPacket.ReadInt();
             MapPosition = pPacket.ReadByte();
-
-
-            pPacket.ReadLong(); // I have still no idea what these are
-            pPacket.ReadInt();
-            pPacket.ReadInt();
         }
 
         public void DecodeMoney(Packet pPacket)

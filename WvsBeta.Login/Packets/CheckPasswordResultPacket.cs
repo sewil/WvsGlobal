@@ -8,7 +8,7 @@ namespace WvsBeta.Login.Packets
     {
         public enum LoginState : byte
         {
-            SUCCESS = 1,
+            SUCCESS = 0,
             BANNED = 2,
             DELETED = 3,
             BLOCKED = 3,
@@ -34,7 +34,7 @@ namespace WvsBeta.Login.Packets
             if (loginState == LoginState.SUCCESS)
             {
                 WriteInt(player.ID);
-                WriteByte(player.Gender);
+                WriteByte((byte)player.Gender);
                 WriteBool(player.IsGM);
                 WriteByte(0x01); //Country ID
                 WriteString(username);
@@ -44,9 +44,6 @@ namespace WvsBeta.Login.Packets
                 WriteByte(banReason);
                 WriteLong(banExpire);
             }
-            WriteLong(0);
-            WriteLong(0);
-            WriteLong(0);
         }
     }
 }

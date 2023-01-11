@@ -28,7 +28,8 @@ namespace WvsBeta.Shop
             if (flags.HasFlag(CharacterDataFlag.Stats))
             {
                 chr.CharacterStat.Encode(pack);
-
+                pack.WriteLong(0); // ?
+                pack.WriteLong(0); // ?
                 pack.WriteByte(20); // Buddylist slots
             }
             // Note: Money is in InventoryPacket

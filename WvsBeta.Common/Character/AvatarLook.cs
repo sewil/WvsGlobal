@@ -81,7 +81,6 @@ namespace WvsBeta.Common.Character
                 packet.WriteByte(i);
                 packet.WriteInt(itemid);
             }
-            packet.WriteSByte(-1);
 
             for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
             {
@@ -91,6 +90,7 @@ namespace WvsBeta.Common.Character
                 packet.WriteByte(i);
                 packet.WriteInt(itemid);
             }
+            packet.WriteSByte(-1);
             packet.WriteSByte(-1);
             
             packet.WriteInt(WeaponStickerID);

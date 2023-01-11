@@ -92,7 +92,7 @@ namespace WvsBeta.Login
                             byte ans = packet.ReadByte();
                             if (ans != 0x00)
                             {
-                                Packet pack = new Packet(ServerMessages.SELECT_WORLD_RESULT);
+                                Packet pack = new Packet(ServerMessages.SELECT_CHANNEL_RESULT);
                                 pack.WriteByte(ans);
                                 player.Socket.SendPacket(pack);
                             }

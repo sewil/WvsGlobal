@@ -16,10 +16,16 @@ namespace WvsBeta.Login
             CharacterSelect,
             CharacterCreation,
         }
+        public enum PlayerGender : byte 
+        {
+            Male = 0,
+            Female = 1,
+            Unset = 10
+        }
 
         public string Username { get; set; }
         public int ID { get; set; }
-        public byte Gender { get; set; }
+        public PlayerGender Gender { get; set; }
         public byte GMLevel { get; set; }
         public bool IsGM { get => GMLevel > 0; }
         public bool IsAdmin { get => GMLevel >= 3; }

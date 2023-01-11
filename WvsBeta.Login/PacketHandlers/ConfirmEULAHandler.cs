@@ -17,7 +17,7 @@ namespace WvsBeta.Login.PacketHandlers
                 );
 
                 Packet pack = new Packet(ServerMessages.CONFIRM_EULA_RESULT);
-                pack.WriteBool(true);
+                pack.WriteBool(true); // Is success
                 session.SendPacket(pack);
             }
 

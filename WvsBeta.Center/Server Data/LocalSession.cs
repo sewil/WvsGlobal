@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Login;
 
 namespace WvsBeta.Center
 {
@@ -417,14 +418,32 @@ namespace WvsBeta.Center
                         Packet pw = new Packet(ISServerMessages.PlayerRequestWorldLoadResult);
                         pw.WriteString(hash);
 
+                        WorldWarning warning = WorldWarning.MaxUsers;
+                        WorldMarker marker = WorldMarker.Overpopulated;
+
                         if (World.ID == world)
                         {
-                            World.AddWarning(pw);
+                            int load = World.CalculateWorldLoad();
+
+                            if (load > World.UserLimit)
+                            {
+                                warning = WorldWarning.MaxUsers;
+                                marker = WorldMarker.Overpopulated;
+                            }
+                            else if (load > World.UserWarning)
+                            {
+                                warning = WorldWarning.HighUsers;
+                                marker = WorldMarker.HighlyPopulated;
+                            }
+                            else
+                            {
+                                warning = WorldWarning.NoWarning;
+                                marker = WorldMarker.NoMarker;
+                            }
                         }
-                        else
-                        {
-                            pw.WriteByte(2); // full load
-                        }
+
+                        pw.WriteByte((byte)warning);
+                        pw.WriteByte((byte)marker);
 
                         SendPacket(pw);
                         break;

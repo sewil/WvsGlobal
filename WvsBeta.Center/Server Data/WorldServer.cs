@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Login;
 
 namespace WvsBeta.Center
 {
@@ -61,16 +62,7 @@ namespace WvsBeta.Center
         {
             return GameServers.Sum(x => x.Value.Connections) + ShopServers.Sum(x => x.Value.Connections);
         }
-
-        public void AddWarning(Packet pw)
-        {
-            int load = CalculateWorldLoad();
-
-            if (load > UserLimit) pw.WriteByte(2); // World is full
-            else if (load > UserWarning) pw.WriteByte(1); // World is quite loaded, expect issues
-            else pw.WriteByte(0);
-        }
-
+        
         public void CheckForEvents()
         {
             var currentDate = MasterThread.CurrentDate;

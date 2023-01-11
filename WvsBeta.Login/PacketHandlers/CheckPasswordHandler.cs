@@ -135,7 +135,7 @@ namespace WvsBeta.Login.PacketHandlers
                         else
                         {
                             session.Player.GMLevel = data.GetByte("admin");
-                            session.Player.Gender = data.GetByte("gender");
+                            session.Player.Gender = (Player.PlayerGender)data.GetByte("gender");
                             session.Player.DateOfBirth = data.GetInt32("char_delete_password");
                             session.Player.Username = username;
                         }
@@ -252,7 +252,7 @@ namespace WvsBeta.Login.PacketHandlers
             }
 
             session.Player.LoggedOn = true;
-            session.Player.State = Player.LoginState.WorldSelect;
+            session.Player.State = session.Player.Gender == Player.PlayerGender.Unset ? Player.LoginState.SetupGender : Player.LoginState.PinCheck;
 
             Program.MainForm.LogAppend($"Account {username} ({session.Player.ID}) logged on. Machine ID: {machineID}, Unique ID: {uniqueID}, IP: {session.IP}, Ban counts: {machineBanCount}/{uniqueBanCount}/{ipBanCount}");
             Program.MainForm.ChangeLoad(true);
@@ -280,8 +280,6 @@ namespace WvsBeta.Login.PacketHandlers
                     "@password", dbpass
                 );
             }
-
-            new WorldInfoHandler(session, log);
         }
 
         private void WriteLoginInfo()

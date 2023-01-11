@@ -2,6 +2,25 @@
 
 namespace WvsBeta.Login
 {
+    public enum WorldRibbon : byte
+    {
+        Normal,
+        Event,
+        New,
+        Hot
+    }
+    public enum WorldWarning : byte
+    {
+        NoWarning,
+        HighUsers,
+        MaxUsers
+    }
+    public enum WorldMarker : byte
+    {
+        NoMarker,
+        HighlyPopulated,
+        Overpopulated
+    }
     public class Center
     {
         public ushort Port { get; set; }
@@ -9,10 +28,11 @@ namespace WvsBeta.Login
         public byte ID { get; set; }
         public byte Channels { get; set; }
         public byte State { get; set; }
-        public string EventDescription { get; set; }
         public bool BlockCharacterCreation { get; set; }
         public bool AdultWorld { get; set; }
         public string Name { get; set; }
+        public WorldRibbon Ribbon { get; set; }
+        public string Message { get; set; }
 
         public int[] UserNo { get; set; }
 

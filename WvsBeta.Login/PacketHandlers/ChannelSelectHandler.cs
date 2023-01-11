@@ -17,7 +17,7 @@ namespace WvsBeta.Login.PacketHandlers
                 !Server.Instance.GetWorld(session.Player.World, out Center center) ||
                 channelId >= center.Channels)
             {
-                var p = new Packet(ServerMessages.SELECT_WORLD_RESULT);
+                var p = new Packet(ServerMessages.SELECT_CHANNEL_RESULT);
                 p.WriteByte(8);
                 session.SendPacket(p);
                 return;

@@ -53,8 +53,7 @@ namespace WvsBeta.Game
             {
                 switch (msg)
                 {
-                    case ISServerMessages.Pong:
-                    case ISServerMessages.Ping: break;
+                    case ISServerMessages.Pong | ISServerMessages.Ping: break;
 
                     case ISServerMessages.ChangeCenterServer:
                         {

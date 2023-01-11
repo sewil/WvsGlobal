@@ -32,7 +32,7 @@ namespace WvsBeta.Login
                 Socket = this
             };
             Loaded = false;
-            //Pinger.Add(this);
+            Pinger.Add(this);
             Server.Instance.AddPlayer(Player);
 
             SendHandshake(Constants.MAPLE_VERSION, Constants.MAPLE_PATCH_LOCATION, Constants.MAPLE_LOCALE);
@@ -403,7 +403,7 @@ namespace WvsBeta.Login
             pack = new Packet(ISClientMessages.PlayerCreateCharacter);
             pack.WriteString(Player.SessionHash);
             pack.WriteInt(Player.ID);
-            pack.WriteByte(Player.Gender);
+            pack.WriteByte((byte)Player.Gender);
 
             pack.WriteString(charname);
 
@@ -464,8 +464,7 @@ namespace WvsBeta.Login
 
             var characters = packet.ReadByte();
 
-
-            var pack = new Packet(ServerMessages.SELECT_WORLD_RESULT);
+            var pack = new Packet(ServerMessages.SELECT_CHANNEL_RESULT);
             pack.WriteByte(0); //Success, other values generate error messages
             pack.WriteByte(characters);
 
@@ -479,10 +478,10 @@ namespace WvsBeta.Login
                 pack.WriteBool(hasRanking);
                 if (hasRanking)
                 {
-                    pack.WriteInt(packet.ReadInt());
-                    pack.WriteInt(packet.ReadInt());
-                    pack.WriteInt(packet.ReadInt());
-                    pack.WriteInt(packet.ReadInt());
+                    pack.WriteInt(packet.ReadInt()); // World ranking
+                    pack.WriteInt(packet.ReadInt()); // increase / decrease amount
+                    pack.WriteInt(packet.ReadInt()); // class ranking position
+                    pack.WriteInt(packet.ReadInt()); // increase / decrease amount
                 }
 
                 Player.Characters[ad.CharacterStat.ID] = ad.CharacterStat.Name;
@@ -502,8 +501,7 @@ namespace WvsBeta.Login
 
             if (!Server.Instance.GetWorld(worldId, out Center center))
             {
-                var p = new Packet(ServerMessages.CHECK_USER_LIMIT_RESULT);
-                p.WriteByte(2); // Full server warning
+                var p = new CheckUserLimitResultPacket(WorldWarning.MaxUsers, WorldMarker.NoMarker);
                 SendPacket(p);
                 return;
             }
@@ -515,8 +513,7 @@ namespace WvsBeta.Login
 
         public void HandleWorldLoadResult(Packet packet)
         {
-            Packet pack = new Packet(ServerMessages.CHECK_USER_LIMIT_RESULT);
-            pack.WriteByte(packet.ReadByte());
+            var pack = new CheckUserLimitResultPacket((WorldWarning)packet.ReadByte(), (WorldMarker)packet.ReadByte());
             SendPacket(pack);
 
             Player.State = Player.LoginState.ChannelSelect;
@@ -535,7 +532,7 @@ namespace WvsBeta.Login
 
             //PINs currently disabled. TODO when we update. Just send successful auth packet for now.
             Packet pack = new Packet(ServerMessages.PIN_OPERATION);
-            pack.WriteByte(0);
+            pack.WriteBool(false); // Is error
 
             SendPacket(pack);
 

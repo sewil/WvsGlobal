@@ -242,10 +242,11 @@ namespace WvsBeta.Login
                     Port = worldConfig["port"].GetUShort(),
                     IP = IPAddress.Parse(worldConfig["ip"].GetString()),
                     AdultWorld = worldConfig["adult"]?.GetBool() ?? false,
-                    EventDescription = worldConfig["eventDesc"]?.GetString() ?? "",
                     BlockCharacterCreation = worldConfig["BlockCharCreation"]?.GetBool() ?? false,
                     State = worldConfig["worldState"]?.GetByte() ?? 0,
                     Name = worldConfig.Name,
+                    Ribbon = (WorldRibbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
+                    Message = worldConfig["worldMessage"]?.GetString() ?? "",
                 };
                 center.UserNo = new int[center.Channels];
 
