@@ -252,7 +252,7 @@ namespace WvsBeta.Login.PacketHandlers
             }
 
             session.Player.LoggedOn = true;
-            session.Player.State = session.Player.Gender == 10 ? Player.LoginState.SetupGender : Player.LoginState.WorldSelect;
+            session.Player.State = session.Player.Gender == 10 ? Player.LoginState.SetupGender : Player.LoginState.PinCheck;
 
             Program.MainForm.LogAppend($"Account {username} ({session.Player.ID}) logged on. Machine ID: {machineID}, Unique ID: {uniqueID}, IP: {session.IP}, Ban counts: {machineBanCount}/{uniqueBanCount}/{ipBanCount}");
             Program.MainForm.ChangeLoad(true);
@@ -279,11 +279,6 @@ namespace WvsBeta.Login.PacketHandlers
                     "@id", session.Player.ID,
                     "@password", dbpass
                 );
-            }
-
-            if (session.Player.State == Player.LoginState.WorldSelect)
-            {
-                new WorldInfoHandler(session, log);
             }
         }
 

@@ -149,9 +149,9 @@ namespace WvsBeta.Login
                         case ClientMessages.LOGIN_SELECT_CHANNEL:
                             new ChannelSelectHandler(this, log, packet);
                             break;
-                        //case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
-                        //    new WorldInfoHandler(this, log);
-                        //    break;
+                        case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
+                            new WorldInfoHandler(this, log);
+                            break;
                         case ClientMessages.LOGIN_WORLD_SELECT:
                             OnWorldSelect(packet);
                             break;
@@ -163,6 +163,9 @@ namespace WvsBeta.Login
                             break;
                         case ClientMessages.LOGIN_SET_GENDER:
                             new SetGenderHandler(this, log, packet);
+                            break;
+                        case ClientMessages.LOGIN_CHECK_PIN:
+                            new PinOperationHandler(this, log, packet);
                             break;
                         case ClientMessages.LOGIN_CREATE_CHARACTER:
                             OnCharCreation(packet);

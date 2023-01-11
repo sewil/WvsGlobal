@@ -5,8 +5,8 @@ namespace WvsBeta.Common
 {
     public static class Constants
     {
-        public const ushort MAPLE_VERSION = 8;
-        public const ushort MAPLE_CRYPTO_VERSION = 8; // for IV stuff
+        public const ushort MAPLE_VERSION = 12;
+        public const ushort MAPLE_CRYPTO_VERSION = 12; // for IV stuff
         public const string MAPLE_PATCH_LOCATION = "";
         public const byte MAPLE_LOCALE = 8;
 

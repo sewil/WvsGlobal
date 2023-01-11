@@ -110,6 +110,8 @@
     <Compile Include="PacketHandlers\ConfirmEULAHandler.cs" />
     <Compile Include="PacketHandlers\ChannelSelectHandler.cs" />
     <Compile Include="PacketHandlers\CharacterSelectHandler.cs" />
+    <Compile Include="PacketHandlers\PinAssignedHandler.cs" />
+    <Compile Include="PacketHandlers\PinOperationHandler.cs" />
     <Compile Include="PacketHandlers\SetGenderHandler.cs" />
     <Compile Include="PacketHandlers\WorldInfoHandler.cs" />
     <Compile Include="Packets\CheckPasswordResultPacket.cs" />
