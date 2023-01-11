@@ -1,6 +1,4 @@
-﻿using MySqlX.XDevAPI.Common;
-using WvsBeta.Common.Sessions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+﻿using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.Packets
 {
@@ -25,8 +23,21 @@ namespace WvsBeta.Login.Packets
             CHANGE_INFO = 17,
             EULA = 23
         }
+        public enum BanReason : byte
+        {
+            Unknown,
+            Hacking,
+            Botting,
+            IllicitAdvertising,
+            Harassment,
+            ProfaneLanguage,
+            Scamming,
+            Misconduct,
+            RWT,
+            IllegalFunding
+        }
 
-        public CheckPasswordResultPacket(LoginState loginState, Player player, string username, byte banReason, long banExpire) : base(ServerMessages.CHECK_PASSWORD_RESULT)
+        public CheckPasswordResultPacket(LoginState loginState, Player player, string username, BanReason banReason, long banExpire) : base(ServerMessages.CHECK_PASSWORD_RESULT)
         {
             WriteByte((byte)loginState); //Login State
             WriteByte(0); // nRegStatID
@@ -41,7 +52,7 @@ namespace WvsBeta.Login.Packets
             }
             else if (loginState == LoginState.BANNED)
             {
-                WriteByte(banReason);
+                WriteByte((byte)banReason);
                 WriteLong(banExpire);
             }
         }

@@ -70,7 +70,7 @@ namespace WvsBeta.Login.PacketHandlers
             LoginState loginState = LoginState.SYSTEM_ERROR;
             string dbpass = String.Empty;
             bool updateDBPass = false;
-            byte banReason = 0;
+            BanReason banReason = BanReason.Unknown;
             long banExpire = 0;
             int userId = 0;
 
@@ -89,7 +89,7 @@ namespace WvsBeta.Login.PacketHandlers
                     username = data.GetString("username");
                     userId = data.GetInt32("ID");
                     dbpass = data.GetString("password");
-                    banReason = data.GetByte("ban_reason");
+                    banReason = (BanReason)data.GetByte("ban_reason");
                     banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeUtc();
 
                     if (RedisBackend.Instance.IsPlayerOnline(userId))
