@@ -226,7 +226,7 @@ namespace WvsBeta.Login.PacketHandlers
                 WriteLoginInfo();
             }
 
-            var pack = new CheckPasswordResultPacket(loginState, session.Player, username, banReason, banExpire);
+            var pack = new CheckPasswordResultPacket(loginState, session.Player, username, banReason, banExpire).Encode();
             session.SendPacket(pack);
 
             if (loginState != LoginState.SUCCESS)

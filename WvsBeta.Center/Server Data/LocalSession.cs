@@ -5,6 +5,7 @@ using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login;
 
@@ -418,8 +419,8 @@ namespace WvsBeta.Center
                         Packet pw = new Packet(ISServerMessages.PlayerRequestWorldLoadResult);
                         pw.WriteString(hash);
 
-                        WorldWarning warning = WorldWarning.MaxUsers;
-                        WorldMarker marker = WorldMarker.Overpopulated;
+                        World.Warning warning = Common.Objects.World.Warning.MaxUsers;
+                        World.Marker marker = Common.Objects.World.Marker.Overpopulated;
 
                         if (World.ID == world)
                         {
@@ -427,18 +428,18 @@ namespace WvsBeta.Center
 
                             if (load > World.UserLimit)
                             {
-                                warning = WorldWarning.MaxUsers;
-                                marker = WorldMarker.Overpopulated;
+                                warning = Common.Objects.World.Warning.MaxUsers;
+                                marker = Common.Objects.World.Marker.Overpopulated;
                             }
                             else if (load > World.UserWarning)
                             {
-                                warning = WorldWarning.HighUsers;
-                                marker = WorldMarker.HighlyPopulated;
+                                warning = Common.Objects.World.Warning.HighUsers;
+                                marker = Common.Objects.World.Marker.HighlyPopulated;
                             }
                             else
                             {
-                                warning = WorldWarning.NoWarning;
-                                marker = WorldMarker.NoMarker;
+                                warning = Common.Objects.World.Warning.NoWarning;
+                                marker = Common.Objects.World.Marker.NoMarker;
                             }
                         }
 

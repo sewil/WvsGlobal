@@ -189,16 +189,6 @@ namespace WvsBeta.Login
             SendPacket(packet);
         }
 
-        public void RequestCharacterIsChannelOnline(string Hash, byte world, byte channel, int accountId)
-        {
-            Packet packet = new Packet(ISClientMessages.PlayerRequestChannelStatus);
-            packet.WriteString(Hash);
-            packet.WriteByte(world);
-            packet.WriteByte(channel);
-            packet.WriteInt(accountId);
-            SendPacket(packet);
-        }
-
         public void RequestDeleteCharacter(string Hash, int accountId, int characterId)
         {
             Packet packet = new Packet(ISClientMessages.PlayerDeleteCharacter);

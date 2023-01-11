@@ -113,8 +113,12 @@
     <Compile Include="PacketHandlers\SetGenderHandler.cs" />
     <Compile Include="PacketHandlers\UpdatePINHandler.cs" />
     <Compile Include="PacketHandlers\WorldInfoHandler.cs" />
+    <Compile Include="Packets\ChannelSelectPacket.cs" />
+    <Compile Include="Packets\ChannelSelectResultPacket.cs" />
+    <Compile Include="Packets\CharacterSelectPacket.cs" />
     <Compile Include="Packets\CheckPasswordResultPacket.cs" />
-    <Compile Include="Packets\CheckUserLimitResultPacket.cs" />
+    <Compile Include="Packets\CheckUserLimitPacket.cs" />
+    <Compile Include="Packets\ISRequestChannelStatusPacket.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

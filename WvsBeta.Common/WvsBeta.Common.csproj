@@ -148,6 +148,7 @@
     <Compile Include="MainFormConsole.cs" />
     <Compile Include="MemoryRegions.cs" />
     <Compile Include="Character\Pos.cs" />
+    <Compile Include="Objects\World.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />

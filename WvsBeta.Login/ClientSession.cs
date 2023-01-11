@@ -13,6 +13,7 @@ using log4net.Appender;
 using static WvsBeta.Login.Packets.CheckPasswordResultPacket;
 using WvsBeta.Login.Packets;
 using WvsBeta.Login.PacketHandlers;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Login
 {
@@ -440,8 +441,7 @@ namespace WvsBeta.Login
             {
                 // Succeeded
                 pack.WriteBool(false);
-                var ad = new AvatarData();
-                ad.Decode(packet);
+                var ad = new AvatarData(packet);
                 ad.Encode(pack);
 
 
@@ -459,34 +459,7 @@ namespace WvsBeta.Login
         public void HandleChannelSelectResult(Packet packet)
         {
             // Packet received from the center server
-
-            Player.Channel = packet.ReadByte();
-
-            var characters = packet.ReadByte();
-
-            var pack = new Packet(ServerMessages.SELECT_CHANNEL_RESULT);
-            pack.WriteByte(0); //Success, other values generate error messages
-            pack.WriteByte(characters);
-
-            for (int index = 0; index < characters; index++)
-            {
-                var ad = new AvatarData();
-                ad.Decode(packet);
-                ad.Encode(pack);
-
-                var hasRanking = packet.ReadBool();
-                pack.WriteBool(hasRanking);
-                if (hasRanking)
-                {
-                    pack.WriteInt(packet.ReadInt()); // World ranking
-                    pack.WriteInt(packet.ReadInt()); // increase / decrease amount
-                    pack.WriteInt(packet.ReadInt()); // class ranking position
-                    pack.WriteInt(packet.ReadInt()); // increase / decrease amount
-                }
-
-                Player.Characters[ad.CharacterStat.ID] = ad.CharacterStat.Name;
-            }
-
+            var pack = new ChannelSelectResultPacket(packet, Player).Encode();
             SendPacket(pack);
 
             Player.State = Player.LoginState.CharacterSelect;
@@ -501,7 +474,7 @@ namespace WvsBeta.Login
 
             if (!Server.Instance.GetWorld(worldId, out Center center))
             {
-                var p = new CheckUserLimitResultPacket(WorldWarning.MaxUsers, WorldMarker.NoMarker);
+                var p = new CheckUserLimitPacket(World.Warning.MaxUsers, World.Marker.Overpopulated).Encode();
                 SendPacket(p);
                 return;
             }
@@ -513,9 +486,8 @@ namespace WvsBeta.Login
 
         public void HandleWorldLoadResult(Packet packet)
         {
-            var pack = new CheckUserLimitResultPacket((WorldWarning)packet.ReadByte(), (WorldMarker)packet.ReadByte());
+            var pack = new CheckUserLimitPacket(packet).Encode();
             SendPacket(pack);
-
             Player.State = Player.LoginState.ChannelSelect;
         }
 

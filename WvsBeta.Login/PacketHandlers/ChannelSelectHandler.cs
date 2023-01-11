@@ -1,5 +1,6 @@
 ﻿using log4net;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Login.Packets;
 
 namespace WvsBeta.Login.PacketHandlers
 {
@@ -10,12 +11,11 @@ namespace WvsBeta.Login.PacketHandlers
             if (log.AssertWarning(session.Player.State != Player.LoginState.ChannelSelect,
                 "Tried to select channel while not in channel select.")) return;
 
-            var worldId = packet.ReadByte();
-            var channelId = packet.ReadByte();
+            var result = new ChannelSelectPacket(packet);
 
-            if (worldId != session.Player.World ||
+            if (result.worldId != session.Player.World ||
                 !Server.Instance.GetWorld(session.Player.World, out Center center) ||
-                channelId >= center.Channels)
+                result.channelId >= center.Channels)
             {
                 var p = new Packet(ServerMessages.SELECT_CHANNEL_RESULT);
                 p.WriteByte(8);
@@ -23,7 +23,8 @@ namespace WvsBeta.Login.PacketHandlers
                 return;
             }
 
-            center.Connection?.RequestCharacterIsChannelOnline(session.Player.SessionHash, session.Player.World, channelId, session.Player.ID);
+            var pack = new ISRequestChannelStatusPacket(session.Player, result.channelId).Encode();
+            center.Connection.SendPacket(pack);
         }
     }
 }
