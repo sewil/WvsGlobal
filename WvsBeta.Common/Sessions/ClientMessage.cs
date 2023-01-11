@@ -9,140 +9,142 @@
         LOGIN_WORLD_SELECT = 3,
         LOGIN_EULA = 4,
         LOGIN_SET_GENDER = 5,
-        LOGIN_WORLD_INFO_REQUEST = 6, // Unused
-        LOGIN_SELECT_CHARACTER = 7,
-        MIGRATE_IN = 8,
-        LOGIN_CHECK_CHARACTER_NAME = 9,
-        LOGIN_CREATE_CHARACTER = 10,
-        LOGIN_DELETE_CHARACTER = 11,
+        LOGIN_CHECK_PIN = 6,
+        LOGIN_UPDATE_PIN = 7,
+        LOGIN_WORLD_INFO_REQUEST = 8,
+        LOGIN_SELECT_CHARACTER = 9,
+        MIGRATE_IN = 10,
+        LOGIN_CHECK_CHARACTER_NAME = 11,
+        LOGIN_CREATE_CHARACTER = 12,
+        LOGIN_DELETE_CHARACTER = 13,
 
         // Client Communication Headers
-        PONG = 12,
-        CLIENT_CRASH_REPORT = 13,
-        CLIENT_HASH = 14,
+        PONG = 14,
+        CLIENT_CRASH_REPORT = 15,
+        CLIENT_HASH = 16,
         // Game Headers
-        
-        __PADDING_15 = 15,
-        __PADDING_16 = 16,
-        ENTER_PORTAL = 17,
-        CHANGE_CHANNEL = 18,
-        ENTER_CASH_SHOP = 19,
-        MOVE_PLAYER = 20,
-        SIT_REQUEST = 21,
+
+        __PADDING_17 = 17,
+        __PADDING_18 = 18,
+        ENTER_PORTAL = 19,
+        CHANGE_CHANNEL = 20,
+        ENTER_CASH_SHOP = 21,
+        MOVE_PLAYER = 22,
+        SIT_REQUEST = 23,
 
         //Damage Headers
-        CLOSE_RANGE_ATTACK = 22,
-        RANGED_ATTACK = 23,
-        MAGIC_ATTACK = 24,
-        __PADDING_25,
-        TAKE_DAMAGE = 26,
+        CLOSE_RANGE_ATTACK = 24,
+        RANGED_ATTACK = 25,
+        MAGIC_ATTACK = 26,
+        __PADDING_27,
+        TAKE_DAMAGE = 28,
 
-        CHAT = 27,
-        EMOTE = 28,
+        CHAT = 29,
+        EMOTE = 30,
 
-        __PADDING_29,
-        __PADDING_30,
+        __PADDING_31,
+        __PADDING_32,
 
         //NPC Interaction Headers
-        NPC_TALK = 31,
-        NPC_TALK_MORE = 32,
-        SHOP_ACTION = 33,
-        STORAGE_ACTION = 34,
+        NPC_TALK = 33,
+        NPC_TALK_MORE = 34,
+        SHOP_ACTION = 35,
+        STORAGE_ACTION = 36,
 
         //Inventory Headers
-        ITEM_MOVE = 35,
-        ITEM_USE = 36,
-        SUMMON_BAG_USE = 37,
-        PET_EAT_FOOD = 38,
-        CASH_ITEM_USE = 39, // Assumed Value
-        RETURN_SCROLL_USE = 40, // Assumed Value
-        SCROLL_USE = 41, // Assumed Value
-        
+        ITEM_MOVE = 37,
+        ITEM_USE = 38,
+        SUMMON_BAG_USE = 39,
+        PET_EAT_FOOD = 40,
+        CASH_ITEM_USE = 41, // Assumed Value
+        RETURN_SCROLL_USE = 42, // Assumed Value
+        SCROLL_USE = 43, // Assumed Value
+
         //Player Stat Headers
-        DISTRIBUTE_AP = 42,
-        HEAL_OVER_TIME = 43,
-        DISTRIBUTE_SP = 44,
-        GIVE_BUFF = 45,
-        CANCEL_BUFF = 46, // Assumed Value
-        PREPARE_SKILL = 47,
+        DISTRIBUTE_AP = 44,
+        HEAL_OVER_TIME = 45,
+        DISTRIBUTE_SP = 46,
+        GIVE_BUFF = 47,
+        CANCEL_BUFF = 48, // Assumed Value
+        PREPARE_SKILL = 49,
 
-        DROP_MESOS = 48,
-        GIVE_FAME = 49,
-        __PADDING_50,
-        CHAR_INFO_REQUEST = 51,
-        SPAWN_PET = 52, // Assumed Value
-        CHARACTER_IS_DEBUFFED = 53, // spammed.
-        ENTER_SCRIPTED_PORTAL = 54,
-        MAP_TRANSFER_REQUEST = 55, // Teleport rock stuff
+        DROP_MESOS = 50,
+        GIVE_FAME = 51,
+        __PADDING_52,
+        CHAR_INFO_REQUEST = 53,
+        SPAWN_PET = 54, // Assumed Value
+        CHARACTER_IS_DEBUFFED = 55, // spammed.
+        ENTER_SCRIPTED_PORTAL = 56,
+        MAP_TRANSFER_REQUEST = 57, // Teleport rock stuff
 
-        REPORT_USER = 56,
-        __PADDING_57,
-        __PADDING_58,
-        GROUP_MESSAGE = 59,
-        WHISPER = 60,
-        MESSENGER = 61,
-        MINI_ROOM_OPERATION = 62,
-        PARTY_OPERATION = 63,
-        DENY_PARTY_REQUEST = 64,
+        REPORT_USER = 58,
+        __PADDING_59,
+        __PADDING_60,
+        GROUP_MESSAGE = 61,
+        WHISPER = 62,
+        MESSENGER = 63,
+        MINI_ROOM_OPERATION = 64,
+        PARTY_OPERATION = 65,
+        DENY_PARTY_REQUEST = 66,
         // -- nonexistant headers, such as admin commands and guild! --
-        __PADDING_65,
-        __PADDING_66,
-        FRIEND_OPERATION = 67,
-        NOTE_OPERATION = 68,
-        ENTER_TOWN_PORTAL = 69,
-        __PADDING_70,
-        __PADDING_71,
-        PET_MOVE = 72,
-        PET_ACTION = 73,
-        PET_INTERACTION = 74,
-        __PADDING_75,
-        __PADDING_76,
+        __PADDING_67,
+        __PADDING_68,
+        FRIEND_OPERATION = 69,
+        NOTE_OPERATION = 70,
+        ENTER_TOWN_PORTAL = 71,
+        __PADDING_72,
+        __PADDING_73,
+        PET_MOVE = 74,
+        PET_ACTION = 75,
+        PET_INTERACTION = 76,
         __PADDING_77,
-        SUMMON_MOVE = 78,
-        SUMMON_ATTACK = 79,
-        SUMMON_DAMAGED = 80,
-        __PADDING_81,
-        __PADDING_82,
+        __PADDING_78,
+        __PADDING_79,
+        SUMMON_MOVE = 80,
+        SUMMON_ATTACK = 81,
+        SUMMON_DAMAGED = 82,
         __PADDING_83,
         __PADDING_84,
         __PADDING_85,
-        MOB_MOVE = 86,
-        MOB_APPLY_CONTROL = 87, // Only when PickUpDrop or FirstAttack
-        MOB_PICKUP_DROP = 88,
-        __PADDING_89,
-        __PADDING_90,
-        NPC_ANIMATE = 91,
+        __PADDING_86,
+        __PADDING_87,
+        MOB_MOVE = 88,
+        MOB_APPLY_CONTROL = 89, // Only when PickUpDrop or FirstAttack
+        MOB_PICKUP_DROP = 90,
+        __PADDING_91,
         __PADDING_92,
-        __PADDING_93,
+        NPC_ANIMATE = 93,
         __PADDING_94,
-        DROP_PICK_UP = 95,
+        __PADDING_95,
         __PADDING_96,
-        __PADDING_97,
-        REACTOR_HIT = 98,
+        DROP_PICK_UP = 97,
+        __PADDING_98,
         __PADDING_99,
-        __PADDING_100,
+        REACTOR_HIT = 100,
         __PADDING_101,
         __PADDING_102,
-        FIELD_SNOWBALL_ATTACK = 103,
-        FIELD_COCONUT_ATTACK = 104,
-        __PADDING_105,
-        __PADDING_106,
-        FIELD_TOURNAMENT_MATCHTABLE = 107, // '/matchtable 1' sends this
+        __PADDING_103,
+        __PADDING_104,
+        FIELD_SNOWBALL_ATTACK = 105,
+        FIELD_COCONUT_ATTACK = 106,
+        __PADDING_107,
         __PADDING_108,
-        __PADDING_109,
+        FIELD_TOURNAMENT_MATCHTABLE = 109, // '/matchtable 1' sends this
         __PADDING_110,
         __PADDING_111,
-        FIELD_CONTIMOVE_STATE = 112, // CONTISTATE?
+        __PADDING_112,
         __PADDING_113,
-        __PADDING_114,
+        FIELD_CONTIMOVE_STATE = 114, // CONTISTATE?
         __PADDING_115,
-        CASHSHOP_QUERY_CASH = 116,
-        CASHSHOP_ACTION = 117,
-        CASHSHOP_ENTER_COUPON = 118,
-        
-        // THERE SHOULD BE 118 (+ 1) FIELDS
+        __PADDING_116,
+        __PADDING_117,
+        CASHSHOP_QUERY_CASH = 118,
+        CASHSHOP_ACTION = 119,
+        CASHSHOP_ENTER_COUPON = 120,
 
-        __CUSTOM_DC_ME__ = 190,
+        // THERE SHOULD BE 120 (+ 1) FIELDS
+
+        __CUSTOM_DC_ME__ = 0xC0,
 
         JUNK = 250
     }

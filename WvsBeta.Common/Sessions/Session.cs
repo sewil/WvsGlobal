@@ -551,6 +551,9 @@ namespace WvsBeta.Common.Sessions
 
             if (Settings.Default.ShandaEnabled)
                 Shanda.Encrypt(pData, pLength);
+
+            if (Settings.Default.AesEnabled)
+                AESCrypt.Process(pData, pLength, iv, false);
             
             //Trace.WriteLine("Encrypted: " + BitConverter.ToString(cfgEncrypted));
 
@@ -565,6 +568,9 @@ namespace WvsBeta.Common.Sessions
         /// <returns>Decrypted data</returns>
         private byte[] Decrypt(byte[] pData, int pLength, byte[] iv)
         {
+            if (Settings.Default.AesEnabled)
+                AESCrypt.Process(pData, pLength, iv, true);
+
             if (Settings.Default.ShandaEnabled)
                 Shanda.Decrypt(pData, pLength);
 

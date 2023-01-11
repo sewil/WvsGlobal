@@ -14,5 +14,8 @@
     <Setting Name="PingInterval" Type="System.Int32" Scope="Application">
       <Value Profile="(Default)">15000</Value>
     </Setting>
+    <Setting Name="AesEnabled" Type="System.Boolean" Scope="Application">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

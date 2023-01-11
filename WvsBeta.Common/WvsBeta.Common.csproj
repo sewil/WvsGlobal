@@ -118,6 +118,7 @@
     <Compile Include="Character\AvatarData.cs" />
     <Compile Include="Character\AvatarLook.cs" />
     <Compile Include="Character\MovableLife.cs" />
+    <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
     <Compile Include="Bullshit\bullshitextensions.cs" />
     <Compile Include="Character\Character.cs" />
@@ -162,6 +163,7 @@
     <Compile Include="RollingTextBox.Designer.cs">
       <DependentUpon>RollingTextBox.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sessions\AESCrypt.cs" />
     <Compile Include="Sessions\ConnectionSession.cs" />
     <Compile Include="Sessions\Acceptor.cs" />
     <Compile Include="Sessions\BlockCipher.cs" />

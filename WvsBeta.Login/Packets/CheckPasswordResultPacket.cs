@@ -36,7 +36,7 @@ namespace WvsBeta.Login.Packets
                 WriteInt(player.ID);
                 WriteByte(player.Gender);
                 WriteBool(player.IsGM);
-                WriteByte(10); //Country ID
+                WriteByte(0x01); //Country ID
                 WriteString(username);
             }
             else if (loginState == LoginState.BANNED)
@@ -44,9 +44,9 @@ namespace WvsBeta.Login.Packets
                 WriteByte(banReason);
                 WriteLong(banExpire);
             }
-            //WriteLong(0);
-            //WriteLong(0);
-            //WriteLong(0);
+            WriteLong(0);
+            WriteLong(0);
+            WriteLong(0);
         }
     }
 }

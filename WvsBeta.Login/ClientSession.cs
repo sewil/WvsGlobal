@@ -32,7 +32,7 @@ namespace WvsBeta.Login
                 Socket = this
             };
             Loaded = false;
-            Pinger.Add(this);
+            //Pinger.Add(this);
             Server.Instance.AddPlayer(Player);
 
             SendHandshake(Constants.MAPLE_VERSION, Constants.MAPLE_PATCH_LOCATION, Constants.MAPLE_LOCALE);
@@ -104,7 +104,7 @@ namespace WvsBeta.Login
 
         private string crashLogTmp = null;
 
-        private static HashSet<ClientMessages> logIgnore = new HashSet<ClientMessages>() { ClientMessages.CLIENT_HASH, ClientMessages.PONG, ClientMessages.LOGIN_CHECK_PASSWORD, ClientMessages.LOGIN_WORLD_INFO_REQUEST, ClientMessages.LOGIN_SELECT_CHANNEL };
+        private static HashSet<ClientMessages> logIgnore = new HashSet<ClientMessages>() { ClientMessages.CLIENT_HASH, ClientMessages.PONG, ClientMessages.LOGIN_CHECK_PIN, ClientMessages.LOGIN_CHECK_PASSWORD, ClientMessages.LOGIN_WORLD_INFO_REQUEST, ClientMessages.LOGIN_SELECT_CHANNEL };
 
         public override void AC_OnPacketInbound(Packet packet)
         {
@@ -149,9 +149,9 @@ namespace WvsBeta.Login
                         case ClientMessages.LOGIN_SELECT_CHANNEL:
                             new ChannelSelectHandler(this, log, packet);
                             break;
-                        //case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
-                        //    new WorldInfoHandler(this, log);
-                        //    break;
+                        case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
+                            new WorldInfoHandler(this, log);
+                            break;
                         case ClientMessages.LOGIN_WORLD_SELECT:
                             OnWorldSelect(packet);
                             break;
@@ -163,6 +163,9 @@ namespace WvsBeta.Login
                             break;
                         case ClientMessages.LOGIN_SET_GENDER:
                             new SetGenderHandler(this, log, packet);
+                            break;
+                        case ClientMessages.LOGIN_CHECK_PIN:
+                            OnPinCheck(packet);
                             break;
                         case ClientMessages.LOGIN_CREATE_CHARACTER:
                             OnCharCreation(packet);
@@ -524,6 +527,19 @@ namespace WvsBeta.Login
             public int localUserId { get; set; }
             public int uniqueId { get; set; }
             public string username { get; set; }
+        }
+        public void OnPinCheck(Packet packet)
+        {
+            if (log.AssertWarning(Player.State != Player.LoginState.PinCheck,
+                "Tried to do a pin check while not in pin check state")) return;
+
+            //PINs currently disabled. TODO when we update. Just send successful auth packet for now.
+            Packet pack = new Packet(ServerMessages.PIN_OPERATION);
+            pack.WriteByte(0);
+
+            SendPacket(pack);
+
+            Player.State = Player.LoginState.WorldSelect;
         }
 
         public void BackToLogin()
