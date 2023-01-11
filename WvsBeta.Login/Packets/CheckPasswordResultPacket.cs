@@ -23,7 +23,7 @@ namespace WvsBeta.Login.Packets
             VERIFY_EMAIL = 16,
             WRONG_GATEWAY = 17,
             CHANGE_INFO = 17,
-            EULA = 19
+            EULA = 23
         }
 
         public CheckPasswordResultPacket(LoginState loginState, Player player, string username, byte banReason, long banExpire) : base(ServerMessages.CHECK_PASSWORD_RESULT)
