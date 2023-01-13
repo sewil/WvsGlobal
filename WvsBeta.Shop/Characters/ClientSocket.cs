@@ -161,7 +161,7 @@ namespace WvsBeta.Shop
 
         public void SendConnectToServer(byte[] IP, ushort port, bool noScheduledDisconnect = false)
         {
-            Packet pw = new Packet(ServerMessages.CHANGE_CHANNEL);
+            Packet pw = new Packet(ServerMessages.MIGRATE_COMMAND);
             pw.WriteBool(true);
             pw.WriteBytes(IP);
             pw.WriteUShort(port);

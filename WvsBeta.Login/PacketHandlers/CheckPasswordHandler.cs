@@ -8,6 +8,8 @@ using WvsBeta.Login.Packets;
 using WvsBeta.Common.Sessions;
 using log4net;
 using static WvsBeta.Login.Packets.CheckPasswordResultPacket;
+using WvsBeta.Common.Extensions;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Login.PacketHandlers
 {
@@ -22,7 +24,7 @@ namespace WvsBeta.Login.PacketHandlers
         public CheckPasswordHandler(ClientSession session, ILog log, Packet packet, ref string crashLogTmp)
         {
             this.log = log;
-            if (log.AssertWarning(session.Player.State != Player.LoginState.LoginScreen, "Player tried to login while not in loginscreen."))
+            if (log.AssertWarning(session.Player.State != GameState.LoginScreen, "Player tried to login while not in loginscreen."))
             {
                 Program.MainForm.LogAppend("Disconnected client (4)");
                 session.Disconnect();
@@ -135,7 +137,7 @@ namespace WvsBeta.Login.PacketHandlers
                         else
                         {
                             session.Player.GMLevel = data.GetByte("admin");
-                            session.Player.Gender = (Player.PlayerGender)data.GetByte("gender");
+                            session.Player.Gender = (PlayerGender)data.GetByte("gender");
                             session.Player.DateOfBirth = data.GetInt32("char_delete_password");
                             session.Player.Username = username;
                         }
@@ -234,7 +236,7 @@ namespace WvsBeta.Login.PacketHandlers
                 session.Loaded = false;
                 if (loginState == LoginState.EULA)
                 {
-                    session.Player.State = Player.LoginState.ConfirmEULA;
+                    session.Player.State = GameState.ConfirmEULA;
                 }
                 return;
             }
@@ -252,7 +254,7 @@ namespace WvsBeta.Login.PacketHandlers
             }
 
             session.Player.LoggedOn = true;
-            session.Player.State = session.Player.Gender == Player.PlayerGender.Unset ? Player.LoginState.SetupGender : Player.LoginState.PinCheck;
+            session.Player.State = session.Player.Gender == PlayerGender.Unset ? GameState.SetupGender : GameState.PinCheck;
 
             Program.MainForm.LogAppend($"Account {username} ({session.Player.ID}) logged on. Machine ID: {machineID}, Unique ID: {uniqueID}, IP: {session.IP}, Ban counts: {machineBanCount}/{uniqueBanCount}/{ipBanCount}");
             Program.MainForm.ChangeLoad(true);

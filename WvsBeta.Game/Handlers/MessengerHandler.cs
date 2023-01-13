@@ -30,7 +30,7 @@ namespace WvsBeta.Game
                 case 6:
                     {
                         string message = packet.ReadString();
-                        if (MessagePacket.ShowMuteMessage(chr))
+                        if (ChatPacket.ShowMuteMessage(chr))
                         {
                             log.Info($"[MUTED] {chr.Name}: {message}");
                         }

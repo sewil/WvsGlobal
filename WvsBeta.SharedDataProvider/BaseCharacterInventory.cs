@@ -15,14 +15,14 @@ namespace WvsBeta.SharedDataProvider
     public abstract class BaseCharacterInventory
     {
         // Shown and hidden
-        protected EquipItem[][] Equips { get; } =
+        public EquipItem[][] Equips { get; } =
         {
-            new EquipItem[17],
+            new EquipItem[19],
             new EquipItem[120] // Pet equips
         };
 
         // All inventories
-        protected BaseItem[][] Items { get; } = new BaseItem[5][];
+        public BaseItem[][] Items { get; } = new BaseItem[5][];
 
         protected Dictionary<int, short> ItemAmounts { get; } = new Dictionary<int, short>();
         public byte[] MaxSlots { get; } = new byte[5];
@@ -411,7 +411,7 @@ namespace WvsBeta.SharedDataProvider
                 foreach (var item in Equips[0])
                 {
                     if (item == null) continue;
-                    BasePacketHelper.AddItemData(packet, item, item.InventorySlot, false);
+                    item.Encode(packet, false);
                 }
                 packet.WriteByte(0);
 
@@ -419,7 +419,7 @@ namespace WvsBeta.SharedDataProvider
                 foreach (var item in Equips[1])
                 {
                     if (item == null) continue;
-                    BasePacketHelper.AddItemData(packet, item, item.InventorySlot, false);
+                    item.Encode(packet, false);
                 }
                 packet.WriteByte(0);
             }
@@ -434,7 +434,7 @@ namespace WvsBeta.SharedDataProvider
                 {
                     if (item != null && item.InventorySlot > 0)
                     {
-                        BasePacketHelper.AddItemData(packet, item, item.InventorySlot, false);
+                        item.Encode(packet, false);
                     }
                 }
                 packet.WriteByte(0);

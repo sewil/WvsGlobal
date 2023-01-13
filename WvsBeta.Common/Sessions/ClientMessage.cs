@@ -20,14 +20,13 @@
         LOGIN_CREATE_CHARACTER,
         LOGIN_DELETE_CHARACTER,
 
-        // Client Communication Headers
-        PONG,
+        // __START_SOCKET
+        PONG = 16,
         CLIENT_CRASH_REPORT,
+        RETURN_TO_LOGIN = 18,
         CLIENT_HASH,
-        // Game Headers
+        // __END_SOCKET
 
-        __PADDING_17,
-        __PADDING_18,
         ENTER_PORTAL,
         CHANGE_CHANNEL,
         ENTER_CASH_SHOP,

@@ -247,9 +247,9 @@ namespace WvsBeta.Game
                 {
                     int x = (grouping.Key >> 16) & 0xFFFF;
                     int y = (grouping.Key >> 0) & 0xFFFF;
-                    MessagePacket.SendNoticeGMs(
+                    ChatPacket.SendNoticeGMs(
                         $"Possible mobvac on map {ID}. More than {MaxMobsForTrigger} mobs on the exact same position. Location: {x} {y}." + GetMobvacPlayerNameInfo(),
-                        MessagePacket.MessageTypes.Megaphone
+                        ChatPacket.MessageTypes.Megaphone
                     );
                     return;
                 }
@@ -331,15 +331,15 @@ namespace WvsBeta.Game
             if ((mobsWithPossiblePvac_Left > pvacTriggerAmount && mobsWithPossiblePvac_Right == 0) ||
                 (mobsWithPossiblePvac_Right > pvacTriggerAmount && mobsWithPossiblePvac_Left == 0))
             {
-                MessagePacket.SendNoticeGMs(
+                ChatPacket.SendNoticeGMs(
                     $"Possible mobvac on map {ID}. pvac left {mobsWithPossiblePvac_Left}, pvac right {mobsWithPossiblePvac_Right}" + GetMobvacPlayerNameInfo(),
-                    MessagePacket.MessageTypes.Megaphone
+                    ChatPacket.MessageTypes.Megaphone
                 );
             }
 
             if (mobsOutOfBounds > 3)
             {
-                MessagePacket.SendNoticeGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), MessagePacket.MessageTypes.Megaphone);
+                ChatPacket.SendNoticeGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), ChatPacket.MessageTypes.Megaphone);
             }
             /*
             if (mobsWithInvalidFoothold > 3)
@@ -859,7 +859,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                     ", ",
                     shownPlayers.Select(x => x.Name + (x.IsAFK ? " (AFK)" : ""))
                 );
-                MessagePacket.SendNotice(playersonline, chr);
+                ChatPacket.SendNotice(playersonline, chr);
             }
 
             // Nuke the stats

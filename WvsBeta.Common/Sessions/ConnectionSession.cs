@@ -94,7 +94,7 @@ namespace WvsBeta.Common.Sessions
         {
             if (isConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
 
-            var packet = new Packet(ServerMessages.SECURITY_SOMETHING);
+            var packet = new Packet(ServerMessages.__UNKNOWN_17);
             packet.WriteByte(0);
 
             var regions = MemoryRegions.Instance.Regions;
@@ -146,6 +146,10 @@ namespace WvsBeta.Common.Sessions
             try
             {
                 byte header = pPacket.ReadByte();
+                if (GetType().ToString() == "WvsBeta.Game.ClientSession" && header != (byte)ServerMessages.PING && header != (byte)ClientMessages.PONG)
+                {
+                    Console.WriteLine("[WvsBeta.Game.ClientSession] Onpacketinbound", pPacket);
+                }
 
                 if (isConnectedAsClient)
                 {

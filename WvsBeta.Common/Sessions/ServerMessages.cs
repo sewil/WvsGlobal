@@ -2,66 +2,72 @@
 {
 	public enum ServerMessages : byte
     {
-        ___START_SOCKET,
-        CHECK_PASSWORD_RESULT,
-        //Confirm that the server can handle the connection
-        __UNKNOWN_2,
-        CHECK_USER_LIMIT_RESULT,
+        // ___START_LOGIN,
+        CHECK_PASSWORD_RESULT = 1,
+        __UNKNOWN_2 = 2,
+        CHECK_USER_LIMIT_RESULT = 3,
+        SET_GENDER_RESULT = 4,
+        CONFIRM_EULA_RESULT = 5,
+        __UNKNOWN_6,
+        PIN_OPERATION = 7,
+        PIN_ASSIGNED = 8,
+        WORLD_INFORMATION = 9,
+        SELECT_CHANNEL_RESULT = 10,
+        SELECT_CHARACTER_RESULT = 11,
+        CHECK_CHARACTER_NAME_AVAILABLE = 12,
+        CREATE_NEW_CHARACTER_RESULT = 13,
+        DELETE_CHARACTER_RESULT = 14,
+        // __END_LOGIN
 
-        //Set Gender result
-        SET_ACCOUNT_RESULT,
+        // __START_SOCKET
+        MIGRATE_COMMAND = 15, // Change channel
+        PING = 16,
+        __UNKNOWN_17 = 17,
+        __UNKNOWN_18 = 18,
+        __UNKNOWN_19 = 19,
+        __MISSING_20 = 20,
+        __MISSING_21 = 21,
+        __MISSING_22 = 22,
+        __UNKNOWN_23 = 23,
+        // ___END_SOCKET
 
-        CONFIRM_EULA_RESULT,
-        __PADDING_6,
-        PIN_OPERATION,
-        PIN_ASSIGNED,
-        WORLD_INFORMATION,
+        // __START_CWVSCONTEXT
+        INVENTORY_OPERATION = 27,
+        INVENTORY_GROW = 28,
+        STAT_CHANGED = 29,
+        FORCED_STAT_SET = 30,
+        FORCED_STAT_RESET = 31,
+        CHANGE_SKILL_RECORD_RESULT = 32,
+        SKILL_USE_RESULT = 33,
+        GIVE_POPULARITY_RESULT = 34,
+        MESSAGE = 35,
+        MEMO_RESULT = 36,
+        MAP_TRANSFER_RESULT = 37,
+        ANTI_MACRO_RESULT = 38,
+        __MISSING_39 = 39,
+        QUEST_CLEAR = 40,
+        SUE_CHARACTER_RESULT = 41,
+        __MISSING_42 = 42,
+        __MISSING_43 = 43,
+        CHARACTER_INFO = 44,
+        PARTY_RESULT = 45,
+        FRIEND_RESULT = 46,
+        __MISSING_47 = 47,
+        GUILD_RESULT = 48,
+        TOWN_PORTAL = 49,
+        BROADCAST_MSG = 50,
+        // __END_CWVSCONTEXT
 
-        SELECT_CHANNEL_RESULT,
-        //Confusing naming, basically connect to server header :)
-        SELECT_CHARACTER_RESULT,
-        CHECK_CHARACTER_NAME_AVAILABLE,
-        CREATE_NEW_CHARACTER_RESULT,
-        DELETE_CHARACTER_RESULT,
+        // ___START_STAGE
+        SET_FIELD = 53,
+        SET_CASH_SHOP = 54,
+        // ___END_STAGE
 
-        CHANGE_CHANNEL,
-        PING,
-        AUTHEN_CODE_CHANGED,
-        SECURITY_SOMETHING, // Either read a buffer (passed to GG?) or a set of ints. Looks like CRC info.
-        ___END_SOCKET,
-
-        ___START_CHARACTERDATA,
-        INVENTORY_OPERATION,
-        INVENTORY_GROW,
-        STAT_CHANGED,
-        FORCED_STAT_SET,
-        FORCED_STAT_RESET,
-        CHANGE_SKILL_RECORD_RESULT,
-        SKILL_USE_RESULT,
-        GIVE_POPULARITY_RESULT,
-        SHOW_STATUS_INFO, // Called 'Message'
-        MEMO_RESULT,
-        MAP_TRANSFER_RESULT,
-        SUE_CHARACTER_RESULT,
-        __PADDING_32, // Possibly ClaimServer stuff
-        __PADDING_33,
-        CHARACTER_INFO,
-        PARTY_RESULT,
-        FRIEND_RESULT,
-        TOWN_PORTAL,
-        BROADCAST_MSG,
-        ___END_CHARACTEDATA,
-
-        ___START_STAGE,
-        SET_FIELD,
-        SET_CASH_SHOP,
-        ___END_STAGE,
-
-        ___START_FIELD,
-        TRANSFER_FIELD_REQ_IGNORED,
-        TRANSFER_CHANNEL_REQ_IGNORED,
-        FIELD_SPECIFIC_DATA,
-        GROUP_MESSAGE,
+        // ___START_FIELD
+        TRANSFER_FIELD_REQ_IGNORED = 57,
+        TRANSFER_CHANNEL_REQ_IGNORED = 58,
+        FIELD_SPECIFIC_DATA = 59,
+        GROUP_MESSAGE = 60,
         WHISPER,
         SUMMON_ITEM_INAVAILABLE,
         FIELD_EFFECT,
@@ -127,21 +133,21 @@
         MESOBAG_FAILED,
         ___END_USERLOCAL,
 
-        ___START_MOBPOOL,
-        MOB_ENTER_FIELD,
-        MOB_LEAVE_FIELD,
-        MOB_CHANGE_CONTROLLER,
+        // ___START_MOBPOOL
+        MOB_ENTER_FIELD = 125,
+        MOB_LEAVE_FIELD = 126,
+        MOB_CHANGE_CONTROLLER = 127,
 
-        ___START_MOB,
-        MOB_MOVE,
-        MOB_MOVE_RESPONSE,
-        __PADDING_115,
-        MOB_STAT_SET,
-        MOB_STAT_RESET,
-        MOB_SUSPEND_RESET,
-        MOB_AFFECTED,
-        MOB_DAMAGED,
-        MOB_EFFECT_BY_SKILL, // int mapmobid, int skillid. Seems to activate a special animation caused by certain skills (e.g. 3210001 mortal blow), mainly those with the 'special' node
+        // ___START_MOB
+        MOB_MOVE = 129,
+        MOB_CTRL_ACK = 130, // Mob move response
+        __MISSING_131,
+        MOB_STAT_SET = 132,
+        MOB_STAT_RESET = 133,
+        MOB_SUSPEND_RESET = 134,
+        MOB_AFFECTED = 135,
+        MOB_DAMAGED = 136,
+        MOB_SHOW_SPECIAL_EFFECT = 137,
         __PADDING_122,
         ___END_MOB,
 

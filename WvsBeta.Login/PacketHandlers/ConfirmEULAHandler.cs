@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.PacketHandlers
@@ -7,7 +9,7 @@ namespace WvsBeta.Login.PacketHandlers
     {
         public ConfirmEULAHandler(ClientSession session, ILog log, Packet packet)
         {
-            if (log.AssertWarning(session.Player.State != Player.LoginState.ConfirmEULA, "Tried to confirm EULA while not in dialog")) return;
+            if (log.AssertWarning(session.Player.State != GameState.ConfirmEULA, "Tried to confirm EULA while not in dialog")) return;
 
             if (packet.ReadBool())
             {

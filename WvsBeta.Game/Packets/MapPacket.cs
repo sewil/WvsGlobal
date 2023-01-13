@@ -109,7 +109,7 @@ namespace WvsBeta.Game
                 {
                     errorHandlerFnc = (script) =>
                     {
-                        MessagePacket.SendNotice("Error compiling script '" + script + "'!", chr);
+                        ChatPacket.SendNotice("Error compiling script '" + script + "'!", chr);
                     };
                 }
 
@@ -774,14 +774,16 @@ namespace WvsBeta.Game
 
         }
 
-        public static void SendJoinGame(Character chr)
+        public static void SendSetField(Character chr)
         {
             Packet pack = new Packet(ServerMessages.SET_FIELD);
+            var isConnecting = true;
 
             pack.WriteInt(Server.Instance.ID); // Channel ID
             pack.WriteByte(0); // 0 portals
-            pack.WriteBool(true); // Is connecting
+            pack.WriteBool(isConnecting); // Is connecting
 
+            if (isConnecting)
             {
                 var rnd = Server.Instance.Randomizer;
                 // Seeds are initialized by global randomizer
@@ -797,82 +799,14 @@ namespace WvsBeta.Game
                 pack.WriteUInt(seed2);
                 pack.WriteUInt(seed3);
                 pack.WriteUInt(seed4);
+
+                new CharacterDataPacket(chr).Encode(pack);
             }
-
-            pack.WriteShort(-1); // Flags (contains everything: 0xFFFF)
-
-            pack.WriteInt(chr.ID);
-            pack.WriteString(chr.Name, 13);
-            pack.WriteByte(chr.Gender); // Gender
-            pack.WriteByte(chr.Skin); // Skin
-            pack.WriteInt(chr.Face); // Face
-            pack.WriteInt(chr.Hair); // Hair
-
-            pack.WriteLong(chr.PetCashId); // Pet Cash ID :/
-
-            pack.WriteByte(chr.PrimaryStats.Level);
-            pack.WriteShort(chr.PrimaryStats.Job);
-            pack.WriteShort(chr.PrimaryStats.Str);
-            pack.WriteShort(chr.PrimaryStats.Dex);
-            pack.WriteShort(chr.PrimaryStats.Int);
-            pack.WriteShort(chr.PrimaryStats.Luk);
-            pack.WriteShort(chr.PrimaryStats.HP);
-            pack.WriteShort(chr.PrimaryStats.GetMaxHP(true));
-            pack.WriteShort(chr.PrimaryStats.MP);
-            pack.WriteShort(chr.PrimaryStats.GetMaxMP(true));
-            pack.WriteShort(chr.PrimaryStats.AP);
-            pack.WriteShort(chr.PrimaryStats.SP);
-            pack.WriteInt(chr.PrimaryStats.EXP);
-            pack.WriteShort(chr.PrimaryStats.Fame);
-
-            pack.WriteInt(chr.MapID); // Mapid
-            pack.WriteByte(chr.MapPosition); // Mappos
-
-            pack.WriteLong(0);
-            pack.WriteInt(0);
-            pack.WriteInt(0);
-
-            pack.WriteByte((byte)chr.PrimaryStats.BuddyListCapacity); // Buddylist slots
-
-            chr.Inventory.GenerateInventoryPacket(pack);
-
-            chr.Skills.AddSkills(pack);
-
-
-            var questsWithData = chr.Quests.Quests;
-            pack.WriteShort((short)questsWithData.Count); // Running quests
-            foreach (var kvp in questsWithData)
+            else
             {
-                pack.WriteInt(kvp.Key);
-                pack.WriteString(kvp.Value.Data);
+
             }
 
-            pack.WriteShort(0); // RPS Game(s)
-                                /*
-                                 * For every game stat:
-                                 * pack.WriteInt(); // All unknown values
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                */
-
-
-            pack.WriteShort(0);
-            /*
-             * For every ring, 33 unkown bytes.
-            */
-
-
-            chr.Inventory.AddRockPacket(pack);
-
-
-            //pack.WriteByte(1); THIS IS WHAT TRIGGERS OMOK AND 5 LINES BELOW
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(327);
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(1112001);
             chr.SendPacket(pack);
         }
 

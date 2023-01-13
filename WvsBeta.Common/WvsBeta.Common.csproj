@@ -120,8 +120,11 @@
     <Compile Include="Character\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
-    <Compile Include="Bullshit\bullshitextensions.cs" />
-    <Compile Include="Character\Character.cs" />
+    <Compile Include="Enums\GameState.cs" />
+    <Compile Include="Enums\MessageType.cs" />
+    <Compile Include="Enums\PlayerGender.cs" />
+    <Compile Include="Extensions\bullshitextensions.cs" />
+    <Compile Include="Character\CharacterBase.cs" />
     <Compile Include="Character\GW_CharacterStat.cs" />
     <Compile Include="ConfigReader.cs" />
     <Compile Include="Constants.cs" />
@@ -143,11 +146,13 @@
     <Compile Include="Crypto\Cryptography\Utilities\Platform.cs" />
     <Compile Include="Crypto\Cryptos.cs" />
     <Compile Include="DiscordReporter.cs" />
+    <Compile Include="Extensions\LogExtensions.cs" />
     <Compile Include="IMainForm.cs" />
     <Compile Include="LoopingID.cs" />
     <Compile Include="MainFormConsole.cs" />
     <Compile Include="MemoryRegions.cs" />
     <Compile Include="Character\Pos.cs" />
+    <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\World.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />

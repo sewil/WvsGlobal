@@ -104,7 +104,7 @@ namespace WvsBeta.Common
         public static class EquipSlots
         {
             // Update this when we go to a newer version with new slots (looks like third job?)
-            public const short MaxSlotIndex = (short)Slots.Pendant;
+            public const short MaxSlotIndex = (short)Slots.Saddle;
 
             public static bool IsValidEquipSlot(short slot)
             {

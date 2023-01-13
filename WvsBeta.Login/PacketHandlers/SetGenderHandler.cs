@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.PacketHandlers
@@ -7,7 +9,7 @@ namespace WvsBeta.Login.PacketHandlers
     {
         public SetGenderHandler(ClientSession session, ILog log, Packet packet)
         {
-            if (log.AssertWarning(session.Player.State != Player.LoginState.SetupGender,
+            if (log.AssertWarning(session.Player.State != GameState.SetupGender,
                 "Tried to set gender while not in setup gender state")) return;
 
             if (packet.ReadBool() == false)
@@ -25,10 +27,10 @@ namespace WvsBeta.Login.PacketHandlers
                 "@gender", isFemale ? 1 : 0
             );
 
-            session.Player.Gender = isFemale ? Player.PlayerGender.Female : Player.PlayerGender.Male;
-            session.Player.State = Player.LoginState.PinCheck;
+            session.Player.Gender = isFemale ? PlayerGender.Female : PlayerGender.Male;
+            session.Player.State = GameState.PinCheck;
 
-            var pack = new Packet(ServerMessages.SET_ACCOUNT_RESULT);
+            var pack = new Packet(ServerMessages.SET_GENDER_RESULT);
             pack.WriteBool(isFemale);
             pack.WriteBool(true); // Is success. If false will show "Try again!" dialog
 

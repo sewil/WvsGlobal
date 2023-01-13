@@ -202,12 +202,14 @@
     <Compile Include="Packets\AttackPacket.cs" />
     <Compile Include="Packets\BuffPacket.cs" />
     <Compile Include="Packets\CashPacket.cs" />
+    <Compile Include="Packets\CharacterDataPacket.cs" />
     <Compile Include="Packets\CharacterStatsPacket.cs" />
     <Compile Include="Events\EventPackets\CoconutPackets.cs" />
     <Compile Include="Packets\DropPacket.cs" />
     <Compile Include="Packets\FamePacket.cs" />
     <Compile Include="Packets\InventoryPacket.cs" />
     <Compile Include="Packets\MapPacket.cs" />
+    <Compile Include="Packets\ChatPacket.cs" />
     <Compile Include="Packets\MessagePacket.cs" />
     <Compile Include="Packets\MiniGamePacket.cs" />
     <Compile Include="Packets\MiscPacket.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="Packets\PlayerShopPackets.cs" />
     <Compile Include="Packets\QuestPacket.cs" />
     <Compile Include="Packets\ReactorPacket.cs" />
+    <Compile Include="Packets\ReturnToLoginPacket.cs" />
     <Compile Include="Packets\SkillPacket.cs" />
     <Compile Include="Packets\StoragePacket.cs" />
     <Compile Include="Packets\TradePacket.cs" />

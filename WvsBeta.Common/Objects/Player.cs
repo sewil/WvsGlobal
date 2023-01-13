@@ -1,28 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using WvsBeta.Common.Enums;
 
-namespace WvsBeta.Login
+namespace WvsBeta.Common.Objects
 {
-
-    public class Player
+    public partial class Player
     {
-        public enum LoginState
-        {
-            LoginScreen,
-            SetupGender,
-            ConfirmEULA,
-            PinCheck,
-            WorldSelect,
-            ChannelSelect,
-            CharacterSelect,
-            CharacterCreation,
-        }
-        public enum PlayerGender : byte 
-        {
-            Male = 0,
-            Female = 1,
-            Unset = 10
-        }
-
         public string Username { get; set; }
         public int ID { get; set; }
         public PlayerGender Gender { get; set; }
@@ -31,10 +17,9 @@ namespace WvsBeta.Login
         public bool IsAdmin { get => GMLevel >= 3; }
         public bool LoggedOn { get; set; } = false;
         public int DateOfBirth { get; set; }
-        public LoginState State { get; set; } = LoginState.LoginScreen;
+        public GameState State { get; set; } = GameState.LoginScreen;
         public byte World { get; set; }
         public byte Channel { get; set; }
-        public ClientSession Socket { get; set; }
         public string SessionHash { get; set; }
 
         public Dictionary<int, string> Characters { get; } = new Dictionary<int, string>();
@@ -43,6 +28,6 @@ namespace WvsBeta.Login
         {
             return Characters.ContainsKey(id);
         }
-        
+
     }
 }

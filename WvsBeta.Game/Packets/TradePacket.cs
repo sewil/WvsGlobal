@@ -98,7 +98,7 @@ namespace WvsBeta.Game
                         var text = pPacket.ReadString();
 
                         var chatLogLine = pCharacter.Name + ": " + text;
-                        if (MessagePacket.ShowMuteMessage(pCharacter))
+                        if (ChatPacket.ShowMuteMessage(pCharacter))
                         {
                             miniroomChatLog.Info("[MUTED] " + chatLogLine);
                         }
@@ -630,7 +630,7 @@ namespace WvsBeta.Game
             pw.WriteByte(User); // 0 or 1 based on left/right side of trade window
             pw.WriteByte(TradeSlot); // item slot in the trade window
             pw.WriteByte((byte)itemType); // Item Type (EQ, USE, SETUP, ETC, PET)
-            PacketHelper.AddItemData(pw, pItem, 0, false);
+            pItem.Encode(pw, false);
             pTo.SendPacket(pw);
         }
 
@@ -644,7 +644,7 @@ namespace WvsBeta.Game
             pw.WriteByte(User); // 0 or 1 based on left/right side of trade window
             pw.WriteByte(TradeSlot); // item slot in the trade window
             pw.WriteByte((byte)itemType); // Item Type (EQ, USE, SETUP, ETC, PET)
-            PacketHelper.AddItemDataWithAmount(pw, pItem, 0, false, amount);
+            pItem.Encode(pw, false);
             pTo.SendPacket(pw);
         }
 

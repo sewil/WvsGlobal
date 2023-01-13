@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.PacketHandlers
@@ -7,7 +9,7 @@ namespace WvsBeta.Login.PacketHandlers
     {
         public UpdatePINHandler(ClientSession session, ILog log, Packet packet)
         {
-            if (log.AssertWarning(session.Player.State != Player.LoginState.PinCheck,
+            if (log.AssertWarning(session.Player.State != GameState.PinCheck,
                         "Tried to update pin while not in pincheck")) return;
 
             packet.ReadByte();

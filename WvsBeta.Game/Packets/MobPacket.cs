@@ -292,7 +292,7 @@ namespace WvsBeta.Game
 
         public static void SendMobControlResponse(Character victim, int mobid, short moveid, bool bNextAttackPossible, short MP, byte skillCommand, byte level)
         {
-            var pw = new Packet(ServerMessages.MOB_MOVE_RESPONSE);
+            var pw = new Packet(ServerMessages.MOB_CTRL_ACK);
             pw.WriteInt(mobid);
             pw.WriteShort(moveid);
             pw.WriteBool(bNextAttackPossible);

@@ -23,7 +23,7 @@ namespace WvsBeta.Game
 
             if (chr.IsGM && !chr.IsAdmin)
             {
-                MessagePacket.SendNotice("You cannot drop mesos.", chr);
+                ChatPacket.SendNotice("You cannot drop mesos.", chr);
                 InventoryPacket.NoChange(chr);
                 return;
             }
@@ -191,7 +191,7 @@ namespace WvsBeta.Game
 
         public static void CannotLoot(Character chr, sbyte reason)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0);
             pw.WriteSByte(reason);
             chr.SendPacket(pw);

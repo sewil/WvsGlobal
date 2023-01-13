@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.SharedDataProvider;
@@ -361,40 +359,6 @@ namespace WvsBeta.Game
                     return i;
             }
             return -1;
-        }
-
-        public void GenerateInventoryPacket(Packet packet)
-        {
-            packet.WriteInt(Mesos);
-
-            foreach (var item in Equips[0])
-            {
-                if (item == null) continue;
-                PacketHelper.AddItemData(packet, item, item.InventorySlot, false);
-            }
-
-            packet.WriteByte(0);
-
-            foreach (var item in Equips[1])
-            {
-                if (item == null) continue;
-                PacketHelper.AddItemData(packet, item, item.InventorySlot, false);
-            }
-            packet.WriteByte(0);
-
-            for (int i = 0; i < 5; i++)
-            {
-                packet.WriteByte(MaxSlots[i]);
-                foreach (BaseItem item in Items[i])
-                {
-                    if (item != null && item.InventorySlot > 0)
-                    {
-                        PacketHelper.AddItemData(packet, item, item.InventorySlot, false);
-                    }
-                }
-
-                packet.WriteByte(0);
-            }
         }
 
         public short DeleteFirstItemInInventory(int inv)

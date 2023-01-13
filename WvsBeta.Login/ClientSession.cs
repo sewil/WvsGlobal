@@ -14,6 +14,8 @@ using static WvsBeta.Login.Packets.CheckPasswordResultPacket;
 using WvsBeta.Login.Packets;
 using WvsBeta.Login.PacketHandlers;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.Extensions;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Login
 {
@@ -21,13 +23,13 @@ namespace WvsBeta.Login
     {
         private static ILog log = LogManager.GetLogger("LoginLogic");
 
-        public Player Player { get; private set; }
+        public Objects.Player Player { get; private set; }
         public bool Loaded { get; set; }
         public bool IsCCing { get; private set; }
 
         public ClientSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false)
         {
-            Player = new Player()
+            Player = new Objects.Player()
             {
                 LoggedOn = false,
                 Socket = this
@@ -238,21 +240,15 @@ namespace WvsBeta.Login
 
             IsCCing = true;
 
-            Packet pw = new Packet(ServerMessages.SELECT_CHARACTER_RESULT);
-            pw.WriteByte(0);
-            pw.WriteByte(0);
-            pw.WriteBytes(IP);
-            pw.WriteUShort(port);
-            pw.WriteInt(charid);
-            pw.WriteByte(bit);
-            SendPacket(pw);
+            var pack = new CharacterSelectPacket(IP, port, charid, Player.Characters[charid], bit).Encode(CharacterSelectPacket.Status.Success);
+            SendPacket(pack);
         }
 
         public void OnCharNamecheck(Packet packet)
         {
-            if (log.AssertWarning(Player.State != Player.LoginState.CharacterSelect && Player.State != Player.LoginState.CharacterCreation, "Trying to check character name while not in character select or creation screen.")) return;
+            if (log.AssertWarning(Player.State != GameState.CharacterSelect && Player.State != GameState.CharacterCreation, "Trying to check character name while not in character select or creation screen.")) return;
 
-            Player.State = Player.LoginState.CharacterCreation;
+            Player.State = GameState.CharacterCreation;
 
             string name = packet.ReadString();
 
@@ -283,8 +279,8 @@ namespace WvsBeta.Login
         public void OnCharDeletion(Packet packet)
         {
             if (log.AssertWarning(
-                Player.State != Player.LoginState.CharacterSelect &&
-                Player.State != Player.LoginState.CharacterCreation,
+                Player.State != GameState.CharacterSelect &&
+                Player.State != GameState.CharacterCreation,
                 "Trying to delete character while not in character select or create screen.")) return;
 
             int DoB = packet.ReadInt();
@@ -341,7 +337,7 @@ namespace WvsBeta.Login
 
         public void OnCharCreation(Packet packet)
         {
-            if (log.AssertWarning(Player.State != Player.LoginState.CharacterCreation, "Trying to create character while not in character creation screen (skipped namecheck?).")) return;
+            if (log.AssertWarning(Player.State != GameState.CharacterCreation, "Trying to create character while not in character creation screen (skipped namecheck?).")) return;
 
             if (!Server.Instance.GetWorld(Player.World, out Center center))
             {
@@ -447,7 +443,7 @@ namespace WvsBeta.Login
 
                 log.Info($"User created a new character, called '{ad.CharacterStat.Name}'");
                 Player.Characters.Add(ad.CharacterStat.ID, ad.CharacterStat.Name);
-                Player.State = Player.LoginState.CharacterSelect;
+                Player.State = GameState.CharacterSelect;
             }
             else
             {
@@ -462,12 +458,12 @@ namespace WvsBeta.Login
             var pack = new ChannelSelectResultPacket(packet, Player).Encode();
             SendPacket(pack);
 
-            Player.State = Player.LoginState.CharacterSelect;
+            Player.State = GameState.CharacterSelect;
         }
 
         public void OnWorldSelect(Packet packet)
         {
-            if (log.AssertWarning(Player.State != Player.LoginState.WorldSelect && Player.State != Player.LoginState.ChannelSelect,
+            if (log.AssertWarning(Player.State != GameState.WorldSelect && Player.State != GameState.ChannelSelect,
                 "Player tried to select world while not in worldselect or channelselect")) return;
 
             byte worldId = packet.ReadByte();
@@ -488,7 +484,7 @@ namespace WvsBeta.Login
         {
             var pack = new CheckUserLimitPacket(packet).Encode();
             SendPacket(pack);
-            Player.State = Player.LoginState.ChannelSelect;
+            Player.State = GameState.ChannelSelect;
         }
 
         public struct LoginLoggingStruct
@@ -499,7 +495,7 @@ namespace WvsBeta.Login
         }
         public void OnPinCheck(Packet packet)
         {
-            if (log.AssertWarning(Player.State != Player.LoginState.PinCheck,
+            if (log.AssertWarning(Player.State != GameState.PinCheck,
                 "Tried to do a pin check while not in pin check state")) return;
 
             //PINs currently disabled. TODO when we update. Just send successful auth packet for now.
@@ -508,12 +504,12 @@ namespace WvsBeta.Login
 
             SendPacket(pack);
 
-            Player.State = Player.LoginState.WorldSelect;
+            Player.State = GameState.WorldSelect;
         }
 
         public void BackToLogin()
         {
-            Player.State = Player.LoginState.LoginScreen;
+            Player.State = GameState.LoginScreen;
             Program.MainForm.ChangeLoad(false);
 
             Loaded = false;

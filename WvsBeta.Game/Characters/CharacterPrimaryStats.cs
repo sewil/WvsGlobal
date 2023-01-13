@@ -867,9 +867,8 @@ namespace WvsBeta.Game
         {
             long currentTime = BuffStat.GetTimeForBuff();
             int tmpBuffPos = pPacket.Position;
-            BuffValueTypes endFlag = 0;
-            pPacket.WriteUInt((uint)endFlag);
-
+            BuffValueTypes endFlag = BuffValueTypes.None;
+            pPacket.WriteULong((ulong)endFlag);
 
             BuffWeaponAttack.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffWeaponDefense.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
@@ -908,8 +907,7 @@ namespace WvsBeta.Game
             BuffWeakness.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffCurse.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
 
-
-            pPacket.SetUInt(tmpBuffPos, (uint)endFlag);
+            pPacket.SetULong(tmpBuffPos, (ulong)endFlag); // Make sure correct flag is set
         }
 
         public bool HasBuff(int skillOrItemID)

@@ -12,13 +12,13 @@ namespace WvsBeta.Game
             switch (to)
             {
                 case 0x00: //To every game server
-                MessagePacket.SendAdminMessage(chr, Message, TypeMessage, 0);
+                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 0);
                 break;
                 case 0x01: //To channel
-                MessagePacket.SendAdminMessage(chr, Message, TypeMessage, 1);
+                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 1);
                 break;
                 case 0x02: //To map
-                MessagePacket.SendAdminMessage(chr, Message, TypeMessage, 2);
+                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 2);
                 break;
             }
         }

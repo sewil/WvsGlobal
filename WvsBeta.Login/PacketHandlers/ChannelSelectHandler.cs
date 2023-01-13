@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login.Packets;
 
@@ -8,7 +10,7 @@ namespace WvsBeta.Login.PacketHandlers
     {
         public ChannelSelectHandler(ClientSession session, ILog log, Packet packet)
         {
-            if (log.AssertWarning(session.Player.State != Player.LoginState.ChannelSelect,
+            if (log.AssertWarning(session.Player.State != GameState.ChannelSelect,
                 "Tried to select channel while not in channel select.")) return;
 
             var result = new ChannelSelectPacket(packet);

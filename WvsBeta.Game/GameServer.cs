@@ -72,7 +72,7 @@ namespace WvsBeta.Game
             ScrollingHeader = newText;
             Program.MainForm.LogAppend("Updating scrolling header to: {0}", ScrollingHeader);
 
-            MessagePacket.SendText(MessagePacket.MessageTypes.Header, ScrollingHeader, null, MessagePacket.MessageMode.ToChannel);
+            ChatPacket.SendText(ChatPacket.MessageTypes.Header, ScrollingHeader, null, ChatPacket.MessageMode.ToChannel);
         }
 
         public void LogToLogfile(string what)
@@ -97,9 +97,9 @@ namespace WvsBeta.Game
             var str = $"Enqueued delayed permban for userid {chr.UserID}, charname {chr.Name}, level {chr.Level}, reason ({banReason}) {reason}, map {chr.MapID} in {seconds} seconds...";
             BanDiscordReporter.Enqueue(str);
 
-            MessagePacket.SendNoticeGMs(
+            ChatPacket.SendNoticeGMs(
                 str,
-                MessagePacket.MessageTypes.Notice
+                ChatPacket.MessageTypes.Notice
             );
         }
 
@@ -259,9 +259,9 @@ namespace WvsBeta.Game
 
                             BanDiscordReporter.Enqueue(str);
 
-                            MessagePacket.SendNoticeGMs(
+                            ChatPacket.SendNoticeGMs(
                                 str,
-                                MessagePacket.MessageTypes.Notice
+                                ChatPacket.MessageTypes.Notice
                             );
 
                             DelayedBanRecords.Remove(userid);

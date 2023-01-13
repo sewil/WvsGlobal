@@ -1,4 +1,5 @@
 ﻿using WvsBeta.Common.Sessions;
+using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login.Packets
 {

@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.PacketHandlers
@@ -7,7 +9,7 @@ namespace WvsBeta.Login.PacketHandlers
     {
         public WorldInfoHandler(ClientSession session, ILog log)
         {
-            if (log.AssertWarning(session.Player.State != Player.LoginState.WorldSelect,
+            if (log.AssertWarning(session.Player.State != GameState.WorldSelect,
                         "Tried to get the world information while not in worldselect")) return;
 
             foreach (var kvp in Server.Instance.Worlds)

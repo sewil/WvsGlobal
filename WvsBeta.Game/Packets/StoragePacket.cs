@@ -242,7 +242,7 @@ namespace WvsBeta.Game
 
             foreach (var item in itemsInInventory)
             {
-                BasePacketHelper.AddItemData(pw, item, 0, false);
+                item.Encode(pw, false);
             }
         }
     }

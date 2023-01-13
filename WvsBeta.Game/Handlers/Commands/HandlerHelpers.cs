@@ -16,18 +16,18 @@ namespace WvsBeta.Game.Handlers.Commands
             return -1;
         }
 
-        public static void ShowError(string message) => SendResponse(MessagePacket.MessageTypes.RedText, message);
-        public static void ShowInfo(string message) => SendResponse(MessagePacket.MessageTypes.Notice, message);
+        public static void ShowError(string message) => SendResponse(ChatPacket.MessageTypes.RedText, message);
+        public static void ShowInfo(string message) => SendResponse(ChatPacket.MessageTypes.Notice, message);
 
-        public static void SendResponse(MessagePacket.MessageTypes type, string message)
+        public static void SendResponse(ChatPacket.MessageTypes type, string message)
         {
             if (MainCommandHandler.CommandCharacter == null) return;
 
-            MessagePacket.SendText(
+            ChatPacket.SendText(
                 type,
                 message,
                 MainCommandHandler.CommandCharacter,
-                MessagePacket.MessageMode.ToPlayer
+                ChatPacket.MessageMode.ToPlayer
             );
         }
     }

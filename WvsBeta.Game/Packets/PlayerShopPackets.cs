@@ -69,7 +69,7 @@ namespace WvsBeta.Game
                 pw.WriteShort(pst.Value.BundleAmount);
                 pw.WriteInt(pst.Value.Price);
                 pw.WriteByte(WvsBeta.Common.Constants.getItemTypeInPacket(pst.Value.sItem.ItemID));
-                PacketHelper.AddItemData(pw, pst.Value.sItem, 0, false);
+                pst.Value.sItem.Encode(pw, false);
             }
             ps.BroadcastPacket(pw);
         }

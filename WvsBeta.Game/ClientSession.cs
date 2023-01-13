@@ -7,6 +7,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 using WvsBeta.Game.Handlers;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -169,6 +170,9 @@ namespace WvsBeta.Game
 
                     switch (header)
                     {
+                        case ClientMessages.RETURN_TO_LOGIN:
+                            ReturnToLoginPacket.Handle(this, packet, log);
+                            break;
                         case ClientMessages.ENTER_PORTAL:
                             MapPacket.OnEnterPortal(packet, character);
                             break;
@@ -201,13 +205,13 @@ namespace WvsBeta.Game
                             break;
 
                         case ClientMessages.CHAT:
-                            MessagePacket.HandleChat(character, packet);
+                            ChatPacket.HandleChat(character, packet);
                             break;
                         case ClientMessages.GROUP_MESSAGE:
-                            MessagePacket.HandleSpecialChat(character, packet);
+                            ChatPacket.HandleSpecialChat(character, packet);
                             break;
                         case ClientMessages.WHISPER:
-                            MessagePacket.HandleCommand(character, packet);
+                            ChatPacket.HandleCommand(character, packet);
                             break;
                         case ClientMessages.EMOTE:
                             MapPacket.SendEmotion(character, packet.ReadInt());
@@ -350,7 +354,6 @@ namespace WvsBeta.Game
                         // TODO: Implement???
                         case ClientMessages.MOB_APPLY_CONTROL: break;
 
-                        case ClientMessages.CLIENT_HASH: break;
                         case ClientMessages.PONG:
                             // Make sure we update the player online thing
                             RedisBackend.Instance.SetPlayerOnline(
@@ -402,9 +405,9 @@ namespace WvsBeta.Game
             var hack = HackDetected.Value;
             if (hack.HasFlag(RedisBackend.HackKind.Speedhack))
             {
-                MessagePacket.SendNoticeGMs(
+                ChatPacket.SendNoticeGMs(
                     $"Detected speed hacks on character '{character.Name}', map {character.MapID}...",
-                    MessagePacket.MessageTypes.RedText);
+                    ChatPacket.MessageTypes.RedText);
 
                 if (character.IsGM == false)
                 {
@@ -417,9 +420,9 @@ namespace WvsBeta.Game
 
             if (hack.HasFlag(RedisBackend.HackKind.MemoryEdits))
             {
-                MessagePacket.SendNoticeGMs(
+                ChatPacket.SendNoticeGMs(
                     $"Detected memory edits on character '{character.Name}', map {character.MapID}.",
-                    MessagePacket.MessageTypes.RedText
+                    ChatPacket.MessageTypes.RedText
                 );
 
                 if (character.IsGM == false)
@@ -472,7 +475,7 @@ namespace WvsBeta.Game
 
         public void SendConnectToServer(byte[] IP, ushort port, bool noScheduledDisconnect = false)
         {
-            var pw = new Packet(ServerMessages.CHANGE_CHANNEL);
+            var pw = new Packet(ServerMessages.MIGRATE_COMMAND);
             pw.WriteBool(true);
             pw.WriteBytes(IP);
             pw.WriteUShort(port);
@@ -570,12 +573,12 @@ namespace WvsBeta.Game
 
             character.PrimaryStats.CheckHPMP();
 
-            MapPacket.SendJoinGame(character);
+            MapPacket.SendSetField(character);
 
             if (character.IsGM)
             {
                 string glevel = character.GMLevel == 1 ? "(GM Intern)" : character.GMLevel == 2 ? "(GM)" : "(Admin)";
-                MessagePacket.SendNotice("Your GM Level: " + character.GMLevel + " " + glevel + ". Undercover? " + (character.Undercover ? "Yes" : "No"), character);
+                ChatPacket.SendNotice("Your GM Level: " + character.GMLevel + " " + glevel + ". Undercover? " + (character.Undercover ? "Yes" : "No"), character);
             }
 
             if (character.IsGM && !character.Undercover)
@@ -590,7 +593,7 @@ namespace WvsBeta.Game
                 character.Summons.DecodeForCC(ccPacket);
             }
 
-            MessagePacket.SendText(MessagePacket.MessageTypes.Header, Server.Instance.ScrollingHeader, character, MessagePacket.MessageMode.ToPlayer);
+            ChatPacket.SendText(ChatPacket.MessageTypes.Header, Server.Instance.ScrollingHeader, character, ChatPacket.MessageMode.ToPlayer);
 
             Server.Instance.CenterConnection.RegisterCharacter(character.ID, character.Name, character.PrimaryStats.Job, character.PrimaryStats.Level, character.GMLevel);
 
@@ -619,6 +622,16 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
+            //TODO:REMOVE
+            if (
+            //    pPacket.Opcode == (byte)ServerMessages.BROADCAST_MSG ||
+            //pPacket.Opcode == (byte)ServerMessages.FORCED_STAT_SET ||
+            pPacket.Opcode == (byte)ServerMessages.ADMIN_RESULT ||
+            pPacket.Opcode == (byte)ServerMessages.MOB_ENTER_FIELD ||
+            pPacket.Opcode == (byte)ServerMessages.STAT_CHANGED ||
+            pPacket.Opcode == (byte)ServerMessages.FORCED_STAT_RESET ||
+            pPacket.Opcode == (byte)ServerMessages.BROADCAST_MSG
+            ) return;
             Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
             base.SendPacket(pPacket);
         }

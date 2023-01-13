@@ -5,8 +5,9 @@ using WvsBeta.Common;
 namespace WvsBeta.Game
 {
     [Flags]
-    public enum BuffValueTypes : uint
+    public enum BuffValueTypes : ulong
     {
+        None = 0,
         // Byte 1
         WeaponAttack = 0x01,
         WeaponDefense = 0x02,

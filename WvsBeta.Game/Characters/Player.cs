@@ -1,8 +1,9 @@
-﻿namespace WvsBeta.Game
+﻿using WvsBeta.Common.Objects;
+
+namespace WvsBeta.Game
 {
-    public class Player
+    public class Player : Common.Objects.Player
     {
-        public string SessionHash { get; set; }
         public Character Character { get; set; }
         public ClientSession Socket { get; set; }
         public bool IsCC { get; set; } = false;

@@ -6,6 +6,7 @@ using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -584,5 +585,37 @@ namespace WvsBeta.Game
             ThreadContext.Properties.Remove("MapID");
         }
 
+        public GW_CharacterStat ToGWStat()
+        {
+            return new GW_CharacterStat
+            {
+                ID = ID,
+                Name = Name,
+                Gender = Gender,
+                Skin = Skin,
+                Face = Face,
+                Hair = Hair,
+
+                PetCashId = PetCashId,
+
+                Level = Level,
+                Job = Job,
+                Str = PrimaryStats.Str,
+                Dex = PrimaryStats.Dex,
+                Int = PrimaryStats.Int,
+                Luk = PrimaryStats.Luk,
+                HP = PrimaryStats.HP,
+                MaxHP = PrimaryStats.GetMaxHP(true),
+                MP = PrimaryStats.MP,
+                MaxMP = PrimaryStats.GetMaxMP(true),
+                AP = PrimaryStats.AP,
+                SP = PrimaryStats.SP,
+                EXP = PrimaryStats.EXP,
+                Fame = PrimaryStats.Fame,
+                
+                MapID = MapID,
+                MapPosition = MapPosition
+        };
+        }
     }
 }

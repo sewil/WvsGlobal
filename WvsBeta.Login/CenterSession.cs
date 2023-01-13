@@ -3,6 +3,7 @@ using System.Net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login
 {
@@ -159,17 +160,6 @@ namespace WvsBeta.Login
         {
             Packet packet = new Packet(ISClientMessages.ServerSetConnectionsValue);
             packet.WriteInt(value);
-            SendPacket(packet);
-        }
-
-        public void RequestCharacterConnectToWorld(string Hash, int charid, byte world, byte channel)
-        {
-            Packet packet = new Packet(ISClientMessages.PlayerChangeServer);
-            packet.WriteString(Hash);
-            packet.WriteInt(charid);
-            packet.WriteByte(world);
-            packet.WriteByte(channel);
-            packet.WriteBool(false);
             SendPacket(packet);
         }
 

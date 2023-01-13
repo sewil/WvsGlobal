@@ -105,7 +105,6 @@
     <Compile Include="LoginServer.cs" />
     <Compile Include="LoginToLoginAcceptor.cs" />
     <Compile Include="LoginToLoginSession.cs" />
-    <Compile Include="LogExtensions.cs" />
     <Compile Include="PacketHandlers\CheckPasswordHandler.cs" />
     <Compile Include="PacketHandlers\ConfirmEULAHandler.cs" />
     <Compile Include="PacketHandlers\ChannelSelectHandler.cs" />
@@ -118,8 +117,13 @@
     <Compile Include="Packets\CharacterSelectPacket.cs" />
     <Compile Include="Packets\CheckPasswordResultPacket.cs" />
     <Compile Include="Packets\CheckUserLimitPacket.cs" />
+    <Compile Include="Packets\ISPlayerChangeServerPacket.cs" />
     <Compile Include="Packets\ISRequestChannelStatusPacket.cs" />
-    <Compile Include="Player.cs" />
+    <Compile Include="Objects\Player.cs" />
+    <Compile Include="Packets\Socket17Packet.cs" />
+    <Compile Include="Packets\Socket18Packet.cs" />
+    <Compile Include="Packets\Socket19Packet.cs" />
+    <Compile Include="Packets\Socket23Packet.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">

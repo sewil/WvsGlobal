@@ -9,7 +9,7 @@ namespace WvsBeta.Game
 
         public static void SendQuestDataUpdate(Character chr, int QuestID, string Data)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x01);
             pw.WriteBool(true);
             pw.WriteInt(QuestID);
@@ -19,7 +19,7 @@ namespace WvsBeta.Game
 
         public static void SendQuestRemove(Character chr, int QuestID)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x01);
             pw.WriteBool(false);
             pw.WriteInt(QuestID);

@@ -49,7 +49,7 @@ namespace WvsBeta.Game
             if (Event)
             {
                 var txt = $"Will spawn crogs on trip {FieldIdStartShipMove} -> {FieldIdEndShipMove} (map {FieldIdMove}) in {(timeTillSpawn / 1000):D} seconds";
-                MessagePacket.SendNoticeGMs(txt, MessagePacket.MessageTypes.Notice);
+                ChatPacket.SendNoticeGMs(txt, ChatPacket.MessageTypes.Notice);
             }
         }
 

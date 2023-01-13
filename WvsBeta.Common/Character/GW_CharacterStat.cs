@@ -6,36 +6,36 @@ namespace WvsBeta.Common.Character
 {
     public class GW_CharacterStat
     {
-        public int ID { get; protected set; }
-        public string Name { get; protected set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
 
-        public byte Gender { get; protected set; }
-        public byte Skin { get; protected set; }
-        public int Face { get; protected set; }
-        public int Hair { get; protected set; }
+        public byte Gender { get; set; }
+        public byte Skin { get; set; }
+        public int Face { get; set; }
+        public int Hair { get; set; }
 
-        public long PetCashId { get; protected set; }
+        public long PetCashId { get; set; }
 
-        public byte Level { get; protected set; }
-        public short Job { get; protected set; }
-        public short Str { get; protected set; }
-        public short Dex { get; protected set; }
-        public short Int { get; protected set; }
-        public short Luk { get; protected set; }
-        public short HP { get; protected set; }
-        public short MaxHP { get; protected set; }
-        public short MP { get; protected set; }
-        public short MaxMP { get; protected set; }
-        public short AP { get; protected set; }
-        public short SP { get; protected set; }
-        public int EXP { get; protected set; }
-        public short Fame { get; protected set; }
+        public byte Level { get; set; }
+        public short Job { get; set; }
+        public short Str { get; set; }
+        public short Dex { get; set; }
+        public short Int { get; set; }
+        public short Luk { get; set; }
+        public short HP { get; set; }
+        public short MaxHP { get; set; }
+        public short MP { get; set; }
+        public short MaxMP { get; set; }
+        public short AP { get; set; }
+        public short SP { get; set; }
+        public int EXP { get; set; }
+        public short Fame { get; set; }
 
-        public int MapID { get; protected set; }
-        public byte MapPosition { get; protected set; }
+        public int MapID { get; set; }
+        public byte MapPosition { get; set; }
 
-        public int Money { get; protected set; }
-        
+        public int Money { get; set; }
+
         public void LoadFromReader(MySqlDataReader data)
         {
             ID = data.GetInt32("id");

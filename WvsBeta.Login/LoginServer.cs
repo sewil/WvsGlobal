@@ -39,14 +39,14 @@ namespace WvsBeta.Login
 
         public MySQL_Connection UsersDatabase { get; private set; }
 
-        private ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string,Player>();
+        private ConcurrentDictionary<string, Objects.Player> PlayerList { get; } = new ConcurrentDictionary<string, Objects.Player>();
         
         public void LogToLogfile(string what)
         {
             Program.LogFile.Write(what);
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayer(Objects.Player player)
         {
             string hash;
             do
@@ -60,7 +60,7 @@ namespace WvsBeta.Login
 
         public void RemovePlayer(string hash)
         {
-            PlayerList.TryRemove(hash, out Player tmp);
+            PlayerList.TryRemove(hash, out Objects.Player tmp);
         }
 
         public bool IsPlayer(string hash)
@@ -68,9 +68,9 @@ namespace WvsBeta.Login
             return PlayerList.ContainsKey(hash);
         }
 
-        public Player GetPlayer(string hash)
+        public Objects.Player GetPlayer(string hash)
         {
-            if (PlayerList.TryGetValue(hash, out Player player)) return player;
+            if (PlayerList.TryGetValue(hash, out Objects.Player player)) return player;
             return null;
         }
 

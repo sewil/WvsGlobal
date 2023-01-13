@@ -157,18 +157,18 @@ namespace WvsBeta.Game
                         fucker.SetMPAndMaxMP(0);
                         fucker.ChangeMap(0); // Back to the start with you.
 
-                        MessagePacket.SendNoticeGMs(
+                        ChatPacket.SendNoticeGMs(
                             $"{fucker.Name} : I was just p0wned by the Anti-Hack system. Damage hax ({amount})! :mavi:",
-                            MessagePacket.MessageTypes.Notice
+                            ChatPacket.MessageTypes.Notice
                         );
                         return false;
                     }
 
                     if (amount >= 30000)
                     {
-                        MessagePacket.SendNoticeGMs(
+                        ChatPacket.SendNoticeGMs(
                             $"{fucker.Name} : Possible damage hack: {amount} damage given!",
-                            MessagePacket.MessageTypes.Notice
+                            ChatPacket.MessageTypes.Notice
                         );
                     }
                 }
@@ -377,7 +377,7 @@ namespace WvsBeta.Game
             {
                 _hackLog.Warn(hackType);
                 Trace.WriteLine(hackType);
-                MessagePacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", MessagePacket.MessageTypes.Megaphone);
+                ChatPacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", ChatPacket.MessageTypes.Megaphone);
             }
             return isHack;
         }

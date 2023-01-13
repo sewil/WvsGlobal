@@ -367,12 +367,12 @@ namespace WvsBeta.Game
                                 {
                                     directionByte = 10;
                                 }
-                                MessagePacket.Whisper(victimChar, sender, channel, message, directionByte);
+                                ChatPacket.Whisper(victimChar, sender, channel, message, directionByte);
                             }
                             else
                             {
                                 string sender = packet.ReadString();
-                                MessagePacket.Find(victimChar, sender, -1, 0, false);
+                                ChatPacket.Find(victimChar, sender, -1, 0, false);
 
                             }
                         }
@@ -383,12 +383,12 @@ namespace WvsBeta.Game
                                 string sender = packet.ReadString();
                                 sbyte channel = packet.ReadSByte();
                                 sbyte wat = packet.ReadSByte();
-                                MessagePacket.Find(victimChar, sender, channel, wat, false);
+                                ChatPacket.Find(victimChar, sender, channel, wat, false);
                             }
                             else
                             {
                                 string sender = packet.ReadString();
-                                MessagePacket.Find(victimChar, sender, -1, 0, false);
+                                ChatPacket.Find(victimChar, sender, -1, 0, false);
                             }
 
 
@@ -398,7 +398,7 @@ namespace WvsBeta.Game
 
                 case ISServerMessages.PlayerSuperMegaphone:
                     {
-                        MessagePacket.SendSuperMegaphoneMessage(packet.ReadString(), packet.ReadBool(), packet.ReadByte());
+                        ChatPacket.SendSuperMegaphoneMessage(packet.ReadString(), packet.ReadBool(), packet.ReadByte());
                         break;
                     }
 

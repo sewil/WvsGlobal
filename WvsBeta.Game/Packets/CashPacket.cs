@@ -97,7 +97,7 @@ namespace WvsBeta.Game
                             switch (itemid)
                             {
                                 case 2081000: // Super Megaphone (channel)
-                                    MessagePacket.SendMegaphoneMessage(chr.Name + " : " + text);
+                                    ChatPacket.SendMegaphoneMessage(chr.Name + " : " + text);
                                     used = true;
                                     break;
 
@@ -209,14 +209,14 @@ namespace WvsBeta.Game
 
         public static void SendRockError(Character chr, RockErrors code)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte((byte)code);
             chr.SendPacket(pw);
         }
 
         public static void SendRockUpdate(Character chr, RockModes mode)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte((byte)mode);
             chr.Inventory.AddRockPacket(pw);
             chr.SendPacket(pw);

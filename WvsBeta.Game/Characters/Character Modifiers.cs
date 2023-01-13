@@ -597,7 +597,7 @@ namespace WvsBeta.Game
             {
                 if (GMLevel == 1)
                 {
-                    MessagePacket.SendNotice("GM interns cannot leave GM Hide.", this);
+                    ChatPacket.SendNotice("GM interns cannot leave GM Hide.", this);
                     AdminPacket.Hide(this, true); //because client unhides you graphically when server rejects it
                 }
                 else
@@ -746,7 +746,7 @@ namespace WvsBeta.Game
         {
             if (this != Sent && Sent.IsGM && !Sent.IsAdmin) //Todo Admin levels
             {
-                MessagePacket.SendNotice("You don't have the premission to edit other players stats!", Sent);
+                ChatPacket.SendNotice("You don't have the premission to edit other players stats!", Sent);
                 //$"{Sent.Name} tried to edit another players stats without premission"
             }
             else
@@ -824,7 +824,7 @@ namespace WvsBeta.Game
                                     PrimaryStats.Job = Job;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Job {Job} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Job {Job} does not exist.", Sent);
                                 break;
                             }
                         case "skill":
@@ -837,7 +837,7 @@ namespace WvsBeta.Game
                                     Skills.SetSkillPoint(SkillID, Convert.ToByte(Value2), true);
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Skill {SkillID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Skill {SkillID} does not exist.", Sent);
                                 break;
                             }
                         case "level":
@@ -855,7 +855,7 @@ namespace WvsBeta.Game
                                     Skin = SkinID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Skin {SkinID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Skin {SkinID} does not exist.", Sent);
                                 break;
                             }
                         case "face":
@@ -868,7 +868,7 @@ namespace WvsBeta.Game
                                     Face = FaceID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Face {FaceID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Face {FaceID} does not exist.", Sent);
                                 break;
                             }
                         case "hair":
@@ -881,7 +881,7 @@ namespace WvsBeta.Game
                                     Hair = HairID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Hair {HairID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Hair {HairID} does not exist.", Sent);
                                 break;
                             }
                         case "gender":
@@ -893,7 +893,7 @@ namespace WvsBeta.Game
                                     "@id", ID
                                 );
 
-                                MessagePacket.SendNotice($"Gender set to {(Gender == 0 ? "male" : (Gender == 2 ? "Unisex" : "female"))}. Please relog.", this);
+                                ChatPacket.SendNotice($"Gender set to {(Gender == 0 ? "male" : (Gender == 2 ? "Unisex" : "female"))}. Please relog.", this);
                                 break;
                             }
                         case "accgender":
@@ -905,7 +905,7 @@ namespace WvsBeta.Game
                                     "@id", UserID
                                 );
 
-                                MessagePacket.SendNotice($"Account gender set to {(gender == 0 ? "male" : (gender == 2 ? "Unisex" : "female"))}", this);
+                                ChatPacket.SendNotice($"Account gender set to {(gender == 0 ? "male" : (gender == 2 ? "Unisex" : "female"))}", this);
                                 break;
                             }
                         case "map":
@@ -915,11 +915,11 @@ namespace WvsBeta.Game
                                 if (DataProvider.Maps.ContainsKey(FieldID))
                                     ChangeMap(FieldID);
                                 else
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Map not found.", this, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Map not found.", this, ChatPacket.MessageMode.ToPlayer);
                                 break;
                             }
                         default:
-                            MessagePacket.SendNotice($"{Var} is not a valid Variable!", Sent);
+                            ChatPacket.SendNotice($"{Var} is not a valid Variable!", Sent);
                             return;
                     }
 
@@ -931,14 +931,14 @@ namespace WvsBeta.Game
                 }
                 catch (Exception ex)
                 {
-                    MessagePacket.SendNotice(ex.Message, Sent);
+                    ChatPacket.SendNotice(ex.Message, Sent);
                 }
             }
         }
 
         public void OnPetVarset(string Var, string Value, bool Me)
         {
-            MessagePacket.SendNotice("Did you hear a cat just now? That damn thing haunts me.", this);
+            ChatPacket.SendNotice("Did you hear a cat just now? That damn thing haunts me.", this);
         }
     }
 }

@@ -84,7 +84,6 @@
   <ItemGroup>
     <Compile Include="BaseCharacterInventory.cs" />
     <Compile Include="BaseItem.cs" />
-    <Compile Include="BasePacketHelper.cs" />
     <Compile Include="CharacterCashItems.cs" />
     <Compile Include="CharacterDataFlag.cs" />
     <Compile Include="BaseDataProvider.cs" />

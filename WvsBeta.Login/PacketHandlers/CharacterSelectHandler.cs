@@ -1,4 +1,6 @@
 ﻿using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login.Packets;
 
@@ -9,20 +11,21 @@ namespace WvsBeta.Login.PacketHandlers
         public CharacterSelectHandler(ClientSession session, ILog log, Packet packet)
         {
             if (log.AssertWarning(
-                session.Player.State != Player.LoginState.CharacterSelect &&
-                session.Player.State != Player.LoginState.CharacterCreation, "Trying to select character while not in character select screen.")) return;
+                session.Player.State != GameState.CharacterSelect &&
+                session.Player.State != GameState.CharacterCreation, "Trying to select character while not in character select screen.")) return;
             var result = new CharacterSelectPacket(packet);
 
-            if (log.AssertWarning(session.Player.HasCharacterWithID(result.charid) == false, "Trying to select a character that the player doesnt have. ID: " + result.charid)) return;
+            if (log.AssertWarning(session.Player.HasCharacterWithID(result.characterId) == false, "Trying to select a character that the player doesnt have. ID: " + result.characterId)) return;
 
             if (Server.Instance.GetWorld(session.Player.World, out Center center))
             {
-                center.Connection.RequestCharacterConnectToWorld(session.Player.SessionHash, result.charid, session.Player.World, session.Player.Channel);
+                var pack = new ISPlayerChangeServerPacket(session.Player, result.characterId).Encode();
+                center.Connection.SendPacket(pack);
                 return;
             }
 
             // Server is offline
-            session.SendPacket(result.Encode());
+            session.SendPacket(result.Encode(CharacterSelectPacket.Status.SystemError));
         }
     }
 }

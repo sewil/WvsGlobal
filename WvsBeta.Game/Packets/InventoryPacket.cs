@@ -343,7 +343,7 @@ namespace WvsBeta.Game
                 {
                     if (chr.IsGM && !chr.IsAdmin)
                     {
-                        MessagePacket.SendAdminWarning(chr, "You cannot drop items.");
+                        ChatPacket.SendAdminWarning(chr, "You cannot drop items.");
                         NoChange(chr);
                     }
                     else
@@ -601,7 +601,7 @@ namespace WvsBeta.Game
             pw.WriteByte(inventory);
             if (isNew)
             {
-                PacketHelper.AddItemData(pw, item, item.InventorySlot, true);
+                item.Encode(pw, true);
             }
             else
             {
@@ -623,7 +623,7 @@ namespace WvsBeta.Game
             pw.WriteByte(inventory);
             if (isNew)
             {
-                PacketHelper.AddItemData(pw, item, item.InventorySlot, true);
+                item.Encode(pw, true);
             }
             else
             {
@@ -656,7 +656,7 @@ namespace WvsBeta.Game
 
         public static void SendItemScrolled(Character chr, bool pSuccessfull)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(4);
             pw.WriteBool(pSuccessfull);
             chr.SendPacket(pw);
@@ -664,7 +664,7 @@ namespace WvsBeta.Game
 
         public static void InventoryFull(Character chr)
         {
-            Packet packet = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet packet = new Packet(ServerMessages.MESSAGE);
             packet.WriteByte(0);
             packet.WriteByte(2);
             chr.SendPacket(packet);
@@ -678,7 +678,7 @@ namespace WvsBeta.Game
             {
                 int amount = Math.Min(MaxSizePerPacket, pExpiredItems.Count - i);
 
-                Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+                Packet pw = new Packet(ServerMessages.MESSAGE);
                 pw.WriteByte(5);
                 pw.WriteByte((byte)amount);
 
@@ -691,7 +691,7 @@ namespace WvsBeta.Game
 
         public static void SendCashItemExpired(Character chr, int pExpiredItem) // "The available time for the cash item [name] has passedand the item is deleted."
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(2);
             pw.WriteInt(pExpiredItem);
             chr.SendPacket(pw);

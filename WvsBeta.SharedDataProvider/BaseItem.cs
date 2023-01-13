@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
@@ -8,6 +7,12 @@ namespace WvsBeta.Game
 {
     public abstract class BaseItem
     {
+        public enum ItemType
+        {
+            Bundle = 0,
+            Equip = 1,
+            Pet = 5,
+        }
         public int ItemID { get; set; } = 0;
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
@@ -49,16 +54,19 @@ namespace WvsBeta.Game
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-
+        static ItemType GetItemType(int itemId)
+        {
+            return (ItemType)(itemId / 1000000);
+        }
         public static BaseItem CreateFromItemID(int itemId, short amount = 1)
         {
             if (itemId == 0) throw new Exception("Invalid ItemID in CreateFromItemID");
 
-            int itemType = (itemId / 1000000);
+            var itemType = GetItemType(itemId);
 
             BaseItem ret;
-            if (itemType == 1) ret = new EquipItem();
-            else if (itemType == 5) ret = new PetItem(); // TODO: Pet
+            if (itemType == ItemType.Equip) ret = new EquipItem();
+            else if (itemType == ItemType.Pet) ret = new PetItem(); // TODO: Pet
             else ret = new BundleItem();
 
             ret.ItemID = itemId;
@@ -191,17 +199,41 @@ namespace WvsBeta.Game
 
             return item;
         }
-
-        public virtual void Encode(Packet packet)
+        public virtual void Encode(Packet packet, bool shortSlot)
         {
-            packet.WriteInt(ItemID);
+            if (InventorySlot != 0)
+            {
+                if (shortSlot)
+                {
+                    packet.WriteShort(InventorySlot);
+                }
+                else
+                {
+                    short slot = Math.Abs(InventorySlot);
+                    if (slot > 100) slot -= 100;
+                    packet.WriteByte((byte)slot);
+                }
+            }
+            var itemType = GetItemType(ItemID);
+            if (itemType == ItemType.Equip)
+            {
+                packet.WriteByte(1);
+            }
+            else if (itemType == ItemType.Pet)
+            {
+                packet.WriteByte(3);
+            }
+            else
+            {
+                packet.WriteByte(2);
+            }
 
+            packet.WriteInt(ItemID);
             packet.WriteBool(CashId != 0);
             if (CashId != 0)
                 packet.WriteLong(CashId);
 
             packet.WriteLong(Expiration);
-
         }
 
         /// <summary>
@@ -232,10 +264,11 @@ namespace WvsBeta.Game
         }
 
 
-        public override void Encode(Packet packet)
+        public override void Encode(Packet packet, bool shortSlot)
         {
-            base.Encode(packet);
+            base.Encode(packet, shortSlot);
             packet.WriteShort(Amount);
+            packet.WriteString(""); // Creator name?
         }
 
         public override string GetFullSaveColumns()
@@ -385,9 +418,9 @@ namespace WvsBeta.Game
             Jump = data.GetInt16("ijump");
         }
 
-        public override void Encode(Packet packet)
+        public override void Encode(Packet packet, bool shortSlot)
         {
-            base.Encode(packet);
+            base.Encode(packet, shortSlot);
 
             packet.WriteByte(Slots);
             packet.WriteByte(Scrolls);
@@ -406,6 +439,7 @@ namespace WvsBeta.Game
             packet.WriteShort(Hands);
             packet.WriteShort(Speed);
             packet.WriteShort(Jump);
+            packet.WriteString(""); // Creator Name
         }
 
         public override string GetFullSaveColumns()
@@ -567,9 +601,9 @@ namespace WvsBeta.Game
             DeadDate = data.GetInt64("deaddate");
         }
 
-        public override void Encode(Packet packet)
+        public override void Encode(Packet packet, bool shortSlot)
         {
-            base.Encode(packet);
+            base.Encode(packet, shortSlot);
 
             packet.WriteString(Name, 13);
             packet.WriteByte(Level);

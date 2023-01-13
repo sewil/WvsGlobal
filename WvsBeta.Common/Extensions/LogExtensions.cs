@@ -1,20 +1,16 @@
 ﻿using log4net;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 
-namespace WvsBeta.Login
+namespace WvsBeta.Common.Extensions
 {
-    internal static class LogExtensions
+    public static class LogExtensions
     {
         public static bool AssertWarning(this ILog log, bool assertion, string msg)
         {
             if (assertion)
             {
                 log.Warn(msg);
-                Server.Instance.ServerTraceDiscordReporter.Enqueue($"AssertWarning: {msg}");
+                Trace.WriteLine(msg);
             }
             return assertion;
         }
@@ -24,8 +20,7 @@ namespace WvsBeta.Login
             if (assertion)
             {
                 log.Error(msg);
-                Program.MainForm.LogAppend(msg);
-                Server.Instance.ServerTraceDiscordReporter.Enqueue($"AssertError: {msg}");
+                Trace.WriteLine(msg);
             }
             return assertion;
         }

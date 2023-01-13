@@ -75,8 +75,8 @@ namespace WvsBeta.Game
 
             foreach (var kvp in Skills)
             {
-                packet.WriteInt(kvp.Key);
-                packet.WriteInt(kvp.Value);
+                packet.WriteInt(kvp.Key); // Skill ID
+                packet.WriteInt(kvp.Value); // Skill points
             }
         }
 

@@ -601,7 +601,7 @@ namespace WvsBeta.Game
 
         public static void SendGainEXP(Character chr, int amount, bool IsLastHit, bool Quest = false)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(3);
             pw.WriteBool(IsLastHit);
             pw.WriteInt(amount);
@@ -611,7 +611,7 @@ namespace WvsBeta.Game
 
         public static void SendGainDrop(Character chr, bool isMesos, int idOrMesosAmount, short amount)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x00);
             pw.WriteBool(isMesos);
             pw.WriteInt(idOrMesosAmount);

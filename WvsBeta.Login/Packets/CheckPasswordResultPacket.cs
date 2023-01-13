@@ -1,5 +1,5 @@
-﻿using System.Drawing.Imaging;
-using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Sessions;
+using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login.Packets
 {
