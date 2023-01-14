@@ -261,7 +261,7 @@ namespace WvsBeta.Game
                 saveQuery.Append("gender = '" + Gender + "', ");
                 saveQuery.Append("eyes = '" + Face + "', ");
                 saveQuery.Append("map = '" + MapID + "', ");
-                saveQuery.Append("pos = '" + MapPosition + "', ");
+                saveQuery.Append("pos = '" + PortalID + "', ");
                 saveQuery.Append("level = '" + PrimaryStats.Level + "', ");
                 saveQuery.Append("job = '" + PrimaryStats.Job + "', ");
                 saveQuery.Append("chp = '" + PrimaryStats.HP + "', ");
@@ -446,7 +446,7 @@ namespace WvsBeta.Game
                     Program.MainForm.LogAppend(
                         "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", ID, _mapId);
                     field = DataProvider.Maps[0];
-                    MapPosition = 0;
+                    PortalID = 0;
                 }
                 Field = field;
 
@@ -465,16 +465,16 @@ namespace WvsBeta.Game
                     {
                         Field = DataProvider.Maps[_mapId];
                     }
-                    MapPosition = 0;
+                    PortalID = 0;
                 }
                 else
                 {
-                    MapPosition = (byte)data.GetInt16("pos");
+                    PortalID = (byte)data.GetInt16("pos");
                 }
 
                 // Select portal to spawn on.
                 {
-                    Portal portal = Field.SpawnPoints.Find(x => x.ID == MapPosition);
+                    Portal portal = Field.SpawnPoints.Find(x => x.ID == PortalID);
                     if (portal == null) portal = Field.GetRandomStartPoint();
                     Position = new Pos(portal.X, portal.Y);
                 }

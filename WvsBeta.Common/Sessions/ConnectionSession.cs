@@ -146,10 +146,6 @@ namespace WvsBeta.Common.Sessions
             try
             {
                 byte header = pPacket.ReadByte();
-                if (GetType().ToString() == "WvsBeta.Game.ClientSession" && header != (byte)ServerMessages.PING && header != (byte)ClientMessages.PONG)
-                {
-                    Console.WriteLine("[WvsBeta.Game.ClientSession] Onpacketinbound", pPacket);
-                }
 
                 if (isConnectedAsClient)
                 {

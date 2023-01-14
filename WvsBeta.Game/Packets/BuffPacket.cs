@@ -39,7 +39,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.FORCED_STAT_SET);
             chr.PrimaryStats.EncodeForLocal(pw, pFlagsAdded);
             pw.WriteShort(pDelay);
-            if ((pFlagsAdded & BuffValueTypes.SPEED_BUFF_ELEMENT) != 0)
+            if ((pFlagsAdded & BuffValueTypes.MOVEMENT_INFO_INDEX) != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }
@@ -52,7 +52,8 @@ namespace WvsBeta.Game
 
             Packet pw = new Packet(ServerMessages.FORCED_STAT_RESET);
             pw.WriteULong((ulong)removedFlags);
-            if (removedFlags.HasFlag(BuffValueTypes.SPEED_BUFF_ELEMENT))
+            var diff = (ulong)(removedFlags & BuffValueTypes.MOVEMENT_INFO_INDEX);
+            if (diff != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }

@@ -657,7 +657,7 @@ namespace WvsBeta.Game
 
             StartChangeMap(prevmap, newMap);
             {
-                MapPosition = to.ID;
+                PortalID = to.ID;
 
                 Position = new Pos(to.X, (short) (to.Y - 40));
                 Stance = 0;
@@ -677,7 +677,7 @@ namespace WvsBeta.Game
                 // However, the server doesnt update the position
                 // When a random portal is assigned, which would trigger a hack check.
                 // So we are a bit clueless...
-                MapPosition = (byte)(partyMemberIdx | (1 << 7));
+                PortalID = (byte)(partyMemberIdx | (1 << 7));
                 if (newMap.Town)
                 {
                     Portal endingAt;

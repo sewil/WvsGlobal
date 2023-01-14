@@ -829,11 +829,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             if (ForcedReturn == Constants.InvalidMap)
             {
                 // Pick the one closest to the user
-                chr.MapPosition = map.GetClosestStartPoint(chr.Position).ID;
+                chr.PortalID = map.GetClosestStartPoint(chr.Position).ID;
             }
             else
             {
-                chr.MapPosition = map.GetRandomStartPoint().ID;
+                chr.PortalID = map.GetRandomStartPoint().ID;
             }
         }
 
@@ -864,7 +864,8 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
 
             // Nuke the stats
-            BuffPacket.ResetTempStats(chr, ~chr.PrimaryStats.AllActiveBuffs());
+            var nonActiveBuffs = ~chr.PrimaryStats.AllActiveBuffs();
+            BuffPacket.ResetTempStats(chr, nonActiveBuffs);
         }
 
         public GameCharacter FindUser(string Name)

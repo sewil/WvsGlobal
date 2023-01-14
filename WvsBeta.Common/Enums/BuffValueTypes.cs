@@ -30,7 +30,7 @@ namespace WvsBeta.Common.Enums
 
         // Byte 3
         SoulArrow = 0x10000,
-        Stun = 0x020000, // Mob Skill: Stun and Dragon Roar
+        Stun = 0x20000, // Mob Skill: Stun and Dragon Roar
         Poison = 0x40000, // Mob Skill: Poison
         Seal = 0x80000, // Mob Skill: Seal
 
@@ -45,12 +45,12 @@ namespace WvsBeta.Common.Enums
         ShadowPartner = 0x4000000,
         PickPocketMesoUP = 0x8000000,
 
-        MesoGuard = 0x10000000,
+        MesoGuard = 0x10_000_000,
         Thaw = 0x20000000,
-        Weakness = 0x40000000, // Mob Skill: Weakness
-        Curse = 0x80000000, // Mob Skill: Curse
+        Weakness = 0x40_000_000, // Mob Skill: Weakness
+        Curse = 0x80_000_000, // Mob Skill: Curse
 
         ALL = 0xFFFFFFFF,
-        SPEED_BUFF_ELEMENT = Speed | Jump | Stun | Weakness,
+        MOVEMENT_INFO_INDEX = Speed | Jump | Stun | Weakness, // 0x40020180
     }
 }

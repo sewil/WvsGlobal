@@ -18,7 +18,7 @@ namespace WvsBeta.Common
         public long PetCashId { get; set; }
 
         public virtual int MapID { get; set; }
-        public byte MapPosition { get; set; }
+        public byte PortalID { get; set; }
         public virtual int PartyID { get; set; }
 
         public bool IsOnline { get; set; }
@@ -98,7 +98,7 @@ namespace WvsBeta.Common
                 Fame = PrimaryStats.Fame,
 
                 MapID = MapID,
-                MapPosition = MapPosition
+                MapPosition = PortalID
             };
         }
     }

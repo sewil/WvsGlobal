@@ -17,7 +17,8 @@ namespace WvsBeta.Common.DataProviders
     {
         public static IDictionary<int, EquipData> Equips { get; protected set; }
         public static IDictionary<int, ItemData> Items { get; protected set; }
-        public static IDictionary<int, PetData> Pets { get; protected set; }
+        public static IDictionary<int, PetData> Pets { get;
+        protected set; }
         public static IDictionary<int, SkillData> Skills { get; protected set; }
         public static List<int> UntradeableDrops { get; } = new List<int>();
         public static List<int> QuestItems { get; } = new List<int>();
@@ -597,7 +598,15 @@ namespace WvsBeta.Common.DataProviders
             {
                 var itemId = int.Parse(node.Name);
                 if (!Pets.ContainsKey(itemId))
-                    Pets[itemId].Name = node["name"].ValueString();
+                {
+                    int ID = (int)Utils.ConvertNameToID(node.Name);
+                    Pets.Add(itemId, new PetData
+                    {
+                        ID = ID,
+                        Reactions = new Dictionary<byte, PetReactionData>(),
+                        Name = node["name"].ValueString()
+                    });
+                }
             }
         }
 

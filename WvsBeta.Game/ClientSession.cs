@@ -625,13 +625,13 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
-            //if (
-            //    pPacket.Opcode != (byte)(ServerMessages.PING) &&
-            //    pPacket.Opcode != (byte)(ServerMessages.STAT_CHANGED)
-            //)
-            //{
-            //    Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
-            //}
+            if (
+                pPacket.Opcode != (byte)(ServerMessages.PING) &&
+                pPacket.Opcode != (byte)(ServerMessages.STAT_CHANGED)
+            )
+            {
+                Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            }
             base.SendPacket(pPacket);
         }
     }

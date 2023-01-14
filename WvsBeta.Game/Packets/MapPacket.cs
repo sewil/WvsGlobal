@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
+using System.Windows.Forms;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
@@ -134,7 +136,7 @@ namespace WvsBeta.Game
             string portalname = packet.ReadString();
             if (portalname.Length > 0)
             {
-                new Pos(packet);
+                new Pos(packet); // Current pos
             }
             packet.ReadByte(); // Related to teleporting to party member? Always 0
             packet.ReadByte(); // unk
@@ -743,13 +745,7 @@ namespace WvsBeta.Game
 
         public static void SendChangeMap(GameCharacter chr)
         {
-            Packet pack = new Packet(ServerMessages.SET_FIELD);
-            pack.WriteInt(Server.Instance.ID); // Channel ID
-            pack.WriteByte(chr.PortalCount);
-            pack.WriteBool(false); // Is not connecting
-            pack.WriteInt(chr.MapID);
-            pack.WriteByte(chr.MapPosition);
-            pack.WriteShort(chr.PrimaryStats.HP);
+            var pack = new SetFieldPacket(chr, Server.Instance.ID, chr.PortalCount, false);
             chr.SendPacket(pack);
         }
 
@@ -761,7 +757,7 @@ namespace WvsBeta.Game
             pw.WriteByte(0); //??
             pw.WriteInt(chr.MapID);
             pw.WriteInt(295); //Swaglord's ID
-            pw.WriteByte(chr.MapPosition); //probably spawnpoint 
+            pw.WriteByte(chr.PortalID); //probably spawnpoint 
             pw.WriteShort(chr.Position.X);
             pw.WriteShort(chr.Position.Y);
             pw.WriteInt(1); //??
@@ -774,40 +770,50 @@ namespace WvsBeta.Game
 
 
         }
+        class SetFieldPacket : Packet
+        {
+            public SetFieldPacket(GameCharacter chr, int channelId, byte portalCount, bool isConnecting) : base(ServerMessages.SET_FIELD)
+            {
+                WriteInt(channelId);
+                WriteByte(portalCount);
+                WriteBool(isConnecting);
+                if (isConnecting)
+                {
+                    var rnd = Server.Instance.Randomizer;
+                    // Seeds are initialized by global randomizer
+                    var seed1 = rnd.Random();
+                    var seed2 = rnd.Random();
+                    var seed3 = rnd.Random();
+                    var seed4 = rnd.Random();
 
+                    chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
+                    chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
+
+                    WriteUInt(seed1);
+                    WriteUInt(seed2);
+                    WriteUInt(seed3);
+                    WriteUInt(seed4);
+
+                    new CharacterDataPacket(chr).Encode(this);
+                }
+                else
+                {
+                    WriteInt(chr.MapID);
+                    WriteByte(chr.PortalID);
+                    WriteShort(chr.PrimaryStats.HP);
+                    bool readMoreStuff = false;
+                    WriteBool(readMoreStuff);
+                    if (readMoreStuff)
+                    {
+                        WriteInt(0);
+                        WriteInt(0);
+                    }
+                }
+            }
+        }
         public static void SendSetField(GameCharacter chr)
         {
-            Packet pack = new Packet(ServerMessages.SET_FIELD);
-            var isConnecting = true;
-
-            pack.WriteInt(Server.Instance.ID); // Channel ID
-            pack.WriteByte(0); // 0 portals
-            pack.WriteBool(isConnecting); // Is connecting
-
-            if (isConnecting)
-            {
-                var rnd = Server.Instance.Randomizer;
-                // Seeds are initialized by global randomizer
-                var seed1 = rnd.Random();
-                var seed2 = rnd.Random();
-                var seed3 = rnd.Random();
-                var seed4 = rnd.Random();
-
-                chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
-                chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
-
-                pack.WriteUInt(seed1);
-                pack.WriteUInt(seed2);
-                pack.WriteUInt(seed3);
-                pack.WriteUInt(seed4);
-
-                new CharacterDataPacket(chr).Encode(pack);
-            }
-            else
-            {
-
-            }
-
+            Packet pack = new SetFieldPacket(chr, Server.Instance.ID, 0, true);
             chr.SendPacket(pack);
         }
 
