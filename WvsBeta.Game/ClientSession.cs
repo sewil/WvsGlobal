@@ -149,7 +149,6 @@ namespace WvsBeta.Game
             try
             {
                 header = (ClientMessages)packet.ReadByte();
-                Trace.WriteLine($"[Client->GameServer] {header} - {packet}");
 
                 if (!Loaded || Player?.Character == null)
                 {
@@ -163,6 +162,10 @@ namespace WvsBeta.Game
                 // Block packets as we are migrating
                 else if (Server.Instance.InMigration == false || Server.Instance.IsNewServerInMigration)
                 {
+                    if (header != ClientMessages.PONG)
+                    {
+                        Trace.WriteLine($"[Client->GameServer] {header} - {packet}");
+                    }
                     var character = Player.Character;
 
                     if (logPackets.Contains(header))
@@ -622,7 +625,13 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
-            Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            //if (
+            //    pPacket.Opcode != (byte)(ServerMessages.PING) &&
+            //    pPacket.Opcode != (byte)(ServerMessages.STAT_CHANGED)
+            //)
+            //{
+            //    Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            //}
             base.SendPacket(pPacket);
         }
     }

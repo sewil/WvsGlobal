@@ -34,12 +34,12 @@
         SIT_REQUEST,
 
         //Damage Headers
-        RANGED_ATTACK = 27,
-        CLOSE_RANGE_ATTACK,
+        CLOSE_RANGE_ATTACK = 27,
+        RANGED_ATTACK = 28,
         MAGIC_ATTACK,
-        TAKE_DAMAGE,
+        TAKE_DAMAGE = 31,
 
-        CHAT = 31,
+        CHAT = 32,
         EMOTE,
 
         __PADDING_31,
@@ -52,7 +52,7 @@
         STORAGE_ACTION,
 
         //Inventory Headers
-        ITEM_MOVE,
+        ITEM_MOVE = 41,
         ITEM_USE,
         SUMMON_BAG_USE,
         PET_EAT_FOOD,
@@ -61,7 +61,7 @@
         SCROLL_USE, // Assumed Value
 
         //Player Stat Headers
-        DISTRIBUTE_AP,
+        DISTRIBUTE_AP = 49,
         HEAL_OVER_TIME,
         DISTRIBUTE_SP,
         GIVE_BUFF,
@@ -108,7 +108,7 @@
         __PADDING_85,
         __PADDING_86,
         __PADDING_87,
-        MOB_MOVE,
+        MOB_MOVE = 99,
         MOB_APPLY_CONTROL, // Only when PickUpDrop or FirstAttack
         MOB_PICKUP_DROP,
         __PADDING_91,
