@@ -348,7 +348,7 @@ namespace WvsBeta.Game
 
         public static void SendCharacterSit(GameCharacter chr, short chairid)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_CHAIR);
+            Packet pw = new Packet(ServerMessages.SIT_RESULT);
             pw.WriteBool(chairid != -1);
             if (chairid != -1)
             {
@@ -813,7 +813,7 @@ namespace WvsBeta.Game
 
         public static void CancelSkillEffect(GameCharacter chr, int skillid)
         {
-            Packet pw = new Packet(ServerMessages.SKILL_END);
+            Packet pw = new Packet(ServerMessages.SKILL_CANCEL);
             pw.WriteInt(chr.ID);
             pw.WriteInt(skillid);
             chr.Field.SendPacket(pw, chr);

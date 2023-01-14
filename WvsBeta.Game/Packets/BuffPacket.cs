@@ -51,8 +51,8 @@ namespace WvsBeta.Game
             if (removedFlags == 0) return;
 
             Packet pw = new Packet(ServerMessages.FORCED_STAT_RESET);
-            pw.WriteUInt((uint)removedFlags);
-            if ((removedFlags & BuffValueTypes.SPEED_BUFF_ELEMENT) != 0)
+            pw.WriteULong((ulong)removedFlags);
+            if (removedFlags.HasFlag(BuffValueTypes.SPEED_BUFF_ELEMENT))
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }

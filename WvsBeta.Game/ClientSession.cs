@@ -622,16 +622,6 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
-            //TODO:REMOVE
-            if (
-            //    pPacket.Opcode == (byte)ServerMessages.BROADCAST_MSG ||
-            //pPacket.Opcode == (byte)ServerMessages.FORCED_STAT_SET ||
-            pPacket.Opcode == (byte)ServerMessages.ADMIN_RESULT ||
-            pPacket.Opcode == (byte)ServerMessages.MOB_ENTER_FIELD ||
-            pPacket.Opcode == (byte)ServerMessages.STAT_CHANGED ||
-            pPacket.Opcode == (byte)ServerMessages.FORCED_STAT_RESET ||
-            pPacket.Opcode == (byte)ServerMessages.BROADCAST_MSG
-            ) return;
             Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
             base.SendPacket(pPacket);
         }
