@@ -1,6 +1,6 @@
 using System;
 
-namespace WvsBeta.SharedDataProvider
+namespace WvsBeta.Common.Enums
 {
     [Flags]
     public enum CharacterDataFlag
@@ -18,7 +18,8 @@ namespace WvsBeta.SharedDataProvider
         Quests = 0x100,
         MinigameStats = 0x200,
         FriendRing = 0x400,
-        TeleportRock = 0x800,
+        Something33U = 0x800,
+        TeleportRock = 0x1000,
         All = 0xFFFF,
 
         Items = Equips | Consume | Install | Etc | Pet

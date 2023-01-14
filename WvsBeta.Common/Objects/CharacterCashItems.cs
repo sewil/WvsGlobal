@@ -6,9 +6,8 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Database;
-using WvsBeta.Game;
 
-namespace WvsBeta.SharedDataProvider
+namespace WvsBeta.Common.Objects
 {
     /// <summary>
     /// This class will handle the 'itemlocker' stuff. The itemlocker is a table used for

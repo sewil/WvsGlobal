@@ -5,7 +5,7 @@ namespace WvsBeta.Game
 {
     public static class MiscPacket
     {
-        public static void ShowItemEffect(Character chr)
+        public static void ShowItemEffect(GameCharacter chr)
         {
             // Does not exist in client..?
             /*
@@ -15,21 +15,21 @@ namespace WvsBeta.Game
             DataProvider.Maps[chr.Map].SendPacket(pw);
             */
         }
-        public static void SendGotMesosFromLucksack(Character chr, int amount)
+        public static void SendGotMesosFromLucksack(GameCharacter chr, int amount)
         {
             Packet pw = new Packet(ServerMessages.MESOBAG_SUCCEED);
             pw.WriteInt(amount);
             chr.SendPacket(pw);
         }
 
-        public static void SendMesoFromLucksackFailed(Character chr)
+        public static void SendMesoFromLucksackFailed(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.MESOBAG_FAILED);
             pw.WriteByte(0);
             chr.SendPacket(pw);
         }
 
-        public static void ReportPlayer(Character chr, Packet packet)
+        public static void ReportPlayer(GameCharacter chr, Packet packet)
         {
             var characterId = packet.ReadInt();
 
@@ -88,7 +88,7 @@ namespace WvsBeta.Game
             UnknownError
         }
 
-        public static void SendSueResult(Character chr, SueResults result)
+        public static void SendSueResult(GameCharacter chr, SueResults result)
         {
             var pw = new Packet(ServerMessages.SUE_CHARACTER_RESULT);
             pw.WriteByte((byte)result);

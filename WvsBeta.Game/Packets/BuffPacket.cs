@@ -1,12 +1,13 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Enums;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
     public static class BuffPacket
     {
-        public static void AddMapBuffValues(Character chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
+        public static void AddMapBuffValues(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
         {
-            CharacterPrimaryStats ps = chr.PrimaryStats;
+            CharacterPrimaryStats ps = (CharacterPrimaryStats)chr.PrimaryStats;
             long currentTime = MasterThread.CurrentTime;
             BuffValueTypes added = 0;
 
@@ -32,9 +33,9 @@ namespace WvsBeta.Game
             pw.SetUInt(tmp, (uint)added);
         }
 
-        public static void SetTempStats(Character chr, BuffValueTypes pFlagsAdded, short pDelay = 0)
+        public static void SetTempStats(GameCharacter chr, BuffValueTypes pFlagsAdded, short pDelay = 0)
         {
-            if (pFlagsAdded == 0) return;
+            if (pFlagsAdded == BuffValueTypes.None) return;
             Packet pw = new Packet(ServerMessages.FORCED_STAT_SET);
             chr.PrimaryStats.EncodeForLocal(pw, pFlagsAdded);
             pw.WriteShort(pDelay);
@@ -45,7 +46,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void ResetTempStats(Character chr, BuffValueTypes removedFlags)
+        public static void ResetTempStats(GameCharacter chr, BuffValueTypes removedFlags)
         {
             if (removedFlags == 0) return;
 

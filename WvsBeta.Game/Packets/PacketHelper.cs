@@ -98,7 +98,7 @@ namespace WvsBeta.Game
             return toRet;
         }
 
-        public static void AddAvatar(Packet pPacket, Character pCharacter)
+        public static void AddAvatar(Packet pPacket, GameCharacter pCharacter)
         {
             pPacket.WriteByte(pCharacter.Gender);
             pPacket.WriteByte(pCharacter.Skin);

@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
@@ -11,7 +13,7 @@ namespace WvsBeta.Game
 {
     public static class InventoryPacket
     {
-        public static void HandleUseItemPacket(Character chr, Packet packet)
+        public static void HandleUseItemPacket(GameCharacter chr, Packet packet)
         {
             if (chr.PrimaryStats.HP < 1)
             {
@@ -78,7 +80,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void DropItem(Character chr, byte inventory, short slot, short quantity)
+        private static void DropItem(GameCharacter chr, byte inventory, short slot, short quantity)
         {
             if (chr.AssertForHack(chr.Room != null, "Trying to drop item while in a 'room'"))
             {
@@ -108,7 +110,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void ChangeSlot(Character chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void ChangeSlot(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
         {
             if (to != null)
             {
@@ -133,7 +135,7 @@ namespace WvsBeta.Game
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
         }
 
-        private static void StackItems(Character chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void StackItems(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
         {
             short slotMax = (short)DataProvider.Items[from.ItemID].MaxSlot;
             if (slotMax == 0)
@@ -164,7 +166,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void EquipSpecial(Character chr, BaseItem from, BaseItem swordOrTop, short slotTo, bool unequipTwo = false)
+        private static void EquipSpecial(GameCharacter chr, BaseItem from, BaseItem swordOrTop, short slotTo, bool unequipTwo = false)
         {
             byte inventory = Constants.getInventory(from.ItemID);
             if (unequipTwo) // If it's 2h Weapon or Overall, try to unequip both Shield + Weapon or Bottom + Top
@@ -204,7 +206,7 @@ namespace WvsBeta.Game
             Equip(chr, from, swordOrTop, from.InventorySlot, slotTo); // If there's no special action required, go through regular equip.
         }
 
-        private static void Equip(Character chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void Equip(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
         {
             byte inventory = Constants.getInventory(from.ItemID);
             chr.Inventory.SetItem(inventory, slotFrom, to);
@@ -213,7 +215,7 @@ namespace WvsBeta.Game
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
         }
 
-        private static bool canWearItem(Character chr, CharacterPrimaryStats stats, EquipData data, short slot)
+        private static bool canWearItem(GameCharacter chr, CharacterPrimaryStats stats, EquipData data, short slot)
         {
             // Non-cash item on cash item slot
             if (!data.Cash && slot > 100)
@@ -257,9 +259,9 @@ namespace WvsBeta.Game
             return reqJob == 0 || ((short)job & reqJob) > 0;
         }
 
-        private static void HandleEquip(Character chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void HandleEquip(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
         {
-            if (chr.AssertForHack(!canWearItem(chr, chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
+            if (chr.AssertForHack(!canWearItem(chr, (CharacterPrimaryStats)chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
                 $"Trying to wear an item that he cannot. from {slotFrom} to {slotTo}. Itemid: {from.ItemID}"))
             {
                 // This should be handled by the client unless data.wz is editted
@@ -282,7 +284,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void Unequip(Character chr, BaseItem equip, short slotTo)
+        private static void Unequip(GameCharacter chr, BaseItem equip, short slotTo)
         {
             byte inventory = Constants.getInventory(equip.ItemID);
             short slotFrom = equip.InventorySlot;
@@ -309,7 +311,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void HandleInventoryPacket(Character chr, Packet packet)
+        public static void HandleInventoryPacket(GameCharacter chr, Packet packet)
         {
             try
             {
@@ -374,7 +376,7 @@ namespace WvsBeta.Game
             NoChange(chr);
         }
 
-        public static void HandleUseSummonSack(Character chr, Packet packet)
+        public static void HandleUseSummonSack(GameCharacter chr, Packet packet)
         {
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
@@ -417,7 +419,7 @@ namespace WvsBeta.Game
             NoChange(chr);
         }
 
-        public static void HandleUseReturnScroll(Character chr, Packet packet)
+        public static void HandleUseReturnScroll(GameCharacter chr, Packet packet)
         {
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
@@ -460,7 +462,7 @@ namespace WvsBeta.Game
             public bool cursed { get; set; }
         }
 
-        public static void HandleScrollItem(Character chr, Packet packet)
+        public static void HandleScrollItem(GameCharacter chr, Packet packet)
         {
             short scrollslot = packet.ReadShort();
             short itemslot = packet.ReadShort();
@@ -555,7 +557,7 @@ namespace WvsBeta.Game
             });
         }
 
-        public static void SwitchSlots(Character chr, short slot1, short slot2, byte inventory)
+        public static void SwitchSlots(GameCharacter chr, short slot1, short slot2, byte inventory)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
@@ -568,7 +570,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void MultiDelete(Character chr, byte inventory, params short[] slots)
+        public static void MultiDelete(GameCharacter chr, byte inventory, params short[] slots)
         {
             const byte MaxSizePerPacket = 100;
             int slotsToWipe = slots.Length;
@@ -592,7 +594,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void AddItem(Character chr, byte inventory, BaseItem item, bool isNew)
+        public static void AddItem(GameCharacter chr, byte inventory, BaseItem item, bool isNew)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
@@ -601,7 +603,7 @@ namespace WvsBeta.Game
             pw.WriteByte(inventory);
             if (isNew)
             {
-                item.Encode(pw, true);
+                new GW_ItemSlotBase(item).Encode(pw, true);
             }
             else
             {
@@ -614,7 +616,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void AddItem2(Character chr, byte inventory, BaseItem item, bool isNew, short amount)
+        public static void AddItem2(GameCharacter chr, byte inventory, BaseItem item, bool isNew, short amount)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
@@ -623,7 +625,7 @@ namespace WvsBeta.Game
             pw.WriteByte(inventory);
             if (isNew)
             {
-                item.Encode(pw, true);
+                new GW_ItemSlotBase(item).Encode(pw, true);
             }
             else
             {
@@ -636,7 +638,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void NoChange(Character chr)
+        public static void NoChange(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
@@ -645,7 +647,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void IncreaseSlots(Character chr, byte inventory, byte amount)
+        public static void IncreaseSlots(GameCharacter chr, byte inventory, byte amount)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_GROW);
             pw.WriteByte(inventory);
@@ -654,7 +656,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendItemScrolled(Character chr, bool pSuccessfull)
+        public static void SendItemScrolled(GameCharacter chr, bool pSuccessfull)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(4);
@@ -662,7 +664,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void InventoryFull(Character chr)
+        public static void InventoryFull(GameCharacter chr)
         {
             Packet packet = new Packet(ServerMessages.MESSAGE);
             packet.WriteByte(0);
@@ -670,7 +672,7 @@ namespace WvsBeta.Game
             chr.SendPacket(packet);
         }
 
-        public static void SendItemsExpired(Character chr, List<int> pExpiredItems) // "The item [name] has been expired, and therefore, deleted from your inventory." * items
+        public static void SendItemsExpired(GameCharacter chr, List<int> pExpiredItems) // "The item [name] has been expired, and therefore, deleted from your inventory." * items
         {
             if (pExpiredItems.Count == 0) return;
             const byte MaxSizePerPacket = 100;
@@ -689,7 +691,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendCashItemExpired(Character chr, int pExpiredItem) // "The available time for the cash item [name] has passedand the item is deleted."
+        public static void SendCashItemExpired(GameCharacter chr, int pExpiredItem) // "The available time for the cash item [name] has passedand the item is deleted."
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(2);

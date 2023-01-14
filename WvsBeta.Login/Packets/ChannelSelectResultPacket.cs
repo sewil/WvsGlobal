@@ -13,7 +13,7 @@ namespace WvsBeta.Login.Packets
     {
         byte characters;
         AvatarData[] avatars;
-        World.Ranking[] rankings;
+        WorldRanking[] rankings;
         Player player;
 
         public ChannelSelectResultPacket(Packet packet, Player player)
@@ -21,7 +21,7 @@ namespace WvsBeta.Login.Packets
             player.Channel = packet.ReadByte();
             characters = packet.ReadByte();
             avatars = new AvatarData[characters];
-            rankings = new World.Ranking[characters];
+            rankings = new WorldRanking[characters];
             this.player = player;
             for (int i = 0; i < characters; i++)
             {
@@ -29,7 +29,7 @@ namespace WvsBeta.Login.Packets
                 var hasRanking = packet.ReadBool();
                 if (hasRanking)
                 {
-                    rankings[i] = new World.Ranking(
+                    rankings[i] = new WorldRanking(
                         packet.ReadInt(),
                         packet.ReadInt(),
                         packet.ReadInt(),

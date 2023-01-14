@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace WvsBeta.Game.Handlers.Commands
 {
-    using CommandHandleFunc = Func<Character, string, CommandHandling.CommandArgs, bool>;
+    using CommandHandleFunc = Func<GameCharacter, string, CommandHandling.CommandArgs, bool>;
 
     static class MainCommandHandler
     {
@@ -64,9 +64,9 @@ namespace WvsBeta.Game.Handlers.Commands
         }
 
 
-        public static Character CommandCharacter = null;
+        public static GameCharacter CommandCharacter = null;
 
-        public static bool HandleCommand(Character chr, CommandHandling.CommandArgs args)
+        public static bool HandleCommand(GameCharacter chr, CommandHandling.CommandArgs args)
         {
             if (args.Sign != '!' && args.Sign != '/') return false;
             try

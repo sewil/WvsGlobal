@@ -5,6 +5,7 @@ using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login;
@@ -419,8 +420,8 @@ namespace WvsBeta.Center
                         Packet pw = new Packet(ISServerMessages.PlayerRequestWorldLoadResult);
                         pw.WriteString(hash);
 
-                        World.Warning warning = Common.Objects.World.Warning.MaxUsers;
-                        World.Marker marker = Common.Objects.World.Marker.Overpopulated;
+                        WorldWarning warning = WorldWarning.MaxUsers;
+                        WorldMarker marker = WorldMarker.Overpopulated;
 
                         if (World.ID == world)
                         {
@@ -428,18 +429,18 @@ namespace WvsBeta.Center
 
                             if (load > World.UserLimit)
                             {
-                                warning = Common.Objects.World.Warning.MaxUsers;
-                                marker = Common.Objects.World.Marker.Overpopulated;
+                                warning = WorldWarning.MaxUsers;
+                                marker = WorldMarker.Overpopulated;
                             }
                             else if (load > World.UserWarning)
                             {
-                                warning = Common.Objects.World.Warning.HighUsers;
-                                marker = Common.Objects.World.Marker.HighlyPopulated;
+                                warning = WorldWarning.HighUsers;
+                                marker = WorldMarker.HighlyPopulated;
                             }
                             else
                             {
-                                warning = Common.Objects.World.Warning.NoWarning;
-                                marker = Common.Objects.World.Marker.NoMarker;
+                                warning = WorldWarning.NoWarning;
+                                marker = WorldMarker.NoMarker;
                             }
                         }
 

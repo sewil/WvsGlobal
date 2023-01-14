@@ -470,7 +470,7 @@ namespace WvsBeta.Login
 
             if (!Server.Instance.GetWorld(worldId, out Center center))
             {
-                var p = new CheckUserLimitPacket(World.Warning.MaxUsers, World.Marker.Overpopulated).Encode();
+                var p = new CheckUserLimitPacket(WorldWarning.MaxUsers, WorldMarker.Overpopulated).Encode();
                 SendPacket(p);
                 return;
             }

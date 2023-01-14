@@ -27,20 +27,19 @@
         CLIENT_HASH,
         // __END_SOCKET
 
-        ENTER_PORTAL,
+        ENTER_PORTAL = 22,
         CHANGE_CHANNEL,
-        ENTER_CASH_SHOP,
-        MOVE_PLAYER,
+        ENTER_CASH_SHOP = 24,
+        MOVE_PLAYER = 25,
         SIT_REQUEST,
 
         //Damage Headers
+        RANGED_ATTACK = 27,
         CLOSE_RANGE_ATTACK,
-        RANGED_ATTACK,
         MAGIC_ATTACK,
-        __PADDING_27,
         TAKE_DAMAGE,
 
-        CHAT,
+        CHAT = 31,
         EMOTE,
 
         __PADDING_31,

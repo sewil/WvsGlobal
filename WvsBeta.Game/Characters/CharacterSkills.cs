@@ -3,22 +3,25 @@ using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.DataProviders;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
 namespace WvsBeta.Game
 {
-    public class CharacterSkills
+    public class CharacterSkills : BaseCharacterSkills
     {
-        private Character Character { get; }
-        public Dictionary<int, byte> Skills { get; } = new Dictionary<int, byte>();
+        private GameCharacter Character { get; }
 
-        public CharacterSkills(Character character)
+        public CharacterSkills(GameCharacter character)
         {
             Character = character;
         }
 
-        public void SaveSkills()
+        public override void SaveSkills()
         {
             var id = Character.ID;
             var query = "DELETE FROM skills WHERE charid = " + id + "; ";
@@ -33,7 +36,7 @@ namespace WvsBeta.Game
             Server.Instance.CharacterDatabase.RunQuery(query);
         }
 
-        public void LoadSkills()
+        public override void LoadSkills()
         {
             using (var reader = Server.Instance.CharacterDatabase.RunQuery(
                     "SELECT skillid, points FROM skills WHERE charid = @charid",
@@ -46,7 +49,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void AddSkillPoint(int skillid)
+        public override void AddSkillPoint(int skillid)
         {
             byte newLevel;
             if (Skills.TryGetValue(skillid, out newLevel))
@@ -60,7 +63,7 @@ namespace WvsBeta.Game
             Character.FlushDamageLog();
         }
 
-        public void SetSkillPoint(int skillid, byte level, bool packet = true)
+        public override void SetSkillPoint(int skillid, byte level, bool packet = true)
         {
             Skills[skillid] = level;
             if (packet)
@@ -69,18 +72,7 @@ namespace WvsBeta.Game
             Character.FlushDamageLog();
         }
 
-        public void AddSkills(Packet packet)
-        {
-            packet.WriteShort((short)Skills.Count);
-
-            foreach (var kvp in Skills)
-            {
-                packet.WriteInt(kvp.Key); // Skill ID
-                packet.WriteInt(kvp.Value); // Skill points
-            }
-        }
-
-        public void DoSkillCost(int skillid, byte level)
+        public override void DoSkillCost(int skillid, byte level)
         {
             var data = GetSkillLevelData(skillid, level);
             if (data == null)
@@ -177,7 +169,7 @@ namespace WvsBeta.Game
             return mp;
         }
 
-        public void UseMeleeAttack(int skillid, AttackData attackData)
+        public override void UseMeleeAttack(int skillid, AttackData attackData)
         {
             if (!DataProvider.Skills.TryGetValue(skillid, out var skillData)) return;
 
@@ -198,8 +190,7 @@ namespace WvsBeta.Game
             }
         }
 
-
-        public void UseRangedAttack(int skillid, short pos)
+        public override void UseRangedAttack(int skillid, short pos)
         {
             Program.MainForm.LogDebug("Using ranged. Skill: " + skillid);
             byte level = 0;
@@ -228,29 +219,29 @@ namespace WvsBeta.Game
             }
         }
 
-        public byte GetSkillLevel(int skillid)
+        public override byte GetSkillLevel(int skillid)
         {
             if (Skills.TryGetValue(skillid, out byte level)) return level;
             return 0;
         }
 
-        public byte GetSkillLevel(int skillid, out SkillLevelData data)
+        public override byte GetSkillLevel(int skillid, out SkillLevelData data)
         {
             data = GetSkillLevelData(skillid, out byte level);
             return level;
         }
 
-        public double GetSpellAttack(int spellId)
+        public override double GetSpellAttack(int spellId)
         {
             return DataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].MagicAttack;
         }
 
-        public double GetSpellMastery(int spellId)
+        public override double GetSpellMastery(int spellId)
         {
             return DataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].Mastery;
         }
 
-        public ushort GetRechargeableBonus()
+        public override ushort GetRechargeableBonus()
         {
             ushort bonus = 0;
             switch (Character.PrimaryStats.Job)
@@ -263,7 +254,7 @@ namespace WvsBeta.Game
             return bonus;
         }
 
-        public int GetMastery()
+        public override int GetMastery()
         {
             var masteryid = 0;
             switch (Constants.getItemType(Character.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, false)))
@@ -300,7 +291,7 @@ namespace WvsBeta.Game
             return masteryid;
         }
 
-        public int GetMpStealSkillData(int attackType, out int prop, out int precent, out byte level)
+        public override int GetMpStealSkillData(int attackType, out int prop, out int precent, out byte level)
         {
             SkillLevelData data = null;
             if (attackType == 2)
@@ -327,27 +318,6 @@ namespace WvsBeta.Game
                 }
             }
             return prop = precent = level = 0;
-        }
-
-        public SkillLevelData GetSkillLevelData(int skill) => GetSkillLevelData(skill, out byte level);
-
-        public SkillLevelData GetSkillLevelData(int skill, out byte level)
-        {
-            if (Skills.TryGetValue(skill, out level))
-            {
-                return GetSkillLevelData(skill, level);
-            }
-            return null;
-        }
-
-        public static SkillLevelData GetSkillLevelData(int skill, byte level)
-        {
-            if (DataProvider.Skills.TryGetValue(skill, out var skillData))
-            {
-                if (skillData.MaxLevel >= level) return skillData.Levels[level];
-            }
-
-            return null;
         }
     }
 }

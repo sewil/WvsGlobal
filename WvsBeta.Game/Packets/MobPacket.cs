@@ -9,7 +9,7 @@ namespace WvsBeta.Game
 {
     public static class MobPacket
     {
-        public static void HandleMobControl(Character victim, Packet packet)
+        public static void HandleMobControl(GameCharacter victim, Packet packet)
         {
             int mobid = packet.ReadInt();
             var mob = victim.Field.GetMob(mobid);
@@ -217,7 +217,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleDistanceFromBoss(Character chr, Packet packet)
+        public static void HandleDistanceFromBoss(GameCharacter chr, Packet packet)
         {
             int mapmobid = packet.ReadInt();
             int distance = packet.ReadInt();
@@ -249,7 +249,7 @@ namespace WvsBeta.Game
                 pw.WriteInt(0);
         }
 
-        public static void SendMobSpawn(Character victim, Mob mob)
+        public static void SendMobSpawn(GameCharacter victim, Mob mob)
         {
             var pw = new Packet(ServerMessages.MOB_ENTER_FIELD);
             MobData(pw, mob);
@@ -273,7 +273,7 @@ namespace WvsBeta.Game
             mob.Field.SendPacket(mob, pw);
         }
 
-        public static void SendMobRequestControl(Character currentController, Mob mob, bool chasing)
+        public static void SendMobRequestControl(GameCharacter currentController, Mob mob, bool chasing)
         {
             var pw = new Packet(ServerMessages.MOB_CHANGE_CONTROLLER);
             pw.WriteByte((byte)(chasing ? 2 : 1));
@@ -282,7 +282,7 @@ namespace WvsBeta.Game
             currentController.SendPacket(pw);
         }
 
-        public static void SendMobRequestEndControl(Character currentController, int spawnId)
+        public static void SendMobRequestEndControl(GameCharacter currentController, int spawnId)
         {
             var pw = new Packet(ServerMessages.MOB_CHANGE_CONTROLLER);
             pw.WriteByte(0);
@@ -290,7 +290,7 @@ namespace WvsBeta.Game
             currentController.SendPacket(pw);
         }
 
-        public static void SendMobControlResponse(Character victim, int mobid, short moveid, bool bNextAttackPossible, short MP, byte skillCommand, byte level)
+        public static void SendMobControlResponse(GameCharacter victim, int mobid, short moveid, bool bNextAttackPossible, short MP, byte skillCommand, byte level)
         {
             var pw = new Packet(ServerMessages.MOB_CTRL_ACK);
             pw.WriteInt(mobid);
@@ -303,7 +303,7 @@ namespace WvsBeta.Game
             victim.SendPacket(pw);
         }
 
-        public static void SendMobControlMove(Character victim, Mob mob, bool bNextAttackPossible, byte action, uint dwData, MovePath movePath)
+        public static void SendMobControlMove(GameCharacter victim, Mob mob, bool bNextAttackPossible, byte action, uint dwData, MovePath movePath)
         {
             var pw = new Packet(ServerMessages.MOB_MOVE);
             pw.WriteInt(mob.SpawnID);
@@ -316,7 +316,7 @@ namespace WvsBeta.Game
             victim.Field.SendPacket(mob, pw, victim);
         }
 
-        public static void SendMobDamageOrHeal(Character victim, int spawnId, int amount, bool isHeal, bool web)
+        public static void SendMobDamageOrHeal(GameCharacter victim, int spawnId, int amount, bool isHeal, bool web)
         {
             Packet pw = new Packet(ServerMessages.MOB_DAMAGED);
             pw.WriteInt(spawnId);

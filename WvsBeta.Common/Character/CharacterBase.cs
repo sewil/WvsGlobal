@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Character;
+﻿using System;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common
@@ -14,9 +15,10 @@ namespace WvsBeta.Common
         public byte Skin { get; set; }
         public int Face { get; set; }
         public int Hair { get; set; }
+        public long PetCashId { get; set; }
 
         public virtual int MapID { get; set; }
-
+        public byte MapPosition { get; set; }
         public virtual int PartyID { get; set; }
 
         public bool IsOnline { get; set; }
@@ -24,7 +26,12 @@ namespace WvsBeta.Common
         public byte GMLevel { get; set; }
         public bool IsGM { get => GMLevel > 0; }
         public bool IsAdmin { get => GMLevel >= 3; }
-        
+        public virtual BaseCharacterInventory Inventory { get; set; }
+        public virtual BaseCharacterSkills Skills { get; protected set; }
+        public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
+        public virtual BaseCharacterQuests Quests { get; protected set; }
+        public virtual void DamageHP(short amount) => throw new NotImplementedException();
+
         public void EncodeForTransfer(Packet pw)
         {
             pw.WriteString(Name);
@@ -60,6 +67,39 @@ namespace WvsBeta.Common
             PartyID = pr.ReadInt();
             IsOnline = pr.ReadBool();
             GMLevel = pr.ReadByte();
+        }
+
+        public GW_CharacterStat ToGWStat()
+        {
+            return new GW_CharacterStat
+            {
+                ID = ID,
+                Name = Name,
+                Gender = Gender,
+                Skin = Skin,
+                Face = Face,
+                Hair = Hair,
+
+                PetCashId = PetCashId,
+
+                Level = Level,
+                Job = Job,
+                Str = PrimaryStats.Str,
+                Dex = PrimaryStats.Dex,
+                Int = PrimaryStats.Int,
+                Luk = PrimaryStats.Luk,
+                HP = PrimaryStats.HP,
+                MaxHP = PrimaryStats.GetMaxHP(true),
+                MP = PrimaryStats.MP,
+                MaxMP = PrimaryStats.GetMaxMP(true),
+                AP = PrimaryStats.AP,
+                SP = PrimaryStats.SP,
+                EXP = PrimaryStats.EXP,
+                Fame = PrimaryStats.Fame,
+
+                MapID = MapID,
+                MapPosition = MapPosition
+            };
         }
     }
 }

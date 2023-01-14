@@ -7,10 +7,11 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Game.GameObjects;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Game
 {
@@ -54,10 +55,10 @@ namespace WvsBeta.Game
 
         public Dictionary<int, Tuple<Packet, long>> CCIngPlayerList { get; } = new Dictionary<int, Tuple<Packet, long>>();
         public ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string, Player>();
-        public Dictionary<int, Character> CharacterList { get; } = new Dictionary<int, Character>();
-        public HashSet<Character> StaffCharacters { get; } = new HashSet<Character>();
+        public Dictionary<int, GameCharacter> CharacterList { get; } = new Dictionary<int, GameCharacter>();
+        public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
 
-        public Dictionary<int, (string reason, string name, byte level, Character.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, Character.BanReasons, long)>();
+        public Dictionary<int, (string reason, string name, byte level, GameCharacter.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, GameCharacter.BanReasons, long)>();
 
         public DiscordReporter BanDiscordReporter { get; private set; }
         public DiscordReporter ServerTraceDiscordReporter { get; private set; }
@@ -80,14 +81,14 @@ namespace WvsBeta.Game
             Program.LogFile.WriteLine(what);
         }
 
-        public void AddDelayedBanRecord(Character chr, string reason, Character.BanReasons banReason, int extraDelay)
+        public void AddDelayedBanRecord(GameCharacter chr, string reason, GameCharacter.BanReasons banReason, int extraDelay)
         {
             // Only enqueue when we haven't recorded it yet, otherwise you would
             // be able to extend the A/B delay.
             if (DelayedBanRecords.ContainsKey(chr.UserID)) return;
 
 
-            Character.HackLog.Info(new Character.PermaBanLogRecord
+            GameCharacter.HackLog.Info(new GameCharacter.PermaBanLogRecord
             {
                 reason = reason
             });
@@ -173,13 +174,13 @@ namespace WvsBeta.Game
             Program.MainForm.LogAppend("Unable to remove player with hash {0}", hash);
         }
 
-        public Character GetCharacter(int ID)
+        public GameCharacter GetCharacter(int ID)
         {
-            return CharacterList.TryGetValue(ID, out Character ret) ? ret : null;
+            return CharacterList.TryGetValue(ID, out GameCharacter ret) ? ret : null;
         }
 
 
-        public Character GetCharacter(string name)
+        public GameCharacter GetCharacter(string name)
         {
             name = name.ToLowerInvariant();
             return (from kvp in CharacterList where kvp.Value != null && kvp.Value.Name.ToLowerInvariant() == name select kvp.Value).FirstOrDefault();

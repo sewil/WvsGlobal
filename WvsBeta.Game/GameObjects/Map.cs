@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 
@@ -73,9 +74,9 @@ namespace WvsBeta.Game
         public Dictionary<int, Mob> Mobs { get; } = new Dictionary<int, Mob>();
         public List<MobGenItem> MobGen { get; } = new List<MobGenItem>();
         private long _lastCreateMobTime;
-        public List<Character> Characters { get; } = new List<Character>();
-        public IEnumerable<Character> GetRegularPlayers => Characters.Where(x => !x.IsGM);
-        public IEnumerable<Character> GetGMs => Characters.Where(x => x.IsGM);
+        public List<GameCharacter> Characters { get; } = new List<GameCharacter>();
+        public IEnumerable<GameCharacter> GetRegularPlayers => Characters.Where(x => !x.IsGM);
+        public IEnumerable<GameCharacter> GetGMs => Characters.Where(x => x.IsGM);
 
         public bool PeopleInMap => Characters.Count > 0;
 
@@ -89,8 +90,8 @@ namespace WvsBeta.Game
         public const double MAP_PREMIUM_EXP = 1.0;
         public bool PortalsOpen { get; set; } = true;
         public bool PQPortalOpen = true;
-        public Action<Character, Map> OnEnter { get; set; }
-        public Action<Character, Map> OnExit { get; set; }
+        public Action<GameCharacter, Map> OnEnter { get; set; }
+        public Action<GameCharacter, Map> OnExit { get; set; }
 
         public Action<Map> OnTimerEnd { get; set; }
         public long TimerEndTime { get; set; }
@@ -120,16 +121,16 @@ namespace WvsBeta.Game
 
         internal Mob GetMob(int SpawnID) => Mobs.TryGetValue(SpawnID, out Mob ret) ? ret : null;
         internal NpcLife GetNPC(int SpawnID) => NPC.FirstOrDefault(n => n.SpawnID == SpawnID);
-        public Character GetPlayer(int id) => Characters.FirstOrDefault(a => a.ID == id);
-        public IEnumerable<Character> GetInParty(int ptId) => Characters.Where(c => c.PartyID == ptId);
+        public GameCharacter GetPlayer(int id) => Characters.FirstOrDefault(a => a.ID == id);
+        public IEnumerable<GameCharacter> GetInParty(int ptId) => Characters.Where(c => c.PartyID == ptId);
         public List<int> GetIDsInParty(int ptId) => GetInParty(ptId).Select(x => x.ID).ToList();
 
-        public virtual bool FilterAdminCommand(Character character, CommandHandling.CommandArgs command)
+        public virtual bool FilterAdminCommand(GameCharacter character, CommandHandling.CommandArgs command)
         {
             return false;
         }
 
-        public virtual bool HandlePacket(Character character, Packet packet, ClientMessages opcode)
+        public virtual bool HandlePacket(GameCharacter character, Packet packet, ClientMessages opcode)
         {
             return false;
         }
@@ -527,7 +528,7 @@ namespace WvsBeta.Game
         }
 
         public IEnumerable<Mob> GetMobsInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => InRange(Mobs.Values, pAround, pLeftTop, pRightBottom);
-        public IEnumerable<Character> GetCharactersInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => InRange(Characters, pAround, pLeftTop, pRightBottom);
+        public IEnumerable<GameCharacter> GetCharactersInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => InRange(Characters, pAround, pLeftTop, pRightBottom);
 
         public void CreateMist(MovableLife pLife, int pSpawnID, int pSkillID, byte pSkillLevel, int pTime, int pX1, int pY1, int pX2, int pY2, short delay)
         {
@@ -751,7 +752,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             return SpawnPoints.OrderBy(x => (new Pos(x.X, x.Y) - position)).FirstOrDefault();
         }
 
-        public virtual void RemovePlayer(Character chr, bool gmhide = false)
+        public virtual void RemovePlayer(GameCharacter chr, bool gmhide = false)
         {
             if (!gmhide && !Characters.Contains(chr)) return;
 
@@ -786,7 +787,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             });
         }
 
-        public void LeavePlayer(Character chr)
+        public void LeavePlayer(GameCharacter chr)
         {
             // Player exits entirely
             RemovePlayer(chr);
@@ -836,7 +837,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
         }
 
-        public virtual void AddPlayer(Character chr)
+        public virtual void AddPlayer(GameCharacter chr)
         {
             PlayersThatHaveBeenHere[chr.Name] = MasterThread.CurrentTime;
 
@@ -866,7 +867,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             BuffPacket.ResetTempStats(chr, ~chr.PrimaryStats.AllActiveBuffs());
         }
 
-        public Character FindUser(string Name)
+        public GameCharacter FindUser(string Name)
         {
             foreach (var User in Characters)
             {
@@ -876,7 +877,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             return Server.Instance.GetCharacter(Name);
         }
 
-        public void SendPacket(Packet packet, Character skipme = null, bool log = false)
+        public void SendPacket(Packet packet, GameCharacter skipme = null, bool log = false)
         {
             Characters.ForEach(p =>
             {
@@ -886,7 +887,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             });
         }
 
-        public void SendPacket(IFieldObj Obj, Packet packet, Character skipme = null)
+        public void SendPacket(IFieldObj Obj, Packet packet, GameCharacter skipme = null)
         {
             Characters.ForEach(p =>
             {
@@ -896,7 +897,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         }
 
 
-        public void ShowPlayer(Character chr, bool gmhide)
+        public void ShowPlayer(GameCharacter chr, bool gmhide)
         {
             var spawneePet = chr.GetSpawnedPet();
 
@@ -928,7 +929,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             RedistributeControllers();
         }
 
-        public void ShowObjects(Character chr)
+        public void ShowObjects(GameCharacter chr)
         {
             if (HasClock)
             {
@@ -990,7 +991,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         /// Send the Map Timer packet to either everybody in the map (chr == null) or the character.
         /// </summary>
         /// <param name="chr">The character to send it to. Can be null to send it to everybody in the map.</param>
-        public void SendMapTimer(Character chr)
+        public void SendMapTimer(GameCharacter chr)
         {
             var currentTime = MasterThread.CurrentTime;
             if (currentTime < TimerEndTime)
@@ -1070,7 +1071,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // Update reactors
         }
 
-        public int KillAllMobs(Character chr, bool damage, int damageAmount)
+        public int KillAllMobs(GameCharacter chr, bool damage, int damageAmount)
         {
             int amount = 0;
 
@@ -1190,7 +1191,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         /// Update controllers of mobs
         /// </summary>
         /// <param name="who">When this is NULL, it will find all uncontrolled mobs and allocate them (Same as RedistributeControllers)</param>
-        public void RemoveController(Character who)
+        public void RemoveController(GameCharacter who)
         {
             Mobs.Values.Where(x => x.Controller == who).ForEach(x => FindNewController(x, null));
         }
@@ -1200,7 +1201,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Mobs.Values.Where(x => x.IsControlled == false).ForEach(x => FindNewController(x, null));
         }
 
-        public bool FindNewController(Mob mob, Character wantedCharacter, bool chase = false)
+        public bool FindNewController(Mob mob, GameCharacter wantedCharacter, bool chase = false)
         {
             // This function is not the same as GMS
             // GMS figures out who has the lowest amount of mobs to control
@@ -1465,7 +1466,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             r.Show();
         }
 
-        private void ShowReactorsTo(Character chr)
+        private void ShowReactorsTo(GameCharacter chr)
         {
             Reactors.Values.ForEach(r => r.ShowTo(chr));
         }
@@ -1479,7 +1480,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
         }
 
-        public void PlayerHitReactor(Character chr, int rid)
+        public void PlayerHitReactor(GameCharacter chr, int rid)
         {
             if (Reactors.TryGetValue(rid, out Reactor r))
             {

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
@@ -124,7 +125,7 @@ namespace WvsBeta.Game
             else return -1;
         }
 
-        private static Character.BanReasons GetBanReasonFromText(CommandArg arg)
+        private static GameCharacter.BanReasons GetBanReasonFromText(CommandArg arg)
         {
             switch (arg)
             {
@@ -133,53 +134,53 @@ namespace WvsBeta.Game
                 case "ct":
                 case "h":
                 case "hack":
-                case "hax": return Character.BanReasons.Hack;
+                case "hax": return GameCharacter.BanReasons.Hack;
 
                 // Your account has been blocked for using macro / auto-keyboard.
                 case "2":
                 case "bot":
-                case "macro": return Character.BanReasons.Macro;
+                case "macro": return GameCharacter.BanReasons.Macro;
 
                 // Your account has been blocked for illicit promotion and advertising.
                 case "3":
                 case "promo":
                 case "ad":
                 case "ads":
-                case "advertisement": return Character.BanReasons.Advertisement;
+                case "advertisement": return GameCharacter.BanReasons.Advertisement;
 
                 // Your account has been blocked for for harassment.
                 case "4":
                 case "harass":
-                case "harassment": return Character.BanReasons.Harassment;
+                case "harassment": return GameCharacter.BanReasons.Harassment;
 
                 // Your account has been blocked for using profane language.
                 case "5":
                 case "trol":
                 case "trolling":
                 case "curse":
-                case "badlanguage": return Character.BanReasons.BadLanguage;
+                case "badlanguage": return GameCharacter.BanReasons.BadLanguage;
 
                 // Your account has been blocked for scamming.
                 case "6":
                 case "scamming":
-                case "scam": return Character.BanReasons.Scam;
+                case "scam": return GameCharacter.BanReasons.Scam;
 
                 // Your account has been blocked for misconduct.
                 case "7":
                 case "ks":
-                case "misconduct": return Character.BanReasons.Misconduct;
+                case "misconduct": return GameCharacter.BanReasons.Misconduct;
 
                 // Your account has been blocked for illegal cash transaction
                 case "8":
                 case "sell":
-                case "irlmoney": return Character.BanReasons.Sell;
+                case "irlmoney": return GameCharacter.BanReasons.Sell;
 
                 // Your account has been blocked for illegal charging/funding. Please contact customer support for further details.
                 case "9":
                 case "moneyloundry":
-                case "icash": return Character.BanReasons.ICash;
+                case "icash": return GameCharacter.BanReasons.ICash;
 
-                default: return Character.BanReasons.Hack;
+                default: return GameCharacter.BanReasons.Hack;
             }
         }
 
@@ -252,7 +253,7 @@ namespace WvsBeta.Game
         }
 
         static bool shuttingDown = false;
-        public static bool HandleChat(Character character, string text)
+        public static bool HandleChat(GameCharacter character, string text)
         {
             if (!character.IsGM) return false;
 
@@ -404,7 +405,7 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string victim = Args[0].Value.ToLower();
-                                    Character who = Server.Instance.GetCharacter(victim);
+                                    GameCharacter who = Server.Instance.GetCharacter(victim);
 
                                     if (who != null)
                                         who.Player.Socket.Disconnect();
@@ -433,9 +434,9 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count >= 2)
                                 {
-                                    Character.BanReasons banReason = Args.Count >= 3
+                                    GameCharacter.BanReasons banReason = Args.Count >= 3
                                         ? GetBanReasonFromText(Args[2])
-                                        : Character.BanReasons.Hack;
+                                        : GameCharacter.BanReasons.Hack;
 
                                     switch (GetUserIDFromArgs(Args[0], Args[1], out int userId))
                                     {
@@ -472,9 +473,9 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count >= 3 && Args[2].IsNumber())
                                 {
-                                    Character.BanReasons banReason = Args.Count > 3
+                                    GameCharacter.BanReasons banReason = Args.Count > 3
                                         ? GetBanReasonFromText(Args[3])
-                                        : Character.BanReasons.Hack;
+                                        : GameCharacter.BanReasons.Hack;
 
                                     switch (GetUserIDFromArgs(Args[0], Args[1], out int userId))
                                     {
@@ -2180,7 +2181,7 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string other = Args[0].Value.ToLower();
-                                    foreach (KeyValuePair<int, Character> kvp in Server.Instance.CharacterList)
+                                    foreach (KeyValuePair<int, GameCharacter> kvp in Server.Instance.CharacterList)
                                     {
                                         if (kvp.Value.Name.ToLower() == other)
                                         {
@@ -2398,7 +2399,7 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string victim = Args[0].Value.ToLower();
-                                    Character who = Server.Instance.GetCharacter(victim);
+                                    GameCharacter who = Server.Instance.GetCharacter(victim);
 
                                     if (who != null)
                                     {
@@ -2545,7 +2546,7 @@ namespace WvsBeta.Game
 
 
 
-        public static void HandleAdminCommand(Character chr, Packet packet)
+        public static void HandleAdminCommand(GameCharacter chr, Packet packet)
         {
             if (chr.AssertForHack(!chr.IsGM, "Tried to use slash GM command while not GM")) return;
             //  41 12 1E 00 00 00 
@@ -2575,7 +2576,7 @@ namespace WvsBeta.Game
                                 {
                                     if (Server.Instance.CharacterList.ContainsKey(charid))
                                     {
-                                        Character victim = Server.Instance.GetCharacter(name);
+                                        GameCharacter victim = Server.Instance.GetCharacter(name);
                                         victim.Player.Socket.Disconnect();
                                         Server.Instance.CharacterDatabase.RunQuery("UPDATE users SET ban_reason = 8 WHERE ID = " + ID); //8 : permanent ban
                                         AdminPacket.BanCharacterMessage(chr);
@@ -2611,7 +2612,7 @@ namespace WvsBeta.Game
                                 {
                                     if (Server.Instance.CharacterList.ContainsKey(charid))
                                     {
-                                        Character victim = Server.Instance.GetCharacter(name);
+                                        GameCharacter victim = Server.Instance.GetCharacter(name);
                                         victim.Player.Socket.Disconnect();
                                         Server.Instance.CharacterDatabase.RunQuery("UPDATE users SET ban_reason = " + type + " WHERE ID = " + ID); //8 : permanent ban
                                         AdminPacket.BanCharacterMessage(chr);
@@ -2673,7 +2674,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleAdminCommandLog(Character chr, Packet packet)
+        public static void HandleAdminCommandLog(GameCharacter chr, Packet packet)
         {
             // 42 04 00 2F 70 6F 73 
             packet.ReadString();

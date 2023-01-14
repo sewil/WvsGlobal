@@ -32,7 +32,7 @@ namespace WvsBeta.Game.Events.GMEvents
             InProgress = false;
         }
 
-        public virtual void Join(Character chr)
+        public virtual void Join(GameCharacter chr)
         {
             EventHelper.SetLastMap(chr, chr.MapID);
             EventHelper.SetParticipated(chr.ID);

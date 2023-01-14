@@ -62,13 +62,13 @@ namespace WvsBeta.Game.GameObjects
             SnowballState = 0;
         }
 
-        public override void AddPlayer(Character chr)
+        public override void AddPlayer(GameCharacter chr)
         {
             base.AddPlayer(chr);
             SendSnowballState(chr);
         }
 
-        public override void RemovePlayer(Character chr, bool gmhide = false)
+        public override void RemovePlayer(GameCharacter chr, bool gmhide = false)
         {
             Program.MainForm.LogDebug("Player Removed: " + chr.Name);
             if (Event.InProgress)
@@ -87,7 +87,7 @@ namespace WvsBeta.Game.GameObjects
             }
         }
 
-        public void SendSnowballState(Character chr = null)
+        public void SendSnowballState(GameCharacter chr = null)
         {
             var packet = SnowballPackets.SnowballState(
                 (byte)SnowballState,
@@ -105,7 +105,7 @@ namespace WvsBeta.Game.GameObjects
             else SendPacket(packet);
         }
 
-        public override bool HandlePacket(Character character, Packet packet, ClientMessages opcode)
+        public override bool HandlePacket(GameCharacter character, Packet packet, ClientMessages opcode)
         {
             if (SnowballState == SnowballEventState.IN_PROGRESS)
                 switch (opcode)
@@ -120,7 +120,7 @@ namespace WvsBeta.Game.GameObjects
                 return false;
         }
 
-        public void OnSnowballHit(byte type, Character chr, short damage, short delay)
+        public void OnSnowballHit(byte type, GameCharacter chr, short damage, short delay)
         {
             Program.MainForm.LogDebug("Type: " + type);
             switch(type)

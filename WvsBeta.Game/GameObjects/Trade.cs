@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
@@ -15,11 +16,11 @@ namespace WvsBeta.Game
         public bool[] Locked;
         private TradeItem[][] ItemList;
 
-        public Character Owner { get; private set; }
+        public GameCharacter Owner { get; private set; }
 
         private int[] Mesos;
 
-        public Trade(Character pOwner) : base(2, RoomType.Trade)
+        public Trade(GameCharacter pOwner) : base(2, RoomType.Trade)
         {
             Owner = pOwner;
             ItemList = new TradeItem[2][];
@@ -48,7 +49,7 @@ namespace WvsBeta.Game
         {
             for (int i = 0; i < 2; i++)
             {
-                Character chr = Users[i];
+                GameCharacter chr = Users[i];
 
                 if (chr == null)
                 {
@@ -71,8 +72,8 @@ namespace WvsBeta.Game
 
         public void CompleteTrade()
         {
-            Character pCharacter1 = Users[0];
-            Character pCharacter2 = Users[1];
+            GameCharacter pCharacter1 = Users[0];
+            GameCharacter pCharacter2 = Users[1];
             AddItems(pCharacter1);
             AddItems(pCharacter2);
             pCharacter1.Room = null;
@@ -93,7 +94,7 @@ namespace WvsBeta.Game
             return CheckInventory(Users[0]) && CheckInventory(Users[1]);
         }
 
-        private bool CheckInventory(Character chr)
+        private bool CheckInventory(GameCharacter chr)
         {
             var neededSlots = new Dictionary<byte, int>();
 
@@ -129,7 +130,7 @@ namespace WvsBeta.Game
         }
 
 
-        private void AddItems(Character chr)
+        private void AddItems(GameCharacter chr)
         {
             // Note: Exchange logic, so A gets B and B gets A stuff
             for (int i = 0; i < 2; i++)
@@ -159,7 +160,7 @@ namespace WvsBeta.Game
         }
 
 
-        public override void RemovePlayer(Character pCharacter, byte pReason)
+        public override void RemovePlayer(GameCharacter pCharacter, byte pReason)
         {
             // Give items back
             RevertItems();
@@ -175,7 +176,7 @@ namespace WvsBeta.Game
             base.RemovePlayer(pCharacter, pReason);
         }
 
-        public override void OnPacket(Character pCharacter, byte pOpcode, Packet pPacket)
+        public override void OnPacket(GameCharacter pCharacter, byte pOpcode, Packet pPacket)
         {
             switch (pOpcode)
             {
@@ -265,7 +266,7 @@ namespace WvsBeta.Game
 
                         for (int i = 0; i < 2; i++)
                         {
-                            Character chr = Users[i];
+                            GameCharacter chr = Users[i];
 
                             if (chr != pCharacter)
                             {
@@ -275,8 +276,8 @@ namespace WvsBeta.Game
 
                         if (Locked[0] == true && Locked[1] == true)
                         {
-                            Character chr = Users[0];
-                            Character chr2 = Users[1];
+                            GameCharacter chr = Users[0];
+                            GameCharacter chr2 = Users[1];
                             if (ContinueTrade())
                             {
                                 CompleteTrade();

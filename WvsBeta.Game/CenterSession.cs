@@ -350,7 +350,7 @@ namespace WvsBeta.Game
                         bool whisper = packet.ReadBool();
                         bool found = packet.ReadBool();
                         int victim = packet.ReadInt();
-                        Character victimChar = Server.Instance.GetCharacter(victim);
+                        GameCharacter victimChar = Server.Instance.GetCharacter(victim);
                         if (victimChar == null) break;
                         victimChar.Player.Socket.StartLogging();
 
@@ -444,7 +444,7 @@ namespace WvsBeta.Game
 
                 case ISServerMessages.PlayerSendPacket:
                     {
-                        Character pChar = Server.Instance.GetCharacter(packet.ReadInt());
+                        GameCharacter pChar = Server.Instance.GetCharacter(packet.ReadInt());
                         ////Console.WriteLine(pChar.Name);
                         pChar?.SendPacket(packet.ReadLeftoverBytes());
                         break;
@@ -461,7 +461,7 @@ namespace WvsBeta.Game
 
                 case ISServerMessages.ChangeParty:
                     {
-                        Character fucker = Server.Instance.GetCharacter(packet.ReadInt());
+                        GameCharacter fucker = Server.Instance.GetCharacter(packet.ReadInt());
                         if (fucker != null)
                             fucker.PartyID = packet.ReadInt();
                         break;
@@ -469,7 +469,7 @@ namespace WvsBeta.Game
 
                 case ISServerMessages.UpdateHpParty:
                     {
-                        Character fucker = Server.Instance.GetCharacter(packet.ReadInt());
+                        GameCharacter fucker = Server.Instance.GetCharacter(packet.ReadInt());
                         if (fucker != null && fucker.PartyID != 0)
                         {
                             fucker.FullPartyHPUpdate();

@@ -6,7 +6,7 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         public static ILog HackLog = LogManager.GetLogger("HackLog");
 

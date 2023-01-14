@@ -2,7 +2,7 @@
 {
     public class Kite : IFieldObj
     {
-        public Character Owner { get; set; }
+        public GameCharacter Owner { get; set; }
         public Map Field { get; set; }
         public int ID { get; set; }
         public int ItemID { get; set; }
@@ -11,7 +11,7 @@
         public short Y { get; set; }
         
 
-        public Kite(Character owner, int id, int itemID, string message, Map field)
+        public Kite(GameCharacter owner, int id, int itemID, string message, Map field)
         {
             Owner = owner;
             ID = id;

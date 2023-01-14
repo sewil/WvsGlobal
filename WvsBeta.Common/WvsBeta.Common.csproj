@@ -117,12 +117,22 @@
   <ItemGroup>
     <Compile Include="Character\AvatarData.cs" />
     <Compile Include="Character\AvatarLook.cs" />
+    <Compile Include="Character\BaseCharacterInventory.cs" />
+    <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
+    <Compile Include="Character\BaseCharacterQuests.cs" />
+    <Compile Include="Character\BaseCharacterSkills.cs" />
     <Compile Include="Character\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
+    <Compile Include="Enums\BuffValueTypes.cs" />
+    <Compile Include="Enums\CureFlag.cs" />
     <Compile Include="Enums\GameState.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\PlayerGender.cs" />
+    <Compile Include="Enums\SkillElement.cs" />
+    <Compile Include="Enums\WorldMarker.cs" />
+    <Compile Include="Enums\WorldWarning.cs" />
+    <Compile Include="Enums\WorldRibbon.cs" />
     <Compile Include="Extensions\bullshitextensions.cs" />
     <Compile Include="Character\CharacterBase.cs" />
     <Compile Include="Character\GW_CharacterStat.cs" />
@@ -152,8 +162,29 @@
     <Compile Include="MainFormConsole.cs" />
     <Compile Include="MemoryRegions.cs" />
     <Compile Include="Character\Pos.cs" />
+    <Compile Include="DataProviders\BaseDataProvider.cs" />
+    <Compile Include="Objects\AttackData.cs" />
+    <Compile Include="Objects\BaseItem.cs" />
+    <Compile Include="Objects\BonusSet.cs" />
+    <Compile Include="Objects\BuffStats\BuffStat_DragonBlood.cs" />
+    <Compile Include="Objects\BuffStats\BuffStat_ComboAttack.cs" />
+    <Compile Include="Objects\BuffStats\BuffStat_MesoGuard.cs" />
+    <Compile Include="Objects\CharacterCashItems.cs" />
+    <Compile Include="Enums\CharacterDataFlag.cs" />
+    <Compile Include="Objects\EquipData.cs" />
+    <Compile Include="Objects\GW_ItemSlotBase.cs" />
+    <Compile Include="Objects\ItemData.cs" />
+    <Compile Include="Objects\ItemSummonInfo.cs" />
+    <Compile Include="Objects\LockerItem.cs" />
+    <Compile Include="Objects\PetData.cs" />
+    <Compile Include="Objects\PetReactionData.cs" />
     <Compile Include="Objects\Player.cs" />
-    <Compile Include="Objects\World.cs" />
+    <Compile Include="Objects\QuestData.cs" />
+    <Compile Include="Objects\SkillData.cs" />
+    <Compile Include="Objects\SkillLevelData.cs" />
+    <Compile Include="Objects\SplitDBInventory.cs" />
+    <Compile Include="Objects\BuffStats\BuffStat.cs" />
+    <Compile Include="Objects\WorldRanking.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />
@@ -215,6 +246,10 @@
     <ProjectReference Include="..\WvsBeta.MasterThread\WvsBeta.MasterThread.csproj">
       <Project>{84164d2f-36b3-4d56-af4a-bd12c37f71f5}</Project>
       <Name>WvsBeta.MasterThread</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\WvsBeta.ReNX\trunk\reNX.csproj">
+      <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
+      <Name>reNX</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />

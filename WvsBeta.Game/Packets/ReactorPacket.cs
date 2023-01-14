@@ -4,7 +4,7 @@ namespace WvsBeta.Game
 {
     public static class ReactorPacket
     {
-        public static void ShowReactor(Reactor reactor, bool toChar = false, Character chr = null)
+        public static void ShowReactor(Reactor reactor, bool toChar = false, GameCharacter chr = null)
         {
             Packet packet = new Packet(ServerMessages.REACTOR_ENTER_FIELD);
             packet.WriteShort(reactor.ID);
@@ -40,7 +40,7 @@ namespace WvsBeta.Game
             MasterThread.RepeatingAction.Start("dr-" + reactor.Field.ID + "-" + reactor.ID, time => reactor.Field.SendPacket(packet), 650, 0);
         }
 
-        public static void HandleReactorHit(Character chr, Packet packet)
+        public static void HandleReactorHit(GameCharacter chr, Packet packet)
         {
             byte rid = packet.ReadByte();
             byte direction = packet.ReadByte();

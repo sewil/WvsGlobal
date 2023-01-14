@@ -69,10 +69,6 @@
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WvsBeta.SharedDataProvider\WvsBeta.SharedDataProvider.csproj">
-      <Project>{dd563e87-6146-4dc4-a6a2-affa12514bfd}</Project>
-      <Name>WvsBeta.SharedDataProvider</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

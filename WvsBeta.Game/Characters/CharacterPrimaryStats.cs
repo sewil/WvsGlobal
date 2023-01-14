@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Objects.BuffStats;
+using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using static WvsBeta.MasterThread;
 
@@ -20,252 +25,37 @@ namespace WvsBeta.Game
         public short Speed { get; set; }
     }
 
-    public class BonusSet
-    {
-        public short Str { get; set; } = 0;
-        public short Dex { get; set; } = 0;
-        public short Int { get; set; } = 0;
-        public short Luk { get; set; } = 0;
-        public short MaxHP { get; set; } = 0;
-        public short MaxMP { get; set; } = 0;
-        public short PDD { get; set; } = 0;
-        public short PAD { get; set; } = 0;
-        public short MAD { get; set; } = 0;
-        public short MDD { get; set; } = 0;
-        public short EVA { get; set; } = 0;
-        public short ACC { get; set; } = 0;
-        public short Craft { get; set; } = 0;
-        public short Jump { get; set; } = 0;
-        public short Speed { get; set; } = 0;
-    }
-
     public class EquipBonus : BonusSet
     {
         public int ID { get; set; }
     }
 
-    public class BuffStat
+    public class CharacterPrimaryStats : BaseCharacterPrimaryStats
     {
-        // Return the amount of milliseconds
-        public static long GetTimeForBuff(long additionalMillis = 0) =>
-            MasterThread.CurrentDate.AddMilliseconds(additionalMillis).ToFileTimeUtc() / 10000;
+        private GameCharacter Char { get; }
 
-        // Number. Most of the time, this is the X or Y value of the skill/buff
-        public short N { get; set; }
-        // Reference ID. For Item IDs, use a negative number
-        public int R { get; set; }
-        // Expire Time. Extended version of T (full time in millis)
-        public long TM { get; set; }
-        public BuffValueTypes Flag { get; set; }
-
-        public bool IsSet(long? time = null)
-        {
-            if (N == 0) return false;
-            if (time == null) time = GetTimeForBuff();
-            return TM > time;
-        }
-
-        public BuffValueTypes GetState(long? time = null)
-        {
-            return IsSet(time) ? Flag : 0;
-        }
-
-        public bool HasReferenceId(int referenceId, long? currenTime = null)
-        {
-            return IsSet(currenTime) && R == referenceId;
-        }
-
-        public BuffStat(BuffValueTypes flag)
-        {
-            Flag = flag;
-            N = 0;
-            R = 0;
-            TM = 0;
-        }
-
-        public BuffValueTypes Reset()
-        {
-            if (R == 0 && N == 0 && TM == 0) return 0;
-
-            Trace.WriteLine($"Removing buff {Flag} {N} {R} {TM}");
-            N = 0;
-            R = 0;
-            TM = 0;
-            return Flag;
-        }
-
-        public virtual bool TryReset(long currentTime, ref BuffValueTypes flag)
-        {
-            if (N == 0 || TM >= currentTime) return false;
-
-            flag |= Reset();
-            return true;
-        }
-
-        public void TryResetByReference(int reference, ref BuffValueTypes flag)
-        {
-            if (N == 0 || R != reference) return;
-            flag |= Reset();
-        }
-
-        public virtual BuffValueTypes Set(int referenceId, short nValue, long expireTime)
-        {
-            // Ignore 0 N-values
-            if (nValue == 0) return 0;
-            R = referenceId;
-            N = nValue;
-            TM = expireTime;
-            return Flag;
-        }
-
-        public void EncodeForRemote(ref BuffValueTypes flag, long currentTime, Action<BuffStat> func, BuffValueTypes specificFlag = BuffValueTypes.ALL)
-        {
-            if (!IsSet(currentTime) || !specificFlag.HasFlag(Flag)) return;
-
-            flag |= Flag;
-            func?.Invoke(this);
-        }
-
-        public void EncodeForLocal(Packet pw, ref BuffValueTypes flag, long currentTime, BuffValueTypes specificFlag = BuffValueTypes.ALL)
-        {
-            if (!IsSet(currentTime) || !specificFlag.HasFlag(Flag)) return;
-
-            flag |= Flag;
-            pw.WriteShort(N);
-            pw.WriteInt(R);
-            pw.WriteShort((short)((TM - currentTime) / 100)); // If its not divided, it will not flash.
-        }
-
-        public virtual bool EncodeForCC(Packet pr, ref BuffValueTypes flag, long currentTime)
-        {
-            if (!IsSet(currentTime)) return false;
-
-            flag |= Flag;
-            pr.WriteShort(N);
-            pr.WriteInt(R);
-            pr.WriteLong(TM);
-            return true;
-        }
-
-        public virtual bool DecodeForCC(Packet pr, BuffValueTypes flag)
-        {
-            if (!flag.HasFlag(Flag))
-            {
-                Reset();
-                return false;
-            }
-            else
-            {
-                N = pr.ReadShort();
-                R = pr.ReadInt();
-                TM = pr.ReadLong();
-                return true;
+        public override short HP {
+            get => base.HP;
+            set {
+                base.HP = value;
+                Char.PartyHPUpdate();
             }
         }
-    }
 
-    public class BuffStat_DragonBlood : BuffStat
-    {
-        private readonly Character Owner;
-        private long tLastDamaged;
-
-        public BuffStat_DragonBlood(BuffValueTypes flag, Character own) : base(flag)
-        {
-            Owner = own;
-        }
-
-        public override BuffValueTypes Set(int referenceId, short nValue, long expireTime)
-        {
-            tLastDamaged = CurrentTime;
-            return base.Set(referenceId, nValue, expireTime);
-        }
-
-        public override bool TryReset(long currentTime, ref BuffValueTypes flag)
-        {
-            if (CurrentTime - tLastDamaged >= 4000)
-            {
-                Owner.DamageHP(N);
-                tLastDamaged = CurrentTime;
-            }
-            return base.TryReset(currentTime, ref flag);
-        }
-
-        public override bool EncodeForCC(Packet pr, ref BuffValueTypes flag, long currentTime)
-        {
-            if (base.EncodeForCC(pr, ref flag, currentTime))
-            {
-                pr.WriteLong(tLastDamaged);
-                return true;
-            }
-            return false;
-        }
-
-        public override bool DecodeForCC(Packet pr, BuffValueTypes flag)
-        {
-            if(base.DecodeForCC(pr, flag))
-            {
-                tLastDamaged = pr.ReadLong();
-                return true;
-            }
-            return false;
-        }
-    }
-
-    public class BuffStat_ComboAttack : BuffStat
-    {
-        public int MaxOrbs { get; set; }
-
-        public BuffStat_ComboAttack(BuffValueTypes flag) : base(flag)
-        {
-        }
-
-        public override BuffValueTypes Set(int referenceId, short nValue, long expireTime)
-        {
-            MaxOrbs = nValue;
-            return base.Set(referenceId, 1, expireTime);
-        }
-    }
-
-    public class BuffStat_MesoGuard : BuffStat
-    {
-        public int MesosLeft { get; set; }
-
-        public BuffStat_MesoGuard(BuffValueTypes flag) : base(flag)
-        {
-        }
-    }
-
-    public class CharacterPrimaryStats
-    {
-        private Character Char { get; }
-
-        public byte Level
+        public override byte Level
         {
             get => Char.Level;
             set => Char.Level = value;
         }
-        public short Job
+        public override short Job
         {
             get => Char.Job;
             set => Char.Job = value;
         }
-        public short Str { get; set; }
-        public short Dex { get; set; }
-        public short Int { get; set; }
-        public short Luk { get; set; }
-        public short MaxHP { get; set; }
-        public short MP { get; set; }
-        public short MaxMP { get; set; }
-        public short AP { get; set; }
-        public short SP { get; set; }
-        public int EXP { get; set; }
-        public short Fame { get; set; }
 
         public float speedMod => TotalSpeed + 100.0f;
 
-        public short MAD => Int;
-        public short MDD => Int;
-        public int EVA
+        public override int EVA
         {
             get
             {
@@ -281,7 +71,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public int ACC
+        public override int ACC
         {
             get
             {
@@ -316,93 +106,15 @@ namespace WvsBeta.Game
                 return Math.Max(0, Math.Min(acc, 999));
             }
         }
-
-        public int Craft => Dex + Luk + Int;
-
-        // TODO: Get this out here
-        public int BuddyListCapacity { get; set; }
-
-        private short _hp;
-        public short HP
-        {
-            get
-            {
-                return _hp;
-            }
-            set
-            {
-                _hp = value;
-                Char.PartyHPUpdate();
-            }
-        }
-
-
         private Dictionary<byte, EquipBonus> EquipStats { get; } = new Dictionary<byte, EquipBonus>();
-        public BonusSet EquipBonuses = new BonusSet();
-        public BonusSet BuffBonuses = new BonusSet();
 
-        public int TotalStr => Str + EquipBonuses.Str;
-        public int TotalDex => Dex + EquipBonuses.Dex;
-        public int TotalInt => Int + EquipBonuses.Int;
-        public int TotalLuk => Luk + EquipBonuses.Luk;
-        public int TotalMaxHP => MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP;
-        public int TotalMaxMP => MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP;
-
-        public short TotalMAD => (short)Math.Max(0, Math.Min(MAD + EquipBonuses.MAD + BuffBonuses.MAD, 1999));
-        public short TotalMDD => (short)Math.Max(0, Math.Min(MDD + EquipBonuses.MDD + BuffBonuses.MDD, 1999));
-        public short TotalPAD => (short)Math.Max(0, Math.Min(EquipBonuses.PAD + BuffBonuses.PAD, 1999));
-        public short TotalPDD => (short)Math.Max(0, Math.Min(EquipBonuses.PDD + BuffBonuses.PDD, 1999));
-
-        public short TotalACC => (short)Math.Max(0, Math.Min(ACC + EquipBonuses.ACC + BuffBonuses.ACC, 999));
-        public short TotalEVA => (short)Math.Max(0, Math.Min(EVA + EquipBonuses.EVA + BuffBonuses.EVA, 999));
-        public short TotalCraft => (short)Math.Max(0, Math.Min(Craft + EquipBonuses.Craft + BuffBonuses.Craft, 999));
-        public short TotalJump => (short)Math.Max(100, Math.Min(EquipBonuses.Jump + BuffBonuses.Jump, 123));
-        public byte TotalSpeed => (byte)Math.Max(100, Math.Min(EquipBonuses.Speed + BuffBonuses.Speed, 200));
-
-
-        // Real Stats
-
-        public BuffStat BuffWeaponAttack { get; } = new BuffStat(BuffValueTypes.WeaponAttack);
-        public BuffStat BuffWeaponDefense { get; } = new BuffStat(BuffValueTypes.WeaponDefense);
-        public BuffStat BuffMagicAttack { get; } = new BuffStat(BuffValueTypes.MagicAttack);
-        public BuffStat BuffMagicDefense { get; } = new BuffStat(BuffValueTypes.MagicDefense);
-        public BuffStat BuffAccurancy { get; } = new BuffStat(BuffValueTypes.Accurancy);
-        public BuffStat BuffAvoidability { get; } = new BuffStat(BuffValueTypes.Avoidability);
-        public BuffStat BuffHands { get; } = new BuffStat(BuffValueTypes.Hands);
-        public BuffStat BuffSpeed { get; } = new BuffStat(BuffValueTypes.Speed);
-        public BuffStat BuffJump { get; } = new BuffStat(BuffValueTypes.Jump);
-        public BuffStat BuffMagicGuard { get; } = new BuffStat(BuffValueTypes.MagicGuard);
-        public BuffStat BuffDarkSight { get; } = new BuffStat(BuffValueTypes.DarkSight);
-        public BuffStat BuffBooster { get; } = new BuffStat(BuffValueTypes.Booster);
-        public BuffStat BuffPowerGuard { get; } = new BuffStat(BuffValueTypes.PowerGuard);
-        public BuffStat BuffMaxHP { get; } = new BuffStat(BuffValueTypes.MaxHP);
-        public BuffStat BuffMaxMP { get; } = new BuffStat(BuffValueTypes.MaxMP);
-        public BuffStat BuffInvincible { get; } = new BuffStat(BuffValueTypes.Invincible);
-        public BuffStat BuffSoulArrow { get; } = new BuffStat(BuffValueTypes.SoulArrow);
-        public BuffStat BuffStun { get; } = new BuffStat(BuffValueTypes.Stun);
-        public BuffStat BuffPoison { get; } = new BuffStat(BuffValueTypes.Poison);
-        public BuffStat BuffSeal { get; } = new BuffStat(BuffValueTypes.Seal);
-        public BuffStat BuffDarkness { get; } = new BuffStat(BuffValueTypes.Darkness);
-        public BuffStat_ComboAttack BuffComboAttack { get; } = new BuffStat_ComboAttack(BuffValueTypes.ComboAttack);
-        public BuffStat BuffCharges { get; } = new BuffStat(BuffValueTypes.Charges);
-        public BuffStat_DragonBlood BuffDragonBlood { get; }
-        public BuffStat BuffHolySymbol { get; } = new BuffStat(BuffValueTypes.HolySymbol);
-        public BuffStat BuffMesoUP { get; } = new BuffStat(BuffValueTypes.MesoUP);
-        public BuffStat BuffShadowPartner { get; } = new BuffStat(BuffValueTypes.ShadowPartner);
-        public BuffStat BuffPickPocketMesoUP { get; } = new BuffStat(BuffValueTypes.PickPocketMesoUP);
-        public BuffStat_MesoGuard BuffMesoGuard { get; } = new BuffStat_MesoGuard(BuffValueTypes.MesoGuard);
-        public BuffStat BuffThaw { get; } = new BuffStat(BuffValueTypes.Thaw);
-        public BuffStat BuffWeakness { get; } = new BuffStat(BuffValueTypes.Weakness);
-        public BuffStat BuffCurse { get; } = new BuffStat(BuffValueTypes.Curse);
-
-
-        public CharacterPrimaryStats(Character chr)
+        public CharacterPrimaryStats(GameCharacter chr)
         {
             Char = chr;
             BuffDragonBlood = new BuffStat_DragonBlood(BuffValueTypes.DragonBlood, Char);
         }
 
-        public void AddEquipStats(sbyte slot, EquipItem equip, bool isLoading)
+        public override void AddEquipStats(sbyte slot, EquipItem equip, bool isLoading)
         {
             try
             {
@@ -445,7 +157,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void CalculateAdditions(bool updateEquips, bool isLoading)
+        public override void CalculateAdditions(bool updateEquips, bool isLoading)
         {
             if (updateEquips)
             {
@@ -502,7 +214,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void CheckHPMP()
+        public override void CheckHPMP()
         {
             short mhp = GetMaxHP(false);
             short mmp = GetMaxMP(false);
@@ -516,7 +228,7 @@ namespace WvsBeta.Game
             }
         }
         
-        public void CheckBoosters()
+        public override void CheckBoosters()
         {
             var equippedId = Char.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, false);
 
@@ -532,14 +244,7 @@ namespace WvsBeta.Game
             Char.Buffs.FinalizeDebuff(removed);
         }
 
-        public short getTotalStr() { return (short)(Str + EquipBonuses.Str); }
-        public short getTotalDex() { return (short)(Dex + EquipBonuses.Dex); }
-        public short getTotalInt() { return (short)(Int + EquipBonuses.Int); }
-        public short getTotalLuk() { return (short)(Luk + EquipBonuses.Luk); }
-        public short getTotalMagicAttack() { return (short)(Int + EquipBonuses.MAD); }
-        public short getTotalMagicDef() { return (short)(Int + EquipBonuses.MDD); }
-
-        public short GetStrAddition(bool nobonus = false)
+        public override short GetStrAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
@@ -547,7 +252,7 @@ namespace WvsBeta.Game
             }
             return Str;
         }
-        public short GetDexAddition(bool nobonus = false)
+        public override short GetDexAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
@@ -555,7 +260,7 @@ namespace WvsBeta.Game
             }
             return Dex;
         }
-        public short GetIntAddition(bool nobonus = false)
+        public override short GetIntAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
@@ -563,7 +268,7 @@ namespace WvsBeta.Game
             }
             return Int;
         }
-        public short GetLukAddition(bool nobonus = false)
+        public override short GetLukAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
@@ -571,24 +276,8 @@ namespace WvsBeta.Game
             }
             return Luk;
         }
-        public short GetMaxHP(bool nobonus = false)
-        {
-            if (!nobonus)
-            {
-                return (short)((MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP) > short.MaxValue ? short.MaxValue : (MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP));
-            }
-            return MaxHP;
-        }
-        public short GetMaxMP(bool nobonus = false)
-        {
-            if (!nobonus)
-            {
-                return (short)((MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP) > short.MaxValue ? short.MaxValue : (MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP));
-            }
-            return MaxMP;
-        }
 
-        public void Reset(bool sendPacket)
+        public override void Reset(bool sendPacket)
         {
             BuffValueTypes flags = 0;
             flags |= BuffWeaponAttack.Reset();
@@ -629,7 +318,7 @@ namespace WvsBeta.Game
             Char.Buffs.FinalizeDebuff(flags, sendPacket);
         }
 
-        public void DecodeForCC(Packet packet)
+        public override void DecodeForCC(Packet packet)
         {
             var flags = (BuffValueTypes)packet.ReadUInt();
 
@@ -692,7 +381,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void EncodeForCC(Packet packet)
+        public override void EncodeForCC(Packet packet)
         {
             long currentTime = BuffStat.GetTimeForBuff();
             int offset = packet.Position;
@@ -735,7 +424,7 @@ namespace WvsBeta.Game
             packet.SetUInt(offset, (uint)flags);
         }
 
-        public void CheckExpired(long currentTime)
+        public override void CheckExpired(long currentTime)
         {
             BuffValueTypes endFlag = 0;
 
@@ -776,7 +465,7 @@ namespace WvsBeta.Game
             Char.Buffs.FinalizeDebuff(endFlag);
         }
 
-        public BuffValueTypes AllActiveBuffs()
+        public override BuffValueTypes AllActiveBuffs()
         {
             long currentTime = BuffStat.GetTimeForBuff();
             BuffValueTypes flags = 0;
@@ -817,7 +506,7 @@ namespace WvsBeta.Game
 
         }
 
-        public BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
+        public override BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
         {
             if (pBuffValue == 0) return 0;
 
@@ -863,7 +552,7 @@ namespace WvsBeta.Game
             return endFlag;
         }
 
-        public void EncodeForLocal(Packet pPacket, BuffValueTypes pSpecificFlag = BuffValueTypes.ALL)
+        public override void EncodeForLocal(Packet pPacket, BuffValueTypes pSpecificFlag = BuffValueTypes.ALL)
         {
             long currentTime = BuffStat.GetTimeForBuff();
             int tmpBuffPos = pPacket.Position;
@@ -910,7 +599,7 @@ namespace WvsBeta.Game
             pPacket.SetULong(tmpBuffPos, (ulong)endFlag); // Make sure correct flag is set
         }
 
-        public bool HasBuff(int skillOrItemID)
+        public override bool HasBuff(int skillOrItemID)
         {
             long currentTime = BuffStat.GetTimeForBuff();
             return

@@ -43,7 +43,7 @@ namespace WvsBeta.Game
         public override void EndLogging()
         {
             base.EndLogging();
-            Character.RemoveLogging();
+            GameCharacter.RemoveLogging();
         }
 
         public override void OnDisconnect()
@@ -438,7 +438,7 @@ namespace WvsBeta.Game
 
         }
 
-        public void OnChangeChannel(Character character, Packet packet)
+        public void OnChangeChannel(GameCharacter character, Packet packet)
         {
             if (character.Field.DisableChangeChannel)
             {
@@ -450,7 +450,7 @@ namespace WvsBeta.Game
             DoChangeChannelReq(channel);
         }
 
-        public void OnEnterCashShop(Character character)
+        public void OnEnterCashShop(GameCharacter character)
         {
             if (character.Field.DisableGoToCashShop)
             {
@@ -535,9 +535,9 @@ namespace WvsBeta.Game
                 goto cleanup_and_disconnect;
             }
 
-            var character = new Character(characterId);
+            var character = new GameCharacter(characterId);
             var loadResult = character.Load(IP);
-            if (loadResult != Character.LoadFailReasons.None)
+            if (loadResult != GameCharacter.LoadFailReasons.None)
             {
                 var msg = "Disconnected characterId " + characterId + " from IP " + IP + ". " + loadResult;
                 Server.Instance.ServerTraceDiscordReporter.Enqueue(msg);

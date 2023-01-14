@@ -27,7 +27,7 @@ namespace WvsBeta.Game.Events
             _instance?.WithCheck(() => KPQStageResult.CHECK);
         }, 1000, 1000);
 
-        private static readonly Action<Character, Map> PQTimer = (chr, map) =>
+        private static readonly Action<GameCharacter, Map> PQTimer = (chr, map) =>
         {
             if (_instance != null)
                 MapPacket.ShowMapTimerForCharacter(chr, (int)(_instance.GetTimeRemaining() / 1000));
@@ -71,19 +71,19 @@ namespace WvsBeta.Game.Events
             return pt.Members.Where(x => x != 0);
         }
 
-        private static IEnumerable<Character> LoadCharactersFromParty(PartyData pt)
+        private static IEnumerable<GameCharacter> LoadCharactersFromParty(PartyData pt)
         {
             return GetAvailablePartyMembers(pt)
                 .Where(m => Server.Instance.CharacterList.ContainsKey(m))
                 .Select(m => Server.Instance.CharacterList[m]);
         }
 
-        private static IEnumerable<Character> FilterOutNonKPQPeople(IEnumerable<Character> characters)
+        private static IEnumerable<GameCharacter> FilterOutNonKPQPeople(IEnumerable<GameCharacter> characters)
         {
             return characters.Where(x => Maps.Contains(x.Field));
         }
 
-        public static KPQStartResult TryStart(Character chr, PartyData pt)
+        public static KPQStartResult TryStart(GameCharacter chr, PartyData pt)
         {
             var leader = pt.Leader;
             var memberList = GetAvailablePartyMembers(pt).ToList();
@@ -128,8 +128,8 @@ namespace WvsBeta.Game.Events
         /****** INSTANCE *******/
         private long startTime;
         public int PartyId { get; private set; }
-        private Character _leader;
-        private IEnumerable<Character> _party;
+        private GameCharacter _leader;
+        private IEnumerable<GameCharacter> _party;
         private List<bool> ropes;
         private List<bool> kittens;
         private List<bool> barrels;
@@ -151,7 +151,7 @@ namespace WvsBeta.Game.Events
             CHECK //Used for additional checks and such, nothing to do with NPC
         }
 
-        private KPQ(Character pLeader, IEnumerable<Character> pParty)
+        private KPQ(GameCharacter pLeader, IEnumerable<GameCharacter> pParty)
         {
             startTime = MasterThread.CurrentTime;
             PartyId = pLeader.PartyID;
@@ -192,14 +192,14 @@ namespace WvsBeta.Game.Events
 
         public long GetTimeRemaining() => Math.Max(PQTime - (MasterThread.CurrentTime - startTime), 0);
 
-        public string GetStage1Question(Character chr)
+        public string GetStage1Question(GameCharacter chr)
         {
             if (questions.TryGetValue(chr.ID, out Tuple<string, int> questionPair))
                 return questionPair.Item1;
             return "Unknown error occurred for character " + chr.Name + ". Please show this to a GM";
         }
 
-        public int GetStage1Coupons(Character chr)
+        public int GetStage1Coupons(GameCharacter chr)
         {
             if (questions.TryGetValue(chr.ID, out Tuple<string, int> questionPair))
                 return questionPair.Item2;
@@ -214,7 +214,7 @@ namespace WvsBeta.Game.Events
          *      ENOUGH_COUPONS
          *      CANNOT_CONTINUE
         **/
-        public KPQStageResult CheckStage1Coupons(Character chr) => WithCheck(() =>
+        public KPQStageResult CheckStage1Coupons(GameCharacter chr) => WithCheck(() =>
         {
             return
                 chr.Inventory.GetItemAmount(4001007) != questions[chr.ID].Item2 ?
@@ -230,7 +230,7 @@ namespace WvsBeta.Game.Events
          *      ENOUGH_PASSES
          *      CANNOT_CONTINUE
          **/
-        public KPQStageResult CheckStage1(Character chr) => WithCheck(() =>
+        public KPQStageResult CheckStage1(GameCharacter chr) => WithCheck(() =>
         {
             int passes = _party.Count() - 1;
 
@@ -252,7 +252,7 @@ namespace WvsBeta.Game.Events
         *      CANNOT_CONTINUE
         *      NOT_ENOUGH_FOR_COMBO
         **/
-        public KPQStageResult CheckStage2(Character chr) => WithCheck(() =>
+        public KPQStageResult CheckStage2(GameCharacter chr) => WithCheck(() =>
         {
             KPQStageResult check2()
             {
@@ -287,7 +287,7 @@ namespace WvsBeta.Game.Events
         *      CANNOT_CONTINUE
         *      NOT_ENOUGH_FOR_COMBO
         **/
-        public KPQStageResult CheckStage3(Character chr) => WithCheck(() =>
+        public KPQStageResult CheckStage3(GameCharacter chr) => WithCheck(() =>
         {
             KPQStageResult check3()
             {
@@ -322,7 +322,7 @@ namespace WvsBeta.Game.Events
         *      CANNOT_CONTINUE
         *      NOT_ENOUGH_FOR_COMBO
         **/
-        public KPQStageResult CheckStage4(Character chr) => WithCheck(() =>
+        public KPQStageResult CheckStage4(GameCharacter chr) => WithCheck(() =>
         {
             KPQStageResult check4()
             {
@@ -400,7 +400,7 @@ namespace WvsBeta.Game.Events
                           where !chr.IsGM
                           where !_party.Contains(chr)
                           select chr;
-            List<Character> boot = leaving.ToList(); //realize the whole list so we can modify map character lists with no issue
+            List<GameCharacter> boot = leaving.ToList(); //realize the whole list so we can modify map character lists with no issue
 
             if (boot.Count == 0) return;
 
@@ -416,7 +416,7 @@ namespace WvsBeta.Game.Events
 
             _instance = null;
             MasterThread.Instance.RemoveRepeatingAction(_watcher);
-            _party = Enumerable.Empty<Character>();
+            _party = Enumerable.Empty<GameCharacter>();
             Boot();
         }
 

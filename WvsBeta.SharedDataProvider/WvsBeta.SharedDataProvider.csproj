@@ -82,19 +82,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseCharacterInventory.cs" />
-    <Compile Include="BaseItem.cs" />
-    <Compile Include="CharacterCashItems.cs" />
-    <Compile Include="CharacterDataFlag.cs" />
-    <Compile Include="BaseDataProvider.cs" />
-    <Compile Include="ItemData.cs" />
-    <Compile Include="ItemSummonInfo.cs" />
-    <Compile Include="LockerItem.cs" />
-    <Compile Include="PetData.cs" />
-    <Compile Include="PetReactionData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="EquipData.cs" />
-    <Compile Include="SplitDBInventory.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WvsBeta.Common\WvsBeta.Common.csproj">

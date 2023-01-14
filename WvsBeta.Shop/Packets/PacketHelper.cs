@@ -1,11 +1,8 @@
-﻿using System;
-using WvsBeta.Common.Sessions;
-using WvsBeta.Game;
-using WvsBeta.SharedDataProvider;
+﻿using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    internal class PacketHelper : BasePacketHelper
+    internal class PacketHelper
     {
         public static void AddGiftList(Packet packet)
         {

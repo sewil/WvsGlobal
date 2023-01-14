@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Game
 {
     public class CharacterInventory : BaseCharacterInventory
     {
-        private Character Character { get; set; }
-        public int ChocoCount { get; private set; }
-        public int ActiveItemID { get; private set; }
+        private GameCharacter Character { get; set; }
 
-        public CharacterInventory(Character character) : base(character.UserID, character.ID)
+        public CharacterInventory(GameCharacter character) : base(character.UserID, character.ID)
         {
             Character = character;
         }
@@ -23,7 +22,7 @@ namespace WvsBeta.Game
             base.SaveInventory(Program.MainForm.LogAppend);
         }
 
-        public void LoadInventory()
+        public new void LoadInventory()
         {
             base.LoadInventory();
 
@@ -44,7 +43,7 @@ namespace WvsBeta.Game
                 UpdateChocoCount();
         }
 
-        public void SetItem(byte inventory, short slot, BaseItem item)
+        public override void SetItem(byte inventory, short slot, BaseItem item)
         {
             inventory -= 1;
             if (item != null) item.InventorySlot = slot;
@@ -71,9 +70,9 @@ namespace WvsBeta.Game
             UpdateChocoCount();
         }
 
-        public int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => GetEquippedItemId((short)slot, cash);
+        public override int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => GetEquippedItemId((short)slot, cash);
 
-        public int GetEquippedItemId(short slot, bool cash)
+        public override int GetEquippedItemId(short slot, bool cash)
         {
             if (!cash)
             {
@@ -117,26 +116,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public int GetItemAmount(int itemid)
-        {
-            int amount = 0;
-            BaseItem temp = null;
-
-
-            for (byte inventory = 1; inventory <= 5; inventory++)
-            {
-                for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
-                { // Slot 1 - 24, not 0 - 23
-                    temp = GetItem(inventory, i);
-                    if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
-                }
-            }
-
-            return amount;
-        }
-
-
-        public short AddItem2(BaseItem item, bool sendpacket = true)
+        public override short AddItem2(BaseItem item, bool sendpacket = true)
         {
             byte inventory = Constants.getInventory(item.ItemID);
             short slot = 0;
@@ -202,7 +182,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public short AddNewItem(int id, short amount) // Only normal items!
+        public override short AddNewItem(int id, short amount) // Only normal items!
         {
             if (!DataProvider.Items.ContainsKey(id) &&
                 !DataProvider.Equips.ContainsKey(id) &&
@@ -266,7 +246,7 @@ namespace WvsBeta.Game
             return givenAmount;
         }
 
-        public bool HasSlotsFreeForItem(int itemid, short amount, bool stackable)
+        public override bool HasSlotsFreeForItem(int itemid, short amount, bool stackable)
         {
             short slotsRequired = 0;
             byte inventory = Constants.getInventory(itemid);
@@ -318,7 +298,7 @@ namespace WvsBeta.Game
             return GetOpenSlotsInInventory(inventory) >= slotsRequired;
         }
 
-        public int ItemAmountAvailable(int itemid)
+        public override int ItemAmountAvailable(int itemid)
         {
             byte inv = Constants.getInventory(itemid);
             int available = 0;
@@ -340,18 +320,7 @@ namespace WvsBeta.Game
             return available;
         }
 
-        public short GetOpenSlotsInInventory(byte inventory)
-        {
-            short amount = 0;
-            for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
-            {
-                if (GetItem(inventory, i) == null)
-                    amount++;
-            }
-            return amount;
-        }
-
-        public short GetNextFreeSlotInInventory(byte inventory)
+        public override short GetNextFreeSlotInInventory(byte inventory)
         {
             for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
             {
@@ -361,7 +330,7 @@ namespace WvsBeta.Game
             return -1;
         }
 
-        public short DeleteFirstItemInInventory(int inv)
+        public override short DeleteFirstItemInInventory(int inv)
         {
             for (short i = 1; i <= MaxSlots[inv]; i++)
             {
@@ -397,7 +366,7 @@ namespace WvsBeta.Game
         /// <param name="itemid">The Item ID</param>
         /// <param name="amount">Amount</param>
         /// <returns>Amount of items that were _not_ taken away</returns>
-        public int TakeItem(int itemid, int amount)
+        public override int TakeItem(int itemid, int amount)
         {
             if (amount == 0) return 0;
 
@@ -429,7 +398,7 @@ namespace WvsBeta.Game
             return initialAmount - amount;
         }
 
-        public BaseItem TakeItemAmountFromSlot(byte inventory, short slot, short amount, bool takeStars)
+        public override BaseItem TakeItemAmountFromSlot(byte inventory, short slot, short amount, bool takeStars)
         {
             var item = GetItem(inventory, slot);
 
@@ -494,7 +463,7 @@ namespace WvsBeta.Game
             return shown;
         }
 
-        public int GetTotalWAttackInEquips(bool star)
+        public override int GetTotalWAttackInEquips(bool star)
         {
             int totalWat = 0;
 
@@ -553,20 +522,6 @@ namespace WvsBeta.Game
             return totalWat;
         }
 
-        public int GetTotalMAttInEquips()
-        {
-            return Equips[0]
-                .Where(i => i != null)
-                .Sum(item => item.Matk);
-        }
-
-        public int GetTotalAccInEquips()
-        {
-            return Equips[0]
-                .Where(i => i != null)
-                .Sum(item => item.Acc);
-        }
-
         public double GetExtraExpRate()
         {
             // Holiday stuff here.
@@ -610,7 +565,7 @@ namespace WvsBeta.Game
         }
 
 
-        public void CheckExpired()
+        public override void CheckExpired()
         {
             var currentTime = MasterThread.CurrentDate.ToFileTimeUtc();
             _cashItems.GetExpiredItems(currentTime, expiredItems =>

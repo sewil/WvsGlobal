@@ -4,7 +4,7 @@ namespace WvsBeta.Game
 {
     public interface INpcScript
     {
-        void Run(IHost host, Character character, byte State, byte Answer, string StringAnswer, int IntegerAnswer);
+        void Run(IHost host, GameCharacter character, byte State, byte Answer, string StringAnswer, int IntegerAnswer);
     }
 
     public interface IHost

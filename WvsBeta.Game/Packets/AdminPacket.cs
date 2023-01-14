@@ -4,7 +4,7 @@ namespace WvsBeta.Game
 {
     public static class AdminPacket
     {
-        public static void HandleAdminCommandMessage(Character chr, Packet packet)
+        public static void HandleAdminCommandMessage(GameCharacter chr, Packet packet)
         {
             byte to = packet.ReadByte();
             byte TypeMessage = packet.ReadByte(); //   /alert, /notice, /slide
@@ -23,7 +23,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void Hide(Character chr, bool hide)
+        public static void Hide(GameCharacter chr, bool hide)
         {
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
             pw.WriteByte(15);
@@ -31,7 +31,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void BanCharacterMessage(Character chr)
+        public static void BanCharacterMessage(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
             pw.WriteByte(4);
@@ -39,7 +39,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void InvalidNameMessage(Character chr)
+        public static void InvalidNameMessage(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
             pw.WriteByte(6);
@@ -47,7 +47,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void UnrankSuccessful(Character chr)
+        public static void UnrankSuccessful(GameCharacter chr)
         {
             // You have successfully removed the name from the ranks.
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
@@ -56,7 +56,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void VarGetMessage(Character chr, string Name, string Var, string Value)
+        public static void VarGetMessage(GameCharacter chr, string Name, string Var, string Value)
         {
             //format ; {string} : {string} = {string} 
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
@@ -67,7 +67,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void RequestFailed(Character chr)
+        public static void RequestFailed(GameCharacter chr)
         {
             // Your request failed.
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);
@@ -76,7 +76,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SentWarning(Character chr, bool succeeded)
+        public static void SentWarning(GameCharacter chr, bool succeeded)
         {
             // Your request failed.
             Packet pw = new Packet(ServerMessages.ADMIN_RESULT);

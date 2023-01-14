@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
@@ -41,7 +42,7 @@ namespace WvsBeta.Game
             Mesos = 0x40000
         };
 
-        public static void HandleStats(Character chr, Packet packet)
+        public static void HandleStats(GameCharacter chr, Packet packet)
         {
             uint flag = packet.ReadUInt();
             if (chr.AssertForHack(chr.PrimaryStats.AP <= 0, "Trying to use AP, but nothing left."))
@@ -161,7 +162,7 @@ namespace WvsBeta.Game
             chr.PrimaryStats.CalculateAdditions(false, false);
         }
 
-        public static void HandleHeal(Character chr, Packet packet)
+        public static void HandleHeal(GameCharacter chr, Packet packet)
         {
             // 2B 00 14 00 00 00 00 03 00 00
             int flag = packet.ReadInt();
@@ -201,7 +202,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendStatChange(Character chr, uint flag, byte value, bool isBySelf = false)
+        public static void SendStatChange(GameCharacter chr, uint flag, byte value, bool isBySelf = false)
         {
             Packet pw = new Packet(ServerMessages.STAT_CHANGED);
             pw.WriteBool(isBySelf);
@@ -210,7 +211,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendStatChange(Character chr, uint flag, short value, bool isBySelf = false)
+        public static void SendStatChange(GameCharacter chr, uint flag, short value, bool isBySelf = false)
         {
             Packet pw = new Packet(ServerMessages.STAT_CHANGED);
             pw.WriteBool(isBySelf);
@@ -219,7 +220,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendStatChange(Character chr, uint flag, int value, bool isBySelf = false)
+        public static void SendStatChange(GameCharacter chr, uint flag, int value, bool isBySelf = false)
         {
             Packet pw = new Packet(ServerMessages.STAT_CHANGED);
             pw.WriteBool(isBySelf);
@@ -228,7 +229,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendStatChange(Character chr, uint flag, long value, bool isBySelf = false)
+        public static void SendStatChange(GameCharacter chr, uint flag, long value, bool isBySelf = false)
         {
             Packet pw = new Packet(ServerMessages.STAT_CHANGED);
             pw.WriteBool(isBySelf);
@@ -237,7 +238,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendUpdateStat(Character chr, bool ExcelRequest, StatFlags StatFlag)
+        public static void SendUpdateStat(GameCharacter chr, bool ExcelRequest, StatFlags StatFlag)
         {
             if (ExcelRequest || StatFlag > 0)
             {
@@ -298,7 +299,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleCharacterDamage(Character chr, Packet pr)
+        public static void HandleCharacterDamage(GameCharacter chr, Packet pr)
         {
             //1A FF 03 00 00 00 00 00 00 00 00 04 87 01 00 00 00
             sbyte attack = pr.ReadSByte();
@@ -509,7 +510,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void OnStatChangeByMobSkill(Character chr, MobSkillLevelData msld, short delay = 0)
+        public static void OnStatChangeByMobSkill(GameCharacter chr, MobSkillLevelData msld, short delay = 0)
         {
 
             // See if we can actually set the effect...
@@ -549,7 +550,7 @@ namespace WvsBeta.Game
         }
 
         public static void SendCharacterDamageByMob(
-            Character chr,
+            GameCharacter chr,
             sbyte attack,
             int initialDamage,
             int reducedDamage,
@@ -585,7 +586,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendCharacterDamage(Character chr, sbyte attack, int initialDamage, int reducedDamage, int healSkillId)
+        public static void SendCharacterDamage(GameCharacter chr, sbyte attack, int initialDamage, int reducedDamage, int healSkillId)
         {
             Packet pw = new Packet(ServerMessages.DAMAGE_PLAYER);
             pw.WriteInt(chr.ID);
@@ -599,7 +600,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendGainEXP(Character chr, int amount, bool IsLastHit, bool Quest = false)
+        public static void SendGainEXP(GameCharacter chr, int amount, bool IsLastHit, bool Quest = false)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(3);
@@ -609,7 +610,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendGainDrop(Character chr, bool isMesos, int idOrMesosAmount, short amount)
+        public static void SendGainDrop(GameCharacter chr, bool isMesos, int idOrMesosAmount, short amount)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x00);

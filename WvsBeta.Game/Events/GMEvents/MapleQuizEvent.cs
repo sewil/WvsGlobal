@@ -41,7 +41,7 @@ namespace WvsBeta.Game.Events.GMEvents
             base.Prepare();
         }
 
-        public override void Join(Character chr)
+        public override void Join(GameCharacter chr)
         {
             base.Join(chr);
             chr.ChangeMap(QuizMapId, "start00");

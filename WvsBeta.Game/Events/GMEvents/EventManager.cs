@@ -66,12 +66,12 @@ namespace WvsBeta.Game.Events.GMEvents
         }
 
         //TODO refactor to use something more robust than charactervariables
-        public static void SetLastMap(Character mongoloid, int mapId)
+        public static void SetLastMap(GameCharacter mongoloid, int mapId)
         {
             mongoloid.Variables.SetVariableData(LastMapKey, mapId.ToString());
         }
 
-        public static int GetLastMap(Character mongoloid)
+        public static int GetLastMap(GameCharacter mongoloid)
         {
             var id = mongoloid.Variables.GetVariableData(LastMapKey);
             if (int.TryParse(id, out int map))
@@ -81,7 +81,7 @@ namespace WvsBeta.Game.Events.GMEvents
             return -1;
         }
 
-        public static void ReturnLastMap(Character mongoloid)
+        public static void ReturnLastMap(GameCharacter mongoloid)
         {
             int dest = GetLastMap(mongoloid);
             dest = dest == -1 ? 104000000 /*Lith Harbor*/ : dest;

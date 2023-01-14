@@ -100,7 +100,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void RequestCharacterConnectToWorld(string Hash, int charid, byte world, byte channel, Character character)
+        public void RequestCharacterConnectToWorld(string Hash, int charid, byte world, byte channel, GameCharacter character)
         {
             Packet packet = new Packet(ISClientMessages.PlayerChangeServer);
             packet.WriteString(Hash);
@@ -157,7 +157,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyUpdate(Character chr)
+        public void BuddyUpdate(GameCharacter chr)
         {
             Packet packet = new Packet(ISClientMessages.BuddyUpdate);
             packet.WriteInt(chr.ID);
@@ -165,7 +165,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyRequest(Character requestor, String targetName)
+        public void BuddyRequest(GameCharacter requestor, String targetName)
         {
             Packet packet = new Packet(ISClientMessages.BuddyInvite);
             packet.WriteInt(requestor.ID);
@@ -174,7 +174,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyAccept(Character acceptor)
+        public void BuddyAccept(GameCharacter acceptor)
         {
             Packet packet = new Packet(ISClientMessages.BuddyInviteAnswer);
             packet.WriteInt(acceptor.ID);
@@ -182,7 +182,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyDecline(Character decliner, int Victim)
+        public void BuddyDecline(GameCharacter decliner, int Victim)
         {
             Packet packet = new Packet(ISClientMessages.BuddyDecline);
             packet.WriteInt(decliner.ID);
@@ -190,7 +190,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyListExpand(Character chr)
+        public void BuddyListExpand(GameCharacter chr)
         {
             Packet packet = new Packet(ISClientMessages.BuddyListExpand);
             packet.WriteInt(chr.ID);
@@ -230,7 +230,7 @@ namespace WvsBeta.Game
         }
 
 
-        public void MessengerJoin(int messengerid, Character chr)
+        public void MessengerJoin(int messengerid, GameCharacter chr)
         {
             Packet packet = new Packet(ISClientMessages.MessengerJoin);
             packet.WriteInt(messengerid);
@@ -281,7 +281,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void MessengerAvatar(Character chr)
+        public void MessengerAvatar(GameCharacter chr)
         {
             Packet packet = new Packet(ISClientMessages.MessengerAvatar);
             packet.WriteInt(chr.ID);
@@ -290,7 +290,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void PlayerUpdateMap(Character pCharacter)
+        public void PlayerUpdateMap(GameCharacter pCharacter)
         {
             Packet packet = new Packet(ISClientMessages.PlayerUpdateMap);
             packet.WriteInt(pCharacter.ID);
@@ -299,7 +299,7 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyChat(Character chr, string what, int[] recipients)
+        public void BuddyChat(GameCharacter chr, string what, int[] recipients)
         {
             Packet packet = new Packet(ISClientMessages.BuddyChat);
             packet.WriteInt(chr.ID);
@@ -331,7 +331,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void UpdatePlayerJobLevel(Character chr)
+        public void UpdatePlayerJobLevel(GameCharacter chr)
         {
             Packet packet = new Packet(ISClientMessages.UpdatePlayerJobLevel);
             packet.WriteInt(chr.ID);

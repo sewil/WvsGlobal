@@ -102,7 +102,7 @@
     <Compile Include="Characters\Character Hack Logic.cs" />
     <Compile Include="Characters\Character log structs.cs" />
     <Compile Include="Characters\Character Modifiers.cs" />
-    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\GameCharacter.cs" />
     <Compile Include="Characters\CharacterBuffs.cs" />
     <Compile Include="Characters\CharacterGameStats.cs" />
     <Compile Include="Characters\CharacterInventory.cs" />
@@ -139,7 +139,6 @@
     <Compile Include="GameObjects\ContinentMan.cs" />
     <Compile Include="GameObjects\DataLoading\DataProvider.cs" />
     <Compile Include="GameObjects\DataLoading\QuizData.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillData.cs" />
     <Compile Include="GameObjects\Door.cs" />
     <Compile Include="GameObjects\Drop.cs" />
     <Compile Include="GameObjects\DataLoading\DropData.cs" />
@@ -183,8 +182,6 @@
     <Compile Include="GameObjects\Scripting.cs" />
     <Compile Include="GameObjects\DataLoading\Seat.cs" />
     <Compile Include="GameObjects\DataLoading\ShopItemData.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillElement.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillLevelData.cs" />
     <Compile Include="GameObjects\Summon.cs" />
     <Compile Include="GameObjects\SummonPool.cs" />
     <Compile Include="GameObjects\Trade.cs" />
@@ -198,7 +195,6 @@
     <Compile Include="Handlers\MessengerHandler.cs" />
     <Compile Include="Handlers\PartyHandler.cs" />
     <Compile Include="Packets\AdminPacket.cs" />
-    <Compile Include="Packets\AttackData.cs" />
     <Compile Include="Packets\AttackPacket.cs" />
     <Compile Include="Packets\BuffPacket.cs" />
     <Compile Include="Packets\CashPacket.cs" />
@@ -278,10 +274,6 @@
     <ProjectReference Include="..\WvsBeta.ReNX\trunk\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WvsBeta.SharedDataProvider\WvsBeta.SharedDataProvider.csproj">
-      <Project>{dd563e87-6146-4dc4-a6a2-affa12514bfd}</Project>
-      <Name>WvsBeta.SharedDataProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -44,7 +44,7 @@ namespace WvsBeta.Game
             this.ByUser = ByUser;
         }
 
-        public bool CanTakeDrop(Character chr)
+        public bool CanTakeDrop(GameCharacter chr)
         {
             if (Server.Instance.InMigration) return false;
 
@@ -72,7 +72,7 @@ namespace WvsBeta.Game
         {
             var Result = false;
 
-            if (Object is Character User && User.PrimaryStats.HP > 0 && User.MapID == Field.ID)
+            if (Object is GameCharacter User && User.PrimaryStats.HP > 0 && User.MapID == Field.ID)
             {
                 if (ShowMax > 0)
                 {

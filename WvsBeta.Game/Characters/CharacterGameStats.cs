@@ -2,7 +2,7 @@
 {
     public class CharacterGameStats
     {
-        public Character mCharacter { get; set; }
+        public GameCharacter mCharacter { get; set; }
 
         public int OmokWins { get; set; }
         public int OmokTies { get; set; }
@@ -12,7 +12,7 @@
         public int MatchCardTies { get; set; }
         public int MatchCardLosses { get; set; }
 
-        public CharacterGameStats(Character pCharacter)
+        public CharacterGameStats(GameCharacter pCharacter)
         {
             mCharacter = pCharacter;
         }

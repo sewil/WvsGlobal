@@ -7,11 +7,12 @@ using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
-    public partial class Character : CharacterBase, IFieldObj
+    public partial class GameCharacter : CharacterBase, IFieldObj
     {
         private static ILog _characterLog = LogManager.GetLogger("CharacterLog");
 
@@ -40,7 +41,6 @@ namespace WvsBeta.Game
 
         public Map Field { get; set; }
         public override int MapID => Field.ID;
-        public byte MapPosition { get; set; }
         public byte PortalCount { get; set; } = 0;
 
         public bool GMHideEnabled { get; private set; }
@@ -51,18 +51,17 @@ namespace WvsBeta.Game
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
 
-        public CharacterInventory Inventory { get; private set; }
-        public CharacterSkills Skills { get; private set; }
+        public override BaseCharacterInventory Inventory { get; set; }
+        public override BaseCharacterSkills Skills { get => base.Skills; protected set => base.Skills = value; }
         public CharacterBuffs Buffs { get; private set; }
-        public CharacterPrimaryStats PrimaryStats { get; private set; }
+        public override BaseCharacterPrimaryStats PrimaryStats { get => base.PrimaryStats; protected set => base.PrimaryStats = value; }
         public Rand32 CalcDamageRandomizer { get; private set; }
         public Rand32 RndActionRandomizer { get; private set; }
         public CharacterSummons Summons { get; private set; }
         public CharacterStorage Storage { get; private set; }
-        public CharacterQuests Quests { get; private set; }
+        public override BaseCharacterQuests Quests { get; protected set; }
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
-        public long PetCashId { get; set; }
         public long PetLastInteraction { get; set; }
 
         public Ring pRing { get; set; }
@@ -102,7 +101,7 @@ namespace WvsBeta.Game
         public long tLastDoor = 0;
 
 
-        public Character(int CharacterID)
+        public GameCharacter(int CharacterID)
         {
             ID = CharacterID;
         }
@@ -201,7 +200,7 @@ namespace WvsBeta.Game
         {
             if (GMHideEnabled)
             {
-                var player = Object as Character;
+                var player = Object as GameCharacter;
                 if (player != null && player.IsGM) return true;
                 return false;
             }
@@ -583,39 +582,6 @@ namespace WvsBeta.Game
             ThreadContext.Properties.Remove("CharacterID");
             ThreadContext.Properties.Remove("CharacterName");
             ThreadContext.Properties.Remove("MapID");
-        }
-
-        public GW_CharacterStat ToGWStat()
-        {
-            return new GW_CharacterStat
-            {
-                ID = ID,
-                Name = Name,
-                Gender = Gender,
-                Skin = Skin,
-                Face = Face,
-                Hair = Hair,
-
-                PetCashId = PetCashId,
-
-                Level = Level,
-                Job = Job,
-                Str = PrimaryStats.Str,
-                Dex = PrimaryStats.Dex,
-                Int = PrimaryStats.Int,
-                Luk = PrimaryStats.Luk,
-                HP = PrimaryStats.HP,
-                MaxHP = PrimaryStats.GetMaxHP(true),
-                MP = PrimaryStats.MP,
-                MaxMP = PrimaryStats.GetMaxMP(true),
-                AP = PrimaryStats.AP,
-                SP = PrimaryStats.SP,
-                EXP = PrimaryStats.EXP,
-                Fame = PrimaryStats.Fame,
-                
-                MapID = MapID,
-                MapPosition = MapPosition
-        };
         }
     }
 }

@@ -1,15 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MySql.Data.MySqlClient;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
 {
-    public class QuestData
-    {
-        public int ID { get; set; }
-        public int QuestID { get; set; }
-        public string Data { get; set; }
-    }
 
     public class QuestMobData
     {
@@ -19,18 +15,17 @@ namespace WvsBeta.Game
         public int Needed { get; set; }
     }
 
-    public class CharacterQuests
+    public class CharacterQuests : BaseCharacterQuests
     {
-        private Character Character { get; set; }
-        public Dictionary<int, QuestData> Quests { get; } = new Dictionary<int, QuestData>();
+        private GameCharacter Character { get; set; }
         public List<QuestMobData> QuestMobs { get; } = new List<QuestMobData>();
 
-        public CharacterQuests(Character character)
+        public CharacterQuests(GameCharacter character)
         {
             Character = character;
         }
 
-        public void SaveQuests()
+        public override void SaveQuests()
         {
             int id = Character.ID;
             string query = "";
@@ -69,7 +64,7 @@ namespace WvsBeta.Game
             Server.Instance.CharacterDatabase.RunQuery(query);
         }
 
-        public bool LoadQuests()
+        public override bool LoadQuests()
         {
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
                     "SELECT * FROM character_quests WHERE charid = @charid",
@@ -159,11 +154,6 @@ namespace WvsBeta.Game
 
             var questDataId = qd.ID;
             return QuestMobs.Exists(x => x.QuestDataId == questDataId && x.MobID == MobID);
-        }
-
-        public bool HasQuest(int QuestID)
-        {
-            return Quests.ContainsKey(QuestID);
         }
 
         public string GetQuestData(int QuestID)

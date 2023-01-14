@@ -5,9 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using WvsBeta.Database;
-using WvsBeta.Game;
 
-namespace WvsBeta.SharedDataProvider
+namespace WvsBeta.Common.Objects
 {
     public static class SplitDBInventory
     {

@@ -1,24 +1,26 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Game
+namespace WvsBeta.Common.Objects
 {
+    public enum ItemType
+    {
+        Bundle = 0,
+        Equip = 1,
+        Pet = 5,
+    }
     public abstract class BaseItem
     {
-        public enum ItemType
-        {
-            Bundle = 0,
-            Equip = 1,
-            Pet = 5,
-        }
         public int ItemID { get; set; } = 0;
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
         public long Expiration { get; set; } = NoItemExpiration;
         public bool AlreadyInDatabase { get; set; } = false;
+        public ItemType ItemType { get { return GetItemType(ItemID);  } }
 
         public const long NoItemExpiration = 150842304000000000L;
 
@@ -54,7 +56,7 @@ namespace WvsBeta.Game
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-        static ItemType GetItemType(int itemId)
+        public static ItemType GetItemType(int itemId)
         {
             return (ItemType)(itemId / 1000000);
         }
@@ -199,35 +201,8 @@ namespace WvsBeta.Game
 
             return item;
         }
-        public virtual void Encode(Packet packet, bool shortSlot)
+        public virtual void Encode(Packet packet)
         {
-            if (InventorySlot != 0)
-            {
-                if (shortSlot)
-                {
-                    packet.WriteShort(InventorySlot);
-                }
-                else
-                {
-                    short slot = Math.Abs(InventorySlot);
-                    if (slot > 100) slot -= 100;
-                    packet.WriteByte((byte)slot);
-                }
-            }
-            var itemType = GetItemType(ItemID);
-            if (itemType == ItemType.Equip)
-            {
-                packet.WriteByte(1);
-            }
-            else if (itemType == ItemType.Pet)
-            {
-                packet.WriteByte(3);
-            }
-            else
-            {
-                packet.WriteByte(2);
-            }
-
             packet.WriteInt(ItemID);
             packet.WriteBool(CashId != 0);
             if (CashId != 0)
@@ -263,10 +238,9 @@ namespace WvsBeta.Game
             Amount = data.GetInt16("amount");
         }
 
-
-        public override void Encode(Packet packet, bool shortSlot)
+        public override void Encode(Packet packet)
         {
-            base.Encode(packet, shortSlot);
+            base.Encode(packet);
             packet.WriteShort(Amount);
             packet.WriteString(""); // Creator name?
         }
@@ -418,9 +392,9 @@ namespace WvsBeta.Game
             Jump = data.GetInt16("ijump");
         }
 
-        public override void Encode(Packet packet, bool shortSlot)
+        public override void Encode(Packet packet)
         {
-            base.Encode(packet, shortSlot);
+            base.Encode(packet);
 
             packet.WriteByte(Slots);
             packet.WriteByte(Scrolls);
@@ -601,9 +575,9 @@ namespace WvsBeta.Game
             DeadDate = data.GetInt64("deaddate");
         }
 
-        public override void Encode(Packet packet, bool shortSlot)
+        public override void Encode(Packet packet)
         {
-            base.Encode(packet, shortSlot);
+            base.Encode(packet);
 
             packet.WriteString(Name, 13);
             packet.WriteByte(Level);

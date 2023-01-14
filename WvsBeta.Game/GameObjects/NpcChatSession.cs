@@ -17,7 +17,7 @@ namespace WvsBeta.Game
     public class NpcChatSession : IHost
     {
         public int mID { get; set; }
-        public Character mCharacter { get; set; }
+        public GameCharacter mCharacter { get; set; }
         private INpcScript _compiledScript = null;
 
         private List<NpcUsedLines> mLines { get; set; } = new List<NpcUsedLines>();
@@ -28,19 +28,19 @@ namespace WvsBeta.Game
         public byte mRealState { get; set; }
         public bool WaitingForResponse { get; set; }
 
-        public NpcChatSession(int id, Character chr)
+        public NpcChatSession(int id, GameCharacter chr)
         {
             mID = id;
             mCharacter = chr;
             mCharacter.NpcSession = this;
         }
         
-        public static void Start(int npcId, string script, Character chr, Action<string> errorHandlerFnc)
+        public static void Start(int npcId, string script, GameCharacter chr, Action<string> errorHandlerFnc)
         {
             Start(npcId, Server.Instance.TryGetOrCompileScript(script, errorHandlerFnc), chr);
         }
         
-        public static void Start(int npcId, INpcScript NPC, Character chr)
+        public static void Start(int npcId, INpcScript NPC, GameCharacter chr)
         {
             if (NPC == null) return;
 

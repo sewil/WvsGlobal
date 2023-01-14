@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
@@ -10,7 +11,7 @@ namespace WvsBeta.Game
 {
     public static class SkillPacket
     {
-        public static void HandleUseSkill(Character chr, Packet packet)
+        public static void HandleUseSkill(GameCharacter chr, Packet packet)
         {
             if (chr.PrimaryStats.HP == 0)
             {
@@ -74,7 +75,7 @@ namespace WvsBeta.Game
 
             short skillDelay = 0;
 
-            IEnumerable<Character> getCharactersForPartyBuff(byte Flags, bool deadPlayersToo = false)
+            IEnumerable<GameCharacter> getCharactersForPartyBuff(byte Flags, bool deadPlayersToo = false)
             {
                 if (chr.PartyID == 0) yield break;
 
@@ -98,12 +99,12 @@ namespace WvsBeta.Game
                 }
             }
 
-            void handlePartyEffects(byte Flags, short Delay, bool deadPlayersToo = false, Action<Character> additionalEffects = null)
+            void handlePartyEffects(byte Flags, short Delay, bool deadPlayersToo = false, Action<GameCharacter> additionalEffects = null)
             {
                 handlePartyEffectsWithPlayers(getCharactersForPartyBuff(Flags, deadPlayersToo), Delay, additionalEffects);
             }
 
-            void handlePartyEffectsWithPlayers(IEnumerable<Character> characters, short Delay, Action<Character> additionalEffects = null)
+            void handlePartyEffectsWithPlayers(IEnumerable<GameCharacter> characters, short Delay, Action<GameCharacter> additionalEffects = null)
             {
                 foreach (var character in characters)
                 {
@@ -146,7 +147,7 @@ namespace WvsBeta.Game
                 mobs.ForEach(x => func(x, delay));
             }
 
-            IEnumerable<Character> getFullMapPlayersForGMSkill()
+            IEnumerable<GameCharacter> getFullMapPlayersForGMSkill()
             {
                 return field.Characters.Where(victim =>
                 {
@@ -489,7 +490,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void StopSkill(Character chr, int skillid)
+        private static void StopSkill(GameCharacter chr, int skillid)
         {
             if (chr.PrimaryStats.HasBuff(skillid) == false) return;
 
@@ -503,13 +504,13 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleStopSkill(Character chr, Packet packet)
+        public static void HandleStopSkill(GameCharacter chr, Packet packet)
         {
             var skillid = packet.ReadInt();
             StopSkill(chr, skillid);
         }
 
-        public static void HandleAddSkillLevel(Character chr, Packet packet)
+        public static void HandleAddSkillLevel(GameCharacter chr, Packet packet)
         {
             var SkillID = packet.ReadInt(); // Todo, add check.
 
@@ -567,7 +568,7 @@ namespace WvsBeta.Game
             chr.AddSP(-1);
         }
 
-        public static void SendAddSkillPoint(Character chr, int skillid, byte level)
+        public static void SendAddSkillPoint(GameCharacter chr, int skillid, byte level)
         {
             var pw = new Packet(ServerMessages.CHANGE_SKILL_RECORD_RESULT);
             pw.WriteByte(0x01);
@@ -579,7 +580,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendSetSkillPoints(Character chr, Dictionary<int, byte> skills)
+        public static void SendSetSkillPoints(GameCharacter chr, Dictionary<int, byte> skills)
         {
             var pw = new Packet(ServerMessages.CHANGE_SKILL_RECORD_RESULT);
             pw.WriteByte(0x01);
@@ -594,7 +595,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void HandlePrepareSkill(Character chr, Packet pw)
+        public static void HandlePrepareSkill(GameCharacter chr, Packet pw)
         {
             var SkillID = pw.ReadInt();
             var SLV = pw.ReadByte();
@@ -603,7 +604,7 @@ namespace WvsBeta.Game
             BroadcastSkillPrepare(chr, SkillID, SLV, Action, ActionSpeed);
         }
 
-        public static void BroadcastSkillPrepare(Character chr, int skillId, byte slv, byte action, byte actionspeed)
+        public static void BroadcastSkillPrepare(GameCharacter chr, int skillId, byte slv, byte action, byte actionspeed)
         {
             var pw = new Packet(ServerMessages.PREPARE_SKILL);
             pw.WriteInt(chr.ID);

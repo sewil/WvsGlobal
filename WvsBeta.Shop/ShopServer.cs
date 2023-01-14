@@ -9,7 +9,8 @@ using System.Windows.Forms;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Character;
 
 namespace WvsBeta.Shop
 {

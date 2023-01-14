@@ -5,7 +5,7 @@ using WvsBeta.Common;
 
 namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         private static ILog _levelLog = LogManager.GetLogger("LevelLog");
 
@@ -75,7 +75,7 @@ namespace WvsBeta.Game
             ModifiedHP();
         }
 
-        public void DamageHP(short amount) => ModifyHP((short)-amount);
+        public override void DamageHP(short amount) => ModifyHP((short)-amount);
 
         public void ModifiedHP()
         {
@@ -399,7 +399,7 @@ namespace WvsBeta.Game
             return mesosDiff;
         }
 
-        public void AddMaplePoints(int value, Character chr)
+        public void AddMaplePoints(int value, GameCharacter chr)
         {
             throw new NotImplementedException();
         }
@@ -742,7 +742,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void OnVarset(Character Sent, string Var, object Value, object Value2 = null, object Value3 = null)
+        public void OnVarset(GameCharacter Sent, string Var, object Value, object Value2 = null, object Value3 = null)
         {
             if (this != Sent && Sent.IsGM && !Sent.IsAdmin) //Todo Admin levels
             {

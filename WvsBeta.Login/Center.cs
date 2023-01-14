@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Login
@@ -13,7 +14,7 @@ namespace WvsBeta.Login
         public bool BlockCharacterCreation { get; set; }
         public bool AdultWorld { get; set; }
         public string Name { get; set; }
-        public World.Ribbon Ribbon { get; set; }
+        public WorldRibbon Ribbon { get; set; }
         public string Message { get; set; }
 
         public int[] UserNo { get; set; }

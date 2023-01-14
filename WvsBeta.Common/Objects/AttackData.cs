@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using WvsBeta.Common;
 
-namespace WvsBeta.Game
+namespace WvsBeta.Common.Objects
 {
     public class AttackData
     {

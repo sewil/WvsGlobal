@@ -1,14 +1,16 @@
 ﻿using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects.Stats;
 
 namespace WvsBeta.Game
 {
     public class CharacterBuffs
     {
-        public Character Character { get; set; }
+        public GameCharacter Character { get; set; }
         public byte mComboCount { get; set; }
 
-        public CharacterBuffs(Character chr)
+        public CharacterBuffs(GameCharacter chr)
         {
             Character = chr;
         }
@@ -56,19 +58,19 @@ namespace WvsBeta.Game
 
             BuffValueTypes removed = 0;
 
-            if (data.Cures.HasFlag(ItemData.CureFlags.Weakness))
+            if (data.Cures.HasFlag(CureFlag.Weakness))
                 removed |= ps.BuffWeakness.Reset();
 
-            if (data.Cures.HasFlag(ItemData.CureFlags.Poison))
+            if (data.Cures.HasFlag(CureFlag.Poison))
                 removed |= ps.BuffPoison.Reset();
 
-            if (data.Cures.HasFlag(ItemData.CureFlags.Curse))
+            if (data.Cures.HasFlag(CureFlag.Curse))
                 removed |= ps.BuffCurse.Reset();
 
-            if (data.Cures.HasFlag(ItemData.CureFlags.Darkness))
+            if (data.Cures.HasFlag(CureFlag.Darkness))
                 removed |= ps.BuffDarkness.Reset();
 
-            if (data.Cures.HasFlag(ItemData.CureFlags.Seal))
+            if (data.Cures.HasFlag(CureFlag.Seal))
                 removed |= ps.BuffSeal.Reset();
 
             FinalizeDebuff(removed);

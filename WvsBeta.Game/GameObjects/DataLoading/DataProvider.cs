@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
+using WvsBeta.Common.DataProviders;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
 
@@ -22,7 +25,6 @@ namespace WvsBeta.Game
         public static IDictionary<int, NPCData> NPCs { get; private set; }
         public static IDictionary<int, MobData> Mobs { get; private set; }
         public static List<int> Jobs { get; private set; }
-        public static IDictionary<int, SkillData> Skills { get; private set; }
         public static IDictionary<byte, Dictionary<byte, MobSkillLevelData>> MobSkills { get; private set; }
         public static IDictionary<string, DropData[]> Drops { get; private set; }
         public static IDictionary<int, Questdata> Quests { get; private set; }

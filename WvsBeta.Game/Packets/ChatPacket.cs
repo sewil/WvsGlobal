@@ -79,7 +79,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static bool ShowMuteMessage(Character chr)
+        public static bool ShowMuteMessage(GameCharacter chr)
         {
             chr.LastChat = MasterThread.CurrentTime;
 
@@ -91,7 +91,7 @@ namespace WvsBeta.Game
             return false;
         }
 
-        public static void HandleChat(Character chr, Packet packet)
+        public static void HandleChat(GameCharacter chr, Packet packet)
         {
             string what = packet.ReadString();
 
@@ -120,7 +120,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleSpecialChat(Character chr, Packet packet)
+        public static void HandleSpecialChat(GameCharacter chr, Packet packet)
         {
             if (!chr.Field.ChatEnabled) return;
 
@@ -163,14 +163,14 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleCommand(Character chr, Packet packet)
+        public static void HandleCommand(GameCharacter chr, Packet packet)
         {
             if (!chr.Field.ChatEnabled) return;
 
             byte type = packet.ReadByte();
             string victim = packet.ReadString();
 
-            Character victimChar = Server.Instance.GetCharacter(victim);
+            GameCharacter victimChar = Server.Instance.GetCharacter(victim);
 
             // Block find or whisper
             if (victimChar != null && (victimChar.IsGM && !chr.IsGM))
@@ -254,7 +254,7 @@ namespace WvsBeta.Game
                 kvp.Value.SendPacket(pw);
         }
 
-        public static void SendText(MessageTypes type, string what, Character victim, MessageMode mode)
+        public static void SendText(MessageTypes type, string what, GameCharacter victim, MessageMode mode)
         {
             if (type == MessageTypes.SuperMegaphone)
                 return;
@@ -309,7 +309,7 @@ namespace WvsBeta.Game
             map.SendPacket(pw);
         }
 
-        public static void SendAdminWarning(Character victim, string what)
+        public static void SendAdminWarning(GameCharacter victim, string what)
         {
             log.Info("[ADMIN WARNING][" + victim.ID + "] " + what);
             Packet pw = new Packet(ServerMessages.WARN_MESSAGE);
@@ -318,7 +318,7 @@ namespace WvsBeta.Game
         }
         
 
-        public static void SendNotice(string what, Character victim)
+        public static void SendNotice(string what, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte((byte)MessageTypes.Notice);
@@ -358,7 +358,7 @@ namespace WvsBeta.Game
             DataProvider.Maps[mapid].SendPacket(pw);
         }
 
-        public static void SendAdminMessage(Character chr, string what, byte Type, byte to)
+        public static void SendAdminMessage(GameCharacter chr, string what, byte Type, byte to)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte(Type);
@@ -384,7 +384,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void Whisper(Character victim, string who, byte channel, string message, byte msgDirection)
+        public static void Whisper(GameCharacter victim, string who, byte channel, string message, byte msgDirection)
         {
             Packet pw = new Packet(ServerMessages.WHISPER);
             pw.WriteByte(msgDirection);
@@ -394,7 +394,7 @@ namespace WvsBeta.Game
             victim.SendPacket(pw);
         }
 
-        public static void Find(Character victim, string who, int map, sbyte dunno, bool isChannel)
+        public static void Find(GameCharacter victim, string who, int map, sbyte dunno, bool isChannel)
         {
             Packet pw = new Packet(ServerMessages.WHISPER);
             

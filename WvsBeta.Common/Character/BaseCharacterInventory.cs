@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
-using WvsBeta.Game;
 
-namespace WvsBeta.SharedDataProvider
+namespace WvsBeta.Common.Character
 {
     public abstract class BaseCharacterInventory
     {
@@ -20,7 +22,8 @@ namespace WvsBeta.SharedDataProvider
             new EquipItem[19],
             new EquipItem[120] // Pet equips
         };
-
+        public int ChocoCount { get; protected set; }
+        public int ActiveItemID { get; protected set; }
         // All inventories
         public BaseItem[][] Items { get; } = new BaseItem[5][];
 
@@ -42,9 +45,60 @@ namespace WvsBeta.SharedDataProvider
             CharacterID = characterId;
             _cashItems = new CharacterCashItems(UserID, CharacterID);
         }
+        public virtual BaseItem TakeItemAmountFromSlot(byte inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
+        public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
+        public int GetTotalMAttInEquips()
+        {
+            return Equips[0]
+                .Where(i => i != null)
+                .Sum(item => item.Matk);
+        }
+
+        public int GetTotalAccInEquips()
+        {
+            return Equips[0]
+                .Where(i => i != null)
+                .Sum(item => item.Acc);
+        }
+
+        public short GetOpenSlotsInInventory(byte inventory)
+        {
+            short amount = 0;
+            for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
+            {
+                if (GetItem(inventory, i) == null)
+                    amount++;
+            }
+            return amount;
+        }
+        public virtual int ItemAmountAvailable(int itemid) { throw new NotImplementedException(); }
+        public virtual int TakeItem(int itemid, int amount) { throw new NotImplementedException(); }
+        public virtual bool HasSlotsFreeForItem(int itemid, short amount, bool stackable) { throw new NotImplementedException(); }
+        public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
+        public virtual void SetItem(byte inventory, short slot, BaseItem item) { throw new NotImplementedException(); }
+        public virtual short GetNextFreeSlotInInventory(byte inventory) { throw new NotImplementedException(); }
+        public virtual short DeleteFirstItemInInventory(int inv) { throw new NotImplementedException(); }
+        public virtual void CheckExpired() { throw new NotImplementedException(); }
+
+        public int GetItemAmount(int itemid)
+        {
+            int amount = 0;
+            BaseItem temp = null;
 
 
-        protected void LoadInventory()
+            for (byte inventory = 1; inventory <= 5; inventory++)
+            {
+                for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
+                { // Slot 1 - 24, not 0 - 23
+                    temp = GetItem(inventory, i);
+                    if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
+                }
+            }
+
+            return amount;
+        }
+
+        public void LoadInventory()
         {
             using (var data = Connection.RunQuery("SELECT mesos, equip_slots, use_slots, setup_slots, etc_slots, cash_slots FROM characters WHERE id = " + CharacterID) as MySqlDataReader)
             {
@@ -127,7 +181,7 @@ namespace WvsBeta.SharedDataProvider
         }
 
 
-        protected void SaveInventory(MySQL_Connection.LogAction dbgCallback = null)
+        public void SaveInventory(MySQL_Connection.LogAction dbgCallback = null)
         {
 
             string query = "UPDATE characters SET " +
@@ -259,6 +313,8 @@ namespace WvsBeta.SharedDataProvider
                 Items[inventory - 1][slot] = item;
             }
         }
+
+        public virtual short AddItem2(BaseItem item, bool sendpacket = true) { throw new NotImplementedException(); }
 
         public virtual void RemoveItem(BaseItem item)
         {
@@ -406,20 +462,29 @@ namespace WvsBeta.SharedDataProvider
                 packet.WriteInt(Mesos);
             }
 
+            if (flags.HasFlag(CharacterDataFlag.Items))
+            {
+                for (int i = 0; i < 5; i++)
+                {
+                    if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << i)) == false) continue;
+                    packet.WriteByte(MaxSlots[i]);
+                }
+            }
+
             if (flags.HasFlag(CharacterDataFlag.Equips))
             {
                 foreach (var item in Equips[0])
                 {
                     if (item == null) continue;
-                    item.Encode(packet, false);
+                    new GW_ItemSlotBase(item).Encode(packet, false);
                 }
+                
                 packet.WriteByte(0);
-
 
                 foreach (var item in Equips[1])
                 {
                     if (item == null) continue;
-                    item.Encode(packet, false);
+                    new GW_ItemSlotBase(item).Encode(packet, false);
                 }
                 packet.WriteByte(0);
             }
@@ -428,13 +493,11 @@ namespace WvsBeta.SharedDataProvider
             for (var i = 0; i < 5; i++)
             {
                 if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << i)) == false) continue;
-
-                packet.WriteByte(MaxSlots[i]);
                 foreach (var item in Items[i])
                 {
                     if (item != null && item.InventorySlot > 0)
                     {
-                        item.Encode(packet, false);
+                        new GW_ItemSlotBase(item).Encode(packet, false);
                     }
                 }
                 packet.WriteByte(0);
@@ -476,5 +539,9 @@ namespace WvsBeta.SharedDataProvider
         {
             return Items[4].Where(x => x != null && Constants.isPet(x.ItemID)).Select(x => x as PetItem);
         }
+
+        public virtual int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => throw new NotImplementedException();
+
+        public virtual int GetEquippedItemId(short slot, bool cash) { throw new NotImplementedException(); }
     }
 }

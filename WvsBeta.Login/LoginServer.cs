@@ -10,6 +10,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using System.Linq;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Login
 {
@@ -246,7 +247,7 @@ namespace WvsBeta.Login
                     BlockCharacterCreation = worldConfig["BlockCharCreation"]?.GetBool() ?? false,
                     State = worldConfig["worldState"]?.GetByte() ?? 0,
                     Name = worldConfig.Name,
-                    Ribbon = (World.Ribbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
+                    Ribbon = (WorldRibbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
                     Message = worldConfig["worldMessage"]?.GetString() ?? "",
                 };
                 center.UserNo = new int[center.Channels];

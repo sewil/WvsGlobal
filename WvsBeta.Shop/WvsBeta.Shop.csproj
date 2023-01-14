@@ -155,6 +155,10 @@
       <Project>{7E353D6F-0493-4FB9-982C-358ACC42B418}</Project>
       <Name>WvsBeta.Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\WvsBeta.Game\WvsBeta.Game.csproj">
+      <Project>{9aad2566-35dd-481e-b87c-a8cd7d80be9e}</Project>
+      <Name>WvsBeta.Game</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WvsBeta.Logger\WvsBeta.Logger.csproj">
       <Project>{5BC0C38A-D121-42C1-B2EF-888477C6D8FA}</Project>
       <Name>WvsBeta.Logger</Name>
@@ -166,10 +170,6 @@
     <ProjectReference Include="..\WvsBeta.ReNX\trunk\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WvsBeta.SharedDataProvider\WvsBeta.SharedDataProvider.csproj">
-      <Project>{dd563e87-6146-4dc4-a6a2-affa12514bfd}</Project>
-      <Name>WvsBeta.SharedDataProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

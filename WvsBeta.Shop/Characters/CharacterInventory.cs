@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Shop
 {

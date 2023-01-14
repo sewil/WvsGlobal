@@ -31,7 +31,7 @@ namespace WvsBeta.Game.GameObjects
             }
         }
 
-        public void ShowAllSummonsTo(Character chr)
+        public void ShowAllSummonsTo(GameCharacter chr)
         {
             foreach (var summon in Summons)
                 chr.SendPacket(MapPacket.ShowSummon(summon, 0));

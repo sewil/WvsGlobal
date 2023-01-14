@@ -1,4 +1,4 @@
-namespace WvsBeta.Game
+namespace WvsBeta.Common.Enums
 {
     public enum SkillElement : byte
     {

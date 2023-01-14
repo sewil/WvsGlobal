@@ -5,7 +5,7 @@ namespace WvsBeta.Game
 {
     public static class PlayerShopPackets
     {
-        public static void OpenPlayerShop(Character pOwner, MiniRoomBase mrb)
+        public static void OpenPlayerShop(GameCharacter pOwner, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -14,7 +14,7 @@ namespace WvsBeta.Game
             pw.WriteBool(mrb.Users[0] == pOwner ? false : true); //owner 
             for (byte i = 0; i < 4; i++)
             {
-                Character pUser = mrb.Users[i];
+                GameCharacter pUser = mrb.Users[i];
                 if (pUser != null)
                 {
                     pw.WriteByte(i);
@@ -29,7 +29,7 @@ namespace WvsBeta.Game
             pOwner.SendPacket(pw);
         }
 
-        public static void AddPlayer(Character pCharacter, Character pTo)
+        public static void AddPlayer(GameCharacter pCharacter, GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
@@ -39,7 +39,7 @@ namespace WvsBeta.Game
             pTo.SendPacket(pw);
         }
 
-        public static void RemovePlayer(Character pCharacter, MiniRoomBase mrb)
+        public static void RemovePlayer(GameCharacter pCharacter, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(10);
@@ -47,7 +47,7 @@ namespace WvsBeta.Game
             mrb.BroadcastPacket(pw, pCharacter);
         }
 
-        public static void CloseShop(Character pCharacter, byte error)
+        public static void CloseShop(GameCharacter pCharacter, byte error)
         {
             //2 : The shop is closed. 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -57,7 +57,7 @@ namespace WvsBeta.Game
             pCharacter.SendPacket(pw);
         }
 
-        public static void PersonalShopRefresh(Character pCharacter, PlayerShop ps)
+        public static void PersonalShopRefresh(GameCharacter pCharacter, PlayerShop ps)
         {
 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -69,12 +69,12 @@ namespace WvsBeta.Game
                 pw.WriteShort(pst.Value.BundleAmount);
                 pw.WriteInt(pst.Value.Price);
                 pw.WriteByte(WvsBeta.Common.Constants.getItemTypeInPacket(pst.Value.sItem.ItemID));
-                pst.Value.sItem.Encode(pw, false);
+                pst.Value.sItem.Encode(pw);
             }
             ps.BroadcastPacket(pw);
         }
 
-        public static void OnItemResult(Character pCharacter, byte msg)
+        public static void OnItemResult(GameCharacter pCharacter, byte msg)
         {
             //1 : You do not have enough in stock. 
             //2 : You have not enough mesos  o.o
@@ -87,7 +87,7 @@ namespace WvsBeta.Game
             pCharacter.SendPacket(pw);
         }
 
-        public static void MoveItemToInventory(Character pCharacter, byte amount, short slot2)
+        public static void MoveItemToInventory(GameCharacter pCharacter, byte amount, short slot2)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x17);
@@ -96,7 +96,7 @@ namespace WvsBeta.Game
             pCharacter.SendPacket(pw);
         }
 
-        public static void SoldItemResult(Character pCharacter, Character pBuyer, byte slot, short amount)
+        public static void SoldItemResult(GameCharacter pCharacter, GameCharacter pBuyer, byte slot, short amount)
         {
             //Shows the information on who has bought an item.
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);

@@ -1,21 +1,22 @@
-﻿using WvsBeta.Common.Objects;
+﻿using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login.Packets
 {
     internal struct CheckUserLimitPacket
     {
-        public readonly World.Warning warning;
-        public readonly World.Marker marker;
-        public CheckUserLimitPacket(World.Warning warning, World.Marker marker)
+        public readonly WorldWarning warning;
+        public readonly WorldMarker marker;
+        public CheckUserLimitPacket(WorldWarning warning, WorldMarker marker)
         {
             this.warning = warning;
             this.marker = marker;
         }
         public CheckUserLimitPacket(Packet packet)
         {
-            warning = (World.Warning)packet.ReadByte();
-            marker = (World.Marker)packet.ReadByte();
+            warning = (WorldWarning)packet.ReadByte();
+            marker = (WorldMarker)packet.ReadByte();
         }
         public Packet Encode()
         {

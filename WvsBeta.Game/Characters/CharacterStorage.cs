@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
 {
     public class CharacterStorage
     {
-        public Character Character { get; set; }
+        public GameCharacter Character { get; set; }
         private BaseItem[][] _items { get; set; }
 
         public byte MaxSlots { get; set; }
@@ -17,7 +17,7 @@ namespace WvsBeta.Game
         public int Mesos { get; set; }
 
 
-        public CharacterStorage(Character chr)
+        public CharacterStorage(GameCharacter chr)
         {
             Character = chr;
         }

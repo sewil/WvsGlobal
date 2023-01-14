@@ -4,8 +4,7 @@ using System;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Shop
 {

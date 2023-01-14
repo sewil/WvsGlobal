@@ -14,7 +14,7 @@ namespace WvsBeta.Game.Handlers.Commands
             Aliases = new[] { "m", "goto" }, 
             UserRanks = UserAdminLevels.AdminGmIntern | UserAdminLevels.Tespian
         )]
-        public static bool HandleMapCommand(Character character,  string initialCommand, CommandHandling.CommandArgs Args)
+        public static bool HandleMapCommand(GameCharacter character,  string initialCommand, CommandHandling.CommandArgs Args)
         {
             if (Args.Count <= 0) return true;
 
@@ -55,7 +55,7 @@ namespace WvsBeta.Game.Handlers.Commands
             Aliases = new[] { "whatmap", "pos" },
             UserRanks = UserAdminLevels.AdminGmIntern | UserAdminLevels.Tespian
         )]
-        public static bool HandleCommandWhereAmI(Character character, string initialCommand, CommandHandling.CommandArgs Args)
+        public static bool HandleCommandWhereAmI(GameCharacter character, string initialCommand, CommandHandling.CommandArgs Args)
         {
             ShowInfo($"You are on mapid {character.MapID}, X {character.Position.X}, Y {character.Position.Y}, FH {character.Foothold}");
             return true;
@@ -66,7 +66,7 @@ namespace WvsBeta.Game.Handlers.Commands
             Aliases = new[] {"c", "warpto"},
             UserRanks = UserAdminLevels.Tespian | UserAdminLevels.AdminGmIntern
         )]
-        public static bool HandleCommandChase(Character character, string initialCommand,
+        public static bool HandleCommandChase(GameCharacter character, string initialCommand,
             CommandHandling.CommandArgs Args)
         {
             if (Args.Count > 0)
@@ -98,7 +98,7 @@ namespace WvsBeta.Game.Handlers.Commands
             Aliases = new[] { "warphere" },
             UserRanks = UserAdminLevels.Tespian | UserAdminLevels.AdminGmIntern
         )]
-        public static bool HandleCommandChaseHere(Character character, string initialCommand,
+        public static bool HandleCommandChaseHere(GameCharacter character, string initialCommand,
             CommandHandling.CommandArgs Args)
         {
             if (Args.Count > 0)

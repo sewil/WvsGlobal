@@ -26,7 +26,7 @@ namespace WvsBeta.Game
             Equipped = equipped;
         }
 
-        public static void LoadRings(Character chr)
+        public static void LoadRings(GameCharacter chr)
         {
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
                 "SELECT * FROM rings WHERE charid = @charid",

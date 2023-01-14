@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects
@@ -55,7 +56,7 @@ namespace WvsBeta.Game.GameObjects
             return currentIndex / 2;
         }
 
-        public void OnStart(Character character, GameKindEnum gameKind)
+        public void OnStart(GameCharacter character, GameKindEnum gameKind)
         {
             if (CurrentRound != -1) return;
             if (PrizeSet /*&& Characters.Count >= 25*/)
@@ -108,7 +109,7 @@ namespace WvsBeta.Game.GameObjects
             }
         }
 
-        public void SendAvatarInfo(Character toCharacter)
+        public void SendAvatarInfo(GameCharacter toCharacter)
         {
             var packet = new Packet(ServerMessages.TOURNAMENT_AVATAR_INFO);
             for (var i = 0; i < SLOTS; i++)
@@ -268,7 +269,7 @@ namespace WvsBeta.Game.GameObjects
             MatchGoingOn--;
         }
 
-        public override bool FilterAdminCommand(Character character, CommandHandling.CommandArgs command)
+        public override bool FilterAdminCommand(GameCharacter character, CommandHandling.CommandArgs command)
         {
             switch (command.Command)
             {
@@ -381,7 +382,7 @@ namespace WvsBeta.Game.GameObjects
             return false;
         }
 
-        public override bool HandlePacket(Character character, Packet packet, ClientMessages opcode)
+        public override bool HandlePacket(GameCharacter character, Packet packet, ClientMessages opcode)
         {
             switch (opcode)
             {

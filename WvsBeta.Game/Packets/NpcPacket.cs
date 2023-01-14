@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -10,7 +11,7 @@ namespace WvsBeta.Game
     public static class NpcPacket
     {
 
-        public static void HandleNPCChat(Character chr, Packet packet)
+        public static void HandleNPCChat(GameCharacter chr, Packet packet)
         {
             if (chr.NpcSession == null)
                 return;
@@ -155,7 +156,7 @@ namespace WvsBeta.Game
             RechargeUnknown,
         }
 
-        public static void HandleNPCShop(Character chr, Packet packet)
+        public static void HandleNPCShop(GameCharacter chr, Packet packet)
         {
             if (chr.ShopNPCID == 0) return;
 
@@ -364,7 +365,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void SendShowNPCShop(Character chr, int NPCID)
+        public static void SendShowNPCShop(GameCharacter chr, int NPCID)
         {
             Packet pw = new Packet(ServerMessages.SHOP);
             pw.WriteInt(NPCID);
@@ -404,7 +405,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendShopResult(Character chr, ShopRes ans)
+        public static void SendShopResult(GameCharacter chr, ShopRes ans)
         {
             Packet pw = new Packet(ServerMessages.SHOP_TRANSACTION);
             pw.WriteByte((byte)ans);
@@ -412,7 +413,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextSimple(Character chr, int NpcID, string Text, bool back, bool next)
+        public static void SendNPCChatTextSimple(GameCharacter chr, int NpcID, string Text, bool back, bool next)
         {
             chr.NpcSession.mLastSentType = 0;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -426,7 +427,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextMenu(Character chr, int NpcID, string Text)
+        public static void SendNPCChatTextMenu(GameCharacter chr, int NpcID, string Text)
         {
             chr.NpcSession.mLastSentType = 4;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -438,7 +439,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextYesNo(Character chr, int NpcID, string Text)
+        public static void SendNPCChatTextYesNo(GameCharacter chr, int NpcID, string Text)
         {
             chr.NpcSession.mLastSentType = 1;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -450,7 +451,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestText(Character chr, int NpcID, string Text, string Default, short MinLength, short MaxLength)
+        public static void SendNPCChatTextRequestText(GameCharacter chr, int NpcID, string Text, string Default, short MinLength, short MaxLength)
         {
             chr.NpcSession.mLastSentType = 2;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -465,7 +466,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestInteger(Character chr, int NpcID, string Text, int Default, int MinValue, int MaxValue)
+        public static void SendNPCChatTextRequestInteger(GameCharacter chr, int NpcID, string Text, int Default, int MinValue, int MaxValue)
         {
             chr.NpcSession.mLastSentType = 3;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -480,7 +481,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestStyle(Character chr, int NpcID, string Text, List<int> values)
+        public static void SendNPCChatTextRequestStyle(GameCharacter chr, int NpcID, string Text, List<int> values)
         {
             chr.NpcSession.mLastSentType = 5;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -497,7 +498,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestPet(Character chr, int NpcID, string Text)
+        public static void SendNPCChatTextRequestPet(GameCharacter chr, int NpcID, string Text)
         {
             chr.NpcSession.mLastSentType = 5;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);

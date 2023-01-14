@@ -4,7 +4,7 @@ namespace WvsBeta.Game
 {
     public static class CoconutPackets
     {
-        public static void HandleEvent(Character chr, Packet packet)
+        public static void HandleEvent(GameCharacter chr, Packet packet)
         {
             short CoconutID = packet.ReadShort();
             short CharStance = packet.ReadShort();
@@ -12,7 +12,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void CoconutScore(Character chr, short maple, short story)
+        public static void CoconutScore(GameCharacter chr, short maple, short story)
         {
             // was 157 in v40b, assumed to be 160 in v12
 
@@ -22,7 +22,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr, false);
         }
 
-        public static void SpawnCoconut(Character chr, bool spawn, int id, int type)
+        public static void SpawnCoconut(GameCharacter chr, bool spawn, int id, int type)
         {
             Packet pw = new Packet(ServerMessages.COCONUT_HIT);
             pw.WriteShort(0); //Coconut ID
@@ -31,7 +31,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr, false);
         }
 
-        public static void HitCoconut(Character chr, short cID, short Stance)
+        public static void HitCoconut(GameCharacter chr, short cID, short Stance)
         {
             Packet pw = new Packet(ServerMessages.COCONUT_HIT);
             pw.WriteShort(cID); //Coconut ID
@@ -40,7 +40,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void ForcedEquip(Character chr, byte team)
+        public static void ForcedEquip(GameCharacter chr, byte team)
         {
             Packet pw = new Packet(ServerMessages.FIELD_SPECIFIC_DATA); // 44, pressumably 47 in v12
             pw.WriteByte(team); //0 : red, 1 : blue
