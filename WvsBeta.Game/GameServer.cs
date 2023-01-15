@@ -122,7 +122,7 @@ namespace WvsBeta.Game
 
         public string GetScriptFilename(string scriptName)
         {
-            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Scripts");
+            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "Scripts");
 
             string filename = Path.Combine(scriptsDir, scriptName + ".s");
             if (!File.Exists(filename)) filename = Path.Combine(scriptsDir, scriptName + ".cs");

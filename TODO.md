@@ -1,18 +1,20 @@
-## Todo / To test
+## To do
+- [ ] NPC scripts, quests should be in client
 - [ ] Update DropData.nx to v22
-- [ ] Update Data.nx to v22
 - [ ] Zakum, inc. prequests
 - [ ] Guilds (100 member)
 - [ ] Pets
 - [ ] Cash Shop
-- [ ] Cash Shop transaction (in-game only?)
 - [ ] KPQ
-- [ ] Ludibrium
-- [ ] LPQ
+- [ ] Cash Shop transaction (in-game only?)
 - [ ] OPQ
 - [ ] GPQ
 - [ ] Adobis Mission
-- [ ] NPC scripts, all quests
+- [x] Update Data.nx to v22
+
+## To test
+- [ ] Ludibrium
+- [ ] LPQ
 - [ ] Zombie Mushmom timer
 - [ ] Mushmom timer
 - [ ] Jr. Balrog timer
@@ -21,10 +23,10 @@
 - [ ] Aqua, Pianus, deep sea gorge
 - [ ] Forest of Golem
 - [ ] Lvl 90 equips
-- [ ] General FM
+- [x] General FM
 - [ ] Patching system
-- [ ] Test shops
-- [ ] Test multiplayer interactions
+- [ ] Shops
+- [ ] Multiplayer interactions
 - [ ] Omok
 
 ## Known bugs
