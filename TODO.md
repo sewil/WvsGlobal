@@ -1,26 +1,24 @@
+## Bugs
+- [ ] Portals don't lead to correct portal (script related?)
+- [ ] Portal to FM doesn't work (script related?)
+- [ ] Random crash when messing with HP? Crashing on channel select in login screen. Removing character no more crash. Might've been avatar related.
+- [x] Crash on select channel (avatar related probably)
+- [x] Character creation is blocked
+- [x] Rankings not working
+
 ## To do
 - [ ] Translate scripts
 - [ ] Update DropData.nx to v22
 - [ ] Zakum, inc. prequests
-- [ ] Guilds (100 member)
-- [ ] Pets
-- [ ] Cash Shop
-- [ ] KPQ
+- [ ] Guilds
 - [ ] Cash Shop transaction (in-game only?)
-- [ ] OPQ
-- [ ] GPQ
 - [ ] Adobis Mission
 - [x] Update Data.nx to v22
+- [ ] Aquarium, Deep Sea Gorge, Pianus
+- [ ] Deep Ludi, Papulatus
 
 ## To test
-- [ ] Ludibrium
-- [ ] LPQ
-- [ ] Zombie Mushmom timer
-- [ ] Mushmom timer
-- [ ] Jr. Balrog timer
-- [ ] Crimson Balrog, boat script
-- [ ] Papulatus, inc. deep ludi
-- [ ] Aqua, Pianus, deep sea gorge
+- [ ] Boss timers
 - [ ] Forest of Golem
 - [ ] Lvl 90 equips
 - [x] General FM
@@ -28,13 +26,6 @@
 - [ ] Shops
 - [ ] Multiplayer interactions
 - [ ] Omok
-
-## Known bugs
-- [ ] Crash on select channel (avatar related probably)
-- [ ] Portals don't lead to correct portal
-- [ ] Portal to FM doesn't work
-- [x] Character creation is blocked
-- [ ] Random crash when messing with HP? Crashing on channel select. Removing character no more crash.
 
 ## KMS Progression
 ### 2003
@@ -74,3 +65,6 @@
 - pianus, deep sea gorge - 24 jan
 - sharenian guild quest - 25 apr
 - 3rd anniversary - 29 apr
+
+## Ideas
+- [ ] Button hyperlinks

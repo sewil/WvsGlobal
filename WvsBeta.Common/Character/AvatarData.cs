@@ -15,15 +15,12 @@ namespace WvsBeta.Common.Character
             CharacterStat.Decode(packet);
             AvatarLook = new AvatarLook();
             AvatarLook.Decode(packet);
-            packet.ReadByte();
         }
 
         public void Encode(Packet packet)
         {
             CharacterStat.Encode(packet);
             AvatarLook.Encode(packet);
-            // Client checks for '!((byte)slot)', so this must be zero!
-            packet.WriteByte(0);
         }
     }
 }
