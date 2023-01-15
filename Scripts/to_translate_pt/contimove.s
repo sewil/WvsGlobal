@@ -65,12 +65,12 @@ script "sell_ticket" {
 		// Ellinia
 		else if ( field.id == 101000300 ) {
 			if ( target.nLevel < 30 ) {
-				nRet = self.askYesNo( "Olá, sou o responsável pela venda de bilhetes para o passeio de navio para a Estação Orbis em Ossyria. O passeio para Orbis sai a cada 15 minutos, começando em horas cheias, e vai lhe custar #b1.000 mesos#k. Tem certeza de que quer comprar #b#t4031044##k?" );
+				nRet = self.askYesNo( "Hello, I'm in charge of selling tickets for the ship ride to Orbis Station of Ossyria. The ride to Orbis takes off every 15 minutes, beginning on the hour, and it'll cost you #b1,000 mesos#k. Are you sure you want to purchase #b#t4031044##k?" );
 				nTicket = 4031044;
 				tCost = 1000;
 			}
 			else {
-				nRet = self.askYesNo( "Olá, sou o responsável pela venda de bilhetes para o passeio de navio para a Estação Orbis em Ossyria. O passeio para Orbis sai a cada 15 minutos, começando em horas cheias, e vai lhe custar #b5.000 mesos#k. Tem certeza de que quer comprar #b#t4031045##k?" );
+				nRet = self.askYesNo( "Hello, I'm in charge of selling tickets for the ship ride to Orbis Station of Ossyria. The ride to Orbis takes off every 15 minutes, beginning on the hour, and it'll cost you #b5,000 mesos#k. Are you sure you want to purchase #b#t4031045##k?" );
 				nTicket = 4031045;
 				tCost = 5000;
 			}
@@ -89,7 +89,7 @@ script "sell_ticket" {
 			}
 		}
 
-		if ( nRet == 0 ) self.say( "Você deve ter alguns negócios para tratar aqui, certo?" );
+		if ( nRet == 0 ) self.say( "You must have some business to take care of, right?" );
 		else {
 			inventory = target.inventory;
 			ret = inventory.exchange( -tCost, nTicket, 1 );
