@@ -27,6 +27,12 @@
 - [ ] Test multiplayer interactions
 - [ ] Omok
 
+## Known bugs
+- [ ] Portals don't lead to correct portal
+- [ ] Portal to FM doesn't work
+- [x] Character creation is blocked
+- [ ] Random crash when messing with HP? Crashing on channel select. Removing character no more crash.
+
 ## KMS Progression
 ### 2003
 - 1st CBT - 21 jan

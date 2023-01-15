@@ -3,27 +3,14 @@ using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login.Packets
 {
-    internal struct ISRequestChannelStatusPacket
+    internal class ISRequestChannelStatusPacket : Packet
     {
-        public readonly string hash;
-        public readonly byte worldId;
-        public readonly byte channelId;
-        public readonly int accountId;
-        public ISRequestChannelStatusPacket(Player player, byte channelId)
+        public ISRequestChannelStatusPacket(Player player, byte channelId) : base(ISClientMessages.PlayerRequestChannelStatus)
         {
-            this.hash = player.SessionHash;
-            this.worldId = player.World;
-            this.channelId = channelId;
-            this.accountId = player.ID;
-        }
-        public Packet Encode()
-        {
-            Packet packet = new Packet(ISClientMessages.PlayerRequestChannelStatus);
-            packet.WriteString(hash);
-            packet.WriteByte(worldId);
-            packet.WriteByte(channelId);
-            packet.WriteInt(accountId);
-            return packet;
+            WriteString(player.SessionHash);
+            WriteByte(player.World);
+            WriteByte(channelId);
+            WriteInt(player.ID);
         }
     }
 }

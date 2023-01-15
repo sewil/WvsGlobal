@@ -18,6 +18,8 @@ namespace WvsBeta.Login
         public string Message { get; set; }
 
         public int[] UserNo { get; set; }
+        public int UserLimit { get; set; }
+        public int UserWarning { get; set; }
 
         public CenterSession Connection { get; private set; }
 

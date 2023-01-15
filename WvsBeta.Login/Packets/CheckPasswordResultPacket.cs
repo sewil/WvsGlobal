@@ -3,7 +3,7 @@ using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login.Packets
 {
-    internal struct CheckPasswordResultPacket
+    internal class CheckPasswordResultPacket : Packet
     {
         public enum LoginState : byte
         {
@@ -37,41 +37,31 @@ namespace WvsBeta.Login.Packets
             RWT,
             IllegalFunding
         }
-
-        public readonly LoginState loginState;
-        public readonly Player player;
-        public readonly string username;
-        public readonly BanReason banReason;
-        public readonly long banExpire;
-
-        public CheckPasswordResultPacket(LoginState loginState, Player player, string username, BanReason banReason, long banExpire)
+        public enum UnverifiedState : byte
         {
-            this.loginState = loginState;
-            this.player = player;
-            this.username = username;
-            this.banReason = banReason;
-            this.banExpire = banExpire;
+            None,
+            Use7Days,
+            Use30Days
         }
-        public Packet Encode()
+
+        public CheckPasswordResultPacket(LoginState loginState, Player player, string username, BanReason banReason, long banExpire, UnverifiedState unverifiedState = UnverifiedState.None) : base(ServerMessages.CHECK_PASSWORD_RESULT)
         {
-            var packet = new Packet(ServerMessages.CHECK_PASSWORD_RESULT);
-            packet.WriteByte((byte)loginState); //Login State
-            packet.WriteByte(0); // nRegStatID
-            packet.WriteInt(0); // nUseDay
+            WriteByte((byte)loginState); //Login State
+            WriteByte((byte)unverifiedState);
+            WriteInt(15); // nUseDay?
             if (loginState == LoginState.SUCCESS)
             {
-                packet.WriteInt(player.ID);
-                packet.WriteByte((byte)player.Gender);
-                packet.WriteBool(player.IsGM);
-                packet.WriteByte(0x01); //Country ID
-                packet.WriteString(username);
+                WriteInt(player.ID);
+                WriteByte((byte)player.Gender);
+                WriteBool(player.IsGM);
+                WriteByte(0x10); //Country ID
+                WriteString(username);
             }
             else if (loginState == LoginState.BANNED)
             {
-                packet.WriteByte((byte)banReason);
-                packet.WriteLong(banExpire);
+                WriteByte((byte)banReason);
+                WriteLong(banExpire);
             }
-            return packet;
         }
     }
 }

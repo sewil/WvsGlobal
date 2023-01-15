@@ -249,6 +249,8 @@ namespace WvsBeta.Login
                     Name = worldConfig.Name,
                     Ribbon = (WorldRibbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
                     Message = worldConfig["worldMessage"]?.GetString() ?? "",
+                    UserWarning = worldConfig["userWarning"]?.GetInt() ?? 400,
+                    UserLimit = worldConfig["userLimit"]?.GetInt() ?? 600,
                 };
                 center.UserNo = new int[center.Channels];
 

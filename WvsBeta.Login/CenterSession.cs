@@ -4,6 +4,7 @@ using MySql.Data.MySqlClient;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login.Objects;
+using WvsBeta.Login.PacketHandlers;
 
 namespace WvsBeta.Login
 {
@@ -99,9 +100,8 @@ namespace WvsBeta.Login
                             }
                             else
                             {
-                                player.Socket.HandleChannelSelectResult(packet);
+                                ChannelSelectHandler.HandleCenterResult(player.Socket, packet, player);
                             }
-
 
                             break;
                         }

@@ -150,7 +150,7 @@ namespace WvsBeta.Login
                         case ClientMessages.LOGIN_CHECK_PASSWORD: break;
 
                         case ClientMessages.LOGIN_SELECT_CHANNEL:
-                            new ChannelSelectHandler(this, log, packet);
+                            ChannelSelectHandler.HandleClientRequest(this, log, packet);
                             break;
                         case ClientMessages.LOGIN_WORLD_INFO_REQUEST:
                             new WorldInfoHandler(this, log);
@@ -450,15 +450,6 @@ namespace WvsBeta.Login
                 pack.WriteBool(true);
             }
             Player.Socket.SendPacket(pack);
-        }
-
-        public void HandleChannelSelectResult(Packet packet)
-        {
-            // Packet received from the center server
-            var pack = new ChannelSelectResultPacket(packet, Player).Encode();
-            SendPacket(pack);
-
-            Player.State = GameState.CharacterSelect;
         }
 
         public void OnWorldSelect(Packet packet)

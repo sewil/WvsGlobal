@@ -21,16 +21,24 @@ namespace WvsBeta.Login.PacketHandlers
                 worldInfo.WriteString(world.Name);
                 worldInfo.WriteByte((byte)world.Ribbon);
                 worldInfo.WriteString(world.Message); // World message
-                worldInfo.WriteByte(1);          // ? exp event notification?
+                worldInfo.WriteBool(world.BlockCharacterCreation); // block char creation
                 worldInfo.WriteByte(world.Channels); // last channel
 
                 for (byte channelID = 0; channelID < world.Channels; channelID++)
                 {
                     worldInfo.WriteString(world.Name + "-" + (channelID + 1));
-                    worldInfo.WriteInt(world.UserNo[channelID] * 1200);
+                    if (world.UserLimit == 0)
+                    {
+                        worldInfo.WriteInt(0);
+                    }
+                    else
+                    {
+                        int userNo = (int)(1200 * (world.UserNo[channelID] / (float)world.UserLimit));
+                        worldInfo.WriteInt(userNo);
+                    }
                     worldInfo.WriteByte(world.ID);
                     worldInfo.WriteByte(channelID);
-                    worldInfo.WriteBool(world.BlockCharacterCreation);
+                    worldInfo.WriteByte(0); // ? not block char creation anymore
                 }
 
                 session.SendPacket(worldInfo);
