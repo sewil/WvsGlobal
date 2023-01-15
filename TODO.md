@@ -28,6 +28,7 @@
 - [ ] Omok
 
 ## Known bugs
+- [ ] Crash on select channel (avatar related probably)
 - [ ] Portals don't lead to correct portal
 - [ ] Portal to FM doesn't work
 - [x] Character creation is blocked
