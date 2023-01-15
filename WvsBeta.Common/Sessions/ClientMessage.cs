@@ -100,7 +100,7 @@
         __PADDING_77,
         __PADDING_78,
         __PADDING_79,
-        SUMMON_MOVE,
+        SUMMON_MOVE = 91,
         SUMMON_ATTACK,
         SUMMON_DAMAGED,
         __PADDING_83,

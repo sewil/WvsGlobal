@@ -1,7 +1,8 @@
 ## Bugs
-- [ ] Portals don't lead to correct portal (script related?)
-- [ ] Portal to FM doesn't work (script related?)
-- [ ] Random crash when messing with HP? Crashing on channel select in login screen. Removing character no more crash. Might've been avatar related.
+- [ ] Some portals are broken (script related?) mostly vic portals
+- [ ] Mobs don't die with ranged attacks, tested both stars and arrows
+- [ ] Portal to FM doesn't work: `[ENTER_SCRIPTED_PORTAL] Unknown packet received! 3D 08 00 6D 61 72 6B 65 74 30 30`
+- [x] Random crash when messing with HP? Crashing on channel select in login screen. Removing character no more crash. Might've been avatar related.
 - [x] Crash on select channel (avatar related probably)
 - [x] Character creation is blocked
 - [x] Rankings not working
@@ -15,7 +16,7 @@
 - [ ] Adobis Mission
 - [x] Update Data.nx to v22
 - [ ] Aquarium, Deep Sea Gorge, Pianus
-- [ ] Deep Ludi, Papulatus
+- [ ] Papulatus
 
 ## To test
 - [ ] Boss timers
