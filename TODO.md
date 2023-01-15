@@ -1,5 +1,5 @@
 ## To do
-- [ ] NPC scripts, quests should be in client
+- [ ] Translate scripts
 - [ ] Update DropData.nx to v22
 - [ ] Zakum, inc. prequests
 - [ ] Guilds (100 member)
