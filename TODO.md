@@ -1,6 +1,7 @@
 ## Bugs
 - [ ] Some portals are broken (script related?) mostly vic portals
-- [ ] Mobs don't die with ranged attacks, tested both stars and arrows
+- [x] Mobs don't die with ranged attacks, tested both stars and arrows
+- [ ] SP/FA doesn't consume extra bullets
 - [ ] Portal to FM doesn't work: `[ENTER_SCRIPTED_PORTAL] Unknown packet received! 3D 08 00 6D 61 72 6B 65 74 30 30`
 - [x] Random crash when messing with HP? Crashing on channel select in login screen. Removing character no more crash. Might've been avatar related.
 - [x] Crash on select channel (avatar related probably)

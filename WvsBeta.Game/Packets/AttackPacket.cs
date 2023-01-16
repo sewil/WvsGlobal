@@ -34,7 +34,7 @@ namespace WvsBeta.Game
             }
 
             // Normal weapon + sword boost gives about 500, so we need to go faster
-            if (false && packet.PacketCreationTime - chr.LastAttackPacket < 350)
+            if (packet.PacketCreationTime - chr.LastAttackPacket < 350)
             {
                 Trace.WriteLine($"{packet.PacketCreationTime - chr.LastAttackPacket}");
                 if (chr.AssertForHack(chr.FastAttackHackCount++ > 5, $"Fast attack hack, type {type}"))
@@ -99,6 +99,7 @@ namespace WvsBeta.Game
             if (type == AttackTypes.Ranged)
             {
                 ad.StarItemSlot = packet.ReadShort();
+                packet.ReadShort(); // ?
                 BaseItem item = chr.Inventory.GetItem(2, ad.StarItemSlot);
 
                 if (ad.StarItemSlot == 0)
