@@ -599,42 +599,42 @@ namespace WvsBeta.Game
             pPacket.SetULong(tmpBuffPos, (ulong)endFlag); // Make sure correct flag is set
         }
 
-        public override bool HasBuff(int skillOrItemID)
+        public override bool HasBuff(int referenceId)
         {
             long currentTime = BuffStat.GetTimeForBuff();
             return
-                BuffWeaponAttack.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffWeaponDefense.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMagicAttack.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMagicDefense.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffAccurancy.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffAvoidability.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffHands.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffSpeed.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffJump.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMagicGuard.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffDarkSight.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffBooster.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffPowerGuard.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMaxHP.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMaxMP.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffInvincible.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffSoulArrow.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffStun.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffPoison.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffSeal.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffDarkness.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffComboAttack.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffCharges.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffDragonBlood.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffHolySymbol.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMesoUP.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffShadowPartner.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffPickPocketMesoUP.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffMesoGuard.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffThaw.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffWeakness.HasReferenceId(skillOrItemID, currentTime) ||
-                BuffCurse.HasReferenceId(skillOrItemID, currentTime);
+                BuffWeaponAttack.HasReferenceId(referenceId, currentTime) ||
+                BuffWeaponDefense.HasReferenceId(referenceId, currentTime) ||
+                BuffMagicAttack.HasReferenceId(referenceId, currentTime) ||
+                BuffMagicDefense.HasReferenceId(referenceId, currentTime) ||
+                BuffAccurancy.HasReferenceId(referenceId, currentTime) ||
+                BuffAvoidability.HasReferenceId(referenceId, currentTime) ||
+                BuffHands.HasReferenceId(referenceId, currentTime) ||
+                BuffSpeed.HasReferenceId(referenceId, currentTime) ||
+                BuffJump.HasReferenceId(referenceId, currentTime) ||
+                BuffMagicGuard.HasReferenceId(referenceId, currentTime) ||
+                BuffDarkSight.HasReferenceId(referenceId, currentTime) ||
+                BuffBooster.HasReferenceId(referenceId, currentTime) ||
+                BuffPowerGuard.HasReferenceId(referenceId, currentTime) ||
+                BuffMaxHP.HasReferenceId(referenceId, currentTime) ||
+                BuffMaxMP.HasReferenceId(referenceId, currentTime) ||
+                BuffInvincible.HasReferenceId(referenceId, currentTime) ||
+                BuffSoulArrow.HasReferenceId(referenceId, currentTime) ||
+                BuffStun.HasReferenceId(referenceId, currentTime) ||
+                BuffPoison.HasReferenceId(referenceId, currentTime) ||
+                BuffSeal.HasReferenceId(referenceId, currentTime) ||
+                BuffDarkness.HasReferenceId(referenceId, currentTime) ||
+                BuffComboAttack.HasReferenceId(referenceId, currentTime) ||
+                BuffCharges.HasReferenceId(referenceId, currentTime) ||
+                BuffDragonBlood.HasReferenceId(referenceId, currentTime) ||
+                BuffHolySymbol.HasReferenceId(referenceId, currentTime) ||
+                BuffMesoUP.HasReferenceId(referenceId, currentTime) ||
+                BuffShadowPartner.HasReferenceId(referenceId, currentTime) ||
+                BuffPickPocketMesoUP.HasReferenceId(referenceId, currentTime) ||
+                BuffMesoGuard.HasReferenceId(referenceId, currentTime) ||
+                BuffThaw.HasReferenceId(referenceId, currentTime) ||
+                BuffWeakness.HasReferenceId(referenceId, currentTime) ||
+                BuffCurse.HasReferenceId(referenceId, currentTime);
         }
     }
 }

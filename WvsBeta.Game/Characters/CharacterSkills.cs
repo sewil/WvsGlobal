@@ -193,29 +193,25 @@ namespace WvsBeta.Game
         public override void UseRangedAttack(int skillid, short pos)
         {
             Program.MainForm.LogDebug("Using ranged. Skill: " + skillid);
-            byte level = 0;
+            short bullets = 1;
             if (skillid != 0)
             {
                 if (!DataProvider.Skills.ContainsKey(skillid)) return;
 
-                level = (byte)(Skills.ContainsKey(skillid) ? Skills[skillid] : 0);
+                byte level = (byte)(Skills.ContainsKey(skillid) ? Skills[skillid] : 0);
                 if (level == 0) return;
                 DoSkillCost(skillid, level);
+                short bulletUsage = DataProvider.Skills[skillid].Levels[level].BulletUsage;
+                if (bulletUsage > 0)
+                    bullets = bulletUsage;
             }
-            short hits = 1;
-            if (skillid != 0)
+            if (Character.PrimaryStats.HasBuff(Constants.Hermit.Skills.ShadowPartner))
             {
-                var bullets = DataProvider.Skills[skillid].Levels[level].BulletUsage;
-                if (bullets > 0)
-                    hits = bullets;
-            }
-            if (Character.PrimaryStats.HasBuff((int)BuffValueTypes.ShadowPartner) && (Character.PrimaryStats.Job == 411 || Character.PrimaryStats.Job == 500))
-            {
-                hits *= 2;
+                bullets *= 2;
             }
             if (pos > 0 && !Character.PrimaryStats.HasBuff((int)BuffValueTypes.SoulArrow))
             {
-                Character.Inventory.TakeItemAmountFromSlot(2, pos, hits, false);
+                Character.Inventory.TakeItemAmountFromSlot(2, pos, bullets, false);
             }
         }
 
