@@ -378,11 +378,12 @@ namespace WvsBeta.Game
             Server.Instance.CenterConnection.BuddyListExpand(this);
         }
 
-        public int AddMesos(int value, bool isSelf = false)
+        public int AddMesos(int value, bool isSelf = false, bool checkCanAfford = false)
         {
             var newMesos = 0;
             if (value < 0)
             {
+                if (checkCanAfford && Inventory.Mesos < value) return -1;
                 if ((Inventory.Mesos - value) < 0) newMesos = 0;
                 else newMesos = Inventory.Mesos + value; // neg - neg = pos
             }

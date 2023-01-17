@@ -4,10 +4,10 @@ namespace WvsBeta.Game.Scripting
 {
     public interface INpcScript : IGameScript
     {
-        void Run(IHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer);
+        void Run(INpcHost self, GameCharacter target, byte state, byte answer, string stringAnswer, int integerAnswer);
     }
 
-    public interface IHost
+    public interface INpcHost
     {
         int mID { get; }
         void SendNext(string Message);

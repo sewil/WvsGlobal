@@ -9,7 +9,7 @@ namespace WvsBeta.Scripts
 {
     internal class Easter : INpcScript
     {
-        public void Run(IHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer)
+        public void Run(INpcHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer)
         {
             if(target.Level < 8)
             {

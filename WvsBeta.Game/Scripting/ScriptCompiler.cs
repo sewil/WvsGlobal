@@ -1,5 +1,6 @@
 ﻿using System;
 using System.CodeDom.Compiler;
+using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 
@@ -9,7 +10,7 @@ namespace WvsBeta.Game.Scripting
     {
         private static CodeDomProvider compiler = CodeDomProvider.CreateProvider("CSharp");
 
-        public static IGameScript CompileScript(string scriptUri, Action<string> errorHandlerFnc, out string savename)
+        public static Assembly CompileScript(string scriptUri, Action<string> errorHandlerFnc, out string savename)
         {
             var results = Compile(scriptUri);
             var fi = new FileInfo(scriptUri);
@@ -26,7 +27,7 @@ namespace WvsBeta.Game.Scripting
                 }
                 return null;
             }
-            return FindInterface(results.CompiledAssembly, "IGameScript");
+            return results.CompiledAssembly;
         }
         public static CompilerResults Compile(string source)
         {
@@ -50,18 +51,6 @@ namespace WvsBeta.Game.Scripting
             parms.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
             return compiler.CompileAssemblyFromFile(parms, source);
-        }
-
-        public static IGameScript FindInterface(Assembly dll, string interfaceName)
-        {
-            // Loop through types looking for one that implements the given interface
-            foreach (Type t in dll.GetTypes())
-            {
-                if (t.GetInterface(interfaceName, true) != null)
-                    return (IGameScript)dll.CreateInstance(t.FullName);
-            }
-
-            return null;
         }
     }
 }

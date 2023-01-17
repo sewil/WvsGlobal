@@ -56,6 +56,8 @@
     <Compile Include="Scripts\market06.cs" />
     <Compile Include="Scripts\market05.cs" />
     <Compile Include="Scripts\market04.cs" />
+    <Compile Include="Scripts\mTaxi.cs" />
+    <Compile Include="Scripts\taxi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

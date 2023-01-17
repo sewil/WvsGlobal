@@ -118,10 +118,7 @@ namespace WvsBeta.Game
                     };
                 }
 
-                INpcScript NPC = null;
-                if (NPC == null && npc.Quest != null) NPC = (INpcScript)ScriptAccessor.GetScript(Server.Instance, npc.Quest, errorHandlerFnc);
-                if (NPC == null) NPC = (INpcScript)ScriptAccessor.GetScript(Server.Instance, npc.ID.ToString(), errorHandlerFnc);
-
+                INpcScript NPC = (INpcScript)ScriptAccessor.GetScript(npc, errorHandlerFnc);
                 NpcChatSession.Start(RealID, NPC, chr);
             }
         }

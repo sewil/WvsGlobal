@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.X509;
+using System;
 using System.Collections.Generic;
 using WvsBeta.Game.Scripting;
 
@@ -15,7 +16,7 @@ namespace WvsBeta.Game
         }
     }
 
-    public class NpcChatSession : IHost
+    public class NpcChatSession : INpcHost
     {
         public int mID { get; set; }
         public GameCharacter mCharacter { get; set; }
@@ -65,6 +66,9 @@ namespace WvsBeta.Game
 
         public void HandleThing(byte state = 0, byte action = 0, string text = "", int integer = 0)
         {
+            #if DEBUG
+                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "state:" + state + ",answer:" + action + ",stringAnswer:" + text + ",integerAnswer:" + integer, mCharacter, ChatPacket.MessageMode.ToPlayer);
+            #endif
             _compiledScript.Run(this, mCharacter, state, action, text, integer);
         }
 
@@ -228,6 +232,5 @@ namespace WvsBeta.Game
             else
                 _savedObjects[pName] = pValue;
         }
-
     }
 }

@@ -18,5 +18,9 @@ namespace WvsBeta.Scripts.Scripts
             var quest = target.Quests.Quests[questID];
             return quest;
         }
+        public static void GoTown()
+        {
+
+        }
     }
 }

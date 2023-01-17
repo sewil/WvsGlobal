@@ -2421,7 +2421,7 @@ namespace WvsBeta.Game
                                 {
                                     var scriptName = Args[0];
 
-                                    var fileName = ScriptAccessor.GetScriptFilename(scriptName);
+                                    var fileName = ScriptAccessor.GetScriptFileName(scriptName);
                                     if (fileName == null)
                                     {
                                         ChatPacket.SendNotice("Could not find a script with the name " + scriptName + "!", character);
