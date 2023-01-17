@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -37,7 +38,7 @@ namespace WvsBeta.Game
         
         public static void Start(int npcId, string script, GameCharacter chr, Action<string> errorHandlerFnc)
         {
-            Start(npcId, Server.Instance.TryGetOrCompileScript(script, errorHandlerFnc), chr);
+            Start(npcId, (INpcScript)ScriptAccessor.GetScript(Server.Instance, script, errorHandlerFnc), chr);
         }
         
         public static void Start(int npcId, INpcScript NPC, GameCharacter chr)

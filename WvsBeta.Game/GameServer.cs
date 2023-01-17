@@ -12,6 +12,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -64,7 +65,7 @@ namespace WvsBeta.Game
         public DiscordReporter ServerTraceDiscordReporter { get; private set; }
         public DiscordReporter MutebanDiscordReporter { get; private set; }
 
-        private Dictionary<string, INpcScript> _availableNPCScripts { get; } = new Dictionary<string, INpcScript>();
+        public Dictionary<string, IGameScript> AvailableScripts { get; } = new Dictionary<string, IGameScript>();
 
         public string ScrollingHeader { get; private set; }
 
@@ -107,51 +108,6 @@ namespace WvsBeta.Game
         public void CheckMaps(long pNow)
         {
             DataProvider.Maps.ForEach(x => x.Value.MapTimer(pNow));
-        }
-
-        public INpcScript TryGetOrCompileScript(string scriptName, Action<string> errorHandlerFnc)
-        {
-            if (_availableNPCScripts.TryGetValue(scriptName, out INpcScript ret)) return ret;
-
-            var scriptUri = GetScriptFilename(scriptName);
-
-            if (scriptUri == null) return null;
-
-            return ForceCompileScriptfile(scriptUri, errorHandlerFnc);
-        }
-
-        public string GetScriptFilename(string scriptName)
-        {
-            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "Scripts");
-
-            string filename = Path.Combine(scriptsDir, scriptName + ".s");
-            if (!File.Exists(filename)) filename = Path.Combine(scriptsDir, scriptName + ".cs");
-            if (!File.Exists(filename)) return null;
-            return filename;
-        }
-
-        public INpcScript ForceCompileScriptfile(string filename, Action<string> errorHandlerFnc)
-        {
-            var fi = new FileInfo(filename);
-            var results = Scripting.CompileScript(filename);
-            if (results.Errors.Count > 0)
-            {
-                errorHandlerFnc?.Invoke(Path.GetFileName(filename));
-
-                Program.MainForm.LogAppend($"Couldn't compile the file ({filename}) correctly:");
-                foreach (CompilerError error in results.Errors)
-                {
-                    Program.MainForm.LogAppend(
-                        $"File {filename}, Line {error.Line}, Column {error.Column}: {error.ErrorText}");
-                }
-                return null;
-            }
-
-
-            var ret = (INpcScript)Scripting.FindInterface(results.CompiledAssembly, "INpcScript");
-            string savename = fi.Name.Replace(".s", "").Replace(".cs", "");
-            _availableNPCScripts[savename] = ret;
-            return ret;
         }
 
         public void AddPlayer(Player player)

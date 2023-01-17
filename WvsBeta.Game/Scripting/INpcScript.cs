@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace WvsBeta.Game
+namespace WvsBeta.Game.Scripting
 {
-    public interface INpcScript
+    public interface INpcScript : IGameScript
     {
-        void Run(IHost host, GameCharacter character, byte State, byte Answer, string StringAnswer, int IntegerAnswer);
+        void Run(IHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer);
     }
 
     public interface IHost
