@@ -23,8 +23,8 @@
         // __START_SOCKET
         PONG = 16,
         CLIENT_CRASH_REPORT,
-        RETURN_TO_LOGIN = 18,
-        CLIENT_HASH,
+        CLIENT_HASH = 18,
+        RETURN_TO_LOGIN,
         // __END_SOCKET
 
         ENTER_PORTAL = 22,
@@ -46,7 +46,7 @@
         __PADDING_32,
 
         //NPC Interaction Headers
-        NPC_TALK,
+        NPC_TALK = 37,
         NPC_TALK_MORE,
         SHOP_ACTION,
         STORAGE_ACTION,
