@@ -55,6 +55,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.PatchCreator", "Wvs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.DataExporter", "WvsBeta.DataExporter\WvsBeta.DataExporter.csproj", "{7EFB302F-ED9B-4A35-A733-0392212BCE56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.Scripts", "WvsBeta.Scripts\WvsBeta.Scripts.csproj", "{EECBD398-F79D-491E-A5ED-635CC08BFC52}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -107,6 +109,10 @@ Global
 		{7EFB302F-ED9B-4A35-A733-0392212BCE56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7EFB302F-ED9B-4A35-A733-0392212BCE56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EFB302F-ED9B-4A35-A733-0392212BCE56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EECBD398-F79D-491E-A5ED-635CC08BFC52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EECBD398-F79D-491E-A5ED-635CC08BFC52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EECBD398-F79D-491E-A5ED-635CC08BFC52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EECBD398-F79D-491E-A5ED-635CC08BFC52}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
