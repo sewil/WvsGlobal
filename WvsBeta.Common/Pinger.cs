@@ -1,114 +1,107 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using log4net;
+using System.Diagnostics;
+using WvsBeta.Common.Properties;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common
 {
     public class Pinger
     {
-        public static int CurrentLoggingConnections => _connections.Count;
+        public static int CurrentLoggingConnections => connections.Count;
 
-        private static ILog _log = LogManager.GetLogger("Pinger");
-        private static readonly List<AbstractConnection> _connections = new List<AbstractConnection>();
-        private const int PingCheckTimeSeconds = 15;
-        private const int PingCheckTime = PingCheckTimeSeconds * 1000;
-        private static long _lastPingTime = 0;
-
+        private static readonly List<ConnectionSession> connections = new List<ConnectionSession>();
+        private static long lastPingTime = 0;
         private static readonly object lockobj = 1;
 
-        public static void Add(AbstractConnection conn)
+        public static void Add(ConnectionSession conn)
         {
-            _log.Debug("Adding connection " + conn.IP + ":" + conn.Port);
+            Trace.WriteLine("Adding connection " + conn.IP + ":" + conn.Port);
             lock (lockobj)
             {
-                _connections.Add(conn);
+                connections.Add(conn);
             }
         }
 
-        public static void Remove(AbstractConnection conn)
+        public static void Remove(ConnectionSession conn)
         {
-            _log.Debug("Removing connection " + conn.IP + ":" + conn.Port);
+            Trace.WriteLine("Removing connection " + conn.IP + ":" + conn.Port);
             lock (lockobj)
             {
-                _connections.Remove(conn);
+                connections.Remove(conn);
             }
         }
 
-        public static void Init(Action<string> pingcallback = null, Action<string> dcCallback = null)
+        public static void Init(Action<string> dcCallback = null)
         {
-            MasterThread.Instance.AddRepeatingAction(new MasterThread.RepeatingAction(
-                "Pinger",
-                time =>
+            var pAction = new MasterThread.RepeatingAction("Pinger", time => {
+                if (lastPingTime != 0 && (time - lastPingTime) < Settings.Default.PingInterval)
                 {
-                    if (_lastPingTime != 0 &&
-                        (time - _lastPingTime) < PingCheckTime)
-                    {
-                        _log.Debug($"Ignoring ping (too much!): {(time - _lastPingTime)}");
-                        return;
-                    }
-                    _lastPingTime = time;
-                    AbstractConnection[] d;
+                    Trace.WriteLine($"Ignoring ping (too much!): {(time - lastPingTime)}");
+                    return;
+                }
+                lastPingTime = time;
+                ConnectionSession[] _connections;
 
-                    lock (lockobj)
-                    {
-                        d = _connections.ToArray();
-                    }
+                lock (lockobj)
+                {
+                    _connections = connections.ToArray();
+                }
 
-                    foreach (var session in d)
+                foreach (ConnectionSession session in _connections)
+                {
+                    string sessionInfo = $"{session}";
+                    try
                     {
                         if (session.gotPong || !session.sentSecondPing)
                         {
-                            session.gotPong = false;
+                            //if (session.gotPong)
+                            //{
+                            //    Trace.WriteLine($"[{sessionInfo}] Got pong");
+                            //}
                             if (session.sentPing)
                             {
+                                //Trace.WriteLine($"[{sessionInfo}] Sent second ping");
                                 session.sentSecondPing = true;
-                            }
-
-                            session.sentPing = true;
-                            if (session.pings > 0)
-                            {
-                                session.pings = 0;
-                                //dcCallback?.Invoke("Got pong - resetting number of ping retries because connection re-established");
-                            }
-                            session.SendPing();
-                        }
-                        else if ((time - session.pingSentDateTime) > PingCheckTime)
-                        {
-                            session.pings++;
-
-                            //dcCallback?.Invoke("Pinger Disconnected! Retry " + session.pings + ". " + session.IP + ":" + session.Port + " " + MasterThread.CurrentDate);
-
-                            if (session.pings > 8)
-                            {
-                                dcCallback?.Invoke("Pinger Disconnected! Too many retries, killing connection. " + session.IP + ":" + session.Port + " " + MasterThread.CurrentDate);
-
-
-                                if (session.Disconnect())
-                                {
-                                    // Killed
-                                    dcCallback?.Invoke("Session is now disconnected. " + session.IP + ":" +
-                                                       session.Port + " " + MasterThread.CurrentDate);
-                                }
-                                else
-                                {
-                                    dcCallback?.Invoke("Connection was already dead?! Getting rid of it. " +
-                                                       session.IP + ":" + session.Port + " " +
-                                                       MasterThread.CurrentDate);
-
-                                    Remove(session);
-                                }
                             }
                             else
                             {
-                                // Make the session kill faster
-                                session.SendPing();
+                                session.sentPing = true;
+                            }
+                            session.gotPong = false;
+                            session.pings = 0;
+                        }
+                        else if ((time - session.pingSentDateTime) > Settings.Default.PingInterval)
+                        {
+                            session.pings++;
+                            //Trace.WriteLine($"[{session}] Ping failed, retrying ({session.pings}/8)");
+
+                            if (session.pings > 8)
+                            {
+                                throw new SessionDisconnectException("Too many retries, killing connection.");
                             }
                         }
+                        //Trace.WriteLine($"[{sessionInfo}] Send ping");
+                        session.SendPing();
                     }
-                }, PingCheckTime, PingCheckTime));
+                    catch (SessionDisconnectException e)
+                    {
+                        dcCallback?.Invoke($"[{sessionInfo}] Pinger disconnected! {e.Message}");
+
+                        if (session.Disconnect())
+                        {
+                            // Killed
+                            dcCallback?.Invoke($"[{sessionInfo}] Session is now disconnected.");
+                        }
+                        else
+                        {
+                            dcCallback?.Invoke($"[{sessionInfo}] Connection was already dead?! Getting rid of it.");
+                            Remove(session);
+                        }
+                    }
+                }
+            }, Settings.Default.PingInterval, Settings.Default.PingInterval);
+            pAction.Start();
         }
     }
 }

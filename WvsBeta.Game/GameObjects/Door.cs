@@ -24,7 +24,7 @@ namespace WvsBeta.Game
             EndTime = tEnd;
         }
 
-        public bool CanEnterDoor(Character chr)
+        public bool CanEnterDoor(GameCharacter chr)
         {
             if (chr.PartyID != -1 && chr.PartyID != 0 && OwnerPartyId == chr.PartyID) return true;
             if (chr.ID == OwnerId) return true;
@@ -74,7 +74,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void CreateDoor(Character chr, short x, short y, long endTime)
+        public void CreateDoor(GameCharacter chr, short x, short y, long endTime)
         {
             var door = new MysticDoor(chr.ID, chr.PartyID, x, y, Field.ID, endTime);
             Doors.Add(chr.ID, door);
@@ -90,7 +90,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void ShowAllDoorsTo(Character fucker)
+        public void ShowAllDoorsTo(GameCharacter fucker)
         {
             foreach (var d in Doors.Values)
             {

@@ -19,7 +19,7 @@ namespace WvsBeta.Game
         public string Password { get; protected set; }
         public byte MaxUsers { get; protected set; }
         public byte EnteredUsers { get; protected set; }
-        public Character[] Users { get; protected set; }
+        public GameCharacter[] Users { get; protected set; }
         public bool Opened { get; protected set; }
         public bool CloseRequest { get; protected set; }
         public bool GameStarted { get; protected set; }
@@ -32,7 +32,7 @@ namespace WvsBeta.Game
             Title = pTitle;
             Password = pPassword;
             MaxUsers = 2;
-            Users = new Character[MaxUsers];
+            Users = new GameCharacter[MaxUsers];
             Opened = false;
             Private = pPrivate;
             CloseRequest = false;
@@ -49,21 +49,21 @@ namespace WvsBeta.Game
             return 0xFF;
         }
 
-        public void RemovePlayer(Character pCharacter)
+        public void RemovePlayer(GameCharacter pCharacter)
         {
             Users[pCharacter.RoomSlotId] = null;
             pCharacter.RoomSlotId = 0;
             EnteredUsers--;
         }
 
-        public void AddPlayer(Character pCharacter)
+        public void AddPlayer(GameCharacter pCharacter)
         {
             EnteredUsers++;
             pCharacter.RoomSlotId = GetEmptySlot();
             Users[pCharacter.RoomSlotId] = pCharacter;
         }
 
-        public static MatchCard CreateRoom(Character pOwner, string pTitle, bool pPrivate, string pPassword)
+        public static MatchCard CreateRoom(GameCharacter pOwner, string pTitle, bool pPrivate, string pPassword)
         {
             MatchCard matchcard = new MatchCard(pTitle, pPrivate, pPassword);
             matchcard.AddPlayer(pOwner);

@@ -30,7 +30,7 @@ namespace WvsBeta.Game
             IncorrectPassword = 0x10,
         }
 
-        public static void Test(Character chr)
+        public static void Test(GameCharacter chr)
         {
             Packet pw = new Packet();
             pw.WriteByte(0xAF);
@@ -41,7 +41,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void ShowWindow(Character pOwner, MiniRoomBase mrb, byte OmokType)
+        public static void ShowWindow(GameCharacter pOwner, MiniRoomBase mrb, byte OmokType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -50,7 +50,7 @@ namespace WvsBeta.Game
             pw.WriteBool(mrb.Users[0] == pOwner ? false : true);
             for (byte i = 0; i < 2; i++)
             {
-                Character pUser = pOwner.Room.Users[i];
+                GameCharacter pUser = pOwner.Room.Users[i];
                 if (pUser != null)
                 {
                     pw.WriteByte(i);
@@ -99,7 +99,7 @@ namespace WvsBeta.Game
             pOwner.SendPacket(pw);
         }
 
-        public static void ShowWindowTest(Character chr)
+        public static void ShowWindowTest(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -128,7 +128,7 @@ namespace WvsBeta.Game
 
             chr.SendPacket(pw);
         }
-        public static void AddVisitor(Character chr, MiniRoomBase mrb)
+        public static void AddVisitor(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
@@ -149,7 +149,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void AddVisitor(Character chr, Character to)
+        public static void AddVisitor(GameCharacter chr, GameCharacter to)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x04);
@@ -164,7 +164,7 @@ namespace WvsBeta.Game
             to.SendPacket(pw);
         }
 
-        public static void AddAnnounceBox(Character chr, byte RoomType, int rid, string name, bool pPublic, byte CardType, bool InProgress)
+        public static void AddAnnounceBox(GameCharacter chr, byte RoomType, int rid, string name, bool pPublic, byte CardType, bool InProgress)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BALLOON);
             pw.WriteInt(chr.ID);
@@ -180,7 +180,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void AddAnnounceBox2(Character to, Character chr, byte RoomType, int rid, string name, bool pPublic, byte CardType, bool InProgress)
+        public static void AddAnnounceBox2(GameCharacter to, GameCharacter chr, byte RoomType, int rid, string name, bool pPublic, byte CardType, bool InProgress)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BALLOON);
             pw.WriteInt(chr.ID);
@@ -196,7 +196,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void RemoveAnnounceBox(Character chr)
+        public static void RemoveAnnounceBox(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BALLOON);
             pw.WriteInt(chr.ID);
@@ -204,7 +204,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void AddShop(Character chr)
+        public static void AddShop(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -222,7 +222,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void ErrorMessage(Character chr, MiniGameError error)
+        public static void ErrorMessage(GameCharacter chr, MiniGameError error)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -231,21 +231,21 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void Ready(Character chr, MiniRoomBase mrb)
+        public static void Ready(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x20);
             mrb.BroadcastPacket(pw);
         }
 
-        public static void UnReady(Character chr, MiniRoomBase mrb)
+        public static void UnReady(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x21);
             mrb.BroadcastPacket(pw);
         }
 
-        public static void OmokMessage(Character chr, MiniRoomBase mrb, byte Type)
+        public static void OmokMessage(GameCharacter chr, MiniRoomBase mrb, byte Type)
         {
             //You have double -3's o.o
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -254,14 +254,14 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void RequestTie(Character chr, MiniRoomBase mrb)
+        public static void RequestTie(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x18);
             mrb.BroadcastPacket(pw);
         }
 
-        public static void RequestTieResult(Character chr, MiniRoomBase mrb)
+        public static void RequestTieResult(GameCharacter chr, MiniRoomBase mrb)
         {
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -269,7 +269,7 @@ namespace WvsBeta.Game
             mrb.BroadcastPacket(pw);
         }
 
-        public static void RequestHandicap(Character chr, MiniRoomBase mrb)
+        public static void RequestHandicap(GameCharacter chr, MiniRoomBase mrb)
         {
             //Your opponent has requested for a handicap. Will you accept it? 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -277,7 +277,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void RequestHandicapResult(Character chr, MiniRoomBase mrb, bool Accepted, byte CountBack)
+        public static void RequestHandicapResult(GameCharacter chr, MiniRoomBase mrb, bool Accepted, byte CountBack)
         {
             //Your opponent denied your request for a handicap
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -291,7 +291,7 @@ namespace WvsBeta.Game
             mrb.BroadcastPacket(pw);
         }
 
-        public static void MoveOmokPiece(Character chr, MiniRoomBase mrb, int X, int Y, byte Piece)
+        public static void MoveOmokPiece(GameCharacter chr, MiniRoomBase mrb, int X, int Y, byte Piece)
         {
             //decodebuffer (8 bytes.. obviously 2 ints)
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -321,7 +321,7 @@ namespace WvsBeta.Game
             mrb.BroadcastPacket(pw);
         }
 
-        public static void Start(Character chr, MiniRoomBase mrb)
+        public static void Start(GameCharacter chr, MiniRoomBase mrb)
         {
             //Timer is (null) then client stops responding ;-;
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -329,7 +329,7 @@ namespace WvsBeta.Game
             pw.WriteByte(mrb.mWinnerIndex); //0 Would let slot 1, 1 would let slot 0
             mrb.BroadcastPacket(pw);
         }
-        public static void Start2(Character chr, MiniRoomBase mrb)
+        public static void Start2(GameCharacter chr, MiniRoomBase mrb)
         {
             //Timer is (null) then client stops responding ;-;
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -338,7 +338,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void UpdateGame(Character pWinner, MiniRoomBase mrb, byte Type)
+        public static void UpdateGame(GameCharacter pWinner, MiniRoomBase mrb, byte Type)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x24);
@@ -374,7 +374,7 @@ namespace WvsBeta.Game
             mrb.BroadcastPacket(pw);
         }
 
-        public static void ShowLeaveMessage(Character pCharacter)
+        public static void ShowLeaveMessage(GameCharacter pCharacter)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(10);
@@ -383,7 +383,7 @@ namespace WvsBeta.Game
             pCharacter.SendPacket(pw);
         }
 
-        public static void RoomClosedMessage(Character pCharacter)
+        public static void RoomClosedMessage(GameCharacter pCharacter)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0xA);

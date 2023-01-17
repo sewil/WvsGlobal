@@ -25,8 +25,8 @@ namespace WvsBeta.Center
         public LocalServerType Type { get; set; }
         public int Connections { get; set; }
         public bool Connected { get; set; }
-        public LocalConnection Connection { get; set; }
-        public LocalConnection TransferConnection { get; set; }
+        public LocalSession Connection { get; set; }
+        public LocalSession TransferConnection { get; set; }
         public byte ChannelID { get; set; }
 
         public bool IsReallyUsed { get; set; }
@@ -40,7 +40,7 @@ namespace WvsBeta.Center
         private double RateMesoAmount_Default;
         private double RateDropChance_Default;
 
-        public LocalConnection ActiveServerConnection => InMaintenance ? TransferConnection : Connection;
+        public LocalSession ActiveServerConnection => InMaintenance ? TransferConnection : Connection;
         public bool IsGameServer => Type == LocalServerType.Game;
 
         public LocalServer()
@@ -50,7 +50,7 @@ namespace WvsBeta.Center
             InMaintenance = false;
         }
 
-        public void SetConnection(LocalConnection lc)
+        public void SetConnection(LocalSession lc)
         {
             if (InMaintenance)
             {

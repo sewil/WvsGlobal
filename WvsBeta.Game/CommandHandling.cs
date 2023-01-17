@@ -4,10 +4,13 @@ using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Packets;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -124,7 +127,7 @@ namespace WvsBeta.Game
             else return -1;
         }
 
-        private static Character.BanReasons GetBanReasonFromText(CommandArg arg)
+        private static GameCharacter.BanReasons GetBanReasonFromText(CommandArg arg)
         {
             switch (arg)
             {
@@ -133,53 +136,53 @@ namespace WvsBeta.Game
                 case "ct":
                 case "h":
                 case "hack":
-                case "hax": return Character.BanReasons.Hack;
+                case "hax": return GameCharacter.BanReasons.Hack;
 
                 // Your account has been blocked for using macro / auto-keyboard.
                 case "2":
                 case "bot":
-                case "macro": return Character.BanReasons.Macro;
+                case "macro": return GameCharacter.BanReasons.Macro;
 
                 // Your account has been blocked for illicit promotion and advertising.
                 case "3":
                 case "promo":
                 case "ad":
                 case "ads":
-                case "advertisement": return Character.BanReasons.Advertisement;
+                case "advertisement": return GameCharacter.BanReasons.Advertisement;
 
                 // Your account has been blocked for for harassment.
                 case "4":
                 case "harass":
-                case "harassment": return Character.BanReasons.Harassment;
+                case "harassment": return GameCharacter.BanReasons.Harassment;
 
                 // Your account has been blocked for using profane language.
                 case "5":
                 case "trol":
                 case "trolling":
                 case "curse":
-                case "badlanguage": return Character.BanReasons.BadLanguage;
+                case "badlanguage": return GameCharacter.BanReasons.BadLanguage;
 
                 // Your account has been blocked for scamming.
                 case "6":
                 case "scamming":
-                case "scam": return Character.BanReasons.Scam;
+                case "scam": return GameCharacter.BanReasons.Scam;
 
                 // Your account has been blocked for misconduct.
                 case "7":
                 case "ks":
-                case "misconduct": return Character.BanReasons.Misconduct;
+                case "misconduct": return GameCharacter.BanReasons.Misconduct;
 
                 // Your account has been blocked for illegal cash transaction
                 case "8":
                 case "sell":
-                case "irlmoney": return Character.BanReasons.Sell;
+                case "irlmoney": return GameCharacter.BanReasons.Sell;
 
                 // Your account has been blocked for illegal charging/funding. Please contact customer support for further details.
                 case "9":
                 case "moneyloundry":
-                case "icash": return Character.BanReasons.ICash;
+                case "icash": return GameCharacter.BanReasons.ICash;
 
-                default: return Character.BanReasons.Hack;
+                default: return GameCharacter.BanReasons.Hack;
             }
         }
 
@@ -252,7 +255,7 @@ namespace WvsBeta.Game
         }
 
         static bool shuttingDown = false;
-        public static bool HandleChat(Character character, string text)
+        public static bool HandleChat(GameCharacter character, string text)
         {
             if (!character.IsGM) return false;
 
@@ -310,8 +313,8 @@ namespace WvsBeta.Game
                                     if (DataProvider.Maps.ContainsKey(FieldID))
                                         character.ChangeMap(FieldID);
                                     else
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Map not found.",
-                                            character, MessagePacket.MessageMode.ToPlayer);
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Map not found.",
+                                            character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -341,8 +344,8 @@ namespace WvsBeta.Game
                                         return true;
                                     }
 
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Victim not found.",
-                                        character, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
+                                        character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -371,8 +374,8 @@ namespace WvsBeta.Game
                                         return true;
                                     }
 
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Victim not found.",
-                                        character, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
+                                        character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -390,7 +393,7 @@ namespace WvsBeta.Game
                                     Server.Instance.CharacterList.Select(x =>
                                         x.Value.Name + (x.Value.IsAFK ? " (AFK)" : ""))
                                 );
-                                MessagePacket.SendNotice(playersonline, character);
+                                ChatPacket.SendNotice(playersonline, character);
                                 return true;
                             }
 
@@ -404,14 +407,14 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string victim = Args[0].Value.ToLower();
-                                    Character who = Server.Instance.GetCharacter(victim);
+                                    GameCharacter who = Server.Instance.GetCharacter(victim);
 
                                     if (who != null)
                                         who.Player.Socket.Disconnect();
                                     else
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
                                             "You have entered an incorrect name.", character,
-                                            MessagePacket.MessageMode.ToPlayer);
+                                            ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -423,7 +426,7 @@ namespace WvsBeta.Game
                         case "ban":
                         case "banhelp":
                             {
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "Help: Use !permaban <userid/charname/charid> <value> (reason) to ban permanently. Use !suspend <userid/charname/charid> <value> <days to suspend> (reason)",
                                     character);
                                 return true;
@@ -433,23 +436,23 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count >= 2)
                                 {
-                                    Character.BanReasons banReason = Args.Count >= 3
+                                    GameCharacter.BanReasons banReason = Args.Count >= 3
                                         ? GetBanReasonFromText(Args[2])
-                                        : Character.BanReasons.Hack;
+                                        : GameCharacter.BanReasons.Hack;
 
                                     switch (GetUserIDFromArgs(Args[0], Args[1], out int userId))
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice("User with char id " + Args[1] + " does not exist",
+                                            ChatPacket.SendNotice("User with char id " + Args[1] + " does not exist",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.", character);
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.", character);
                                             return true;
                                         case UserIdFetchResult.Found:
                                             Server.Instance.CharacterDatabase.PermaBan(userId, (byte)banReason, character.Name, "");
@@ -458,11 +461,11 @@ namespace WvsBeta.Game
                                             var msg =
                                                 $"[{character.Name}] Permabanned {Args[0]} {Args[1]} (userid {userId}), reason {banReason}";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            MessagePacket.SendNoticeGMs(msg, MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice("Usage: !permaban <userid/charname/charid> <value> (reason)",
+                                ChatPacket.SendNotice("Usage: !permaban <userid/charname/charid> <value> (reason)",
                                     character);
 
                                 return true;
@@ -472,23 +475,23 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count >= 3 && Args[2].IsNumber())
                                 {
-                                    Character.BanReasons banReason = Args.Count > 3
+                                    GameCharacter.BanReasons banReason = Args.Count > 3
                                         ? GetBanReasonFromText(Args[3])
-                                        : Character.BanReasons.Hack;
+                                        : GameCharacter.BanReasons.Hack;
 
                                     switch (GetUserIDFromArgs(Args[0], Args[1], out int userId))
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice("User with char id " + Args[1] + " does not exist",
+                                            ChatPacket.SendNotice("User with char id " + Args[1] + " does not exist",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.", character);
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.", character);
                                             return true;
                                         case UserIdFetchResult.Found:
                                             var hours = Args[2].GetInt32();
@@ -499,11 +502,11 @@ namespace WvsBeta.Game
                                             var msg =
                                                 $"[{character.Name}] Tempbanned {Args[0]} {Args[1]} (userid {userId}), reason {banReason}, hours {hours}";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            MessagePacket.SendNoticeGMs(msg, MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "Usage: !suspend/tempban <userid/charname/charid> <value> <hours> (reason)",
                                     character);
                                 return true;
@@ -521,15 +524,15 @@ namespace WvsBeta.Game
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice("User with char id " + Args[1] + " does not exist",
+                                            ChatPacket.SendNotice("User with char id " + Args[1] + " does not exist",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.", character);
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.", character);
                                             return true;
                                         case UserIdFetchResult.Found:
                                             Server.Instance.CharacterDatabase.RunQuery(
@@ -541,11 +544,11 @@ namespace WvsBeta.Game
                                             var msg =
                                                 $"[{character.Name}] Unbanned {Args[0]} {Args[1]} (userid {userId})";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            MessagePacket.SendNoticeGMs(msg, MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice("Usage: !unban <userid/charname/charid> <value>", character);
+                                ChatPacket.SendNotice("Usage: !unban <userid/charname/charid> <value>", character);
 
                                 return true;
                             }
@@ -559,13 +562,13 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count >= 3 && Args[2].IsNumber())
                                 {
-                                    MessagePacket.MuteReasons banReason = Args.Count > 3
-                                        ? MessagePacket.ParseMuteReason(Args[3])
-                                        : MessagePacket.MuteReasons.FoulLanguage;
+                                    ChatPacket.MuteReasons banReason = Args.Count > 3
+                                        ? ChatPacket.ParseMuteReason(Args[3])
+                                        : ChatPacket.MuteReasons.FoulLanguage;
 
                                     if (banReason == 0)
                                     {
-                                        MessagePacket.SendNotice("Unknown mute reason.", character);
+                                        ChatPacket.SendNotice("Unknown mute reason.", character);
                                         return true;
                                     }
 
@@ -573,15 +576,15 @@ namespace WvsBeta.Game
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice(
+                                            ChatPacket.SendNotice(
                                                 "User with char id " + Args[1] + " does not exist", character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.Found:
@@ -607,11 +610,11 @@ namespace WvsBeta.Game
                                             var msg =
                                                 $"[{character.Name}] Muted {Args[0]} {Args[1]} (userid {userId}), reason {banReason}, hours {hours}";
                                             Server.Instance.MutebanDiscordReporter.Enqueue(msg);
-                                            MessagePacket.SendNoticeGMs(msg, MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "Usage: !muteban/mute <userid/charname/charid> <value> <hours> (reason)",
                                     character);
                                 return true;
@@ -624,15 +627,15 @@ namespace WvsBeta.Game
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice("User with char id " + Args[1] + " does not exist",
+                                            ChatPacket.SendNotice("User with char id " + Args[1] + " does not exist",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.", character);
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.", character);
                                             return true;
                                         case UserIdFetchResult.Found:
                                             Server.Instance.CharacterDatabase.RunQuery(
@@ -656,11 +659,11 @@ namespace WvsBeta.Game
                                             var msg =
                                                 $"[{character.Name}] Unmuted {Args[0]} {Args[1]} (userid {userId})";
                                             Server.Instance.MutebanDiscordReporter.Enqueue(msg);
-                                            MessagePacket.SendNoticeGMs(msg, MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice("Usage: !unmute <userid/charname/charid> <value>", character);
+                                ChatPacket.SendNotice("Usage: !unmute <userid/charname/charid> <value>", character);
 
                                 return true;
                             }
@@ -676,7 +679,7 @@ namespace WvsBeta.Game
                                     var chr = Server.Instance.GetCharacter(Args[0]);
                                     if (chr == null)
                                     {
-                                        MessagePacket.SendNotice("Character " + Args[0] + " not found on this channel.",
+                                        ChatPacket.SendNotice("Character " + Args[0] + " not found on this channel.",
                                             character);
                                     }
                                     else
@@ -684,13 +687,13 @@ namespace WvsBeta.Game
                                         var hours = Args[1].GetInt32();
                                         chr.HacklogMuted = MasterThread.CurrentDate.AddHours(hours);
                                         RedisBackend.Instance.MuteCharacter(character.ID, chr.ID, hours);
-                                        MessagePacket.SendNoticeGMs(
+                                        ChatPacket.SendNoticeGMs(
                                             $"[{character.Name}] Muted character {Args[0]} for {hours} hours.",
-                                            MessagePacket.MessageTypes.RedText);
+                                            ChatPacket.MessageTypes.RedText);
                                     }
                                     return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !hackmute <charactername> <hours>", character);
+                                ChatPacket.SendNotice("Usage: !hackmute <charactername> <hours>", character);
                                 return true;
                             }
                         case "hackunmute":
@@ -700,19 +703,19 @@ namespace WvsBeta.Game
                                     var chr = Server.Instance.GetCharacter(Args[0]);
                                     if (chr == null)
                                     {
-                                        MessagePacket.SendNotice("Character " + Args[0] + " not found on this channel.",
+                                        ChatPacket.SendNotice("Character " + Args[0] + " not found on this channel.",
                                             character);
                                     }
                                     else
                                     {
                                         chr.HacklogMuted = DateTime.MinValue;
                                         RedisBackend.Instance.UnmuteCharacter(chr.ID);
-                                        MessagePacket.SendNoticeGMs($"[{character.Name}] Unmuted character {Args[0]}",
-                                            MessagePacket.MessageTypes.RedText);
+                                        ChatPacket.SendNoticeGMs($"[{character.Name}] Unmuted character {Args[0]}",
+                                            ChatPacket.MessageTypes.RedText);
                                     }
                                     return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !hackunmute <charactername>", character);
+                                ChatPacket.SendNotice("Usage: !hackunmute <charactername>", character);
                                 return true;
                             }
 
@@ -748,15 +751,15 @@ namespace WvsBeta.Game
                                     {
                                         case UserIdFetchResult.UnknownType: break; // Fallthrough
                                         case UserIdFetchResult.IDNotFound:
-                                            MessagePacket.SendNotice("User with char id " + Args[1] + " does not exist",
+                                            ChatPacket.SendNotice("User with char id " + Args[1] + " does not exist",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.PlayerNotFound:
-                                            MessagePacket.SendNotice("Player " + Args[1] + " does not exist.",
+                                            ChatPacket.SendNotice("Player " + Args[1] + " does not exist.",
                                                 character);
                                             return true;
                                         case UserIdFetchResult.UserNotFound:
-                                            MessagePacket.SendNotice("User " + Args[1] + " does not exist.", character);
+                                            ChatPacket.SendNotice("User " + Args[1] + " does not exist.", character);
                                             return true;
                                         case UserIdFetchResult.Found:
                                             var amount = Math.Min(Args[2].GetInt32(), 10);
@@ -770,13 +773,13 @@ namespace WvsBeta.Game
                                                     x.Value.MoveTraceCount = amount;
                                                     x.Value.MoveTraceSource = source;
                                                 });
-                                                MessagePacket.SendNotice(
+                                                ChatPacket.SendNotice(
                                                     $"Tracing player type {source} amount {amount}!", character);
                                             }
                                             return true;
                                     }
                                 }
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "Usage: !movetrace(pet|player|mob|summon) <userid/charname/charid> <value> <amount>",
                                     character);
                                 return true;
@@ -796,7 +799,7 @@ namespace WvsBeta.Game
                                     if (victim != null)
                                     {
                                         AdminPacket.SentWarning(character, true);
-                                        MessagePacket.SendAdminWarning(victim, string.Join(" ", Args.Args.Skip(1)));
+                                        ChatPacket.SendAdminWarning(victim, string.Join(" ", Args.Args.Skip(1)));
                                     }
                                     else
                                     {
@@ -804,7 +807,7 @@ namespace WvsBeta.Game
                                     }
                                     return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !warn charname <text...>", character);
+                                ChatPacket.SendNotice("Usage: !warn charname <text...>", character);
                                 return true;
                             }
 
@@ -814,11 +817,11 @@ namespace WvsBeta.Game
                                 if (Args.Count >= 1)
                                 {
                                     AdminPacket.SentWarning(character, true);
-                                    MessagePacket.SendAdminWarning(character.Field, string.Join(" ", Args.Args));
+                                    ChatPacket.SendAdminWarning(character.Field, string.Join(" ", Args.Args));
 
                                     return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !warnmap <text...>", character);
+                                ChatPacket.SendNotice("Usage: !warnmap <text...>", character);
                                 return true;
                             }
 
@@ -1004,7 +1007,7 @@ namespace WvsBeta.Game
                             {
                                 string ret = "Position of " + character.Name + ". X: " + character.Position.X +
                                              ". Y: " + character.Position.Y + ". Fh: " + character.Foothold + ".";
-                                MessagePacket.SendNotice(ret, character);
+                                ChatPacket.SendNotice(ret, character);
                                 return true;
                             }
 
@@ -1018,12 +1021,12 @@ namespace WvsBeta.Game
                                 var undercover = Args[0].GetBool();
                                 RedisBackend.Instance.SetUndercover(character.ID, undercover);
                                 character.Undercover = undercover;
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "You are now " + (undercover ? "" : "not") + " undercover.", character);
                                 return true;
                             }
 
-                            MessagePacket.SendNotice("Usage: !undercover <true/false>", character);
+                            ChatPacket.SendNotice("Usage: !undercover <true/false>", character);
                             return true;
 
                         #endregion
@@ -1033,9 +1036,9 @@ namespace WvsBeta.Game
                         case "reportlog":
                         case "reports":
                             {
-                                MessagePacket.SendNotice("These are the last (at most) 15 reports: ", character);
+                                ChatPacket.SendNotice("These are the last (at most) 15 reports: ", character);
                                 ReportManager.GetAbuseReports()
-                                    .ForEach(r => MessagePacket.SendNotice(r.ToString(), character));
+                                    .ForEach(r => ChatPacket.SendNotice(r.ToString(), character));
                                 return true;
                             }
 
@@ -1046,7 +1049,7 @@ namespace WvsBeta.Game
                         case "whowashere":
                             {
                                 const int MaxAmount = 10;
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     "These are the last (at most) " + MaxAmount + " players that entered the map:",
                                     character);
                                 var lastPlayers = character.Field.PlayersThatHaveBeenHere.ToList();
@@ -1058,7 +1061,7 @@ namespace WvsBeta.Game
                                     return x.Key + " (" + secondsAgo + "s ago)";
                                 }));
 
-                                MessagePacket.SendNotice(str, character);
+                                ChatPacket.SendNotice(str, character);
 
                                 return true;
                             }
@@ -1078,7 +1081,7 @@ namespace WvsBeta.Game
                                         character,
                                         script =>
                                         {
-                                            MessagePacket.SendNotice("Error compiling script: " + script, character);
+                                            ChatPacket.SendNotice("Error compiling script: " + script, character);
                                         }
                                     );
                                 }
@@ -1111,7 +1114,7 @@ namespace WvsBeta.Game
                                              !DataProvider.Items.ContainsKey(ItemID) &&
                                              !DataProvider.Pets.ContainsKey(ItemID)))
                                         {
-                                            MessagePacket.SendNotice("Item not found :(", character);
+                                            ChatPacket.SendNotice("Item not found :(", character);
                                             return true;
                                         }
 
@@ -1144,17 +1147,17 @@ namespace WvsBeta.Game
                                         }
                                     }
                                     else
-                                        MessagePacket.SendNotice($"Command syntax: !{Args.Command} [itemid] {{amount}}",
+                                        ChatPacket.SendNotice($"Command syntax: !{Args.Command} [itemid] {{amount}}",
                                             character);
                                     return true;
                                 }
                                 catch (Exception ex)
                                 {
-                                    MessagePacket.SendNotice($"Command syntax: !{Args.Command} [itemid] {{amount}}",
+                                    ChatPacket.SendNotice($"Command syntax: !{Args.Command} [itemid] {{amount}}",
                                         character);
                                     if (character.IsGM)
                                     {
-                                        MessagePacket.SendNotice(string.Format("LOLEXCEPTION: {0}", ex.ToString()),
+                                        ChatPacket.SendNotice(string.Format("LOLEXCEPTION: {0}", ex.ToString()),
                                             character);
                                     }
                                     return true;
@@ -1190,8 +1193,8 @@ namespace WvsBeta.Game
                                         }
                                     }
                                     else
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Mob not found.",
-                                            character, MessagePacket.MessageMode.ToPlayer);
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Mob not found.",
+                                            character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1203,7 +1206,7 @@ namespace WvsBeta.Game
                         case "varset":
                             {
                                 if (Args.Count == 0)
-                                    MessagePacket.SendNotice(
+                                    ChatPacket.SendNotice(
                                         "Usable args are Hp, Mp, Exp, MaxHp, MaxMp, Ap, Sp, Str, Dex, Int, Luk, Job, Level, Gender, Skin, Face, and Hair for Users and Name, Level, Tameness, Hunger for Pets.",
                                         character);
                                 else if (Args.Count == 2 ||
@@ -1224,7 +1227,7 @@ namespace WvsBeta.Game
                                                 (Args.Count >= 4) ? Args[3].Value : null,
                                                 (Args.Count == 5) ? Args[4].Value : null);
                                         else
-                                            MessagePacket.SendNotice($"Unable to find {Args.Args[0].Value}", character);
+                                            ChatPacket.SendNotice($"Unable to find {Args.Args[0].Value}", character);
                                     }
                                 }
                                 else if (Args.Args.Count == 3)
@@ -1233,10 +1236,10 @@ namespace WvsBeta.Game
                                     if (Player != null && Args[1].Value.ToLower() == "pet")
                                         Player.OnPetVarset(Args[2].Value, Args[3].Value, false);
                                     else
-                                        MessagePacket.SendNotice("Unable to find the user or pet", character);
+                                        ChatPacket.SendNotice("Unable to find the user or pet", character);
                                 }
                                 else
-                                    MessagePacket.SendNotice("Too many or not enough args!", character);
+                                    ChatPacket.SendNotice("Too many or not enough args!", character);
                                 return true;
                             }
 
@@ -1254,8 +1257,8 @@ namespace WvsBeta.Game
                                     MySqlDataReader data = Server.Instance.CharacterDatabase.Reader;
                                     data.Read();
                                     int id = data.GetInt32("ID");
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "ID is " + id + ".",
-                                        character, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "ID is " + id + ".",
+                                        character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1267,26 +1270,21 @@ namespace WvsBeta.Game
                         case "d":
                         case "delete":
                             {
-                                if (Args.Count == 1 && Args[0].IsNumber())
+                                if (Args.Count == 1 && Args[0].IsNumber() && Enum.TryParse(Args[0].GetByte().ToString(), out Inventory inv))
                                 {
-                                    var inv = Args[0].GetByte();
-
-                                    if (inv >= 0 && inv <= 4)
+                                    // Find first item to delete
+                                    var slot = character.Inventory.DeleteFirstItemInInventory(inv);
+                                    if (slot != 0)
                                     {
-                                        // Find first item to delete
-                                        var slot = character.Inventory.DeleteFirstItemInInventory(inv);
-                                        if (slot != 0)
-                                        {
-                                            InventoryPacket.SwitchSlots(character, slot, 0, (byte)(inv + 1));
-                                        }
-                                        else
-                                        {
-                                            MessagePacket.SendNotice("No item to delete found.", character);
-                                        }
-                                        return true;
+                                        InventoryPacket.SwitchSlots(character, slot, 0, inv);
                                     }
+                                    else
+                                    {
+                                        ChatPacket.SendNotice("No item to delete found.", character);
+                                    }
+                                    return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !delete <inventory, 0=equip, 1=use, etc>", character);
+                                ChatPacket.SendNotice("Usage: !delete <inventory, 1=equip, 2=use, etc>", character);
                                 return true;
                             }
 
@@ -1308,7 +1306,7 @@ namespace WvsBeta.Game
                         case "killall":
                             {
                                 int amount = character.Field.KillAllMobs(character, false, 0);
-                                MessagePacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
+                                ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }
 
@@ -1321,7 +1319,7 @@ namespace WvsBeta.Game
                             {
                                 int dmg = Args.Count == 0 ? 0 : Args[0].GetInt32();
                                 int amount = character.Field.KillAllMobs(character, true, dmg);
-                                MessagePacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
+                                ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }
 
@@ -1332,9 +1330,9 @@ namespace WvsBeta.Game
                         case "mapnotice":
                             {
                                 if (Args.Count > 0)
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.PopupBox,
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.PopupBox,
                                         $"[{character.Name}] : {Args.CommandText}", character,
-                                        MessagePacket.MessageMode.ToMap);
+                                        ChatPacket.MessageMode.ToMap);
                                 return true;
                             }
 
@@ -1351,28 +1349,28 @@ namespace WvsBeta.Game
                                     {
                                         if (int.TryParse(Args[0], out charid) == false)
                                         {
-                                            MessagePacket.SendNotice(
+                                            ChatPacket.SendNotice(
                                                 "Character " + Args[0] + " not found??", character);
                                             return true;
                                         }
                                     }
 
                                     RedisBackend.Instance.SetImitateID(character.ID, charid);
-                                    MessagePacket.SendNoticeGMs($"[{character.Name}] Imitating character {Args[0]}.",
-                                        MessagePacket.MessageTypes.RedText);
+                                    ChatPacket.SendNoticeGMs($"[{character.Name}] Imitating character {Args[0]}.",
+                                        ChatPacket.MessageTypes.RedText);
                                     // CC
                                     character.Player.Socket.DoChangeChannelReq(Server.Instance.ID);
                                     return true;
                                 }
-                                MessagePacket.SendNotice("Usage: !ditto <charactername or id>", character);
+                                ChatPacket.SendNotice("Usage: !ditto <charactername or id>", character);
                                 return true;
                             }
                         case "datto":
                             {
                                 RedisBackend.Instance.SetImitateID(character.ID, 0);
-                                MessagePacket.SendNoticeGMs(
+                                ChatPacket.SendNoticeGMs(
                                     $"[{character.ImitatorName}] Stopped imitating {character.Name}. Glad to have you back",
-                                    MessagePacket.MessageTypes.RedText);
+                                    ChatPacket.MessageTypes.RedText);
                                 return true;
                             }
 
@@ -1384,8 +1382,8 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count > 0)
                                 {
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.Notice, Args.CommandText, null,
-                                        MessagePacket.MessageMode.ToChannel);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice, Args.CommandText, null,
+                                        ChatPacket.MessageMode.ToChannel);
                                 }
                                 return true;
                             }
@@ -1416,7 +1414,7 @@ namespace WvsBeta.Game
                                         character.Skills.SetSkillPoint(SkillID, Level);
                                     }
                                     else
-                                        MessagePacket.SendNotice("Skill not found.", character);
+                                        ChatPacket.SendNotice("Skill not found.", character);
                                 }
                                 return true;
                             }
@@ -1511,12 +1509,12 @@ namespace WvsBeta.Game
                                 {
                                     if (!character.Field.Portals.TryGetValue(Args[0], out var pt))
                                     {
-                                        MessagePacket.SendNotice("Portal not found.", character);
+                                        ChatPacket.SendNotice("Portal not found.", character);
                                     }
                                     else
                                     {
                                         var enabled = pt.Enabled = Args.Command.ToLowerInvariant() == "pton";
-                                        MessagePacket.SendNotice(
+                                        ChatPacket.SendNotice(
                                             "Portal " + Args[0] + " is now " + (enabled ? "enabled" : "disabled"),
                                             character);
                                     }
@@ -1535,13 +1533,13 @@ namespace WvsBeta.Game
                                     .OrderBy(x => new Pos(x.X, x.Y) - character.Position).Take(3).ToArray();
                                 if (portalsInRange.Length == 0)
                                 {
-                                    MessagePacket.SendNotice("No portals found.", character);
+                                    ChatPacket.SendNotice("No portals found.", character);
                                 }
                                 else
                                 {
                                     foreach (var portal in portalsInRange)
                                     {
-                                        MessagePacket.SendNotice(
+                                        ChatPacket.SendNotice(
                                             $"Portal '{portal.Name}' id {portal.ID} script '{portal.Script}' enabled {portal.Enabled} Distance {new Pos(portal.X, portal.Y) - character.Position} ToMap {portal.ToMapID} ToName {portal.ToName} Type {portal.Type}",
                                             character);
                                     }
@@ -1557,7 +1555,7 @@ namespace WvsBeta.Game
                             {
                                 var ytd = new DateTime(2010, 1, 1);
                                 Server.Instance.CharacterDatabase.RunQuery("UPDATE characters SET event = '" + ytd.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE ID = @charid", "@charid", character.ID);
-                                MessagePacket.SendNotice("Reset event participation time.", character);
+                                ChatPacket.SendNotice("Reset event participation time.", character);
                                 return true;
                             }
                         #endregion
@@ -1581,7 +1579,7 @@ namespace WvsBeta.Game
                                 "Quiz. Help: !quizhelp Map: /map quiz"
                             };
 
-                                HelpMessages.ForEach(m => MessagePacket.SendNotice(m, character));
+                                HelpMessages.ForEach(m => ChatPacket.SendNotice(m, character));
                                 return true;
                             }
 
@@ -1591,7 +1589,7 @@ namespace WvsBeta.Game
 
                         case "eventdesc":
                             MapPacket.SendGMEventInstructions(character.Field);
-                            MessagePacket.SendNotice("Sent event description to everybody", character);
+                            ChatPacket.SendNotice("Sent event description to everybody", character);
                             return true;
 
                         #endregion
@@ -1616,7 +1614,7 @@ namespace WvsBeta.Game
                                 "Tip: It is recommended (and GMS-like) to run the event with more than 1 hidden jewel. Put a handful, like 5-15."
                             };
 
-                                HelpMessages.ForEach(m => MessagePacket.SendNotice(m, character));
+                                HelpMessages.ForEach(m => ChatPacket.SendNotice(m, character));
                                 return true;
                             }
                         case "ftjenable":
@@ -1624,11 +1622,11 @@ namespace WvsBeta.Game
                                 var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
                                 if (jewelEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("FTJ already in progress. Did not enable entry!");
+                                    ChatPacket.SendNoticeGMs("FTJ already in progress. Did not enable entry!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs("Enabled joining FTJ. Portals Disabled until start.");
+                                    ChatPacket.SendNoticeGMs("Enabled joining FTJ. Portals Disabled until start.");
                                     jewelEvent.Prepare();
                                 }
                                 return true;
@@ -1638,11 +1636,11 @@ namespace WvsBeta.Game
                                 var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
                                 if (jewelEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("FTJ already in progress. Did not start a new one!");
+                                    ChatPacket.SendNoticeGMs("FTJ already in progress. Did not start a new one!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Started FTJ. Portals enabled, and outsiders can no longer join the event.");
                                     jewelEvent.Start();
                                 }
@@ -1650,7 +1648,7 @@ namespace WvsBeta.Game
                             }
                         case "ftjstop":
                             {
-                                MessagePacket.SendNoticeGMs(
+                                ChatPacket.SendNoticeGMs(
                                     "Stopped FTJ early. Kicking everyone if event was in progress...");
                                 var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
                                 jewelEvent.Stop();
@@ -1660,7 +1658,7 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count < 2)
                                 {
-                                    MessagePacket.SendNotice(
+                                    ChatPacket.SendNotice(
                                         "Usage: !ftjreactorhere <reactor id> <jewel>, <jewel> = 0 for no treasure or 1 for treasure",
                                         character);
                                 }
@@ -1696,7 +1694,7 @@ namespace WvsBeta.Game
                                     int rid = short.Parse(Args[0]);
                                     if (rid > maxFTJReactors() || rid < 0)
                                     {
-                                        MessagePacket.SendNotice(
+                                        ChatPacket.SendNotice(
                                             "Exceeded max reactor limit for this map!!! Did not place.", character);
                                         return true;
                                     }
@@ -1731,7 +1729,7 @@ namespace WvsBeta.Game
                                 "another event can be started."
                             };
 
-                                HelpMessages.ForEach(m => MessagePacket.SendNotice(m, character));
+                                HelpMessages.ForEach(m => ChatPacket.SendNotice(m, character));
                                 return true;
                             }
                         case "snowballenable":
@@ -1739,11 +1737,11 @@ namespace WvsBeta.Game
                                 var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
                                 if (snowballEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("Snowball already in progress. Did not enable entry!");
+                                    ChatPacket.SendNoticeGMs("Snowball already in progress. Did not enable entry!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Enabled joining Snowball. Portals Disabled until start.");
                                     snowballEvent.Prepare();
                                 }
@@ -1754,12 +1752,12 @@ namespace WvsBeta.Game
                                 var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
                                 if (snowballEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Snowball already in progress. Did not start a new one!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Started Snowball. Portals enabled, and outsiders can no longer join the event.");
                                     snowballEvent.Start();
                                 }
@@ -1769,7 +1767,7 @@ namespace WvsBeta.Game
                             {
                                 var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
                                 snowballEvent.Stop();
-                                MessagePacket.SendNoticeGMs(
+                                ChatPacket.SendNoticeGMs(
                                     "Stopped Snowball early. Kicking everyone if event was in progress, and determining winner.");
                                 return true;
                             }
@@ -1790,7 +1788,7 @@ namespace WvsBeta.Game
                                 "the timer runs out. All who make it past stage 4 are automatically taken to the victory map by the portal."
                             };
 
-                                HelpMessages.ForEach(m => MessagePacket.SendNotice(m, character));
+                                HelpMessages.ForEach(m => ChatPacket.SendNotice(m, character));
                                 return true;
                             }
                         case "fitnessenable":
@@ -1799,11 +1797,11 @@ namespace WvsBeta.Game
                                 var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
                                 if (fitnessEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("Fitness already in progress. Did not enable entry!");
+                                    ChatPacket.SendNoticeGMs("Fitness already in progress. Did not enable entry!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Enabled joining Fitness. Portals Disabled until start.");
                                     fitnessEvent.Prepare();
                                 }
@@ -1815,12 +1813,12 @@ namespace WvsBeta.Game
                                 var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
                                 if (fitnessEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Fitness already in progress. Did not start a new one!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Started Fitness. Portals enabled, and outsiders can no longer join the event.");
                                     fitnessEvent.Start();
                                 }
@@ -1831,7 +1829,7 @@ namespace WvsBeta.Game
                             {
                                 var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
                                 fitnessEvent.Stop();
-                                MessagePacket.SendNoticeGMs(
+                                ChatPacket.SendNoticeGMs(
                                     "Stopped Fitness early. Kicking everyone if event was in progress.");
                                 return true;
                             }
@@ -1850,7 +1848,7 @@ namespace WvsBeta.Game
                                 "3. To stop early, use !quizstop. Otherwise, the event will run until all questions have been asked."
                             };
 
-                                HelpMessages.ForEach(m => MessagePacket.SendNotice(m, character));
+                                HelpMessages.ForEach(m => ChatPacket.SendNotice(m, character));
                                 return true;
                             }
                         case "quizenable":
@@ -1858,11 +1856,11 @@ namespace WvsBeta.Game
                                 var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
                                 if (quizEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("Quiz already in progress. Did not enable joining!");
+                                    ChatPacket.SendNoticeGMs("Quiz already in progress. Did not enable joining!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs("Enabled joining for Quiz.");
+                                    ChatPacket.SendNoticeGMs("Enabled joining for Quiz.");
                                     quizEvent.Prepare();
                                 }
                                 return true;
@@ -1872,11 +1870,11 @@ namespace WvsBeta.Game
                                 var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
                                 if (quizEvent.InProgress)
                                 {
-                                    MessagePacket.SendNoticeGMs("Quiz already in progress. Did not start a new one!");
+                                    ChatPacket.SendNoticeGMs("Quiz already in progress. Did not start a new one!");
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNoticeGMs(
+                                    ChatPacket.SendNoticeGMs(
                                         "Started Quiz. Portals enabled, and outsiders can no longer join the event.");
                                     quizEvent.Start();
                                 }
@@ -1886,7 +1884,7 @@ namespace WvsBeta.Game
                             {
                                 var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
                                 ((MapleQuizEvent)quizEvent).StopEarly();
-                                MessagePacket.SendNoticeGMs(
+                                ChatPacket.SendNoticeGMs(
                                     "Stopped Quiz early. Kicking everyone if event was in progress.");
                                 return true;
                             }
@@ -1913,9 +1911,9 @@ namespace WvsBeta.Game
                                             len = 10;
                                     }
 
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
                                         string.Format("Shutting down in {0} seconds", len), character,
-                                        MessagePacket.MessageMode.ToPlayer);
+                                        ChatPacket.MessageMode.ToPlayer);
 
                                     MasterThread.RepeatingAction.Start("Shutdown Thread",
                                         (a) => { Environment.Exit(9001); }, (long)len * 1000, 0);
@@ -1924,8 +1922,8 @@ namespace WvsBeta.Game
                                 }
                                 else
                                 {
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
-                                        "Unable to shutdown now!", character, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                        "Unable to shutdown now!", character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1957,11 +1955,11 @@ namespace WvsBeta.Game
                                 {
                                     var txt = Args.CommandText;
                                     Server.Instance.SetScrollingHeader(txt);
-                                    MessagePacket.SendText(
-                                        MessagePacket.MessageTypes.Notice,
+                                    ChatPacket.SendText(
+                                        ChatPacket.MessageTypes.Notice,
                                         txt,
                                         null,
-                                        MessagePacket.MessageMode.ToChannel
+                                        ChatPacket.MessageMode.ToChannel
                                     );
                                 }
                                 return true;
@@ -1986,7 +1984,7 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count % 2 != 0 || Args.Count == 0)
                                 {
-                                    MessagePacket.SendNotice(
+                                    ChatPacket.SendNotice(
                                         "Usage: !packet <type> <value> <type> <value> ... where type is int, short, long, string, byte",
                                         character);
                                     return true;
@@ -2016,7 +2014,7 @@ namespace WvsBeta.Game
                                             pw.WriteString(Args[i + 1].Value);
                                             break;
                                         default:
-                                            MessagePacket.SendNotice("Unknown type: " + Args[i].Value, character);
+                                            ChatPacket.SendNotice("Unknown type: " + Args[i].Value, character);
                                             return true;
                                     }
                                 }
@@ -2037,7 +2035,7 @@ namespace WvsBeta.Game
                                     {
                                         if (!Args[0].IsNumber())
                                         {
-                                            MessagePacket.SendNotice("Command syntax: !drop [itemid] {amount}",
+                                            ChatPacket.SendNotice("Command syntax: !drop [itemid] {amount}",
                                                 character);
                                             return true;
                                         }
@@ -2051,7 +2049,7 @@ namespace WvsBeta.Game
                                              !DataProvider.Items.ContainsKey(ItemID) &&
                                              !DataProvider.Pets.ContainsKey(ItemID)))
                                         {
-                                            MessagePacket.SendNotice("Item not found :(", character);
+                                            ChatPacket.SendNotice("Item not found :(", character);
                                             return true;
                                         }
 
@@ -2070,7 +2068,7 @@ namespace WvsBeta.Game
                                 }
                                 catch
                                 {
-                                    MessagePacket.SendNotice("Item not found :(", character);
+                                    ChatPacket.SendNotice("Item not found :(", character);
                                     return true;
                                 }
                             }
@@ -2078,7 +2076,7 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count < 2 || !Args[0].IsNumber())
                                 {
-                                    MessagePacket.SendNotice("Command syntax: !droptext [0=red, 1=green] your text",
+                                    ChatPacket.SendNotice("Command syntax: !droptext [0=red, 1=green] your text",
                                         character);
                                     return true;
                                 }
@@ -2111,7 +2109,7 @@ namespace WvsBeta.Game
                                                           "";
                                         break;
                                     default:
-                                        MessagePacket.SendNotice("Command syntax: !droptext [0=red, 1=green] your text",
+                                        ChatPacket.SendNotice("Command syntax: !droptext [0=red, 1=green] your text",
                                             character);
                                         return true;
                                 }
@@ -2156,16 +2154,16 @@ namespace WvsBeta.Game
                             {
                                 if (character.Field.PortalsOpen == false)
                                 {
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.Notice,
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice,
                                         "You have toggled the portal on.", character,
-                                        MessagePacket.MessageMode.ToPlayer);
+                                        ChatPacket.MessageMode.ToPlayer);
                                     character.Field.PortalsOpen = true;
                                 }
                                 else
                                 {
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.Notice,
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice,
                                         "You have toggled the portal off.", character,
-                                        MessagePacket.MessageMode.ToPlayer);
+                                        ChatPacket.MessageMode.ToPlayer);
                                     character.Field.PortalsOpen = false;
                                 }
                                 return true;
@@ -2180,13 +2178,13 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string other = Args[0].Value.ToLower();
-                                    foreach (KeyValuePair<int, Character> kvp in Server.Instance.CharacterList)
+                                    foreach (KeyValuePair<int, GameCharacter> kvp in Server.Instance.CharacterList)
                                     {
                                         if (kvp.Value.Name.ToLower() == other)
                                         {
                                             //PartyPacket.partyInvite(kvp.Value);
-                                            MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Hey", kvp.Value,
-                                                MessagePacket.MessageMode.ToPlayer);
+                                            ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Hey", kvp.Value,
+                                                ChatPacket.MessageMode.ToPlayer);
                                         }
                                     }
                                 }
@@ -2207,14 +2205,14 @@ namespace WvsBeta.Game
                                     {
                                         Server.Instance.CharacterDatabase.RunQuery(
                                             $"UPDATE users SET donator = 1 WHERE ID = {derp}");
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
                                             $"'{name} ' is now set as a donator on the AccountID : {derp}", character,
-                                            MessagePacket.MessageMode.ToPlayer);
+                                            ChatPacket.MessageMode.ToPlayer);
                                     }
                                     else if (derp <= 1)
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
                                             "You have entered an incorrect name.", character,
-                                            MessagePacket.MessageMode.ToPlayer);
+                                            ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2253,8 +2251,8 @@ namespace WvsBeta.Game
                                     string name = Args[0].Value.ToLower();
                                     int id = Server.Instance.CharacterDatabase.CharacterIdByName(name);
                                     string name2 = character.Name;
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, $"ID is '{id}'.",
-                                        character, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, $"ID is '{id}'.",
+                                        character, ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2266,7 +2264,7 @@ namespace WvsBeta.Game
                         case "save":
                             {
                                 character.Save();
-                                MessagePacket.SendNotice("Saved!", character);
+                                ChatPacket.SendNotice("Saved!", character);
                                 return true;
                             }
 
@@ -2281,7 +2279,7 @@ namespace WvsBeta.Game
                                     MasterThread.Instance.AddCallback(x =>
                                     {
                                         kvp.Value.Save();
-                                        MessagePacket.SendNotice(kvp.Value.Name + " saved at : " + DateTime.Now + ".",
+                                        ChatPacket.SendNotice(kvp.Value.Name + " saved at : " + DateTime.Now + ".",
                                             character);
                                     }, "Saving message for " + kvp.Key);
                                 }
@@ -2300,10 +2298,10 @@ namespace WvsBeta.Game
                                     if (newname.Length < 14)
                                     {
                                         //character.Pets.ChangePetname(newname);
-                                        MessagePacket.SendNotice("Changed name lol", character);
+                                        ChatPacket.SendNotice("Changed name lol", character);
                                     }
                                     else
-                                        MessagePacket.SendNotice("Cannot change the name! It's too long :(", character);
+                                        ChatPacket.SendNotice("Cannot change the name! It's too long :(", character);
                                 }
                                 return true;
                             }
@@ -2378,12 +2376,12 @@ namespace WvsBeta.Game
                                 var Capacity = Field.GetCapacity();
                                 var boosted = Field.IsBoostedMobGen;
                                 var RemainCapacity = Capacity - Field.Mobs.Count;
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     $"Min Limit {Field.MobCapacityMin}, Max Limit {Field.MobCapacityMax}, Count {Field.Mobs.Count}",
                                     character);
-                                MessagePacket.SendNotice($"Capacity {Capacity}, RemainCapacity {RemainCapacity}",
+                                ChatPacket.SendNotice($"Capacity {Capacity}, RemainCapacity {RemainCapacity}",
                                     character);
-                                MessagePacket.SendNotice(
+                                ChatPacket.SendNotice(
                                     $"Boosted {boosted}, Boost trigger @ {Field.MobCapacityMin / 2} players (cur {Field.Characters.Count})",
                                     character);
                                 return true;
@@ -2398,16 +2396,16 @@ namespace WvsBeta.Game
                                 if (Args.Count > 0)
                                 {
                                     string victim = Args[0].Value.ToLower();
-                                    Character who = Server.Instance.GetCharacter(victim);
+                                    GameCharacter who = Server.Instance.GetCharacter(victim);
 
                                     if (who != null)
                                     {
                                         who.Field.Mobs.ForEach(x => x.Value.SetController(who, true));
                                     }
                                     else
-                                        MessagePacket.SendText(MessagePacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
                                             "You have entered an incorrect name.", character,
-                                            MessagePacket.MessageMode.ToPlayer);
+                                            ChatPacket.MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2416,8 +2414,6 @@ namespace WvsBeta.Game
 
                         #region npcreload
 
-                        case "npcreload":
-                        case "reloadnpc":
                         case "scriptreload":
                         case "reloadscript":
                             {
@@ -2425,11 +2421,10 @@ namespace WvsBeta.Game
                                 {
                                     var scriptName = Args[0];
 
-                                    var fileName = Server.Instance.GetScriptFilename(scriptName);
+                                    var fileName = ScriptAccessor.GetScriptFileName(scriptName);
                                     if (fileName == null)
                                     {
-                                        MessagePacket.SendNotice(
-                                            "Could not find a script with the name " + scriptName + "!", character);
+                                        ChatPacket.SendNotice("Could not find a script with the name " + scriptName + "!", character);
                                         return true;
                                     }
 
@@ -2441,29 +2436,19 @@ namespace WvsBeta.Game
                                         p.WriteString(scriptName);
                                         Server.Instance.CenterConnection.SendPacket(p);
 
-                                        MessagePacket.SendNotice("Sent request to reload the script to all channels.",
+                                        ChatPacket.SendNotice("Sent request to reload the script to all channels.",
                                             character);
                                     }
-                                    else
+                                    else if (ScriptAccessor.GetScript(Server.Instance, scriptName, (script) => {
+                                        ChatPacket.SendNotice("Error while recompiling " + scriptName + ". See logs. Script: " + script, character);
+                                    }, true) != null)
                                     {
-                                        if (Server.Instance.ForceCompileScriptfile(
-                                                fileName,
-                                                (script) =>
-                                                {
-                                                    MessagePacket.SendNotice(
-                                                        "Error while recompiling " + scriptName +
-                                                        ". See logs. Script: " + script,
-                                                        character
-                                                    );
-                                                }) != null)
-                                        {
-                                            MessagePacket.SendNotice("Recompiled the script.", character);
-                                        }
+                                        ChatPacket.SendNotice("Recompiled the script.", character);
                                     }
                                 }
                                 else
                                 {
-                                    MessagePacket.SendNotice(
+                                    ChatPacket.SendNotice(
                                         $"Usage: !{Args.Command} <script name or id> (1 here for all channels)",
                                         character);
                                 }
@@ -2483,7 +2468,7 @@ namespace WvsBeta.Game
                                 p.WriteByte((byte)ISServerMessages.ReloadCashshopData);
                                 Server.Instance.CenterConnection.SendPacket(p);
 
-                                MessagePacket.SendNotice("Sent request to reload the cashshop data.", character);
+                                ChatPacket.SendNotice("Sent request to reload the cashshop data.", character);
                             }
                             return true;
 
@@ -2497,7 +2482,7 @@ namespace WvsBeta.Game
                                 var p = new Packet(ISClientMessages.ReloadEvents);
                                 Server.Instance.CenterConnection.SendPacket(p);
 
-                                MessagePacket.SendNotice("Sent request to reload events.", character);
+                                ChatPacket.SendNotice("Sent request to reload events.", character);
                             }
                             return true;
 
@@ -2509,7 +2494,7 @@ namespace WvsBeta.Game
                             {
                                 if (Args.Count < 6)
                                 {
-                                    MessagePacket.SendNotice("Usage: <short id>, <byte state>, <short x>, <short y>, <bool z>, <byte zm>, [optional] item id", character);
+                                    ChatPacket.SendNotice("Usage: <short id>, <byte state>, <short x>, <short y>, <bool z>, <byte zm>, [optional] item id", character);
                                 }
                                 else
                                 {
@@ -2527,16 +2512,16 @@ namespace WvsBeta.Game
                     }
                 }
 
-                MessagePacket.SendNotice($"Unknown command: {text}", character);
+                ChatPacket.SendNotice($"Unknown command: {text}", character);
                 return true;
             }
             catch (Exception ex)
             {
                 ////Console.WriteLine(ex.ToString());
-                MessagePacket.SendNotice("Something went wrong while processing this command.", character);
+                ChatPacket.SendNotice("Something went wrong while processing this command.", character);
                 if (character.IsGM)
                 {
-                    MessagePacket.SendNotice(ex.ToString(), character);
+                    ChatPacket.SendNotice(ex.ToString(), character);
                 }
                 return true;
             }
@@ -2545,7 +2530,7 @@ namespace WvsBeta.Game
 
 
 
-        public static void HandleAdminCommand(Character chr, Packet packet)
+        public static void HandleAdminCommand(GameCharacter chr, Packet packet)
         {
             if (chr.AssertForHack(!chr.IsGM, "Tried to use slash GM command while not GM")) return;
             //  41 12 1E 00 00 00 
@@ -2575,7 +2560,7 @@ namespace WvsBeta.Game
                                 {
                                     if (Server.Instance.CharacterList.ContainsKey(charid))
                                     {
-                                        Character victim = Server.Instance.GetCharacter(name);
+                                        GameCharacter victim = Server.Instance.GetCharacter(name);
                                         victim.Player.Socket.Disconnect();
                                         Server.Instance.CharacterDatabase.RunQuery("UPDATE users SET ban_reason = 8 WHERE ID = " + ID); //8 : permanent ban
                                         AdminPacket.BanCharacterMessage(chr);
@@ -2611,7 +2596,7 @@ namespace WvsBeta.Game
                                 {
                                     if (Server.Instance.CharacterList.ContainsKey(charid))
                                     {
-                                        Character victim = Server.Instance.GetCharacter(name);
+                                        GameCharacter victim = Server.Instance.GetCharacter(name);
                                         victim.Player.Socket.Disconnect();
                                         Server.Instance.CharacterDatabase.RunQuery("UPDATE users SET ban_reason = " + type + " WHERE ID = " + ID); //8 : permanent ban
                                         AdminPacket.BanCharacterMessage(chr);
@@ -2673,7 +2658,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleAdminCommandLog(Character chr, Packet packet)
+        public static void HandleAdminCommandLog(GameCharacter chr, Packet packet)
         {
             // 42 04 00 2F 70 6F 73 
             packet.ReadString();

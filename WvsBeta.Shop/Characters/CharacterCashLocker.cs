@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Game;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Shop
 {

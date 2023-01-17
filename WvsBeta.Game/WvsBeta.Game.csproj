@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WvsBeta.Game</RootNamespace>
     <AssemblyName>WvsBeta.Game</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
     <FileAlignment>512</FileAlignment>
@@ -41,33 +41,68 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
+    <Reference Include="BouncyCastle.Crypto, Version=1.9.0.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.9.0\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Google.Protobuf, Version=3.21.12.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.21.12\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="K4os.Compression.LZ4, Version=1.2.16.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.1.2.16\lib\net46\K4os.Compression.LZ4.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Compression.LZ4.Streams, Version=1.2.16.0, Culture=neutral, PublicKeyToken=2186fa9121ef231d, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Compression.LZ4.Streams.1.2.16\lib\net46\K4os.Compression.LZ4.Streams.dll</HintPath>
+    </Reference>
+    <Reference Include="K4os.Hash.xxHash, Version=1.0.8.0, Culture=neutral, PublicKeyToken=32cd54395057cec3, processorArchitecture=MSIL">
+      <HintPath>..\packages\K4os.Hash.xxHash.1.0.8\lib\net462\K4os.Hash.xxHash.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=2.0.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <HintPath>..\packages\log4net.2.0.15\lib\net45\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.31.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.31\lib\net48\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.ValueTuple, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
-      <HintPath>..\packages\System.ValueTuple.4.4.0\lib\net461\System.ValueTuple.dll</HintPath>
+    <Reference Include="System.Management" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.5\lib\net461\System.Memory.dll</HintPath>
     </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.5.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.6.0.0\lib\net461\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="ZstdNet, Version=1.4.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.31\lib\net48\ZstdNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BuffDataProvider.cs" />
     <Compile Include="CenterSocket Packets.cs" />
-    <Compile Include="CenterSocket.cs" />
+    <Compile Include="CenterSession.cs" />
     <Compile Include="Characters\Character Hack Logic.cs" />
     <Compile Include="Characters\Character log structs.cs" />
     <Compile Include="Characters\Character Modifiers.cs" />
-    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\GameCharacter.cs" />
     <Compile Include="Characters\CharacterBuffs.cs" />
     <Compile Include="Characters\CharacterGameStats.cs" />
     <Compile Include="Characters\CharacterInventory.cs" />
@@ -77,7 +112,7 @@
     <Compile Include="Characters\CharacterStorage.cs" />
     <Compile Include="Characters\CharacterSummons.cs" />
     <Compile Include="Characters\CharacterVariables.cs" />
-    <Compile Include="Characters\ClientSocket.cs" />
+    <Compile Include="ClientSession.cs" />
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />
@@ -104,7 +139,6 @@
     <Compile Include="GameObjects\ContinentMan.cs" />
     <Compile Include="GameObjects\DataLoading\DataProvider.cs" />
     <Compile Include="GameObjects\DataLoading\QuizData.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillData.cs" />
     <Compile Include="GameObjects\Door.cs" />
     <Compile Include="GameObjects\Drop.cs" />
     <Compile Include="GameObjects\DataLoading\DropData.cs" />
@@ -113,8 +147,8 @@
     <Compile Include="GameObjects\DataLoading\Foothold.cs" />
     <Compile Include="GameObjects\FieldSet.cs" />
     <Compile Include="GameObjects\IFieldObj.cs" />
-    <Compile Include="GameObjects\INpcScript.cs" />
-    <Compile Include="GameObjects\DataLoading\ItemReward.cs" />
+    <Compile Include="Scripting\IGameScript.cs" />
+    <Compile Include="Scripting\INpcScript.cs" />
     <Compile Include="GameObjects\Kite.cs" />
     <Compile Include="GameObjects\DataLoading\Life.cs" />
     <Compile Include="GameObjects\DataLoading\LifeWrapper.cs" />
@@ -132,24 +166,23 @@
     <Compile Include="GameObjects\DataLoading\MobSkillData.cs" />
     <Compile Include="GameObjects\DataLoading\MobSkillLevelData.cs" />
     <Compile Include="GameObjects\MobStatus.cs" />
-    <Compile Include="GameObjects\NpcChatSession.cs" />
+    <Compile Include="Scripting\NpcChatSession.cs" />
     <Compile Include="GameObjects\DataLoading\NPCData.cs" />
     <Compile Include="GameObjects\NpcLife.cs" />
     <Compile Include="GameObjects\Omok.cs" />
     <Compile Include="GameObjects\Pet.cs" />
     <Compile Include="GameObjects\PlayerShop.cs" />
     <Compile Include="GameObjects\DataLoading\Portal.cs" />
-    <Compile Include="GameObjects\DataLoading\Questdata.cs" />
-    <Compile Include="GameObjects\DataLoading\QuestMob.cs" />
     <Compile Include="GameObjects\Reactor.cs" />
     <Compile Include="GameObjects\DataLoading\ReactorData.cs" />
     <Compile Include="GameObjects\Reward.cs" />
     <Compile Include="GameObjects\Rings.cs" />
-    <Compile Include="GameObjects\Scripting.cs" />
+    <Compile Include="Scripting\IPortalScript.cs" />
+    <Compile Include="Scripting\PortalScriptSession.cs" />
+    <Compile Include="Scripting\ScriptAccessor.cs" />
+    <Compile Include="Scripting\ScriptCompiler.cs" />
     <Compile Include="GameObjects\DataLoading\Seat.cs" />
     <Compile Include="GameObjects\DataLoading\ShopItemData.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillElement.cs" />
-    <Compile Include="GameObjects\DataLoading\SkillLevelData.cs" />
     <Compile Include="GameObjects\Summon.cs" />
     <Compile Include="GameObjects\SummonPool.cs" />
     <Compile Include="GameObjects\Trade.cs" />
@@ -163,16 +196,17 @@
     <Compile Include="Handlers\MessengerHandler.cs" />
     <Compile Include="Handlers\PartyHandler.cs" />
     <Compile Include="Packets\AdminPacket.cs" />
-    <Compile Include="Packets\AttackData.cs" />
     <Compile Include="Packets\AttackPacket.cs" />
     <Compile Include="Packets\BuffPacket.cs" />
     <Compile Include="Packets\CashPacket.cs" />
+    <Compile Include="Packets\CharacterDataPacket.cs" />
     <Compile Include="Packets\CharacterStatsPacket.cs" />
     <Compile Include="Events\EventPackets\CoconutPackets.cs" />
     <Compile Include="Packets\DropPacket.cs" />
     <Compile Include="Packets\FamePacket.cs" />
     <Compile Include="Packets\InventoryPacket.cs" />
     <Compile Include="Packets\MapPacket.cs" />
+    <Compile Include="Packets\ChatPacket.cs" />
     <Compile Include="Packets\MessagePacket.cs" />
     <Compile Include="Packets\MiniGamePacket.cs" />
     <Compile Include="Packets\MiscPacket.cs" />
@@ -186,11 +220,13 @@
     <Compile Include="Packets\PlayerShopPackets.cs" />
     <Compile Include="Packets\QuestPacket.cs" />
     <Compile Include="Packets\ReactorPacket.cs" />
+    <Compile Include="Packets\ReturnToLoginPacket.cs" />
     <Compile Include="Packets\SkillPacket.cs" />
     <Compile Include="Packets\StoragePacket.cs" />
     <Compile Include="Packets\TradePacket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripting\ScriptStandard.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -240,10 +276,6 @@
     <ProjectReference Include="..\WvsBeta.ReNX\trunk\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WvsBeta.SharedDataProvider\WvsBeta.SharedDataProvider.csproj">
-      <Project>{dd563e87-6146-4dc4-a6a2-affa12514bfd}</Project>
-      <Name>WvsBeta.SharedDataProvider</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

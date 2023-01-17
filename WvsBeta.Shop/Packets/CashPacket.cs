@@ -4,8 +4,8 @@ using System;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Shop
 {
@@ -344,7 +344,7 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_MoveStoL:
                     {
                         var cashid = packet.ReadLong();
-                        var inv = packet.ReadByte();
+                        Inventory inv = (Inventory)packet.ReadByte();
 
                         var lockerItem = chr.Inventory.GetLockerItemByCashID(cashid);
                         if (lockerItem == null)
@@ -375,7 +375,7 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_MoveLtoS:
                     {
                         var cashid = packet.ReadLong();
-                        var inv = packet.ReadByte();
+                        Inventory inv = (Inventory)packet.ReadByte();
                         var slot = packet.ReadShort();
 
                         var lockerItem = chr.Locker.GetLockerItemFromCashID(cashid);
@@ -408,7 +408,7 @@ namespace WvsBeta.Shop
                             return;
                         }
 
-                        if (slot < 1 || slot > chr.Inventory.MaxSlots[inv - 1])
+                        if (slot < 1 || slot > chr.Inventory.MaxSlots[(byte)inv - 1])
                         {
                             _log.Warn($"Moving Locker to Storage failed: not enough slots left.");
                             SendError(chr, CashPacketOpcodes.S_MoveLtoS_Failed, CashErrors.CheckFullInventory);
@@ -516,7 +516,7 @@ namespace WvsBeta.Shop
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_MoveLtoS_Done);
             pw.WriteShort(item.InventorySlot);
-            pw.WriteByte(Constants.getInventory(item.ItemID));
+            pw.WriteByte((byte)Constants.getInventory(item.ItemID));
             item.Encode(pw);
             chr.SendPacket(pw);
         }

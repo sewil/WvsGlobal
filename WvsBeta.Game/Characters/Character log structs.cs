@@ -1,6 +1,6 @@
 ﻿namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         public struct LevelLogRecord
         {

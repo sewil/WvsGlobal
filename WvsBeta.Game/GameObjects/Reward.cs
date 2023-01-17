@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -32,7 +33,7 @@ namespace WvsBeta.Game
         // Used for MC drops, map the MCType prop of the item to some table calculated in CField_MonsterCarnival::GetMCRewardRate
         public static double MonsterCarnivalRewardRate => 1.0;
 
-        public static List<Reward> GetRewards(Character Owner, Map Field, int ID, char Type, bool PremiumMap, double Showdown)
+        public static List<Reward> GetRewards(GameCharacter Owner, Map Field, int ID, char Type, bool PremiumMap, double Showdown)
         {
             double HourDropRateIncrease = 1.0;
             var curDate = MasterThread.CurrentDate;

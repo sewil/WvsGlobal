@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
 {
@@ -14,7 +15,7 @@ namespace WvsBeta.Game
         public readonly byte Z;
         public readonly byte ZM;
 
-        public Character Owner { get; private set; }
+        public GameCharacter Owner { get; private set; }
         public List<(int itemId, short amount)> ItemDrops { get; set; } = new List<(int itemId, short amount)>();
         public int MesoDrop { get; set; }
 
@@ -65,7 +66,7 @@ namespace WvsBeta.Game
             ReactorPacket.ShowReactor(this);
         }
 
-        public void ShowTo(Character chr)
+        public void ShowTo(GameCharacter chr)
         {
             ReactorPacket.ShowReactor(this, true, chr);
         }
@@ -75,7 +76,7 @@ namespace WvsBeta.Game
             ReactorPacket.DestroyReactor(this);
         }
 
-        public void HitBy(Character chr)
+        public void HitBy(GameCharacter chr)
         {
             Owner = chr;
             State++;

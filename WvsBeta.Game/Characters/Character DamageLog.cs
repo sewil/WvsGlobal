@@ -4,7 +4,7 @@ using log4net;
 
 namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         private static ILog _damageLog = LogManager.GetLogger("DamageLog");
 
@@ -83,12 +83,12 @@ namespace WvsBeta.Game
 
         private void InitDamageLog()
         {
-            _damageLogState = new DamageLogState(PrimaryStats);
+            _damageLogState = new DamageLogState((CharacterPrimaryStats)PrimaryStats);
         }
 
         public void FlushDamageLog(bool force = false)
         {
-            var actualState = new DamageLogState(PrimaryStats);
+            var actualState = new DamageLogState((CharacterPrimaryStats)PrimaryStats);
             if (_damageLogState.IsSame(actualState) && !force) return;
 
             RunFlushDamageLog();

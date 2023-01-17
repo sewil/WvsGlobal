@@ -11,7 +11,7 @@ namespace WvsBeta.Login
 
         public override void OnAccept(System.Net.Sockets.Socket pSocket)
         {
-            new ClientSocket(pSocket);
+            new ClientSession(pSocket);
         }
     }
 }

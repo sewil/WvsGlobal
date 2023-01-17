@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 
 public class MobData

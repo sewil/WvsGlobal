@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
 {
     static class Pet
     {
-        public static void IncreaseCloseness(Character chr, PetItem petItem, short inc)
+        public static void IncreaseCloseness(GameCharacter chr, PetItem petItem, short inc)
         {
             if (petItem.Closeness >= Constants.MaxCloseness) return;
             petItem.Closeness = (short)Math.Min(Constants.MaxCloseness, petItem.Closeness + inc);
@@ -34,7 +31,7 @@ namespace WvsBeta.Game
             return 1;
         }
 
-        public static void UpdatePet(Character chr, PetItem petItem)
+        public static void UpdatePet(GameCharacter chr, PetItem petItem)
         {
             InventoryPacket.AddItem(chr, Constants.getInventory(petItem.ItemID), petItem, false);
         }

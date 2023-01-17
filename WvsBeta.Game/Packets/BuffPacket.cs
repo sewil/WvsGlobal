@@ -1,12 +1,13 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Enums;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
     public static class BuffPacket
     {
-        public static void AddMapBuffValues(Character chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
+        public static void AddMapBuffValues(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
         {
-            CharacterPrimaryStats ps = chr.PrimaryStats;
+            CharacterPrimaryStats ps = (CharacterPrimaryStats)chr.PrimaryStats;
             long currentTime = MasterThread.CurrentTime;
             BuffValueTypes added = 0;
 
@@ -32,26 +33,27 @@ namespace WvsBeta.Game
             pw.SetUInt(tmp, (uint)added);
         }
 
-        public static void SetTempStats(Character chr, BuffValueTypes pFlagsAdded, short pDelay = 0)
+        public static void SetTempStats(GameCharacter chr, BuffValueTypes pFlagsAdded, short pDelay = 0)
         {
-            if (pFlagsAdded == 0) return;
+            if (pFlagsAdded == BuffValueTypes.None) return;
             Packet pw = new Packet(ServerMessages.FORCED_STAT_SET);
             chr.PrimaryStats.EncodeForLocal(pw, pFlagsAdded);
             pw.WriteShort(pDelay);
-            if ((pFlagsAdded & BuffValueTypes.SPEED_BUFF_ELEMENT) != 0)
+            if ((pFlagsAdded & BuffValueTypes.MOVEMENT_INFO_INDEX) != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }
             chr.SendPacket(pw);
         }
 
-        public static void ResetTempStats(Character chr, BuffValueTypes removedFlags)
+        public static void ResetTempStats(GameCharacter chr, BuffValueTypes removedFlags)
         {
             if (removedFlags == 0) return;
 
             Packet pw = new Packet(ServerMessages.FORCED_STAT_RESET);
-            pw.WriteUInt((uint)removedFlags);
-            if ((removedFlags & BuffValueTypes.SPEED_BUFF_ELEMENT) != 0)
+            pw.WriteULong((ulong)removedFlags);
+            var diff = (ulong)(removedFlags & BuffValueTypes.MOVEMENT_INFO_INDEX);
+            if (diff != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }

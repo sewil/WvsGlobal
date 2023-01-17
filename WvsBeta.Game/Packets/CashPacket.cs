@@ -1,5 +1,7 @@
 ﻿using System;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
@@ -24,7 +26,7 @@ namespace WvsBeta.Game
             CannotSaveMap = 0x0A
         };
 
-        public static void HandleTeleRockFunction(Character chr, Packet packet)
+        public static void HandleTeleRockFunction(GameCharacter chr, Packet packet)
         {
             bool AddCurrentMap = packet.ReadBool();
             if (AddCurrentMap)
@@ -46,12 +48,12 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleCashItem(Character chr, Packet packet)
+        public static void HandleCashItem(GameCharacter chr, Packet packet)
         {
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(2, slot);
+            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
 
             if (chr.AssertForHack(item == null, "HandleCashItem with null item") ||
                 chr.AssertForHack(item.ItemID != itemid, "HandleCashItem with itemid inconsistency") ||
@@ -97,7 +99,7 @@ namespace WvsBeta.Game
                             switch (itemid)
                             {
                                 case 2081000: // Super Megaphone (channel)
-                                    MessagePacket.SendMegaphoneMessage(chr.Name + " : " + text);
+                                    ChatPacket.SendMegaphoneMessage(chr.Name + " : " + text);
                                     used = true;
                                     break;
 
@@ -144,7 +146,7 @@ namespace WvsBeta.Game
                         if (mode == 1)
                         {
                             string name = packet.ReadString();
-                            Character target = Server.Instance.GetCharacter(name);
+                            GameCharacter target = Server.Instance.GetCharacter(name);
                             if (target != null && target != chr)
                             {
                                 map = target.MapID;
@@ -207,16 +209,16 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendRockError(Character chr, RockErrors code)
+        public static void SendRockError(GameCharacter chr, RockErrors code)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte((byte)code);
             chr.SendPacket(pw);
         }
 
-        public static void SendRockUpdate(Character chr, RockModes mode)
+        public static void SendRockUpdate(GameCharacter chr, RockModes mode)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte((byte)mode);
             chr.Inventory.AddRockPacket(pw);
             chr.SendPacket(pw);

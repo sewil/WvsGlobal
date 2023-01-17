@@ -6,7 +6,7 @@ namespace WvsBeta.Game
     class MessengerHandler
     {
         private static ILog log = LogManager.GetLogger("MessengerLog");
-        public static void HandleMessenger(Character chr, Packet packet)
+        public static void HandleMessenger(GameCharacter chr, Packet packet)
         {
             byte mode = packet.ReadByte();
             switch (mode)
@@ -30,7 +30,7 @@ namespace WvsBeta.Game
                 case 6:
                     {
                         string message = packet.ReadString();
-                        if (MessagePacket.ShowMuteMessage(chr))
+                        if (ChatPacket.ShowMuteMessage(chr))
                         {
                             log.Info($"[MUTED] {chr.Name}: {message}");
                         }

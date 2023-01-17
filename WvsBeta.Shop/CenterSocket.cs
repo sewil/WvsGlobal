@@ -6,11 +6,11 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    public class CenterSocket : AbstractConnection
+    public class CenterSocket : ConnectionSession
     {
         private bool disconnectExpected = false;
         public CenterSocket()
-            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort)
+            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true)
         {
 
         }
@@ -144,7 +144,7 @@ namespace WvsBeta.Shop
 
         public void UnregisterCharacter(int charid, bool cc)
         {
-            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterPlayer);
+            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterCharacter);
             packet.WriteInt(charid);
             packet.WriteBool(false);
             packet.WriteBool(cc);
@@ -153,7 +153,7 @@ namespace WvsBeta.Shop
 
         public void RegisterCharacter(int charid, string name, short job, byte level, byte gm)
         {
-            Packet packet = new Packet(ISClientMessages.ServerRegisterUnregisterPlayer);
+            Packet packet = new Packet(ISClientMessages.ServerRegisterRegisterCharacter);
             packet.WriteInt(charid);
             packet.WriteBool(true);
             packet.WriteString(name);

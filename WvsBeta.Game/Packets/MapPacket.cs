@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Runtime.ConstrainedExecution;
+using System.Windows.Forms;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -22,7 +27,7 @@ namespace WvsBeta.Game
             Rings = 0x20
         }
 
-        public static void HandleMove(Character chr, Packet packet)
+        public static void HandleMove(GameCharacter chr, Packet packet)
         {
             if (packet.ReadByte() != chr.PortalCount) return;
 
@@ -60,7 +65,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void OnContiMoveState(Character chr, Packet packet)
+        public static void OnContiMoveState(GameCharacter chr, Packet packet)
         {
             int mapid = packet.ReadInt();
 
@@ -70,7 +75,7 @@ namespace WvsBeta.Game
             chr.SendPacket(p);
         }
 
-        public static void HandleNPCChat(Character chr, Packet packet)
+        public static void HandleNPCChat(GameCharacter chr, Packet packet)
         {
             int npcId = packet.ReadInt();
             var Npc = chr.Field.GetNPC(npcId);
@@ -109,19 +114,72 @@ namespace WvsBeta.Game
                 {
                     errorHandlerFnc = (script) =>
                     {
-                        MessagePacket.SendNotice("Error compiling script '" + script + "'!", chr);
+                        ChatPacket.SendNotice("Error compiling script '" + script + "'!", chr);
                     };
                 }
 
-                INpcScript NPC = null;
-                if (NPC == null && npc.Quest != null) NPC = Server.Instance.TryGetOrCompileScript(npc.Quest, errorHandlerFnc);
-                if (NPC == null) NPC = Server.Instance.TryGetOrCompileScript(npc.ID.ToString(), errorHandlerFnc);
-
+                INpcScript NPC = (INpcScript)ScriptAccessor.GetScript(npc, errorHandlerFnc);
                 NpcChatSession.Start(RealID, NPC, chr);
             }
         }
 
-        public static void OnEnterPortal(Packet packet, Character chr)
+        public static void HandleEnterPortal(GameCharacter chr, int toMapID, string toPortalName)
+        {
+            if (
+                DataProvider.Maps.TryGetValue(toMapID, out Map toMap) &&
+                toMap.Portals.TryGetValue(toPortalName, out Portal toPortal)
+            )
+            {
+                if (chr.Field.PQPortalOpen)
+                {
+                    chr.ChangeMap(toMapID, toPortal);
+                }
+                else
+                {
+                    BlockedMessage(chr, PortalBlockedMessage.CannotGoToThatPlace);
+                }
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to arrive at unknown portal " + toPortalName + ", " + toMapID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+            }
+        }
+        private static void HandleEnterPortal(GameCharacter chr, string portalName)
+        {
+            if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
+            {
+                var pos = new Pos(portal.X, portal.Y);
+                var dist = chr.Position - pos;
+                if (chr.AssertForHack(dist > 300, "Portal distance hack (" + dist + ")", dist > 600))
+                {
+                    InventoryPacket.NoChange(chr);
+                }
+                else if (!portal.Enabled)
+                {
+                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+                    InventoryPacket.NoChange(chr);
+                }
+                else if (!chr.Field.PortalsOpen)
+                {
+                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+                    InventoryPacket.NoChange(chr);
+                }
+                else
+                {
+                    HandleEnterPortal(chr, portal.ToMapID, portal.ToName);
+                }
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal??? " + portalName + ", " + chr.Field.ID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+            }
+        }
+
+        public static void OnEnterPortal(Packet packet, GameCharacter chr)
         {
             if (packet.ReadByte() != chr.PortalCount)
             {
@@ -129,96 +187,66 @@ namespace WvsBeta.Game
                 return;
             }
 
-            int opcode = packet.ReadInt();
-            string portalname = packet.ReadString();
-            if (portalname.Length > 0)
+            int status = packet.ReadInt();
+            string portalName = packet.ReadString();
+            if (portalName.Length > 0)
             {
-                new Pos(packet);
+                new Pos(packet); // Current pos
             }
             packet.ReadByte(); // Related to teleporting to party member? Always 0
             packet.ReadByte(); // unk
 
-            switch (opcode)
+            switch (status)
             {
                 case 0:
+                {
+                    if (chr.PrimaryStats.HP == 0)
                     {
-                        if (chr.PrimaryStats.HP == 0)
-                        {
-                            chr.HandleDeath();
-                        }
-                        else if (!chr.IsGM)
-                        {
-                            Program.MainForm.LogAppend($"Not handling death of {chr.ID}, because user is not dead. Killing him again. HP: " + chr.PrimaryStats.HP);
-                            // Kill him anyway
-                            chr.DamageHP(30000);
-                        }
-                        else
-                        {
-                            // Admin /map 0
-                            chr.ChangeMap(opcode);
-                        }
-                        break;
+                        chr.HandleDeath();
                     }
+                    else if (!chr.IsGM)
+                    {
+                        Program.MainForm.LogAppend($"Not handling death of {chr.ID}, because user is not dead. Killing him again. HP: " + chr.PrimaryStats.HP);
+                        // Kill him anyway
+                        chr.DamageHP(30000);
+                    }
+                    else
+                    {
+                        // Admin /map 0
+                        chr.ChangeMap(status);
+                    }
+                    break;
+                }
                 case -1:
-                    {
-
-                        if (chr.Field.Portals.TryGetValue(portalname, out Portal portal) &&
-                            DataProvider.Maps.TryGetValue(portal.ToMapID, out Map toMap) &&
-                            toMap.Portals.TryGetValue(portal.ToName, out Portal to))
-                        {
-                            var pos = new Pos(portal.X, portal.Y);
-                            var dist = chr.Position - pos;
-                            if (chr.AssertForHack(dist > 300, "Portal distance hack (" + dist + ")", dist > 600))
-                            {
-                                InventoryPacket.NoChange(chr);
-                                return;
-                            }
-
-                            if (portal.Enabled == false)
-                            {
-                                Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
-                                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                                InventoryPacket.NoChange(chr);
-                                return;
-                            }
-
-                            if (chr.Field.PortalsOpen == false)
-                            {
-                                Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
-                                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                                InventoryPacket.NoChange(chr);
-                            }
-                            else if (chr.Field.PQPortalOpen)
-                            {
-                                chr.ChangeMap(portal.ToMapID, to);
-                            }
-                            else
-                            {
-                                BlockedMessage(chr, PortalBlockedMessage.CannotGoToThatPlace);
-                            }
-
-                        }
-                        else
-                        {
-                            Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal??? " + portalname + ", " + chr.Field.ID);
-                            BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                        }
-
-
-                        break;
-                    }
+                    HandleEnterPortal(chr, portalName);
+                    break;
                 default:
+                {
+                    if (chr.IsGM)
                     {
-                        if (chr.IsGM)
-                        {
-                            chr.ChangeMap(opcode);
-                        }
-                        break;
+                        chr.ChangeMap(status);
                     }
+                    break;
+                }
             }
         }
 
-        public static void HandleSitChair(Character chr, Packet packet)
+        public static void OnEnterScriptPortal(Packet packet, GameCharacter chr)
+        {
+            string portalName = packet.ReadString();
+            if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
+            {
+                PortalScriptSession.Run(portal.Script, chr, script => {
+                    ChatPacket.SendNotice("Error compiling script: " + script, chr);
+                });
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal " + portalName + ", " + chr.Field.ID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+            }
+        }
+        public static void HandleSitChair(GameCharacter chr, Packet packet)
         {
             short chair = packet.ReadShort();
 
@@ -250,7 +278,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void ShowNPC(NpcLife npcLife, Character victim)
+        public static void ShowNPC(NpcLife npcLife, GameCharacter victim)
         {
             Packet pw;/* = new Packet(ServerMessages.NPC_ENTER_FIELD);
             pw.WriteUInt(npcLife.SpawnID);
@@ -281,7 +309,7 @@ namespace WvsBeta.Game
 
 
 
-        public static void HandleNPCAnimation(Character controller, Packet packet)
+        public static void HandleNPCAnimation(GameCharacter controller, Packet packet)
         {
             Packet pw = new Packet(ServerMessages.NPC_ANIMATE);
             pw.WriteBytes(packet.ReadLeftoverBytes());
@@ -289,7 +317,7 @@ namespace WvsBeta.Game
             controller.SendPacket(pw);
         }
 
-        public static void SendWeatherEffect(Map map, Character victim = null)
+        public static void SendWeatherEffect(Map map, GameCharacter victim = null)
         {
             Packet pw = new Packet(ServerMessages.BLOW_WEATHER);
             pw.WriteBool(map.WeatherIsAdmin);
@@ -303,7 +331,7 @@ namespace WvsBeta.Game
                 map.SendPacket(pw);
         }
 
-        public static void SendPlayerMove(Character chr, MovePath movePath)
+        public static void SendPlayerMove(GameCharacter chr, MovePath movePath)
         {
             Packet pw = new Packet(ServerMessages.MOVE_PLAYER);
             pw.WriteInt(chr.ID);
@@ -312,7 +340,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendChatMessage(Character who, string message)
+        public static void SendChatMessage(GameCharacter who, string message)
         {
             Packet pw = new Packet(ServerMessages.CHAT);
             pw.WriteInt(who.ID);
@@ -322,7 +350,7 @@ namespace WvsBeta.Game
             who.Field.SendPacket(who, pw);
         }
 
-        public static void SendEmotion(Character chr, int emotion)
+        public static void SendEmotion(GameCharacter chr, int emotion)
         {
             Packet pw = new Packet(ServerMessages.FACIAL_EXPRESSION);
             pw.WriteInt(chr.ID);
@@ -331,23 +359,23 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendCharacterLeavePacket(Character who)
+        public static void SendCharacterLeavePacket(GameCharacter who)
         {
             Packet pw = new Packet(ServerMessages.USER_LEAVE_FIELD);
             pw.WriteInt(who.ID);
             who.Field.SendPacket(who, pw, who);
         }
 
-        public static void SendCharacterLeavePacket(int id, Character victim)
+        public static void SendCharacterLeavePacket(int id, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.USER_LEAVE_FIELD);
             pw.WriteInt(id);
             victim.SendPacket(pw);
         }
 
-        public static void SendCharacterSit(Character chr, short chairid)
+        public static void SendCharacterSit(GameCharacter chr, short chairid)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_CHAIR);
+            Packet pw = new Packet(ServerMessages.SIT_RESULT);
             pw.WriteBool(chairid != -1);
             if (chairid != -1)
             {
@@ -367,7 +395,7 @@ namespace WvsBeta.Game
             pField.SendPacket(pw);
         }
 
-        public static void MapEffect(Character chr, byte type, string message, bool ToTeam)
+        public static void MapEffect(GameCharacter chr, byte type, string message, bool ToTeam)
         {
             //Sounds : Party1/Clear // Party1/Failed
             //Messages : quest/party/clear // quest/party/wrong_kor
@@ -384,17 +412,17 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void PortalEffect(Map field, byte what, string message)
+        public static void PortalEffect(Map field)
         {
 
             Packet pw = new Packet(ServerMessages.FIELD_EFFECT);
             pw.WriteByte(2); //2
-            pw.WriteByte(what); //?? Unknown 
-            pw.WriteString(message); //gate
+            pw.WriteByte(2); //?? Unknown 
+            pw.WriteString("gate"); //gate
             field.SendPacket(pw);
         }
 
-        public static void Kite(Character chr, Kite Kite)
+        public static void Kite(GameCharacter chr, Kite Kite)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE_BOX_ENTER_FIELD);
             pw.WriteInt(Kite.ID);
@@ -414,7 +442,7 @@ namespace WvsBeta.Game
             Field.SendPacket(Kite, pw);
         }
 
-        public static void KiteMessage(Character chr)
+        public static void KiteMessage(GameCharacter chr)
         {
             //Can't fly it here
             Packet pw = new Packet(ServerMessages.MESSAGE_BOX_CREATE_FAILED);
@@ -422,7 +450,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void ShowMapTimerForCharacter(Character chr, int time)
+        public static void ShowMapTimerForCharacter(GameCharacter chr, int time)
         {
             Packet pw = new Packet(ServerMessages.CLOCK);
             pw.WriteByte(0x02);
@@ -446,7 +474,7 @@ namespace WvsBeta.Game
             map.SendPacket(pw);
         }
 
-        public static void SendMapClock(Character chr, int hour, int minute, int second)
+        public static void SendMapClock(GameCharacter chr, int hour, int minute, int second)
         {
             Packet pw = new Packet(ServerMessages.CLOCK);
             pw.WriteByte(0x01);
@@ -456,7 +484,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendJukebox(Map map, Character victim)
+        public static void SendJukebox(Map map, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.PLAY_JUKE_BOX);
             pw.WriteInt(map.JukeboxID);
@@ -475,16 +503,16 @@ namespace WvsBeta.Game
             CannotGoToThatPlace = 2
         }
 
-        public static void BlockedMessage(Character chr, byte msg) => BlockedMessage(chr, (PortalBlockedMessage)msg);
+        public static void BlockedMessage(GameCharacter chr, byte msg) => BlockedMessage(chr, (PortalBlockedMessage)msg);
 
-        public static void BlockedMessage(Character chr, PortalBlockedMessage msg)
+        public static void BlockedMessage(GameCharacter chr, PortalBlockedMessage msg)
         {
             Packet pw = new Packet(ServerMessages.TRANSFER_FIELD_REQ_IGNORED);
             pw.WriteByte((byte)msg);
             chr.SendPacket(pw);
         }
 
-        public static void SpawnPortal(Character chr, int srcMapId, int destMapId, short destX, short destY)
+        public static void SpawnPortal(GameCharacter chr, int srcMapId, int destMapId, short destX, short destY)
         {
             //spawns a portal (Spawnpoint in the map you are going to spawn in)
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL);
@@ -496,7 +524,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SpawnPortalParty(Character chr, byte ownerIdIdx, int srcMapId, int destMapId, short destX, short destY)
+        public static void SpawnPortalParty(GameCharacter chr, byte ownerIdIdx, int srcMapId, int destMapId, short destX, short destY)
         {
             Packet pw = new Packet(ServerMessages.PARTY_RESULT);
             pw.WriteByte(26); //door change
@@ -508,7 +536,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void RemovePortal(Character chr)
+        public static void RemovePortal(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL);
             pw.WriteInt(Constants.InvalidMap);
@@ -516,7 +544,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendPinkText(Character chr, string text) //needs work 
+        public static void SendPinkText(GameCharacter chr, string text) //needs work 
         {
             Packet pw = new Packet(ServerMessages.GROUP_MESSAGE);
             pw.WriteByte(1);
@@ -525,7 +553,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendCharacterEnterPacket(Character player, Character victim)
+        public static void SendCharacterEnterPacket(GameCharacter player, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.USER_ENTER_FIELD);
 
@@ -577,10 +605,10 @@ namespace WvsBeta.Game
             victim.SendPacket(pw);
         }
 
-        public static void SendPlayerInfo(Character chr, Packet packet)
+        public static void SendPlayerInfo(GameCharacter chr, Packet packet)
         {
             int id = packet.ReadInt();
-            Character victim = chr.Field.GetPlayer(id);
+            GameCharacter victim = chr.Field.GetPlayer(id);
             if (victim == null)
             {
                 InventoryPacket.NoChange(chr);
@@ -621,7 +649,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendAvatarModified(Character chr, AvatarModFlag AvatarModFlag = 0)
+        public static void SendAvatarModified(GameCharacter chr, AvatarModFlag AvatarModFlag = 0)
         {
             Packet pw = new Packet(ServerMessages.AVATAR_MODIFIED);
             pw.WriteInt(chr.ID);
@@ -665,7 +693,7 @@ namespace WvsBeta.Game
         }
 
 
-        public static void SendPlayerLevelupAnim(Character chr)
+        public static void SendPlayerLevelupAnim(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
             pw.WriteInt(chr.ID);
@@ -675,7 +703,7 @@ namespace WvsBeta.Game
         }
 
 
-        public static void SendPlayerSkillAnim(Character chr, int skillid, byte level)
+        public static void SendPlayerSkillAnim(GameCharacter chr, int skillid, byte level)
         {
             Packet pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
             pw.WriteInt(chr.ID);
@@ -686,7 +714,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendPlayerSkillAnimSelf(Character chr, int skillid, byte level)
+        public static void SendPlayerSkillAnimSelf(GameCharacter chr, int skillid, byte level)
         {
             Packet pw = new Packet(ServerMessages.PLAYER_EFFECT); // Not updated
             pw.WriteByte(0x01);
@@ -696,7 +724,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendPlayerSkillAnimThirdParty(Character chr, int skillid, byte level, bool party, bool self)
+        public static void SendPlayerSkillAnimThirdParty(GameCharacter chr, int skillid, byte level, bool party, bool self)
         {
             Packet pw;
             if (party && self)
@@ -721,7 +749,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendPlayerBuffed(Character chr, BuffValueTypes pBuffs, short delay = 0)
+        public static void SendPlayerBuffed(GameCharacter chr, BuffValueTypes pBuffs, short delay = 0)
         {
             Packet pw = new Packet(ServerMessages.GIVE_FOREIGN_BUFF);
             pw.WriteInt(chr.ID);
@@ -731,7 +759,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendPlayerDebuffed(Character chr, BuffValueTypes buffFlags)
+        public static void SendPlayerDebuffed(GameCharacter chr, BuffValueTypes buffFlags)
         {
             Packet pw = new Packet(ServerMessages.RESET_FOREIGN_BUFF);
             pw.WriteInt(chr.ID);
@@ -740,19 +768,13 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendChangeMap(Character chr)
+        public static void SendChangeMap(GameCharacter chr)
         {
-            Packet pack = new Packet(ServerMessages.SET_FIELD);
-            pack.WriteInt(Server.Instance.ID); // Channel ID
-            pack.WriteByte(chr.PortalCount);
-            pack.WriteBool(false); // Is not connecting
-            pack.WriteInt(chr.MapID);
-            pack.WriteByte(chr.MapPosition);
-            pack.WriteShort(chr.PrimaryStats.HP);
+            var pack = new SetFieldPacket(chr, Server.Instance.ID, chr.PortalCount, false);
             chr.SendPacket(pack);
         }
 
-        public static void EmployeeEnterField(Character chr) //hired merchant :D
+        public static void EmployeeEnterField(GameCharacter chr) //hired merchant :D
         {
             Packet pw = new Packet(0x83); //not the right opcode
             pw.WriteByte(chr.PortalCount);
@@ -760,7 +782,7 @@ namespace WvsBeta.Game
             pw.WriteByte(0); //??
             pw.WriteInt(chr.MapID);
             pw.WriteInt(295); //Swaglord's ID
-            pw.WriteByte(chr.MapPosition); //probably spawnpoint 
+            pw.WriteByte(chr.PortalID); //probably spawnpoint 
             pw.WriteShort(chr.Position.X);
             pw.WriteShort(chr.Position.Y);
             pw.WriteInt(1); //??
@@ -773,112 +795,55 @@ namespace WvsBeta.Game
 
 
         }
-
-        public static void SendJoinGame(Character chr)
+        class SetFieldPacket : Packet
         {
-            Packet pack = new Packet(ServerMessages.SET_FIELD);
-
-            pack.WriteInt(Server.Instance.ID); // Channel ID
-            pack.WriteByte(0); // 0 portals
-            pack.WriteBool(true); // Is connecting
-
+            public SetFieldPacket(GameCharacter chr, int channelId, byte portalCount, bool isConnecting) : base(ServerMessages.SET_FIELD)
             {
-                var rnd = Server.Instance.Randomizer;
-                // Seeds are initialized by global randomizer
-                var seed1 = rnd.Random();
-                var seed2 = rnd.Random();
-                var seed3 = rnd.Random();
-                var seed4 = rnd.Random();
+                WriteInt(channelId);
+                WriteByte(portalCount);
+                WriteBool(isConnecting);
+                if (isConnecting)
+                {
+                    var rnd = Server.Instance.Randomizer;
+                    // Seeds are initialized by global randomizer
+                    var seed1 = rnd.Random();
+                    var seed2 = rnd.Random();
+                    var seed3 = rnd.Random();
+                    var seed4 = rnd.Random();
 
-                chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
-                chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
+                    chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
+                    chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
 
-                pack.WriteUInt(seed1);
-                pack.WriteUInt(seed2);
-                pack.WriteUInt(seed3);
-                pack.WriteUInt(seed4);
+                    WriteUInt(seed1);
+                    WriteUInt(seed2);
+                    WriteUInt(seed3);
+                    WriteUInt(seed4);
+
+                    new CharacterDataPacket(chr).Encode(this);
+                }
+                else
+                {
+                    WriteInt(chr.MapID);
+                    WriteByte(chr.PortalID);
+                    WriteShort(chr.PrimaryStats.HP);
+                    WriteBool(false);
+                    if (true)
+                    {
+                        WriteInt(chr.Position.X);
+                        WriteInt(chr.Position.Y);
+                    }
+                }
             }
-
-            pack.WriteShort(-1); // Flags (contains everything: 0xFFFF)
-
-            pack.WriteInt(chr.ID);
-            pack.WriteString(chr.Name, 13);
-            pack.WriteByte(chr.Gender); // Gender
-            pack.WriteByte(chr.Skin); // Skin
-            pack.WriteInt(chr.Face); // Face
-            pack.WriteInt(chr.Hair); // Hair
-
-            pack.WriteLong(chr.PetCashId); // Pet Cash ID :/
-
-            pack.WriteByte(chr.PrimaryStats.Level);
-            pack.WriteShort(chr.PrimaryStats.Job);
-            pack.WriteShort(chr.PrimaryStats.Str);
-            pack.WriteShort(chr.PrimaryStats.Dex);
-            pack.WriteShort(chr.PrimaryStats.Int);
-            pack.WriteShort(chr.PrimaryStats.Luk);
-            pack.WriteShort(chr.PrimaryStats.HP);
-            pack.WriteShort(chr.PrimaryStats.GetMaxHP(true));
-            pack.WriteShort(chr.PrimaryStats.MP);
-            pack.WriteShort(chr.PrimaryStats.GetMaxMP(true));
-            pack.WriteShort(chr.PrimaryStats.AP);
-            pack.WriteShort(chr.PrimaryStats.SP);
-            pack.WriteInt(chr.PrimaryStats.EXP);
-            pack.WriteShort(chr.PrimaryStats.Fame);
-
-            pack.WriteInt(chr.MapID); // Mapid
-            pack.WriteByte(chr.MapPosition); // Mappos
-
-            pack.WriteLong(0);
-            pack.WriteInt(0);
-            pack.WriteInt(0);
-
-            pack.WriteByte((byte)chr.PrimaryStats.BuddyListCapacity); // Buddylist slots
-
-            chr.Inventory.GenerateInventoryPacket(pack);
-
-            chr.Skills.AddSkills(pack);
-
-
-            var questsWithData = chr.Quests.Quests;
-            pack.WriteShort((short)questsWithData.Count); // Running quests
-            foreach (var kvp in questsWithData)
-            {
-                pack.WriteInt(kvp.Key);
-                pack.WriteString(kvp.Value.Data);
-            }
-
-            pack.WriteShort(0); // RPS Game(s)
-                                /*
-                                 * For every game stat:
-                                 * pack.WriteInt(); // All unknown values
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                 * pack.WriteInt();
-                                */
-
-
-            pack.WriteShort(0);
-            /*
-             * For every ring, 33 unkown bytes.
-            */
-
-
-            chr.Inventory.AddRockPacket(pack);
-
-
-            //pack.WriteByte(1); THIS IS WHAT TRIGGERS OMOK AND 5 LINES BELOW
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(327);
-            //pack.WriteInt(1112001);
-            //pack.WriteInt(1112001);
+        }
+        public static void SendSetField(GameCharacter chr)
+        {
+            Packet pack = new SetFieldPacket(chr, Server.Instance.ID, 0, true);
             chr.SendPacket(pack);
         }
 
-        public static void CancelSkillEffect(Character chr, int skillid)
+        public static void CancelSkillEffect(GameCharacter chr, int skillid)
         {
-            Packet pw = new Packet(ServerMessages.SKILL_END);
+            Packet pw = new Packet(ServerMessages.SKILL_CANCEL);
             pw.WriteInt(chr.ID);
             pw.WriteInt(skillid);
             chr.Field.SendPacket(pw, chr);
@@ -905,7 +870,7 @@ namespace WvsBeta.Game
             return pw;
         }
 
-        public static void HandleDoorUse(Character chr, Packet packet)
+        public static void HandleDoorUse(GameCharacter chr, Packet packet)
         {
             int charid = packet.ReadInt();
             Program.MainForm.LogDebug("cid: " + charid);
@@ -967,7 +932,7 @@ namespace WvsBeta.Game
             return pw;
         }
 
-        public static void HandleSummonMove(Character chr, Packet packet)
+        public static void HandleSummonMove(GameCharacter chr, Packet packet)
         {
             var skillId = packet.ReadInt();
             if (chr.Summons.GetSummon(skillId, out var summon))
@@ -982,7 +947,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void SendMoveSummon(Character chr, Summon summon, MovePath movePath)
+        private static void SendMoveSummon(GameCharacter chr, Summon summon, MovePath movePath)
         {
             Packet pw = new Packet(ServerMessages.SPAWN_MOVE);
             pw.WriteInt(chr.ID);
@@ -992,7 +957,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr);
         }
 
-        public static void HandleSummonDamage(Character chr, Packet packet)
+        public static void HandleSummonDamage(GameCharacter chr, Packet packet)
         {
             int summonid = packet.ReadInt();
             if (chr.Summons.GetSummon(summonid, out var summon) && summon is Puppet puppet)
@@ -1009,7 +974,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void SendDamageSummon(Character chr, Puppet summon, sbyte unk, int damage, int mobid, byte unk2)
+        private static void SendDamageSummon(GameCharacter chr, Puppet summon, sbyte unk, int damage, int mobid, byte unk2)
         {
             // Needs to be fixed.
             Packet pw = new Packet(ServerMessages.SPAWN_HIT);

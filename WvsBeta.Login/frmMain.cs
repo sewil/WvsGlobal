@@ -46,7 +46,7 @@ namespace WvsBeta.Login
                 });
 
 
-                Pinger.Init(Program.MainForm.LogAppend, Program.MainForm.LogAppend);
+                Pinger.Init(Program.MainForm.LogAppend);
 
                 MasterThread.RepeatingAction.Start(
                     "Form Updater",

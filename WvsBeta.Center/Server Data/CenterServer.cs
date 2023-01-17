@@ -31,7 +31,7 @@ namespace WvsBeta.Center
 
         public ServerConnectionAcceptor ConnectionAcceptor { get; set; }
         public CenterToCenterAcceptor CenterToCenterAcceptor { get; private set; }
-        public CenterToCenterConnection CenterToCenterConnection { get; set; }
+        public CenterToCenterSession CenterToCenterConnection { get; set; }
 
         public List<Character> CharacterStore { get; } = new List<Character>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
@@ -136,7 +136,7 @@ namespace WvsBeta.Center
                     try
                     {
                         bool wasConnected = false;
-                        CenterToCenterConnection = new CenterToCenterConnection(privateIp, CTCPort);
+                        CenterToCenterConnection = new CenterToCenterSession(privateIp, CTCPort);
                         for (var i = 0; i < 10; i++)
                         {
                             System.Threading.Thread.Sleep(100);
@@ -190,7 +190,11 @@ namespace WvsBeta.Center
             Program.MainForm.LogAppend("Starting CTC acceptor on port {0}", CTCPort);
             CenterToCenterAcceptor = new CenterToCenterAcceptor(CTCPort);
             CharacterDatabase.RunQuery(
-                "DELETE FROM servers WHERE configname = 'Center' AND world_id = @worldId; " +
+                "DELETE FROM servers WHERE configname = 'Center' AND world_id = @worldId;",
+                "@worldId", World.ID,
+                "@ip", PrivateIP
+            );
+            CharacterDatabase.RunQuery(
                 "INSERT INTO servers VALUES ('Center', @worldId, @ip);",
                 "@worldId", World.ID,
                 "@ip", PrivateIP

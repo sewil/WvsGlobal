@@ -94,7 +94,7 @@ namespace WvsBeta.Game
                 SendMessage(curProcess, WM_SETICON, ICON_BIG, Resources.Tespia.Handle);
                 SendMessage(curProcess, WM_SETICON, ICON_SMALL, Resources.Tespia.Handle);
             }
-            Pinger.Init(x => Program.MainForm.LogAppend(x), x => Program.MainForm.LogAppend(x));
+            Pinger.Init(x => Program.MainForm.LogAppend(x));
         }
 
 

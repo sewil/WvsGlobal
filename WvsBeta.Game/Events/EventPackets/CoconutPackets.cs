@@ -1,10 +1,35 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using System.Windows.Forms;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
     public static class CoconutPackets
     {
-        public static void HandleEvent(Character chr, Packet packet)
+        public class CoconutAttackPacket : Packet
+        {
+            public enum Type : byte
+            {
+                Spawn,
+                Hit,
+                Break,
+                Destroy
+            }
+            public CoconutAttackPacket(short coconutId, short delay, Type type) : base(ServerMessages.COCONUT_ATTACK)
+            {
+                WriteShort(coconutId);
+                WriteShort(delay);
+                WriteByte((byte)type);
+            }
+        }
+        public class CoconutScorePacket : Packet
+        {
+            public CoconutScorePacket(short maple, short story) : base(ServerMessages.COCONUT_SCORE)
+            {
+                WriteShort(maple);
+                WriteShort(story);
+            }
+        }
+        public static void HandleEvent(GameCharacter chr, Packet packet)
         {
             short CoconutID = packet.ReadShort();
             short CharStance = packet.ReadShort();
@@ -12,35 +37,25 @@ namespace WvsBeta.Game
 
         }
 
-        public static void CoconutScore(Character chr, short maple, short story)
+        public static void CoconutScore(GameCharacter chr, short maple, short story)
         {
-            // was 157 in v40b, assumed to be 160 in v12
-
-            Packet pw = new Packet(ServerMessages.COCONUT_SCORE); // 157, pressumably 160 in v12
-            pw.WriteShort(maple);
-            pw.WriteShort(story);
+            var pw = new CoconutScorePacket(maple, story);
             chr.Field.SendPacket(pw, chr, false);
         }
 
-        public static void SpawnCoconut(Character chr, bool spawn, int id, int type)
+        public static void SpawnCoconut(GameCharacter chr, bool spawn, int id, int type)
         {
-            Packet pw = new Packet(ServerMessages.COCONUT_HIT);
-            pw.WriteShort(0); //Coconut ID
-            pw.WriteShort(0); //Type of hit?
-            pw.WriteByte(0); //0 = spawn 1 = hit 
-            chr.Field.SendPacket(pw, chr, false);
+            var pw = new CoconutAttackPacket(0, 0, CoconutAttackPacket.Type.Spawn);
+            chr.Field.SendPacket(pw);
         }
 
-        public static void HitCoconut(Character chr, short cID, short Stance)
+        public static void HitCoconut(GameCharacter chr, short cID, short Stance)
         {
-            Packet pw = new Packet(ServerMessages.COCONUT_HIT);
-            pw.WriteShort(cID); //Coconut ID
-            pw.WriteShort(Stance); //Delay! lol
-            pw.WriteByte(1); //0 = spawn 1 = hit 2 = break 3 = destroy
+            var pw = new CoconutAttackPacket(cID, Stance, CoconutAttackPacket.Type.Hit);
             chr.SendPacket(pw);
         }
 
-        public static void ForcedEquip(Character chr, byte team)
+        public static void ForcedEquip(GameCharacter chr, byte team)
         {
             Packet pw = new Packet(ServerMessages.FIELD_SPECIFIC_DATA); // 44, pressumably 47 in v12
             pw.WriteByte(team); //0 : red, 1 : blue

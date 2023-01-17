@@ -9,6 +9,8 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using System.Linq;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Login
 {
@@ -32,20 +34,20 @@ namespace WvsBeta.Login
 
         private LoginAcceptor LoginAcceptor { get; set; }
         public LoginToLoginAcceptor LoginToLoginAcceptor { get; set; }
-        public LoginToLoginConnection LoginToLoginConnection { get; set; }
+        public LoginToLoginSession LoginToLoginConnection { get; set; }
 
         public DiscordReporter ServerTraceDiscordReporter { get; private set; }
 
         public MySQL_Connection UsersDatabase { get; private set; }
 
-        private ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string,Player>();
+        private ConcurrentDictionary<string, Objects.Player> PlayerList { get; } = new ConcurrentDictionary<string, Objects.Player>();
         
         public void LogToLogfile(string what)
         {
             Program.LogFile.Write(what);
         }
 
-        public void AddPlayer(Player player)
+        public void AddPlayer(Objects.Player player)
         {
             string hash;
             do
@@ -59,7 +61,7 @@ namespace WvsBeta.Login
 
         public void RemovePlayer(string hash)
         {
-            PlayerList.TryRemove(hash, out Player tmp);
+            PlayerList.TryRemove(hash, out Objects.Player tmp);
         }
 
         public bool IsPlayer(string hash)
@@ -67,9 +69,9 @@ namespace WvsBeta.Login
             return PlayerList.ContainsKey(hash);
         }
 
-        public Player GetPlayer(string hash)
+        public Objects.Player GetPlayer(string hash)
         {
-            if (PlayerList.TryGetValue(hash, out Player player)) return player;
+            if (PlayerList.TryGetValue(hash, out Objects.Player player)) return player;
             return null;
         }
 
@@ -137,7 +139,7 @@ namespace WvsBeta.Login
                     try
                     {
                         bool wasConnected = false;
-                        LoginToLoginConnection = new LoginToLoginConnection(privateIp, LTLPort);
+                        LoginToLoginConnection = new LoginToLoginSession(privateIp, LTLPort);
                         for (var i = 0; i < 10; i++)
                         {
                             System.Threading.Thread.Sleep(100);
@@ -242,10 +244,13 @@ namespace WvsBeta.Login
                     Port = worldConfig["port"].GetUShort(),
                     IP = IPAddress.Parse(worldConfig["ip"].GetString()),
                     AdultWorld = worldConfig["adult"]?.GetBool() ?? false,
-                    EventDescription = worldConfig["eventDesc"]?.GetString() ?? "",
                     BlockCharacterCreation = worldConfig["BlockCharCreation"]?.GetBool() ?? false,
                     State = worldConfig["worldState"]?.GetByte() ?? 0,
                     Name = worldConfig.Name,
+                    Ribbon = (WorldRibbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
+                    Message = worldConfig["worldMessage"]?.GetString() ?? "",
+                    UserWarning = worldConfig["userWarning"]?.GetInt() ?? 400,
+                    UserLimit = worldConfig["userLimit"]?.GetInt() ?? 600,
                 };
                 center.UserNo = new int[center.Channels];
 

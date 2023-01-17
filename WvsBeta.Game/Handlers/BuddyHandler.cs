@@ -4,7 +4,7 @@ namespace WvsBeta.Game.Handlers
 {
     class BuddyHandler
     {
-        public static void HandleBuddy(Character chr, Packet packet)
+        public static void HandleBuddy(GameCharacter chr, Packet packet)
         {
             byte header = packet.ReadByte(); //Which case
             switch (header)

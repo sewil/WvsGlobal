@@ -13,7 +13,7 @@ namespace WvsBeta.Game.GameObjects
             Trace.WriteLine($"Found PersonalTimeLimit map {id}");
         }
 
-        public override void AddPlayer(Character chr)
+        public override void AddPlayer(GameCharacter chr)
         {
             base.AddPlayer(chr);
 
@@ -24,7 +24,7 @@ namespace WvsBeta.Game.GameObjects
             }
         }
 
-        public override void RemovePlayer(Character chr, bool gmhide = false)
+        public override void RemovePlayer(GameCharacter chr, bool gmhide = false)
         {
             base.RemovePlayer(chr, gmhide);
 

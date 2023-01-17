@@ -7,9 +7,9 @@ namespace WvsBeta.Game
     public static class QuestPacket
     {
 
-        public static void SendQuestDataUpdate(Character chr, int QuestID, string Data)
+        public static void SendQuestDataUpdate(GameCharacter chr, int QuestID, string Data)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x01);
             pw.WriteBool(true);
             pw.WriteInt(QuestID);
@@ -17,16 +17,16 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendQuestRemove(Character chr, int QuestID)
+        public static void SendQuestRemove(GameCharacter chr, int QuestID)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0x01);
             pw.WriteBool(false);
             pw.WriteInt(QuestID);
             chr.SendPacket(pw);
         }
 
-        public static void SendGainItemChat(Character chr, params KeyValuePair<int, int>[] pItems)
+        public static void SendGainItemChat(GameCharacter chr, params KeyValuePair<int, int>[] pItems)
         {
             Packet pw = new Packet(ServerMessages.PLAYER_EFFECT);
             pw.WriteByte(0x03);

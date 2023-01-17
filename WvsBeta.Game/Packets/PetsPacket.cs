@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
 
@@ -7,9 +8,9 @@ namespace WvsBeta.Game
 {
     public static class PetsPacket
     {
-        public static void HandleSpawnPet(Character chr, short slot)
+        public static void HandleSpawnPet(GameCharacter chr, short slot)
         {
-            if (!(chr.Inventory.GetItem(5, slot) is PetItem petItem))
+            if (!(chr.Inventory.GetItem(Common.Enums.Inventory.Pet, slot) is PetItem petItem))
             {
                 InventoryPacket.NoChange(chr);
                 return;
@@ -35,7 +36,7 @@ namespace WvsBeta.Game
             InventoryPacket.NoChange(chr);
         }
 
-        public static void DoPetSpawn(Character chr)
+        public static void DoPetSpawn(GameCharacter chr)
         {
             chr.PetLastInteraction = MasterThread.CurrentTime;
 
@@ -49,7 +50,7 @@ namespace WvsBeta.Game
             SendSpawnPet(chr, petItem);
         }
 
-        public static void HandleMovePet(Character chr, Packet packet)
+        public static void HandleMovePet(GameCharacter chr, Packet packet)
         {
             // 48 00 00 00 00 03 00 00 00 D1 00 00 00 9E 02 00 00 06 E0 01 00 00 00 D7 00 00 00 00 00 00 00 06 09 00 00 00 00 D7 00 00 00 00 00 88 00 04 15 00 00 
 
@@ -65,7 +66,7 @@ namespace WvsBeta.Game
             SendMovePet(chr, movePath);
         }
 
-        public static void HandleInteraction(Character chr, Packet packet)
+        public static void HandleInteraction(GameCharacter chr, Packet packet)
         {
             var petItem = chr.GetSpawnedPet();
             if (petItem == null) return;
@@ -107,7 +108,7 @@ namespace WvsBeta.Game
             SendPetInteraction(chr, interactionId, success);
         }
 
-        public static void HandlePetLoot(Character chr, Packet packet)
+        public static void HandlePetLoot(GameCharacter chr, Packet packet)
         {
             // 4B 23 06 D7 00 3A 00 00 00
             /*
@@ -140,7 +141,7 @@ namespace WvsBeta.Game
             */
         }
 
-        public static void HandlePetAction(Character chr, Packet packet)
+        public static void HandlePetAction(GameCharacter chr, Packet packet)
         {
             var type = packet.ReadByte();
             var action = packet.ReadByte();
@@ -152,12 +153,12 @@ namespace WvsBeta.Game
 
         }
 
-        public static void HandlePetFeed(Character chr, Packet packet)
+        public static void HandlePetFeed(GameCharacter chr, Packet packet)
         {
             // 26 06 00 40 59 20 00 
         }
 
-        public static void SendPetChat(Character chr, byte type, byte action, string text)
+        public static void SendPetChat(GameCharacter chr, byte type, byte action, string text)
         {
             var pw = new Packet(ServerMessages.PET_ACTION);
             pw.WriteInt(chr.ID);
@@ -167,7 +168,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendPetNamechange(Character chr, string name)
+        public static void SendPetNamechange(GameCharacter chr, string name)
         {
             var pw = new Packet(ServerMessages.PET_NAME_CHANGED);
             pw.WriteInt(chr.ID);
@@ -177,7 +178,7 @@ namespace WvsBeta.Game
 
 
 
-        public static void SendPetLevelup(Character chr, byte wat = 0)
+        public static void SendPetLevelup(GameCharacter chr, byte wat = 0)
         {
             var pw = new Packet(ServerMessages.PLAYER_EFFECT);
             pw.WriteByte(0x04);
@@ -191,7 +192,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendPetAction(Character chr, byte a, byte b)
+        public static void SendPetAction(GameCharacter chr, byte a, byte b)
         {
             var pw = new Packet(ServerMessages.PET_INTERACTION);
             pw.WriteInt(chr.ID);
@@ -203,7 +204,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendPetInteraction(Character chr, byte action, bool inc)
+        public static void SendPetInteraction(GameCharacter chr, byte action, bool inc)
         {
             var pw = new Packet(ServerMessages.PET_INTERACTION);
             pw.WriteInt(chr.ID);
@@ -215,7 +216,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendMovePet(Character chr, MovePath movePath)
+        public static void SendMovePet(GameCharacter chr, MovePath movePath)
         {
             var pw = new Packet(ServerMessages.PET_MOVE);
             pw.WriteInt(chr.ID);
@@ -224,7 +225,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendSpawnPet(Character chr, PetItem pet, Character tochar = null)
+        public static void SendSpawnPet(GameCharacter chr, PetItem pet, GameCharacter tochar = null)
         {
             // 43 10000000 01 404B4C00 0300312031 3A00000000000000 0000 00 0000  000000000000000000000000000000000000000000000000000000 
             var pw = new Packet(ServerMessages.SPAWN_PET);
@@ -245,7 +246,7 @@ namespace WvsBeta.Game
                 tochar.SendPacket(pw);
         }
 
-        public static void SendRemovePet(Character chr, bool gmhide = false)
+        public static void SendRemovePet(GameCharacter chr, bool gmhide = false)
         {
             var pw = new Packet(ServerMessages.SPAWN_PET);
             pw.WriteInt(chr.ID);

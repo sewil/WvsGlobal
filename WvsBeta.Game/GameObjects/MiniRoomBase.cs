@@ -28,7 +28,7 @@ namespace WvsBeta.Game
         public string Password { get; protected set; }
         public byte MaxUsers { get; protected set; }
         public byte EnteredUsers { get; protected set; }
-        public Character[] Users { get; protected set; }
+        public GameCharacter[] Users { get; protected set; }
         public bool Opened { get; protected set; }
         public bool Private { get; protected set; }
         public bool CloseRequest { get; protected set; }
@@ -48,7 +48,7 @@ namespace WvsBeta.Game
             Title = "";
             Password = "";
             MaxUsers = pMaxUsers;
-            Users = new Character[MaxUsers];
+            Users = new GameCharacter[MaxUsers];
             Opened = false;
             CloseRequest = false;
             Tournament = false;
@@ -76,14 +76,14 @@ namespace WvsBeta.Game
             return 0xFF;
         }
 
-        public byte GetCharacterSlotID(Character pCharacter)
+        public byte GetCharacterSlotID(GameCharacter pCharacter)
         {
             return pCharacter.RoomSlotId;
         }
 
-        public void BroadcastPacket(Packet pPacket, Character pSkipMeh = null)
+        public void BroadcastPacket(Packet pPacket, GameCharacter pSkipMeh = null)
         {
-            foreach (Character chr in Users) if (chr != null && chr != pSkipMeh) chr.SendPacket(pPacket);
+            foreach (GameCharacter chr in Users) if (chr != null && chr != pSkipMeh) chr.SendPacket(pPacket);
         }
 
         public bool IsFull()
@@ -91,7 +91,7 @@ namespace WvsBeta.Game
             return EnteredUsers == MaxUsers;
         }
 
-        public virtual void RemovePlayer(Character pCharacter, byte pReason)
+        public virtual void RemovePlayer(GameCharacter pCharacter, byte pReason)
         {
             //Users[pCharacter.RoomSlotId] = null;
 
@@ -108,7 +108,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void RemovePlayerFromShop(Character pCharacter)
+        public void RemovePlayerFromShop(GameCharacter pCharacter)
         {
             MiniRoomBase mrb = pCharacter.Room;
 
@@ -146,7 +146,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public virtual void AddPlayer(Character pCharacter)
+        public virtual void AddPlayer(GameCharacter pCharacter)
         {
             _transaction += " " + pCharacter.Name + " (" + pCharacter.ID + ")";
             EnteredUsers++;
@@ -159,17 +159,17 @@ namespace WvsBeta.Game
             return Password.Equals(pPass);
         }
 
-        public virtual void EncodeLeave(Character pCharacter, Packet pPacket) { }
+        public virtual void EncodeLeave(GameCharacter pCharacter, Packet pPacket) { }
 
-        public virtual void EncodeEnter(Character pCharacter, Packet pPacket) { }
+        public virtual void EncodeEnter(GameCharacter pCharacter, Packet pPacket) { }
 
-        public virtual void EncodeEnterResult(Character pCharacter, Packet pPacket) { }
+        public virtual void EncodeEnterResult(GameCharacter pCharacter, Packet pPacket) { }
 
-        public virtual void OnPacket(Character pCharacter, byte pOpcode, Packet pPacket) { }
+        public virtual void OnPacket(GameCharacter pCharacter, byte pOpcode, Packet pPacket) { }
 
-        public virtual void AddItemToShop(Character pCharacter, PlayerShopItem Item) { }
+        public virtual void AddItemToShop(GameCharacter pCharacter, PlayerShopItem Item) { }
 
-        public static MiniRoomBase CreateRoom(Character pOwner, byte pType, Packet pPacket, bool pTournament, int pRound)
+        public static MiniRoomBase CreateRoom(GameCharacter pOwner, byte pType, Packet pPacket, bool pTournament, int pRound)
         {
             switch ((RoomType)pType)
             {

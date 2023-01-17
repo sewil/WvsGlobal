@@ -23,14 +23,14 @@ namespace WvsBeta.Game.Events
 
         public static int EventTimeSeconds = 60 * 10; //10 Minutes
 
-        private readonly HashSet<Character> MapleTeam;
-        private readonly HashSet<Character> StoryTeam;
+        private readonly HashSet<GameCharacter> MapleTeam;
+        private readonly HashSet<GameCharacter> StoryTeam;
         private RepeatingAction End;
 
         public MapleSnowballEvent() : base()
         {
-            MapleTeam = new HashSet<Character>();
-            StoryTeam = new HashSet<Character>();
+            MapleTeam = new HashSet<GameCharacter>();
+            StoryTeam = new HashSet<GameCharacter>();
         }
 
         public override void Prepare()
@@ -41,7 +41,7 @@ namespace WvsBeta.Game.Events
             base.Prepare();
         }
 
-        public override void Join(Character chr)
+        public override void Join(GameCharacter chr)
         {
             base.Join(chr);
             chr.ChangeMap(lobbyMapId);
@@ -77,8 +77,8 @@ namespace WvsBeta.Game.Events
             End?.Stop();
             End = null;
 
-            List<Character> Winners;
-            List<Character> Losers;
+            List<GameCharacter> Winners;
+            List<GameCharacter> Losers;
 
             if (SnowballMap.GetWinner() == SnowballEventState.MAPLE_WIN)
             {
@@ -118,7 +118,7 @@ namespace WvsBeta.Game.Events
             }, 10 * 1000, 0);
         }
 
-        public void PlayerLeft(Character chr)
+        public void PlayerLeft(GameCharacter chr)
         {
             MapleTeam.Remove(chr);
             StoryTeam.Remove(chr);

@@ -8,7 +8,7 @@ namespace WvsBeta.Game
 {
     public static class DropPacket
     {
-        public static void HandleDropMesos(Character chr, int amount)
+        public static void HandleDropMesos(GameCharacter chr, int amount)
         {
 
             //30 E8 03 00 00 
@@ -23,7 +23,7 @@ namespace WvsBeta.Game
 
             if (chr.IsGM && !chr.IsAdmin)
             {
-                MessagePacket.SendNotice("You cannot drop mesos.", chr);
+                ChatPacket.SendNotice("You cannot drop mesos.", chr);
                 InventoryPacket.NoChange(chr);
                 return;
             }
@@ -36,7 +36,7 @@ namespace WvsBeta.Game
             InventoryPacket.NoChange(chr);
         }
 
-        public static void HandlePickupDrop(Character chr, Packet packet)
+        public static void HandlePickupDrop(GameCharacter chr, Packet packet)
         {
             // 5F 18 FF 12 01 00 00 00 00 
             packet.Skip(4); // pos?
@@ -140,7 +140,7 @@ namespace WvsBeta.Game
             chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.FreeForAll, chr.ID);
         }
 
-        public static void SendMakeEnterFieldPacket(Drop drop, RewardEnterType EnterType, short Delay, Character chr = null)
+        public static void SendMakeEnterFieldPacket(Drop drop, RewardEnterType EnterType, short Delay, GameCharacter chr = null)
         {
             Packet pw = new Packet(ServerMessages.DROP_ENTER_FIELD);
             pw.WriteByte((byte)EnterType);
@@ -189,9 +189,9 @@ namespace WvsBeta.Game
             Drop.Field.SendPacket(Drop, pw);
         }
 
-        public static void CannotLoot(Character chr, sbyte reason)
+        public static void CannotLoot(GameCharacter chr, sbyte reason)
         {
-            Packet pw = new Packet(ServerMessages.SHOW_STATUS_INFO);
+            Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0);
             pw.WriteSByte(reason);
             chr.SendPacket(pw);

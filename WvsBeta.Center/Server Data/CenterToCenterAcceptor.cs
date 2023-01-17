@@ -11,7 +11,7 @@ namespace WvsBeta.Center
 
         public override void OnAccept(Socket pSocket)
         {
-            new CenterToCenterConnection(pSocket);
+            new CenterToCenterSession(pSocket);
         }
     }
 }

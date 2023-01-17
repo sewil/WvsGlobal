@@ -12,12 +12,12 @@ namespace WvsBeta.Game
         Mobgen,
         Mobdestroy,
         End,
-        TargetStartfield,
-        TargetStartShipmoveField,
-        TargetWaitfield,
-        TargetMovefield,
-        TargetEndfield,
-        TargetEndShipmoveField,
+        TargetFieldStart,
+        TargetFieldShipmoveStart,
+        TargetFieldWait,
+        TargetFieldMove,
+        TargetFieldEnd,
+        TargetFieldShipmoveEnd,
     }
 
     public partial class ContinentMan
@@ -89,7 +89,7 @@ namespace WvsBeta.Game
             {
                 if (contimove.FieldIdMove == fieldId)
                 {
-                    SendContiPacket(fieldId, Conti.TargetMovefield, Conti.Mobdestroy);
+                    SendContiPacket(fieldId, Conti.TargetFieldMove, Conti.Mobdestroy);
                 }
             }
 
@@ -99,7 +99,7 @@ namespace WvsBeta.Game
         {
             if (!DataProvider.Maps.TryGetValue(fieldId, out var field)) return;
 
-            var packet = new Packet(ServerMessages.CONTIMOVE);
+            var packet = new Packet(ServerMessages.CONTI_TARGET_FIELD);
             packet.WriteByte((byte)target);
             packet.WriteByte((byte)flag);
 
@@ -127,7 +127,7 @@ namespace WvsBeta.Game
 
                         SendContiPacket(
                             contimove.FieldIdMove, 
-                            Conti.TargetMovefield,
+                            Conti.TargetFieldMove,
                             Conti.Mobgen
                         );
                         break;
@@ -137,7 +137,7 @@ namespace WvsBeta.Game
                         
                         SendContiPacket(
                             contimove.FieldIdMove,
-                            Conti.TargetMovefield,
+                            Conti.TargetFieldMove,
                             Conti.Mobdestroy
                         );
                         break;
@@ -146,7 +146,7 @@ namespace WvsBeta.Game
                         // Finish moving
                         SendContiPacket(
                             contimove.FieldIdEndShipMove,
-                            Conti.TargetEndShipmoveField,
+                            Conti.TargetFieldShipmoveEnd,
                             Conti.End
                         );
                         MoveField(contimove.FieldIdMove, contimove.FieldIdEnd);
@@ -161,7 +161,7 @@ namespace WvsBeta.Game
                     case Conti.Start:
                         SendContiPacket(
                             contimove.FieldIdStartShipMove,
-                            Conti.TargetStartShipmoveField,
+                            Conti.TargetFieldShipmoveStart,
                             Conti.Start
                         );
                         MoveField(contimove.FieldIdWait, contimove.FieldIdMove);

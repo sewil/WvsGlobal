@@ -7,10 +7,12 @@ using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Game.GameObjects;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -43,7 +45,7 @@ namespace WvsBeta.Game
         public IPAddress PublicIP { get; set; }
         public IPAddress PrivateIP { get; set; }
 
-        public CenterSocket CenterConnection { get; set; }
+        public CenterSession CenterConnection { get; set; }
 
         public int GetOnlineId() => RedisBackend.GetOnlineId(WorldID, ID);
 
@@ -54,16 +56,16 @@ namespace WvsBeta.Game
 
         public Dictionary<int, Tuple<Packet, long>> CCIngPlayerList { get; } = new Dictionary<int, Tuple<Packet, long>>();
         public ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string, Player>();
-        public Dictionary<int, Character> CharacterList { get; } = new Dictionary<int, Character>();
-        public HashSet<Character> StaffCharacters { get; } = new HashSet<Character>();
+        public Dictionary<int, GameCharacter> CharacterList { get; } = new Dictionary<int, GameCharacter>();
+        public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
 
-        public Dictionary<int, (string reason, string name, byte level, Character.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, Character.BanReasons, long)>();
+        public Dictionary<int, (string reason, string name, byte level, GameCharacter.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, GameCharacter.BanReasons, long)>();
 
         public DiscordReporter BanDiscordReporter { get; private set; }
         public DiscordReporter ServerTraceDiscordReporter { get; private set; }
         public DiscordReporter MutebanDiscordReporter { get; private set; }
 
-        private Dictionary<string, INpcScript> _availableNPCScripts { get; } = new Dictionary<string, INpcScript>();
+        public Dictionary<string, IGameScript> AvailableScripts { get; } = new Dictionary<string, IGameScript>();
 
         public string ScrollingHeader { get; private set; }
 
@@ -72,7 +74,7 @@ namespace WvsBeta.Game
             ScrollingHeader = newText;
             Program.MainForm.LogAppend("Updating scrolling header to: {0}", ScrollingHeader);
 
-            MessagePacket.SendText(MessagePacket.MessageTypes.Header, ScrollingHeader, null, MessagePacket.MessageMode.ToChannel);
+            ChatPacket.SendText(ChatPacket.MessageTypes.Header, ScrollingHeader, null, ChatPacket.MessageMode.ToChannel);
         }
 
         public void LogToLogfile(string what)
@@ -80,14 +82,14 @@ namespace WvsBeta.Game
             Program.LogFile.WriteLine(what);
         }
 
-        public void AddDelayedBanRecord(Character chr, string reason, Character.BanReasons banReason, int extraDelay)
+        public void AddDelayedBanRecord(GameCharacter chr, string reason, GameCharacter.BanReasons banReason, int extraDelay)
         {
             // Only enqueue when we haven't recorded it yet, otherwise you would
             // be able to extend the A/B delay.
             if (DelayedBanRecords.ContainsKey(chr.UserID)) return;
 
 
-            Character.HackLog.Info(new Character.PermaBanLogRecord
+            GameCharacter.HackLog.Info(new GameCharacter.PermaBanLogRecord
             {
                 reason = reason
             });
@@ -97,60 +99,15 @@ namespace WvsBeta.Game
             var str = $"Enqueued delayed permban for userid {chr.UserID}, charname {chr.Name}, level {chr.Level}, reason ({banReason}) {reason}, map {chr.MapID} in {seconds} seconds...";
             BanDiscordReporter.Enqueue(str);
 
-            MessagePacket.SendNoticeGMs(
+            ChatPacket.SendNoticeGMs(
                 str,
-                MessagePacket.MessageTypes.Notice
+                ChatPacket.MessageTypes.Notice
             );
         }
 
         public void CheckMaps(long pNow)
         {
             DataProvider.Maps.ForEach(x => x.Value.MapTimer(pNow));
-        }
-
-        public INpcScript TryGetOrCompileScript(string scriptName, Action<string> errorHandlerFnc)
-        {
-            if (_availableNPCScripts.TryGetValue(scriptName, out INpcScript ret)) return ret;
-
-            var scriptUri = GetScriptFilename(scriptName);
-
-            if (scriptUri == null) return null;
-
-            return ForceCompileScriptfile(scriptUri, errorHandlerFnc);
-        }
-
-        public string GetScriptFilename(string scriptName)
-        {
-            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Scripts");
-
-            string filename = Path.Combine(scriptsDir, scriptName + ".s");
-            if (!File.Exists(filename)) filename = Path.Combine(scriptsDir, scriptName + ".cs");
-            if (!File.Exists(filename)) return null;
-            return filename;
-        }
-
-        public INpcScript ForceCompileScriptfile(string filename, Action<string> errorHandlerFnc)
-        {
-            var fi = new FileInfo(filename);
-            var results = Scripting.CompileScript(filename);
-            if (results.Errors.Count > 0)
-            {
-                errorHandlerFnc?.Invoke(Path.GetFileName(filename));
-
-                Program.MainForm.LogAppend($"Couldn't compile the file ({filename}) correctly:");
-                foreach (CompilerError error in results.Errors)
-                {
-                    Program.MainForm.LogAppend(
-                        $"File {filename}, Line {error.Line}, Column {error.Column}: {error.ErrorText}");
-                }
-                return null;
-            }
-
-
-            var ret = (INpcScript)Scripting.FindInterface(results.CompiledAssembly, "INpcScript");
-            string savename = fi.Name.Replace(".s", "").Replace(".cs", "");
-            _availableNPCScripts[savename] = ret;
-            return ret;
         }
 
         public void AddPlayer(Player player)
@@ -173,13 +130,13 @@ namespace WvsBeta.Game
             Program.MainForm.LogAppend("Unable to remove player with hash {0}", hash);
         }
 
-        public Character GetCharacter(int ID)
+        public GameCharacter GetCharacter(int ID)
         {
-            return CharacterList.TryGetValue(ID, out Character ret) ? ret : null;
+            return CharacterList.TryGetValue(ID, out GameCharacter ret) ? ret : null;
         }
 
 
-        public Character GetCharacter(string name)
+        public GameCharacter GetCharacter(string name)
         {
             name = name.ToLowerInvariant();
             return (from kvp in CharacterList where kvp.Value != null && kvp.Value.Name.ToLowerInvariant() == name select kvp.Value).FirstOrDefault();
@@ -259,9 +216,9 @@ namespace WvsBeta.Game
 
                             BanDiscordReporter.Enqueue(str);
 
-                            MessagePacket.SendNoticeGMs(
+                            ChatPacket.SendNoticeGMs(
                                 str,
-                                MessagePacket.MessageTypes.Notice
+                                ChatPacket.MessageTypes.Notice
                             );
 
                             DelayedBanRecords.Remove(userid);
@@ -291,7 +248,7 @@ namespace WvsBeta.Game
         public void ConnectToCenter()
         {
             if (CenterConnection?.Disconnected == false) return;
-            CenterConnection = new CenterSocket();
+            CenterConnection = new CenterSession();
         }
 
         private void LoadDBConfig(string configFile)

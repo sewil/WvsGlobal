@@ -5,19 +5,19 @@ namespace WvsBeta.Game
 {
     public static class DamageFormula
     {
-        public static MessagePacket.MessageTypes GetGMNoticeType(int damageGiven, int maxDamageCalculated)
+        public static ChatPacket.MessageTypes GetGMNoticeType(int damageGiven, int maxDamageCalculated)
         {
             int percent = damageGiven * 100 / maxDamageCalculated;
-            if (percent < 115) return MessagePacket.MessageTypes.Notice;
-            if (percent < 150) return MessagePacket.MessageTypes.Notice;
-            if (percent < 200) return MessagePacket.MessageTypes.RedText;
-            return MessagePacket.MessageTypes.Megaphone;
+            if (percent < 115) return ChatPacket.MessageTypes.Notice;
+            if (percent < 150) return ChatPacket.MessageTypes.Notice;
+            if (percent < 200) return ChatPacket.MessageTypes.RedText;
+            return ChatPacket.MessageTypes.Megaphone;
         }
 
         // Author: wackyracer / Joren McGrew
         // Checks for points in Critical Throw/Shot and returns the damage modifier appropriately.
         // +55% ~ +200% damage multiplier based on rank of Critical Throw/Shot, otherwise, return normal damage.
-        public static double CriticalStrikeModifier(Character chr)
+        public static double CriticalStrikeModifier(GameCharacter chr)
         {
             try
             {
@@ -49,7 +49,7 @@ namespace WvsBeta.Game
         // Author: wackyracer / Joren McGrew
         // Checks for points in Final Attack and returns the damage modifier appropriately.
         // +5% ~ +150% damage multiplier based on rank of Critical Throw/Shot, otherwise, return normal damage.
-        public static double FinalAttackModifier(Character chr, int SkillID)
+        public static double FinalAttackModifier(GameCharacter chr, int SkillID)
         {
             var chrFinalAttack = chr.Skills.GetSkillLevelData(SkillID, out byte FinalAttackLevel);
 
@@ -188,7 +188,7 @@ namespace WvsBeta.Game
         // Author: wackyracer / Joren McGrew
         // Fetches the Mastery of a given character and returns it as a double.
         // This function is primarily used for assisting calculations in other functions.
-        public static double GetMastery(Character chr)
+        public static double GetMastery(GameCharacter chr)
         {
             // Abbreviation description:
             // First letter is the first letter of the job it is relative to. F = Fighter, P = Page, and so on.
@@ -232,7 +232,7 @@ namespace WvsBeta.Game
         // Accuracy = (DEX*0.8) + (LUK*0.5) + (accuracy from mastery and equipment)
         // Chance to Hit = Accuracy/((1.84 + 0.07 * D) * Avoid) - 1
         // (D = monster level - your level.If negative, make it 0.)
-        public static double CalcPhysicalAcc(Character chr, Mob mob)
+        public static double CalcPhysicalAcc(GameCharacter chr, Mob mob)
         {
             double chrDEX = chr.PrimaryStats.GetDexAddition();
             double chrLUK = chr.PrimaryStats.GetLukAddition();
@@ -245,7 +245,7 @@ namespace WvsBeta.Game
 
         // Author: wackyracer / Joren McGrew
         // This formula retrieves the type of weapon that the character is currently using to attack with.
-        public static string GetWeaponType(Character chr)
+        public static string GetWeaponType(GameCharacter chr)
         {
             var eqp = chr.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, false);
 
@@ -308,7 +308,7 @@ namespace WvsBeta.Game
         // I have added mob level difference from character (if mob level is higher than character's).
         // My formula looks like...
         // MAX = ((Primary Stat + Secondary Stat) * Weapon Attack / 100) * Element Modifier * Level Difference - (Mob Weapon Defense * 0.5)
-        public static double MaximumMeleeDamage(Character chr, Mob mob, int Targets = 1, int SkillID = 99)
+        public static double MaximumMeleeDamage(GameCharacter chr, Mob mob, int Targets = 1, int SkillID = 99)
         {
             var MeleeSkill = chr.Skills.GetSkillLevelData(SkillID, out byte MeleeSkillLevel);
             string WeaponType;
@@ -412,7 +412,7 @@ namespace WvsBeta.Game
         // I have added mob level difference from character (if mob level is higher than character's).
         // My formula looks like...
         // ((Magic * 3.3 + Magic * Magic * 0.003365 + INT * 0.5) * Spell Attack / 100) * Element Modifier * Level Difference - (Mob Magic Defense * 0.5)
-        public static double MaximumSpellDamage(Character chr, Mob mob, int SpellID)
+        public static double MaximumSpellDamage(GameCharacter chr, Mob mob, int SpellID)
         {
             double chrINT = chr.PrimaryStats.GetIntAddition();
             double chrMagicAttack = chr.PrimaryStats.BuffMagicAttack.N + chr.Inventory.GetTotalMAttInEquips();
@@ -444,7 +444,7 @@ namespace WvsBeta.Game
         // Including the mob magic defense resistance calculation, elemental and level difference amplification/reduction formulas...
         // My formula looks like...
         // ((INT * 1.2 + LUK) * Magic / 1000 * (1.5 + 5 / Targets)) * Heal Damage (10% ~ 300%, based on level of Heal) * Elemental Damage Modifier * Level Difference - (Mob Magic Defense * 0.5)
-        public static double MaximumHealDamage(Character chr, Mob mob, byte Targets)
+        public static double MaximumHealDamage(GameCharacter chr, Mob mob, byte Targets)
         {
             if (chr.PrimaryStats.Job / 10 == 23 || chr.PrimaryStats.Job / 100 == 5)
             {
@@ -472,7 +472,7 @@ namespace WvsBeta.Game
         // Including the mob weapon defense resistance calculation, level difference amplification/reduction formulas, and critical strike formula...
         // My formula looks like...
         // ((LUK * 5.0) * Weapon Attack / 100) * Lucky Seven Damage (55% ~ 150%, based on level of Lucky Seven) * Level Difference - (Mob Weapon Defense * 0.5)
-        public static double MaximumLuckySevenDamage(Character chr, Mob mob, int ClientTotalDamage)
+        public static double MaximumLuckySevenDamage(GameCharacter chr, Mob mob, int ClientTotalDamage)
         {
             if (chr.PrimaryStats.Job / 100 == 4 || chr.PrimaryStats.Job / 100 == 5)
             {
@@ -514,7 +514,7 @@ namespace WvsBeta.Game
         // Including the mob weapon defense resistance calculation, level difference amplification/reduction formulas, and critical strike formula...
         // My formula looks like...
         // ((DEX * 3.4 + STR) * Weapon Attack / 150) * (105% ~ 200%, based on level of Power Knockback) * Level Difference - (Mob Weapon Defense * 0.5)
-        public static double MaximumPowerKnockbackDamage(Character chr, Mob mob, int ClientTotalDamage)
+        public static double MaximumPowerKnockbackDamage(GameCharacter chr, Mob mob, int ClientTotalDamage)
         {
             if (chr.PrimaryStats.Job / 10 == 31 || chr.PrimaryStats.Job / 10 == 32 || chr.PrimaryStats.Job / 100 == 5)
             {
@@ -553,7 +553,7 @@ namespace WvsBeta.Game
         // NEEDS TESTING!!!
         // Including the mob weapon defense resistance calculation, level difference amplification/reduction formulas, and critical strike formula...
         // My formula looks like: ((DEX * 3.4 + STR) * Weapon Attack / 100) * (Bomb Arrow Damage Modifier * Critical Strike Modifier) * Level Disadvantage - (Mob Weapon Defense * 0.5)
-        public static double MaximumArrowBombDamage(Character chr, Mob mob, int ArrowID, int ClientTotalDamage)
+        public static double MaximumArrowBombDamage(GameCharacter chr, Mob mob, int ArrowID, int ClientTotalDamage)
         {
             try
             {
@@ -605,7 +605,7 @@ namespace WvsBeta.Game
         // Including the mob weapon defense resistance calculation, level difference amplification/reduction formulas, and critical strike formula...
         // Something seems off here. I can smell it. I think Bow/Crossbow Mastery needs to be taken into account but I can't find the formula for it online...
         // Guess I can only find out with testing... F3.
-        public static double MaximumRangedDamage(Character chr, Mob mob, int SkillID, int StarID, byte Targets, int ClientTotalDamage)
+        public static double MaximumRangedDamage(GameCharacter chr, Mob mob, int SkillID, int StarID, byte Targets, int ClientTotalDamage)
         {
             // If they're a Bowman, Thief, or GM...
             if (chr.PrimaryStats.Job / 100 == 3 || chr.PrimaryStats.Job / 100 == 4 || chr.PrimaryStats.Job / 100 == 5)

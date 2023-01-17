@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using reNX.NXProperties;
+using WvsBeta.Common.DataProviders;
 
 namespace WvsBeta.Shop
 {

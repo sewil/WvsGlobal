@@ -6,13 +6,13 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    public class ClientSocket : AbstractConnection
+    public class ClientSocket : ConnectionSession
     {
         public Player Player { get; set; }
         public bool Loaded { get; set; }
 
         public ClientSocket(System.Net.Sockets.Socket pSocket)
-            : base(pSocket)
+            : base(pSocket, false)
         {
             Loaded = false;
             Init();
@@ -161,7 +161,7 @@ namespace WvsBeta.Shop
 
         public void SendConnectToServer(byte[] IP, ushort port, bool noScheduledDisconnect = false)
         {
-            Packet pw = new Packet(ServerMessages.CHANGE_CHANNEL);
+            Packet pw = new Packet(ServerMessages.MIGRATE_COMMAND);
             pw.WriteBool(true);
             pw.WriteBytes(IP);
             pw.WriteUShort(port);

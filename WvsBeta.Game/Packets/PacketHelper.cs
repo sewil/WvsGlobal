@@ -3,11 +3,10 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Game
 {
-    internal class PacketHelper : BasePacketHelper
+    internal class PacketHelper
     {
         public static bool ValidateMovePath(MovableLife life, MovePath path)
         {
@@ -99,7 +98,7 @@ namespace WvsBeta.Game
             return toRet;
         }
 
-        public static void AddAvatar(Packet pPacket, Character pCharacter)
+        public static void AddAvatar(Packet pPacket, GameCharacter pCharacter)
         {
             pPacket.WriteByte(pCharacter.Gender);
             pPacket.WriteByte(pCharacter.Skin);

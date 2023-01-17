@@ -35,9 +35,9 @@ namespace WvsBeta.Game
         public bool[] PlacedStone { get; set; }
 
         public Dictionary<byte, OmokStone> LastPlacedStone { get; set; }
-        public Character Owner { get; private set; }
+        public GameCharacter Owner { get; private set; }
 
-        public Omok(Character pOwner)
+        public Omok(GameCharacter pOwner)
             : base(2, RoomType.Omok)
         {
             mCurrentTurnIndex = 0;
@@ -49,21 +49,21 @@ namespace WvsBeta.Game
             LastPlacedStone = new Dictionary<byte, OmokStone>();
         }
 
-        public void AddOwner(Character pOwner)
+        public void AddOwner(GameCharacter pOwner)
         {
             EnteredUsers++;
             pOwner.RoomSlotId = GetEmptySlot();
             Users[pOwner.RoomSlotId] = pOwner;
         }
 
-        public void AddUser(Character pTo)
+        public void AddUser(GameCharacter pTo)
         {
             EnteredUsers++;
             pTo.RoomSlotId = GetEmptySlot();
             Users[pTo.RoomSlotId] = pTo;
         }
 
-        public void CloseOmok(Character pOwner)
+        public void CloseOmok(GameCharacter pOwner)
         {
             MiniGamePacket.RemoveAnnounceBox(pOwner);
             for (int i = 0; i < 2; i++)
@@ -82,7 +82,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void UpdateGame(Character pWinnner, bool Draw = false, bool Forfeit = false)
+        public void UpdateGame(GameCharacter pWinnner, bool Draw = false, bool Forfeit = false)
         {
             if (Draw)
             {
@@ -113,7 +113,7 @@ namespace WvsBeta.Game
             Stones = new byte[15, 15];
         }
 
-        public void UpdateAnnounceBox(Character pOwner)
+        public void UpdateAnnounceBox(GameCharacter pOwner)
         {
 
         }
@@ -125,7 +125,7 @@ namespace WvsBeta.Game
             return 0xFF;
         }
 
-        public void AddStone(int X, int Y, byte Piece, Character chr)
+        public void AddStone(int X, int Y, byte Piece, GameCharacter chr)
         {
             this.Stones[X, Y] = Piece;
 

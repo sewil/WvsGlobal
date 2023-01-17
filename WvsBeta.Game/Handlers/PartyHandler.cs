@@ -14,7 +14,7 @@ namespace WvsBeta.Game
 
     class PartyHandler
     {
-        public static void HandleParty(Character chr, Packet pw)
+        public static void HandleParty(GameCharacter chr, Packet pw)
         {
             PartyRecvops mode = (PartyRecvops)pw.ReadByte();
 
@@ -44,7 +44,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleDecline(Character chr, Packet packet)
+        public static void HandleDecline(GameCharacter chr, Packet packet)
         {
             Server.Instance.CenterConnection.DeclineParty(chr.ID, chr.Name);
         }

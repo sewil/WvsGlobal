@@ -8,10 +8,10 @@ namespace WvsBeta.Game
 {
     public class CharacterSummons
     {
-        public readonly Character Chr;
+        public readonly GameCharacter Chr;
         private readonly Dictionary<int, Summon> Summons = new Dictionary<int, Summon>();
 
-        public CharacterSummons(Character c)
+        public CharacterSummons(GameCharacter c)
         {
             Chr = c;
         }

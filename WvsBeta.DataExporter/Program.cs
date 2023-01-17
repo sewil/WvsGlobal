@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Game;
 
 namespace WvsBeta.DataExporter

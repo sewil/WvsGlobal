@@ -11,24 +11,17 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
 {
-    public class Character
+    public class Character : CharacterBase
     {
         private static ILog _characterLog = LogManager.GetLogger("CharacterLog");
         public static ILog CashLog = LogManager.GetLogger("CashLog");
 
-        public int ID { get; set; }
         public int UserID { get; set; }
-        public byte GMLevel { get; set; }
-        public string Name { get; set; }
         public string UserName { get; set; }
-        public byte Gender { get; set; }
-        public byte Skin { get; set; }
-        public int Hair { get; set; }
-        public int Face { get; set; }
         public long PetCashId { get; set; }
         public int DoB { get; set; }
 
-        public CharacterInventory Inventory { get; private set; }
+        public new CharacterInventory Inventory { get; private set; }
         public CharacterCashLocker Locker { get; private set; }
         public int[] Wishlist { get; } = new int[10];
 

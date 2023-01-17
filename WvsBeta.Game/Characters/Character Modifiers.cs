@@ -5,7 +5,7 @@ using WvsBeta.Common;
 
 namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         private static ILog _levelLog = LogManager.GetLogger("LevelLog");
 
@@ -75,7 +75,7 @@ namespace WvsBeta.Game
             ModifiedHP();
         }
 
-        public void DamageHP(short amount) => ModifyHP((short)-amount);
+        public override void DamageHP(short amount) => ModifyHP((short)-amount);
 
         public void ModifiedHP()
         {
@@ -378,11 +378,12 @@ namespace WvsBeta.Game
             Server.Instance.CenterConnection.BuddyListExpand(this);
         }
 
-        public int AddMesos(int value, bool isSelf = false)
+        public int AddMesos(int value, bool isSelf = false, bool checkCanAfford = false)
         {
             var newMesos = 0;
             if (value < 0)
             {
+                if (checkCanAfford && Inventory.Mesos < value) return -1;
                 if ((Inventory.Mesos - value) < 0) newMesos = 0;
                 else newMesos = Inventory.Mesos + value; // neg - neg = pos
             }
@@ -399,7 +400,7 @@ namespace WvsBeta.Game
             return mesosDiff;
         }
 
-        public void AddMaplePoints(int value, Character chr)
+        public void AddMaplePoints(int value, GameCharacter chr)
         {
             throw new NotImplementedException();
         }
@@ -597,7 +598,7 @@ namespace WvsBeta.Game
             {
                 if (GMLevel == 1)
                 {
-                    MessagePacket.SendNotice("GM interns cannot leave GM Hide.", this);
+                    ChatPacket.SendNotice("GM interns cannot leave GM Hide.", this);
                     AdminPacket.Hide(this, true); //because client unhides you graphically when server rejects it
                 }
                 else
@@ -624,9 +625,9 @@ namespace WvsBeta.Game
             TryActivateHide();
             MapPacket.SendChangeMap(this);
 
-            if (newMap.PQPortalOpen == true)
+            if (newMap.PQPortalOpen)
             {
-                MapPacket.PortalEffect(Field, 2, "gate");
+                MapPacket.PortalEffect(Field);
             }
             newMap.AddPlayer(this);
             Summons.MigrateSummons(prevMap, newMap);
@@ -641,29 +642,32 @@ namespace WvsBeta.Game
         }
 
         // Change map, but go to a specific portal
-        public void ChangeMap(int mapid, string portalName)
+        public void ChangeMap(int toMapId, string toPortalName)
         {
-            var newMap = DataProvider.Maps[mapid];
-            if (newMap.Portals.TryGetValue(portalName, out var portal))
-                ChangeMap(mapid, portal);
+            var newMap = DataProvider.Maps[toMapId];
+            if (newMap.Portals.TryGetValue(toPortalName, out var portal))
+                ChangeMap(toMapId, portal);
             else
-                Program.MainForm.LogAppend("Did not find portal {0} for mapid {1}", portalName, mapid);
+                Program.MainForm.LogAppend("Did not find portal {0} for mapid {1}", toPortalName, toMapId);
         }
 
-        public void ChangeMap(int mapid, Portal to)
+        public void ChangeMap(Map toMap, Portal toPortal)
         {
             var prevmap = Field;
-            var newMap = DataProvider.Maps[mapid];
-
-            StartChangeMap(prevmap, newMap);
+            StartChangeMap(prevmap, toMap);
             {
-                MapPosition = to.ID;
+                PortalID = toPortal.ID;
 
-                Position = new Pos(to.X, (short) (to.Y - 40));
+                Position = new Pos(toPortal.X, (short)(toPortal.Y - 40));
                 Stance = 0;
                 Foothold = 0;
             }
-            FinishChangeMap(prevmap, newMap);
+            FinishChangeMap(prevmap, toMap);
+        }
+        public void ChangeMap(int toMapId, Portal toPortal)
+        {
+            Map toMap = DataProvider.Maps[toMapId];
+            ChangeMap(toMap, toPortal);
         }
 
         public void ChangeMap(int mapid, byte partyMemberIdx, MysticDoor door)
@@ -677,7 +681,7 @@ namespace WvsBeta.Game
                 // However, the server doesnt update the position
                 // When a random portal is assigned, which would trigger a hack check.
                 // So we are a bit clueless...
-                MapPosition = (byte)(partyMemberIdx | (1 << 7));
+                PortalID = (byte)(partyMemberIdx | (1 << 7));
                 if (newMap.Town)
                 {
                     Portal endingAt;
@@ -742,11 +746,11 @@ namespace WvsBeta.Game
             }
         }
 
-        public void OnVarset(Character Sent, string Var, object Value, object Value2 = null, object Value3 = null)
+        public void OnVarset(GameCharacter Sent, string Var, object Value, object Value2 = null, object Value3 = null)
         {
             if (this != Sent && Sent.IsGM && !Sent.IsAdmin) //Todo Admin levels
             {
-                MessagePacket.SendNotice("You don't have the premission to edit other players stats!", Sent);
+                ChatPacket.SendNotice("You don't have the premission to edit other players stats!", Sent);
                 //$"{Sent.Name} tried to edit another players stats without premission"
             }
             else
@@ -824,7 +828,7 @@ namespace WvsBeta.Game
                                     PrimaryStats.Job = Job;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Job {Job} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Job {Job} does not exist.", Sent);
                                 break;
                             }
                         case "skill":
@@ -837,7 +841,7 @@ namespace WvsBeta.Game
                                     Skills.SetSkillPoint(SkillID, Convert.ToByte(Value2), true);
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Skill {SkillID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Skill {SkillID} does not exist.", Sent);
                                 break;
                             }
                         case "level":
@@ -855,7 +859,7 @@ namespace WvsBeta.Game
                                     Skin = SkinID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Skin {SkinID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Skin {SkinID} does not exist.", Sent);
                                 break;
                             }
                         case "face":
@@ -868,7 +872,7 @@ namespace WvsBeta.Game
                                     Face = FaceID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Face {FaceID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Face {FaceID} does not exist.", Sent);
                                 break;
                             }
                         case "hair":
@@ -881,7 +885,7 @@ namespace WvsBeta.Game
                                     Hair = HairID;
                                 }
                                 else
-                                    MessagePacket.SendNotice($"Hair {HairID} does not exist.", Sent);
+                                    ChatPacket.SendNotice($"Hair {HairID} does not exist.", Sent);
                                 break;
                             }
                         case "gender":
@@ -893,7 +897,7 @@ namespace WvsBeta.Game
                                     "@id", ID
                                 );
 
-                                MessagePacket.SendNotice($"Gender set to {(Gender == 0 ? "male" : (Gender == 2 ? "Unisex" : "female"))}. Please relog.", this);
+                                ChatPacket.SendNotice($"Gender set to {(Gender == 0 ? "male" : (Gender == 2 ? "Unisex" : "female"))}. Please relog.", this);
                                 break;
                             }
                         case "accgender":
@@ -905,7 +909,7 @@ namespace WvsBeta.Game
                                     "@id", UserID
                                 );
 
-                                MessagePacket.SendNotice($"Account gender set to {(gender == 0 ? "male" : (gender == 2 ? "Unisex" : "female"))}", this);
+                                ChatPacket.SendNotice($"Account gender set to {(gender == 0 ? "male" : (gender == 2 ? "Unisex" : "female"))}", this);
                                 break;
                             }
                         case "map":
@@ -915,11 +919,11 @@ namespace WvsBeta.Game
                                 if (DataProvider.Maps.ContainsKey(FieldID))
                                     ChangeMap(FieldID);
                                 else
-                                    MessagePacket.SendText(MessagePacket.MessageTypes.RedText, "Map not found.", this, MessagePacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Map not found.", this, ChatPacket.MessageMode.ToPlayer);
                                 break;
                             }
                         default:
-                            MessagePacket.SendNotice($"{Var} is not a valid Variable!", Sent);
+                            ChatPacket.SendNotice($"{Var} is not a valid Variable!", Sent);
                             return;
                     }
 
@@ -931,14 +935,14 @@ namespace WvsBeta.Game
                 }
                 catch (Exception ex)
                 {
-                    MessagePacket.SendNotice(ex.Message, Sent);
+                    ChatPacket.SendNotice(ex.Message, Sent);
                 }
             }
         }
 
         public void OnPetVarset(string Var, string Value, bool Me)
         {
-            MessagePacket.SendNotice("Did you hear a cat just now? That damn thing haunts me.", this);
+            ChatPacket.SendNotice("Did you hear a cat just now? That damn thing haunts me.", this);
         }
     }
 }

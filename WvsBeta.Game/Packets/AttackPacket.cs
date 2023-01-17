@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 
@@ -21,7 +24,7 @@ namespace WvsBeta.Game
             Summon
         }
 
-        public static bool ParseAttackData(Character chr, Packet packet, out AttackData data, AttackTypes type)
+        public static bool ParseAttackData(GameCharacter chr, Packet packet, out AttackData data, AttackTypes type)
         {
             // Don't accept zombies
             if (chr.PrimaryStats.HP == 0)
@@ -31,7 +34,7 @@ namespace WvsBeta.Game
             }
 
             // Normal weapon + sword boost gives about 500, so we need to go faster
-            if (false && packet.PacketCreationTime - chr.LastAttackPacket < 350)
+            if (packet.PacketCreationTime - chr.LastAttackPacket < 350)
             {
                 Trace.WriteLine($"{packet.PacketCreationTime - chr.LastAttackPacket}");
                 if (chr.AssertForHack(chr.FastAttackHackCount++ > 5, $"Fast attack hack, type {type}"))
@@ -96,7 +99,8 @@ namespace WvsBeta.Game
             if (type == AttackTypes.Ranged)
             {
                 ad.StarItemSlot = packet.ReadShort();
-                BaseItem item = chr.Inventory.GetItem(2, ad.StarItemSlot);
+                packet.ReadShort(); // ?
+                BaseItem item = chr.Inventory.GetItem(Inventory.Use, ad.StarItemSlot);
 
                 if (ad.StarItemSlot == 0)
                 {
@@ -216,7 +220,7 @@ namespace WvsBeta.Game
             return true;
         }
 
-        public static void HandleMeleeAttack(Character chr, Packet packet)
+        public static void HandleMeleeAttack(GameCharacter chr, Packet packet)
         {
             //Program.MainForm.LogAppend("Handling Melee");
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Melee)) return;
@@ -489,7 +493,7 @@ namespace WvsBeta.Game
 
         }
 
-        public static void HandleRangedAttack(Character chr, Packet packet)
+        public static void HandleRangedAttack(GameCharacter chr, Packet packet)
         {
             //Program.MainForm.LogAppend("Handling Ranged");
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Ranged)) return;
@@ -591,7 +595,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleMagicAttack(Character chr, Packet packet)
+        public static void HandleMagicAttack(GameCharacter chr, Packet packet)
         {
             //Program.MainForm.LogAppend("Handling Magic");
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Magic)) return;
@@ -702,7 +706,7 @@ namespace WvsBeta.Game
         }
 
         
-        public static void HandleSummonAttack(Character chr, Packet packet)
+        public static void HandleSummonAttack(GameCharacter chr, Packet packet)
         {
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Summon)) return;
 
@@ -756,7 +760,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendSummonAttack(Character chr, Summon summon, AttackData ad)
+        public static void SendSummonAttack(GameCharacter chr, Summon summon, AttackData ad)
         {
             Packet pw = new Packet(ServerMessages.SPAWN_ATTACK);
             pw.WriteInt(chr.ID);
@@ -775,7 +779,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr);
         }
 
-        private static int? GetFixedDamage(Character chr)
+        private static int? GetFixedDamage(GameCharacter chr)
         {
             int? fixedDamage = null;
 
@@ -789,7 +793,7 @@ namespace WvsBeta.Game
             return fixedDamage;
         }
 
-        public static void SendMeleeAttack(Character chr, AttackData data)
+        public static void SendMeleeAttack(GameCharacter chr, AttackData data)
         {
             var fixedDamage = GetFixedDamage(chr);
             byte tbyte = (byte)((data.Targets * 0x10) + data.Hits);
@@ -831,7 +835,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendRangedAttack(Character chr, AttackData data)
+        public static void SendRangedAttack(GameCharacter chr, AttackData data)
         {
             var fixedDamage = GetFixedDamage(chr);
 
@@ -868,7 +872,7 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendMagicAttack(Character chr, AttackData data)
+        public static void SendMagicAttack(GameCharacter chr, AttackData data)
         {
             var fixedDamage = GetFixedDamage(chr);
             byte tbyte = (byte)((data.Targets * 0x10) + data.Hits);
@@ -918,7 +922,7 @@ namespace WvsBeta.Game
             public short posY { get; set; }
         }
 
-        private static bool ReportDamagehack(Character chr, AttackData ad, int TotalDamage, int MaxDamage)
+        private static bool ReportDamagehack(GameCharacter chr, AttackData ad, int TotalDamage, int MaxDamage)
         {
             // Broken. don't care.
             return false;
@@ -946,7 +950,7 @@ namespace WvsBeta.Game
 
             if (percentage > 400.0)
             {
-                chr.PermaBan($"Automatically banned for damage hacks ({percentage:0.00}%) skill {ad.SkillID}", Character.BanReasons.Hack);
+                chr.PermaBan($"Automatically banned for damage hacks ({percentage:0.00}%) skill {ad.SkillID}", GameCharacter.BanReasons.Hack);
                 return true;
             }
 

@@ -4,6 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
+using WvsBeta.Common.Objects.Stats;
 
 namespace WvsBeta.Game
 {
@@ -31,7 +34,7 @@ namespace WvsBeta.Game
         public bool HasAnyStatus => _status != null;
         public MobStatus Status => _status ?? (_status = new MobStatus(this));
         public Mob Owner { get; set; } = null;
-        public Character Controller { get; set; } = null;
+        public GameCharacter Controller { get; set; } = null;
         public bool IsControlled => Controller != null;
 
         public MobDamageLog DamageLog { get; set; }
@@ -132,7 +135,7 @@ namespace WvsBeta.Game
         }
 
 
-        public bool GiveDamage(Character fucker, int amount, bool pWasPoison = false)
+        public bool GiveDamage(GameCharacter fucker, int amount, bool pWasPoison = false)
         {
             if (DeadAlreadyHandled || HP == 0) return false;
 
@@ -157,18 +160,18 @@ namespace WvsBeta.Game
                         fucker.SetMPAndMaxMP(0);
                         fucker.ChangeMap(0); // Back to the start with you.
 
-                        MessagePacket.SendNoticeGMs(
+                        ChatPacket.SendNoticeGMs(
                             $"{fucker.Name} : I was just p0wned by the Anti-Hack system. Damage hax ({amount})! :mavi:",
-                            MessagePacket.MessageTypes.Notice
+                            ChatPacket.MessageTypes.Notice
                         );
                         return false;
                     }
 
                     if (amount >= 30000)
                     {
-                        MessagePacket.SendNoticeGMs(
+                        ChatPacket.SendNoticeGMs(
                             $"{fucker.Name} : Possible damage hack: {amount} damage given!",
-                            MessagePacket.MessageTypes.Notice
+                            ChatPacket.MessageTypes.Notice
                         );
                     }
                 }
@@ -377,12 +380,12 @@ namespace WvsBeta.Game
             {
                 _hackLog.Warn(hackType);
                 Trace.WriteLine(hackType);
-                MessagePacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", MessagePacket.MessageTypes.Megaphone);
+                ChatPacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", ChatPacket.MessageTypes.Megaphone);
             }
             return isHack;
         }
 
-        public bool CheckVacHack(long timeInMilliseconds, Pos startPos, Pos endPos, Character chr)
+        public bool CheckVacHack(long timeInMilliseconds, Pos startPos, Pos endPos, GameCharacter chr)
         {
             var distance = startPos - endPos;
             if (distance == 0) return false;
@@ -412,7 +415,7 @@ namespace WvsBeta.Game
                 if (autoban && chr != null)
                 {
                     chr.PermaBan($"Mob vac on map {Field.ID} (heightDiff: {heightDiff}), " +
-                                 $"Mobid {MobID} loc {startPos.X} {startPos.Y} -> {endPos.X} {endPos.Y}", Character.BanReasons.Hack);
+                                 $"Mobid {MobID} loc {startPos.X} {startPos.Y} -> {endPos.X} {endPos.Y}", GameCharacter.BanReasons.Hack);
                     return true;
                 }
 
@@ -446,11 +449,11 @@ namespace WvsBeta.Game
             //    Rate = (Stat.nShowdown_ * 100) * 0.01;
 
             int MostDamage = 0;
-            Character Chr = null;
+            GameCharacter Chr = null;
             int MaxDamageCharacterID = 0;
             long DamageSum = DamageLog.VainDamage;
             var TotalDamages = new Dictionary<int, int>();
-            var CharactersTmp = new Dictionary<int, Character>();
+            var CharactersTmp = new Dictionary<int, GameCharacter>();
 
             foreach (var Log in DamageLog.Log)
             {
@@ -623,10 +626,10 @@ namespace WvsBeta.Game
             var currentHour = MasterThread.CurrentDate.Hour;
 
             int MostDamage = 0;
-            Character Chr = null;
+            GameCharacter Chr = null;
             int MaxDamageCharacterID = 0;
             long DamageSum = DamageLog.VainDamage;
-            var CharactersTmp = new Dictionary<int, Character>();
+            var CharactersTmp = new Dictionary<int, GameCharacter>();
 
             int idx = 0;
             foreach (var Log in DamageLog.Log)
@@ -705,7 +708,7 @@ namespace WvsBeta.Game
                         if (!(currentHour < 13 && currentHour >= 19))
                         {
                             // Note: this is an int, set to 100 for 1.0x
-                            IncEXP = ((double)Character.ms_nIncExpRate_WSE * IncEXP * 0.01);
+                            IncEXP = ((double)GameCharacter.ms_nIncExpRate_WSE * IncEXP * 0.01);
 
                             Trace.WriteLine("WS event: " + IncEXP);
                         }
@@ -783,9 +786,9 @@ namespace WvsBeta.Game
                         var partyMemberLevelSumHigherThanMinLevel = partyMembersHigherThanMinLevel.Sum(x => x.Level);
 
                         double partyBonusEventRate = 0.05;
-                        if (Character.ms_nPartyBonusEventRate > 0)
+                        if (GameCharacter.ms_nPartyBonusEventRate > 0)
                         {
-                            partyBonusEventRate = Character.ms_nPartyBonusEventRate * 0.01 * 0.05;
+                            partyBonusEventRate = GameCharacter.ms_nPartyBonusEventRate * 0.01 * 0.05;
                         }
                         Trace.WriteLine("PartyBonus event rate: " + partyBonusEventRate);
 
@@ -854,14 +857,14 @@ namespace WvsBeta.Game
 
                             if (!(currentHour < 13 && currentHour >= 19))
                             {
-                                IncExpUser = ((double)Character.ms_nIncExpRate_WSE * IncExpUser * 0.01);
+                                IncExpUser = ((double)GameCharacter.ms_nIncExpRate_WSE * IncExpUser * 0.01);
                                 Trace.WriteLine("WS event: " + IncExpUser);
                             }
 
                             IncExpUser *= Field.m_dIncRate_Exp;
                             Trace.WriteLine("Field increase rate: " + IncExpUser);
 
-                            var marriageExpBuff = Character.ms_nIncExpRate_Wedding - 100;
+                            var marriageExpBuff = GameCharacter.ms_nIncExpRate_Wedding - 100;
 
                             var marriedAndBothInThisParty = false;
                             if (false)
@@ -1083,7 +1086,7 @@ namespace WvsBeta.Game
 
         public double AlterEXPbyLevel(int Level, double IncEXP) => IncEXP;
 
-        public void GiveMoney(Character User, AttackData.AttackInfo Attack, int AttackCount)
+        public void GiveMoney(GameCharacter User, AttackData.AttackInfo Attack, int AttackCount)
         {
             if (User.Skills.GetSkillLevel(Constants.ChiefBandit.Skills.Pickpocket, out SkillLevelData SkillData) > 0)
             {
@@ -1207,7 +1210,7 @@ namespace WvsBeta.Game
             Controller = null;
         }
 
-        public void SetMobCountQuestInfo(Character User)
+        public void SetMobCountQuestInfo(GameCharacter User)
         {
             if (User != null && User.PrimaryStats.HP > 0 && User.Field.ID == Field.ID)
             {
@@ -1215,7 +1218,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void SetController(Character controller, bool chasing = false, bool sendStopControlPacket = true)
+        public void SetController(GameCharacter controller, bool chasing = false, bool sendStopControlPacket = true)
         {
             if (HP == 0) return;
             RemoveController(sendStopControlPacket);

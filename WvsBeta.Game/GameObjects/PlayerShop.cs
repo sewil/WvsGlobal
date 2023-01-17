@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Tracking;
 
 namespace WvsBeta.Game
@@ -26,9 +28,9 @@ namespace WvsBeta.Game
         public Dictionary<byte, PlayerShopItem> Items { get; set; } = new Dictionary<byte, PlayerShopItem>();
         public List<PlayerShopItem> BoughtItems { get; set; } = new List<PlayerShopItem>();
         public int Mesos { get; set; }
-        public Character Owner { get; private set; }
+        public GameCharacter Owner { get; private set; }
 
-        public PlayerShop(Character pOwner) : base(4, RoomType.PersonalShop)
+        public PlayerShop(GameCharacter pOwner) : base(4, RoomType.PersonalShop)
         {
             Owner = pOwner;
             EnteredUsers++;
@@ -36,14 +38,14 @@ namespace WvsBeta.Game
             Users[Owner.RoomSlotId] = Owner;
         }
         
-        public void AddUser(Character pTo)
+        public void AddUser(GameCharacter pTo)
         {
             EnteredUsers++;
             pTo.RoomSlotId = GetEmptySlot();
             Users[pTo.RoomSlotId] = pTo;
         }
 
-        public void RevertItems(Character pOwner)
+        public void RevertItems(GameCharacter pOwner)
         {
             if (pOwner == pOwner.Room.Users[0])
             {
@@ -59,7 +61,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public override void RemovePlayer(Character pCharacter, byte pReason)
+        public override void RemovePlayer(GameCharacter pCharacter, byte pReason)
         {
             if (pCharacter.Room.Type == MiniRoomBase.RoomType.PersonalShop)
             {
@@ -68,7 +70,7 @@ namespace WvsBeta.Game
             base.RemovePlayer(pCharacter, pReason);
         }
 
-        public static void HandleShopUpdateItem(Character pCharacter, byte inv, short invslot, short bundle, short bundleamount, int price)
+        public static void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
         {
             MiniRoomBase mrb = pCharacter.Room;
 
@@ -118,11 +120,11 @@ namespace WvsBeta.Game
 
         }
 
-        public override void OnPacket(Character pCharacter, byte pOpcode, Common.Sessions.Packet pPacket)
+        public override void OnPacket(GameCharacter pCharacter, byte pOpcode, Common.Sessions.Packet pPacket)
         {
         }
 
-        public override void AddItemToShop(Character pCharacter, PlayerShopItem Item)
+        public override void AddItemToShop(GameCharacter pCharacter, PlayerShopItem Item)
         {
             if (Items.Count == 0)
             {
@@ -138,7 +140,7 @@ namespace WvsBeta.Game
             base.AddItemToShop(pCharacter, Item);
         }
 
-        public void HandleMoveItemBack(Character pCharacter, byte slot)
+        public void HandleMoveItemBack(GameCharacter pCharacter, byte slot)
         {
             if (Items.TryGetValue(slot, out PlayerShopItem pst))
             {
@@ -159,7 +161,7 @@ namespace WvsBeta.Game
             InventoryPacket.NoChange(pCharacter);
         }
 
-        public void BuyItem(Character pCharacter, byte slot, short quantity)
+        public void BuyItem(GameCharacter pCharacter, byte slot, short quantity)
         {
             //This may seem confusing, but the client calculates the amount left itself.
             //The formula is bundles * bundleamount, so if you have 2 bundles with 25 in each, it will obviously show 50. If you have 100 items in 1 bundle, it will show you 100

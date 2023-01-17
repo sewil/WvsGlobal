@@ -84,7 +84,7 @@ namespace WvsBeta.Game
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);
         }
 
-        public static bool Enter(string name, Character chr, int mapIdx)
+        public static bool Enter(string name, GameCharacter chr, int mapIdx)
         {
             if (!Instances.TryGetValue(name, out var fs)) return false;
             // Todo: accept more people ?
@@ -116,7 +116,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private void RunTimer(Character chr, Map map)
+        private void RunTimer(GameCharacter chr, Map map)
         {
             if (Started)
                 MapPacket.ShowMapTimerForCharacter(chr, (int)(TimeRemaining / 1000));

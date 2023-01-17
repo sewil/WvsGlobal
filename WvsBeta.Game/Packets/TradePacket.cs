@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 using log4net;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -9,7 +11,7 @@ namespace WvsBeta.Game
         private static ILog miniroomLog = LogManager.GetLogger("MiniroomLog");
         private static ILog miniroomChatLog = LogManager.GetLogger("MiniroomChatLog");
 
-        public static void HandlePacket(Character pCharacter, Packet pPacket)
+        public static void HandlePacket(GameCharacter pCharacter, Packet pPacket)
         {
             //MessagePacket.SendNotice("PACKET: " + pPacket.ToString(), pCharacter);
             byte Type = pPacket.ReadByte();
@@ -35,7 +37,7 @@ namespace WvsBeta.Game
                         }
 
                         int playerid = pPacket.ReadInt();
-                        Character victim = pCharacter.Field.GetPlayer(playerid);
+                        GameCharacter victim = pCharacter.Field.GetPlayer(playerid);
 
                         if (victim == null)
                         {
@@ -98,7 +100,7 @@ namespace WvsBeta.Game
                         var text = pPacket.ReadString();
 
                         var chatLogLine = pCharacter.Name + ": " + text;
-                        if (MessagePacket.ShowMuteMessage(pCharacter))
+                        if (ChatPacket.ShowMuteMessage(pCharacter))
                         {
                             miniroomChatLog.Info("[MUTED] " + chatLogLine);
                         }
@@ -115,7 +117,7 @@ namespace WvsBeta.Game
                     {
                         if (pCharacter.Room == null) return;
 
-                        byte inventory = pPacket.ReadByte();
+                        Inventory inventory = (Inventory)pPacket.ReadByte();
                         short inventoryslot = pPacket.ReadShort();
                         short bundleamount = pPacket.ReadShort();
                         short AmountPerBundle = pPacket.ReadShort();
@@ -151,8 +153,8 @@ namespace WvsBeta.Game
                         {
                             for (int i = 0; i < 2; i++)
                             {
-                                Character chr = mr.Users[i];
-                                Character leader = mr.Users[0];
+                                GameCharacter chr = mr.Users[i];
+                                GameCharacter leader = mr.Users[0];
 
                                 if (chr == null)
                                 {
@@ -357,7 +359,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void CreateMiniRoomBase(Character chr, Packet packet)
+        private static void CreateMiniRoomBase(GameCharacter chr, Packet packet)
         {
             if (chr.Room != null)
             {
@@ -421,7 +423,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void EnterMiniRoom(Character chr, Packet packet)
+        private static void EnterMiniRoom(GameCharacter chr, Packet packet)
         {
             if (chr.Room != null)
             {
@@ -501,7 +503,7 @@ namespace WvsBeta.Game
                         PlayerShop shop = MiniRoomBase.PlayerShops[roomId];
                         for (int i = 0; i < shop.EnteredUsers; i++)
                         {
-                            Character shopUser = mrb.Users[i];
+                            GameCharacter shopUser = mrb.Users[i];
                             if (shopUser != null && shopUser != chr)
                             {
                                 shop.AddPlayer(chr);
@@ -515,7 +517,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void ShowWindow(MiniRoomBase pRoom, Character pTo)
+        public static void ShowWindow(MiniRoomBase pRoom, GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
@@ -525,7 +527,7 @@ namespace WvsBeta.Game
 
             for (int i = 0; i < pRoom.Users.Length; i++)
             {
-                Character character = pRoom.Users[i];
+                GameCharacter character = pRoom.Users[i];
 
                 if (character == null)
                 {
@@ -542,7 +544,7 @@ namespace WvsBeta.Game
             pTo.SendPacket(pw);
         }
 
-        public static void ShowJoin(MiniRoomBase pRoom, Character pWho)
+        public static void ShowJoin(MiniRoomBase pRoom, GameCharacter pWho)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
@@ -553,7 +555,7 @@ namespace WvsBeta.Game
             pRoom.BroadcastPacket(pw, pWho);
         }
 
-        public static void ShowLeave(MiniRoomBase pRoom, Character pWho, byte pReason)
+        public static void ShowLeave(MiniRoomBase pRoom, GameCharacter pWho, byte pReason)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0xA);
@@ -562,7 +564,7 @@ namespace WvsBeta.Game
             pWho.SendPacket(pw);
         }
 
-        public static void ShowLeaveRoom(MiniRoomBase pRoom, Character pWho, byte pReason)
+        public static void ShowLeaveRoom(MiniRoomBase pRoom, GameCharacter pWho, byte pReason)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0xA);
@@ -571,7 +573,7 @@ namespace WvsBeta.Game
             pRoom.BroadcastPacket(pw);
         }
 
-        public static void Invite(MiniRoomBase pRoom, Character pWho, Character pVictim)
+        public static void Invite(MiniRoomBase pRoom, GameCharacter pWho, GameCharacter pVictim)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(2);
@@ -581,7 +583,7 @@ namespace WvsBeta.Game
             pVictim.SendPacket(pw);
         }
 
-        public static void InviteResult(Character pWho, byte pFailID, string pName = "")
+        public static void InviteResult(GameCharacter pWho, byte pFailID, string pName = "")
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(3);
@@ -595,7 +597,7 @@ namespace WvsBeta.Game
             pWho.SendPacket(pw);
         }
 
-        public static void Chat(MiniRoomBase pRoom, Character pCharacter, string pText, sbyte pMessageCode)
+        public static void Chat(MiniRoomBase pRoom, GameCharacter pCharacter, string pText, sbyte pMessageCode)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(6);
@@ -622,7 +624,7 @@ namespace WvsBeta.Game
     public static class TradePacket
     {
         // This packet feels wonky and insecure - wackyracer
-        public static void AddItem(Character pTo, byte TradeSlot, BaseItem pItem, byte User)
+        public static void AddItem(GameCharacter pTo, byte TradeSlot, BaseItem pItem, byte User)
         {
             int itemType = (pItem.ItemID / 1000000);
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -630,12 +632,12 @@ namespace WvsBeta.Game
             pw.WriteByte(User); // 0 or 1 based on left/right side of trade window
             pw.WriteByte(TradeSlot); // item slot in the trade window
             pw.WriteByte((byte)itemType); // Item Type (EQ, USE, SETUP, ETC, PET)
-            PacketHelper.AddItemData(pw, pItem, 0, false);
+            pItem.Encode(pw);
             pTo.SendPacket(pw);
         }
 
         // This is unused. Why? Idk. This has something to do with Trading Stars being bugged. It is probably the fix. - wackyracer
-        public static void AddItemWithAmount(Character pTo, byte TradeSlot, BaseItem pItem, short amount, byte User)
+        public static void AddItemWithAmount(GameCharacter pTo, byte TradeSlot, BaseItem pItem, short amount, byte User)
         {
             int itemType = (pItem.ItemID / 1000000);
             // Used for items from the same stack
@@ -644,11 +646,11 @@ namespace WvsBeta.Game
             pw.WriteByte(User); // 0 or 1 based on left/right side of trade window
             pw.WriteByte(TradeSlot); // item slot in the trade window
             pw.WriteByte((byte)itemType); // Item Type (EQ, USE, SETUP, ETC, PET)
-            PacketHelper.AddItemDataWithAmount(pw, pItem, 0, false, amount);
+            pItem.Encode(pw);
             pTo.SendPacket(pw);
         }
 
-        public static void PutCash(Character pTo, int pAmount, byte test)
+        public static void PutCash(GameCharacter pTo, int pAmount, byte test)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(14);
@@ -657,14 +659,14 @@ namespace WvsBeta.Game
             pTo.SendPacket(pw);
         }
 
-        public static void SelectTrade(Character pTo)
+        public static void SelectTrade(GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0xF);
             pTo.SendPacket(pw);
         }
 
-        public static void TradeUnsuccessful(Character pTo)
+        public static void TradeUnsuccessful(GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(10);
@@ -673,7 +675,7 @@ namespace WvsBeta.Game
             pTo.SendPacket(pw);
         }
 
-        public static void TradeSuccessful(Character pCompleter)
+        public static void TradeSuccessful(GameCharacter pCompleter)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(10);

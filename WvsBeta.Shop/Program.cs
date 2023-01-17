@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using log4net.Config;
 using WvsBeta.Common;
 
 
@@ -27,9 +26,6 @@ namespace WvsBeta.Shop
                 MessageBox.Show("Invalid argument length.");
                 return;
             }
-
-            log4net.GlobalContext.Properties["ImgName"] = args[0];
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "logging-config-shop.xml")));
 
             IMGFilename = args[0];
             LogFile = new Common.Logfile(IMGFilename);

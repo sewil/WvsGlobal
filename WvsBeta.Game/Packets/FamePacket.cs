@@ -5,13 +5,13 @@ namespace WvsBeta.Game
 {
     public static class FamePacket
     {
-        public static void HandleFame(Character chr, Packet pr)
+        public static void HandleFame(GameCharacter chr, Packet pr)
         {
             int charId = pr.ReadInt();
             bool up = pr.ReadBool();
 
 
-            Character victim = chr.Field.GetPlayer(charId);
+            GameCharacter victim = chr.Field.GetPlayer(charId);
 
             if (charId == chr.ID)
             {
@@ -84,7 +84,7 @@ HAVING COUNT(*) > 5
         //3 -> can't raise or drop anymore today
         //4 -> can't raise or drop that person this month
         //6 -> fame not changed due to unk error
-        public static void SendFameError(Character chr, byte error)
+        public static void SendFameError(GameCharacter chr, byte error)
         {
             Packet pw = new Packet(ServerMessages.GIVE_POPULARITY_RESULT);
             pw.WriteByte(error);
@@ -93,7 +93,7 @@ HAVING COUNT(*) > 5
 
         //0 -> you have raised/lowered X's level of fame
         //5 -> X has raised/lowered Y's level of fame
-        public static void SendFameSucceed(Character chr, Character victim, bool up)
+        public static void SendFameSucceed(GameCharacter chr, GameCharacter victim, bool up)
         {
             Packet pw = new Packet(ServerMessages.GIVE_POPULARITY_RESULT);
             pw.WriteByte(5);

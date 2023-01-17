@@ -414,8 +414,6 @@ FROM users WHERE ban_expire > NOW()",
                 _command.EnableCaching = false;
                 if (parametersLength > 0)
                 {
-                    _command.Prepare();
-
                     for (var i = 0; i < parametersLength; i += 2)
                     {
                         _command.Parameters.AddWithValue(
@@ -423,6 +421,7 @@ FROM users WHERE ban_expire > NOW()",
                             parameters[i + 1]
                         );
                     }
+                    _command.Prepare();
                 }
 
 

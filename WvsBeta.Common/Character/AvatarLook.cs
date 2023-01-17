@@ -1,6 +1,4 @@
-﻿using System.Diagnostics;
-using System.Runtime.InteropServices;
-using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Character
 {
@@ -69,8 +67,8 @@ namespace WvsBeta.Common.Character
             packet.WriteByte(Skin);
             packet.WriteInt(Face);
 
-            packet.WriteByte(0);
-            packet.WriteInt(HairEquip[0]);
+            packet.WriteByte(0); // First slot
+            packet.WriteInt(HairEquip[0]); // First equip
             // Note: this could use i = 0, but for the sake of clarity, we do not do that
             // Because also the client doesn't go from zero.
             for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
@@ -92,12 +90,9 @@ namespace WvsBeta.Common.Character
                 packet.WriteInt(itemid);
             }
             packet.WriteSByte(-1);
-            
-            packet.WriteInt(WeaponStickerID);
 
-#if USE_PETITEMID
+            packet.WriteInt(WeaponStickerID);
             packet.WriteInt(PetItemId);
-#endif
         }
 
         public void Decode(Packet packet)
@@ -111,7 +106,6 @@ namespace WvsBeta.Common.Character
             Skin = packet.ReadByte();
             Face = packet.ReadInt();
 
-
             byte slot = 0;
             while ((slot = packet.ReadByte()) != 0xFF)
             {
@@ -124,10 +118,7 @@ namespace WvsBeta.Common.Character
             }
 
             WeaponStickerID = packet.ReadInt();
-#if USE_PETITEMID
             PetItemId = packet.ReadInt();
-#endif
         }
-        
     }
 }

@@ -130,7 +130,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public void OnEnter(Character User)
+        public void OnEnter(GameCharacter User)
         {
             foreach (Drop Drop in Drops.Values)
             {

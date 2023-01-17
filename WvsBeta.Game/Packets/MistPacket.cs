@@ -4,7 +4,7 @@ namespace WvsBeta.Game
 {
     public static class MistPacket
     {
-        public static void SendMistSpawn(Mist pMist, Character pVictim = null, short pDelay = 0)
+        public static void SendMistSpawn(Mist pMist, GameCharacter pVictim = null, short pDelay = 0)
         {
             Packet packet = new Packet(ServerMessages.AFFECTED_AREA_CREATED);
             packet.WriteInt(pMist.SpawnID);

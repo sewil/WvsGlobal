@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
-using WvsBeta.SharedDataProvider;
 
 namespace WvsBeta.Game
 {
@@ -46,7 +47,7 @@ namespace WvsBeta.Game
             EncodeAll = EncodeMesos | EncodeInventoryEquip | EncodeInventoryUse | EncodeInventorySetUp | EncodeInventoryEtc | EncodeInventoryPet,
         }
 
-        public static void HandleStorage(Character chr, Packet pr)
+        public static void HandleStorage(GameCharacter chr, Packet pr)
         {
             if (chr.TrunkNPCID == 0) return;
 
@@ -98,7 +99,7 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        byte inventory = Constants.getInventory(itemid);
+                        Inventory inventory = Constants.getInventory(itemid);
                         BaseItem item = chr.Inventory.GetItem(inventory, slot);
                         if (item == null || item.ItemID != itemid || item.CashId != 0)
                         {
@@ -167,7 +168,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendShowStorage(Character chr, int NPCID)
+        public static void SendShowStorage(GameCharacter chr, int NPCID)
         {
             Packet pw = new Packet(ServerMessages.STORAGE);
             pw.WriteInt(NPCID);
@@ -177,7 +178,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendChangedMesos(Character chr)
+        public static void SendChangedMesos(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.STORAGE_RESULT);
             pw.WriteByte(14);
@@ -186,14 +187,14 @@ namespace WvsBeta.Game
         }
 
 
-        public static void SendError(Character chr, StorageErrors what)
+        public static void SendError(GameCharacter chr, StorageErrors what)
         {
             Packet pw = new Packet(ServerMessages.STORAGE_RESULT);
             pw.WriteByte((byte)what);
             chr.SendPacket(pw);
         }
 
-        public static void EncodeStorage(Character chr, StorageEncode enc, StorageEncodeFlags flags)
+        public static void EncodeStorage(GameCharacter chr, StorageEncode enc, StorageEncodeFlags flags)
         {
             Packet packet = new Packet(ServerMessages.STORAGE_RESULT);
             packet.WriteByte((byte)enc);
@@ -201,22 +202,22 @@ namespace WvsBeta.Game
             chr.SendPacket(packet);
         }
 
-        private static StorageEncodeFlags GetEncodeFlagForInventory(byte inventory)
+        private static StorageEncodeFlags GetEncodeFlagForInventory(Inventory inventory)
         {
             StorageEncodeFlags flag;
             switch (inventory)
             {
-                case 1: flag = StorageEncodeFlags.EncodeInventoryEquip; break;
-                case 2: flag = StorageEncodeFlags.EncodeInventoryUse; break;
-                case 3: flag = StorageEncodeFlags.EncodeInventorySetUp; break;
-                case 4: flag = StorageEncodeFlags.EncodeInventoryEtc; break;
-                case 5: flag = StorageEncodeFlags.EncodeInventoryPet; break;
+                case Inventory.Equip: flag = StorageEncodeFlags.EncodeInventoryEquip; break;
+                case Inventory.Use: flag = StorageEncodeFlags.EncodeInventoryUse; break;
+                case Inventory.Setup: flag = StorageEncodeFlags.EncodeInventorySetUp; break;
+                case Inventory.Etc: flag = StorageEncodeFlags.EncodeInventoryEtc; break;
+                case Inventory.Pet: flag = StorageEncodeFlags.EncodeInventoryPet; break;
                 default: flag = 0; break;
             }
             return flag;
         }
 
-        private static void EncodeStorage(Character chr, Packet packet, StorageEncodeFlags flags)
+        private static void EncodeStorage(GameCharacter chr, Packet packet, StorageEncodeFlags flags)
         {
             packet.WriteByte(chr.Storage.MaxSlots);
 
@@ -225,24 +226,24 @@ namespace WvsBeta.Game
             if (flags.HasFlag(StorageEncodeFlags.EncodeMesos))
                 packet.WriteInt(chr.Storage.Mesos);
 
-            for (byte i = 1; i <= 5; i++)
+            foreach (Inventory inv in Enum.GetValues(typeof(Inventory)))
             {
-                StorageEncodeFlags flag = GetEncodeFlagForInventory(i);
+                StorageEncodeFlags flag = GetEncodeFlagForInventory(inv);
                 if (flags.HasFlag(flag))
                 {
-                    AddInvItems(chr, packet, i);
+                    AddInvItems(chr, packet, inv);
                 }
             }
         }
 
-        public static void AddInvItems(Character chr, Packet pw, byte inv)
+        public static void AddInvItems(GameCharacter chr, Packet pw, Inventory inv)
         {
             var itemsInInventory = chr.Storage.GetInventoryItems(inv).ToArray();
             pw.WriteByte((byte)itemsInInventory.Length);
 
-            foreach (var item in itemsInInventory)
+            foreach (BaseItem item in itemsInInventory)
             {
-                BasePacketHelper.AddItemData(pw, item, 0, false);
+                item.Encode(pw);
             }
         }
     }

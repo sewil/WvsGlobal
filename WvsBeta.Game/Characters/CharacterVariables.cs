@@ -6,10 +6,10 @@ namespace WvsBeta.Game
 {
     public class CharacterVariables
     {
-        private Character Character { get; set; }
+        private GameCharacter Character { get; set; }
         private Dictionary<string, string> Variables { get; set; }
 
-        public CharacterVariables(Character character)
+        public CharacterVariables(GameCharacter character)
         {
             Character = character;
             Variables = new Dictionary<string, string>();

@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.SharedDataProvider;
+using WvsBeta.Game.Packets;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Shop
 {
@@ -25,27 +26,7 @@ namespace WvsBeta.Shop
                 CharacterDataFlag.Skills);
             pack.WriteShort((short)flags);
 
-            if (flags.HasFlag(CharacterDataFlag.Stats))
-            {
-                chr.CharacterStat.Encode(pack);
-
-                pack.WriteByte(20); // Buddylist slots
-            }
-            // Note: Money is in InventoryPacket
-
-            chr.Inventory.GenerateInventoryPacket(pack, flags);
-
-            if (flags.HasFlag(CharacterDataFlag.Skills))
-            {
-                pack.WriteShort((short)chr.Skills.Count);
-
-                foreach (var skillId in chr.Skills)
-                {
-                    pack.WriteInt(skillId);
-                    pack.WriteInt(1);
-                }
-            }
-
+            new CharacterDataPacket(chr).Encode(pack);
 
             // No quests, etc
 

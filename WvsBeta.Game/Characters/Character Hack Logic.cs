@@ -6,7 +6,7 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
-    public partial class Character
+    public partial class GameCharacter
     {
         public static ILog HackLog = LogManager.GetLogger("HackLog");
 
@@ -29,9 +29,9 @@ namespace WvsBeta.Game
             HackLog.Warn(hackType);
             if (seriousHack && HacklogMuted < MasterThread.CurrentDate)
             {
-                MessagePacket.SendNoticeGMs(
+                ChatPacket.SendNoticeGMs(
                     $"Check '{hackType}' triggered! Character: '{Name}', Map: '{MapID}'.",
-                    MessagePacket.MessageTypes.Megaphone
+                    ChatPacket.MessageTypes.Megaphone
                 );
             }
 
@@ -60,9 +60,9 @@ namespace WvsBeta.Game
             }
             else
             {
-                MessagePacket.SendNoticeGMs(
+                ChatPacket.SendNoticeGMs(
                     $"Would've perma'd {Name} (uid {UserID}, cid {ID}), reason: {reason}",
-                    MessagePacket.MessageTypes.Notice
+                    ChatPacket.MessageTypes.Notice
                 );
             }
         }
