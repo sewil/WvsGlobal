@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
@@ -9,6 +10,7 @@ using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -117,10 +119,66 @@ namespace WvsBeta.Game
                 }
 
                 INpcScript NPC = null;
-                if (NPC == null && npc.Quest != null) NPC = Server.Instance.TryGetOrCompileScript(npc.Quest, errorHandlerFnc);
-                if (NPC == null) NPC = Server.Instance.TryGetOrCompileScript(npc.ID.ToString(), errorHandlerFnc);
+                if (NPC == null && npc.Quest != null) NPC = (INpcScript)ScriptAccessor.GetScript(Server.Instance, npc.Quest, errorHandlerFnc);
+                if (NPC == null) NPC = (INpcScript)ScriptAccessor.GetScript(Server.Instance, npc.ID.ToString(), errorHandlerFnc);
 
                 NpcChatSession.Start(RealID, NPC, chr);
+            }
+        }
+
+        public static void HandleEnterPortal(GameCharacter chr, int toMapID, string toPortalName)
+        {
+            if (
+                DataProvider.Maps.TryGetValue(toMapID, out Map toMap) &&
+                toMap.Portals.TryGetValue(toPortalName, out Portal toPortal)
+            )
+            {
+                if (chr.Field.PQPortalOpen)
+                {
+                    chr.ChangeMap(toMapID, toPortal);
+                }
+                else
+                {
+                    BlockedMessage(chr, PortalBlockedMessage.CannotGoToThatPlace);
+                }
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to arrive at unknown portal " + toPortalName + ", " + toMapID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+            }
+        }
+        private static void HandleEnterPortal(GameCharacter chr, string portalName)
+        {
+            if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
+            {
+                var pos = new Pos(portal.X, portal.Y);
+                var dist = chr.Position - pos;
+                if (chr.AssertForHack(dist > 300, "Portal distance hack (" + dist + ")", dist > 600))
+                {
+                    InventoryPacket.NoChange(chr);
+                }
+                else if (!portal.Enabled)
+                {
+                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+                    InventoryPacket.NoChange(chr);
+                }
+                else if (!chr.Field.PortalsOpen)
+                {
+                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+                    InventoryPacket.NoChange(chr);
+                }
+                else
+                {
+                    HandleEnterPortal(chr, portal.ToMapID, portal.ToName);
+                }
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal??? " + portalName + ", " + chr.Field.ID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
             }
         }
 
@@ -132,95 +190,65 @@ namespace WvsBeta.Game
                 return;
             }
 
-            int opcode = packet.ReadInt();
-            string portalname = packet.ReadString();
-            if (portalname.Length > 0)
+            int status = packet.ReadInt();
+            string portalName = packet.ReadString();
+            if (portalName.Length > 0)
             {
                 new Pos(packet); // Current pos
             }
             packet.ReadByte(); // Related to teleporting to party member? Always 0
             packet.ReadByte(); // unk
 
-            switch (opcode)
+            switch (status)
             {
                 case 0:
+                {
+                    if (chr.PrimaryStats.HP == 0)
                     {
-                        if (chr.PrimaryStats.HP == 0)
-                        {
-                            chr.HandleDeath();
-                        }
-                        else if (!chr.IsGM)
-                        {
-                            Program.MainForm.LogAppend($"Not handling death of {chr.ID}, because user is not dead. Killing him again. HP: " + chr.PrimaryStats.HP);
-                            // Kill him anyway
-                            chr.DamageHP(30000);
-                        }
-                        else
-                        {
-                            // Admin /map 0
-                            chr.ChangeMap(opcode);
-                        }
-                        break;
+                        chr.HandleDeath();
                     }
+                    else if (!chr.IsGM)
+                    {
+                        Program.MainForm.LogAppend($"Not handling death of {chr.ID}, because user is not dead. Killing him again. HP: " + chr.PrimaryStats.HP);
+                        // Kill him anyway
+                        chr.DamageHP(30000);
+                    }
+                    else
+                    {
+                        // Admin /map 0
+                        chr.ChangeMap(status);
+                    }
+                    break;
+                }
                 case -1:
-                    {
-
-                        if (chr.Field.Portals.TryGetValue(portalname, out Portal portal) &&
-                            DataProvider.Maps.TryGetValue(portal.ToMapID, out Map toMap) &&
-                            toMap.Portals.TryGetValue(portal.ToName, out Portal to))
-                        {
-                            var pos = new Pos(portal.X, portal.Y);
-                            var dist = chr.Position - pos;
-                            if (chr.AssertForHack(dist > 300, "Portal distance hack (" + dist + ")", dist > 600))
-                            {
-                                InventoryPacket.NoChange(chr);
-                                return;
-                            }
-
-                            if (portal.Enabled == false)
-                            {
-                                Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
-                                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                                InventoryPacket.NoChange(chr);
-                                return;
-                            }
-
-                            if (chr.Field.PortalsOpen == false)
-                            {
-                                Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
-                                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                                InventoryPacket.NoChange(chr);
-                            }
-                            else if (chr.Field.PQPortalOpen)
-                            {
-                                chr.ChangeMap(portal.ToMapID, to);
-                            }
-                            else
-                            {
-                                BlockedMessage(chr, PortalBlockedMessage.CannotGoToThatPlace);
-                            }
-
-                        }
-                        else
-                        {
-                            Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal??? " + portalname + ", " + chr.Field.ID);
-                            BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                        }
-
-
-                        break;
-                    }
+                    HandleEnterPortal(chr, portalName);
+                    break;
                 default:
+                {
+                    if (chr.IsGM)
                     {
-                        if (chr.IsGM)
-                        {
-                            chr.ChangeMap(opcode);
-                        }
-                        break;
+                        chr.ChangeMap(status);
                     }
+                    break;
+                }
             }
         }
 
+        public static void OnEnterScriptPortal(Packet packet, GameCharacter chr)
+        {
+            string portalName = packet.ReadString();
+            if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
+            {
+                PortalScriptSession.Run(portal.Script, chr, script => {
+                    ChatPacket.SendNotice("Error compiling script: " + script, chr);
+                });
+            }
+            else
+            {
+                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal " + portalName + ", " + chr.Field.ID);
+                BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
+            }
+        }
         public static void HandleSitChair(GameCharacter chr, Packet packet)
         {
             short chair = packet.ReadShort();
@@ -387,13 +415,13 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void PortalEffect(Map field, byte what, string message)
+        public static void PortalEffect(Map field)
         {
 
             Packet pw = new Packet(ServerMessages.FIELD_EFFECT);
             pw.WriteByte(2); //2
-            pw.WriteByte(what); //?? Unknown 
-            pw.WriteString(message); //gate
+            pw.WriteByte(2); //?? Unknown 
+            pw.WriteString("gate"); //gate
             field.SendPacket(pw);
         }
 
@@ -801,12 +829,11 @@ namespace WvsBeta.Game
                     WriteInt(chr.MapID);
                     WriteByte(chr.PortalID);
                     WriteShort(chr.PrimaryStats.HP);
-                    bool readMoreStuff = false;
-                    WriteBool(readMoreStuff);
-                    if (readMoreStuff)
+                    WriteBool(false);
+                    if (true)
                     {
-                        WriteInt(0);
-                        WriteInt(0);
+                        WriteInt(chr.Position.X);
+                        WriteInt(chr.Position.Y);
                     }
                 }
             }

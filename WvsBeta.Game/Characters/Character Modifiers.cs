@@ -624,9 +624,9 @@ namespace WvsBeta.Game
             TryActivateHide();
             MapPacket.SendChangeMap(this);
 
-            if (newMap.PQPortalOpen == true)
+            if (newMap.PQPortalOpen)
             {
-                MapPacket.PortalEffect(Field, 2, "gate");
+                MapPacket.PortalEffect(Field);
             }
             newMap.AddPlayer(this);
             Summons.MigrateSummons(prevMap, newMap);
@@ -641,29 +641,32 @@ namespace WvsBeta.Game
         }
 
         // Change map, but go to a specific portal
-        public void ChangeMap(int mapid, string portalName)
+        public void ChangeMap(int toMapId, string toPortalName)
         {
-            var newMap = DataProvider.Maps[mapid];
-            if (newMap.Portals.TryGetValue(portalName, out var portal))
-                ChangeMap(mapid, portal);
+            var newMap = DataProvider.Maps[toMapId];
+            if (newMap.Portals.TryGetValue(toPortalName, out var portal))
+                ChangeMap(toMapId, portal);
             else
-                Program.MainForm.LogAppend("Did not find portal {0} for mapid {1}", portalName, mapid);
+                Program.MainForm.LogAppend("Did not find portal {0} for mapid {1}", toPortalName, toMapId);
         }
 
-        public void ChangeMap(int mapid, Portal to)
+        public void ChangeMap(Map toMap, Portal toPortal)
         {
             var prevmap = Field;
-            var newMap = DataProvider.Maps[mapid];
-
-            StartChangeMap(prevmap, newMap);
+            StartChangeMap(prevmap, toMap);
             {
-                PortalID = to.ID;
+                PortalID = toPortal.ID;
 
-                Position = new Pos(to.X, (short) (to.Y - 40));
+                Position = new Pos(toPortal.X, (short)(toPortal.Y - 40));
                 Stance = 0;
                 Foothold = 0;
             }
-            FinishChangeMap(prevmap, newMap);
+            FinishChangeMap(prevmap, toMap);
+        }
+        public void ChangeMap(int toMapId, Portal toPortal)
+        {
+            Map toMap = DataProvider.Maps[toMapId];
+            ChangeMap(toMap, toPortal);
         }
 
         public void ChangeMap(int mapid, byte partyMemberIdx, MysticDoor door)

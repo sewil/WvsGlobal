@@ -106,7 +106,7 @@ namespace WvsBeta.Game
             return true;
         }
 
-        public bool AddNewQuest(int QuestID, string Data = "")
+        public override bool AddNewQuest(int QuestID, string Data = "")
         {
             if (Quests.ContainsKey(QuestID))
                 return false;
@@ -180,5 +180,10 @@ namespace WvsBeta.Game
             QuestPacket.SendQuestDataUpdate(Character, QuestID, pData);
         }
 
+        public void CompleteQuest(int questID)
+        {
+            if (!HasQuest(questID)) return;
+            var quest = Quests[questID];
+        }
     }
 }

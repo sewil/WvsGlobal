@@ -122,7 +122,7 @@ namespace WvsBeta.Game
         public PetItem GetSpawnedPet()
         {
             if (PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(PetCashId, 5) as PetItem;
+            return Inventory.GetItemByCashID(PetCashId, Common.Enums.Inventory.Pet) as PetItem;
         }
 
         public void HandleDeath()

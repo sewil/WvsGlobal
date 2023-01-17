@@ -32,7 +32,7 @@ namespace WvsBeta.Game.Packets
 
             if (flags.HasFlag(CharacterDataFlag.Quests))
             {
-                var questsWithData = chr.Quests.Quests;
+                var questsWithData = chr.Quests.GetWZExistingQuests();
                 packet.WriteShort((short)questsWithData.Count); // Running quests
                 foreach (var kvp in questsWithData)
                 {

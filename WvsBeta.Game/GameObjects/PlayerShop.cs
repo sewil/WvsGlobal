@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Tracking;
 
@@ -69,7 +70,7 @@ namespace WvsBeta.Game
             base.RemovePlayer(pCharacter, pReason);
         }
 
-        public static void HandleShopUpdateItem(GameCharacter pCharacter, byte inv, short invslot, short bundle, short bundleamount, int price)
+        public static void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
         {
             MiniRoomBase mrb = pCharacter.Room;
 

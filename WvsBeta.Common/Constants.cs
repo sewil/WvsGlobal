@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Common
 {
@@ -363,15 +364,15 @@ namespace WvsBeta.Common
         }
 
         public static short getSkillJob(int skillId) => (short)(skillId / 10000);
-        public static byte getInventory(int itemid) { return (byte)(itemid / 1000000); }
+        public static Inventory getInventory(int itemid) { return (Inventory)(itemid / 1000000); }
         public static int getItemType(int itemid) { return (itemid / 10000); }
         public static int getScrollType(int itemid) { return ((itemid % 10000) - (itemid % 100)); }
         public static int itemTypeToScrollType(int itemid) { return ((getItemType(itemid) % 100) * 100); }
         public static bool isArrow(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ItemArrow); }
         public static bool isStar(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ItemStar); }
         public static bool isRechargeable(int itemid) { return isStar(itemid); }
-        public static bool isEquip(int itemid) { return (getInventory(itemid) == 1); }
-        public static bool isPet(int itemid) { return (getInventory(itemid) == 5); }
+        public static bool isEquip(int itemid) { return (getInventory(itemid) == Inventory.Equip); }
+        public static bool isPet(int itemid) { return (getInventory(itemid) == Inventory.Pet); }
         public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isPet(itemid)); }
         public static bool isOverall(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorOverall); }
         public static bool isTop(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorTop); }

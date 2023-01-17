@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using log4net;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -116,7 +117,7 @@ namespace WvsBeta.Game
                     {
                         if (pCharacter.Room == null) return;
 
-                        byte inventory = pPacket.ReadByte();
+                        Inventory inventory = (Inventory)pPacket.ReadByte();
                         short inventoryslot = pPacket.ReadShort();
                         short bundleamount = pPacket.ReadShort();
                         short AmountPerBundle = pPacket.ReadShort();

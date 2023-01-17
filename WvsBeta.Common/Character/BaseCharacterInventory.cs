@@ -45,7 +45,7 @@ namespace WvsBeta.Common.Character
             CharacterID = characterId;
             _cashItems = new CharacterCashItems(UserID, CharacterID);
         }
-        public virtual BaseItem TakeItemAmountFromSlot(byte inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
+        public virtual BaseItem TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
         public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
         public int GetTotalMAttInEquips()
         {
@@ -61,10 +61,10 @@ namespace WvsBeta.Common.Character
                 .Sum(item => item.Acc);
         }
 
-        public short GetOpenSlotsInInventory(byte inventory)
+        public short GetOpenSlotsInInventory(Inventory inventory)
         {
             short amount = 0;
-            for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
+            for (short i = 1; i <= MaxSlots[(byte)inventory - 1]; i++)
             {
                 if (GetItem(inventory, i) == null)
                     amount++;
@@ -75,9 +75,9 @@ namespace WvsBeta.Common.Character
         public virtual int TakeItem(int itemid, int amount) { throw new NotImplementedException(); }
         public virtual bool HasSlotsFreeForItem(int itemid, short amount, bool stackable) { throw new NotImplementedException(); }
         public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
-        public virtual void SetItem(byte inventory, short slot, BaseItem item) { throw new NotImplementedException(); }
-        public virtual short GetNextFreeSlotInInventory(byte inventory) { throw new NotImplementedException(); }
-        public virtual short DeleteFirstItemInInventory(int inv) { throw new NotImplementedException(); }
+        public virtual void SetItem(Inventory inventory, short slot, BaseItem item) { throw new NotImplementedException(); }
+        public virtual short GetNextFreeSlotInInventory(Inventory inventory) { throw new NotImplementedException(); }
+        public virtual short DeleteFirstItemInInventory(Inventory inv) { throw new NotImplementedException(); }
         public virtual void CheckExpired() { throw new NotImplementedException(); }
 
         public int GetItemAmount(int itemid)
@@ -85,16 +85,27 @@ namespace WvsBeta.Common.Character
             int amount = 0;
             BaseItem temp = null;
 
-
-            for (byte inventory = 1; inventory <= 5; inventory++)
+            foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
             {
-                for (short i = 1; i <= MaxSlots[inventory - 1]; i++)
+                for (short slot = 1; slot <= MaxSlots[(byte)inventory - 1]; slot++)
                 { // Slot 1 - 24, not 0 - 23
-                    temp = GetItem(inventory, i);
+                    temp = GetItem(inventory, slot);
                     if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
                 }
             }
 
+            return amount;
+        }
+
+        public int GetItemAmount(Inventory inventory, int itemid)
+        {
+            int amount = 0;
+            BaseItem temp = null;
+            for (short i = 1; i <= MaxSlots[(byte)inventory - 1]; i++)
+            { // Slot 1 - 24, not 0 - 23
+                temp = GetItem(inventory, i);
+                if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
+            }
             return amount;
         }
 
@@ -114,7 +125,7 @@ namespace WvsBeta.Common.Character
 
             SplitDBInventory.Load(Connection, "inventory", "charid = " + CharacterID, (type, inventory, slot, item) =>
             {
-                AddItem(inventory, slot, item, true);
+                AddItem((Inventory)inventory, slot, item, true);
             });
 
             _cashItems.Load();
@@ -124,7 +135,7 @@ namespace WvsBeta.Common.Character
             foreach (var cashItemsEquip in _cashItems.Equips)
             {
                 Console.WriteLine("Adding cash equip on slot {0}", cashItemsEquip.InventorySlot);
-                AddItem(1, cashItemsEquip.InventorySlot, cashItemsEquip, true);
+                AddItem(Inventory.Equip, cashItemsEquip.InventorySlot, cashItemsEquip, true);
             }
 
             foreach (var cashItemsBundle in _cashItems.Bundles)
@@ -257,15 +268,15 @@ namespace WvsBeta.Common.Character
             return _cashItems.GetLockerItemFromCashID(cashId);
         }
 
-        public BaseItem GetItemByCashID(long cashId, byte inventory)
+        public BaseItem GetItemByCashID(long cashId, Inventory inventory)
         {
-            BaseItem item = Items[inventory - 1].FirstOrDefault(x => x != null && x.CashId == cashId);
+            BaseItem item = Items[(byte)inventory - 1].FirstOrDefault(x => x != null && x.CashId == cashId);
             if (item == null) item = Equips[0].FirstOrDefault(x => x != null && x.CashId == cashId);
             if (item == null) item = Equips[1].FirstOrDefault(x => x != null && x.CashId == cashId);
             return item;
         }
 
-        public virtual void AddItem(byte inventory, short slot, BaseItem item, bool isLoading)
+        public virtual void AddItem(Inventory inventory, short slot, BaseItem item, bool isLoading)
         {
             if (slot == 0)
             {
@@ -310,12 +321,34 @@ namespace WvsBeta.Common.Character
             }
             else
             {
-                Items[inventory - 1][slot] = item;
+                Items[(byte)inventory - 1][slot] = item;
             }
         }
 
         public virtual short AddItem2(BaseItem item, bool sendpacket = true) { throw new NotImplementedException(); }
+        public virtual void TakeInventoryItem(int itemid, short amount) { throw new NotImplementedException(); }
 
+        public virtual void TakeInventoryItem(BaseItem item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
+        public virtual BaseItem GetItemByID(int itemid, out Inventory inventory, out short slot)
+        {
+            inventory = 0;
+            slot = 0;
+            foreach (Inventory _inventory in Enum.GetValues(typeof(Inventory)))
+            {
+                var items = Items[(byte)_inventory-1];
+                for (int j = 0; j < items.Length; j++)
+                {
+                    var item = items[j];
+                    if (item != null && item.ItemID == itemid)
+                    {
+                        inventory = _inventory;
+                        slot = item.InventorySlot;
+                        return item;
+                    }
+                }
+            }
+            return null;
+        }
         public virtual void RemoveItem(BaseItem item)
         {
             var inventory = Constants.getInventory(item.ItemID);
@@ -353,18 +386,12 @@ namespace WvsBeta.Common.Character
             }
             else
             {
-                Items[inventory - 1][slot] = null;
+                Items[(byte)inventory - 1][slot] = null;
             }
         }
 
-        public BaseItem GetItem(byte inventory, short slot)
+        public BaseItem GetItem(Inventory inventory, short slot)
         {
-            inventory -= 1;
-            if (inventory < 0 || inventory > 4)
-            {
-                return null;
-            }
-
             BaseItem itm;
             if (slot < 0)
             {
@@ -381,7 +408,7 @@ namespace WvsBeta.Common.Character
             }
             else
             {
-                itm = Items[inventory][slot];
+                itm = Items[(byte)inventory-1][slot];
             }
             return itm;
         }

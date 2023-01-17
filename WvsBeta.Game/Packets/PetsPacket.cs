@@ -10,7 +10,7 @@ namespace WvsBeta.Game
     {
         public static void HandleSpawnPet(GameCharacter chr, short slot)
         {
-            if (!(chr.Inventory.GetItem(5, slot) is PetItem petItem))
+            if (!(chr.Inventory.GetItem(Common.Enums.Inventory.Pet, slot) is PetItem petItem))
             {
                 InventoryPacket.NoChange(chr);
                 return;

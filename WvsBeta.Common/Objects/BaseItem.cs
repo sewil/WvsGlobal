@@ -722,8 +722,8 @@ namespace WvsBeta.Common.Objects
         public static implicit operator BaseItem(Item i)
         {
             var inventory = Constants.getInventory(i.ItemID);
-            if (inventory == 1) return i.ToEquipItem();
-            if (inventory == 5) return null; // TODO: ???
+            if (inventory == Enums.Inventory.Equip) return i.ToEquipItem();
+            if (inventory == Enums.Inventory.Pet) return null; // TODO: ???
             return i.ToBundleItem();
         }
     }

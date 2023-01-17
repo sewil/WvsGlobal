@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -238,7 +239,7 @@ namespace WvsBeta.Game
                         short itemslot = packet.ReadShort();
                         int itemid = packet.ReadInt();
                         short amount = packet.ReadShort();
-                        byte inv = Constants.getInventory(itemid);
+                        Inventory inv = Constants.getInventory(itemid);
 
                         BaseItem item = chr.Inventory.GetItem(inv, itemslot);
 
@@ -305,7 +306,7 @@ namespace WvsBeta.Game
                     {
                         short itemslot = packet.ReadShort();
 
-                        byte inv = 2;
+                        Inventory inv = Inventory.Use;
                         BaseItem item = chr.Inventory.GetItem(inv, itemslot);
                         if (item == null ||
                             !Constants.isRechargeable(item.ItemID))

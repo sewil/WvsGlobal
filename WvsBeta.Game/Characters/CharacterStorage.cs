@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
@@ -99,8 +100,9 @@ namespace WvsBeta.Game
                 $"userid = {userId} AND world_id = {worldId}",
                 (type, inventory) =>
                 {
-                    if (inventory == 5) return new List<BaseItem>();
-                    return GetInventoryItems(inventory);
+                    Inventory inv = (Inventory)inventory;
+                    if (inv == Inventory.Pet) return new List<BaseItem>();
+                    return GetInventoryItems(inv);
                 },
                 Program.MainForm.LogAppend
             );
@@ -109,8 +111,8 @@ namespace WvsBeta.Game
 
         public bool AddItem(BaseItem item)
         {
-            var inv = Constants.getInventory(item.ItemID);
-            var items = _items[inv - 1];
+            Inventory inv = Constants.getInventory(item.ItemID);
+            var items = _items[(byte)inv - 1];
             // Find first empty slot
             for (var i = 0; i < MaxSlots; i++)
             {
@@ -124,9 +126,9 @@ namespace WvsBeta.Game
             return false;
         }
 
-        public IEnumerable<BaseItem> GetInventoryItems(byte inv)
+        public IEnumerable<BaseItem> GetInventoryItems(Inventory inv)
         {
-            return _items[inv - 1].Where(x => x != null && Constants.getInventory(x.ItemID) == inv);
+            return _items[(byte)inv - 1].Where(x => x != null && Constants.getInventory(x.ItemID) == inv);
         }
 
         public void TakeItemOut(byte inv, byte slot)

@@ -428,7 +428,7 @@ namespace WvsBeta.Game.Events
         public void OpenPortal(Map map) => WithCheck(() =>
         {
             map.PQPortalOpen = true;
-            MapPacket.PortalEffect(map, 2, "gate");
+            MapPacket.PortalEffect(map);
             RepeatingAction.Start("KPQ-UNSTUCKER", time => _party.ForEach(InventoryPacket.NoChange), 6000, 0);
             return KPQStageResult.CHECK;
         });

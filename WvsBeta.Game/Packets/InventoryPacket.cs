@@ -5,6 +5,7 @@ using System.Linq;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -24,7 +25,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(2, slot);
+            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 return;
@@ -62,7 +63,7 @@ namespace WvsBeta.Game
             {
                 item.Amount -= 1;
             }
-            chr.Inventory.SetItem(2, slot, item);
+            chr.Inventory.SetItem(Inventory.Use, slot, item);
 
             if (chr.PrimaryStats.BuffSpeed.R == itemid)
             {
@@ -71,16 +72,16 @@ namespace WvsBeta.Game
 
             if (delete) // possible location of the switching to USE inventory bug - Joren
             {
-                chr.Inventory.SetItem(2, slot, null);
-                SwitchSlots(chr, slot, 0, 2);
+                chr.Inventory.SetItem(Inventory.Use, slot, null);
+                SwitchSlots(chr, slot, 0, Inventory.Use);
             }
             else
             {
-                AddItem(chr, 2, item, false);
+                AddItem(chr, Inventory.Use, item, false);
             }
         }
 
-        private static void DropItem(GameCharacter chr, byte inventory, short slot, short quantity)
+        private static void DropItem(GameCharacter chr, Inventory inventory, short slot, short quantity)
         {
             if (chr.AssertForHack(chr.Room != null, "Trying to drop item while in a 'room'"))
             {
@@ -126,7 +127,7 @@ namespace WvsBeta.Game
                     return;
                 }
             }
-            byte inventory = Constants.getInventory(@from.ItemID);
+            Inventory inventory = Constants.getInventory(@from.ItemID);
 
             chr.Inventory.SetItem(inventory, slotFrom, to);
             chr.Inventory.SetItem(inventory, slotTo, from);
@@ -142,7 +143,7 @@ namespace WvsBeta.Game
             {
                 slotMax = 100;
             }
-            byte inventory = Constants.getInventory(from.ItemID);
+            Inventory inventory = Constants.getInventory(from.ItemID);
 
             if (to.Amount <= slotMax && to.Amount > 0) //adding to stack
             {
@@ -168,7 +169,7 @@ namespace WvsBeta.Game
 
         private static void EquipSpecial(GameCharacter chr, BaseItem from, BaseItem swordOrTop, short slotTo, bool unequipTwo = false)
         {
-            byte inventory = Constants.getInventory(from.ItemID);
+            Inventory inventory = Constants.getInventory(from.ItemID);
             if (unequipTwo) // If it's 2h Weapon or Overall, try to unequip both Shield + Weapon or Bottom + Top
             {
                 BaseItem overallOr2h = from;
@@ -208,7 +209,7 @@ namespace WvsBeta.Game
 
         private static void Equip(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
         {
-            byte inventory = Constants.getInventory(from.ItemID);
+            Inventory inventory = Constants.getInventory(from.ItemID);
             chr.Inventory.SetItem(inventory, slotFrom, to);
             chr.Inventory.SetItem(inventory, slotTo, from);
             SwitchSlots(chr, slotFrom, slotTo, inventory);
@@ -286,7 +287,7 @@ namespace WvsBeta.Game
 
         private static void Unequip(GameCharacter chr, BaseItem equip, short slotTo)
         {
-            byte inventory = Constants.getInventory(equip.ItemID);
+            Inventory inventory = Constants.getInventory(equip.ItemID);
             short slotFrom = equip.InventorySlot;
 
             BaseItem swap = chr.Inventory.GetItem(inventory, slotTo);
@@ -315,11 +316,11 @@ namespace WvsBeta.Game
         {
             try
             {
-                byte inventory = packet.ReadByte();
+                Inventory inventory = (Inventory)packet.ReadByte();
                 short slotFrom = packet.ReadShort(); // Slot from
                 short slotTo = packet.ReadShort(); // Slot to
 
-                if (slotFrom == 0 || inventory < 0 || inventory > 5) goto no_op;
+                if (slotFrom == 0 || inventory < 0 || inventory > Inventory.Pet) goto no_op;
 
                 Trace.WriteLine($"Trying to swap from {slotFrom} to {slotTo}, inventory {inventory}");
                 if (slotFrom < 0) Trace.WriteLine("From: " + (Constants.EquipSlots.Slots)((-slotFrom) % 100));
@@ -381,7 +382,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(2, slot);
+            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 NoChange(chr);
@@ -424,7 +425,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(2, slot);
+            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 NoChange(chr);
@@ -474,8 +475,8 @@ namespace WvsBeta.Game
                 return;
             }
 
-            BaseItem scroll = chr.Inventory.GetItem(2, scrollslot);
-            EquipItem equip = (EquipItem)chr.Inventory.GetItem(1, itemslot);
+            BaseItem scroll = chr.Inventory.GetItem(Inventory.Use, scrollslot);
+            EquipItem equip = (EquipItem)chr.Inventory.GetItem(Inventory.Equip, itemslot);
             if (scroll == null ||
                 equip == null ||
                 Constants.itemTypeToScrollType(equip.ItemID) != Constants.getScrollType(scroll.ItemID) ||
@@ -521,7 +522,7 @@ namespace WvsBeta.Game
 
                 succeeded = true;
 
-                AddItem(chr, 1, equip, true);
+                AddItem(chr, Inventory.Equip, equip, true);
                 MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
                 SendItemScrolled(chr, true);
             }
@@ -532,8 +533,8 @@ namespace WvsBeta.Game
                     cursed = true;
                     chr.Inventory.TryRemoveCashItem(equip);
 
-                    SwitchSlots(chr, itemslot, 0, 1);
-                    chr.Inventory.SetItem(1, itemslot, null);
+                    SwitchSlots(chr, itemslot, 0, Inventory.Equip);
+                    chr.Inventory.SetItem(Inventory.Equip, itemslot, null);
                     SendItemScrolled(chr, false);
 
                     chr.PrimaryStats.CheckBoosters();
@@ -541,7 +542,7 @@ namespace WvsBeta.Game
                 else
                 {
                     equip.Slots--;
-                    AddItem(chr, 1, equip, true);
+                    AddItem(chr, Inventory.Equip, equip, true);
                     SendItemScrolled(chr, false);
                 }
             }
@@ -557,20 +558,20 @@ namespace WvsBeta.Game
             });
         }
 
-        public static void SwitchSlots(GameCharacter chr, short slot1, short slot2, byte inventory)
+        public static void SwitchSlots(GameCharacter chr, short slot1, short slot2, Inventory inventory)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
             pw.WriteByte(0x01);
             pw.WriteByte(0x02);
-            pw.WriteByte(inventory);
+            pw.WriteByte((byte)inventory);
             pw.WriteShort(slot1);
             pw.WriteShort(slot2);
             pw.WriteByte(0); // FIX: This should be the 'movement info index'
             chr.SendPacket(pw);
         }
 
-        public static void MultiDelete(GameCharacter chr, byte inventory, params short[] slots)
+        public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
         {
             const byte MaxSizePerPacket = 100;
             int slotsToWipe = slots.Length;
@@ -583,7 +584,7 @@ namespace WvsBeta.Game
                 for (var j = 0; j < chunk; j++)
                 {
                     pw.WriteByte(0x02);
-                    pw.WriteByte(inventory);
+                    pw.WriteByte((byte)inventory);
                     pw.WriteShort(slots[i + j]);
                     pw.WriteShort(0);
                 }
@@ -594,13 +595,13 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void AddItem(GameCharacter chr, byte inventory, BaseItem item, bool isNew)
+        public static void AddItem(GameCharacter chr, Inventory inventory, BaseItem item, bool isNew)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
             pw.WriteByte(0x01);
             pw.WriteBool(!isNew);
-            pw.WriteByte(inventory);
+            pw.WriteByte((byte)inventory);
             if (isNew)
             {
                 new GW_ItemSlotBase(item).Encode(pw, true);
@@ -616,13 +617,13 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void AddItem2(GameCharacter chr, byte inventory, BaseItem item, bool isNew, short amount)
+        public static void AddItem2(GameCharacter chr, Inventory inventory, BaseItem item, bool isNew, short amount)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
             pw.WriteByte(0x01);
             pw.WriteByte(0x01);
             pw.WriteBool(!isNew);
-            pw.WriteByte(inventory);
+            pw.WriteByte((byte)inventory);
             if (isNew)
             {
                 new GW_ItemSlotBase(item).Encode(pw, true);

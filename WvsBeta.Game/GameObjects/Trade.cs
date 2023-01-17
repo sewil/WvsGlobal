@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -96,7 +97,7 @@ namespace WvsBeta.Game
 
         private bool CheckInventory(GameCharacter chr)
         {
-            var neededSlots = new Dictionary<byte, int>();
+            var neededSlots = new Dictionary<Inventory, int>();
 
             for (int j = 0; j < 2; j++)
             {
@@ -107,7 +108,7 @@ namespace WvsBeta.Game
 
                     if (ti == null || ti.OriginalItem == null) continue;
 
-                    byte inv = Constants.getInventory(ti.OriginalItem.ItemID);
+                    Inventory inv = Constants.getInventory(ti.OriginalItem.ItemID);
 
                     if (!neededSlots.ContainsKey(inv))
                     {
@@ -191,7 +192,7 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        byte inventory = pPacket.ReadByte();
+                        Inventory inventory = (Inventory)pPacket.ReadByte();
                         short slot = pPacket.ReadShort();
                         short amount = pPacket.ReadShort();
                         byte toslot = pPacket.ReadByte();
