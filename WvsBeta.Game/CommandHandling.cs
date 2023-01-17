@@ -4,11 +4,13 @@ using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Packets;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -1268,26 +1270,21 @@ namespace WvsBeta.Game
                         case "d":
                         case "delete":
                             {
-                                if (Args.Count == 1 && Args[0].IsNumber())
+                                if (Args.Count == 1 && Args[0].IsNumber() && Enum.TryParse(Args[0].GetByte().ToString(), out Inventory inv))
                                 {
-                                    var inv = Args[0].GetByte();
-
-                                    if (inv >= 0 && inv <= 4)
+                                    // Find first item to delete
+                                    var slot = character.Inventory.DeleteFirstItemInInventory(inv);
+                                    if (slot != 0)
                                     {
-                                        // Find first item to delete
-                                        var slot = character.Inventory.DeleteFirstItemInInventory(inv);
-                                        if (slot != 0)
-                                        {
-                                            InventoryPacket.SwitchSlots(character, slot, 0, (byte)(inv + 1));
-                                        }
-                                        else
-                                        {
-                                            ChatPacket.SendNotice("No item to delete found.", character);
-                                        }
-                                        return true;
+                                        InventoryPacket.SwitchSlots(character, slot, 0, inv);
                                     }
+                                    else
+                                    {
+                                        ChatPacket.SendNotice("No item to delete found.", character);
+                                    }
+                                    return true;
                                 }
-                                ChatPacket.SendNotice("Usage: !delete <inventory, 0=equip, 1=use, etc>", character);
+                                ChatPacket.SendNotice("Usage: !delete <inventory, 1=equip, 2=use, etc>", character);
                                 return true;
                             }
 
@@ -2417,8 +2414,6 @@ namespace WvsBeta.Game
 
                         #region npcreload
 
-                        case "npcreload":
-                        case "reloadnpc":
                         case "scriptreload":
                         case "reloadscript":
                             {
@@ -2426,11 +2421,10 @@ namespace WvsBeta.Game
                                 {
                                     var scriptName = Args[0];
 
-                                    var fileName = Server.Instance.GetScriptFilename(scriptName);
+                                    var fileName = ScriptAccessor.GetScriptFilename(scriptName);
                                     if (fileName == null)
                                     {
-                                        ChatPacket.SendNotice(
-                                            "Could not find a script with the name " + scriptName + "!", character);
+                                        ChatPacket.SendNotice("Could not find a script with the name " + scriptName + "!", character);
                                         return true;
                                     }
 
@@ -2445,21 +2439,11 @@ namespace WvsBeta.Game
                                         ChatPacket.SendNotice("Sent request to reload the script to all channels.",
                                             character);
                                     }
-                                    else
+                                    else if (ScriptAccessor.GetScript(Server.Instance, scriptName, (script) => {
+                                        ChatPacket.SendNotice("Error while recompiling " + scriptName + ". See logs. Script: " + script, character);
+                                    }, true) != null)
                                     {
-                                        if (Server.Instance.ForceCompileScriptfile(
-                                                fileName,
-                                                (script) =>
-                                                {
-                                                    ChatPacket.SendNotice(
-                                                        "Error while recompiling " + scriptName +
-                                                        ". See logs. Script: " + script,
-                                                        character
-                                                    );
-                                                }) != null)
-                                        {
-                                            ChatPacket.SendNotice("Recompiled the script.", character);
-                                        }
+                                        ChatPacket.SendNotice("Recompiled the script.", character);
                                     }
                                 }
                                 else

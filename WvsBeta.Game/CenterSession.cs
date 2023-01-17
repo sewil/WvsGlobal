@@ -7,6 +7,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events.PartyQuests;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -118,10 +119,7 @@ namespace WvsBeta.Game
 
                             Program.MainForm.LogAppend("Processing reload npc script request... Script: " + scriptName);
 
-                            Server.Instance.ForceCompileScriptfile(
-                                Server.Instance.GetScriptFilename(scriptName),
-                                null
-                            );
+                            ScriptAccessor.GetScript(Server.Instance, scriptName, null, true);
                             break;
                         }
 

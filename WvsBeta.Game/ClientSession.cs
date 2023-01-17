@@ -179,6 +179,9 @@ namespace WvsBeta.Game
                         case ClientMessages.ENTER_PORTAL:
                             MapPacket.OnEnterPortal(packet, character);
                             break;
+                        case ClientMessages.ENTER_SCRIPTED_PORTAL:
+                            MapPacket.OnEnterScriptPortal(packet, character);
+                            break;
                         case ClientMessages.CHANGE_CHANNEL:
                             OnChangeChannel(character, packet);
                             break;
@@ -283,7 +286,6 @@ namespace WvsBeta.Game
                         case ClientMessages.SPAWN_PET:
                             PetsPacket.HandleSpawnPet(character, packet.ReadShort());
                             break;
-
                         case ClientMessages.SUMMON_MOVE:
                             MapPacket.HandleSummonMove(character, packet);
                             break;
