@@ -13,7 +13,7 @@ namespace WvsBeta.Scripts
         {
             if(target.Level < 8)
             {
-                self.SendOK(" Sup. I'm Roy, but my boys call me 'The Mad Bunny'. I hate Easter and I'm going to bring it down this year. I don't think you can help us out right now, cuz you seem weak. Go get yourself stronger, and maybe we'll talk business. ");
+                self.SendNext(" Sup. I'm Roy, but my boys call me 'The Mad Bunny'. I hate Easter and I'm going to bring it down this year. I don't think you can help us out right now, cuz you seem weak. Go get yourself stronger, and maybe we'll talk business. ");
                 return;
             }
             var quests = target.Quests.Quests;
@@ -27,13 +27,13 @@ namespace WvsBeta.Scripts
             var eeTime = cTime.CompareTo(new DateTime(cTime.Year, 4, 2, 23, 59, 59));
             if (esTime < 0)
             {
-                self.SendOK("Quit buggin me. When Easter comes along, I'll have plenty for you to do...");
+                self.SendNext("Quit buggin me. When Easter comes along, I'll have plenty for you to do...");
                 self.Stop();
                 return;
             }
             else if (eeTime > 0)
             {
-                self.SendOK("Sup. Easter is over, but I still don't like it one bit, and now the people are aware of my plans. That's alright, though; my gang will do our best to bring it down next year, too. I'll be counting on you to help us take away more Easter Eggs from others. Peace..");
+                self.SendNext("Sup. Easter is over, but I still don't like it one bit, and now the people are aware of my plans. That's alright, though; my gang will do our best to bring it down next year, too. I'll be counting on you to help us take away more Easter Eggs from others. Peace..");
                 self.Stop();
                 return;
             }
@@ -87,7 +87,7 @@ namespace WvsBeta.Scripts
                 }
                 else
                 {
-                    self.SendOK("You don't have the Golden Egg!! Man... if you ever find one, then please see me, alright?");
+                    self.SendNext("You don't have the Golden Egg!! Man... if you ever find one, then please see me, alright?");
                     self.Stop();
                 }
             }
@@ -106,7 +106,7 @@ namespace WvsBeta.Scripts
                 }
                 else //user doesn't accept the quest
                 {
-                    self.SendOK("You just wasted my breath. Get lost!");
+                    self.SendNext("You just wasted my breath. Get lost!");
                 }
                 self.Stop();
             }

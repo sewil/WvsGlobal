@@ -1,19 +1,20 @@
-# MapleGlobal (WvsBeta_REVAMP)
-
-This is it. The last version before closing down.
-
-This only contains the server source, without the scripts and other 'private' things, making
-it incompatible with the client. Good luck fixing that.
+# WvsGlobal v22 (WvsBeta_REVAMP)
+WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts.
 
 ## Notes
-- We will not give support on this release. This file has all the support we want to give.
-- The NX files are from some old version I had lying around. Possibly not fully compatible with client.
+- AES no worky, use maplecrypt (shanda).
+- Scripts need to be translated and converted. Reworked script compiler that handles portals.
+- Quest completion unhandled.
+- Drop data not updated.
+- Scrolling not working.
+- Some portals broken such as Henesys Market and Deep Ant Tunnel II (checked data and st00 is in the incorrect position for some reason), majority of portals fixed though, FM portals work.
+- Running Tespia or any other world other than Scania disables char creation for some reason. Tespia is assumed to have ID 20 (wz edited).
+- CS/Shops/player interactions not tested.
 - Config options for Redis, ElasticSearch/logging and some others are missing
 - ReNX has been modified to support merging of NX files
 - log4net.ElasticSearch was made a bit better in terms of memory usage and logging
 - SQLs/wvsbeta_sql_compatible.sql should be compatible with the server
 - packages/ folder contains the NuGet packages.
-
 
 ## Features
 - Lots.
@@ -26,7 +27,6 @@ it incompatible with the client. Good luck fixing that.
 - Anti-Hack measures
 - Discord webhook support
 - bcrypt password hashing
-- NO NPC SCRIPTS INCLUDED
 
 ## KMS Progression
 ### 2003
