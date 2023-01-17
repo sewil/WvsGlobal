@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,7 +28,6 @@ namespace WvsBeta.Game
         public static List<int> Jobs { get; private set; }
         public static IDictionary<byte, Dictionary<byte, MobSkillLevelData>> MobSkills { get; private set; }
         public static IDictionary<string, DropData[]> Drops { get; private set; }
-        public static IDictionary<int, Questdata> Quests { get; private set; }
         public static Dictionary<byte, List<QuizData>> QuizQuestions { get; } = new Dictionary<byte, List<QuizData>>();
 
         private static NXFile pDropFile;
@@ -46,7 +46,8 @@ namespace WvsBeta.Game
                     ReadNpcs,
                     ReadSkills,
                     ReadDrops,
-                    ReadQuiz
+                    ReadQuiz,
+                    ReadQuestData
                 };
 
 #if DEBUG
@@ -564,16 +565,39 @@ namespace WvsBeta.Game
             }
         }
 
-
-        /*static void ReadQuestData()
+        static void ReadQuestData()
         {
+            Quests = new Dictionary<int, WZQuestData>();
+            //var quests = pFile.BaseNode["Quest"].ToList();
+            //Quests = IterateAllToDict(quests, p => {
+            //    var questInfo = p["QuestInfo.img"].GetEnumerator();
+            //    for (int i = 0; i < length; i++)
+            //    {
+
+            //    }
+            //    var q = new WZQuestData
+            //    {
+            //        //public byte Stage { get; set; }
+            //        //public int ReqItem { get; set; }
+            //        //public int ItemReward { get; set; }
+            //        //public short ItemRewardCount { get; set; }
+            //        //public int MesoReward { get; set; }
+            //        //public int FameReward { get; set; }
+            //        //public int ExpReward { get; set; }
+            //        //public List<ItemReward> ReqItems { get; set; }
+            //        //public List<ItemReward> ItemRewards { get; set; }
+            //        //public List<ItemReward> RandomRewards { get; set; }
+            //        //public List<QuestMob> Mobs { get; set; }
+            //    };
+            //    return q;
+            //}, x => x.ID);
             IEnumerator cEnumerator = pFile.ResolvePath("Quest/Check.img").GetEnumerator();
             while (cEnumerator.MoveNext())
             {
 
                 NXNode cNode = (NXNode)cEnumerator.Current;
                 IEnumerator pEnumerator = pFile.BaseNode["Quest"]["Check.img"][cNode.Name].GetEnumerator();
-                Questdata qd = new Questdata();
+                WZQuestData qd = new WZQuestData();
                 while (pEnumerator.MoveNext())
                 {
                     NXNode stageNode = (NXNode)pEnumerator.Current;
@@ -601,7 +625,7 @@ namespace WvsBeta.Game
             {
                 NXNode pNode = (NXNode)enumerator.Current;
                 IEnumerator pEnumerator = pFile.BaseNode["Quest"]["Act.img"][pNode.Name].GetEnumerator();
-                Questdata qd = new Questdata();
+                WZQuestData qd = new WZQuestData();
                 while (pEnumerator.MoveNext())
                 {
                     NXNode iNode = (NXNode)pEnumerator.Current;
@@ -670,7 +694,7 @@ namespace WvsBeta.Game
 
                 if (pNode.Name == "1008")
                 {
-                    ////Console.WriteLine("MESO REWARD : " + qd.MesoReward);
+                    Console.WriteLine("MESO REWARD : " + qd.MesoReward);
                 }
                 if (Quests.ContainsKey(int.Parse(pNode.Name)))
                 {
@@ -685,7 +709,7 @@ namespace WvsBeta.Game
                     Quests.Add(int.Parse(pNode.Name), qd);
                 }
             }
-        }*/
+        }
 
         static void ReadNpcs()
         {
