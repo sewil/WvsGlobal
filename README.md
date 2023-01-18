@@ -1,6 +1,16 @@
 # WvsGlobal v22 (WvsBeta_REVAMP)
 WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts.
 
+## Todo
+- [ ] Fix AES (key already included)
+- [ ] Translate/convert remaining scripts
+- [ ] Update drop data
+- [ ] Scrolling
+- [ ] Fix broken portals
+- [ ] Fix blocked character creation in non-Scania worlds (worldID > 0)
+- [ ] Quests
+- [ ] Fix CS error
+
 ## Notes
 - AES no worky, use maplecrypt (shanda).
 - Scripts need to be translated and converted. Reworked script compiler that handles portals.
