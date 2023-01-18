@@ -2,14 +2,26 @@
 WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts.
 
 ## Todo
+### Crypt
 - [ ] Fix AES (key already included)
+
+### Login
+- [ ] Fix blocked character creation in non-Scania worlds (worldID > 0)
+
+### Game
 - [ ] Translate/convert remaining scripts
 - [ ] Update drop data
 - [ ] Scrolling
+
+### Portals
 - [ ] Fix broken portals
-- [ ] Fix blocked character creation in non-Scania worlds (worldID > 0)
-- [ ] Quests
-- [ ] Fix CS error
+
+### Quests
+- [ ] Quest completion handler
+
+### Cash Shop
+- [x] Fix data parse crash
+- [ ] Entering cash shop not working
 
 ## Notes
 - AES no worky, use maplecrypt (shanda).

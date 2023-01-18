@@ -38,11 +38,10 @@ namespace WvsBeta.Shop
                 var snId = node["SN"].ValueInt32();
                 var itemId = node["ItemId"].ValueInt32();
 
-
                 var ci = Commodity[snId] = new CommodityInfo
                 {
                     Count = node["Count"].ValueInt16(),
-                    Gender = (CommodityGenders)node["Gender"].ValueByte(),
+                    Gender = (CommodityGenders)node["Gender"].ValueSByte(),
                     ItemID = itemId,
                     Period = node["Period"].ValueInt16(),
                     OnSale = node["OnSale"].ValueBool(),
