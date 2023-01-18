@@ -27,7 +27,7 @@ namespace WvsBeta.Game
         public static bool ParseAttackData(GameCharacter chr, Packet packet, out AttackData data, AttackTypes type)
         {
             // Don't accept zombies
-            if (chr.PrimaryStats.HP == 0)
+            if (chr.HP == 0)
             {
                 data = null;
                 return false;
@@ -553,7 +553,7 @@ namespace WvsBeta.Game
                                 if (ad.SkillID == Constants.Assassin.Skills.Drain)
                                 {
                                     double hp = Math.Min(ai.Damages[0] * sld.XValue * 0.01, mob.MaxHP);
-                                    hp = Math.Min(hp, chr.PrimaryStats.MaxHP / 2);
+                                    hp = Math.Min(hp, chr.CharacterStat.MaxHP / 2);
                                     chr.ModifyHP((short)(hp));
                                 }
 

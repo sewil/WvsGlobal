@@ -1,4 +1,6 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Google.Protobuf.Collections;
+using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -34,8 +36,6 @@ namespace WvsBeta.Common.Character
         public int MapID { get; set; }
         public byte MapPosition { get; set; }
 
-        public int Money { get; set; }
-
         public void LoadFromReader(MySqlDataReader data)
         {
             ID = data.GetInt32("id");
@@ -44,9 +44,6 @@ namespace WvsBeta.Common.Character
             Skin = data.GetByte("skin");
             Hair = data.GetInt32("hair");
             Face = data.GetInt32("eyes");
-
-            MapID = data.GetInt32("map");
-            MapPosition = (byte)data.GetInt16("pos");
 
             Level = data.GetByte("level");
             Job = data.GetInt16("job");
@@ -62,15 +59,14 @@ namespace WvsBeta.Common.Character
             SP = data.GetInt16("sp");
             EXP = data.GetInt32("exp");
             Fame = data.GetInt16("fame");
-
-            Money = data.GetInt32("mesos");
+            MapID = data.GetInt32("map");
+            MapPosition = (byte)data.GetInt16("pos");
         }
 
         public void Encode(Packet pPacket)
         {
             pPacket.WriteInt(ID);
             pPacket.WriteString(Name, 13);
-
 
             pPacket.WriteByte(Gender); // Gender
             pPacket.WriteByte(Skin); // Skin
@@ -98,16 +94,10 @@ namespace WvsBeta.Common.Character
             pPacket.WriteByte(MapPosition);
         }
 
-        public void EncodeMoney(Packet pPacket)
-        {
-            pPacket.WriteInt(Money); // Hell yea
-        }
-
         public void Decode(Packet pPacket)
         {
             ID = pPacket.ReadInt();
             Name = pPacket.ReadString(13);
-
 
             Gender = pPacket.ReadByte();
             Skin = pPacket.ReadByte();
@@ -133,11 +123,6 @@ namespace WvsBeta.Common.Character
 
             MapID = pPacket.ReadInt();
             MapPosition = pPacket.ReadByte();
-        }
-
-        public void DecodeMoney(Packet pPacket)
-        {
-            Money = pPacket.ReadInt();
         }
     }
 }

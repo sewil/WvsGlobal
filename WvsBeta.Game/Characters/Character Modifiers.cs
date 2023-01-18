@@ -15,7 +15,7 @@ namespace WvsBeta.Game
         public void SetJob(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "job", add = false });
-            PrimaryStats.Job = value;
+            CharacterStat.Job = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Job, value);
 
             this.FlushDamageLog();
@@ -24,7 +24,7 @@ namespace WvsBeta.Game
 
         public void SetEXP(int value)
         {
-            PrimaryStats.EXP = value;
+            CharacterStat.EXP = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Exp, value);
         }
 
@@ -36,7 +36,7 @@ namespace WvsBeta.Game
             }
 
             SetMaxHP(value);
-            PrimaryStats.HP = value;
+            HP = value;
 
             if (sendPacket == true)
             {
@@ -46,28 +46,28 @@ namespace WvsBeta.Game
 
         public void ModifyHP(short value, bool sendPacket = true)
         {
-            var startValue = PrimaryStats.HP;
+            var startValue = HP;
 
-            if ((PrimaryStats.HP + value) < 0)
+            if ((HP + value) < 0)
             {
-                PrimaryStats.HP = 0;
+                HP = 0;
             }
-            else if ((PrimaryStats.HP + value) > PrimaryStats.GetMaxHP(false))
+            else if ((HP + value) > PrimaryStats.GetMaxHP(false))
             {
-                PrimaryStats.HP = PrimaryStats.GetMaxHP(false);
+                HP = PrimaryStats.GetMaxHP(false);
             }
             else
             {
-                PrimaryStats.HP = (short)(PrimaryStats.HP + value);
+                HP = (short)(HP + value);
             }
 
 
             if (sendPacket)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Hp, PrimaryStats.HP);
+                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Hp, HP);
             }
 
-            if (startValue == PrimaryStats.HP)
+            if (startValue == HP)
             {
                 // Doesn't matter
                 return;
@@ -79,7 +79,7 @@ namespace WvsBeta.Game
 
         public void ModifiedHP()
         {
-            if (PrimaryStats.HP == 0)
+            if (HP == 0)
             {
                 loseEXP();
                 PrimaryStats.Reset(true);
@@ -95,7 +95,7 @@ namespace WvsBeta.Game
             }
 
             SetMaxMP(value);
-            PrimaryStats.MP = value;
+            CharacterStat.MP = value;
 
             if (sendPacket == true)
             {
@@ -105,21 +105,21 @@ namespace WvsBeta.Game
 
         public void ModifyMP(short value, bool sendPacket = true)
         {
-            if ((PrimaryStats.MP + value) < 0)
+            if ((CharacterStat.MP + value) < 0)
             {
-                PrimaryStats.MP = 0;
+                CharacterStat.MP = 0;
             }
-            else if ((PrimaryStats.MP + value) > PrimaryStats.GetMaxMP(false))
+            else if ((CharacterStat.MP + value) > PrimaryStats.GetMaxMP(false))
             {
-                PrimaryStats.MP = PrimaryStats.GetMaxMP(false);
+                CharacterStat.MP = PrimaryStats.GetMaxMP(false);
             }
             else
             {
-                PrimaryStats.MP = (short)(PrimaryStats.MP + value);
+                CharacterStat.MP = (short)(CharacterStat.MP + value);
             }
             if (sendPacket)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, PrimaryStats.MP);
+                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, CharacterStat.MP);
 
                 /*if (this.PartyID != -1)
                 {
@@ -131,22 +131,22 @@ namespace WvsBeta.Game
 
         public void DamageMP(short amount)
         {
-            PrimaryStats.MP = (short)(amount > PrimaryStats.MP ? 0 : PrimaryStats.MP - amount);
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, PrimaryStats.MP, false);
+            CharacterStat.MP = (short)(amount > CharacterStat.MP ? 0 : CharacterStat.MP - amount);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, CharacterStat.MP, false);
         }
 
         public void ModifyMaxMP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxmp", add = true });
-            PrimaryStats.MaxMP = (short)(((PrimaryStats.MaxMP + value) > Constants.MaxMaxMp) ? Constants.MaxMaxMp : (PrimaryStats.MaxMP + value));
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, PrimaryStats.MaxMP);
+            CharacterStat.MaxMP = (short)(((CharacterStat.MaxMP + value) > Constants.MaxMaxMp) ? Constants.MaxMaxMp : (CharacterStat.MaxMP + value));
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, CharacterStat.MaxMP);
         }
 
         public void ModifyMaxHP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxhp", add = true });
-            PrimaryStats.MaxHP = (short)(((PrimaryStats.MaxHP + value) > Constants.MaxMaxHp) ? Constants.MaxMaxHp : (PrimaryStats.MaxHP + value));
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxHp, PrimaryStats.MaxHP);
+            CharacterStat.MaxHP = (short)(((CharacterStat.MaxHP + value) > Constants.MaxMaxHp) ? Constants.MaxMaxHp : (CharacterStat.MaxHP + value));
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxHp, CharacterStat.MaxHP);
         }
 
         public void SetMaxHP(short value)
@@ -154,7 +154,7 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxhp", add = false });
             if (value > Constants.MaxMaxHp) value = Constants.MaxMaxHp;
             else if (value < Constants.MinMaxHp) value = Constants.MinMaxHp;
-            PrimaryStats.MaxHP = value;
+            CharacterStat.MaxHP = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxHp, value);
         }
 
@@ -163,14 +163,14 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxmp", add = false });
             if (value > Constants.MaxMaxMp) value = Constants.MaxMaxMp;
             else if (value < Constants.MinMaxMp) value = Constants.MinMaxMp;
-            PrimaryStats.MaxMP = value;
+            CharacterStat.MaxMP = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, value);
         }
 
         public void SetLevel(byte value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "level", add = false });
-            PrimaryStats.Level = value;
+            CharacterStat.Level = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Level, value);
             MapPacket.SendPlayerLevelupAnim(this);
 
@@ -181,20 +181,20 @@ namespace WvsBeta.Game
         public void AddFame(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = true });
-            if (PrimaryStats.Fame + value > Int16.MaxValue)
+            if (CharacterStat.Fame + value > Int16.MaxValue)
             {
                 SetFame(Int16.MaxValue);
             }
             else
             {
-                SetFame((short)(PrimaryStats.Fame + value));
+                SetFame((short)(CharacterStat.Fame + value));
             }
         }
 
         public void SetFame(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = false });
-            PrimaryStats.Fame = value;
+            CharacterStat.Fame = value;
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Fame, value);
         }
 
@@ -212,7 +212,7 @@ namespace WvsBeta.Game
             var expRequired = Constants.GetLevelEXP(PrimaryStats.Level);
             if (expRequired == 0) return 0;
 
-            var percentage = (byte)(((ulong)PrimaryStats.EXP * 100) / (ulong)expRequired);
+            var percentage = (byte)(((ulong)CharacterStat.EXP * 100) / (ulong)expRequired);
 
             var percentagePerLevel = GetPercentagePerLevelToSave(PrimaryStats.Level);
 
@@ -223,10 +223,10 @@ namespace WvsBeta.Game
 
         public void AddEXP(uint value, bool IsLastHit = false, bool Quest = false)
         {
-            if (value == 0 || PrimaryStats.Level >= 200 || PrimaryStats.HP <= 0) return;
+            if (value == 0 || PrimaryStats.Level >= 200 || HP <= 0) return;
 
             var amount = (int)(value > Int32.MaxValue ? Int32.MaxValue : value);
-            var amnt = (uint)(PrimaryStats.EXP + amount);
+            var amnt = (uint)(CharacterStat.EXP + amount);
 
             CharacterStatsPacket.SendGainEXP(this, amount, IsLastHit, Quest);
             var level = PrimaryStats.Level;
@@ -240,7 +240,7 @@ namespace WvsBeta.Game
                 short spgain = 0;
                 short mpgain = 0;
                 short hpgain = 0;
-                var job = (short)(PrimaryStats.Job / 100);
+                var job = (short)(CharacterStat.Job / 100);
 
                 var intt = PrimaryStats.GetIntAddition(true);
 
@@ -283,7 +283,7 @@ namespace WvsBeta.Game
                     mpgain += CharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
                 }
 
-                if (PrimaryStats.Job != 0)
+                if (CharacterStat.Job != 0)
                 {
                     spgain = Constants.SpPerLevel;
                 }
@@ -317,7 +317,7 @@ namespace WvsBeta.Game
                 save = true;
             }
 
-            PrimaryStats.EXP = (int)amnt;
+            CharacterStat.EXP = (int)amnt;
 
             // Calculate savepoints
 
@@ -370,7 +370,7 @@ namespace WvsBeta.Game
                 Save();
             }
 
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Exp, PrimaryStats.EXP);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Exp, CharacterStat.EXP);
         }
 
         public void IncreaseBuddySlots()
@@ -415,57 +415,57 @@ namespace WvsBeta.Game
         public void AddAP(short value, bool isSelf = false)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "ap", add = true });
-            if (value + PrimaryStats.AP > Int16.MaxValue)
+            if (value + CharacterStat.AP > Int16.MaxValue)
             {
-                PrimaryStats.AP = Int16.MaxValue;
+                CharacterStat.AP = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.AP += value;
+                CharacterStat.AP += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, PrimaryStats.AP, isSelf);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, CharacterStat.AP, isSelf);
         }
 
         public void SetAP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "ap", add = false });
-            PrimaryStats.AP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, PrimaryStats.AP);
+            CharacterStat.AP = value;
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, CharacterStat.AP);
         }
 
         public void AddSP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "sp", add = true });
-            if (value + PrimaryStats.SP > Int16.MaxValue)
+            if (value + CharacterStat.SP > Int16.MaxValue)
             {
-                PrimaryStats.SP = Int16.MaxValue;
+                CharacterStat.SP = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.SP += value;
+                CharacterStat.SP += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, PrimaryStats.SP);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, CharacterStat.SP);
         }
 
         public void SetSP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "sp", add = false });
-            PrimaryStats.SP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, PrimaryStats.SP);
+            CharacterStat.SP = value;
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, CharacterStat.SP);
         }
 
         public void AddStr(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "str", add = true });
-            if (value + PrimaryStats.Str > Int16.MaxValue)
+            if (value + CharacterStat.Str > Int16.MaxValue)
             {
-                PrimaryStats.Str = Int16.MaxValue;
+                CharacterStat.Str = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.Str += value;
+                CharacterStat.Str += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, PrimaryStats.Str);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, CharacterStat.Str);
 
             this.FlushDamageLog();
         }
@@ -473,8 +473,8 @@ namespace WvsBeta.Game
         public void SetStr(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "str", add = false });
-            PrimaryStats.Str = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, PrimaryStats.Str);
+            CharacterStat.Str = value;
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, CharacterStat.Str);
 
             this.FlushDamageLog();
         }
@@ -482,15 +482,15 @@ namespace WvsBeta.Game
         public void AddDex(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "dex", add = true });
-            if (value + PrimaryStats.Dex > Int16.MaxValue)
+            if (value + CharacterStat.Dex > Int16.MaxValue)
             {
-                PrimaryStats.Dex = Int16.MaxValue;
+                CharacterStat.Dex = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.Dex += value;
+                CharacterStat.Dex += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, PrimaryStats.Dex);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, CharacterStat.Dex);
 
             this.FlushDamageLog();
         }
@@ -498,8 +498,8 @@ namespace WvsBeta.Game
         public void SetDex(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "dex", add = false });
-            PrimaryStats.Dex = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, PrimaryStats.Dex);
+            CharacterStat.Dex = value;
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, CharacterStat.Dex);
 
             this.FlushDamageLog();
         }
@@ -507,15 +507,15 @@ namespace WvsBeta.Game
         public void AddInt(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "int", add = true });
-            if (value + PrimaryStats.Int > Int16.MaxValue)
+            if (value + CharacterStat.Int > Int16.MaxValue)
             {
-                PrimaryStats.Int = Int16.MaxValue;
+                CharacterStat.Int = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.Int += value;
+                CharacterStat.Int += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, PrimaryStats.Int);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, CharacterStat.Int);
 
             this.FlushDamageLog();
         }
@@ -523,9 +523,9 @@ namespace WvsBeta.Game
         public void SetInt(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "int", add = false });
-            PrimaryStats.Int = value;
+            CharacterStat.Int = value;
 
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, PrimaryStats.Int);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, CharacterStat.Int);
 
             this.FlushDamageLog();
         }
@@ -533,15 +533,15 @@ namespace WvsBeta.Game
         public void AddLuk(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "luk", add = true });
-            if (value + PrimaryStats.Luk > Int16.MaxValue)
+            if (value + CharacterStat.Luk > Int16.MaxValue)
             {
-                PrimaryStats.Luk = Int16.MaxValue;
+                CharacterStat.Luk = Int16.MaxValue;
             }
             else
             {
-                PrimaryStats.Luk += value;
+                CharacterStat.Luk += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, PrimaryStats.Luk);
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, CharacterStat.Luk);
 
             this.FlushDamageLog();
         }
@@ -549,15 +549,15 @@ namespace WvsBeta.Game
         public void SetLuk(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "luk", add = false });
-            PrimaryStats.Luk = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, PrimaryStats.Luk);
+            CharacterStat.Luk = value;
+            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, CharacterStat.Luk);
 
             this.FlushDamageLog();
         }
 
         public void loseEXP()
         {
-            if (PrimaryStats.Job == 0 || PrimaryStats.Level >= 200) return;
+            if (CharacterStat.Job == 0 || PrimaryStats.Level >= 200) return;
 
             double lossPercent;
             if (Field.Town || Field.MobGen.Count == 0)
@@ -566,7 +566,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                if (PrimaryStats.Job / 100 == 3)
+                if (CharacterStat.Job / 100 == 3)
                 {
                     lossPercent = 0.08;
                 }
@@ -574,14 +574,14 @@ namespace WvsBeta.Game
                 {
                     lossPercent = 0.2;
                 }
-                lossPercent = lossPercent / PrimaryStats.Luk + 0.05;
+                lossPercent = lossPercent / CharacterStat.Luk + 0.05;
             }
             var levelExp = Constants.GetLevelEXP(PrimaryStats.Level);
 
             var loseAmount = (levelExp * lossPercent);
             _characterLog.Info($"Player is losing {loseAmount} EXP ({lossPercent}) because of dying.");
 
-            var rExp = (int)(PrimaryStats.EXP - loseAmount);
+            var rExp = (int)(CharacterStat.EXP - loseAmount);
             SetEXP(rExp <= 0 ? 0 : rExp);
         }
 
@@ -764,56 +764,56 @@ namespace WvsBeta.Game
                     {
                         case "hp":
                             dwFlag |= CharacterStatsPacket.StatFlags.Hp;
-                            PrimaryStats.HP = Convert.ToInt16(Value);
+                            HP = Convert.ToInt16(Value);
                             break;
                         case "mp":
                             dwFlag |= CharacterStatsPacket.StatFlags.Mp;
-                            PrimaryStats.MP = Convert.ToInt16(Value);
+                            CharacterStat.MP = Convert.ToInt16(Value);
                             break;
                         case "exp":
                             dwFlag |= CharacterStatsPacket.StatFlags.Exp;
-                            PrimaryStats.EXP = Convert.ToInt32(Value);
+                            CharacterStat.EXP = Convert.ToInt32(Value);
                             break;
                         case "maxhp":
                             dwFlag |= CharacterStatsPacket.StatFlags.MaxHp;
                             if (Value.ToString() == "0")
                                 Value = "1";
-                            PrimaryStats.MaxHP = Convert.ToInt16(Value);
+                            CharacterStat.MaxHP = Convert.ToInt16(Value);
                             break;
                         case "maxmp":
                             dwFlag |= CharacterStatsPacket.StatFlags.MaxMp;
                             if (Value.ToString() == "0")
                                 Value = "1";
-                            PrimaryStats.MaxMP = Convert.ToInt16(Value);
+                            CharacterStat.MaxMP = Convert.ToInt16(Value);
                             break;
                         case "ap":
                             dwFlag |= CharacterStatsPacket.StatFlags.Ap;
-                            PrimaryStats.AP = Convert.ToInt16(Value);
+                            CharacterStat.AP = Convert.ToInt16(Value);
                             break;
                         case "sp":
                             dwFlag |= CharacterStatsPacket.StatFlags.Sp;
-                            PrimaryStats.SP = Convert.ToInt16(Value);
+                            CharacterStat.SP = Convert.ToInt16(Value);
                             break;
                         case "str":
                             dwFlag |= CharacterStatsPacket.StatFlags.Str;
-                            PrimaryStats.Str = Convert.ToInt16(Value);
+                            CharacterStat.Str = Convert.ToInt16(Value);
                             break;
                         case "dex":
                             dwFlag |= CharacterStatsPacket.StatFlags.Dex;
-                            PrimaryStats.Dex = Convert.ToInt16(Value);
+                            CharacterStat.Dex = Convert.ToInt16(Value);
                             break;
                         case "int":
                             dwFlag |= CharacterStatsPacket.StatFlags.Int;
-                            PrimaryStats.Int = Convert.ToInt16(Value);
+                            CharacterStat.Int = Convert.ToInt16(Value);
                             break;
                         case "luk":
                             dwFlag |= CharacterStatsPacket.StatFlags.Luk;
-                            PrimaryStats.Luk = Convert.ToInt16(Value);
+                            CharacterStat.Luk = Convert.ToInt16(Value);
                             break;
                         case "fame":
                         case "pop":
                             dwFlag |= CharacterStatsPacket.StatFlags.Fame;
-                            PrimaryStats.Fame = Convert.ToInt16(Value);
+                            CharacterStat.Fame = Convert.ToInt16(Value);
                             break;
                         case "mesos":
                             dwFlag |= CharacterStatsPacket.StatFlags.Mesos;
@@ -825,7 +825,7 @@ namespace WvsBeta.Game
                                 if (DataProvider.HasJob(Job) || Job == 0)
                                 {
                                     dwFlag |= CharacterStatsPacket.StatFlags.Job;
-                                    PrimaryStats.Job = Job;
+                                    CharacterStat.Job = Job;
                                 }
                                 else
                                     ChatPacket.SendNotice($"Job {Job} does not exist.", Sent);

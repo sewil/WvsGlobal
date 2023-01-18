@@ -72,7 +72,7 @@ namespace WvsBeta.Game
         {
             var Result = false;
 
-            if (Object is GameCharacter User && User.PrimaryStats.HP > 0 && User.MapID == Field.ID)
+            if (Object is GameCharacter User && User.HP > 0 && User.MapID == Field.ID)
             {
                 if (ShowMax > 0)
                 {

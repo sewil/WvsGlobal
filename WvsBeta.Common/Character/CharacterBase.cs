@@ -6,18 +6,16 @@ namespace WvsBeta.Common
 {
     public class CharacterBase : MovableLife
     {
-        public string Name { get; set; }
-        public int ID { get; set; }
-        public short Job { get; set; } // Center is the only server that uses this for jobs. Game uses PrimaryStats for job.
-        public byte Level { get; set; } // Center is the only server that uses this for level. Game uses PrimaryStats for level.
+        public string Name { get => CharacterStat.Name; set => CharacterStat.Name = value; }
+        public int ID { get => CharacterStat.ID; set => CharacterStat.ID = value; }
+        public short Job { get => CharacterStat.Job; set => CharacterStat.Job = value; }
+        public byte Level { get => CharacterStat.Level; set => CharacterStat.Level = value; }
 
-        public byte Gender { get; set; }
-        public byte Skin { get; set; }
-        public int Face { get; set; }
-        public int Hair { get; set; }
-        public long PetCashId { get; set; }
-
-        public virtual int MapID { get; set; }
+        public byte Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
+        public byte Skin { get => CharacterStat.Skin; set => CharacterStat.Skin = value; }
+        public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
+        public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
+        public int MapID { get => CharacterStat.MapID; set => CharacterStat.MapID = value; }
         public byte PortalID { get; set; }
         public virtual int PartyID { get; set; }
 
@@ -31,20 +29,21 @@ namespace WvsBeta.Common
         public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
         public virtual BaseCharacterQuests Quests { get; protected set; }
         public virtual void DamageHP(short amount) => throw new NotImplementedException();
-
+        public GW_CharacterStat CharacterStat { get; } = new GW_CharacterStat();
+        public byte BuddyListCapacity { get; set; }
         public void EncodeForTransfer(Packet pw)
         {
-            pw.WriteString(Name);
-            pw.WriteInt(ID);
-            pw.WriteShort(Job);
-            pw.WriteByte(Level);
+            pw.WriteString(CharacterStat.Name);
+            pw.WriteInt(CharacterStat.ID);
+            pw.WriteShort(CharacterStat.Job);
+            pw.WriteByte(CharacterStat.Level);
 
-            pw.WriteByte(Gender);
-            pw.WriteByte(Skin);
-            pw.WriteInt(Face);
-            pw.WriteInt(Hair);
+            pw.WriteByte(CharacterStat.Gender);
+            pw.WriteByte(CharacterStat.Skin);
+            pw.WriteInt(CharacterStat.Face);
+            pw.WriteInt(CharacterStat.Hair);
 
-            pw.WriteInt(MapID);
+            pw.WriteInt(CharacterStat.MapID);
             pw.WriteInt(PartyID);
             pw.WriteBool(IsOnline);
             pw.WriteByte(GMLevel);
@@ -53,53 +52,20 @@ namespace WvsBeta.Common
 
         public void DecodeForTransfer(Packet pr)
         {
-            Name = pr.ReadString();
-            ID = pr.ReadInt();
-            Job = pr.ReadShort();
-            Level = pr.ReadByte();
+            CharacterStat.Name = pr.ReadString();
+            CharacterStat.ID = pr.ReadInt();
+            CharacterStat.Job = pr.ReadShort();
+            CharacterStat.Level = pr.ReadByte();
 
-            Gender = pr.ReadByte();
-            Skin = pr.ReadByte();
-            Face = pr.ReadInt();
-            Hair = pr.ReadInt();
+            CharacterStat.Gender = pr.ReadByte();
+            CharacterStat.Skin = pr.ReadByte();
+            CharacterStat.Face = pr.ReadInt();
+            CharacterStat.Hair = pr.ReadInt();
 
-            MapID = pr.ReadInt();
+            CharacterStat.MapID = pr.ReadInt();
             PartyID = pr.ReadInt();
             IsOnline = pr.ReadBool();
             GMLevel = pr.ReadByte();
-        }
-
-        public GW_CharacterStat ToGWStat()
-        {
-            return new GW_CharacterStat
-            {
-                ID = ID,
-                Name = Name,
-                Gender = Gender,
-                Skin = Skin,
-                Face = Face,
-                Hair = Hair,
-
-                PetCashId = PetCashId,
-
-                Level = Level,
-                Job = Job,
-                Str = PrimaryStats.Str,
-                Dex = PrimaryStats.Dex,
-                Int = PrimaryStats.Int,
-                Luk = PrimaryStats.Luk,
-                HP = PrimaryStats.HP,
-                MaxHP = PrimaryStats.GetMaxHP(true),
-                MP = PrimaryStats.MP,
-                MaxMP = PrimaryStats.GetMaxMP(true),
-                AP = PrimaryStats.AP,
-                SP = PrimaryStats.SP,
-                EXP = PrimaryStats.EXP,
-                Fame = PrimaryStats.Fame,
-
-                MapID = MapID,
-                MapPosition = PortalID
-            };
         }
     }
 }

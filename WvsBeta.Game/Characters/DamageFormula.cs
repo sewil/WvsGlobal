@@ -25,13 +25,13 @@ namespace WvsBeta.Game
                 var chrCriticalThrow = chr.Skills.GetSkillLevelData(4100001, out byte critThrowLevel);
 
                 // If they are an Assassin branch of the Thief class and have at least one point Critical Throw
-                if ((chr.PrimaryStats.Job / 10 == 41 || chr.PrimaryStats.Job / 100 == 5) && chrCriticalThrow != null)
+                if ((chr.CharacterStat.Job / 10 == 41 || chr.CharacterStat.Job / 100 == 5) && chrCriticalThrow != null)
                 {
                     return (double)(chrCriticalThrow.Damage / 100.0);
                 }
 
                 // If they are a Bowman class and have at least one point Critical Shot
-                else if ((chr.PrimaryStats.Job / 100 == 3 || chr.PrimaryStats.Job / 100 == 5) && chrCriticalThrow != null)
+                else if ((chr.CharacterStat.Job / 100 == 3 || chr.CharacterStat.Job / 100 == 5) && chrCriticalThrow != null)
                 {
                     return (double)(chrCriticalShot.Damage / 100.0);
                 }
@@ -54,7 +54,7 @@ namespace WvsBeta.Game
             var chrFinalAttack = chr.Skills.GetSkillLevelData(SkillID, out byte FinalAttackLevel);
 
             // If their job ID matches first 3 digits of the Final Attack Skill ID, and has a skill point in it, then it is a legal operation.
-            if (chr.PrimaryStats.Job == (SkillID / 10000) && chrFinalAttack != null)
+            if (chr.CharacterStat.Job == (SkillID / 10000) && chrFinalAttack != null)
             {
                 return (double)(chrFinalAttack.Damage / 100.0);
             }
@@ -265,7 +265,7 @@ namespace WvsBeta.Game
                     case 1322: // 1H BLUNT WEAPON
                         return "1HBW";
                     case 1332: // DAGGER
-                        if ((chr.PrimaryStats.Job / 100) == 4) { return "DAGGERT"; }
+                        if ((chr.CharacterStat.Job / 100) == 4) { return "DAGGERT"; }
                         else { return "DAGGERNT"; }
                     case 1372: // WAND
                         return "WAND";
@@ -419,7 +419,7 @@ namespace WvsBeta.Game
             double chrMagic = Math.Min(chrINT + chrMagicAttack, 999.0);
             double SpellAttack = chr.Skills.GetSpellAttack(SpellID);
 
-            if (chr.PrimaryStats.Job / 100 == 2 || chr.PrimaryStats.Job / 100 == 5)
+            if (chr.CharacterStat.Job / 100 == 2 || chr.CharacterStat.Job / 100 == 5)
             {
                 return ((chrMagic * 3.3 + chrMagic * chrMagic * 0.003365 + chrINT * 0.5) * SpellAttack / 100.0) * ElementModifier(mob, SpellID) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.MDD * 0.5);
             }
@@ -446,7 +446,7 @@ namespace WvsBeta.Game
         // ((INT * 1.2 + LUK) * Magic / 1000 * (1.5 + 5 / Targets)) * Heal Damage (10% ~ 300%, based on level of Heal) * Elemental Damage Modifier * Level Difference - (Mob Magic Defense * 0.5)
         public static double MaximumHealDamage(GameCharacter chr, Mob mob, byte Targets)
         {
-            if (chr.PrimaryStats.Job / 10 == 23 || chr.PrimaryStats.Job / 100 == 5)
+            if (chr.CharacterStat.Job / 10 == 23 || chr.CharacterStat.Job / 100 == 5)
             {
                 double chrINT = chr.PrimaryStats.GetIntAddition();
                 double chrLUK = chr.PrimaryStats.GetLukAddition();
@@ -474,7 +474,7 @@ namespace WvsBeta.Game
         // ((LUK * 5.0) * Weapon Attack / 100) * Lucky Seven Damage (55% ~ 150%, based on level of Lucky Seven) * Level Difference - (Mob Weapon Defense * 0.5)
         public static double MaximumLuckySevenDamage(GameCharacter chr, Mob mob, int ClientTotalDamage)
         {
-            if (chr.PrimaryStats.Job / 100 == 4 || chr.PrimaryStats.Job / 100 == 5)
+            if (chr.CharacterStat.Job / 100 == 4 || chr.CharacterStat.Job / 100 == 5)
             {
                 double chrLUK = chr.PrimaryStats.GetLukAddition();
                 double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
@@ -485,7 +485,7 @@ namespace WvsBeta.Game
                     double MaxDamageWithoutCrit = (((chrLUK * 5.0) * chrWeaponAttack / 100.0) * (double)(chrLuckySevenData.Damage / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5)) * chrLuckySevenData.BulletUsage;
                     double MaxDamageWithCrit = (((chrLUK * 5.0) * chrWeaponAttack / 100.0) * (double)(chrLuckySevenData.Damage / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5) * CriticalStrikeModifier(chr)) * chrLuckySevenData.BulletUsage;
 
-                    if (chr.PrimaryStats.Job / 10 == 41 || chr.PrimaryStats.Job / 100 == 5)
+                    if (chr.CharacterStat.Job / 10 == 41 || chr.CharacterStat.Job / 100 == 5)
                     {
                         if (ClientTotalDamage <= MaxDamageWithoutCrit)
                         {
@@ -516,12 +516,12 @@ namespace WvsBeta.Game
         // ((DEX * 3.4 + STR) * Weapon Attack / 150) * (105% ~ 200%, based on level of Power Knockback) * Level Difference - (Mob Weapon Defense * 0.5)
         public static double MaximumPowerKnockbackDamage(GameCharacter chr, Mob mob, int ClientTotalDamage)
         {
-            if (chr.PrimaryStats.Job / 10 == 31 || chr.PrimaryStats.Job / 10 == 32 || chr.PrimaryStats.Job / 100 == 5)
+            if (chr.CharacterStat.Job / 10 == 31 || chr.CharacterStat.Job / 10 == 32 || chr.CharacterStat.Job / 100 == 5)
             {
                 double chrSTR = chr.PrimaryStats.GetStrAddition();
                 double chrDEX = chr.PrimaryStats.GetDexAddition();
                 double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(false);
-                var chrPowerKnockbackData = chr.PrimaryStats.Job == 310 ? chr.Skills.GetSkillLevelData(3101003, out byte PowerKnockbackLevel1) : chr.Skills.GetSkillLevelData(3201003, out byte PowerKnockbackLevel2);
+                var chrPowerKnockbackData = chr.CharacterStat.Job == 310 ? chr.Skills.GetSkillLevelData(3101003, out byte PowerKnockbackLevel1) : chr.Skills.GetSkillLevelData(3201003, out byte PowerKnockbackLevel2);
 
                 if (chrPowerKnockbackData != null)
                 {
@@ -558,7 +558,7 @@ namespace WvsBeta.Game
             try
             {
                 // If they're a Bowman or GM...
-                if (chr.PrimaryStats.Job / 10 == 31 || chr.PrimaryStats.Job / 100 == 5)
+                if (chr.CharacterStat.Job / 10 == 31 || chr.CharacterStat.Job / 100 == 5)
                 {
                     // Bow
                     // Primary: DEX * 3.4
@@ -608,7 +608,7 @@ namespace WvsBeta.Game
         public static double MaximumRangedDamage(GameCharacter chr, Mob mob, int SkillID, int StarID, byte Targets, int ClientTotalDamage)
         {
             // If they're a Bowman, Thief, or GM...
-            if (chr.PrimaryStats.Job / 100 == 3 || chr.PrimaryStats.Job / 100 == 4 || chr.PrimaryStats.Job / 100 == 5)
+            if (chr.CharacterStat.Job / 100 == 3 || chr.CharacterStat.Job / 100 == 4 || chr.CharacterStat.Job / 100 == 5)
             {
                 // Bow
                 // Primary: DEX * 3.4
@@ -720,7 +720,7 @@ namespace WvsBeta.Game
                     double MaxDamageWithoutCrit = ((chrLUK * 3.6 + (chrSTR + chrDEX)) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5);
                     double MaxDamageWithCrit = ((chrLUK * 3.6 + (chrSTR + chrDEX)) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5) * CriticalStrikeModifier(chr);
 
-                    if (chr.PrimaryStats.Job / 10 == 41 || chr.PrimaryStats.Job / 100 == 5)
+                    if (chr.CharacterStat.Job / 10 == 41 || chr.CharacterStat.Job / 100 == 5)
                     {
                         if (ClientTotalDamage <= MaxDamageWithoutCrit)
                         { // NEEDS TESTING

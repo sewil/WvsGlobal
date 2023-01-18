@@ -80,7 +80,7 @@ namespace WvsBeta.Game
 
             if (skillid == Constants.DragonKnight.Skills.DragonRoar)
             {
-                var lefthp = (int)(Character.PrimaryStats.MaxHP * (data.XValue / 100.0d));
+                var lefthp = (int)(Character.CharacterStat.MaxHP * (data.XValue / 100.0d));
                 Character.DamageHP((short)lefthp);
             }
 
@@ -92,12 +92,12 @@ namespace WvsBeta.Game
             if (mp > 0)
             {
                 mp = GetElemAmpInc(skillid, mp);
-                if (Character.AssertForHack(Character.PrimaryStats.MP < mp, "MP Hack (no MP left)")) return;
+                if (Character.AssertForHack(Character.CharacterStat.MP < mp, "MP Hack (no MP left)")) return;
                 Character.ModifyMP((short)-mp, true);
             }
             if (hp > 0)
             {
-                if (Character.AssertForHack(Character.PrimaryStats.HP < hp, "HP Hack (no HP left)")) return;
+                if (Character.AssertForHack(Character.HP < hp, "HP Hack (no HP left)")) return;
                 Character.ModifyHP((short)-hp, true);
             }
             if (item > 0)
@@ -126,13 +126,13 @@ namespace WvsBeta.Game
         private short GetElemAmpInc(int skillId, short mp)
         {
             double inc = 100.0;
-            if (Character.PrimaryStats.Job == 211) //f/p
+            if (Character.CharacterStat.Job == 211) //f/p
             {
                 var level = Character.Skills.GetSkillLevel(Constants.FPMage.Skills.ElementAmplification, out SkillLevelData sld);
                 if (level != 0)
                     inc = sld.XValue;
             }
-            else if (Character.PrimaryStats.Job == 221) //i/l
+            else if (Character.CharacterStat.Job == 221) //i/l
             {
                 var level = Character.Skills.GetSkillLevel(Constants.ILMage.Skills.ElementAmplification, out SkillLevelData sld);
                 if (level != 0)
@@ -240,7 +240,7 @@ namespace WvsBeta.Game
         public override ushort GetRechargeableBonus()
         {
             ushort bonus = 0;
-            switch (Character.PrimaryStats.Job)
+            switch (Character.CharacterStat.Job)
             {
                 case Constants.Assassin.ID:
                 case Constants.Hermit.ID:
@@ -257,7 +257,7 @@ namespace WvsBeta.Game
             {
                 case (int)Constants.Items.Types.ItemTypes.Weapon1hSword:
                 case (int)Constants.Items.Types.ItemTypes.Weapon2hSword:
-                    switch (Character.PrimaryStats.Job)
+                    switch (Character.CharacterStat.Job)
                     {
                         case Constants.Fighter.ID:
                         case Constants.Crusader.ID:

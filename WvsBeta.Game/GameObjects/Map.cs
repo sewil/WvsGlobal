@@ -794,7 +794,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             int newMap;
             // Make sure it isnt dead
-            if (chr.PrimaryStats.HP == 0)
+            if (chr.HP == 0)
             {
                 chr.ModifyHP(50, false);
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
@@ -8,7 +7,6 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
-using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game
 {
@@ -34,32 +32,13 @@ namespace WvsBeta.Game
     {
         private GameCharacter Char { get; }
 
-        public override short HP {
-            get => base.HP;
-            set {
-                base.HP = value;
-                Char.PartyHPUpdate();
-            }
-        }
-
-        public override byte Level
-        {
-            get => Char.Level;
-            set => Char.Level = value;
-        }
-        public override short Job
-        {
-            get => Char.Job;
-            set => Char.Job = value;
-        }
-
         public float speedMod => TotalSpeed + 100.0f;
 
         public override int EVA
         {
             get
             {
-                int eva = Luk / 2 + Dex / 4;
+                int eva = CharacterStat.Luk / 2 + CharacterStat.Dex / 4;
 
                 var buff = Char.Skills.GetSkillLevelData(4000000, out byte lvl2);
                 if (buff != null)
@@ -77,10 +56,10 @@ namespace WvsBeta.Game
             {
                 int acc = 0;
 
-                if (Job / 100 == 3 || Job / 100 == 4)
-                    acc = (int)((Luk * 0.3) + (Dex * 0.6));
+                if (CharacterStat.Job / 100 == 3 || CharacterStat.Job / 100 == 4)
+                    acc = (int)((CharacterStat.Luk * 0.3) + (CharacterStat.Dex * 0.6));
                 else
-                    acc = (int)((Luk * 0.5) + (Dex * 0.8));
+                    acc = (int)((CharacterStat.Luk * 0.5) + (CharacterStat.Dex * 0.8));
 
                 var buff = Char.Skills.GetSkillLevelData(Constants.Archer.Skills.BlessingOfAmazon, out byte lvl1);
                 if (buff != null)
@@ -108,7 +87,7 @@ namespace WvsBeta.Game
         }
         private Dictionary<byte, EquipBonus> EquipStats { get; } = new Dictionary<byte, EquipBonus>();
 
-        public CharacterPrimaryStats(GameCharacter chr)
+        public CharacterPrimaryStats(GameCharacter chr) : base(chr.CharacterStat)
         {
             Char = chr;
             BuffDragonBlood = new BuffStat_DragonBlood(BuffValueTypes.DragonBlood, Char);
@@ -218,11 +197,11 @@ namespace WvsBeta.Game
         {
             short mhp = GetMaxHP(false);
             short mmp = GetMaxMP(false);
-            if (HP > mhp)
+            if (Char.HP > mhp)
             {
                 Char.ModifyHP(mhp);
             }
-            if (MP > mmp)
+            if (CharacterStat.MP > mmp)
             {
                 Char.ModifyMP(mmp);
             }
@@ -248,33 +227,33 @@ namespace WvsBeta.Game
         {
             if (!nobonus)
             {
-                return (short)((Str + EquipBonuses.Str + BuffBonuses.Str) > short.MaxValue ? short.MaxValue : (Str + EquipBonuses.Str + BuffBonuses.Str));
+                return (short)((CharacterStat.Str + EquipBonuses.Str + BuffBonuses.Str) > short.MaxValue ? short.MaxValue : (CharacterStat.Str + EquipBonuses.Str + BuffBonuses.Str));
             }
-            return Str;
+            return CharacterStat.Str;
         }
         public override short GetDexAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
-                return (short)((Dex + EquipBonuses.Dex + BuffBonuses.Dex) > short.MaxValue ? short.MaxValue : (Dex + EquipBonuses.Dex + BuffBonuses.Dex));
+                return (short)((CharacterStat.Dex + EquipBonuses.Dex + BuffBonuses.Dex) > short.MaxValue ? short.MaxValue : (CharacterStat.Dex + EquipBonuses.Dex + BuffBonuses.Dex));
             }
-            return Dex;
+            return CharacterStat.Dex;
         }
         public override short GetIntAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
-                return (short)((Int + EquipBonuses.Int + BuffBonuses.Int) > short.MaxValue ? short.MaxValue : (Int + EquipBonuses.Int + BuffBonuses.Int));
+                return (short)((CharacterStat.Int + EquipBonuses.Int + BuffBonuses.Int) > short.MaxValue ? short.MaxValue : (CharacterStat.Int + EquipBonuses.Int + BuffBonuses.Int));
             }
-            return Int;
+            return CharacterStat.Int;
         }
         public override short GetLukAddition(bool nobonus = false)
         {
             if (!nobonus)
             {
-                return (short)((Luk + EquipBonuses.Luk + BuffBonuses.Luk) > short.MaxValue ? short.MaxValue : (Luk + EquipBonuses.Luk + BuffBonuses.Luk));
+                return (short)((CharacterStat.Luk + EquipBonuses.Luk + BuffBonuses.Luk) > short.MaxValue ? short.MaxValue : (CharacterStat.Luk + EquipBonuses.Luk + BuffBonuses.Luk));
             }
-            return Luk;
+            return CharacterStat.Luk;
         }
 
         public override void Reset(bool sendPacket)
@@ -339,9 +318,9 @@ namespace WvsBeta.Game
             BuffMaxMP.DecodeForCC(packet, flags);
             if (BuffMaxHP.IsSet())
             {
-                short hpmpBonus = (short)((double)Char.PrimaryStats.MaxHP * ((double)BuffMaxHP.N / 100.0d));
+                short hpmpBonus = (short)((double)CharacterStat.MaxHP * ((double)BuffMaxHP.N / 100.0d));
                 Char.PrimaryStats.BuffBonuses.MaxHP = hpmpBonus;
-                hpmpBonus = (short)((double)Char.PrimaryStats.MaxMP * ((double)BuffMaxMP.N / 100.0d));
+                hpmpBonus = (short)((double)CharacterStat.MaxMP * ((double)BuffMaxMP.N / 100.0d));
                 Char.PrimaryStats.BuffBonuses.MaxMP = hpmpBonus;
             }
             BuffInvincible.DecodeForCC(packet, flags);

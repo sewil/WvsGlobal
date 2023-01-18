@@ -16,7 +16,7 @@ namespace WvsBeta.Game
     {
         public static void HandleUseItemPacket(GameCharacter chr, Packet packet)
         {
-            if (chr.PrimaryStats.HP < 1)
+            if (chr.HP < 1)
             {
                 NoChange(chr);
                 return;
@@ -231,9 +231,9 @@ namespace WvsBeta.Game
                     && stats.getTotalDex() >= data.RequiredDexterity
                     && stats.getTotalInt() >= data.RequiredIntellect
                     && stats.getTotalLuk() >= data.RequiredLuck
-                    && (stats.Fame >= data.RequiredFame || data.RequiredFame == 0)
-                    && stats.Level >= data.RequiredLevel
-                    && isRequiredJob(Constants.getJobTrack(stats.Job), data.RequiredJob);
+                    && (chr.CharacterStat.Fame >= data.RequiredFame || data.RequiredFame == 0)
+                    && chr.CharacterStat.Level >= data.RequiredLevel
+                    && isRequiredJob(Constants.getJobTrack(chr.CharacterStat.Job), data.RequiredJob);
         }
 
         [Flags]

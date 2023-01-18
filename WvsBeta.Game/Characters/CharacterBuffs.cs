@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using MySql.Data.MySqlClient;
+using System.Diagnostics;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects.Stats;
@@ -98,12 +99,12 @@ namespace WvsBeta.Game
             primaryStats.BuffBonuses.MaxMP = 0;
 
 
-            if (primaryStats.HP > primaryStats.GetMaxHP(false))
+            if (Character.HP > primaryStats.GetMaxHP(false))
             {
                 Character.ModifyHP(primaryStats.GetMaxHP(false));
             }
 
-            if (primaryStats.MP > primaryStats.GetMaxMP(false))
+            if (Character.CharacterStat.MP > primaryStats.GetMaxMP(false))
             {
                 Character.ModifyMP(primaryStats.GetMaxMP(false));
             }

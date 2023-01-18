@@ -39,8 +39,26 @@ namespace WvsBeta.Game
         private DateTime LastSavepoint;
         private long LastPlayTimeSave;
 
-        public Map Field { get; set; }
-        public override int MapID => Field.ID;
+        Map _field;
+        public Map Field {
+            get { return _field; }
+            set
+            {
+                _field = value;
+                CharacterStat.MapID = _field.ID;
+            }
+        }
+
+        public short HP
+        {
+            get => CharacterStat.HP;
+            set
+            {
+                CharacterStat.HP = value;
+                PartyHPUpdate();
+            }
+        }
+
         public byte PortalCount { get; set; } = 0;
 
         public bool GMHideEnabled { get; private set; }
@@ -103,7 +121,7 @@ namespace WvsBeta.Game
 
         public GameCharacter(int CharacterID)
         {
-            ID = CharacterID;
+            CharacterStat.ID = CharacterID;
         }
 
         public bool IsAFK => (MasterThread.CurrentTime - LastMove) > 120000 &&
@@ -121,8 +139,8 @@ namespace WvsBeta.Game
 
         public PetItem GetSpawnedPet()
         {
-            if (PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(PetCashId, Common.Enums.Inventory.Pet) as PetItem;
+            if (CharacterStat.PetCashId == 0) return null;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Pet) as PetItem;
         }
 
         public void HandleDeath()
@@ -256,30 +274,30 @@ namespace WvsBeta.Game
                 var saveQuery = new StringBuilder();
 
                 saveQuery.Append("UPDATE characters SET ");
-                saveQuery.Append("skin = '" + Skin + "', ");
-                saveQuery.Append("hair = '" + Hair + "', ");
-                saveQuery.Append("gender = '" + Gender + "', ");
-                saveQuery.Append("eyes = '" + Face + "', ");
-                saveQuery.Append("map = '" + MapID + "', ");
+                saveQuery.Append("skin = '" + CharacterStat.Skin + "', ");
+                saveQuery.Append("hair = '" + CharacterStat.Hair + "', ");
+                saveQuery.Append("gender = '" + CharacterStat.Gender + "', ");
+                saveQuery.Append("eyes = '" + CharacterStat.Face + "', ");
+                saveQuery.Append("map = '" + CharacterStat.MapID + "', ");
                 saveQuery.Append("pos = '" + PortalID + "', ");
-                saveQuery.Append("level = '" + PrimaryStats.Level + "', ");
-                saveQuery.Append("job = '" + PrimaryStats.Job + "', ");
-                saveQuery.Append("chp = '" + PrimaryStats.HP + "', ");
-                saveQuery.Append("cmp = '" + PrimaryStats.MP + "', ");
-                saveQuery.Append("mhp = '" + PrimaryStats.MaxHP + "', ");
-                saveQuery.Append("mmp = '" + PrimaryStats.MaxMP + "', ");
-                saveQuery.Append("`int` = '" + PrimaryStats.Int + "', ");
-                saveQuery.Append("dex = '" + PrimaryStats.Dex + "', ");
-                saveQuery.Append("str = '" + PrimaryStats.Str + "', ");
-                saveQuery.Append("luk = '" + PrimaryStats.Luk + "', ");
-                saveQuery.Append("ap = '" + PrimaryStats.AP + "', ");
-                saveQuery.Append("sp = '" + PrimaryStats.SP + "', ");
-                saveQuery.Append("fame = '" + PrimaryStats.Fame + "', ");
-                saveQuery.Append("exp = '" + PrimaryStats.EXP + "', ");
-                saveQuery.Append($"pet_cash_id = 0x{PetCashId:X16},");
+                saveQuery.Append("level = '" + CharacterStat.Level + "', ");
+                saveQuery.Append("job = '" + CharacterStat.Job + "', ");
+                saveQuery.Append("chp = '" + CharacterStat.HP + "', ");
+                saveQuery.Append("cmp = '" + CharacterStat.MP + "', ");
+                saveQuery.Append("mhp = '" + CharacterStat.MaxHP + "', ");
+                saveQuery.Append("mmp = '" + CharacterStat.MaxMP + "', ");
+                saveQuery.Append("`int` = '" + CharacterStat.Int + "', ");
+                saveQuery.Append("dex = '" + CharacterStat.Dex + "', ");
+                saveQuery.Append("str = '" + CharacterStat.Str + "', ");
+                saveQuery.Append("luk = '" + CharacterStat.Luk + "', ");
+                saveQuery.Append("ap = '" + CharacterStat.AP + "', ");
+                saveQuery.Append("sp = '" + CharacterStat.SP + "', ");
+                saveQuery.Append("fame = '" + CharacterStat.Fame + "', ");
+                saveQuery.Append("exp = '" + CharacterStat.EXP + "', ");
+                saveQuery.Append($"pet_cash_id = 0x{CharacterStat.PetCashId:X16},");
                 // saveQuery.Append($"playtime = playtime + 0x{(MasterThread.CurrentTime - LastPlayTimeSave):X16}, ");
                 saveQuery.Append("last_savepoint = '" + LastSavepoint.ToString("yyyy-MM-dd HH:mm:ss") + "' ");
-                saveQuery.Append("WHERE ID = " + ID);
+                saveQuery.Append("WHERE ID = " + CharacterStat.ID);
 
                 comm.CommandText = saveQuery.ToString();
                 comm.ExecuteNonQuery();
@@ -289,7 +307,7 @@ namespace WvsBeta.Game
 
             Server.Instance.CharacterDatabase.RunTransaction(comm =>
             {
-                comm.CommandText = "DELETE FROM character_wishlist WHERE charid = " + ID;
+                comm.CommandText = "DELETE FROM character_wishlist WHERE charid = " + CharacterStat.ID;
                 comm.ExecuteNonQuery();
 
                 if (Wishlist.Count > 0)
@@ -297,7 +315,7 @@ namespace WvsBeta.Game
                     var wishlistQuery = new StringBuilder();
 
                     wishlistQuery.Append("INSERT INTO character_wishlist VALUES ");
-                    wishlistQuery.Append(string.Join(", ", Wishlist.Select(serial => "(" + ID + ", " + serial + ")")));
+                    wishlistQuery.Append(string.Join(", ", Wishlist.Select(serial => "(" + CharacterStat.ID + ", " + serial + ")")));
 
                     comm.CommandText = wishlistQuery.ToString();
                     comm.ExecuteNonQuery();
@@ -321,8 +339,8 @@ namespace WvsBeta.Game
 
             Field
                 .GetInParty(PartyID)
-                .Where(p => p.ID != ID)
-                .ForEach(p => p.SendPacket(PartyPacket.SendHpUpdate(PrimaryStats.HP, PrimaryStats.GetMaxHP(), ID)));
+                .Where(p => p.CharacterStat.ID != CharacterStat.ID)
+                .ForEach(p => p.SendPacket(PartyPacket.SendHpUpdate(HP, PrimaryStats.GetMaxHP(), CharacterStat.ID)));
 
         }
 
@@ -332,12 +350,12 @@ namespace WvsBeta.Game
 
             Field
                 .GetInParty(PartyID)
-                .Where(p => p.ID != ID)
+                .Where(p => p.CharacterStat.ID != CharacterStat.ID)
                 .Select(p => Tuple.Create(this, p))
                 .ForEach(pair =>
                 {
-                    pair.Item1.SendPacket(PartyPacket.SendHpUpdate(pair.Item2.PrimaryStats.HP, pair.Item2.PrimaryStats.GetMaxHP(), pair.Item2.ID));
-                    pair.Item2.SendPacket(PartyPacket.SendHpUpdate(pair.Item1.PrimaryStats.HP, pair.Item1.PrimaryStats.GetMaxHP(), pair.Item1.ID));
+                    pair.Item1.SendPacket(PartyPacket.SendHpUpdate(pair.Item2.HP, pair.Item2.PrimaryStats.GetMaxHP(), pair.Item2.CharacterStat.ID));
+                    pair.Item2.SendPacket(PartyPacket.SendHpUpdate(pair.Item1.HP, pair.Item1.PrimaryStats.GetMaxHP(), pair.Item1.CharacterStat.ID));
                 });
         }
 
@@ -353,17 +371,17 @@ namespace WvsBeta.Game
         public LoadFailReasons Load(string IP)
         {
 
-            var imitateId = RedisBackend.Instance.GetImitateID(ID);
+            var imitateId = RedisBackend.Instance.GetImitateID(CharacterStat.ID);
             var imitating = imitateId.HasValue;
-            var originalId = ID;
+            var originalId = CharacterStat.ID;
             if (imitating)
             {
-                ID = imitateId.Value;
-                _characterLog.Debug($"Loading character {ID} from IP {IP}... (IMITATION from ID {originalId})");
+                CharacterStat.ID = imitateId.Value;
+                _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}... (IMITATION from ID {originalId})");
             }
             else
             {
-                _characterLog.Debug($"Loading character {ID} from IP {IP}...");
+                _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
             }
 
             // Initial load
@@ -385,7 +403,7 @@ namespace WvsBeta.Game
                 if (data.GetString("last_ip") != IP && !imitating)
                 {
 #if DEBUG
-                    Program.MainForm.LogAppend("Allowed player " + this.ID +
+                    Program.MainForm.LogAppend("Allowed player " + this.CharacterStat.ID +
                                                " to log in from different IP because source is running in debug mode!");
 #else
                     _characterLog.Debug("Loading failed: not from previous IP.");
@@ -393,13 +411,13 @@ namespace WvsBeta.Game
 #endif
                 }
                 UserID = data.GetInt32("userid");
-                Name = data.GetString("name");
+                CharacterStat.Name = data.GetString("name");
                 GMLevel = data.GetByte("admin");
                 Donator = data.GetBoolean("donator");
                 BetaPlayer = data.GetBoolean("beta");
 
 
-                if (imitating) ImitatorName = Name;
+                if (imitating) ImitatorName = CharacterStat.Name;
                 else ImitatorName = null;
             }
 
@@ -411,7 +429,7 @@ namespace WvsBeta.Game
                 "FROM characters " +
                 "LEFT JOIN users ON users.id = characters.userid " +
                 "WHERE characters.id = @id",
-                "@id", ID))
+                "@id", CharacterStat.ID))
             {
                 if (!data.Read())
                 {
@@ -426,13 +444,6 @@ namespace WvsBeta.Game
                 }
 
                 UserID = data.GetInt32("userid"); // For cashitem loading
-                Name = data.GetString("name");
-
-                Gender = data.GetByte("gender");
-                Skin = data.GetByte("skin");
-                Hair = data.GetInt32("hair");
-                Face = data.GetInt32("eyes");
-                PetCashId = data.GetInt64("pet_cash_id");
                 MutedUntil = data.GetDateTime("quiet_ban_expire");
                 MuteReason = data.GetByte("quiet_ban_reason");
                 LastSavepoint = data.GetDateTime("last_savepoint");
@@ -444,7 +455,7 @@ namespace WvsBeta.Game
                 if (!DataProvider.Maps.TryGetValue(_mapId, out field))
                 {
                     Program.MainForm.LogAppend(
-                        "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", ID, _mapId);
+                        "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", CharacterStat.ID, _mapId);
                     field = DataProvider.Maps[0];
                     PortalID = 0;
                 }
@@ -457,7 +468,7 @@ namespace WvsBeta.Game
                     if (!DataProvider.Maps.TryGetValue(_mapId, out field))
                     {
                         Program.MainForm.LogAppend(
-                            "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", ID, _mapId);
+                            "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", CharacterStat.ID, _mapId);
                         // Note: using Field here
                         Field = DataProvider.Maps[0];
                     }
@@ -485,24 +496,10 @@ namespace WvsBeta.Game
                 RndActionRandomizer = new Rand32();
 
 
-                PrimaryStats = new CharacterPrimaryStats(this)
-                {
-                    Level = data.GetByte("level"),
-                    Job = data.GetInt16("job"),
-                    Str = data.GetInt16("str"),
-                    Dex = data.GetInt16("dex"),
-                    Int = data.GetInt16("int"),
-                    Luk = data.GetInt16("luk"),
-                    HP = data.GetInt16("chp"),
-                    MaxHP = data.GetInt16("mhp"),
-                    MP = data.GetInt16("cmp"),
-                    MaxMP = data.GetInt16("mmp"),
-                    AP = data.GetInt16("ap"),
-                    SP = data.GetInt16("sp"),
-                    EXP = data.GetInt32("exp"),
-                    Fame = data.GetInt16("fame"),
-                    BuddyListCapacity = data.GetInt32("buddylist_size")
-                };
+                PrimaryStats = new CharacterPrimaryStats(this);
+
+                CharacterStat.LoadFromReader(data);
+                BuddyListCapacity = (byte)data.GetInt32("buddylist_size");
 
                 // Make sure we don't update too many times
                 lastSaveStep = CalculateSaveStep();
@@ -535,7 +532,7 @@ namespace WvsBeta.Game
             GameStats.Load();
 
             Wishlist = new List<int>();
-            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT serial FROM character_wishlist WHERE charid = " + ID))
+            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT serial FROM character_wishlist WHERE charid = " + CharacterStat.ID))
             {
                 while (data.Read())
                 {
@@ -544,19 +541,19 @@ namespace WvsBeta.Game
             }
 
             // Loading done, switch back ID
-            ID = originalId;
+            CharacterStat.ID = originalId;
 
             InitDamageLog();
 
             SetIncExpRate();
 
-            var muteTimeSpan = RedisBackend.Instance.GetCharacterMuteTime(ID);
+            var muteTimeSpan = RedisBackend.Instance.GetCharacterMuteTime(CharacterStat.ID);
             if (muteTimeSpan.HasValue)
                 HacklogMuted = MasterThread.CurrentDate.Add(muteTimeSpan.Value);
             else
                 HacklogMuted = DateTime.MinValue;
 
-            Undercover = RedisBackend.Instance.IsUndercover(ID);
+            Undercover = RedisBackend.Instance.IsUndercover(CharacterStat.ID);
 
             RedisBackend.Instance.SetPlayerOnline(
                 UserID,
@@ -571,9 +568,9 @@ namespace WvsBeta.Game
         public void SetupLogging()
         {
             ThreadContext.Properties["UserID"] = UserID;
-            ThreadContext.Properties["CharacterID"] = ID;
-            ThreadContext.Properties["CharacterName"] = Name;
-            ThreadContext.Properties["MapID"] = MapID;
+            ThreadContext.Properties["CharacterID"] = CharacterStat.ID;
+            ThreadContext.Properties["CharacterName"] = CharacterStat.Name;
+            ThreadContext.Properties["MapID"] = CharacterStat.MapID;
         }
 
         public static void RemoveLogging()

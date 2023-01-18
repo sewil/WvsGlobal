@@ -22,11 +22,10 @@ namespace WvsBeta.Shop
                 CharacterDataFlag.Consume |
                 CharacterDataFlag.Install |
                 CharacterDataFlag.Etc |
-                CharacterDataFlag.Pet |
-                CharacterDataFlag.Skills);
+                CharacterDataFlag.Pet);
             pack.WriteShort((short)flags);
 
-            new CharacterData(chr).Encode(pack);
+            new CharacterData(chr).Encode(pack, flags);
 
             // No quests, etc
 

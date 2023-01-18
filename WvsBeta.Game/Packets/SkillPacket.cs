@@ -13,7 +13,7 @@ namespace WvsBeta.Game
     {
         public static void HandleUseSkill(GameCharacter chr, Packet packet)
         {
-            if (chr.PrimaryStats.HP == 0)
+            if (chr.HP == 0)
             {
                 // We don't like zombies
                 InventoryPacket.NoChange(chr);
@@ -67,9 +67,9 @@ namespace WvsBeta.Game
 
             if (SkillID == (int)Constants.Spearman.Skills.HyperBody && !chr.PrimaryStats.HasBuff((int)Constants.Spearman.Skills.HyperBody)) // Buff already exists, do not execute bonus again. Allow multiple casts for duration refresh
             {
-                var hpmpBonus = (short)((double)chr.PrimaryStats.MaxHP * ((double)sld.XValue / 100.0d));
+                var hpmpBonus = (short)((double)chr.CharacterStat.MaxHP * ((double)sld.XValue / 100.0d));
                 chr.PrimaryStats.BuffBonuses.MaxHP = hpmpBonus;
-                hpmpBonus = (short)((double)chr.PrimaryStats.MaxMP * ((double)sld.YValue / 100.0d));
+                hpmpBonus = (short)((double)chr.CharacterStat.MaxMP * ((double)sld.YValue / 100.0d));
                 chr.PrimaryStats.BuffBonuses.MaxMP = hpmpBonus;
             }
 
@@ -91,7 +91,7 @@ namespace WvsBeta.Game
                         var affected = Server.Instance.GetCharacter(charid);
 
                         if (affected != null && chr.MapID == affected.MapID &&
-                            (deadPlayersToo || affected.PrimaryStats.HP > 0))
+                            (deadPlayersToo || affected.HP > 0))
                         {
                             yield return affected;
                         }
@@ -199,9 +199,9 @@ namespace WvsBeta.Game
                         {
                             if (!victim.PrimaryStats.HasBuff((int)Constants.Spearman.Skills.HyperBody)) // Buff already exists, do not execute bonus again. Allow multiple casts for duration refresh
                             {
-                                var hpmpBonus = (short)((double)victim.PrimaryStats.MaxHP * ((double)sld.XValue / 100.0d));
+                                var hpmpBonus = (short)((double)victim.CharacterStat.MaxHP * ((double)sld.XValue / 100.0d));
                                 victim.PrimaryStats.BuffBonuses.MaxHP = hpmpBonus;
-                                hpmpBonus = (short)((double)victim.PrimaryStats.MaxMP * ((double)sld.YValue / 100.0d));
+                                hpmpBonus = (short)((double)victim.CharacterStat.MaxMP * ((double)sld.YValue / 100.0d));
                                 victim.PrimaryStats.BuffBonuses.MaxMP = hpmpBonus;
                             }
                             victim.Buffs.AddBuff(SkillID, SkillLevel);
@@ -228,13 +228,13 @@ namespace WvsBeta.Game
 
                         var bigHeal = Math.Min(((long)healRate / (count == 0 ? 1 : count)), short.MaxValue); //prevent integer overflow caused by high stats. Set count to 1 when not in party
                         var heal = (short)bigHeal;
-                        chr.ModifyHP((short)Math.Min(heal, (chr.PrimaryStats.GetMaxHP() - chr.PrimaryStats.HP)));
+                        chr.ModifyHP((short)Math.Min(heal, (chr.PrimaryStats.GetMaxHP() - chr.HP)));
 
                         handlePartyEffectsWithPlayers(members, Delay, victim =>
                         {
-                            int oldHP = victim.PrimaryStats.HP;
-                            victim.ModifyHP((short)Math.Min(heal, (victim.PrimaryStats.GetMaxHP() - victim.PrimaryStats.HP)));
-                            chr.AddEXP(20 * ((victim.PrimaryStats.HP - oldHP) / (8 * victim.Level + 190)), true);
+                            int oldHP = victim.HP;
+                            victim.ModifyHP((short)Math.Min(heal, (victim.PrimaryStats.GetMaxHP() - victim.HP)));
+                            chr.AddEXP(20 * ((victim.HP - oldHP) / (8 * victim.Level + 190)), true);
                         });
 
                         break;
@@ -328,7 +328,7 @@ namespace WvsBeta.Game
                     {
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
-                            if (victim.PrimaryStats.HP <= 0)
+                            if (victim.HP <= 0)
                             {
                                 MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, true);
                                 MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, false);
@@ -514,7 +514,7 @@ namespace WvsBeta.Game
         {
             var SkillID = packet.ReadInt(); // Todo, add check.
 
-            if (chr.PrimaryStats.SP <= 0)
+            if (chr.CharacterStat.SP <= 0)
             {
                 // No SP left...
                 InventoryPacket.NoChange(chr);
@@ -555,8 +555,8 @@ namespace WvsBeta.Game
 
             // Check if the user tried to get a skill from a different job
             if (
-                Constants.getJobTrack(chr.PrimaryStats.Job) != jobTrackOfSkill ||
-                jobOfSkill > chr.PrimaryStats.Job
+                Constants.getJobTrack(chr.CharacterStat.Job) != jobTrackOfSkill ||
+                jobOfSkill > chr.CharacterStat.Job
             )
             {
                 Program.MainForm.LogAppend("Character {0} tried to put points in a skill ({1}) for the wrong job.", chr.ID, SkillID);

@@ -600,9 +600,9 @@ namespace WvsBeta.Game
 
             ChatPacket.SendText(ChatPacket.MessageTypes.Header, Server.Instance.ScrollingHeader, character, ChatPacket.MessageMode.ToPlayer);
 
-            Server.Instance.CenterConnection.RegisterCharacter(character.ID, character.Name, character.PrimaryStats.Job, character.PrimaryStats.Level, character.GMLevel);
+            Server.Instance.CenterConnection.RegisterCharacter(character.ID, character.Name, character.CharacterStat.Job, character.CharacterStat.Level, character.GMLevel);
 
-            Server.Instance.CenterConnection.RequestBuddyListLoad(character.Name, false, character.PrimaryStats.BuddyListCapacity); //Sends a packet that request the buddylistload from the centerserver 
+            Server.Instance.CenterConnection.RequestBuddyListLoad(character.Name, false, character.BuddyListCapacity); //Sends a packet that request the buddylistload from the centerserver 
             character.IsOnline = true;
             Server.Instance.CenterConnection.PlayerUpdateMap(character);
 

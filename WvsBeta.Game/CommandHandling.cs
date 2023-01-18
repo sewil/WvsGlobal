@@ -1436,7 +1436,7 @@ namespace WvsBeta.Game
 
                         case "heal":
                             {
-                                int hpHealed = character.PrimaryStats.GetMaxHP(false) - character.PrimaryStats.HP;
+                                int hpHealed = character.PrimaryStats.GetMaxHP(false) - character.HP;
                                 character.ModifyHP(character.PrimaryStats.GetMaxHP(false));
                                 character.ModifyMP(character.PrimaryStats.GetMaxMP(false));
                                 // CharacterStatsPacket.SendCharacterDamage(character, 0, -hpHealed, 0, 0, 0, 0, null);

@@ -17,21 +17,21 @@ namespace WvsBeta.Game
             }
             
 
-            if (chr.PetCashId != 0)
+            if (chr.CharacterStat.PetCashId != 0)
             {
                 // Already spawned a pet
                 SendRemovePet(chr);
 
-                if (chr.PetCashId == petItem.CashId)
+                if (chr.CharacterStat.PetCashId == petItem.CashId)
                 {
                     // Spawned the same mob
-                    chr.PetCashId = 0;
+                    chr.CharacterStat.PetCashId = 0;
                     InventoryPacket.NoChange(chr);
                     return;
                 }
             }
             
-            chr.PetCashId = petItem.CashId;
+            chr.CharacterStat.PetCashId = petItem.CashId;
             DoPetSpawn(chr);
             InventoryPacket.NoChange(chr);
         }

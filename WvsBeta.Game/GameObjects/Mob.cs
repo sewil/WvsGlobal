@@ -774,7 +774,7 @@ namespace WvsBeta.Game
                         var Party = Field.GetInParty(damage.PartyID)
                             .Where(User =>
                                 User != null &&
-                                User.PrimaryStats.HP > 0 &&
+                                User.HP > 0 &&
                                 User.Field.ID == Field.ID
                             );
 
@@ -1212,7 +1212,7 @@ namespace WvsBeta.Game
 
         public void SetMobCountQuestInfo(GameCharacter User)
         {
-            if (User != null && User.PrimaryStats.HP > 0 && User.Field.ID == Field.ID)
+            if (User != null && User.HP > 0 && User.Field.ID == Field.ID)
             {
                 //TODO
             }

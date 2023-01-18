@@ -55,7 +55,7 @@ namespace WvsBeta.Game
                 if (chr.OutOfMBRCount++ > 5)
                 {
                     // Okay, reset.
-                    chr.ChangeMap(chr.MapID, chr.Field.GetClosestStartPoint(chr.Position));
+                    chr.ChangeMap(chr.CharacterStat.MapID, chr.Field.GetClosestStartPoint(chr.Position));
                     chr.OutOfMBRCount = 0;
                 }
             }
@@ -141,7 +141,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                Program.MainForm.LogDebug(chr.Name + " tried to arrive at unknown portal " + toPortalName + ", " + toMapID);
+                Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to arrive at unknown portal " + toPortalName + ", " + toMapID);
                 BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
             }
         }
@@ -157,13 +157,13 @@ namespace WvsBeta.Game
                 }
                 else if (!portal.Enabled)
                 {
-                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter a disabled portal.");
                     BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
                     InventoryPacket.NoChange(chr);
                 }
                 else if (!chr.Field.PortalsOpen)
                 {
-                    Program.MainForm.LogDebug(chr.Name + " tried to enter a disabled portal.");
+                    Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter a disabled portal.");
                     BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
                     InventoryPacket.NoChange(chr);
                 }
@@ -174,7 +174,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal??? " + portalName + ", " + chr.Field.ID);
+                Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter unknown portal??? " + portalName + ", " + chr.Field.ID);
                 BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
             }
         }
@@ -200,13 +200,13 @@ namespace WvsBeta.Game
             {
                 case 0:
                 {
-                    if (chr.PrimaryStats.HP == 0)
+                    if (chr.HP == 0)
                     {
                         chr.HandleDeath();
                     }
                     else if (!chr.IsGM)
                     {
-                        Program.MainForm.LogAppend($"Not handling death of {chr.ID}, because user is not dead. Killing him again. HP: " + chr.PrimaryStats.HP);
+                        Program.MainForm.LogAppend($"Not handling death of {chr.CharacterStat.ID}, because user is not dead. Killing him again. HP: " + chr.HP);
                         // Kill him anyway
                         chr.DamageHP(30000);
                     }
@@ -242,7 +242,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                Program.MainForm.LogDebug(chr.Name + " tried to enter unknown portal " + portalName + ", " + chr.Field.ID);
+                Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter unknown portal " + portalName + ", " + chr.Field.ID);
                 BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
             }
         }
@@ -334,7 +334,7 @@ namespace WvsBeta.Game
         public static void SendPlayerMove(GameCharacter chr, MovePath movePath)
         {
             Packet pw = new Packet(ServerMessages.MOVE_PLAYER);
-            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.CharacterStat.ID);
             movePath.EncodeToPacket(pw);
 
             chr.Field.SendPacket(chr, pw, chr);
@@ -617,9 +617,9 @@ namespace WvsBeta.Game
 
             Packet pw = new Packet(ServerMessages.CHARACTER_INFO); // Idk why this is in mappacket, it's part of CWvsContext
             pw.WriteInt(victim.ID);
-            pw.WriteByte(victim.PrimaryStats.Level);
-            pw.WriteShort(victim.PrimaryStats.Job);
-            pw.WriteShort(victim.PrimaryStats.Fame);
+            pw.WriteByte(victim.CharacterStat.Level);
+            pw.WriteShort(victim.CharacterStat.Job);
+            pw.WriteShort(victim.CharacterStat.Fame);
 
             if (chr.IsGM && !victim.IsGM)
                 pw.WriteString("" + id + ":" + victim.UserID);
@@ -652,19 +652,19 @@ namespace WvsBeta.Game
         public static void SendAvatarModified(GameCharacter chr, AvatarModFlag AvatarModFlag = 0)
         {
             Packet pw = new Packet(ServerMessages.AVATAR_MODIFIED);
-            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.CharacterStat.ID);
             pw.WriteInt((int)AvatarModFlag);
 
             if ((AvatarModFlag & AvatarModFlag.Skin) == AvatarModFlag.Skin)
-                pw.WriteByte(chr.Skin);
+                pw.WriteByte(chr.CharacterStat.Skin);
             if ((AvatarModFlag & AvatarModFlag.Face) == AvatarModFlag.Face)
-                pw.WriteInt(chr.Face);
+                pw.WriteInt(chr.CharacterStat.Face);
 
             pw.WriteBool((AvatarModFlag & AvatarModFlag.Equips) == AvatarModFlag.Equips);
             if ((AvatarModFlag & AvatarModFlag.Equips) == AvatarModFlag.Equips)
             {
                 pw.WriteByte(0); //My Hair is a Bird, Your Argument is Invalid
-                pw.WriteInt(chr.Hair);
+                pw.WriteInt(chr.CharacterStat.Hair);
                 chr.Inventory.GeneratePlayerPacket(pw);
                 pw.WriteByte(0xFF); // Equips shown end
                 pw.WriteInt(chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, true));
@@ -696,7 +696,7 @@ namespace WvsBeta.Game
         public static void SendPlayerLevelupAnim(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.CharacterStat.ID);
             pw.WriteByte(0x00);
 
             chr.Field.SendPacket(chr, pw, chr);
@@ -706,7 +706,7 @@ namespace WvsBeta.Game
         public static void SendPlayerSkillAnim(GameCharacter chr, int skillid, byte level)
         {
             Packet pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.CharacterStat.ID);
             pw.WriteByte(0x01);
             pw.WriteInt(skillid);
             pw.WriteByte(level);
@@ -734,7 +734,7 @@ namespace WvsBeta.Game
             else
             {
                 pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-                pw.WriteInt(chr.ID);
+                pw.WriteInt(chr.CharacterStat.ID);
             }
             pw.WriteByte((byte)(party ? 0x02 : 0x01));
             pw.WriteInt(skillid);
@@ -752,7 +752,7 @@ namespace WvsBeta.Game
         public static void SendPlayerBuffed(GameCharacter chr, BuffValueTypes pBuffs, short delay = 0)
         {
             Packet pw = new Packet(ServerMessages.GIVE_FOREIGN_BUFF);
-            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.CharacterStat.ID);
             BuffPacket.AddMapBuffValues(chr, pw, pBuffs);
             pw.WriteShort(delay); // the delay. usually 0, but is carried on through OnStatChangeByMobSkill / DoActiveSkill_(Admin/Party/Self)StatChange
 
@@ -786,8 +786,8 @@ namespace WvsBeta.Game
             pw.WriteShort(chr.Position.X);
             pw.WriteShort(chr.Position.Y);
             pw.WriteInt(1); //??
-            pw.WriteShort(chr.PrimaryStats.HP);
-            pw.WriteShort(chr.PrimaryStats.MP);
+            pw.WriteShort(chr.HP);
+            pw.WriteShort(chr.CharacterStat.MP);
             pw.WriteShort(1); //??
             pw.WriteLong(0);
             pw.WriteLong(0);
@@ -825,7 +825,7 @@ namespace WvsBeta.Game
                 {
                     WriteInt(chr.MapID);
                     WriteByte(chr.PortalID);
-                    WriteShort(chr.PrimaryStats.HP);
+                    WriteShort(chr.HP);
                     WriteBool(false);
                     if (true)
                     {

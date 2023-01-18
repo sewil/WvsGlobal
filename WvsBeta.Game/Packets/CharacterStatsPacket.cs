@@ -45,19 +45,19 @@ namespace WvsBeta.Game
         public static void HandleStats(GameCharacter chr, Packet packet)
         {
             uint flag = packet.ReadUInt();
-            if (chr.AssertForHack(chr.PrimaryStats.AP <= 0, "Trying to use AP, but nothing left."))
+            if (chr.AssertForHack(chr.CharacterStat.AP <= 0, "Trying to use AP, but nothing left."))
             {
                 InventoryPacket.NoChange(chr);
                 return;
             }
 
-            short jobTrack = Constants.getJobTrack(chr.PrimaryStats.Job);
+            short jobTrack = Constants.getJobTrack(chr.CharacterStat.Job);
 
             switch ((StatFlags)flag)
             {
                 case StatFlags.Str:
                     {
-                        if (chr.PrimaryStats.Str >= Constants.MaxStat)
+                        if (chr.CharacterStat.Str >= Constants.MaxStat)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -67,7 +67,7 @@ namespace WvsBeta.Game
                     }
                 case StatFlags.Dex:
                     {
-                        if (chr.PrimaryStats.Dex >= Constants.MaxStat)
+                        if (chr.CharacterStat.Dex >= Constants.MaxStat)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -77,7 +77,7 @@ namespace WvsBeta.Game
                     }
                 case StatFlags.Int:
                     {
-                        if (chr.PrimaryStats.Int >= Constants.MaxStat)
+                        if (chr.CharacterStat.Int >= Constants.MaxStat)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -87,7 +87,7 @@ namespace WvsBeta.Game
                     }
                 case StatFlags.Luk:
                     {
-                        if (chr.PrimaryStats.Luk >= Constants.MaxStat)
+                        if (chr.CharacterStat.Luk >= Constants.MaxStat)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -97,7 +97,7 @@ namespace WvsBeta.Game
                     }
                 case StatFlags.MaxHp:
                     {
-                        if (chr.PrimaryStats.MaxHP >= Constants.MaxMaxHp)
+                        if (chr.CharacterStat.MaxHP >= Constants.MaxMaxHp)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -121,7 +121,7 @@ namespace WvsBeta.Game
                     }
                 case StatFlags.MaxMp:
                     {
-                        if (chr.PrimaryStats.MaxMP >= Constants.MaxMaxMp)
+                        if (chr.CharacterStat.MaxMP >= Constants.MaxMaxMp)
                         {
                             InventoryPacket.NoChange(chr);
                             return;
@@ -173,7 +173,7 @@ namespace WvsBeta.Game
 
             byte extraHealEffect = packet.ReadByte();
 
-            if (chr.PrimaryStats.HP == 0) return;
+            if (chr.HP == 0) return;
 
 
             if (hp > 400 ||
@@ -254,40 +254,40 @@ namespace WvsBeta.Game
                     pw.WriteInt(chr.Hair);
 
                 if ((StatFlag & StatFlags.Pet) == StatFlags.Pet)
-                    pw.WriteLong(chr.PetCashId);
+                    pw.WriteLong(chr.CharacterStat.PetCashId);
 
                 if ((StatFlag & StatFlags.Level) == StatFlags.Level)
                     pw.WriteByte(chr.Level);
                 if ((StatFlag & StatFlags.Job) == StatFlags.Job)
-                    pw.WriteShort(chr.PrimaryStats.Job);
+                    pw.WriteShort(chr.CharacterStat.Job);
                 if ((StatFlag & StatFlags.Str) == StatFlags.Str)
-                    pw.WriteShort(chr.PrimaryStats.Str);
+                    pw.WriteShort(chr.CharacterStat.Str);
                 if ((StatFlag & StatFlags.Dex) == StatFlags.Dex)
-                    pw.WriteShort(chr.PrimaryStats.Dex);
+                    pw.WriteShort(chr.CharacterStat.Dex);
                 if ((StatFlag & StatFlags.Int) == StatFlags.Int)
-                    pw.WriteShort(chr.PrimaryStats.Int);
+                    pw.WriteShort(chr.CharacterStat.Int);
                 if ((StatFlag & StatFlags.Luk) == StatFlags.Luk)
-                    pw.WriteShort(chr.PrimaryStats.Luk);
+                    pw.WriteShort(chr.CharacterStat.Luk);
 
                 if ((StatFlag & StatFlags.Hp) == StatFlags.Hp)
-                    pw.WriteShort(chr.PrimaryStats.HP);
+                    pw.WriteShort(chr.HP);
                 if ((StatFlag & StatFlags.MaxHp) == StatFlags.MaxHp)
-                    pw.WriteShort(chr.PrimaryStats.MaxHP);
+                    pw.WriteShort(chr.CharacterStat.MaxHP);
                 if ((StatFlag & StatFlags.Mp) == StatFlags.Mp)
-                    pw.WriteShort(chr.PrimaryStats.MP);
+                    pw.WriteShort(chr.CharacterStat.MP);
                 if ((StatFlag & StatFlags.MaxMp) == StatFlags.MaxMp)
-                    pw.WriteShort(chr.PrimaryStats.MaxMP);
+                    pw.WriteShort(chr.CharacterStat.MaxMP);
 
                 if ((StatFlag & StatFlags.Ap) == StatFlags.Ap)
-                    pw.WriteShort(chr.PrimaryStats.AP);
+                    pw.WriteShort(chr.CharacterStat.AP);
                 if ((StatFlag & StatFlags.Sp) == StatFlags.Sp)
-                    pw.WriteShort(chr.PrimaryStats.SP);
+                    pw.WriteShort(chr.CharacterStat.SP);
 
                 if ((StatFlag & StatFlags.Exp) == StatFlags.Exp)
-                    pw.WriteInt(chr.PrimaryStats.EXP);
+                    pw.WriteInt(chr.CharacterStat.EXP);
 
                 if ((StatFlag & StatFlags.Fame) == StatFlags.Fame)
-                    pw.WriteShort(chr.PrimaryStats.Fame);
+                    pw.WriteShort(chr.CharacterStat.Fame);
 
                 if ((StatFlag & StatFlags.Mesos) == StatFlags.Mesos)
                     pw.WriteInt(chr.Inventory.Mesos);
@@ -315,7 +315,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            if (chr.PrimaryStats.HP == 0) return;
+            if (chr.HP == 0) return;
 
             byte mobSkillId = 0, mobSkillLevel = 0;
 
@@ -363,7 +363,7 @@ namespace WvsBeta.Game
                 }
 
                 if (chr.PrimaryStats.BuffMagicGuard.HasReferenceId(Constants.Magician.Skills.MagicGuard) &&
-                    chr.PrimaryStats.MP > 0)
+                    chr.CharacterStat.MP > 0)
                 {
                     // Absorbs X amount of damage. :)
                     var skillId = chr.PrimaryStats.BuffMagicGuard.R;

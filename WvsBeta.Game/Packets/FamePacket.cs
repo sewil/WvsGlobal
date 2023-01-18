@@ -105,7 +105,7 @@ HAVING COUNT(*) > 5
             pw.WriteByte(0);
             pw.WriteString(victim.Name);
             pw.WriteBool(up);
-            pw.WriteInt(victim.PrimaryStats.Fame);
+            pw.WriteInt(victim.CharacterStat.Fame);
             chr.SendPacket(pw);
         }
     }

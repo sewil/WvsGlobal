@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common;
+﻿using System.Runtime.InteropServices;
+using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
@@ -11,15 +12,14 @@ namespace WvsBeta.Game.Packets
         {
             this.chr = chr;
         }
-        public void Encode(Packet packet)
+        public void Encode(Packet packet, CharacterDataFlag flags = CharacterDataFlag.All)
         {
-            var flags = CharacterDataFlag.All;
             packet.WriteShort((short)flags);
 
             if (flags.HasFlag(CharacterDataFlag.Stats))
             {
-                chr.ToGWStat().Encode(packet);
-                packet.WriteByte((byte)chr.PrimaryStats.BuddyListCapacity);
+                chr.CharacterStat.Encode(packet);
+                packet.WriteByte(chr.BuddyListCapacity);
             }
 
             chr.Inventory.GenerateInventoryPacket(packet, flags);

@@ -66,7 +66,7 @@ namespace WvsBeta.Game
             foreach (var character in field.Characters.ToArray())
             {
                 // Little hack
-                if (character.PrimaryStats.HP == 0)
+                if (character.HP == 0)
                 {
                     // Dead
                     character.ChangeMap(field.ReturnMap);
