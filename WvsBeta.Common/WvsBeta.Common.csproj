@@ -189,6 +189,7 @@
     <Compile Include="Objects\BuffStats\BuffStat.cs" />
     <Compile Include="Objects\WorldRanking.cs" />
     <Compile Include="Objects\WZQuestData.cs" />
+    <Compile Include="Objects\CharacterData.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />

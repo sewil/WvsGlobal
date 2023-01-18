@@ -819,7 +819,7 @@ namespace WvsBeta.Game
                     WriteUInt(seed3);
                     WriteUInt(seed4);
 
-                    new CharacterDataPacket(chr).Encode(this);
+                    new CharacterData(chr).Encode(this);
                 }
                 else
                 {

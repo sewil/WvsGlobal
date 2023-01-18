@@ -26,7 +26,7 @@ namespace WvsBeta.Shop
                 CharacterDataFlag.Skills);
             pack.WriteShort((short)flags);
 
-            new CharacterDataPacket(chr).Encode(pack);
+            new CharacterData(chr).Encode(pack);
 
             // No quests, etc
 

@@ -4,10 +4,10 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.Packets
 {
-    public class CharacterDataPacket
+    public struct CharacterData
     {
         private readonly CharacterBase chr;
-        public CharacterDataPacket(CharacterBase chr)
+        public CharacterData(CharacterBase chr)
         {
             this.chr = chr;
         }

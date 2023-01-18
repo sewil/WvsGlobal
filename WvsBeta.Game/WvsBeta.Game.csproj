@@ -199,7 +199,6 @@
     <Compile Include="Packets\AttackPacket.cs" />
     <Compile Include="Packets\BuffPacket.cs" />
     <Compile Include="Packets\CashPacket.cs" />
-    <Compile Include="Packets\CharacterDataPacket.cs" />
     <Compile Include="Packets\CharacterStatsPacket.cs" />
     <Compile Include="Events\EventPackets\CoconutPackets.cs" />
     <Compile Include="Packets\DropPacket.cs" />
