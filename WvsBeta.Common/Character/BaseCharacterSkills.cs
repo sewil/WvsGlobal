@@ -1,8 +1,11 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using StackExchange.Redis;
+using System;
 using System.Collections.Generic;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Database;
 
 namespace WvsBeta.Common.Character
 {
@@ -26,6 +29,18 @@ namespace WvsBeta.Common.Character
             throw new NotImplementedException();
         }
 
+        public void LoadSkills(int characterID, MySQL_Connection db)
+        {
+            using (var reader = db.RunQuery(
+                    "SELECT skillid, points FROM skills WHERE charid = @charid",
+                    "@charid", characterID) as MySqlDataReader)
+            {
+                while (reader.Read())
+                {
+                    Skills.Add(reader.GetInt32("skillid"), (byte)reader.GetInt16("points"));
+                }
+            }
+        }
         public virtual void LoadSkills()
         {
             throw new NotImplementedException();

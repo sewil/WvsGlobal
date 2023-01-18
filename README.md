@@ -12,16 +12,13 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Translate/convert remaining scripts
 - [ ] Update drop data
 - [ ] Scrolling
+- [ ] Cash Shop
 
 ### Portals
 - [ ] Fix broken portals
 
 ### Quests
 - [ ] Quest completion handler
-
-### Cash Shop
-- [x] Fix data parse crash
-- [ ] Entering cash shop not working
 
 ## Notes
 - AES no worky, use maplecrypt (shanda).
@@ -31,7 +28,7 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - Scrolling not working.
 - Some portals broken such as Henesys Market and Deep Ant Tunnel II (checked data and st00 is in the incorrect position for some reason), majority of portals fixed though, FM portals work.
 - Running Tespia or any other world other than Scania disables char creation for some reason. Tespia is assumed to have ID 20 (wz edited).
-- CS/Shops/player interactions not tested.
+- Shops/player interactions not tested.
 - Config options for Redis, ElasticSearch/logging and some others are missing
 - ReNX has been modified to support merging of NX files
 - log4net.ElasticSearch was made a bit better in terms of memory usage and logging

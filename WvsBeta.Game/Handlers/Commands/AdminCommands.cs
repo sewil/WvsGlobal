@@ -124,5 +124,26 @@ namespace WvsBeta.Game.Handlers.Commands
             }
             return true;
         }
+
+        [CommandHandler(
+            CommandName = "packet",
+            Aliases = new[] { "pack", "p" },
+            UserRanks = UserAdminLevels.Admin
+        )]
+        public static bool HandleCommandPacket(GameCharacter character, string initialCommand, CommandHandling.CommandArgs Args)
+        {
+            try
+            {
+                if (Args.Count == 0) throw new Exception("Usage: /packet 01 FD 4D 23");
+                byte[] bytes = Args.Args.Select(a => Convert.ToByte(a, 16)).ToArray();
+                character.SendPacket(bytes);
+                return true;
+            }
+            catch (Exception e)
+            {
+                ChatPacket.SendText(ChatPacket.MessageTypes.RedText, e.Message, character, ChatPacket.MessageMode.ToPlayer);
+                return false;
+            }
+        }
     }
 }

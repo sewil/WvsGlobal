@@ -12,7 +12,7 @@ using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
-namespace WvsBeta.Game
+namespace WvsBeta.Game.Handlers.Commands
 {
     public class CommandHandling
     {
@@ -96,29 +96,6 @@ namespace WvsBeta.Game
             { "ox", 109020001 },
             { "quiz", 109020001 },
             { "oxquiz", 109020001 }
-        };
-
-        private readonly string[] AdminCommands = new string[]
-        {
-            "map <mapid/mapname>: Go to a map (alias: goto)",
-            "killmobs: Kill all mobs in map (alias: killall)",
-            "killmobsdmg [amount of damage]: Kill all mobs. When [amount of damage] is set, show that amount of damage. (alias: killalldmg)",
-            "chase <name>: Warp to 'name' (alias: warp)",
-            "chasehere <name>: Warp 'name' to yourself (alias: warphere)",
-            "online: Show all online players",
-            "dc <name>: Disconnect player from server (alias: kick)",
-            "permaban <userid/charname/charid> <value>: Permaban + kick user. For example, !permaban charname hacker",
-            "unban <userid>: Unban a user.",
-            "maxskills: Max all skills",
-            "job <jobid>: Make yourself a specific job.",
-            "mp/hp/str/dex/int/luk/ap/sp/level <amount>: Set your MP/HP/str/dex/int/luk/ap/sp/level to 'amount'",
-            "addsp <amount>: Add 'amount' SP",
-            "lvl <amount>: Set your level to 'amount' (alias: level)",
-            "maxslots: Get 100 slots in all your inventories.",
-            "maxstats: Get 3k HP/MP/str/dex/int/luk, 0 AP and 2k SP.",
-            "pos: Get your current location info (alias: pos1, pos2, pos3)",
-            // TODO: add reactor? Its pretty complex
-            "cleardrops: Remove all drops from the map"
         };
 
         public static int GetMapidFromName(string name)

@@ -13,13 +13,13 @@ namespace WvsBeta.Common.Enums
         Install = 0x10,
         Etc = 0x20,
         Pet = 0x40,
-        // Note: slot count is inside the inventories in this version
-        Skills = 0x80,
-        Quests = 0x100,
-        MinigameStats = 0x200,
-        FriendRing = 0x400,
-        Something33U = 0x800,
-        TeleportRock = 0x1000,
+        MaxSlots = 0x80,
+        Skills = 0x100,
+        Quests = 0x200,
+        MinigameStats = 0x400,
+        FriendRing = 0x800,
+        Something33U = 0x1000,
+        TeleportRock = 0x2000,
         All = 0xFFFF,
 
         Items = Equips | Consume | Install | Etc | Pet

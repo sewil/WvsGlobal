@@ -489,7 +489,7 @@ namespace WvsBeta.Common.Character
                 packet.WriteInt(Mesos);
             }
 
-            if (flags.HasFlag(CharacterDataFlag.Items))
+            if (flags.HasFlag(CharacterDataFlag.MaxSlots))
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -505,7 +505,7 @@ namespace WvsBeta.Common.Character
                     if (item == null) continue;
                     new GW_ItemSlotBase(item).Encode(packet, false);
                 }
-                
+
                 packet.WriteByte(0);
 
                 foreach (var item in Equips[1])

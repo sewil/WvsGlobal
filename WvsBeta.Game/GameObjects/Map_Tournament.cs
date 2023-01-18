@@ -3,6 +3,7 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Handlers.Commands;
 
 namespace WvsBeta.Game.GameObjects
 {

@@ -27,7 +27,6 @@ namespace WvsBeta.Game.Packets
             if (flags.HasFlag(CharacterDataFlag.Skills))
             {
                 chr.Skills.AddSkills(packet);
-
             }
 
             if (flags.HasFlag(CharacterDataFlag.Quests))

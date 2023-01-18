@@ -116,7 +116,7 @@
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />
-    <Compile Include="CommandHandling.cs" />
+    <Compile Include="Handlers\Commands\CommandHandling.cs" />
     <Compile Include="Events\EventPackets\EventPackets.cs" />
     <Compile Include="Events\GMEvents\EventManager.cs" />
     <Compile Include="Events\GMEvents\Event.cs" />

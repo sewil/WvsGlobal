@@ -7,7 +7,7 @@ using System.Text;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
-
+using WvsBeta.Game;
 
 namespace WvsBeta.Shop
 {
@@ -101,6 +101,7 @@ namespace WvsBeta.Shop
                 DoB = data.GetInt32("char_delete_password");
                 
                 CharacterStat.LoadFromReader(data);
+                BuddyListCapacity = (byte)data.GetInt32("buddylist_size");
             }
 
             
@@ -109,6 +110,9 @@ namespace WvsBeta.Shop
 
             Inventory = new CharacterInventory(this);
             Inventory.LoadInventory();
+
+            Skills = new BaseCharacterSkills();
+            Skills.LoadSkills(ID, Server.Instance.CharacterDatabase);
 
             Locker = new CharacterCashLocker(this);
             Locker.Load();

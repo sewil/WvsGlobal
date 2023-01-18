@@ -6,6 +6,8 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
 using WvsBeta.Common.Enums;
+using System.Net.Sockets;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Shop
 {
@@ -16,41 +18,30 @@ namespace WvsBeta.Shop
         {
             Packet pack = new Packet(ServerMessages.SET_CASH_SHOP);
             var flags = (
-                CharacterDataFlag.Stats |
-                CharacterDataFlag.Money |
-                CharacterDataFlag.Equips |
-                CharacterDataFlag.Consume |
-                CharacterDataFlag.Install |
-                CharacterDataFlag.Etc |
-                CharacterDataFlag.Pet);
-            pack.WriteShort((short)flags);
+                CharacterDataFlag.Stats
+                |CharacterDataFlag.Money
+                |CharacterDataFlag.MaxSlots
+                |CharacterDataFlag.Items
+            );
 
             new CharacterData(chr).Encode(pack, flags);
 
-            // No quests, etc
+            bool doEncode = true;
+            pack.WriteBool(doEncode);
+            if (doEncode)
+            {
+                pack.WriteString(chr.UserName);
+            }
 
-            pack.WriteBool(true);
-            pack.WriteString(chr.UserName);
+            List<CommodityInfo> commodityItems = DataProvider.Commodity.Where(x => x.Value.OnSale == false).Select(i => i.Value).ToList();
+            pack.WriteShort((short)commodityItems.Count);
+            commodityItems.ForEach(i => i.Encode(pack));
 
-            // If you want to show all items, write 1 not sold SN.
-            // The rest will pop up
-
-            var itemsNotOnSale = DataProvider.Commodity.Where(x => x.Value.OnSale == false).Select(x => x.Key).ToList();
-
-            pack.WriteShort(0);
-            //pack.WriteShort((short)itemsNotOnSale.Count);
-            //itemsNotOnSale.ForEach(pack.WriteInt);
-            
-            // Client does not have modified commodity support...
-
-            // Newer versions will have discount-per-category stuff here
-            // byte amount, foreach { byte category, byte categorySub, byte discountRate  }
-
-            
-            // BEST
+            //// Newer versions will have discount-per-category stuff here
+            //// byte amount, foreach { byte category, byte categorySub, byte discountRate  }
 
             // Categories
-            for (byte i = 1; i <= 8; i++)
+            for (byte i = 1; i <= 9; i++)
             {
                 // Gender (0 = male, 1 = female)
                 for (byte j = 0; j <= 1; j++)
@@ -71,28 +62,17 @@ namespace WvsBeta.Shop
                         }
                     }
                 }
-            }
+            } // 9 * 2 * 5 * 12 = 1080u
 
-            // -1 == available, 2 is not available, 1 = default?
+            //// -1 == available, 2 is not available, 1 = default?
 
             var customStockState = DataProvider.Commodity.Values.Where(x => x.StockState != StockState.DefaultState).ToList();
-
-            pack.WriteUShort((ushort)customStockState.Count);
+            pack.WriteShort((short)customStockState.Count);
             customStockState.ForEach(x =>
             {
                 pack.WriteInt(x.SerialNumber);
                 pack.WriteInt((int)x.StockState);
             });
-
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
-            pack.WriteLong(0);
 
             chr.SendPacket(pack);
         }
