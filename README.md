@@ -13,6 +13,10 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Update drop data
 - [ ] Scrolling
 - [ ] Cash Shop
+- [ ] Adobis Mission, Zakum
+- [ ] Deep Sea Gorge, Pianus
+- [ ] Deep Ludi, Papulatus
+- [ ] Sitting
 
 ### Portals
 - [ ] Fix broken portals
@@ -22,11 +26,6 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 
 ## Notes
 - AES no worky, use maplecrypt (shanda).
-- Scripts need to be translated and converted. Reworked script compiler that handles portals.
-- Quest completion unhandled.
-- Drop data not updated.
-- Scrolling not working.
-- Some portals broken such as Henesys Market and Deep Ant Tunnel II (checked data and st00 is in the incorrect position for some reason), majority of portals fixed though, FM portals work.
 - Running Tespia or any other world other than Scania disables char creation for some reason. Tespia is assumed to have ID 20 (wz edited).
 - Shops/player interactions not tested.
 - Config options for Redis, ElasticSearch/logging and some others are missing
