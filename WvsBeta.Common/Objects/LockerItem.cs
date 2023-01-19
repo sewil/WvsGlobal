@@ -57,12 +57,7 @@ namespace WvsBeta.Common.Objects
 
             packet.WriteString(BuyCharacterName, 13);
             packet.WriteLong(Expiration);
-            packet.WriteByte((byte)(GiftUnread ? 1 : 0));
-            packet.WriteByte(0);
-            packet.WriteByte(0);
-            packet.WriteByte(0);
+            //packet.WriteByte((byte)(GiftUnread ? 1 : 0));
         }
-
-
     }
 }
