@@ -2,22 +2,13 @@
 using System.Diagnostics;
 using System.Linq;
 using log4net;
+using WvsBeta.Common.Objects;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
     public partial class GameCharacter
     {
-        public static ILog HackLog = LogManager.GetLogger("HackLog");
-
-        public long LastAttackPacket { get; set; }
-        public byte FastAttackHackCount { get; set; }
-        public DateTime HacklogMuted { get; set; }
-        public int MoveTraceCount { get; set; }
-        public int DesyncedSoulArrows { get; set; }
-        public MovePath.MovementSource MoveTraceSource { get; set; }
-        public byte OutOfMBRCount { get; set; }
-
         public bool AssertForHack(bool isHack, string hackType, bool seriousHack = true)
         {
             if (!isHack || IsAdmin) return false;
@@ -65,13 +56,6 @@ namespace WvsBeta.Game
                     ChatPacket.MessageTypes.Notice
                 );
             }
-        }
-
-        public void TryTraceMovement(MovePath path)
-        {
-            if (MoveTraceCount <= 0 || MoveTraceSource != path.Source) return;
-            path.Dump();
-            MoveTraceCount--;
         }
 
         public bool IsInvalidTextInput(string inputType, string str, int maxLength = int.MaxValue, int minLength = 0)

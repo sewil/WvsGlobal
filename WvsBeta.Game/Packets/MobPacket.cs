@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
 
@@ -45,7 +46,7 @@ namespace WvsBeta.Game
             var lastMoveMillis = MasterThread.CurrentTime - mob.LastMove;
             bool justStartedControlling = (MasterThread.CurrentTime - mob.LastControllerAssignTime) < 2000;
             
-            PacketHelper.ValidateMovePath(mob, movePath);
+            Common.Packets.PacketHelper.ValidateMovePath(mob, movePath);
 
             //Program.MainForm.LogDebug("[" + DateTime.Now.ToString() + "]" + "Received movement packet from " + victim.Name + ". Original pos: x:" + movePath.OriginalPosition.X + " y: " + movePath.OriginalPosition.Y + "\r\nNew position: x: " + movePath.NewPosition.X + " y: " + movePath.NewPosition.Y);
 

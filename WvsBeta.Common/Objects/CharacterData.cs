@@ -3,7 +3,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Game.Packets
+namespace WvsBeta.Common.Objects
 {
     public struct CharacterData
     {

@@ -5,6 +5,7 @@ using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.PartyQuests;
@@ -40,7 +41,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            bool allowed = PacketHelper.ValidateMovePath(chr, movePath);
+            bool allowed = Common.Packets.PacketHelper.ValidateMovePath(chr, movePath);
             if (!allowed && !chr.IsGM)
             {
                 //this.Session.Socket.Shutdown(System.Net.Sockets.SocketShutdown.Both);

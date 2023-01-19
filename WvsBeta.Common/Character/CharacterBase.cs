@@ -1,5 +1,7 @@
-﻿using System;
+﻿using log4net;
+using System;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common
@@ -67,5 +69,29 @@ namespace WvsBeta.Common
             IsOnline = pr.ReadBool();
             GMLevel = pr.ReadByte();
         }
+
+        public PetItem GetSpawnedPet()
+        {
+            if (CharacterStat.PetCashId == 0) return null;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Pet) as PetItem;
+        }
+
+        #region Character Hack Logic
+        public static ILog HackLog = LogManager.GetLogger("HackLog");
+        public long LastAttackPacket { get; set; }
+        public byte FastAttackHackCount { get; set; }
+        public DateTime HacklogMuted { get; set; }
+        public int DesyncedSoulArrows { get; set; }
+        public byte OutOfMBRCount { get; set; }
+        public int MoveTraceCount { get; set; }
+        public MovePath.MovementSource MoveTraceSource { get; set; }
+
+        public void TryTraceMovement(MovePath path)
+        {
+            if (MoveTraceCount <= 0 || MoveTraceSource != path.Source) return;
+            path.Dump();
+            MoveTraceCount--;
+        }
+        #endregion
     }
 }

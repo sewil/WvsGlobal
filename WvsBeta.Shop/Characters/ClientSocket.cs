@@ -3,6 +3,7 @@ using System.Threading;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Shop.Packets;
 
 namespace WvsBeta.Shop
 {
@@ -116,6 +117,7 @@ namespace WvsBeta.Shop
                             Server.Instance.CenterConnection.CharacterExitCashshop(Player.SessionHash,
                                 Player.Character.ID, Server.Instance.WorldID);
                             break;
+                        case ClientMessages.PET_MOVE: PetsPacket.HandleMovePet(Player.Character, packet); break;
                         case ClientMessages.CASHSHOP_ACTION:
                             CashPacket.HandleCashPacket(Player.Character, packet);
                             break;

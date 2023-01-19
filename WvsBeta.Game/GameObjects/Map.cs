@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;

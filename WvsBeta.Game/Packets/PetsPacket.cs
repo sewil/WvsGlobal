@@ -61,7 +61,7 @@ namespace WvsBeta.Game
             movePath.DecodeFromPacket(packet, MovePath.MovementSource.Pet);
             chr.TryTraceMovement(movePath);
 
-            PacketHelper.ValidateMovePath(petItem.MovableLife, movePath);
+            Common.Packets.PacketHelper.ValidateMovePath(petItem.MovableLife, movePath);
 
             SendMovePet(chr, movePath);
         }

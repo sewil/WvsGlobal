@@ -2,7 +2,7 @@
 
 namespace WvsBeta.Shop
 {
-    internal class PacketHelper
+    internal class PacketHelper : Common.Packets.PacketHelper
     {
         public static void AddGiftList(Packet packet)
         {

@@ -211,7 +211,6 @@
     <Compile Include="Packets\MiscPacket.cs" />
     <Compile Include="Packets\MistPacket.cs" />
     <Compile Include="Packets\MobPacket.cs" />
-    <Compile Include="Packets\MovementParser.cs" />
     <Compile Include="Packets\NpcPacket.cs" />
     <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Packets\PartyPacket.cs" />

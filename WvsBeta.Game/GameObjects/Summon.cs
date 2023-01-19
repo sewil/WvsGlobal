@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game.GameObjects
 {

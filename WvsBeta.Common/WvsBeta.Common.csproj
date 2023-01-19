@@ -121,7 +121,7 @@
     <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
     <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
-    <Compile Include="Character\MovableLife.cs" />
+    <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
     <Compile Include="Enums\BuffValueTypes.cs" />
@@ -178,6 +178,7 @@
     <Compile Include="Objects\ItemReward.cs" />
     <Compile Include="Objects\ItemSummonInfo.cs" />
     <Compile Include="Objects\LockerItem.cs" />
+    <Compile Include="Objects\MovePath.cs" />
     <Compile Include="Objects\PetData.cs" />
     <Compile Include="Objects\PetReactionData.cs" />
     <Compile Include="Objects\Player.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Objects\WorldRanking.cs" />
     <Compile Include="Objects\WZQuestData.cs" />
     <Compile Include="Objects\CharacterData.cs" />
+    <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />
