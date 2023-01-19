@@ -94,7 +94,7 @@
         ENTER_TOWN_PORTAL,
         __PADDING_72,
         __PADDING_73,
-        PET_MOVE,
+        PET_MOVE = 85,
         PET_ACTION,
         PET_INTERACTION,
         __PADDING_77,
