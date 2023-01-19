@@ -473,7 +473,7 @@ namespace WvsBeta.Shop
 
             var userLocker = chr.Locker.Items.Where(x => x.UserId == chr.UserID).ToList();
 
-            pw.WriteByte((byte)userLocker.Count);
+            pw.WriteShort((short)userLocker.Count);
 
             foreach (var item in userLocker)
             {
@@ -481,6 +481,7 @@ namespace WvsBeta.Shop
                 item.GiftUnread = false;
             }
 
+            pw.WriteShort(0);
             pw.WriteShort(3); // Storage slots
             chr.SendPacket(pw);
         }

@@ -98,6 +98,7 @@ namespace WvsBeta.Shop
             {
                 StartLogging();
                 var header = (ClientMessages)packet.ReadByte();
+                System.Diagnostics.Trace.WriteLine($"[Client->ShopServer] {header} - {packet}");
                 if (!Loaded)
                 {
                     switch (header)
@@ -171,6 +172,11 @@ namespace WvsBeta.Shop
             {
                 ScheduleDisconnect();
             }
+        }
+        public override void SendPacket(Packet pPacket)
+        {
+            System.Diagnostics.Trace.WriteLine($"[ShopServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            base.SendPacket(pPacket);
         }
 
         public void OnPlayerLoad(Packet packet)

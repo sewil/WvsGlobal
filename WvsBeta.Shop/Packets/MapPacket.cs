@@ -36,12 +36,15 @@ namespace WvsBeta.Shop
             List<CommodityInfo> commodityItems = DataProvider.Commodity.Where(x => x.Value.OnSale == false).Select(i => i.Value).ToList();
             pack.WriteShort((short)commodityItems.Count);
             commodityItems.ForEach(i => i.Encode(pack));
+            //pack.WriteShort(0);
 
             //// Newer versions will have discount-per-category stuff here
             //// byte amount, foreach { byte category, byte categorySub, byte discountRate  }
 
+            pack.WriteBytes(new byte[121]);
+
             // Categories
-            for (byte i = 1; i <= 9; i++)
+            for (byte i = 1; i <= 8; i++)
             {
                 // Gender (0 = male, 1 = female)
                 for (byte j = 0; j <= 1; j++)
@@ -62,7 +65,7 @@ namespace WvsBeta.Shop
                         }
                     }
                 }
-            } // 9 * 2 * 5 * 12 = 1080u
+            }
 
             //// -1 == available, 2 is not available, 1 = default?
 
@@ -73,6 +76,10 @@ namespace WvsBeta.Shop
                 pack.WriteInt(x.SerialNumber);
                 pack.WriteInt((int)x.StockState);
             });
+            //pack.WriteInt(0);
+            //pack.WriteShort(0);
+            //pack.WriteByte(0);
+            //pack.WriteInt(75);
 
             chr.SendPacket(pack);
         }
