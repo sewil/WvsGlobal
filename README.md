@@ -12,11 +12,15 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Translate/convert remaining scripts
 - [ ] Update drop data
 - [ ] Scrolling
-- [ ] Cash Shop
 - [ ] Adobis Mission, Zakum
 - [ ] Deep Sea Gorge, Pianus
 - [ ] Deep Ludi, Papulatus
 - [ ] Sitting
+
+### Cash Shop
+- [ ] Crash on move item from CS to inventory
+- [ ] Charge/coupons buttons disabled
+- [ ] Best item list empty
 
 ### Portals
 - [ ] Fix broken portals
