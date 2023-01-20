@@ -19,6 +19,7 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Mini rooms
 - [ ] FM portal no sound
 - [ ] Some portals broken
+- [ ] Crash on user_enter_field
 
 ### Cash Shop
 - [ ] Crash on move item from CS to inventory
