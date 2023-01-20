@@ -83,7 +83,7 @@
         GROUP_MESSAGE,
         WHISPER,
         MESSENGER,
-        MINI_ROOM_OPERATION,
+        MINI_ROOM_OPERATION = 73,
         PARTY_OPERATION,
         DENY_PARTY_REQUEST,
         // -- nonexistant headers, such as admin commands and guild! --
