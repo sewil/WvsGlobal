@@ -121,6 +121,8 @@
     <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
     <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
+    <Compile Include="Enums\TransactionType.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
@@ -191,6 +193,7 @@
     <Compile Include="Objects\WorldRanking.cs" />
     <Compile Include="Objects\WZQuestData.cs" />
     <Compile Include="Objects\CharacterData.cs" />
+    <Compile Include="Packets\CashPacket.cs" />
     <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />

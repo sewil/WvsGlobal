@@ -162,7 +162,7 @@ namespace WvsBeta.Shop
                         slots += 4;
                         chr.Inventory.SetInventorySlots(inventory, slots, false);
 
-                        chr.AddSale($"Bought inventory expansion for inventory type {inventory} character {chr.ID}", price, maplepoints ? Character.TransactionType.MaplePoints : Character.TransactionType.NX);
+                        chr.AddSale($"Bought inventory expansion for inventory type {inventory} character {chr.ID}", price, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
 
                         Character.CashLog.Info(new BuySlotIncrease
                         {
@@ -216,7 +216,7 @@ namespace WvsBeta.Shop
                         var baseItem = CharacterCashLocker.CreateCashItem(lockerItem, ci);
                         chr.Locker.AddItem(lockerItem, baseItem);
 
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, maplepoints ? Character.TransactionType.MaplePoints : Character.TransactionType.NX);
+                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
 
                         Character.CashLog.Info(new BuyItem
                         {
@@ -307,7 +307,7 @@ namespace WvsBeta.Shop
                         // !!! THIS MEANS THAT IF SOMEONE MANAGED TO CRASH THE CASHSHOP, NOTHING IS LOST !!!!
                         chr.Locker.AddItem(lockerItem, baseItem);
 
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16}) as a gift for {recipient}", ci.Price, Character.TransactionType.NX);
+                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16}) as a gift for {recipient}", ci.Price, TransactionType.NX);
 
                         Character.CashLog.Info(new BuyItem
                         {

@@ -8,6 +8,7 @@ namespace WvsBeta.Common
 {
     public class CharacterBase : MovableLife
     {
+        public int UserID { get; set; }
         public string Name { get => CharacterStat.Name; set => CharacterStat.Name = value; }
         public int ID { get => CharacterStat.ID; set => CharacterStat.ID = value; }
         public short Job { get => CharacterStat.Job; set => CharacterStat.Job = value; }

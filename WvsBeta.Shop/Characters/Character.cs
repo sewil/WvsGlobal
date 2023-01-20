@@ -1,13 +1,12 @@
 ﻿using log4net;
 using MySql.Data.MySqlClient;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game;
 
 namespace WvsBeta.Shop
 {
@@ -16,7 +15,6 @@ namespace WvsBeta.Shop
         private static ILog _characterLog = LogManager.GetLogger("CharacterLog");
         public static ILog CashLog = LogManager.GetLogger("CashLog");
 
-        public int UserID { get; set; }
         public string UserName { get; set; }
         public long PetCashId { get; set; }
         public int DoB { get; set; }
@@ -26,12 +24,6 @@ namespace WvsBeta.Shop
         public int[] Wishlist { get; } = new int[10];
 
         public Player Player { get; set; }
-
-        public enum TransactionType
-        {
-            MaplePoints,
-            NX
-        }
 
         public Dictionary<TransactionType, List<(string reason, int amount)>> BoughtItems { get; } = new Dictionary<TransactionType, List<(string, int)>>();
 
@@ -191,40 +183,7 @@ WHERE userid = @userid",
         {
             if (BoughtItems.Select(x => x.Value.Count).Sum() == 0) return;
 
-            Server.Instance.CharacterDatabase.RunTransaction(x =>
-            {
-                var sb = new StringBuilder();
-
-                sb.AppendLine("INSERT INTO user_point_transactions VALUES ");
-
-                var start = true;
-                foreach (var boughtItem in BoughtItems)
-                {
-
-                    var boughtType = "";
-                    switch (boughtItem.Key)
-                    {
-                        case TransactionType.MaplePoints: boughtType = "maplepoints"; break;
-                        case TransactionType.NX: boughtType = "nx"; break;
-                    }
-
-                    foreach (var record in boughtItem.Value)
-                    {
-                        if (!start) sb.Append(',');
-                        start = false;
-
-                        sb.AppendFormat("(NULL, {0}, {1}, NOW(), '{2}', '{3}')\r\n",
-                            UserID,
-                            -record.amount,
-                            MySqlHelper.EscapeString(record.reason),
-                            boughtType
-                        );
-                    }
-                }
-
-                x.CommandText = sb.ToString();
-                x.ExecuteNonQuery();
-            });
+            Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, UserID, BoughtItems);
 
             // Remove all sales
             foreach (var keyValuePair in BoughtItems)

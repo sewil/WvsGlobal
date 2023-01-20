@@ -34,7 +34,6 @@ namespace WvsBeta.Game
         public static int ms_nPartyBonusEventRate = 0;
 
 
-        public int UserID { get; set; }
         public short MapChair { get; set; } = -1;
         private DateTime LastSavepoint;
         private long LastPlayTimeSave;

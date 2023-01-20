@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
@@ -1065,7 +1067,32 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                            #endregion
+                        #endregion
+
+                        #region Cash Shop
+                        case "cash":
+                        case "nxcash":
+                        case "givecash":
+                            {
+                                try
+                                {
+                                    if (Args.Count < 2) throw new ArgumentException("Usage: /givecash <player> <amount>");
+                                    string victimName = Args[0].Value.ToLower();
+                                    GameCharacter victim = Server.Instance.GetCharacter(victimName);
+                                    if (victim == null) throw new ArgumentException($"Player \"{victimName}\" not found.");
+                                    if (!int.TryParse(Args[1].Value, out int amount)) throw new ArgumentException($"Invalid amount \"{Args[1].Value}\".");
+                                    Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, victim.UserID, new Dictionary<TransactionType, List<(string reason, int amount)>> {
+                                        { TransactionType.NX, new List<(string reason, int amount)>() { ("", -amount)  } }
+                                    });
+                                    ChatPacket.SendNotice($"You have been gifted {amount.ToFormattedString()} NX cash.", victim);
+                                }
+                                catch(Exception e)
+                                {
+                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, e.Message, character, ChatPacket.MessageMode.ToPlayer);
+                                }
+                                return true;
+                            }
+                        #endregion
                     }
                 }
 
