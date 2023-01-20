@@ -236,8 +236,6 @@ namespace WvsBeta.Game.Handlers.Commands
         static bool shuttingDown = false;
         public static bool HandleChat(GameCharacter character, string text)
         {
-            if (!character.IsGM) return false;
-
             string logtext = string.Format("[{0,-9}] {1,-13}: {2}", character.MapID, character.Name, text);
             if (!Directory.Exists("Chatlogs"))
             {
@@ -251,6 +249,20 @@ namespace WvsBeta.Game.Handlers.Commands
             try
             {
                 var Args = new CommandArgs(text);
+
+                if (!character.IsGM)
+                {
+                    switch (Args.Command.ToLowerInvariant())
+                    {
+                        case "roll":
+                            {
+                                int roll = Rand32.NextBetween(1, 100);
+                                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
+                                break;
+                            }
+                    }
+                    return true;
+                }
 
                 if (character.GMLevel >= 1) //Intern commands
                 {
