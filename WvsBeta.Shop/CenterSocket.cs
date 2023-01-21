@@ -107,7 +107,7 @@ namespace WvsBeta.Shop
                 case ISServerMessages.ReloadCashshopData:
                     {
                         Program.MainForm.LogAppend("Reloading cashshop data");
-                        Server.Instance.LoadCashshopData();
+                        Server.Instance.LoadCashShopData();
                         DataProvider.Reload();
                         break;
                     }

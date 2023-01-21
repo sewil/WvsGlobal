@@ -22,9 +22,9 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Crash on user_enter_field
 
 ### Cash Shop
-- [x] Crash on move item from CS to inventory
 - [ ] Charge/coupons buttons disabled
-- [ ] Best item list empty
+- [x] Crash on move item from CS to inventory
+- [x] Best item list empty
 
 ### Quests
 - [ ] Quest completion handler

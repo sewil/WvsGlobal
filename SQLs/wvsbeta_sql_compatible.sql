@@ -1347,6 +1347,7 @@ CREATE TABLE `user_point_transactions` (
   `userid` int(11) NOT NULL,
   `amount` mediumint(9) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `sn` INT(10) NOT NULL,
   `note` text NOT NULL,
   `pointtype` enum('maplepoints','nx') NOT NULL,
   PRIMARY KEY (`id`),

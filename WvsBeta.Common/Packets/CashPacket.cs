@@ -23,7 +23,7 @@ namespace WvsBeta.Common.Packets
                     var pointtype = transaction.type == TransactionType.MaplePoints ? "maplepoints" : "nx";
                     if (!start) sb.Append(',');
                     start = false;
-                    sb.AppendFormat("(NULL, {0}, {1}, NOW(), '{2}', '{3}')\r\n", transaction.userid, -transaction.amount, MySqlHelper.EscapeString(transaction.note), pointtype);
+                    sb.AppendFormat("(NULL, {0}, {1}, NOW(), {2}, '{3}', '{4}')\r\n", transaction.userid, -transaction.amount, transaction.sn, MySqlHelper.EscapeString(transaction.note), pointtype);
                 }
 
                 x.CommandText = sb.ToString();

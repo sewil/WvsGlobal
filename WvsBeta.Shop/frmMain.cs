@@ -35,7 +35,7 @@ namespace WvsBeta.Shop
             LogAppend("Loading data file... ", false);
             DataProvider.Load();
             LogAppend("DONE");
-            
+            Server.Instance.LoadCashShopData();
 
             Invoke((MethodInvoker) delegate
             {

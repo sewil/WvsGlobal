@@ -9,5 +9,6 @@ namespace WvsBeta.Common.Objects
         public int amount;
         public int userid;
         public string date;
+        public int sn;
     }
 }

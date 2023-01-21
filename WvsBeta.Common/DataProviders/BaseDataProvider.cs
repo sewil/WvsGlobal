@@ -24,7 +24,7 @@ namespace WvsBeta.Common.DataProviders
         public static List<int> UntradeableDrops { get; } = new List<int>();
         public static List<int> QuestItems { get; } = new List<int>();
 
-        protected static List<NXFile> pOverride = new List<NXFile>();
+        protected static List<NXFile> pOverride;
         protected static NXFile pFile;
         private static DateTime startTime;
 
@@ -56,6 +56,7 @@ namespace WvsBeta.Common.DataProviders
             startTime = DateTime.Now;
             var x = GetMergedDatafiles();
             pFile = x.Key;
+            pOverride = new List<NXFile>();
             pOverride.AddRange(x.Value);
         }
 

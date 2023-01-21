@@ -66,6 +66,7 @@ namespace WvsBeta.Shop
             C_IncreaseSlots = 5,
             C_MoveLtoS = 10,
             C_MoveStoL = 11,
+            C_BuyPackage = 25,
 
             // Server packets (S)
             S_LoadLocker_Done = 28,
@@ -162,7 +163,7 @@ namespace WvsBeta.Shop
                         slots += 4;
                         chr.Inventory.SetInventorySlots(inventory, slots, false);
 
-                        chr.AddSale($"Bought inventory expansion for inventory type {inventory} character {chr.ID}", price, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
+                        chr.AddSale($"Bought inventory expansion for inventory type {inventory} character {chr.ID}", price, 0, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
 
                         Character.CashLog.Info(new BuySlotIncrease
                         {
@@ -216,7 +217,7 @@ namespace WvsBeta.Shop
                         var baseItem = CharacterCashLocker.CreateCashItem(lockerItem, ci);
                         chr.Locker.AddItem(lockerItem, baseItem);
 
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
+                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, ci.SerialNumber, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
 
                         Character.CashLog.Info(new BuyItem
                         {
@@ -307,7 +308,7 @@ namespace WvsBeta.Shop
                         // !!! THIS MEANS THAT IF SOMEONE MANAGED TO CRASH THE CASHSHOP, NOTHING IS LOST !!!!
                         chr.Locker.AddItem(lockerItem, baseItem);
 
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16}) as a gift for {recipient}", ci.Price, TransactionType.NX);
+                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16}) as a gift for {recipient}", ci.Price, ci.SerialNumber, TransactionType.NX);
 
                         Character.CashLog.Info(new BuyItem
                         {

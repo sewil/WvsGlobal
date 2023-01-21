@@ -11,6 +11,9 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Character;
+using log4net.Core;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
+using WvsBeta.Game;
 
 namespace WvsBeta.Shop
 {
@@ -43,7 +46,8 @@ namespace WvsBeta.Shop
 
         private string ConfigFilePath { get; set; }
 
-        public Dictionary<(byte category, byte gender, byte idx), int> BestItems { get; } = new Dictionary<(byte category, byte gender, byte idx), int>();
+        public List<CommodityInfo> BestItems { get; } = new List<CommodityInfo>();
+        public List<ShopTransaction> Transactions { get; } = new List<ShopTransaction>();
 
         public void LogToLogfile(string what)
         {
@@ -115,7 +119,6 @@ namespace WvsBeta.Shop
         {
             ConfigFilePath = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", Name + ".img");
             LoadConfig(ConfigFilePath);
-            LoadCashshopData();
             LoadDBConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Database.img"));
 
             ConnectToCenter();
@@ -164,30 +167,25 @@ namespace WvsBeta.Shop
             RedisBackend.Init(reader);
         }
 
-        public void LoadCashshopData()
+        public void LoadCashShopData()
         {
             BestItems.Clear();
-            ConfigReader reader = new ConfigReader(ConfigFilePath);
-            var bestNode = reader["best"];
-            if (bestNode != null)
+            var sales = new List<CommodityInfo>();
+            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT sn, COUNT(sn) AS snc FROM user_point_transactions WHERE sn > 0 GROUP BY sn ORDER BY snc DESC"))
             {
-                foreach (var categoryNode in bestNode)
+                while (data.Read())
                 {
-                    if (!byte.TryParse(categoryNode.Name, out byte category)) continue;
-
-                    foreach (var genderNode in categoryNode)
+                    var sn = data.GetInt32("sn");
+                    if (DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci))
                     {
-                        if (!byte.TryParse(genderNode.Name, out byte gender)) continue;
-
-                        for (var i = 0; i < 5; i++)
-                        {
-                            if (genderNode["" + i] != null)
-                            {
-                                BestItems[(category, gender, (byte)i)] = genderNode["" + i].GetInt();
-                            }
-                        }
+                        sales.Add(ci);
                     }
                 }
+            }
+            for (int c = 1; c <= 8; c++)
+            {
+                var top = sales.Where(i => (int)i.Category == c).Take(5);
+                top.ForEach(ci => BestItems.Add(ci));
             }
         }
 

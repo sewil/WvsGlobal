@@ -170,11 +170,12 @@ WHERE userid = @userid",
             }
         }
 
-        public void AddSale(string note, int amount, TransactionType transactionType)
+        public void AddSale(string note, int amount, int sn, TransactionType transactionType)
         {
             CashLog.Info(note);
             Transactions.Add(new ShopTransaction
             {
+                sn = sn,
                 type = transactionType,
                 note = note,
                 amount = amount,

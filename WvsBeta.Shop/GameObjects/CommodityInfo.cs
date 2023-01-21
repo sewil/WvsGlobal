@@ -1,3 +1,4 @@
+using System;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
@@ -8,6 +9,17 @@ namespace WvsBeta.Shop
         DefaultState = 0,
         OutOfStock = 1,
         NotAvailable = 2,
+    }
+
+    public enum CommodityCategory
+    {
+        Event = 2,
+        Equip = 3,
+        Use = 4,
+        Etc = 5,
+        Setup = 6,
+        Pet = 7,
+        Package = 8
     }
 
     public class CommodityInfo
@@ -21,6 +33,7 @@ namespace WvsBeta.Shop
         public CommodityGenders Gender { get; set; }
 
         public StockState StockState { get; set; } = StockState.DefaultState;
+        public CommodityCategory Category { get { return (CommodityCategory)(Math.Floor((double)SerialNumber / 10000000) + 1); } }
 
         public void Encode(Packet packet)
         {
