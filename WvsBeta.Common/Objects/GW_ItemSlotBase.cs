@@ -10,20 +10,23 @@ namespace WvsBeta.Common.Objects
         {
             this.item = item;
         }
-        public void Encode(Packet packet, bool shortSlot)
+        public void Encode(Packet packet, bool writeSlot, bool shortSlot)
         {
-            short slot = item.InventorySlot;
-            if (slot != 0)
+            if (writeSlot)
             {
-                if (shortSlot)
+                short slot = item.InventorySlot;
+                if (slot != 0)
                 {
-                    packet.WriteShort(slot);
-                }
-                else
-                {
-                    slot = Math.Abs(slot);
-                    if (slot > 100) slot -= 100;
-                    packet.WriteByte((byte)slot);
+                    if (shortSlot)
+                    {
+                        packet.WriteShort(slot);
+                    }
+                    else
+                    {
+                        slot = Math.Abs(slot);
+                        if (slot > 100) slot -= 100;
+                        packet.WriteByte((byte)slot);
+                    }
                 }
             }
             var itemType = item.ItemType;

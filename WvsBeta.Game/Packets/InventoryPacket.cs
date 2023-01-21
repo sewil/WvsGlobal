@@ -604,7 +604,7 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)inventory);
             if (isNew)
             {
-                new GW_ItemSlotBase(item).Encode(pw, true);
+                new GW_ItemSlotBase(item).Encode(pw, true, true);
             }
             else
             {
@@ -626,7 +626,7 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)inventory);
             if (isNew)
             {
-                new GW_ItemSlotBase(item).Encode(pw, true);
+                new GW_ItemSlotBase(item).Encode(pw, true, true);
             }
             else
             {

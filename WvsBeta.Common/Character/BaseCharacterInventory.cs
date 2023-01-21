@@ -503,7 +503,7 @@ namespace WvsBeta.Common.Character
                 foreach (var item in Equips[0])
                 {
                     if (item == null) continue;
-                    new GW_ItemSlotBase(item).Encode(packet, false);
+                    new GW_ItemSlotBase(item).Encode(packet, true, false);
                 }
 
                 packet.WriteByte(0);
@@ -511,7 +511,7 @@ namespace WvsBeta.Common.Character
                 foreach (var item in Equips[1])
                 {
                     if (item == null) continue;
-                    new GW_ItemSlotBase(item).Encode(packet, false);
+                    new GW_ItemSlotBase(item).Encode(packet, true, false);
                 }
                 packet.WriteByte(0);
             }
@@ -524,7 +524,7 @@ namespace WvsBeta.Common.Character
                 {
                     if (item != null && item.InventorySlot > 0)
                     {
-                        new GW_ItemSlotBase(item).Encode(packet, false);
+                        new GW_ItemSlotBase(item).Encode(packet, true, false);
                     }
                 }
                 packet.WriteByte(0);

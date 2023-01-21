@@ -164,7 +164,7 @@ namespace WvsBeta.Game
                 {
                     if (header != ClientMessages.PONG)
                     {
-                        Trace.WriteLine($"[Client->GameServer] {header} - {packet}");
+                        Trace.WriteLine($"[{Player.Character.Name}->GameServer] {header} - {packet}");
                     }
                     var character = Player.Character;
 
@@ -632,7 +632,7 @@ namespace WvsBeta.Game
                 pPacket.Opcode != (byte)(ServerMessages.STAT_CHANGED)
             )
             {
-                Trace.WriteLine($"[GameServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+                Trace.WriteLine($"[GameServer->{Player.Character.Name}] {(ServerMessages)pPacket.Opcode} - {pPacket}");
             }
             base.SendPacket(pPacket);
         }

@@ -73,7 +73,7 @@ namespace WvsBeta.Shop
             S_LoadWish_Done = 30,
             S_LoadWish_Failed,
             S_UpdateWish_Done = 32,
-            S_UpdateWish_Failed,
+            S_UpdateWish_Failed = 33,
             S_Buy_Done = 34,
             S_Buy_Failed,
 
@@ -90,15 +90,15 @@ namespace WvsBeta.Shop
 
 
             S_MoveLtoS_Done = 47,
-            S_MoveLtoS_Failed,
-            S_MoveStoL_Done = 49,
-            S_MoveStoL_Failed,
+            S_MoveLtoS_Failed = 48,
+            S_MoveStoL_Done,
+            S_MoveStoL_Failed = 50,
             S_Delete_Done = 51, // + long SN
-            S_Delete_Failed,
+            S_Delete_Failed = 52,
             S_Expired_Done = 53, // + long SN
-            S_Expired_Failed,
+            S_Expired_Failed = 54,
 
-
+            S_GiftPackage_Failed = 71,
             S_GiftPackage_Done = 72, // + Itemdata, str, int, short ??
         }
 
@@ -517,8 +517,7 @@ namespace WvsBeta.Shop
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_MoveLtoS_Done);
             pw.WriteShort(item.InventorySlot);
-            pw.WriteByte((byte)Constants.getInventory(item.ItemID));
-            item.Encode(pw);
+            new GW_ItemSlotBase(item).Encode(pw, false, false);
             chr.SendPacket(pw);
         }
 
