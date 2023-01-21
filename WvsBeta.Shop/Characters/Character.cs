@@ -7,6 +7,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Shop
 {
@@ -25,7 +26,7 @@ namespace WvsBeta.Shop
 
         public Player Player { get; set; }
 
-        public Dictionary<TransactionType, List<(string reason, int amount)>> BoughtItems { get; } = new Dictionary<TransactionType, List<(string, int)>>();
+        public IList<ShopTransaction> Transactions { get; } = new List<ShopTransaction>();
 
         public Character(int CharacterID)
         {
@@ -96,10 +97,6 @@ namespace WvsBeta.Shop
                 BuddyListCapacity = (byte)data.GetInt32("buddylist_size");
             }
 
-            
-            BoughtItems[TransactionType.MaplePoints] = new List<(string, int)>();
-            BoughtItems[TransactionType.NX] = new List<(string, int)>();
-
             Inventory = new CharacterInventory(this);
             Inventory.LoadInventory();
 
@@ -167,29 +164,32 @@ WHERE userid = @userid",
                 var mpSum = data.IsDBNull(1) ? 0 : data.GetInt32("mp_sum");
 
                 return (
-                    nxSum - BoughtItems[TransactionType.NX].Sum(x => x.amount),
-                    mpSum - BoughtItems[TransactionType.MaplePoints].Sum(x => x.amount)
+                    nxSum - Transactions.Where(i => i.type == TransactionType.NX).Sum(x => x.amount),
+                    mpSum - Transactions.Where(i => i.type == TransactionType.MaplePoints).Sum(x => x.amount)
                 );
             }
         }
 
-        public void AddSale(string message, int amount, TransactionType paidWith)
+        public void AddSale(string note, int amount, TransactionType transactionType)
         {
-            CashLog.Info(message);
-            BoughtItems[paidWith].Add((message, amount));
+            CashLog.Info(note);
+            Transactions.Add(new ShopTransaction
+            {
+                type = transactionType,
+                note = note,
+                amount = amount,
+                userid = UserID
+            });
         }
 
         public void SaveSales()
         {
-            if (BoughtItems.Select(x => x.Value.Count).Sum() == 0) return;
+            if (Transactions.Sum(i => i.amount) == 0) return;
 
-            Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, UserID, BoughtItems);
+            Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, Transactions);
 
             // Remove all sales
-            foreach (var keyValuePair in BoughtItems)
-            {
-                keyValuePair.Value.Clear();
-            }
+            Transactions.Clear();
         }
     }
 }

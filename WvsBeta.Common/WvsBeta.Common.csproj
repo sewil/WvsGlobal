@@ -187,6 +187,7 @@
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Objects\QuestData.cs" />
     <Compile Include="Objects\QuestMob.cs" />
+    <Compile Include="Objects\ShopTransaction.cs" />
     <Compile Include="Objects\SkillData.cs" />
     <Compile Include="Objects\SkillLevelData.cs" />
     <Compile Include="Objects\SplitDBInventory.cs" />

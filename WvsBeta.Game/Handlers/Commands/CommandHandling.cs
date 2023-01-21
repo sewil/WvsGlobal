@@ -1093,8 +1093,13 @@ namespace WvsBeta.Game.Handlers.Commands
                                     GameCharacter victim = Server.Instance.GetCharacter(victimName);
                                     if (victim == null) throw new ArgumentException($"Player \"{victimName}\" not found.");
                                     if (!int.TryParse(Args[1].Value, out int amount)) throw new ArgumentException($"Invalid amount \"{Args[1].Value}\".");
-                                    Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, victim.UserID, new Dictionary<TransactionType, List<(string reason, int amount)>> {
-                                        { TransactionType.NX, new List<(string reason, int amount)>() { ("", -amount)  } }
+                                    Common.Packets.CashPacket.AddTransactions(Server.Instance.CharacterDatabase, new List<ShopTransaction> {
+                                        new ShopTransaction {
+                                            userid = victim.UserID,
+                                            type = TransactionType.NX,
+                                            note = "",
+                                            amount = -amount
+                                        }
                                     });
                                     ChatPacket.SendNotice($"You have been gifted {amount.ToFormattedString()} NX cash.", victim);
                                 }
