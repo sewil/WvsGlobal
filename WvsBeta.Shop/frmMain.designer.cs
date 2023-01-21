@@ -27,6 +27,9 @@
             this.txtLoad = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtLog = new WvsBeta.Common.RollingTextBox();
+            this.packetInput = new System.Windows.Forms.TextBox();
+            this.packetLabel = new System.Windows.Forms.Label();
+            this.packetButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // txtLoad
@@ -53,20 +56,51 @@
             this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtLog.Location = new System.Drawing.Point(12, 38);
+            this.txtLog.Location = new System.Drawing.Point(12, 94);
             this.txtLog.MaxLines = 15;
             this.txtLog.Multiline = true;
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtLog.Size = new System.Drawing.Size(396, 241);
+            this.txtLog.Size = new System.Drawing.Size(396, 185);
             this.txtLog.TabIndex = 6;
+            this.txtLog.Text = "Running in DEBUG mode.";
+            // 
+            // packetInput
+            // 
+            this.packetInput.Location = new System.Drawing.Point(206, 43);
+            this.packetInput.Name = "packetInput";
+            this.packetInput.Size = new System.Drawing.Size(117, 20);
+            this.packetInput.TabIndex = 7;
+            this.packetInput.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // packetLabel
+            // 
+            this.packetLabel.AutoSize = true;
+            this.packetLabel.Location = new System.Drawing.Point(156, 46);
+            this.packetLabel.Name = "packetLabel";
+            this.packetLabel.Size = new System.Drawing.Size(44, 13);
+            this.packetLabel.TabIndex = 8;
+            this.packetLabel.Text = "Packet:";
+            // 
+            // packetButton
+            // 
+            this.packetButton.Location = new System.Drawing.Point(333, 41);
+            this.packetButton.Name = "packetButton";
+            this.packetButton.Size = new System.Drawing.Size(75, 23);
+            this.packetButton.TabIndex = 9;
+            this.packetButton.Text = "Send";
+            this.packetButton.UseVisualStyleBackColor = true;
+            this.packetButton.Click += new System.EventHandler(this.packetButton_Click);
             // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(421, 291);
+            this.Controls.Add(this.packetButton);
+            this.Controls.Add(this.packetLabel);
+            this.Controls.Add(this.packetInput);
             this.Controls.Add(this.txtLog);
             this.Controls.Add(this.txtLoad);
             this.Controls.Add(this.label1);
@@ -86,6 +120,9 @@
 		private System.Windows.Forms.TextBox txtLoad;
 		private System.Windows.Forms.Label label1;
         private Common.RollingTextBox txtLog;
+        private System.Windows.Forms.TextBox packetInput;
+        private System.Windows.Forms.Label packetLabel;
+        private System.Windows.Forms.Button packetButton;
     }
 }
 

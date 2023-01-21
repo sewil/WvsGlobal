@@ -122,6 +122,7 @@
     <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
     <Compile Include="Enums\TransactionType.cs" />
+    <Compile Include="Extensions\CrossThreadExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />

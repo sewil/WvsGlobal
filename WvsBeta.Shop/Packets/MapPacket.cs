@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Packets;
 using WvsBeta.Common.Enums;
-using System.Net.Sockets;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Shop

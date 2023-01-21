@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using log4net.Core;
 using WvsBeta.Common;
+using WvsBeta.Common.Extensions;
+using WvsBeta.Common.Sessions;
 using WvsBeta.Shop.Properties;
 
 namespace WvsBeta.Shop
@@ -151,6 +155,18 @@ namespace WvsBeta.Shop
 
             MasterThread.Instance.AddRepeatingAction(ra);
             return;
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void packetButton_Click(object sender, EventArgs e)
+        {
+            byte[] bytes = string.Join("", packetInput.Text.Split(' ')).FromHexToBytes();
+            var packet = new Packet(bytes);
+            Server.Instance.PlayerList.First().Value.Socket.SendPacket(packet);
         }
     }
 }

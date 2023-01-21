@@ -14,5 +14,12 @@ namespace WvsBeta.Common.Extensions
         {
             return value.ToString("N0", new CultureInfo("en-US"));
         }
+        public static byte[] FromHexToBytes(this string value)
+        {
+            return Enumerable.Range(0, value.Length)
+                             .Where(x => x % 2 == 0)
+                             .Select(x => Convert.ToByte(value.Substring(x, 2), 16))
+                             .ToArray();
+        }
     }
 }
