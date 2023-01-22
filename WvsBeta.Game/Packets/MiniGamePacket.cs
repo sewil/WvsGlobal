@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Character;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
@@ -36,7 +37,7 @@ namespace WvsBeta.Game
             pw.WriteByte(0xAF);
             pw.WriteByte(4);
             pw.WriteByte(0);
-            PacketHelper.AddAvatar(pw, chr);
+            new AvatarLook(chr).Encode(pw);
             pw.WriteString(chr.Name);
             chr.SendPacket(pw);
         }
@@ -54,7 +55,7 @@ namespace WvsBeta.Game
                 if (pUser != null)
                 {
                     pw.WriteByte(i);
-                    PacketHelper.AddAvatar(pw, pUser);
+                    new AvatarLook(pUser).Encode(pw);
                     pw.WriteString(pUser.Name);
                 }
             }
@@ -108,7 +109,7 @@ namespace WvsBeta.Game
             pw.WriteBool(true);
 
             pw.WriteByte(0);
-            PacketHelper.AddAvatar(pw, chr);
+            new AvatarLook(chr).Encode(pw);
             pw.WriteString(chr.Name);
 
             pw.WriteByte(0xFF);
@@ -133,7 +134,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
             pw.WriteByte(chr.RoomSlotId);
-            PacketHelper.AddAvatar(pw, chr);
+            new AvatarLook(chr).Encode(pw);
             pw.WriteString(chr.Name);
 
             //GW_Minigamerecord_Decode
@@ -154,7 +155,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x04);
             pw.WriteByte(0x01);
-            PacketHelper.AddAvatar(pw, chr);
+            new AvatarLook(chr).Encode(pw);
             pw.WriteString("lolwat123");
             pw.WriteInt(1);
             pw.WriteInt(0);
@@ -212,7 +213,7 @@ namespace WvsBeta.Game
             pw.WriteByte(4);
             pw.WriteBool(false);
             pw.WriteByte(0);
-            PacketHelper.AddAvatar(pw, chr);
+            new AvatarLook(chr).Encode(pw);
             pw.WriteString("loltest123");
             pw.WriteByte(0xFF);
             pw.WriteString("lolwattest");

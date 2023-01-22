@@ -4,8 +4,10 @@ using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.PartyQuests;
@@ -557,52 +559,10 @@ namespace WvsBeta.Game
         public static void SendCharacterEnterPacket(GameCharacter player, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.USER_ENTER_FIELD);
-
             pw.WriteInt(player.ID);
 
-            pw.WriteString(player.Name);
+            player.EncodeForRemote(pw);
 
-            BuffPacket.AddMapBuffValues(player, pw);
-
-            PacketHelper.AddAvatar(pw, player);
-
-            pw.WriteInt(player.GetSpawnedPet()?.ItemID ?? 0);
-            pw.WriteInt(player.Inventory.ActiveItemID);
-            pw.WriteInt(player.Inventory.ChocoCount);
-            pw.WriteShort(player.Position.X);
-            pw.WriteShort(player.Position.Y);
-            pw.WriteByte(player.Stance);
-            pw.WriteShort(player.Foothold);
-            pw.WriteBool(player.IsGM && !player.Undercover);
-
-            var petItem = player.GetSpawnedPet();
-            pw.WriteBool(petItem != null);
-            if (petItem != null)
-            {
-                pw.WriteInt(petItem.ItemID);
-                pw.WriteString(petItem.Name);
-                pw.WriteLong(petItem.CashId);
-                var ml = petItem.MovableLife;
-                pw.WriteShort(ml.Position.X);
-                pw.WriteShort(ml.Position.Y);
-                pw.WriteByte(ml.Stance);
-                pw.WriteShort(ml.Foothold);
-            }
-
-            // Mini Game & Player Shops
-            pw.WriteByte(0); // Hardcoded end of minigame & player shops until implemented
-
-            //Rings
-            pw.WriteByte(0); // Number of Rings, hardcoded 0 until implemented.
-
-            //Ring packet structure
-            /**
-            for (Ring ring in player.Rings()) {
-                pw.WriteLong(ring.getRingId()); // R
-                pw.WriteLong(ring.getPartnerRingId());
-                pw.WriteInt(ring.getItemId());
-            }
-            */
             victim.SendPacket(pw);
         }
 
@@ -754,7 +714,7 @@ namespace WvsBeta.Game
         {
             Packet pw = new Packet(ServerMessages.GIVE_FOREIGN_BUFF);
             pw.WriteInt(chr.CharacterStat.ID);
-            BuffPacket.AddMapBuffValues(chr, pw, pBuffs);
+            BuffPacket.EncodeForRemote(chr, pw, pBuffs);
             pw.WriteShort(delay); // the delay. usually 0, but is carried on through OnStatChangeByMobSkill / DoActiveSkill_(Admin/Party/Self)StatChange
 
             chr.Field.SendPacket(chr, pw, chr);
@@ -762,9 +722,9 @@ namespace WvsBeta.Game
 
         public static void SendPlayerDebuffed(GameCharacter chr, BuffValueTypes buffFlags)
         {
-            Packet pw = new Packet(ServerMessages.RESET_FOREIGN_BUFF);
+            Packet pw = new Packet(ServerMessages.RESET_TEMPORARY_STAT);
             pw.WriteInt(chr.ID);
-            pw.WriteUInt((uint)buffFlags);
+            pw.WriteULong((ulong)buffFlags);
 
             chr.Field.SendPacket(chr, pw, chr);
         }

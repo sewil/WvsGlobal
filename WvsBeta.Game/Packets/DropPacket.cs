@@ -151,12 +151,12 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)drop.OwnType);
             pw.WriteShort(drop.Pt2.X);
             pw.WriteShort(drop.Pt2.Y);
+            pw.WriteInt(drop.SourceID);
 
             if (EnterType == RewardEnterType.ShowDrop ||
                 EnterType == RewardEnterType.DropAnimation ||
                 EnterType == RewardEnterType.DisappearDuringDrop)
             {
-                pw.WriteInt(drop.SourceID);
                 pw.WriteShort(drop.Pt1.X);
                 pw.WriteShort(drop.Pt1.Y);
                 pw.WriteShort(Delay);

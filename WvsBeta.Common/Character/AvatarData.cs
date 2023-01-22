@@ -13,8 +13,7 @@ namespace WvsBeta.Common.Character
         {
             CharacterStat = new GW_CharacterStat();
             CharacterStat.Decode(packet);
-            AvatarLook = new AvatarLook();
-            AvatarLook.Decode(packet);
+            AvatarLook = new AvatarLook(packet);
         }
 
         public void Encode(Packet packet)

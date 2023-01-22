@@ -5,14 +5,14 @@ namespace WvsBeta.Game
 {
     public static class BuffPacket
     {
-        public static void AddMapBuffValues(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
+        public static void EncodeForRemote(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
         {
             CharacterPrimaryStats ps = (CharacterPrimaryStats)chr.PrimaryStats;
             long currentTime = MasterThread.CurrentTime;
             BuffValueTypes added = 0;
 
             int tmp = pw.Position;
-            pw.WriteUInt(0); // Placeholder
+            pw.WriteULong((ulong)pBuffFlags);
 
             ps.BuffSpeed.EncodeForRemote(ref added, currentTime, stat => pw.WriteByte((byte)stat.N), pBuffFlags);
             ps.BuffComboAttack.EncodeForRemote(ref added, currentTime, stat => pw.WriteByte((byte)stat.N), pBuffFlags);
@@ -30,7 +30,7 @@ namespace WvsBeta.Game
             ps.BuffShadowPartner.EncodeForRemote(ref added, currentTime, null, pBuffFlags);
             ps.BuffDarkSight.EncodeForRemote(ref added, currentTime, null, pBuffFlags);
 
-            pw.SetUInt(tmp, (uint)added);
+            pw.SetULong(tmp, (ulong)added);
         }
 
         public static void SetTempStats(GameCharacter chr, BuffValueTypes pFlagsAdded, short pDelay = 0)

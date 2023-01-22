@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using log4net;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -535,7 +536,7 @@ namespace WvsBeta.Game
                 }
 
                 pw.WriteByte(character.RoomSlotId);
-                PacketHelper.AddAvatar(pw, character);
+                new AvatarLook(character).Encode(pw);
                 pw.WriteString(character.Name);
             }
 
@@ -549,7 +550,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
             pw.WriteByte(pWho.RoomSlotId);
-            PacketHelper.AddAvatar(pw, pWho);
+            new AvatarLook(pWho).Encode(pw);
             pw.WriteString(pWho.Name);
             pRoom.EncodeEnterResult(pWho, pw);
             pRoom.BroadcastPacket(pw, pWho);

@@ -142,6 +142,68 @@ namespace WvsBeta.Game
             return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Pet) as PetItem;
         }
 
+        public void EncodeForRemote(Packet packet)
+        {
+            packet.WriteString(Name);
+
+            packet.WriteString(""); // Guild?
+
+            packet.WriteShort(0); // ?
+            packet.WriteByte(0); // ?
+            packet.WriteShort(0); // ?
+            packet.WriteByte(0); // ?
+
+            BuffPacket.EncodeForRemote(this, packet);
+            new AvatarLook(this).Encode(packet);
+
+            packet.WriteInt(Inventory.ActiveItemID);
+            packet.WriteInt(Inventory.ChocoCount);
+            packet.WriteShort(Position.X);
+            packet.WriteShort(Position.Y);
+            packet.WriteByte(Stance);
+            packet.WriteShort(Foothold);
+
+            packet.WriteBool(IsGM && !Undercover);
+
+            var petItem = GetSpawnedPet();
+            packet.WriteBool(petItem != null);
+            if (petItem != null)
+            {
+                packet.WriteInt(petItem.ItemID);
+                packet.WriteString(petItem.Name);
+                packet.WriteLong(petItem.CashId);
+                var ml = petItem.MovableLife;
+                packet.WriteShort(ml.Position.X);
+                packet.WriteShort(ml.Position.Y);
+                packet.WriteByte(ml.Stance);
+                packet.WriteShort(ml.Foothold);
+            }
+
+            // Mini Game & Player Shops
+            string miniGame = null;
+            packet.WriteBool(miniGame != null); // Hardcoded end of minigame & player shops until implemented
+            if (miniGame != null)
+            {
+                packet.WriteInt(0);
+                packet.WriteString("");
+                packet.WriteByte(0);
+                packet.WriteByte(0);
+                packet.WriteByte(0);
+                packet.WriteByte(0);
+                packet.WriteByte(0);
+            }
+
+            packet.WriteByte(0); // Number of Rings, hardcoded 0 until implemented.
+            //Ring packet structure
+            /**
+            for (Ring ring in player.Rings()) {
+                pw.WriteLong(ring.getRingId()); // R
+                pw.WriteLong(ring.getPartnerRingId());
+                pw.WriteInt(ring.getItemId());
+            }
+            */
+        }
+
         public void HandleDeath()
         {
             HackLog.Info("Player will be moved back to town/return map");

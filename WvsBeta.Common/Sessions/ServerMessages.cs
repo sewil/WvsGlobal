@@ -120,7 +120,7 @@
         AVATAR_MODIFIED = 106, //Called UPDATE_CHAR_LOOK in odin, new name = gms-like
         SHOW_FOREIGN_EFFECT = 107, // Called 'Effect'
         GIVE_FOREIGN_BUFF = 108, // CUserRemote::OnSetTemporaryStat
-        RESET_FOREIGN_BUFF = 109, // CUserRemote::OnResetTemporaryStat
+        RESET_TEMPORARY_STAT = 109, // CUserRemote::OnResetTemporaryStat
         UPDATE_PARTYMEMBER_HP = 110,
         __UNKNOWN_111 = 111,
         __UNKNOWN_112 = 112,

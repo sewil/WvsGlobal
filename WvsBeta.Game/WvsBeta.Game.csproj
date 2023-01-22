@@ -212,7 +212,6 @@
     <Compile Include="Packets\MistPacket.cs" />
     <Compile Include="Packets\MobPacket.cs" />
     <Compile Include="Packets\NpcPacket.cs" />
-    <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Packets\PartyPacket.cs" />
     <Compile Include="Packets\PetsPacket.cs" />
     <Compile Include="Packets\PlayerShopPackets.cs" />

@@ -19,10 +19,13 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Mini rooms
 - [ ] FM portal no sound
 - [ ] Some portals broken
-- [ ] Crash on user_enter_field
+- [ ] Guild
+- [ ] Cant loot other ppl's drops
+- [ ] Party accept crash
+- [ ] Messenger accept crash
+- [x] Crash on user_enter_field
 
 ### Cash Shop
-- [ ] Charge/coupons buttons disabled
 - [x] Crash on move item from CS to inventory
 - [x] Best item list empty
 

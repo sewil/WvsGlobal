@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -236,7 +237,7 @@ namespace WvsBeta.Game
             packet.WriteInt(messengerid);
             packet.WriteInt(chr.ID);
             packet.WriteString(chr.Name);
-            PacketHelper.AddAvatar(packet, chr);
+            new AvatarLook(chr).Encode(packet);
             SendPacket(packet);
         }
 
@@ -286,7 +287,7 @@ namespace WvsBeta.Game
             Packet packet = new Packet(ISClientMessages.MessengerAvatar);
             packet.WriteInt(chr.ID);
             packet.WriteString(chr.Name);
-            PacketHelper.AddAvatar(packet, chr);
+            new AvatarLook(chr).Encode(packet);
             SendPacket(packet);
         }
 

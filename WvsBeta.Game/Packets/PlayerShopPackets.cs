@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -18,7 +19,7 @@ namespace WvsBeta.Game
                 if (pUser != null)
                 {
                     pw.WriteByte(i);
-                    PacketHelper.AddAvatar(pw, pUser);
+                    new AvatarLook(pUser).Encode(pw);
                     pw.WriteString(pUser.Name);
                 }
             }
@@ -34,7 +35,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(4);
             pw.WriteByte(pCharacter.RoomSlotId);
-            PacketHelper.AddAvatar(pw, pCharacter);
+            new AvatarLook(pCharacter).Encode(pw);
             pw.WriteString(pCharacter.Name);
             pTo.SendPacket(pw);
         }

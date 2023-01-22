@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using System.Linq;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Character
 {
@@ -13,7 +14,13 @@ namespace WvsBeta.Common.Character
         public int[] UnseenEquip { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
         public int[] HairEquip { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
 
-        public void Load(GW_CharacterStat cs, int[] equips, int[] equipsCash, bool putCashInUnseen)
+        public AvatarLook(CharacterBase character) : this(
+            character.CharacterStat,
+            character.Inventory.Equips[0].Select(i => i?.ItemID ?? 0).ToArray(),
+            character.Inventory.Equips[1].Select(i => i?.ItemID ?? 0).ToArray(),
+            true
+        ) { }
+        public AvatarLook(GW_CharacterStat cs, int[] equips, int[] equipsCash, bool putCashInUnseen)
         {
             Gender = cs.Gender;
             Skin = cs.Skin;
@@ -95,7 +102,7 @@ namespace WvsBeta.Common.Character
             packet.WriteInt(PetItemId);
         }
 
-        public void Decode(Packet packet)
+        public AvatarLook(Packet packet)
         {
             for (var i = HairEquip.Length - 1; i >= 0; i--)
                 HairEquip[i] = 0;

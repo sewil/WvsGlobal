@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.Commands;
@@ -124,7 +126,7 @@ namespace WvsBeta.Game.GameObjects
                 else
                 {
                     packet.WriteBool(true);
-                    PacketHelper.AddAvatar(packet, player);
+                    new AvatarLook(toCharacter).Encode(packet);
                     packet.WriteString(player.Name);
                 }
             }

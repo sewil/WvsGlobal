@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -51,7 +52,6 @@ namespace WvsBeta.Common
             pw.WriteBool(IsOnline);
             pw.WriteByte(GMLevel);
         }
-
 
         public void DecodeForTransfer(Packet pr)
         {
