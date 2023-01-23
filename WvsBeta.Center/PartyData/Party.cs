@@ -32,14 +32,18 @@ namespace WvsBeta.Center
     {
         public readonly int id;
         public readonly string name;
-        public bool leader { get; set; }
+        public readonly int job;
+        public readonly int level;
+        public bool isLeader { get; set; }
         public DoorInformation door { get; set; }
 
-        public PartyMember(int i, string n, bool l)
+        public PartyMember(int id, string name, int job, int level, bool isLeader)
         {
-            id = i;
-            name = n;
-            leader = l;
+            this.id = id;
+            this.name = name;
+            this.job = job;
+            this.level = level;
+            this.isLeader = isLeader;
             door = DoorInformation.DefaultNoDoor;
         }
 
@@ -47,7 +51,7 @@ namespace WvsBeta.Center
         {
             id = pr.ReadInt();
             name = pr.ReadString();
-            leader = pr.ReadBool();
+            isLeader = pr.ReadBool();
         }
 
         public void SendPacket(Packet packet)
@@ -83,7 +87,7 @@ namespace WvsBeta.Center
         {
             pw.WriteInt(id);
             pw.WriteString(name);
-            pw.WriteBool(leader);
+            pw.WriteBool(isLeader);
         }
     }
 
@@ -259,7 +263,7 @@ namespace WvsBeta.Center
             _log.Debug($"{chr.ID} joins the party {partyId} under slot {slot}");
 
             chr.PartyID = partyId;
-            var member = new PartyMember(chr.ID, chr.Name, false);
+            var member = new PartyMember(chr.ID, chr.Name, chr.Job, chr.Level, false);
 
             members[slot] = member;
 
@@ -482,7 +486,7 @@ namespace WvsBeta.Center
                 return;
             }
 
-            PartyMember ldr = new PartyMember(leader.ID, leader.Name, true);
+            PartyMember ldr = new PartyMember(leader.ID, leader.Name, leader.Job, leader.Level, true);
             int id = IdGenerator.NextValue();
             Party pty = new Party(id, ldr);
             _log.Info($"Created party {id} with leader {leader.ID}");

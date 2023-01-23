@@ -154,25 +154,31 @@ namespace WvsBeta.Center
 
         public static void AddPartyData(Packet packet, PartyMember member, Party pt, PartyMember remove = null, int disconnect = -1)
         {
-            //226
+            //294
             var ids = pt.members.Select(e => e == null ? 0 : e.id);
             var names = pt.members.Select(e => e == null ? "" : e.name);
+            var jobs = pt.members.Select(e => e == null ? 0 : e.job);
+            var levels = pt.members.Select(e => e == null ? 0 : e.level);
+            var channels = pt.members.Select(e => e == null ? 0 : e.GetChannel());
             var maps = pt.members.Select(e => (e == null || e.id == disconnect || e.GetChannel() != member.GetChannel()) ? -1 : e.GetMap());
             var doorTowns = pt.members.Select(e => e == null ? Constants.InvalidMap : e.door.DstMap);
 
             ids.ForEach(packet.WriteInt);
             names.ForEach(packet.WriteString13);
+            jobs.ForEach(packet.WriteInt);
+            levels.ForEach(packet.WriteInt);
+            channels.ForEach(packet.WriteInt);
             maps.ForEach(packet.WriteInt);
             packet.WriteInt(pt.leader.id);
-            maps.ForEach(m => packet.WriteInt(-1));
+            //maps.ForEach(m => packet.WriteInt(-1));
 
             //doors - these are fucked, fix in v39 i guess
             for (int i = 0; i < Constants.MaxPartyMembers; i++)
             {
-                packet.WriteInt(Constants.InvalidMap); 
-                packet.WriteInt(Constants.InvalidMap); 
-                packet.WriteShort(0);        
-                packet.WriteShort(0);  
+                packet.WriteInt(Constants.InvalidMap);
+                packet.WriteInt(Constants.InvalidMap);
+                packet.WriteInt(0); // X
+                packet.WriteInt(0); // Y
             }
         }
 

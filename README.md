@@ -20,10 +20,13 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] FM portal no sound
 - [ ] Some portals broken
 - [ ] Guild
-- [ ] Party accept crash
 - [ ] Messenger accept crash
+- [x] Party accept crash
 - [x] Cant loot other ppl's drops
 - [x] Crash on user_enter_field
+- [ ] Buddy map/find crash, crash
+- [ ] Not updating remote avatar data directly (have to go in/out of portals)
+- [ ] Door crashes for all pt members
 
 ### Cash Shop
 - [x] Crash on move item from CS to inventory
