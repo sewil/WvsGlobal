@@ -31,7 +31,7 @@ namespace WvsBeta.Game
             chr.AddMesos(-amount, true);
             Common.Tracking.MesosTransfer.PlayerDropMesos(chr.ID, amount, chr.MapID.ToString());
 
-            chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.Normal, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
+            chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
             // This shouldn't be required
             InventoryPacket.NoChange(chr);
         }

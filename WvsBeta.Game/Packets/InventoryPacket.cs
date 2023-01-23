@@ -103,7 +103,7 @@ namespace WvsBeta.Game
 
             ItemTransfer.ItemDropped(chr.ID, chr.MapID, drop.ItemID, drop.Amount, "", drop);
 
-            chr.Field.DropPool.Create(Reward.Create(drop), chr.ID, 0, DropType.Normal, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, (short)(chr.Field.DropPool.DropEverlasting ? drop.InventorySlot : 0), false, true);
+            chr.Field.DropPool.Create(Reward.Create(drop), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, (short)(chr.Field.DropPool.DropEverlasting ? drop.InventorySlot : 0), false, true);
 
             if (droppedFromEquips)
             {
