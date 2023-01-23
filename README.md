@@ -21,12 +21,12 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Some portals broken
 - [ ] Guild
 - [ ] Messenger accept crash
+- [ ] Buddy map/find crash
+- [ ] Not updating remote avatar data directly (have to go in/out of portals)
+- [ ] Door crashes for all pt members
 - [x] Party accept crash
 - [x] Cant loot other ppl's drops
 - [x] Crash on user_enter_field
-- [ ] Buddy map/find crash, crash
-- [ ] Not updating remote avatar data directly (have to go in/out of portals)
-- [ ] Door crashes for all pt members
 
 ### Cash Shop
 - [x] Crash on move item from CS to inventory
