@@ -16,13 +16,15 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Deep Sea Gorge, Pianus
 - [ ] Deep Ludi, Papulatus
 - [ ] Sitting
-- [ ] Mini rooms
-- [ ] FM portal no sound
-- [ ] Some portals broken
-- [ ] Guild
+- [ ] Player Shop
+- [ ] Omok
+- [ ] FM portal SoundEffect
+- [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
+- [ ] Guild (opcodes, packets, db)
 - [ ] Messenger accept crash
 - [ ] Buddy map/find crash
-- [ ] Not updating remote avatar data directly (have to go in/out of portals)
+- [ ] Remote AvatarLook not updating (messenger/field)
+- [ ] Cash eqps unseen
 - [ ] Door crashes for all pt members
 - [x] Party accept crash
 - [x] Cant loot other ppl's drops
