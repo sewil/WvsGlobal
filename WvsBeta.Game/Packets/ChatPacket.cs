@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using log4net;
@@ -394,36 +395,40 @@ namespace WvsBeta.Game
             victim.SendPacket(pw);
         }
 
-        public static void Find(GameCharacter victim, string who, int map, sbyte dunno, bool isChannel)
+        enum WhisperType : byte
+        {
+            Find = 9,
+            NotFound = 10
+        }
+        enum FindType : byte
+        {
+            Map = 1,
+            CashShop = 2,
+            Channel = 3,
+        }
+
+        public static void Find(GameCharacter victim, string who, int map, sbyte dunno, bool sameChannel)
         {
             Packet pw = new Packet(ServerMessages.WHISPER);
             
             if (map != -1)
             {
-                pw.WriteByte(0x09);
+                pw.WriteByte((byte)WhisperType.Find);
                 pw.WriteString(who);
-                if (map == -2)
+                FindType findType = map == -2 ? FindType.CashShop : sameChannel ? FindType.Map : FindType.Channel;
+                int mapId = Math.Max(0, map);
+                pw.WriteByte((byte)findType);
+                pw.WriteInt(mapId);
+
+                if (findType == FindType.Map)
                 {
-                    // In cashshop
-                    pw.WriteByte(0x02);
                     pw.WriteInt(0);
-                }
-                else if (isChannel)
-                {
-                    // In a channel
-                    pw.WriteByte(0x01);
-                    pw.WriteInt(map); // The channel ID
-                }
-                else
-                {
-                    // In a map
-                    pw.WriteByte(0x03);
-                    pw.WriteInt(map);
+                    pw.WriteInt(0);
                 }
             }
             else
             {
-                pw.WriteByte(0x0A);
+                pw.WriteByte((byte)WhisperType.NotFound);
                 pw.WriteString(who);
                 pw.WriteSByte(dunno);
             }
