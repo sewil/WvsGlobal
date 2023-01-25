@@ -63,15 +63,7 @@ namespace WvsBeta.Center
             var chr = FindCharacter(id, false);
             if (chr == null)
             {
-                chr = new Character()
-                {
-                    Name = name,
-                    ID = id,
-                    isCCing = false,
-                    GMLevel = gm,
-                    IsOnline = true,
-                };
-
+                chr = new Character(name, id, false, gm, true);
                 CharacterStore.Add(chr);
             }
             else if (chr.isCCing)

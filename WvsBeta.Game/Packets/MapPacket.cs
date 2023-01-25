@@ -20,14 +20,12 @@ namespace WvsBeta.Game
     public static class MapPacket
     {
         [Flags]
-        public enum AvatarModFlag
+        public enum AvatarModFlag : byte
         {
-            Skin = 1,
-            Face = 2,
-            Equips = 4,
-            ItemEffects = 8 | 0x10,
-            Speed = 0x10,
-            Rings = 0x20
+            AvatarLook = 1,
+            Speed = 2,
+            ItemEffects = 4,
+            Rings = 8
         }
 
         public static void HandleMove(GameCharacter chr, Packet packet)
@@ -610,41 +608,28 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendAvatarModified(GameCharacter chr, AvatarModFlag AvatarModFlag = 0)
+        public static void SendAvatarModified(GameCharacter chr, AvatarModFlag flags = 0)
         {
+            Server.Instance.CenterConnection.MessengerAvatar(chr);
             Packet pw = new Packet(ServerMessages.AVATAR_MODIFIED);
             pw.WriteInt(chr.CharacterStat.ID);
-            pw.WriteInt((int)AvatarModFlag);
+            pw.WriteByte((byte)flags);
 
-            if ((AvatarModFlag & AvatarModFlag.Skin) == AvatarModFlag.Skin)
-                pw.WriteByte(chr.CharacterStat.Skin);
-            if ((AvatarModFlag & AvatarModFlag.Face) == AvatarModFlag.Face)
-                pw.WriteInt(chr.CharacterStat.Face);
-
-            pw.WriteBool((AvatarModFlag & AvatarModFlag.Equips) == AvatarModFlag.Equips);
-            if ((AvatarModFlag & AvatarModFlag.Equips) == AvatarModFlag.Equips)
+            if (flags.HasFlag(AvatarModFlag.AvatarLook))
             {
-                pw.WriteByte(0); //My Hair is a Bird, Your Argument is Invalid
-                pw.WriteInt(chr.CharacterStat.Hair);
-                chr.Inventory.GeneratePlayerPacket(pw);
-                pw.WriteByte(0xFF); // Equips shown end
-                pw.WriteInt(chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, true));
-                pw.WriteInt(chr.GetSpawnedPet()?.ItemID ?? 0);
+                new AvatarLook(chr).Encode(pw);
             }
-
-            pw.WriteBool((AvatarModFlag & AvatarModFlag.ItemEffects) == AvatarModFlag.ItemEffects);
-            if ((AvatarModFlag & AvatarModFlag.ItemEffects) == AvatarModFlag.ItemEffects)
+            if (flags.HasFlag(AvatarModFlag.Speed))
             {
-                pw.WriteInt(chr.Inventory.ActiveItemID);
-                pw.WriteInt(chr.Inventory.ChocoCount);
-            }
-
-            pw.WriteBool((AvatarModFlag & AvatarModFlag.Speed) == AvatarModFlag.Speed);
-            if ((AvatarModFlag & AvatarModFlag.Speed) == AvatarModFlag.Speed)
                 pw.WriteByte(chr.PrimaryStats.TotalSpeed);
+            }
 
-            pw.WriteBool((AvatarModFlag & AvatarModFlag.Rings) == AvatarModFlag.Rings);
-            if ((AvatarModFlag & AvatarModFlag.Rings) == AvatarModFlag.Rings)
+            if (flags.HasFlag(AvatarModFlag.ItemEffects))
+            {
+                pw.WriteByte(0);
+            }
+            pw.WriteBool(flags.HasFlag(AvatarModFlag.Rings));
+            if (flags.HasFlag(AvatarModFlag.Rings))
             {
                 pw.WriteLong(0);
                 pw.WriteLong(0);
@@ -652,7 +637,6 @@ namespace WvsBeta.Game
 
             chr.Field.SendPacket(chr, pw, chr);
         }
-
 
         public static void SendPlayerLevelupAnim(GameCharacter chr)
         {

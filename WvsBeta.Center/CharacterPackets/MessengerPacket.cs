@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ConstrainedExecution;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center.CharacterPackets
@@ -7,8 +9,8 @@ namespace WvsBeta.Center.CharacterPackets
 
     enum MessengerAction : byte
     {
-        SelfEnterResult = 0,
-        Enter = 1,
+        Enter = 0,
+        SelfEnterResult = 1,
         Leave = 2,
         Invite = 3,
         InviteResult = 4,
@@ -20,21 +22,25 @@ namespace WvsBeta.Center.CharacterPackets
 
     public static class MessengerPacket
     {
-        // Used for visually displaying Characters in messenger
-        public static Packet SelfEnter(Character chr)
+        //Used to inform the client which slot it's going to enter
+        public static Packet SelfEnter(byte slot)
         {
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerAction.SelfEnterResult);
-            ModifyMessengerSlot(packet, chr, true);
+            packet.WriteByte(slot);
             return packet;
         }
 
-        //Used to inform the client which slot it's going to enter
-        public static Packet Enter(byte slot)
+        // Used for visually displaying Characters in messenger
+        public static Packet Enter(Character chr)
         {
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerAction.Enter);
-            packet.WriteByte(slot);
+            packet.WriteByte(chr.MessengerSlot);
+            new AvatarLook(chr).Encode(packet);
+            packet.WriteString(chr.Name);
+            packet.WriteByte(chr.ChannelID);
+            packet.WriteBool(true); //Announce in chat
             return packet;
         }
 
@@ -88,35 +94,8 @@ namespace WvsBeta.Center.CharacterPackets
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerFunction.Avatar);
             packet.WriteByte(chr.MessengerSlot);
-            ModifyMessengerSlot(packet, chr, false);
+            new AvatarLook(chr).Encode(packet);
             return packet;
-        }
-        
-        private static void ModifyMessengerSlot(Packet packet, Character chr, bool InChat)
-        {
-            packet.WriteByte(chr.MessengerSlot);
-            AddAvatar(packet, chr);
-            packet.WriteString(chr.Name);
-            packet.WriteByte(chr.ChannelID);
-            packet.WriteBool(InChat); //Announce in chat
-        }
-        
-        // This is super wonky, we should utilize PacketHelper.AddAvatar for this, but it's in the WvsBeta.Game namespace, so it's not available..
-        private static void AddAvatar(Packet packet, Character pCharacter)
-        {
-            packet.WriteByte(pCharacter.Gender);
-            packet.WriteByte(pCharacter.Skin);
-            packet.WriteInt(pCharacter.Face);
-            packet.WriteByte(0); // Part of equips lol
-            packet.WriteInt(pCharacter.Hair);
-            foreach (var kvp in pCharacter.Equips)
-            {
-                packet.WriteByte(kvp.Key);
-                packet.WriteInt(kvp.Value);
-            }
-            packet.WriteByte(0xFF); // Equips shown end
-            packet.WriteInt(pCharacter.WeaponStickerID);
-            // Eventually this will contain pet item ID
         }
     }
 }

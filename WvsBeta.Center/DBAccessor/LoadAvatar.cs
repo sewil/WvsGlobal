@@ -25,7 +25,7 @@ namespace WvsBeta.Center.DBAccessor
             }
 
 
-            ad.AvatarLook = new AvatarLook(ad.CharacterStat, equips, equipsCash, true);
+            ad.AvatarLook = new AvatarLook(ad.CharacterStat, equips, equipsCash, false);
 
             return ad;
         }

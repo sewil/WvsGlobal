@@ -110,6 +110,7 @@
     <Compile Include="Buddy\Buddy.cs" />
     <Compile Include="Buddy\BuddyList.cs" />
     <Compile Include="Character.cs" />
+    <Compile Include="CharacterInventory.cs" />
     <Compile Include="CharacterPackets\MessengerPacket.cs" />
     <Compile Include="DBAccessor\CharacterDBAccessor.cs" />
     <Compile Include="DBAccessor\CheckDuplicateID.cs" />

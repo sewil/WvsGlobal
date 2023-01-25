@@ -713,7 +713,7 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "hair", add = false });
             Hair = id;
             CharacterStatsPacket.SendStatChange(this, (int)CharacterStatsPacket.StatFlags.Hair, id);
-            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.Equips);//Because hair is a equip I guess
+            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);//Because hair is a equip I guess
         }
 
         public void SetFace(int id)
@@ -721,7 +721,7 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "face", add = false });
             Face = id;
             CharacterStatsPacket.SendStatChange(this, (int)CharacterStatsPacket.StatFlags.Eyes, id);
-            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.Face);
+            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);
         }
 
         public void SetSkin(byte id)
@@ -729,7 +729,7 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "skin", add = false });
             Skin = id;
             CharacterStatsPacket.SendStatChange(this, (byte)CharacterStatsPacket.StatFlags.Skin, id);
-            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.Skin);
+            MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);
         }
 
         private byte ParseGenderString(string input)
@@ -854,7 +854,7 @@ namespace WvsBeta.Game
                                 var SkinID = Convert.ToByte(Value);
                                 if (SkinID >= 0 && SkinID < 6)
                                 {
-                                    AvatarMod |= MapPacket.AvatarModFlag.Skin;
+                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
                                     dwFlag |= CharacterStatsPacket.StatFlags.Skin;
                                     Skin = SkinID;
                                 }
@@ -867,7 +867,7 @@ namespace WvsBeta.Game
                                 var FaceID = Convert.ToInt32(Value);
                                 if (DataProvider.Equips.ContainsKey(FaceID))
                                 {
-                                    AvatarMod |= MapPacket.AvatarModFlag.Face;
+                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
                                     dwFlag |= CharacterStatsPacket.StatFlags.Eyes;
                                     Face = FaceID;
                                 }
@@ -880,7 +880,7 @@ namespace WvsBeta.Game
                                 var HairID = Convert.ToInt32(Value);
                                 if (DataProvider.Equips.ContainsKey(HairID))
                                 {
-                                    AvatarMod |= MapPacket.AvatarModFlag.Equips;
+                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
                                     dwFlag |= CharacterStatsPacket.StatFlags.Hair;
                                     Hair = HairID;
                                 }

@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using static WvsBeta.Common.Constants;
 
 namespace WvsBeta.Center
 {
@@ -16,9 +20,6 @@ namespace WvsBeta.Center
         public Messenger Messenger { get; set; }
         public byte MessengerSlot { get; set; }
 
-        public int WeaponStickerID { get; set; }
-
-        public Dictionary<byte, int> Equips { get; set; }
         private int _PartyID;
         public override int PartyID
         {
@@ -39,7 +40,15 @@ namespace WvsBeta.Center
             }
         }
 
-        public Character() { }
+        public Character(string name, int id, bool isCCing, byte gmLevel, bool isOnline)
+        {
+            Name = name;
+            ID = id;
+            this.isCCing = isCCing;
+            GMLevel = gmLevel;
+            IsOnline = isOnline;
+            Inventory = new CharacterInventory(0, id);
+        }
 
         public Character(Packet pr)
         {
@@ -47,6 +56,20 @@ namespace WvsBeta.Center
             LastChannel = pr.ReadByte();
             FriendsList = new BuddyList(pr);
             base.DecodeForTransfer(pr);
+            Inventory = new CharacterInventory(UserID, ID);
+        }
+
+        public void SetFromAvatarLook(AvatarLook avatar)
+        {
+            int hairi = avatar.CashInUnseen ? 0 : 1;
+            int unseeni = avatar.CashInUnseen ? 1 : 0;
+            Inventory.Equips[hairi] = avatar.HairEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
+            Inventory.Equips[unseeni] = avatar.UnseenEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
+
+            Gender = avatar.Gender;
+            Skin = avatar.Skin;
+            Face = avatar.Face;
+            Hair = avatar.HairEquip[0];
         }
 
         public new void EncodeForTransfer(Packet pw)

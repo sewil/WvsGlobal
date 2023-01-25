@@ -107,7 +107,7 @@ namespace WvsBeta.Game
 
             if (droppedFromEquips)
             {
-                MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
+                MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
             }
         }
 
@@ -133,7 +133,7 @@ namespace WvsBeta.Game
             chr.Inventory.SetItem(inventory, slotTo, from);
 
             SwitchSlots(chr, slotFrom, slotTo, inventory);
-            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
+            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
         private static void StackItems(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
@@ -213,7 +213,7 @@ namespace WvsBeta.Game
             chr.Inventory.SetItem(inventory, slotFrom, to);
             chr.Inventory.SetItem(inventory, slotTo, from);
             SwitchSlots(chr, slotFrom, slotTo, inventory);
-            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
+            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
         private static bool canWearItem(GameCharacter chr, CharacterPrimaryStats stats, EquipData data, short slot)
@@ -308,7 +308,7 @@ namespace WvsBeta.Game
             chr.Inventory.SetItem(inventory, slotTo, equip);
 
             SwitchSlots(chr, slotFrom, slotTo, inventory);
-            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
+            MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
 
         }
 
@@ -523,7 +523,7 @@ namespace WvsBeta.Game
                 succeeded = true;
 
                 AddItem(chr, Inventory.Equip, equip, true);
-                MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.Equips);
+                MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
                 SendItemScrolled(chr, true);
             }
             else
