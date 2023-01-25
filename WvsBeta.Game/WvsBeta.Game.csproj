@@ -147,6 +147,7 @@
     <Compile Include="GameObjects\DataLoading\Foothold.cs" />
     <Compile Include="GameObjects\FieldSet.cs" />
     <Compile Include="GameObjects\IFieldObj.cs" />
+    <Compile Include="Packets\FieldEffectPacket.cs" />
     <Compile Include="Scripting\IGameScript.cs" />
     <Compile Include="Scripting\INpcScript.cs" />
     <Compile Include="GameObjects\Kite.cs" />

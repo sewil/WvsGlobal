@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -627,7 +628,7 @@ namespace WvsBeta.Game
 
             if (newMap.PQPortalOpen)
             {
-                MapPacket.PortalEffect(Field);
+                Field.SendPacket(FieldEffectPacket.QuestEffect());
             }
             newMap.AddPlayer(this);
             Summons.MigrateSummons(prevMap, newMap);

@@ -8,6 +8,7 @@ using static WvsBeta.Game.GameObjects.Map_Snowball;
 using System;
 using log4net;
 using log4net.Core;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.Events
 {
@@ -97,13 +98,13 @@ namespace WvsBeta.Game.Events
 
             Winners.ForEach(c =>
             {
-                MapPacket.MapEffect(c, 4, "Coconut/Victory", true);
-                MapPacket.MapEffect(c, 3, "event/coconut/victory", true);
+                c.SendPacket(FieldEffectPacket.Sound("Coconut/Victory"));
+                c.SendPacket(FieldEffectPacket.Effect("event/coconut/victory"));
             });
             Losers.ForEach(c =>
             {
-                MapPacket.MapEffect(c, 4, "Coconut/Failed", true);
-                MapPacket.MapEffect(c, 3, "event/coconut/lose", true);
+                c.SendPacket(FieldEffectPacket.Sound("Coconut/Failed"));
+                c.SendPacket(FieldEffectPacket.Effect("event/coconut/lose"));
             });
 
             RepeatingAction.Start("snowball warper", e =>

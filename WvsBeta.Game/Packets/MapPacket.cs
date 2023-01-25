@@ -200,35 +200,35 @@ namespace WvsBeta.Game
             switch (status)
             {
                 case 0:
-                {
-                    if (chr.HP == 0)
                     {
-                        chr.HandleDeath();
+                        if (chr.HP == 0)
+                        {
+                            chr.HandleDeath();
+                        }
+                        else if (!chr.IsGM)
+                        {
+                            Program.MainForm.LogAppend($"Not handling death of {chr.CharacterStat.ID}, because user is not dead. Killing him again. HP: " + chr.HP);
+                            // Kill him anyway
+                            chr.DamageHP(30000);
+                        }
+                        else
+                        {
+                            // Admin /map 0
+                            chr.ChangeMap(status);
+                        }
+                        break;
                     }
-                    else if (!chr.IsGM)
-                    {
-                        Program.MainForm.LogAppend($"Not handling death of {chr.CharacterStat.ID}, because user is not dead. Killing him again. HP: " + chr.HP);
-                        // Kill him anyway
-                        chr.DamageHP(30000);
-                    }
-                    else
-                    {
-                        // Admin /map 0
-                        chr.ChangeMap(status);
-                    }
-                    break;
-                }
                 case -1:
                     HandleEnterPortal(chr, portalName);
                     break;
                 default:
-                {
-                    if (chr.IsGM)
                     {
-                        chr.ChangeMap(status);
+                        if (chr.IsGM)
+                        {
+                            chr.ChangeMap(status);
+                        }
+                        break;
                     }
-                    break;
-                }
             }
         }
 
@@ -383,44 +383,6 @@ namespace WvsBeta.Game
                 pw.WriteShort(chairid);
             }
             chr.SendPacket(pw);
-        }
-
-        public static void SendBossHPBar(Map pField, int pHP, int pMaxHP, int pColorBottom, int pColorTop)
-        {
-            Packet pw = new Packet(ServerMessages.FIELD_EFFECT);
-            pw.WriteByte(5);
-            pw.WriteInt(pHP);
-            pw.WriteInt(pMaxHP);
-            pw.WriteInt(pColorTop);
-            pw.WriteInt(pColorBottom);
-            pField.SendPacket(pw);
-        }
-
-        public static void MapEffect(GameCharacter chr, byte type, string message, bool ToTeam)
-        {
-            //Sounds : Party1/Clear // Party1/Failed
-            //Messages : quest/party/clear // quest/party/wrong_kor
-            Packet pw = new Packet(ServerMessages.FIELD_EFFECT);
-            pw.WriteByte(type); //4: sound 3: message
-            pw.WriteString(message);
-            if (!ToTeam)
-            {
-                chr.Field.SendPacket(pw);
-            }
-            else
-            {
-                chr.SendPacket(pw);
-            }
-        }
-
-        public static void PortalEffect(Map field)
-        {
-
-            Packet pw = new Packet(ServerMessages.FIELD_EFFECT);
-            pw.WriteByte(2); //2
-            pw.WriteByte(2); //?? Unknown 
-            pw.WriteString("gate"); //gate
-            field.SendPacket(pw);
         }
 
         public static void Kite(GameCharacter chr, Kite Kite)

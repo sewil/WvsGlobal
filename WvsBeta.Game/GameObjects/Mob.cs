@@ -7,6 +7,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -121,7 +122,7 @@ namespace WvsBeta.Game
 
                     if (IsBoss && Data.HPTagBgColor > 0)
                     {
-                        MapPacket.SendBossHPBar(Field, DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor);
+                        Field.SendPacket(FieldEffectPacket.BossHPBar(DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
                     }
                 }
 
@@ -185,7 +186,7 @@ namespace WvsBeta.Game
 
                 if (IsBoss && Data.HPTagBgColor > 0) // There's no way to hide this :|
                 {
-                    MapPacket.SendBossHPBar(Field, DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor);
+                    Field.SendPacket(FieldEffectPacket.BossHPBar(DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
                 }
             }
             else

@@ -5,6 +5,7 @@ using System.Runtime.Remoting.Messaging;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Game.Events.PartyQuests;
+using WvsBeta.Game.Packets;
 using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game.Events
@@ -428,7 +429,7 @@ namespace WvsBeta.Game.Events
         public void OpenPortal(Map map) => WithCheck(() =>
         {
             map.PQPortalOpen = true;
-            MapPacket.PortalEffect(map);
+            map.SendPacket(FieldEffectPacket.QuestEffect());
             RepeatingAction.Start("KPQ-UNSTUCKER", time => _party.ForEach(InventoryPacket.NoChange), 6000, 0);
             return KPQStageResult.CHECK;
         });
@@ -448,13 +449,13 @@ namespace WvsBeta.Game.Events
         {
             if (success)
             {
-                MapPacket.MapEffect(_leader, 4, "Party1/Clear", false);
-                MapPacket.MapEffect(_leader, 3, "quest/party/clear", false);
+                _leader.Field.SendPacket(FieldEffectPacket.Sound("Party1/Clear"));
+                _leader.Field.SendPacket(FieldEffectPacket.Effect("quest/party/clear"));
             }
             else
             {
-                MapPacket.MapEffect(_leader, 4, "Party1/Failed", false);
-                MapPacket.MapEffect(_leader, 3, "quest/party/wrong_kor", false);
+                _leader.Field.SendPacket(FieldEffectPacket.Sound("Party1/Failed"));
+                _leader.Field.SendPacket(FieldEffectPacket.Effect("quest/party/wrong_kor"));
             }
             //TODO not sure if this packet is correct, might be left over from v40b? Test.
             return KPQStageResult.CHECK;
