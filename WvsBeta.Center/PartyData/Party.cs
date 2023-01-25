@@ -15,7 +15,6 @@ namespace WvsBeta.Center
         public readonly int SrcMap;
         public readonly short X;
         public readonly short Y;
-
         public DoorInformation(int dstMap, int srcMap, short x, short y, int owner)
         {
             DstMap = dstMap;
@@ -99,6 +98,7 @@ namespace WvsBeta.Center
         public readonly int world;
         public readonly PartyMember[] members = new PartyMember[Constants.MaxPartyMembers];
         public PartyMember leader { get; private set; }
+        public IEnumerable<DoorInformation> Doors { get { return members.Where(m => m != null).Select(m => m.door); } }
 
         private Party(int id, PartyMember ldr)
         {
@@ -179,19 +179,19 @@ namespace WvsBeta.Center
             var toInvite = CenterServer.Instance.FindCharacter(invitee);
             if (toInvite == null)
             {
-                ldr.SendPacket(PartyPacket.PartyError(PartyFunction.UNABLE_TO_FIND_PLAYER));
+                ldr.SendPacket(PartyPacket.Error(PartyFunctionError.UNABLE_TO_FIND_PLAYER));
             }
             else if (Invites.ContainsKey(toInvite.ID))
             {
-                ldr.SendPacket(PartyPacket.PartyErrorWithName(PartyFunction.INVITE_USER_ALREADY_HAS_INVITE, toInvite.Name));
+                ldr.SendPacket(PartyPacket.Error(PartyFunctionError.INVITE_USER_ALREADY_HAS_INVITE, toInvite.Name));
             }
             else if (toInvite.PartyID != 0)
             {
-                ldr.SendPacket(PartyPacket.PartyError(PartyFunction.JOIN_ALREADY_JOINED));
+                ldr.SendPacket(PartyPacket.Error(PartyFunctionError.JOIN_ALREADY_JOINED));
             }
             else if (IsFull())
             {
-                ldr.SendPacket(PartyPacket.PartyError(PartyFunction.JOIN_ALREADY_FULL));
+                ldr.SendPacket(PartyPacket.Error(PartyFunctionError.JOIN_ALREADY_FULL));
             }
             else
             {
@@ -208,7 +208,7 @@ namespace WvsBeta.Center
             {
                 _log.Debug($"Invite to party {partyId} has been declined by {decliner.ID}");
                 Invites.Remove(decliner.ID);
-                leader.SendPacket(PartyPacket.PartyErrorWithName(PartyFunction.INVITE_REJECTED, decliner.Name));
+                leader.SendPacket(PartyPacket.Error(PartyFunctionError.INVITE_REJECTED, decliner.Name));
             }
             else
             {
@@ -222,7 +222,7 @@ namespace WvsBeta.Center
             {
                 Program.MainForm.LogAppend("Trying to join party while no invite. CharacterID: {0}, party ID {1}",
                     chr.ID, partyId);
-                chr.SendPacket(PartyPacket.PartyError(PartyFunction.UNABLE_TO_FIND_PLAYER));
+                chr.SendPacket(PartyPacket.Error(PartyFunctionError.UNABLE_TO_FIND_PLAYER));
                 return;
             }
 
@@ -230,21 +230,21 @@ namespace WvsBeta.Center
             if (IsFull())
             {
                 _log.Warn($"Invite accepted to party {partyId} by {chr.ID}, but its already full.");
-                chr.SendPacket(PartyPacket.PartyError(PartyFunction.JOIN_ALREADY_FULL));
+                chr.SendPacket(PartyPacket.Error(PartyFunctionError.JOIN_ALREADY_FULL));
                 return;
             }
 
             if (chr.PartyID != 0)
             {
                 _log.Warn($"Invite accepted to party {partyId} by {chr.ID}, the person is already in a party");
-                chr.SendPacket(PartyPacket.PartyError(PartyFunction.JOIN_ALREADY_JOINED));
+                chr.SendPacket(PartyPacket.Error(PartyFunctionError.JOIN_ALREADY_JOINED));
                 return;
             }
 
             if (leader.GetMap() != chr.MapID)
             {
                 _log.Warn($"Invite accepted to party {partyId} by {chr.ID}, but is not in the same map.");
-                chr.SendPacket(PartyPacket.PartyError(PartyFunction.UNABLE_TO_FIND_PLAYER));
+                chr.SendPacket(PartyPacket.Error(PartyFunctionError.UNABLE_TO_FIND_PLAYER));
                 return;
             }
 
@@ -267,7 +267,7 @@ namespace WvsBeta.Center
 
             members[slot] = member;
 
-            ForAllMembers(m => m.SendPacket(PartyPacket.JoinParty(member, this)));
+            ForAllMembers(m => m.SendPacket(PartyPacket.Join(this, member)));
             member.SendHpUpdate();
             SendUpdatePartyData();
             UpdateAllDoors();
@@ -280,7 +280,7 @@ namespace WvsBeta.Center
             if (slot == -1 || fucker.PartyID == 0)
             {
                 _log.Error($"{fucker.ID} tried to get out of party {partyId}, but is not in it?");
-                fucker.SendPacket(PartyPacket.PartyError(PartyFunction.WITHDRAW_NOT_JOINED));
+                fucker.SendPacket(PartyPacket.Error(PartyFunctionError.WITHDRAW_NOT_JOINED));
             }
             else if (fucker.ID == leader.id)
             {
@@ -303,7 +303,7 @@ namespace WvsBeta.Center
         public void SilentUpdate(int charId, int disconnecting = -1)
         {
             var member = GetById(charId);
-            ForAllMembers(m => m.SendPacket(PartyPacket.SilentUpdate(m, this, disconnecting)));
+            ForAllMembers(m => m.SendPacket(PartyPacket.Load(this, m, disconnecting)));
             member.SendHpUpdate();
             SendUpdatePartyData();
             UpdateAllDoors();
@@ -408,7 +408,13 @@ namespace WvsBeta.Center
             {
                 member.door = newDoor;
                 int idx = GetCharacterSlot(member);
-                ForAllMembers(m => { if (m.GetChannel() == member.GetChannel()) m.SendPacket(PartyPacket.UpdateDoor(newDoor, (byte)idx)); });
+                ForAllMembers(m =>
+                {
+                    if (m.GetChannel() == member.GetChannel())
+                    {
+                        m.SendPacket(PartyPacket.TownPortalChanged(this, m, (byte)idx));
+                    }
+                });
             }
         }
 
@@ -419,12 +425,12 @@ namespace WvsBeta.Center
             foreach (var door in doors.ToList())
             {
                 var doorOwner = GetById(door.OwnerId);
-                foreach (var m in mems.ToList())
+                foreach (var member in mems.ToList())
                 {
                     var idx = (byte)GetCharacterSlot(door.OwnerId);
-                    if (m.GetMap() == door.DstMap && m.GetChannel() == doorOwner.GetChannel())
+                    if (member.GetMap() == door.DstMap && member.GetChannel() == doorOwner.GetChannel())
                     {
-                        m.SendPacket(PartyPacket.UpdateDoor(door, idx));
+                        member.SendPacket(PartyPacket.TownPortalChanged(this, member, idx));
                     }
                 }
             }
@@ -475,14 +481,14 @@ namespace WvsBeta.Center
             if (leader.Job == 0)
             {
                 _log.Warn($"Cannot create party because the leader would be a beginner. Leader {leader.ID}");
-                leader.SendPacket(PartyPacket.PartyError(PartyFunction.CREATE_NEW_BEGINNER_DISALLOWED));
+                leader.SendPacket(PartyPacket.Error(PartyFunctionError.CREATE_NEW_BEGINNER_DISALLOWED));
                 return;
             }
 
             if (leader.PartyID != 0)
             {
                 _log.Warn($"Cannot create party because the leader is already in a party. Leader {leader.ID}");
-                leader.SendPacket(PartyPacket.PartyError(PartyFunction.CREATE_NEW_ALREADY_JOINED));
+                leader.SendPacket(PartyPacket.Error(PartyFunctionError.CREATE_NEW_ALREADY_JOINED));
                 return;
             }
 

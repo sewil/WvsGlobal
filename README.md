@@ -20,7 +20,7 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] FM portal SoundEffect
 - [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
 - [ ] Guild (opcodes, packets, db)
-- [ ] Door crashes for all pt members
+- [ ] Doors not showing up in town, wrong spawn position
 - [x] Sitting
 - [x] Buddy map/find crash
 - [x] Remote AvatarLook not updating in messenger
