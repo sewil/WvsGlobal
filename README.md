@@ -9,18 +9,21 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Fix blocked character creation in non-Scania worlds (worldID > 0)
 
 ### Game
-- [ ] Translate/convert remaining scripts
-- [ ] Update drop data
 - [ ] Scrolling
-- [ ] Adobis Mission, Zakum
-- [ ] Deep Sea Gorge, Pianus
-- [ ] Deep Ludi, Papulatus
-- [ ] Player Shop
-- [ ] Omok
-- [ ] FM portal SoundEffect
-- [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
-- [ ] Guild (opcodes, packets, db)
+- [ ] Wrong party map status (leader id in wrong position?)
 - [ ] Doors not showing up in town, wrong spawn position
+- [ ] FM Store
+- [ ] Omok
+- [ ] Guild (opcodes, packets, db)
+- [ ] Quests (handle completion, etc)
+- [ ] Scriptify KPQ, remove pqportalopen field
+- [ ] FM portal, no sound effect
+- [ ] Translate/convert remaining scripts
+- [ ] Zakum (Adobis Mission)
+- [ ] Pianus (Aqua, Deep Sea Gorge)
+- [ ] Papulatus
+- [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
+- [ ] Update drop data
 - [x] Sitting
 - [x] Buddy map/find crash
 - [x] Remote AvatarLook not updating in messenger
@@ -33,9 +36,6 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 ### Cash Shop
 - [x] Crash on move item from CS to inventory
 - [x] Best item list empty
-
-### Quests
-- [ ] Quest completion handler
 
 ## Notes
 - AES no worky, use maplecrypt (shanda).
