@@ -15,13 +15,13 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Adobis Mission, Zakum
 - [ ] Deep Sea Gorge, Pianus
 - [ ] Deep Ludi, Papulatus
-- [ ] Sitting
 - [ ] Player Shop
 - [ ] Omok
 - [ ] FM portal SoundEffect
 - [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
 - [ ] Guild (opcodes, packets, db)
 - [ ] Door crashes for all pt members
+- [x] Sitting
 - [x] Buddy map/find crash
 - [x] Remote AvatarLook not updating in messenger
 - [x] Cash eqps unseen
