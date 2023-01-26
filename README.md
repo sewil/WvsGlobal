@@ -10,8 +10,6 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 
 ### Game
 - [ ] Scrolling
-- [ ] Wrong party map status (leader id in wrong position?)
-- [ ] Doors not showing up in town, wrong spawn position
 - [ ] FM Store
 - [ ] Omok
 - [ ] Guild (opcodes, packets, db)
@@ -24,6 +22,10 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Papulatus
 - [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
 - [ ] Update drop data
+- [ ] Town door not going away for non-owners when leaving/disbanding pt
+- [ ] Pt job/level not updating
+- [x] Wrong party map status (leader id in wrong position?)
+- [x] Doors not showing up in town, wrong spawn position
 - [x] Sitting
 - [x] Buddy map/find crash
 - [x] Remote AvatarLook not updating in messenger

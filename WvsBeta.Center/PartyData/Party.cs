@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Runtime.ConstrainedExecution;
+using System.Security.Cryptography;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
@@ -400,19 +404,19 @@ namespace WvsBeta.Center
             }
         }
 
-        public void UpdateDoor(DoorInformation newDoor, int charId)
+        public void UpdateDoor(DoorInformation newDoor, int ownerId)
         {
-            Program.MainForm.LogDebug("UPDATING DOOR: " + charId);
-            var member = GetById(charId);
-            if (member != null)
+            Program.MainForm.LogDebug("UPDATING DOOR: " + ownerId);
+            var doorOwner = GetById(ownerId);
+            if (doorOwner != null)
             {
-                member.door = newDoor;
-                int idx = GetCharacterSlot(member);
+                doorOwner.door = newDoor;
+                byte idx = (byte)GetCharacterSlot(doorOwner);
                 ForAllMembers(m =>
                 {
-                    if (m.GetChannel() == member.GetChannel())
+                    if (m.GetChannel() == doorOwner.GetChannel())
                     {
-                        m.SendPacket(PartyPacket.TownPortalChanged(this, m, (byte)idx));
+                        m.SendPacket(PartyPacket.TownPortalChangedUnk(this, m, newDoor, idx));
                     }
                 });
             }
@@ -424,15 +428,7 @@ namespace WvsBeta.Center
             var doors = mems.Select(m => m.door);
             foreach (var door in doors.ToList())
             {
-                var doorOwner = GetById(door.OwnerId);
-                foreach (var member in mems.ToList())
-                {
-                    var idx = (byte)GetCharacterSlot(door.OwnerId);
-                    if (member.GetMap() == door.DstMap && member.GetChannel() == doorOwner.GetChannel())
-                    {
-                        member.SendPacket(PartyPacket.TownPortalChanged(this, member, idx));
-                    }
-                }
+                UpdateDoor(door, door.OwnerId);
             }
         }
 

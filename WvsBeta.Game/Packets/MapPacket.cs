@@ -475,7 +475,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SpawnPortal(GameCharacter chr, int srcMapId, int destMapId, short destX, short destY)
+        public static Packet SpawnPortal(int srcMapId, int destMapId, short destX, short destY)
         {
             //spawns a portal (Spawnpoint in the map you are going to spawn in)
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL);
@@ -484,7 +484,9 @@ namespace WvsBeta.Game
             pw.WriteInt(srcMapId);
             pw.WriteShort(destX);
             pw.WriteShort(destY);
-            chr.SendPacket(pw);
+
+            Trace.WriteLine($"TOWN_PORTAL dest: {destMapId} src: {srcMapId} x:{destX} y: {destY}");
+            return pw;
         }
 
         public static void SpawnPortalParty(GameCharacter chr, byte ownerIdIdx, int srcMapId, int destMapId, short destX, short destY)
@@ -764,7 +766,7 @@ namespace WvsBeta.Game
             pw.WriteShort(door.X);
             pw.WriteShort(door.Y);
 
-            Trace.WriteLine($"Spawning Door @ {door.X} {door.Y}, owner {door.OwnerId}");
+            Trace.WriteLine($"TOWN_PORTAL_CREATED enterType: {enterType} ownerId: {door.OwnerId} x: {door.X} y: {door.Y}");
 
             return pw;
         }
@@ -774,6 +776,8 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL_REMOVED);
             pw.WriteByte(leaveType);
             pw.WriteInt(door.OwnerId);
+
+            Trace.WriteLine($"TOWN_PORTAL_REMOVED leaveType: {leaveType} ownerId: {door.OwnerId}");
             return pw;
         }
 
@@ -786,7 +790,7 @@ namespace WvsBeta.Game
             {
                 // When you enter from town and go to a training map
                 // Resulting map is _not_ a town
-                if (chr.Field.DoorPool.DoorsLeadingHere.TryGetValue(charid, out var door) && door.CanEnterDoor(chr))
+                if (chr.Field.DoorPool.TownDoors.TryGetValue(charid, out var door) && door.CanEnterDoor(chr))
                 {
                     chr.ChangeMap(door.FieldId, PartyData.GetMemberIdx(charid) ?? 0, door);
                     return;

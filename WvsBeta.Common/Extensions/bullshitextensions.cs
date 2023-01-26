@@ -101,7 +101,20 @@ namespace WvsBeta.Common
             onNotFound();
             return false;
         }
-        
+        public static bool TryFind<T>(this IEnumerable<T> enumerable, Predicate<T> predicate, out T found)
+        {
+            foreach (T element in enumerable)
+            {
+                if (predicate(element))
+                {
+                    found = element;
+                    return true;
+                }
+            }
+            found = default(T);
+            return false;
+        }
+
     }
 }
 // joren wuz heer

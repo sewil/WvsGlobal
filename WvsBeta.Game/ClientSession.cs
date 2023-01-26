@@ -162,10 +162,6 @@ namespace WvsBeta.Game
                 // Block packets as we are migrating
                 else if (Server.Instance.InMigration == false || Server.Instance.IsNewServerInMigration)
                 {
-                    if (header != ClientMessages.PONG)
-                    {
-                        Trace.WriteLine($"[{Player.Character.Name}->GameServer] {header} - {packet}");
-                    }
                     var character = Player.Character;
 
                     if (logPackets.Contains(header))
@@ -627,13 +623,6 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
-            if (
-                pPacket.Opcode != (byte)(ServerMessages.PING) &&
-                pPacket.Opcode != (byte)(ServerMessages.STAT_CHANGED)
-            )
-            {
-                Trace.WriteLine($"[GameServer->{Player.Character.Name}] {(ServerMessages)pPacket.Opcode} - {pPacket}");
-            }
             base.SendPacket(pPacket);
         }
     }

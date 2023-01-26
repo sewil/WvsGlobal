@@ -35,14 +35,14 @@ namespace WvsBeta.Game
     public class DoorManager
     {
 
-        public readonly Dictionary<int, MysticDoor> DoorsLeadingHere;
+        public readonly Dictionary<int, MysticDoor> TownDoors;
         private readonly Dictionary<int, MysticDoor> Doors;
         private readonly Map Field;
 
         public DoorManager(Map field)
         {
             Doors = new Dictionary<int, MysticDoor>();
-            DoorsLeadingHere = new Dictionary<int, MysticDoor>();
+            TownDoors = new Dictionary<int, MysticDoor>();
             Field = field;
         }
 
@@ -55,7 +55,7 @@ namespace WvsBeta.Game
 
                 Field.SendPacket(MapPacket.RemoveDoor(door, 0));
 
-                DataProvider.Maps[Field.ReturnMap].DoorPool.DoorsLeadingHere.Remove(ownerCharId);
+                DataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Remove(ownerCharId);
 
                 //in case owner is in town when it dies
                 if (door.OwnerPartyId == 0)
@@ -78,11 +78,9 @@ namespace WvsBeta.Game
         {
             var door = new MysticDoor(chr.ID, chr.PartyID, x, y, Field.ID, endTime);
             Doors.Add(chr.ID, door);
+            DataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Add(chr.ID, door);
             Field.SendPacket(MapPacket.ShowDoor(door, 0));
-
-            DataProvider.Maps[Field.ReturnMap].DoorPool.DoorsLeadingHere.Add(chr.ID, door);
-
-            //Owner is never in town when spawning door out of town, so no need to send portal spawn packet til he enters town
+            chr.SendPacket(MapPacket.SpawnPortal(door.FieldId, Field.ReturnMap, door.X, door.Y));
 
             if (door.OwnerPartyId != 0)
             {
@@ -90,20 +88,21 @@ namespace WvsBeta.Game
             }
         }
 
-        public void ShowAllDoorsTo(GameCharacter fucker)
+        public void ShowAllDoorsTo(GameCharacter victim)
         {
-            foreach (var d in Doors.Values)
+            foreach (var door in Doors.Values)
             {
-                fucker.SendPacket(MapPacket.ShowDoor(d, 1));
-            }
-            
-            foreach (var d in DoorsLeadingHere.Values)
-            {
-                if (d.OwnerId == fucker.ID)
+                if (door.OwnerId == victim.ID || door.OwnerPartyId == victim.PartyID)
                 {
-                    if (fucker.PartyID != 0) continue;
-                    d.OwnerPartyId = 0; // Update portal just to be sure
-                    MapPacket.SpawnPortal(fucker, Field.ReturnMap, Field.ReturnMap, d.X, d.Y);
+                    victim.SendPacket(MapPacket.ShowDoor(door, 1));
+                }
+            }
+
+            foreach (var townDoor in TownDoors.Values)
+            {
+                if (townDoor.OwnerId == victim.ID || townDoor.OwnerPartyId == victim.PartyID)
+                {
+                    victim.SendPacket(MapPacket.SpawnPortal(townDoor.FieldId, Field.ReturnMap, townDoor.X, townDoor.Y));
                 }
             }
         }

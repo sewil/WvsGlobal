@@ -1,5 +1,4 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using System.Collections.Generic;
+﻿using System.Diagnostics;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
@@ -31,8 +30,7 @@ namespace WvsBeta.Center
         WITHDRAW_UNK = 0xD,
         JOIN_DONE = 0xE,
         TOWN_PORTAL_CHANGED = 0x1A,
-        CHANGE_LEVEL_OR_JOB = 0x1B,
-        TOWN_PORTAL_CHANGED_UNK = 0x1C,
+        TOWN_PORTAL_CHANGED_UNK = 0x1B,
     }
 
     public class PartyPacket : Packet
@@ -43,6 +41,11 @@ namespace WvsBeta.Center
         {
             WriteByte((byte)function);
             WriteInt(pid);
+        }
+        private PartyPacket(PartyFunction function, byte idx) : base(ServerMessages.PARTY_RESULT)
+        {
+            WriteByte((byte)function);
+            WriteByte(idx);
         }
         private PartyPacket(PartyFunctionError function) : base(ServerMessages.PARTY_RESULT)
         {
@@ -75,11 +78,20 @@ namespace WvsBeta.Center
             return pw;
         }
 
-        public static PartyPacket TownPortalChanged(Party pt, PartyMember member, byte ownerIdIdx)
+        public static PartyPacket TownPortalChanged(Party pt, PartyMember member)
         {
-            Program.MainForm.LogDebug("Updating door at index: " + ownerIdIdx);
-            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED, ownerIdIdx);
+            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED, pt.partyId);
             EncodePartyData(pw, member, pt);
+            return pw;
+        }
+        public static PartyPacket TownPortalChangedUnk(Party pt, PartyMember member, DoorInformation door, byte idx)
+        {
+            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED_UNK, idx);
+            Trace.WriteLine($"PartyData dest: {door.DstMap} src: {door.SrcMap} x:{door.X} y: {door.Y}");
+            pw.WriteInt(door.DstMap);
+            pw.WriteInt(door.SrcMap);
+            pw.WriteShort(door.X);
+            pw.WriteShort(door.Y);
             return pw;
         }
         public static PartyPacket Join(Party pt, PartyMember joined)
