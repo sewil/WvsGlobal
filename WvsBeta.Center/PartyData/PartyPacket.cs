@@ -137,17 +137,18 @@ namespace WvsBeta.Center
             jobs.ForEach(packet.WriteInt);
             levels.ForEach(packet.WriteInt);
             channels.ForEach(packet.WriteInt);
-            packet.WriteInt(pt.leader.id);
             maps.ForEach(packet.WriteInt);
-            foreach (var partychar in pt.members)
+            packet.WriteInt(pt.leader.id);
+            foreach (var m in pt.members)
             {
-                if (partychar != null && partychar.GetChannel() == member.GetChannel() && partychar.door != null)
+                if (m != null && m.GetChannel() == member.GetChannel() && m.door != null)
                 {
-                    var mdo = partychar.door;
-                    packet.WriteInt(mdo.DstMap);
-                    packet.WriteInt(mdo.SrcMap);
-                    packet.WriteInt(mdo.X);
-                    packet.WriteInt(mdo.Y);
+                    var door = m.door;
+                    Trace.WriteLine($"PartyData dest: {door.DstMap} src: {door.SrcMap} x:{door.X} y: {door.Y}");
+                    packet.WriteInt(door.DstMap);
+                    packet.WriteInt(door.SrcMap);
+                    packet.WriteInt(door.X);
+                    packet.WriteInt(door.Y);
                 }
                 else
                 {
