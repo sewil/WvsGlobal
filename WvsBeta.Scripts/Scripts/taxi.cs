@@ -100,7 +100,7 @@ namespace WvsBeta.Scripts.Scripts
             { 104000000, 1200 },
             { 102000000, 1000 },
             { 100000000, 1000 },
-            { 100000000, 1200 }
+            { 103000000, 1200 }
         };
         public void Run(INpcHost self, GameCharacter target, byte state, byte answer, string atringAnswer, int integerAnswer)
         {
