@@ -22,10 +22,10 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Papulatus
 - [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
 - [ ] Update drop data
-- [ ] Pt job/level not updating
 - [ ] Items/mesos fall from top of map when manually dropped
 - [ ] Looting issues when in party
 - [ ] Remove annoying blinking buttons
+- [ ] Pt job/level not updating
 - [x] Town door going away when leaving party
 - [x] Door not showing up when pt member with door joins pt
 - [x] Door not going away when disbanding pt
