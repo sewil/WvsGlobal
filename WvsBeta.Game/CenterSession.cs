@@ -461,7 +461,13 @@ namespace WvsBeta.Game
                     {
                         GameCharacter fucker = Server.Instance.GetCharacter(packet.ReadInt());
                         if (fucker != null)
+                        {
                             fucker.PartyID = packet.ReadInt();
+                            if (DataProvider.Maps.TryGetValue(fucker.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(fucker.ID, out MysticDoor door))
+                            {
+                                door.OwnerPartyId = fucker.PartyID;
+                            }
+                        }
                         break;
                     }
 
@@ -504,7 +510,12 @@ namespace WvsBeta.Game
                         PartyData.Parties.Remove(ptId);
                         break;
                     }
-
+                case ISServerMessages.PartyMemberJoined:
+                    {
+                        var joined = Server.Instance.GetCharacter(packet.ReadInt());
+                        joined.Field.DoorPool.ShowAllDoorsTo(joined);
+                        break;
+                    }
                 default: return false;
             }
 

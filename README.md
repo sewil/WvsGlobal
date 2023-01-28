@@ -25,8 +25,8 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Pt job/level not updating
 - [ ] Items/mesos fall from top of map when manually dropped
 - [ ] Looting issues when in party
-- [ ] Door not showing up in field when joining party
 - [ ] Door not going away when disbanding pt
+- [x] Door not showing up in field when joining party
 - [x] Door not updating when creating party
 - [x] Wrong party map status (leader id in wrong position?)
 - [x] Doors not showing up in town, wrong spawn position

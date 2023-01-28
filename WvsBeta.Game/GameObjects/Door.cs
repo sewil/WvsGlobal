@@ -26,12 +26,16 @@ namespace WvsBeta.Game
 
         public bool CanEnterDoor(GameCharacter chr)
         {
-            if (chr.PartyID != -1 && chr.PartyID != 0 && OwnerPartyId == chr.PartyID) return true;
+            if (chr.PartyID > 0 && OwnerPartyId == chr.PartyID) return true;
             if (chr.ID == OwnerId) return true;
             return false;
         }
     }
-
+    public enum DoorEnterType
+    {
+        Drop = 0,
+        Fade = 1
+    }
     public class DoorManager
     {
 
@@ -45,32 +49,23 @@ namespace WvsBeta.Game
             TownDoors = new Dictionary<int, MysticDoor>();
             Field = field;
         }
-
-        public void TryRemoveDoor(int ownerCharId)
+        public void TryRemoveDoor(int ownerId)
         {
-            if (Doors.ContainsKey(ownerCharId))
+            if (!Doors.ContainsKey(ownerId)) return;
+            var door = Doors[ownerId];
+            Doors.Remove(door.OwnerId);
+            Field.SendPacket(MapPacket.RemoveDoor(ownerId, 0));
+            var town = DataProvider.Maps[Field.ReturnMap];
+            town.DoorPool.TownDoors.Remove(door.OwnerId);
+            var owner = Server.Instance.GetCharacter(door.OwnerId);
+            if (owner != null && owner.Field.ID == Field.ReturnMap)
             {
-                var door = Doors[ownerCharId];
-                Doors.Remove(ownerCharId);
-
-                Field.SendPacket(MapPacket.RemoveDoor(door, 0));
-
-                DataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Remove(ownerCharId);
-
-                //in case owner is in town when it dies
-                if (door.OwnerPartyId == 0)
-                {
-                    var owner = Server.Instance.GetCharacter(ownerCharId);
-                    if (owner != null && owner.Field.ID == Field.ReturnMap)
-                    {
-                        MapPacket.RemovePortal(owner);
-                        owner.DoorMapId = Constants.InvalidMap;
-                    }
-                }
-                else
-                {
-                    Server.Instance.CenterConnection.PartyDoorRemoved(ownerCharId);
-                }
+                town.SendPacket(MapPacket.RemovePortal());
+                owner.DoorMapId = Constants.InvalidMap;
+            }
+            if (door.OwnerPartyId != 0)
+            {
+                Server.Instance.CenterConnection.PartyDoorRemoved(door.OwnerId);
             }
         }
 
@@ -79,8 +74,11 @@ namespace WvsBeta.Game
             var door = new MysticDoor(chr.ID, chr.PartyID, x, y, Field.ID, endTime);
             Doors.Add(chr.ID, door);
             DataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Add(chr.ID, door);
-            Field.SendPacket(MapPacket.ShowDoor(door, 0));
-            chr.SendPacket(MapPacket.SpawnPortal(door.FieldId, Field.ReturnMap, door.X, door.Y));
+            foreach (var c in UpdatableChars(door))
+            {
+                c.SendPacket(MapPacket.ShowDoor(door, DoorEnterType.Drop));
+                c.SendPacket(MapPacket.SpawnPortal(door.FieldId, Field.ReturnMap, door.X, door.Y));
+            }
 
             if (door.OwnerPartyId != 0)
             {
@@ -94,7 +92,7 @@ namespace WvsBeta.Game
             {
                 if (door.OwnerId == victim.ID || door.OwnerPartyId == victim.PartyID)
                 {
-                    victim.SendPacket(MapPacket.ShowDoor(door, 1));
+                    victim.SendPacket(MapPacket.ShowDoor(door, DoorEnterType.Fade));
                 }
             }
 
@@ -107,6 +105,28 @@ namespace WvsBeta.Game
             }
         }
 
+        public IEnumerable<GameCharacter> UpdatableChars(MysticDoor door)
+        {
+            return Field.Characters.Where(c => door.CanEnterDoor(c));
+        }
+        public void HideDoors(GameCharacter c)
+        {
+            foreach (var door in Doors.Values)
+            {
+                if (!door.CanEnterDoor(c))
+                {
+                    c.SendPacket(MapPacket.RemoveDoor(door.OwnerId, 0));
+                }
+            }
+            foreach (var door in TownDoors.Values)
+            {
+                if (!door.CanEnterDoor(c))
+                {
+                    c.SendPacket(MapPacket.RemovePortal());
+                }
+            }
+        }
+        
         public void Update(long pNow)
         {
             foreach (var door in Doors.Values.ToList())

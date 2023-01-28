@@ -283,6 +283,14 @@ namespace WvsBeta.Center
             member.SendHpUpdate();
             SendUpdatePartyData();
             UpdateAllDoors();
+            SendPartyMemberJoined(member);
+        }
+
+        public void SendPartyMemberJoined(PartyMember joined)
+        {
+            var pw = new Packet(ISServerMessages.PartyMemberJoined);
+            pw.WriteInt(joined.id);
+            CenterServer.Instance.SendPacketToServer(pw, (byte)joined.GetChannel());
         }
 
         public void Leave(Character fucker)

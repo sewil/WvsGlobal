@@ -101,6 +101,7 @@
         UpdateHpParty,
         PartyInformationUpdate,
         PartyDisbanded,
+        PartyMemberJoined,
 
         Test,
         MessengerOperation,
