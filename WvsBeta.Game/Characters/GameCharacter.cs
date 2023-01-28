@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Crypto;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
@@ -32,7 +33,6 @@ namespace WvsBeta.Game
         public double m_dIncDropRate_Ticket = 1.0;
 
         public static int ms_nPartyBonusEventRate = 0;
-
 
         public short MapChair { get; set; } = -1;
         private DateTime LastSavepoint;

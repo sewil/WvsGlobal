@@ -507,13 +507,44 @@ namespace WvsBeta.Game
                     {
                         int ptId = packet.ReadInt();
                         //Program.MainForm.LogDebug("Removing party: " + ptId);
+                        if (!PartyData.Parties.TryGetValue(ptId, out PartyData pt))
+                        {
+                            throw new ArgumentException("Invalid ptid");
+                        }
+                        var members = pt.Members.Select(m => Server.Instance.GetCharacter(m)).Where(m => m != null);
+                        foreach (var m in members)
+                        {
+                            m.PartyID = 0;
+                            m.Field.DoorPool.HideAllDoorsFrom(m);
+                        }
                         PartyData.Parties.Remove(ptId);
                         break;
                     }
                 case ISServerMessages.PartyMemberJoined:
                     {
                         var joined = Server.Instance.GetCharacter(packet.ReadInt());
-                        joined.Field.DoorPool.ShowAllDoorsTo(joined);
+                        if (PartyData.Parties.TryGetValue(joined.PartyID, out PartyData pt))
+                        {
+                            foreach (var m in pt.Members.Select(m => Server.Instance.GetCharacter(m)).Where(m => m != null))
+                            {
+                                m.Field.DoorPool.ShowAllDoorsTo(m, true);
+                            }
+                        }
+                        break;
+                    }
+                case ISServerMessages.PartyMemberLeft:
+                    {
+                        int ptId = packet.ReadInt();
+                        if (!PartyData.Parties.TryGetValue(ptId, out PartyData pt))
+                        {
+                            throw new ArgumentException("Invalid ptid");
+                        }
+                        GameCharacter left = Server.Instance.GetCharacter(packet.ReadInt());
+                        left.Field.DoorPool.HideAllDoorsFrom(left);
+                        foreach (var m in pt.Members.Select(m => Server.Instance.GetCharacter(m)).Where(m => m != null))
+                        {
+                            m.Field.DoorPool.HideAllDoorsFrom(m);
+                        }
                         break;
                     }
                 default: return false;

@@ -102,6 +102,7 @@
         PartyInformationUpdate,
         PartyDisbanded,
         PartyMemberJoined,
+        PartyMemberLeft,
 
         Test,
         MessengerOperation,

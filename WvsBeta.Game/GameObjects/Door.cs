@@ -86,11 +86,13 @@ namespace WvsBeta.Game
             }
         }
 
-        public void ShowAllDoorsTo(GameCharacter victim)
+        public void ShowAllDoorsTo(GameCharacter victim, bool ignoreMine = false)
         {
             foreach (var door in Doors.Values)
             {
-                if (door.OwnerId == victim.ID || door.OwnerPartyId == victim.PartyID)
+                bool mine = door.OwnerId == victim.ID;
+                if (ignoreMine && mine) continue;
+                if (door.CanEnterDoor(victim))
                 {
                     victim.SendPacket(MapPacket.ShowDoor(door, DoorEnterType.Fade));
                 }
@@ -98,7 +100,9 @@ namespace WvsBeta.Game
 
             foreach (var townDoor in TownDoors.Values)
             {
-                if (townDoor.OwnerId == victim.ID || townDoor.OwnerPartyId == victim.PartyID)
+                bool mine = townDoor.OwnerId == victim.ID;
+                if (ignoreMine && mine) continue;
+                if (townDoor.CanEnterDoor(victim))
                 {
                     victim.SendPacket(MapPacket.SpawnPortal(townDoor.FieldId, Field.ReturnMap, townDoor.X, townDoor.Y));
                 }
@@ -109,7 +113,7 @@ namespace WvsBeta.Game
         {
             return Field.Characters.Where(c => door.CanEnterDoor(c));
         }
-        public void HideDoors(GameCharacter c)
+        public void HideAllDoorsFrom(GameCharacter c)
         {
             foreach (var door in Doors.Values)
             {

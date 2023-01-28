@@ -2,11 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Net;
-using System.Runtime.ConstrainedExecution;
-using System.Security.Cryptography;
 using log4net;
-using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 
@@ -37,6 +33,13 @@ namespace WvsBeta.Center
         }
 
         public static readonly DoorInformation DefaultNoDoor = new DoorInformation(Constants.InvalidMap, Constants.InvalidMap, -1, -1, -1);
+        public void Encode(Packet pw)
+        {
+            pw.WriteInt(DstMap);
+            pw.WriteInt(SrcMap);
+            pw.WriteShort(X);
+            pw.WriteShort(Y);
+        }
     }
 
     public class PartyMember
@@ -117,7 +120,6 @@ namespace WvsBeta.Center
             partyId = id;
             leader = ldr;
             members[0] = ldr;
-            SendUpdatePartyData();
         }
 
         public Party(Packet pr)
@@ -174,12 +176,13 @@ namespace WvsBeta.Center
             return -1;
         }
 
-        public void ForAllMembers(Action<PartyMember> action, int skip = -1, bool onlyOnline = true)
+        public void ForAllMembers(Action<PartyMember> action, int skip = -1, bool onlyOnline = true, int only = -1)
         {
             foreach (var partyMember in members)
             {
                 if (partyMember == null) continue;
                 if (partyMember.id == skip) continue;
+                if (only > -1 && partyMember.id != only) continue;
                 if (onlyOnline && partyMember.IsOnline == false) continue;
 
                 action(partyMember);
@@ -228,7 +231,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public void TryJoin(Character chr)
+        public void TryJoin(Character chr, Packet packet)
         {
             if (!Invites.ContainsKey(chr.ID))
             {
@@ -260,10 +263,10 @@ namespace WvsBeta.Center
                 return;
             }
 
-            Join(chr);
+            Join(chr, packet);
         }
 
-        private void Join(Character chr)
+        private void Join(Character chr, Packet packet)
         {
             var slot = GetFirstFreeSlot();
             if (slot == -1)
@@ -276,6 +279,10 @@ namespace WvsBeta.Center
 
             chr.PartyID = partyId;
             var member = new PartyMember(chr.ID, chr.Name, chr.Job, chr.Level, false);
+            if (packet.ReadBool())
+            {
+                member.door = new DoorInformation(packet);
+            }
 
             members[slot] = member;
 
@@ -312,12 +319,23 @@ namespace WvsBeta.Center
                 _log.Debug($"{fucker.ID} left the party {partyId} from slot {slot}");
                 var leaving = members[slot];
                 members[slot] = null;
+
                 ForAllMembers(m => m.SendPacket(PartyPacket.MemberLeft(m, leaving, this, false, false)));
                 leaving.SendPacket(PartyPacket.MemberLeft(leaving, leaving, this, false, false));
+
                 fucker.PartyID = 0;
+                SendPartyMemberLeft(fucker);
                 SendUpdatePartyData();
                 UpdateAllDoors();
             }
+        }
+
+        public void SendPartyMemberLeft(Character left)
+        {
+            var pw = new Packet(ISServerMessages.PartyMemberLeft);
+            pw.WriteInt(partyId);
+            pw.WriteInt(left.ID);
+            CenterServer.Instance.SendPacketToServer(pw, left.ChannelID);
         }
 
         public void SilentUpdate(int charId, int disconnecting = -1)
@@ -332,6 +350,7 @@ namespace WvsBeta.Center
         private void Disband(Character disbander) => OnlyWithLeader(disbander.ID, ldr =>
         {
             _log.Debug($"Disbanding party {partyId} by character {disbander.ID}");
+            var doors = Doors.ToList();
 
             ForAllMembers(m =>
             {
@@ -359,7 +378,7 @@ namespace WvsBeta.Center
             var discardedInvites = Invites.Where(x => x.Value.partyId == partyId).Select(x => x.Key).ToArray();
             discardedInvites.ForEach(x => Invites.Remove(x));
 
-            SendPartyDisband();
+            SendPartyDisband(doors);
         });
 
         public void Expel(int expellerId, int toExpel) => OnlyWithLeader(expellerId, ldr =>
@@ -388,8 +407,8 @@ namespace WvsBeta.Center
             {
                 _log.Debug($"Unable to set PartyID to 0 of {toExpel}");
             }
-            
 
+            SendPartyMemberLeft(expellchr);
             SendUpdatePartyData();
             UpdateAllDoors();
         });
@@ -420,9 +439,9 @@ namespace WvsBeta.Center
             }
         }
 
-        public void UpdateDoor(DoorInformation newDoor, int ownerId)
+        public void UpdateDoor(DoorInformation newDoor, int ownerId, int only = -1)
         {
-            Program.MainForm.LogDebug("UPDATING DOOR: " + ownerId);
+            Trace.WriteLine("UPDATING DOOR: " + ownerId);
             var doorOwner = GetById(ownerId);
             if (doorOwner != null)
             {
@@ -434,7 +453,7 @@ namespace WvsBeta.Center
                     {
                         m.SendPacket(PartyPacket.TownPortalChangedUnk(this, m, newDoor, idx));
                     }
-                });
+                }, only: only);
             }
         }
 
@@ -470,7 +489,7 @@ namespace WvsBeta.Center
             CenterServer.Instance.World.SendPacketToEveryGameserver(pw);
         }
 
-        private void SendPartyDisband()
+        private void SendPartyDisband(IList<DoorInformation> doors)
         {
             Packet pw = new Packet(ISServerMessages.PartyDisbanded);
             pw.WriteInt(partyId);
@@ -516,6 +535,7 @@ namespace WvsBeta.Center
 
             Parties.Add(pty.partyId, pty);
             leader.PartyID = pty.partyId;
+            pty.SendUpdatePartyData();
             leader.SendPacket(PartyPacket.PartyCreated(leader.ID, pty.partyId));
             pty.UpdateAllDoors();
         }

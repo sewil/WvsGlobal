@@ -27,7 +27,7 @@ namespace WvsBeta.Game
                     Server.Instance.CenterConnection.LeaveParty(chr.ID);
                     break;
                 case PartyRecvops.JOIN: // ACCEPT PARTY
-                    Server.Instance.CenterConnection.AcceptParty(chr.ID);
+                    Server.Instance.CenterConnection.AcceptParty(chr);
                     break;
                 case PartyRecvops.INVITE: // INVITE PARTY
                     int cid = pw.ReadInt();

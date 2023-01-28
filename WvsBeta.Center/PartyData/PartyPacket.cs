@@ -141,7 +141,7 @@ namespace WvsBeta.Center
             packet.WriteInt(pt.leader.id);
             foreach (var m in pt.members)
             {
-                if (m != null && m.GetChannel() == member.GetChannel() && m.door != null)
+                if (remove == null && m != null && m.GetChannel() == member.GetChannel() && m.door != null)
                 {
                     var door = m.door;
                     Trace.WriteLine($"PartyData dest: {door.DstMap} src: {door.SrcMap} x:{door.X} y: {door.Y}");

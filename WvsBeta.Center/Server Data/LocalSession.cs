@@ -699,7 +699,7 @@ namespace WvsBeta.Center
 
                         if (fucker1 != null && Party.Invites.TryGetValue(AcceptorID, out Party party))
                         {
-                            party.TryJoin(fucker1);
+                            party.TryJoin(fucker1, packet);
                         }
 
                         break;

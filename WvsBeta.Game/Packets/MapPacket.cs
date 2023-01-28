@@ -501,12 +501,12 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void RemovePortal(GameCharacter chr)
+        public static Packet RemovePortal()
         {
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL);
             pw.WriteInt(Constants.InvalidMap);
             pw.WriteInt(Constants.InvalidMap);
-            chr.SendPacket(pw);
+            return pw;
         }
 
         public static void SendPinkText(GameCharacter chr, string text) //needs work 
@@ -758,10 +758,10 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr);
         }
 
-        public static Packet ShowDoor(MysticDoor door, byte enterType)
+        public static Packet ShowDoor(MysticDoor door, DoorEnterType enterType)
         {
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL_CREATED);
-            pw.WriteByte(enterType); //Does this decide if the animation plays when it is shown?
+            pw.WriteByte((byte)enterType);
             pw.WriteInt(door.OwnerId);
             pw.WriteShort(door.X);
             pw.WriteShort(door.Y);
@@ -771,13 +771,13 @@ namespace WvsBeta.Game
             return pw;
         }
 
-        public static Packet RemoveDoor(MysticDoor door, byte leaveType)
+        public static Packet RemoveDoor(int ownerId, byte leaveType)
         {
             Packet pw = new Packet(ServerMessages.TOWN_PORTAL_REMOVED);
             pw.WriteByte(leaveType);
-            pw.WriteInt(door.OwnerId);
+            pw.WriteInt(ownerId);
 
-            Trace.WriteLine($"TOWN_PORTAL_REMOVED leaveType: {leaveType} ownerId: {door.OwnerId}");
+            Trace.WriteLine($"TOWN_PORTAL_REMOVED leaveType: {leaveType} ownerId: {ownerId}");
             return pw;
         }
 

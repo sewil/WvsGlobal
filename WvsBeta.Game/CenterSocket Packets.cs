@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
@@ -14,6 +15,11 @@ namespace WvsBeta.Game
         {
             Packet pw = new Packet(ISClientMessages.PartyCreate);
             pw.WriteInt(chr.ID);
+            EncodeDoor(pw, chr);
+            SendPacket(pw);
+        }
+        public void EncodeDoor(Packet pw, GameCharacter chr)
+        {
             if (DataProvider.Maps.TryGetValue(chr.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(chr.ID, out MysticDoor door))
             {
                 pw.WriteBool(true);
@@ -27,9 +33,7 @@ namespace WvsBeta.Game
             {
                 pw.WriteBool(false);
             }
-            SendPacket(pw);
         }
-
         public void InviteToParty(int from, int to)
         {
             Packet pw = new Packet(ISClientMessages.PartyInvite);
@@ -46,10 +50,11 @@ namespace WvsBeta.Game
             SendPacket(pw);
         }
 
-        public void AcceptParty(int acceptor)
+        public void AcceptParty(GameCharacter chr)
         {
             Packet pw = new Packet(ISClientMessages.PartyAccept);
-            pw.WriteInt(acceptor);
+            pw.WriteInt(chr.ID);
+            EncodeDoor(pw, chr);
             SendPacket(pw);
         }
 
