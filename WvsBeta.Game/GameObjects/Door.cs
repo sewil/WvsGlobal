@@ -113,22 +113,23 @@ namespace WvsBeta.Game
         {
             return Field.Characters.Where(c => door.CanEnterDoor(c));
         }
-        public void HideAllDoorsFrom(GameCharacter c)
+        public void HideAllDoorsFrom(GameCharacter c, bool ignoreMine = false)
         {
             foreach (var door in Doors.Values)
             {
+                if (ignoreMine && door.OwnerId == c.ID) continue;
                 if (!door.CanEnterDoor(c))
                 {
                     c.SendPacket(MapPacket.RemoveDoor(door.OwnerId, 0));
                 }
             }
-            foreach (var door in TownDoors.Values)
-            {
-                if (!door.CanEnterDoor(c))
-                {
-                    c.SendPacket(MapPacket.RemovePortal());
-                }
-            }
+            //foreach (var door in TownDoors.Values)
+            //{
+            //    if (!door.CanEnterDoor(c))
+            //    {
+            //        c.SendPacket(MapPacket.RemovePortal());
+            //    }
+            //}
         }
         
         public void Update(long pNow)

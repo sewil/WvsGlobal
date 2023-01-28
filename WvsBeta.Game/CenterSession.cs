@@ -514,8 +514,7 @@ namespace WvsBeta.Game
                         var members = pt.Members.Select(m => Server.Instance.GetCharacter(m)).Where(m => m != null);
                         foreach (var m in members)
                         {
-                            m.PartyID = 0;
-                            m.Field.DoorPool.HideAllDoorsFrom(m);
+                            m.Field.DoorPool.HideAllDoorsFrom(m, true);
                         }
                         PartyData.Parties.Remove(ptId);
                         break;
@@ -540,10 +539,10 @@ namespace WvsBeta.Game
                             throw new ArgumentException("Invalid ptid");
                         }
                         GameCharacter left = Server.Instance.GetCharacter(packet.ReadInt());
-                        left.Field.DoorPool.HideAllDoorsFrom(left);
+                        left.Field.DoorPool.HideAllDoorsFrom(left, true);
                         foreach (var m in pt.Members.Select(m => Server.Instance.GetCharacter(m)).Where(m => m != null))
                         {
-                            m.Field.DoorPool.HideAllDoorsFrom(m);
+                            m.Field.DoorPool.HideAllDoorsFrom(m, true);
                         }
                         break;
                     }

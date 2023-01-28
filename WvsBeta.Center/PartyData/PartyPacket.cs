@@ -29,8 +29,8 @@ namespace WvsBeta.Center
         WITHDRAW_DONE = 0xB,
         WITHDRAW_UNK = 0xD,
         JOIN_DONE = 0xE,
-        TOWN_PORTAL_CHANGED = 0x1A,
-        TOWN_PORTAL_CHANGED_UNK = 0x1B,
+        TOWN_PORTAL_CHANGED_UNK = 0x1A,
+        TOWN_PORTAL_CHANGED = 0x1B,
     }
 
     public class PartyPacket : Packet
@@ -78,15 +78,9 @@ namespace WvsBeta.Center
             return pw;
         }
 
-        public static PartyPacket TownPortalChanged(Party pt, PartyMember member)
+        public static PartyPacket TownPortalChanged(DoorInformation door, byte idx)
         {
-            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED, pt.partyId);
-            EncodePartyData(pw, member, pt);
-            return pw;
-        }
-        public static PartyPacket TownPortalChangedUnk(Party pt, PartyMember member, DoorInformation door, byte idx)
-        {
-            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED_UNK, idx);
+            var pw = new PartyPacket(PartyFunction.TOWN_PORTAL_CHANGED, idx);
             Trace.WriteLine($"PartyData dest: {door.DstMap} src: {door.SrcMap} x:{door.X} y: {door.Y}");
             pw.WriteInt(door.DstMap);
             pw.WriteInt(door.SrcMap);
@@ -141,7 +135,7 @@ namespace WvsBeta.Center
             packet.WriteInt(pt.leader.id);
             foreach (var m in pt.members)
             {
-                if (remove == null && m != null && m.GetChannel() == member.GetChannel() && m.door != null)
+                if (remove == null && m != null && m.door != null && m.GetChannel() == member.GetChannel())
                 {
                     var door = m.door;
                     Trace.WriteLine($"PartyData dest: {door.DstMap} src: {door.SrcMap} x:{door.X} y: {door.Y}");

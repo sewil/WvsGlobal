@@ -113,7 +113,7 @@ namespace WvsBeta.Center
         public readonly int world;
         public readonly PartyMember[] members = new PartyMember[Constants.MaxPartyMembers];
         public PartyMember leader { get; private set; }
-        public IEnumerable<DoorInformation> Doors { get { return members.Where(m => m != null).Select(m => m.door); } }
+        public IEnumerable<DoorInformation> Doors { get { return members.Where(m => m != null && m.door.OwnerId > -1).Select(m => m.door); } }
 
         private Party(int id, PartyMember ldr)
         {
@@ -350,7 +350,6 @@ namespace WvsBeta.Center
         private void Disband(Character disbander) => OnlyWithLeader(disbander.ID, ldr =>
         {
             _log.Debug($"Disbanding party {partyId} by character {disbander.ID}");
-            var doors = Doors.ToList();
 
             ForAllMembers(m =>
             {
@@ -378,7 +377,7 @@ namespace WvsBeta.Center
             var discardedInvites = Invites.Where(x => x.Value.partyId == partyId).Select(x => x.Key).ToArray();
             discardedInvites.ForEach(x => Invites.Remove(x));
 
-            SendPartyDisband(doors);
+            SendPartyDisband();
         });
 
         public void Expel(int expellerId, int toExpel) => OnlyWithLeader(expellerId, ldr =>
@@ -451,7 +450,7 @@ namespace WvsBeta.Center
                 {
                     if (m.GetChannel() == doorOwner.GetChannel())
                     {
-                        m.SendPacket(PartyPacket.TownPortalChangedUnk(this, m, newDoor, idx));
+                        m.SendPacket(PartyPacket.TownPortalChanged(newDoor, idx));
                     }
                 }, only: only);
             }
@@ -459,9 +458,7 @@ namespace WvsBeta.Center
 
         private void UpdateAllDoors()
         {
-            var mems = members.Where(m => m != null);
-            var doors = mems.Select(m => m.door);
-            foreach (var door in doors.ToList())
+            foreach (var door in Doors.ToList())
             {
                 UpdateDoor(door, door.OwnerId);
             }
@@ -489,7 +486,7 @@ namespace WvsBeta.Center
             CenterServer.Instance.World.SendPacketToEveryGameserver(pw);
         }
 
-        private void SendPartyDisband(IList<DoorInformation> doors)
+        private void SendPartyDisband()
         {
             Packet pw = new Packet(ISServerMessages.PartyDisbanded);
             pw.WriteInt(partyId);
