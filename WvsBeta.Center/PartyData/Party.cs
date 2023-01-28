@@ -27,6 +27,14 @@ namespace WvsBeta.Center
             Y = y;
             OwnerId = owner;
         }
+        public DoorInformation(Packet packet)
+        {
+            DstMap = packet.ReadInt();
+            SrcMap = packet.ReadInt();
+            X = packet.ReadShort();
+            Y = packet.ReadShort();
+            OwnerId = packet.ReadInt();
+        }
 
         public static readonly DoorInformation DefaultNoDoor = new DoorInformation(Constants.InvalidMap, Constants.InvalidMap, -1, -1, -1);
     }
@@ -467,7 +475,7 @@ namespace WvsBeta.Center
         public static readonly Dictionary<int, Party> Parties = new Dictionary<int, Party>(); //partyId -> party
         public static readonly Dictionary<int, Party> Invites = new Dictionary<int, Party>(); //invitee -> party
 
-        public static void CreateParty(Character leader)
+        public static void CreateParty(Character leader, Packet packet)
         {
             if (leader == null)
             {
@@ -489,6 +497,11 @@ namespace WvsBeta.Center
             }
 
             PartyMember ldr = new PartyMember(leader.ID, leader.Name, leader.Job, leader.Level, true);
+            if (packet.ReadBool()) // Has door
+            {
+                ldr.door = new DoorInformation(packet);
+            }
+
             int id = IdGenerator.NextValue();
             Party pty = new Party(id, ldr);
             _log.Info($"Created party {id} with leader {leader.ID}");
@@ -496,6 +509,7 @@ namespace WvsBeta.Center
             Parties.Add(pty.partyId, pty);
             leader.PartyID = pty.partyId;
             leader.SendPacket(PartyPacket.PartyCreated(leader.ID, pty.partyId));
+            pty.UpdateAllDoors();
         }
 
         public static void EncodeForMigration(Packet pw)

@@ -21,7 +21,7 @@ namespace WvsBeta.Game
             switch (mode)
             {
                 case PartyRecvops.CREATE_NEW: // CREATE PARTY
-                    Server.Instance.CenterConnection.CreateParty(chr.ID);
+                    Server.Instance.CenterConnection.CreateParty(chr);
                     break;
                 case PartyRecvops.WITHDRAW: // LEAVE PARTY
                     Server.Instance.CenterConnection.LeaveParty(chr.ID);

@@ -676,7 +676,7 @@ namespace WvsBeta.Center
                     {
                         int fuker = packet.ReadInt();
                         Character fucker = CenterServer.Instance.FindCharacter(fuker);
-                        Party.CreateParty(fucker);
+                        Party.CreateParty(fucker, packet);
                         break;
                     }
 

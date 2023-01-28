@@ -10,10 +10,23 @@ namespace WvsBeta.Game
     public partial class CenterSession
     {
 
-        public void CreateParty(int cid)
+        public void CreateParty(GameCharacter chr)
         {
             Packet pw = new Packet(ISClientMessages.PartyCreate);
-            pw.WriteInt(cid);
+            pw.WriteInt(chr.ID);
+            if (DataProvider.Maps.TryGetValue(chr.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(chr.ID, out MysticDoor door))
+            {
+                pw.WriteBool(true);
+                pw.WriteInt(map.ReturnMap);
+                pw.WriteInt(door.FieldId);
+                pw.WriteShort(door.X);
+                pw.WriteShort(door.Y);
+                pw.WriteInt(chr.ID);
+            }
+            else
+            {
+                pw.WriteBool(false);
+            }
             SendPacket(pw);
         }
 
