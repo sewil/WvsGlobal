@@ -42,12 +42,13 @@ namespace WvsBeta.Game
             ICash = 9
         }
 
-        public void PermaBan(string reason, BanReasons banReason = BanReasons.Hack, bool doNotBanForNow = false, int extraDelay = 0)
+        public bool PermaBan(string reason, BanReasons banReason = BanReasons.Hack, bool doNotBanForNow = false, int extraDelay = 0)
         {
             if (IsAdmin) doNotBanForNow = true;
             if (!doNotBanForNow)
             {
                 Server.Instance.AddDelayedBanRecord(this, reason, banReason, extraDelay);
+                return true;
             }
             else
             {
@@ -55,6 +56,7 @@ namespace WvsBeta.Game
                     $"Would've perma'd {Name} (uid {UserID}, cid {ID}), reason: {reason}",
                     ChatPacket.MessageTypes.Notice
                 );
+                return false;
             }
         }
 

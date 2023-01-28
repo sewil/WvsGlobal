@@ -300,8 +300,8 @@ namespace WvsBeta.Game
                     var maxDamage = 5 + (chr.Level * 6);
                     if (ad.SkillID == 0 && chr.Level < 10 && TotalDamage > maxDamage)
                     {
-                        chr.PermaBan("Melee damage hack (low level), hit " + TotalDamage + " (max: " + maxDamage + ")");
-                        return;
+                        if (chr.PermaBan("Melee damage hack (low level), hit " + TotalDamage + " (max: " + maxDamage + ")"))
+                            return;
                     }
 
                     died = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? delayForMesoExplosionKill : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
