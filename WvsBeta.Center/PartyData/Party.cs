@@ -345,13 +345,14 @@ namespace WvsBeta.Center
             CenterServer.Instance.SendPacketToServer(pw, left.ChannelID);
         }
 
-        public void SilentUpdate(int charId, int disconnecting = -1)
-        {
-            SilentUpdate(GetById(charId), disconnecting);
-        }
-        public void SilentUpdate(PartyMember member, int disconnecting = -1)
+        public void Load(int disconnecting = -1)
         {
             ForAllMembers(m => m.SendPacket(PartyPacket.Load(this, m, disconnecting)));
+        }
+        public void SilentUpdate(int charId, int disconnecting = -1)
+        {
+            var member = GetById(charId);
+            Load(disconnecting);
             member.SendHpUpdate();
             SendUpdatePartyData();
             UpdateAllDoors();

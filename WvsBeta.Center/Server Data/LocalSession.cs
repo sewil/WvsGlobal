@@ -1019,7 +1019,7 @@ namespace WvsBeta.Center
                         {
                             var member = pt.GetById(charId);
                             member.UpdateJobLevel();
-                            pt.SilentUpdate(member);
+                            pt.Load();
                         }
                         break;
                     }
