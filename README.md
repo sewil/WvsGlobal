@@ -24,8 +24,8 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Update drop data
 - [ ] Items/mesos fall from top of map when manually dropped
 - [ ] Looting issues when in party
-- [ ] Remove annoying blinking buttons
-- [ ] Pt job/level not updating
+- [ ] Party exp/leeching issues
+- [x] Pt job/level not updating
 - [x] Town door going away when leaving party
 - [x] Door not showing up when pt member with door joins pt
 - [x] Door not going away when disbanding pt

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using log4net;
 using MySql.Data.MySqlClient;
@@ -1007,10 +1008,19 @@ namespace WvsBeta.Center
                         int charId = packet.ReadInt();
                         var character = CenterServer.Instance.FindCharacter(charId);
                         if (character == null)
+                        {
+                            Trace.WriteLine($"[ISClientMessages.UpdatePlayerJobLevel] Couldn't find charId {charId}");
                             return;
+                        }
 
                         character.Job = packet.ReadShort();
                         character.Level = packet.ReadByte();
+                        if (character.PartyID > 0 && Party.Parties.Select(p => p.Value).TryFind(p => p.partyId == character.PartyID, out Party pt))
+                        {
+                            var member = pt.GetById(charId);
+                            member.UpdateJobLevel();
+                            pt.SilentUpdate(member);
+                        }
                         break;
                     }
 

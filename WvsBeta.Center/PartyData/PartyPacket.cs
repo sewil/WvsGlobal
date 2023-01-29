@@ -120,8 +120,8 @@ namespace WvsBeta.Center
             //294
             var ids = pt.members.Select(e => e == null ? 0 : e.id);
             var names = pt.members.Select(e => e == null ? "" : e.name);
-            var jobs = pt.members.Select(e => e == null ? 0 : e.job);
-            var levels = pt.members.Select(e => e == null ? 0 : e.level);
+            var jobs = pt.members.Select(e => e == null ? 0 : e.Job);
+            var levels = pt.members.Select(e => e == null ? 0 : e.Level);
             var channels = pt.members.Select(e => e == null ? 0 : e.GetChannel());
             var maps = pt.members.Select(e => (e == null || e.id == disconnect || e.GetChannel() != member.GetChannel()) ? -1 : e.GetMap());
             var doorTowns = pt.members.Select(e => e == null ? Constants.InvalidMap : e.door.DstMap);

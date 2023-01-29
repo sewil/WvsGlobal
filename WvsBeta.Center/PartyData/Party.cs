@@ -46,8 +46,8 @@ namespace WvsBeta.Center
     {
         public readonly int id;
         public readonly string name;
-        public readonly int job;
-        public readonly int level;
+        public int Job { get; private set; }
+        public int Level { get; private set; }
         public bool isLeader { get; set; }
         public DoorInformation door { get; set; }
 
@@ -55,8 +55,8 @@ namespace WvsBeta.Center
         {
             this.id = id;
             this.name = name;
-            this.job = job;
-            this.level = level;
+            Job = job;
+            Level = level;
             this.isLeader = isLeader;
             door = DoorInformation.DefaultNoDoor;
         }
@@ -88,6 +88,13 @@ namespace WvsBeta.Center
         public int GetMap()
         {
             return GetCharacter(true)?.MapID ?? 0;
+        }
+
+        public void UpdateJobLevel()
+        {
+            var chr = GetCharacter(true);
+            Job = chr.Job;
+            Level = chr.Level;
         }
 
         public void SendHpUpdate()
@@ -340,7 +347,10 @@ namespace WvsBeta.Center
 
         public void SilentUpdate(int charId, int disconnecting = -1)
         {
-            var member = GetById(charId);
+            SilentUpdate(GetById(charId), disconnecting);
+        }
+        public void SilentUpdate(PartyMember member, int disconnecting = -1)
+        {
             ForAllMembers(m => m.SendPacket(PartyPacket.Load(this, m, disconnecting)));
             member.SendHpUpdate();
             SendUpdatePartyData();

@@ -86,7 +86,7 @@ namespace WvsBeta.Common
             else
                 return default(T);
         }
-        
+
         public static bool TryFind<T>(this IEnumerable<T> enumerable, Predicate<T> predicate, Action<T> onFound, Action onNotFound)
         {
             foreach (T element in enumerable)
