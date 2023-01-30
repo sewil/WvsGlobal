@@ -10,8 +10,9 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 
 ### Game
 - [ ] Scrolling
-- [ ] Player Shop not visible for person opening it
-- [ ] Player Shop empty error msg when closing
+- [x] Player Shop not visible for person opening it
+- [x] Player Shop empty error msg when closing
+- [ ] Can open player shop anywhere in fm rooms, even over other balloons
 - [ ] Omok
 - [ ] Guild (opcodes, packets, db)
 - [ ] Quests (handle completion, etc)
