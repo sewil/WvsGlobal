@@ -166,23 +166,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             to.SendPacket(pw);
         }
 
-        public static void AddShop(GameCharacter chr)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(5);
-            pw.WriteByte((byte)MiniRoomTypes.Shop);
-            pw.WriteByte(4);
-            pw.WriteBool(false);
-            pw.WriteByte(0);
-            new AvatarLook(chr).Encode(pw);
-            pw.WriteString("loltest123");
-            pw.WriteByte(0xFF);
-            pw.WriteString("lolwattest");
-            pw.WriteByte(0x10);
-            pw.WriteByte(0);
-            chr.SendPacket(pw);
-        }
-
         public static void ErrorMessage(GameCharacter chr, MiniGameError error)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);

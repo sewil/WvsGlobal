@@ -9,7 +9,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void OpenPlayerShop(GameCharacter pOwner, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(5);
+            pw.WriteByte((byte)MiniRoomBaseType.EnterResult);
             pw.WriteByte((byte)mrb.Type);
             pw.WriteByte(mrb.MaxUsers);
             pw.WriteBool(mrb.Users[0] == pOwner ? false : true); //owner 
@@ -33,7 +33,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void AddPlayer(GameCharacter pCharacter, GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(4);
+            pw.WriteByte((byte)MiniRoomBaseType.Enter);
             pw.WriteByte(pCharacter.RoomSlotId);
             new AvatarLook(pCharacter).Encode(pw);
             pw.WriteString(pCharacter.Name);
@@ -43,7 +43,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void RemovePlayer(GameCharacter pCharacter, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(10);
+            pw.WriteByte((byte)MiniRoomBaseType.Leave);
             pw.WriteByte(pCharacter.RoomSlotId);
             mrb.BroadcastPacket(pw, pCharacter);
         }

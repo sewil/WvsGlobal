@@ -184,7 +184,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             omok.Password = pPacket.ReadString();
                         }
 
-                        pPacket.Skip(7); //Important ? :S
                         omok.PieceType = pPacket.ReadByte();
                         omok.AddOwner(pOwner);
                         omok.mWinnerIndex = 1;

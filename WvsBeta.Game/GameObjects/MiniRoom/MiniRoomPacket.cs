@@ -407,7 +407,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     }
 
                 case MiniRoomType.PersonalShop:
-                    {
+                    { // TODO: Handle shops overlap
                         miniroomLog.Info($"{chr.Name} creates a player shop miniroom");
                         MiniRoomBase mrb = MiniRoomBase.CreateRoom(chr, nType, packet, false, 0);
                         chr.Room = mrb;
