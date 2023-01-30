@@ -9,6 +9,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers.Commands;
 
 namespace WvsBeta.Game
@@ -965,13 +966,9 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // ShowPlayer also redistibutes mobs, we want this
             ShowPlayer(chr, false);
 
-            PlayerShops.ForEach(ps =>
-                MiniGamePacket.AddAnnounceBox(ps.Value.Users[0], (byte)ps.Value.Type, ps.Value.ID, ps.Value.Title, ps.Value.Private, 0, false)
-            );
+            PlayerShops.ForEach(ps => new MiniRoomBalloonPacket(ps.Value).Send());
 
-            Omoks.ForEach(omok =>
-                MiniGamePacket.AddAnnounceBox(omok.Value.Users[0], (byte)omok.Value.Type, omok.Value.ID, omok.Value.Title, omok.Value.Private, 0, false)
-            );
+            Omoks.ForEach(omok => new MiniRoomBalloonPacket(omok.Value).Send());
 
             Kites.ForEach(kite => MapPacket.Kite(chr, kite));
 

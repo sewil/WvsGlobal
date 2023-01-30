@@ -6,6 +6,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Packets;
 
@@ -143,6 +144,21 @@ namespace WvsBeta.Game
             ClientMessages.MINI_ROOM_OPERATION, ClientMessages.STORAGE_ACTION, ClientMessages.SHOP_ACTION
         };
 
+        private static readonly HashSet<ClientMessages> ignoreClientPackets = new HashSet<ClientMessages>
+        {
+            ClientMessages.PONG, ClientMessages.MOVE_PLAYER, ClientMessages.HEAL_OVER_TIME, ClientMessages.MOB_MOVE, ClientMessages.MOB_APPLY_CONTROL,
+            ClientMessages.TAKE_DAMAGE, ClientMessages.CLIENT_HASH
+        };
+
+        private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>
+        {
+            ServerMessages.PING,
+            ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED, ServerMessages.SET_FIELD,
+            ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
+            ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK, ServerMessages.MOB_ENTER_FIELD,
+            ServerMessages.DAMAGE_PLAYER
+        };
+
         public override void AC_OnPacketInbound(Packet packet)
         {
             ClientMessages header = 0;
@@ -163,6 +179,9 @@ namespace WvsBeta.Game
                 else if (Server.Instance.InMigration == false || Server.Instance.IsNewServerInMigration)
                 {
                     var character = Player.Character;
+
+                    if (!ignoreClientPackets.Contains(header))
+                        Program.MainForm.LogAppend($"[{character.Name}->CH{Player.Channel}][{header}] {packet}");
 
                     if (logPackets.Contains(header))
                         PacketLog.ReceivedPacket(packet, (byte)header, Server.Instance.Name, IP);
@@ -205,7 +224,8 @@ namespace WvsBeta.Game
                         case ClientMessages.TAKE_DAMAGE:
                             CharacterStatsPacket.HandleCharacterDamage(character, packet);
                             break;
-
+                        case ClientMessages.CLIENT_HASH:
+                            break;
                         case ClientMessages.CHAT:
                             ChatPacket.HandleChat(character, packet);
                             break;
@@ -623,6 +643,9 @@ namespace WvsBeta.Game
 
         public override void SendPacket(Packet pPacket)
         {
+            var header = (ServerMessages)pPacket.Opcode;
+            if (!ignoreServerPackets.Contains(header))
+                Program.MainForm.LogAppend($"[CH{Player.Channel}->{Player.Character.Name}][{header}] {pPacket}");
             base.SendPacket(pPacket);
         }
     }

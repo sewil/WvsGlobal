@@ -10,6 +10,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects.MiniRoom;
 
 namespace WvsBeta.Game
 {
@@ -291,7 +292,7 @@ namespace WvsBeta.Game
         {
             if (Room != null)
             {
-                if (Room.Type == MiniRoomBase.RoomType.PersonalShop)
+                if (Room.Type == MiniRoomType.PersonalShop)
                 {
                     Room.RemovePlayerFromShop(this);
                 }

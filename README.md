@@ -10,7 +10,8 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 
 ### Game
 - [ ] Scrolling
-- [ ] FM Store
+- [ ] Player Shop not visible for person opening it
+- [ ] Player Shop empty error msg when closing
 - [ ] Omok
 - [ ] Guild (opcodes, packets, db)
 - [ ] Quests (handle completion, etc)
@@ -21,9 +22,10 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Pianus (Aqua, Deep Sea Gorge)
 - [ ] Papulatus
 - [ ] Some portals broken (Henesys Market, Deep Ant Tunnel II, wrong offset)
+- [ ] Storage
 - [ ] Update drop data
-- [ ] Items/mesos fall from top of map when manually dropped
-- [ ] Looting issues when in party
+- [ ] Items/mesos fall from top of map when manually dropped, only in maps with mobs
+- [ ] Can't loot when in party
 - [ ] Party exp/leeching issues
 - [ ] Party quits when leader logs out?
 - [x] Pt job/level not updating
