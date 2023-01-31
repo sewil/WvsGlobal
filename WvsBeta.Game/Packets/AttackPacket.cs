@@ -9,6 +9,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -369,8 +370,7 @@ namespace WvsBeta.Game
                     if (StolenMP > 0)
                     {
                         chr.ModifyMP((short)StolenMP);
-                        MapPacket.SendPlayerSkillAnimSelf(chr, MpStealSkillID, MpStealLevel);
-                        MapPacket.SendPlayerSkillAnim(chr, MpStealSkillID, MpStealLevel);
+                        PlayerEffectPacket.SendSkill(chr, MpStealSkillID, MpStealLevel);
                     }
 
                     if (ad.SkillID != 0)
@@ -669,8 +669,7 @@ namespace WvsBeta.Game
                         if (StolenMP > 0)
                         {
                             chr.ModifyMP((short)StolenMP);
-                            MapPacket.SendPlayerSkillAnimSelf(chr, MpStealSkillID, MpStealLevel);
-                            MapPacket.SendPlayerSkillAnim(chr, MpStealSkillID, MpStealLevel);
+                            PlayerEffectPacket.SendSkill(chr, MpStealSkillID, MpStealLevel);
                         }
                     }
 

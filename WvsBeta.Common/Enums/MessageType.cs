@@ -2,14 +2,14 @@
 {
     public enum MessageType
     {
-        DropPickUp,
-        QuestRecord,
-        CashItemExpire,
-        IncEXP,
-        ScrollItemResult,
-        GeneralItemExpire,
-        __UNKNOWN_6,
-        __UNKNOWN_7,
-        __UNKNOWN_8,
+        DropPickUp = 0,
+        QuestRecord = 1,
+        CashItemExpire = 2,
+        IncEXP = 3,
+        GainFame = 4,
+        MesosChanged = 5,
+        ScrollItemResult = 6,
+        GeneralItemExpire = 7,
+        RedText = 8
     }
 }

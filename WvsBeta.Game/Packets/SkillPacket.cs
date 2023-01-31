@@ -6,6 +6,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -58,8 +59,7 @@ namespace WvsBeta.Game
                 chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, false) == 0)
             {
                 // If you are using Heal, and are not using a wand/weapon, it won't show anything.
-
-                MapPacket.SendPlayerSkillAnim(chr, SkillID, SkillLevel);
+                PlayerEffectPacket.SendSkill(chr, SkillID, SkillLevel, foreignOnly: true);
             }
 
             var sld = DataProvider.Skills[SkillID].Levels[SkillLevel];
@@ -111,8 +111,7 @@ namespace WvsBeta.Game
                     if (character == chr) continue;
                     if (!computerSaysYes()) continue;
 
-                    MapPacket.SendPlayerSkillAnimThirdParty(character, SkillID, SkillLevel, true, true);
-                    MapPacket.SendPlayerSkillAnimThirdParty(character, SkillID, SkillLevel, true, false);
+                    PlayerEffectPacket.SendSkill(character, SkillID, SkillLevel, onOther: true);
                     additionalEffects?.Invoke(character);
                 }
             }
@@ -303,8 +302,7 @@ namespace WvsBeta.Game
                     {
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
-                            MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, true);
-                            MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, false);
+                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
                             victim.Buffs.AddBuff(SkillID, SkillLevel);
                         });
                         break;
@@ -313,8 +311,7 @@ namespace WvsBeta.Game
                     {
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
-                            MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, true);
-                            MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, false);
+                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
                             victim.ModifyHP(victim.PrimaryStats.GetMaxMP(false), true);
                             victim.ModifyMP(victim.PrimaryStats.GetMaxMP(false), true);
                             victim.Buffs.Dispell();
@@ -330,8 +327,7 @@ namespace WvsBeta.Game
                         {
                             if (victim.HP <= 0)
                             {
-                                MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, true);
-                                MapPacket.SendPlayerSkillAnimThirdParty(victim, SkillID, SkillLevel, true, false);
+                                PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
                                 victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
                             }
                         });
@@ -499,7 +495,7 @@ namespace WvsBeta.Game
             {
                 // Are we debuffing twice here?
                 MapPacket.CancelSkillEffect(chr, skillid); //?
-                MapPacket.SendPlayerSkillAnim(chr, skillid, 1);
+                PlayerEffectPacket.SendSkill(chr, skillid, 1, foreignOnly: true);
                 MapPacket.SendPlayerDebuffed(chr, BuffValueTypes.DarkSight);
             }
         }

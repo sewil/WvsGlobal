@@ -176,22 +176,6 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-
-
-        public static void SendPetLevelup(GameCharacter chr, byte wat = 0)
-        {
-            var pw = new Packet(ServerMessages.PLAYER_EFFECT);
-            pw.WriteByte(0x04);
-            pw.WriteByte(wat); // 0 = levelup, 1 = teleport to base, 2 = teleport to your back
-            chr.SendPacket(pw);
-
-            pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-            pw.WriteInt(chr.ID);
-            pw.WriteByte(0x04);
-            pw.WriteByte(wat);
-            chr.Field.SendPacket(chr, pw, chr);
-        }
-
         public static void SendPetAction(GameCharacter chr, byte a, byte b)
         {
             var pw = new Packet(ServerMessages.PET_INTERACTION);

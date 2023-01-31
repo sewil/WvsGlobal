@@ -1,6 +1,7 @@
 ﻿using System;
 using WvsBeta.Common;
 using WvsBeta.Common.Objects;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -15,9 +16,8 @@ namespace WvsBeta.Game
             if (possibleLevel != petItem.Level)
             {
                 petItem.Level = possibleLevel;
-                PetsPacket.SendPetLevelup(chr);
+                PlayerEffectPacket.SendPetEffect(chr, PetEffectType.LevelUp);
             }
-
         }
 
         public static byte GetLevel(PetItem petItem)

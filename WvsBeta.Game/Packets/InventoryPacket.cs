@@ -9,6 +9,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -498,8 +499,8 @@ namespace WvsBeta.Game
             chr.Inventory.TakeItem(scroll.ItemID, 1);
             var chanceRoll = Rand32.Next() % 100;
 
-            bool succeeded = false;
-            bool cursed = false;
+            bool scrollSuccess = false;
+            bool scrollCursed = false;
 
             if (chanceRoll < scrollData.ScrollSuccessRate)
             {
@@ -520,32 +521,30 @@ namespace WvsBeta.Game
                 equip.Scrolls++;
                 equip.Slots--;
 
-                succeeded = true;
+                scrollSuccess = true;
 
                 AddItem(chr, Inventory.Equip, equip, true);
                 MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
-                SendItemScrolled(chr, true);
             }
             else
             {
                 if (chanceRoll < scrollData.ScrollCurseRate)
                 {
-                    cursed = true;
+                    scrollCursed = true;
                     chr.Inventory.TryRemoveCashItem(equip);
 
                     SwitchSlots(chr, itemslot, 0, Inventory.Equip);
                     chr.Inventory.SetItem(Inventory.Equip, itemslot, null);
-                    SendItemScrolled(chr, false);
-
                     chr.PrimaryStats.CheckBoosters();
                 }
                 else
                 {
                     equip.Slots--;
                     AddItem(chr, Inventory.Equip, equip, true);
-                    SendItemScrolled(chr, false);
                 }
             }
+
+            SendItemScrolled(chr, scrollSuccess);
 
             _scrollingLog.Info(new ScrollResult
             {
@@ -553,8 +552,8 @@ namespace WvsBeta.Game
                 itemId = equip.ItemID,
                 scrollData = scrollData,
                 scrollId = scroll.ItemID,
-                succeeded = succeeded,
-                cursed = cursed
+                succeeded = scrollSuccess,
+                cursed = scrollCursed
             });
         }
 
@@ -657,12 +656,11 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendItemScrolled(GameCharacter chr, bool pSuccessfull)
+        public static void SendItemScrolled(GameCharacter chr, bool success)
         {
-            Packet pw = new Packet(ServerMessages.MESSAGE);
-            pw.WriteByte(4);
-            pw.WriteBool(pSuccessfull);
-            chr.SendPacket(pw);
+            chr.SendPacket(MessagePacket.ScrollResult(success));
+            PlayerEffectPacket.SendSkill(chr, (int)(success ? Constants.Skills.EnchantSuccess : Constants.Skills.EnchantFailure), 1);
+            chr.Field.SendPacket(FieldEffectPacket.Sound(success ? Constants.Sounds.EnchantSuccess : Constants.Sounds.EnchantFailure));
         }
 
         public static void InventoryFull(GameCharacter chr)

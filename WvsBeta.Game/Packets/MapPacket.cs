@@ -611,53 +611,6 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-
-        public static void SendPlayerSkillAnim(GameCharacter chr, int skillid, byte level)
-        {
-            Packet pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-            pw.WriteInt(chr.CharacterStat.ID);
-            pw.WriteByte(0x01);
-            pw.WriteInt(skillid);
-            pw.WriteByte(level);
-
-            chr.Field.SendPacket(chr, pw);
-        }
-
-        public static void SendPlayerSkillAnimSelf(GameCharacter chr, int skillid, byte level)
-        {
-            Packet pw = new Packet(ServerMessages.PLAYER_EFFECT); // Not updated
-            pw.WriteByte(0x01);
-            pw.WriteInt(skillid);
-            pw.WriteByte(level);
-
-            chr.SendPacket(pw);
-        }
-
-        public static void SendPlayerSkillAnimThirdParty(GameCharacter chr, int skillid, byte level, bool party, bool self)
-        {
-            Packet pw;
-            if (party && self)
-            {
-                pw = new Packet(ServerMessages.PLAYER_EFFECT);
-            }
-            else
-            {
-                pw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-                pw.WriteInt(chr.CharacterStat.ID);
-            }
-            pw.WriteByte((byte)(party ? 0x02 : 0x01));
-            pw.WriteInt(skillid);
-            pw.WriteByte(level);
-            if (self)
-            {
-                chr.SendPacket(pw);
-            }
-            else
-            {
-                chr.Field.SendPacket(chr, pw, chr);
-            }
-        }
-
         public static void SendPlayerBuffed(GameCharacter chr, BuffValueTypes pBuffs, short delay = 0)
         {
             Packet pw = new Packet(ServerMessages.GIVE_FOREIGN_BUFF);

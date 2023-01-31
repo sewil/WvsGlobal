@@ -46,9 +46,11 @@ namespace WvsBeta.Common.Enums
         PickPocketMesoUP = 0x8000000,
 
         MesoGuard = 0x10_000_000,
-        Thaw = 0x20000000,
+        Thaw = 0x20_000_000,
         Weakness = 0x40_000_000, // Mob Skill: Weakness
         Curse = 0x80_000_000, // Mob Skill: Curse
+
+        Unk100m = 0x100_000_000, // Unknown
 
         ALL = 0xFFFFFFFF,
         MOVEMENT_INFO_INDEX = Speed | Jump | Stun | Weakness, // 0x40020180

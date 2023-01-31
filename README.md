@@ -9,9 +9,6 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Fix blocked character creation in non-Scania worlds (worldID > 0)
 
 ### Game
-- [ ] Scrolling
-- [x] Player Shop not visible for person opening it
-- [x] Player Shop empty error msg when closing
 - [ ] Can open player shop anywhere in fm rooms, even over other balloons
 - [ ] Omok
 - [ ] Guild (opcodes, packets, db)
@@ -29,6 +26,9 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Can't loot when in party
 - [ ] Party exp/leeching issues
 - [ ] Party quits when leader logs out?
+- [x] Scrolling
+- [x] Player Shop not visible for person opening it
+- [x] Player Shop empty error msg when closing
 - [x] Pt job/level not updating
 - [x] Town door going away when leaving party
 - [x] Door not showing up when pt member with door joins pt

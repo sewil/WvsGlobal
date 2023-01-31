@@ -150,6 +150,7 @@
     <Compile Include="GameObjects\IFieldObj.cs" />
     <Compile Include="GameObjects\MiniRoom\Enums.cs" />
     <Compile Include="Packets\FieldEffectPacket.cs" />
+    <Compile Include="Packets\PlayerEffectPacket.cs" />
     <Compile Include="Scripting\IGameScript.cs" />
     <Compile Include="Scripting\INpcScript.cs" />
     <Compile Include="GameObjects\Kite.cs" />

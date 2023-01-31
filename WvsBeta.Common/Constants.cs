@@ -293,7 +293,16 @@ namespace WvsBeta.Common
             }
         }
 
-
+        public enum Skills
+        {
+            EnchantSuccess = 5001008,
+            EnchantFailure = 5001009
+        }
+        public static class Sounds
+        {
+            public static readonly string EnchantSuccess = "Enchant/Success";
+            public static readonly string EnchantFailure  = "Enchant/Failure";
+        }
         public static class MobSkills
         {
             public enum Skills

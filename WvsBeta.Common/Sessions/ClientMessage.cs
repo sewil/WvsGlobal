@@ -58,7 +58,7 @@
         PET_EAT_FOOD,
         CASH_ITEM_USE, // Assumed Value
         RETURN_SCROLL_USE, // Assumed Value
-        SCROLL_USE, // Assumed Value
+        SCROLL_USE = 48, // Assumed Value
 
         //Player Stat Headers
         DISTRIBUTE_AP = 49,
