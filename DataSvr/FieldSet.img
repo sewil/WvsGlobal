@@ -2,11 +2,13 @@
 #     0 = 900000000
 #     1 = 900000001
 #     2 = 900000002
-#     timeOut = 1000
-#     kickPeopleToReturnMap = 1
+#     timeOut = 1000 # Seconds
+#     returnMap = 100030000 # 0 = Nearest town
 # }
 
 
 Utah = {
     0 = 900000000
+    timeOut = 60
+    returnMap = 100030000
 }

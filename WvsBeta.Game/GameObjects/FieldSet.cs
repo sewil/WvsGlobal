@@ -19,7 +19,7 @@ namespace WvsBeta.Game
         public long EndTime { get; private set; }
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
 
-        public bool KickPeopleToReturnMap { get; private set; } = true;
+        public int ReturnMap { get; private set; } = -1;
 
         public FieldSet(ConfigReader.Node fsNode)
         {
@@ -43,8 +43,8 @@ namespace WvsBeta.Game
                         case "timeOut":
                             Timeout = subNode.GetInt();
                             break;
-                        case "kickPeopleToReturnMap":
-                            KickPeopleToReturnMap = subNode.GetBool();
+                        case "returnMap":
+                            ReturnMap = subNode.GetInt();
                             break;
                     }
             }
@@ -72,11 +72,12 @@ namespace WvsBeta.Game
             {
                 map.OnEnter = null;
                 map.OnTimerEnd?.Invoke(map);
-                if (KickPeopleToReturnMap)
+                if (ReturnMap > -1)
                 {
+                    int returnMap = ReturnMap == 0 ? map.ForcedReturn : ReturnMap;
                     foreach (var character in map.Characters.ToList())
                     {
-                        character.ChangeMap(map.ForcedReturn);
+                        character.ChangeMap(returnMap);
                     }
                 }
             }
@@ -103,7 +104,7 @@ namespace WvsBeta.Game
         {
             if (!Started) return;
 
-            var timesUp = EndTime < currentTime;
+            var timesUp = Timeout > 0 && EndTime < currentTime;
             var noMorePlayers = Maps.Sum(x => x.Characters.Count) == 0;
 
             if (timesUp || noMorePlayers)
