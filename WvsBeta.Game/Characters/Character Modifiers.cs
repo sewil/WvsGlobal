@@ -386,7 +386,10 @@ namespace WvsBeta.Game
             AddMesos(mesos);
             return true;
         }
-
+        public bool TryExchange(int mesos)
+        {
+            return TryAddMesos(mesos);
+        }
         public bool TryAddMesos(int value, bool isSelf = false)
         {
             if (value < 0 && Inventory.Mesos < Math.Abs(value)) return false;

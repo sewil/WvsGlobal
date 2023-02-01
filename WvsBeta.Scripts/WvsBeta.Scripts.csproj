@@ -49,6 +49,7 @@
     <Compile Include="Scripts\market.cs" />
     <Compile Include="Scripts\taxi.cs" />
     <Compile Include="Scripts\victoria0.cs" />
+    <Compile Include="Scripts\victoria1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

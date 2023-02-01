@@ -68,19 +68,18 @@
         CANCEL_BUFF, // Assumed Value
         PREPARE_SKILL,
 
-        DROP_MESOS,
-        GIVE_FAME,
+        DROP_MESOS = 55,
+        GIVE_FAME = 56,
         __PADDING_52,
-        CHAR_INFO_REQUEST,
-        SPAWN_PET, // Assumed Value
+        CHAR_INFO_REQUEST = 58,
+        SPAWN_PET = 59,
         CHARACTER_IS_DEBUFFED, // spammed.
-        ENTER_SCRIPTED_PORTAL,
+        ENTER_SCRIPTED_PORTAL = 61,
         MAP_TRANSFER_REQUEST, // Teleport rock stuff
 
-        REPORT_USER,
-        __PADDING_59,
-        __PADDING_60,
-        GROUP_MESSAGE,
+        START_QUEST = 66,
+        REPORT_USER = 67,
+        GROUP_MESSAGE = 70,
         WHISPER = 71,
         MESSENGER = 72,
         MINI_ROOM_OPERATION = 73,

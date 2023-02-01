@@ -64,9 +64,9 @@ namespace WvsBeta.Common.Character
         public short GetOpenSlotsInInventory(Inventory inventory)
         {
             short amount = 0;
-            for (short i = 1; i <= MaxSlots[(byte)inventory - 1]; i++)
+            for (short slot = 1; slot <= MaxSlots[(byte)inventory - 1]; slot++)
             {
-                if (GetItem(inventory, i) == null)
+                if (GetItem(inventory, slot) == null)
                     amount++;
             }
             return amount;

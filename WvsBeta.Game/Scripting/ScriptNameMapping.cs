@@ -11,9 +11,6 @@ namespace WvsBeta.Game.Scripting
             { "taxi3", "taxi" },
             { "taxi4", "taxi" },
             { "mTaxi", "taxi" },
-            { "rithTeleport", "victoria0" },
-            { "jane", "victoria0" },
-            { "q2073", "victoria0" },
             { "market00", "market" },
             { "market01", "market" },
             { "market02", "market" },
@@ -24,6 +21,13 @@ namespace WvsBeta.Game.Scripting
             { "market07", "market" },
             { "market08", "market" },
             { "market09", "market" },
+            { "rithTeleport", "victoria0" },
+            { "jane", "victoria0" },
+            { "q2073", "victoria0" },
+            { "bush1", "victoria1" },
+            { "bush2", "victoria1" },
+            { "herb_out", "victoria1" },
+            { "herb_in", "victoria1" },
         };
     }
 }
