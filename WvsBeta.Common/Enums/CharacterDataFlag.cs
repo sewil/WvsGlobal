@@ -18,8 +18,8 @@ namespace WvsBeta.Common.Enums
         Quests = 0x200,
         MinigameStats = 0x400,
         FriendRing = 0x800,
-        Something33U = 0x1000,
-        TeleportRock = 0x2000,
+        TeleportRock = 0x1000,
+        Unk4000 = 0x4000,
         All = 0xFFFF,
 
         Items = Equips | Consume | Install | Etc | Pet

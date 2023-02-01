@@ -35,9 +35,14 @@ namespace WvsBeta.Common.Objects
                 packet.WriteShort((short)questsWithData.Count); // Running quests
                 foreach (var kvp in questsWithData)
                 {
-                    packet.WriteInt(kvp.Key);
+                    packet.WriteShort((short)kvp.Key);
                     packet.WriteString(kvp.Value.Data);
                 }
+            }
+
+            if (flags.HasFlag(CharacterDataFlag.Unk4000))
+            {
+                packet.WriteShort(0);
             }
 
             if (flags.HasFlag(CharacterDataFlag.MinigameStats))
@@ -50,12 +55,7 @@ namespace WvsBeta.Common.Objects
                 packet.WriteShort(0); // ?
             }
 
-            if (flags.HasFlag(CharacterDataFlag.Something33U))
-            {
-                packet.WriteShort(0); // ?, decodes 33u buffer wut
-            }
-
-            if (flags.HasFlag(CharacterDataFlag.TeleportRock))
+            if (flags.HasFlag(CharacterDataFlag.TeleportRock)) // 5 locations
             {
                 chr.Inventory.AddRockPacket(packet);
             }
