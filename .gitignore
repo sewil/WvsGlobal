@@ -259,4 +259,3 @@ paket-files/
 __pycache__/
 *.pyc
 BinSvr/
-DataSvr/

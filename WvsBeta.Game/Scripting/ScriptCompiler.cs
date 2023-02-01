@@ -1,6 +1,5 @@
 ﻿using System;
 using System.CodeDom.Compiler;
-using System.ComponentModel;
 using System.IO;
 using System.Reflection;
 
@@ -10,26 +9,25 @@ namespace WvsBeta.Game.Scripting
     {
         private static CodeDomProvider compiler = CodeDomProvider.CreateProvider("CSharp");
 
-        public static Assembly CompileScript(string scriptUri, Action<string> errorHandlerFnc, out string savename)
+        public static Assembly CompileScript(string scriptPath, Action<string> errorHandlerFnc)
         {
-            var results = Compile(scriptUri);
-            var fi = new FileInfo(scriptUri);
-            savename = fi.Name.Replace(".s", "").Replace(".cs", "");
+            var results = CompileFile(scriptPath);
+            var fi = new FileInfo(scriptPath);
             if (results.Errors.Count > 0)
             {
-                errorHandlerFnc?.Invoke(Path.GetFileName(scriptUri));
+                errorHandlerFnc?.Invoke(Path.GetFileName(scriptPath));
 
-                Program.MainForm.LogAppend($"Couldn't compile the file ({scriptUri}) correctly:");
+                Program.MainForm.LogAppend($"Couldn't compile the file ({scriptPath}) correctly:");
                 foreach (CompilerError error in results.Errors)
                 {
                     Program.MainForm.LogAppend(
-                        $"File {scriptUri}, Line {error.Line}, Column {error.Column}: {error.ErrorText}");
+                        $"File {scriptPath}, Line {error.Line}, Column {error.Column}: {error.ErrorText}");
                 }
                 return null;
             }
             return results.CompiledAssembly;
         }
-        public static CompilerResults Compile(string source)
+        public static CompilerResults CompileFile(string filePath)
         {
             CompilerParameters parms = new CompilerParameters()
             {
@@ -50,7 +48,7 @@ namespace WvsBeta.Game.Scripting
             }
             parms.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
 
-            return compiler.CompileAssemblyFromFile(parms, source);
+            return compiler.CompileAssemblyFromFile(parms, filePath);
         }
     }
 }

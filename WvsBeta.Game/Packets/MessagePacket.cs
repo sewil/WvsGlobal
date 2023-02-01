@@ -15,6 +15,12 @@ namespace WvsBeta.Game.Packets
         {
             WriteByte((byte)type);
         }
+        public static MessagePacket RedText(string message)
+        {
+            var pw = new MessagePacket(MessageType.RedText);
+            pw.WriteString(message);
+            return pw;
+        }
         public static MessagePacket ScrollResult(bool success)
         {
             var pw = new MessagePacket(MessageType.ScrollItemResult);

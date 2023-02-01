@@ -133,7 +133,7 @@ namespace WvsBeta.Game
                 case Constants.Items.Types.ItemTypes.ItemMesoSack:
                     if (data.Mesos > 0)
                     {
-                        int amountGot = chr.AddMesos(data.Mesos);
+                        chr.AddMesos(data.Mesos, false, out int amountGot);
 
                         MiscPacket.SendGotMesosFromLucksack(chr, amountGot);
                         used = true;

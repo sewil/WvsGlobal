@@ -16,6 +16,12 @@ namespace WvsBeta.Common.Character
         {
             return Quests.ContainsKey(QuestID);
         }
+        // Used by scripts because they can't use out
+        public QuestData GetQuest(int QuestID)
+        {
+            if (Quests.ContainsKey(QuestID)) return Quests[QuestID];
+            else return null;
+        }
         public Dictionary<int, QuestData> GetWZExistingQuests()
         {
             return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);

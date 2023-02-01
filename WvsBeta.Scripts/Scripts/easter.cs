@@ -4,10 +4,12 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
+using WvsBeta.Scripts.Scripts;
 
 namespace WvsBeta.Scripts
 {
-    internal class Easter : INpcScript
+    [Script("easter")]
+    class Easter : INpcScript
     {
         public void Run(INpcHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer)
         {
@@ -18,9 +20,7 @@ namespace WvsBeta.Scripts
             }
             var quests = target.Quests.Quests;
             int questID = 8876;
-            if (!target.Quests.HasQuest(questID))
-                target.Quests.AddNewQuest(questID, "uns");
-            var quest = quests[questID];
+            var quest = ScriptStandard.GetQuestData(target, questID, "uns");
             var inventory = target.Inventory;
             var cTime = MasterThread.CurrentDate;
             var esTime = cTime.CompareTo(new DateTime(cTime.Year, 3, 11, 0, 0, 0));

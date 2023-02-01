@@ -4,7 +4,7 @@ namespace WvsBeta.Game.Scripting
 {
     public interface INpcScript : IGameScript
     {
-        void Run(INpcHost self, GameCharacter target, byte state, byte answer, string stringAnswer, int integerAnswer);
+        void Run(INpcHost self, GameCharacter target, byte state, byte nRet, string stringAnswer, int nRetNum);
     }
 
     public interface INpcHost
@@ -17,7 +17,7 @@ namespace WvsBeta.Game.Scripting
         void AskMenu(string Message);
         void AskYesNo(string Message);
         void AskText(string Message, string Default, short MinLength, short MaxLength);
-        void AskInteger(string Message, int Default, int MinValue, int MaxValue);
+        void AskNumber(string Message, int Default, int MinValue, int MaxValue);
         void AskStyle(string Message, List<int> Values);
         void Stop();
 

@@ -46,18 +46,9 @@
     <Compile Include="Scripts\easter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Scripts\market00.cs" />
-    <Compile Include="Scripts\market01.cs" />
-    <Compile Include="Scripts\market03.cs" />
-    <Compile Include="Scripts\market02.cs" />
-    <Compile Include="Scripts\market09.cs" />
-    <Compile Include="Scripts\market08.cs" />
-    <Compile Include="Scripts\market07.cs" />
-    <Compile Include="Scripts\market06.cs" />
-    <Compile Include="Scripts\market05.cs" />
-    <Compile Include="Scripts\market04.cs" />
-    <Compile Include="Scripts\mTaxi.cs" />
+    <Compile Include="Scripts\market.cs" />
     <Compile Include="Scripts\taxi.cs" />
+    <Compile Include="Scripts\victoria0.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

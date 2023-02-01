@@ -184,6 +184,7 @@
     <Compile Include="Scripting\IPortalScript.cs" />
     <Compile Include="Scripting\PortalScriptSession.cs" />
     <Compile Include="Scripting\ScriptAccessor.cs" />
+    <Compile Include="Scripting\ScriptAttribute.cs" />
     <Compile Include="Scripting\ScriptCompiler.cs" />
     <Compile Include="GameObjects\DataLoading\Seat.cs" />
     <Compile Include="GameObjects\DataLoading\ShopItemData.cs" />
@@ -227,6 +228,7 @@
     <Compile Include="GameObjects\MiniRoom\MiniRoomPacket.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripting\ScriptNameMapping.cs" />
     <Compile Include="Scripting\ScriptStandard.cs" />
     <EmbeddedResource Include="frmMain.resx">
       <DependentUpon>frmMain.cs</DependentUpon>

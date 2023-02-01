@@ -79,7 +79,7 @@ namespace WvsBeta.Game
         public static void HandleNPCChat(GameCharacter chr, Packet packet)
         {
             int npcId = packet.ReadInt();
-            var Npc = chr.Field.GetNPC(npcId);
+            NpcLife npc = chr.Field.GetNPC(npcId);
 
             if (chr.AssertForHack(!chr.CanAttachAdditionalProcess, "Tried to chat to npc while not able to attach additional process"))
             {
@@ -88,22 +88,22 @@ namespace WvsBeta.Game
             }
 
             // Npc doesnt exist
-            if (Npc == null)
+            if (npc == null)
             {
                 InventoryPacket.NoChange(chr);
                 return;
             }
 
-            int RealID = Npc.ID;
-            if (!DataProvider.NPCs.TryGetValue(RealID, out NPCData npc)) return;
+            int RealID = npc.ID;
+            if (!DataProvider.NPCs.TryGetValue(RealID, out NPCData npcData)) return;
 
-            if (npc.Shop.Count > 0)
+            if (npcData.Shop.Count > 0)
             {
                 // It's a shop!
                 chr.ShopNPCID = RealID;
                 NpcPacket.SendShowNPCShop(chr, RealID);
             }
-            else if (npc.Trunk > 0)
+            else if (npcData.Trunk > 0)
             {
                 chr.TrunkNPCID = RealID;
                 StoragePacket.SendShowStorage(chr, chr.TrunkNPCID);
@@ -113,14 +113,14 @@ namespace WvsBeta.Game
                 Action<string> errorHandlerFnc = null;
                 if (chr.IsGM)
                 {
-                    errorHandlerFnc = (script) =>
+                    errorHandlerFnc = (error) =>
                     {
-                        ChatPacket.SendNotice("Error compiling script '" + script + "'!", chr);
+                        ChatPacket.SendNotice("Error compiling script '" + error + "'!", chr);
                     };
                 }
 
-                INpcScript NPC = (INpcScript)ScriptAccessor.GetScript(npc, errorHandlerFnc);
-                NpcChatSession.Start(RealID, NPC, chr);
+                INpcScript npcScript = (INpcScript)ScriptAccessor.GetScript(npcData, errorHandlerFnc);
+                NpcChatSession.Start(RealID, npcScript, chr);
             }
         }
 

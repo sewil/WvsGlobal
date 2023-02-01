@@ -199,7 +199,7 @@ namespace WvsBeta.Game
             NpcPacket.SendNPCChatTextRequestText(mCharacter, mID, Message, Default, MinLength, MaxLength);
         }
 
-        public void AskInteger(string Message, int Default, int MinValue, int MaxValue)
+        public void AskNumber(string Message, int Default, int MinValue, int MaxValue)
         {
             if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
 

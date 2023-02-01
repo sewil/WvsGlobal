@@ -147,7 +147,7 @@ namespace WvsBeta.Game
         private static readonly HashSet<ClientMessages> ignoreClientPackets = new HashSet<ClientMessages>
         {
             ClientMessages.PONG, ClientMessages.MOVE_PLAYER, ClientMessages.HEAL_OVER_TIME, ClientMessages.MOB_MOVE, ClientMessages.MOB_APPLY_CONTROL,
-            ClientMessages.TAKE_DAMAGE, ClientMessages.CLIENT_HASH
+            ClientMessages.TAKE_DAMAGE, ClientMessages.CLIENT_HASH, ClientMessages.NPC_ANIMATE
         };
 
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>

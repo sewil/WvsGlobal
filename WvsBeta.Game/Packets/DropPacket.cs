@@ -88,7 +88,7 @@ namespace WvsBeta.Game
                                 mesosGiven += Bonus;
                             }
                             // Now figure out what we really gave the user
-                            mesosGiven = BonusUser.AddMesos(mesosGiven, true);
+                            BonusUser.AddMesos(mesosGiven, true, out mesosGiven);
 
                             Common.Tracking.MesosTransfer.PlayerLootMesos(drop.SourceID, chr.ID, mesosGiven, "Party " + chr.PartyID + ", " + chr.MapID + ", " + drop.GetHashCode());
 
@@ -99,7 +99,7 @@ namespace WvsBeta.Game
 
                 if (!SentDropNotice)
                 {
-                    dropNoticeItemIdOrMesos = chr.AddMesos(reward.Drop, true);
+                    chr.AddMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
                     Common.Tracking.MesosTransfer.PlayerLootMesos(
                         drop.SourceID,
                         chr.ID,

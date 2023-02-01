@@ -1,9 +1,6 @@
-﻿using log4net;
-using System;
-using System.ComponentModel;
+﻿using System;
 using System.IO;
 using System.Reflection;
-using System.Text.RegularExpressions;
 
 namespace WvsBeta.Game.Scripting
 {
@@ -19,51 +16,43 @@ namespace WvsBeta.Game.Scripting
         public static IGameScript GetScript(Server server, string scriptName, Action<string> errorHandlerFnc, bool forceRecompile = false)
         {
             if (!forceRecompile && server.AvailableScripts.TryGetValue(scriptName, out IGameScript instance)) return instance;
-            var scriptUri = GetScriptFileName(scriptName);
-            if (scriptUri == null && !forceRecompile)
+            string scriptPath = GetScriptPath(scriptName);
+            if (scriptPath == null && !forceRecompile)
             {
-                errorHandlerFnc?.Invoke(scriptName + " not found");
+                errorHandlerFnc?.Invoke(scriptName + " not found.");
                 return null;
             }
-            var dll = ScriptCompiler.CompileScript(scriptUri, errorHandlerFnc, out string savename);
+            var dll = ScriptCompiler.CompileScript(scriptPath, errorHandlerFnc);
             if (dll == null) return null;
-            instance = GetScriptInstance(dll, scriptName);
+
+            instance = CreateScriptInstance(dll, scriptName, errorHandlerFnc);
+            if (instance == null) return null;
+
             server.AvailableScripts[scriptName] = instance;
             return instance;
         }
-        public static IGameScript GetScriptInstance(Assembly dll, string scriptName)
+        public static IGameScript CreateScriptInstance(Assembly dll, string scriptName, Action<string> errorHandlerFnc)
         {
-            // Loop through types looking for one that implements the display name or interface as fallback
-            IGameScript fallback = null;
             foreach (Type t in dll.GetTypes())
             {
-                var displayName = t.GetCustomAttribute(typeof(DisplayNameAttribute), true) as DisplayNameAttribute;
-                if (displayName != null && displayName.DisplayName == scriptName)
+                ScriptAttribute attr = t.GetCustomAttribute(typeof(ScriptAttribute), true) as ScriptAttribute;
+                if (attr != null && attr.DisplayName == scriptName)
                 {
                     return (IGameScript)dll.CreateInstance(t.FullName);
                 }
-                if (t.GetInterface("IGameScript", true) != null)
-                {
-                    fallback = (IGameScript)dll.CreateInstance(t.FullName);
-                }
             }
-            return fallback;
+            errorHandlerFnc?.Invoke(string.Format("Script implementation for '{0}' not found.", scriptName));
+            return null;
         }
-        public static string GetScriptFileName(string scriptName)
+        public static string GetScriptPath(string scriptName)
         {
             var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "WvsBeta.Scripts", "Scripts");
 
-            string filename = Path.Combine(scriptsDir, scriptName + ".cs");
-            if (!File.Exists(filename))
-            {
-                var m = Regex.Match(scriptName, @"\d+$");
-                if (m.Success) // Strip script digits
-                {
-                    filename = Path.Combine(scriptsDir, scriptName.Substring(0, m.Index) + ".cs");
-                }
-            }
-            if (!File.Exists(filename)) return null;
-            return filename;
+            string scriptPath = Path.Combine(scriptsDir, scriptName + ".cs");
+            if (!File.Exists(scriptPath) && ScriptNameMapping.Map.TryGetValue(scriptName, out string mapValue))
+                scriptPath = Path.Combine(scriptsDir, mapValue + ".cs");
+            if (!File.Exists(scriptPath)) return null;
+            return scriptPath;
         }
     }
 }

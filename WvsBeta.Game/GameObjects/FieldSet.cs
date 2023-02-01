@@ -84,15 +84,19 @@ namespace WvsBeta.Game
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);
         }
 
+        public bool Enter(GameCharacter chr, int mapIdx)
+        {
+            // Todo: accept more people ?
+            if (Started) return false;
+            Start();
+            var mapId = Maps[mapIdx].ID;
+            chr.ChangeMap(mapId);
+            return true;
+        }
         public static bool Enter(string name, GameCharacter chr, int mapIdx)
         {
             if (!Instances.TryGetValue(name, out var fs)) return false;
-            // Todo: accept more people ?
-            if (fs.Started) return false;
-            fs.Start();
-            var mapId = fs.Maps[mapIdx].ID;
-            chr.ChangeMap(mapId);
-            return true;
+            return fs.Enter(chr, mapIdx);
         }
 
         public void TryEndingIt(long currentTime)
