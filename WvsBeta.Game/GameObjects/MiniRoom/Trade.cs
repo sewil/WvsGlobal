@@ -63,7 +63,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                     if (ti?.OriginalItem != null) //just to make sure that the player actually has items in trade..
                     {
-                        chr.Inventory.AddItem2(ti.OriginalItem);
+                        chr.Inventory.AddItem(ti.OriginalItem);
                         ItemTransfer.PlayerTradeReverted(chr.ID, ti.OriginalItem.ItemID, ti.OriginalItem.Amount, _transaction, ti.OriginalItem);
                         ti.OriginalItem = null;
                     }
@@ -145,7 +145,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                     if (ti?.OriginalItem != null)
                     {
-                        chr.Inventory.AddItem2(ti.OriginalItem);
+                        chr.Inventory.AddItem(ti.OriginalItem);
                         ItemTransfer.PlayerTradeExchange(charFrom.ID, chr.ID, ti.OriginalItem.ItemID, ti.OriginalItem.Amount, _transaction, ti.OriginalItem);
                         ti.OriginalItem = null;
                     }
@@ -154,7 +154,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 var mesos = Mesos[i];
                 if (mesos != 0)
                 {
-                    chr.AddMesos(mesos);
+                    chr.Inventory.ExchangeMesos(mesos);
                     MesosTransfer.PlayerTradeExchange(charFrom.ID, chr.ID, mesos, _transaction);
                 }
             }
@@ -169,7 +169,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             var mesos = Mesos[pCharacter.RoomSlotId];
             if (mesos != 0)
             {
-                pCharacter.AddMesos(mesos);
+                pCharacter.Inventory.ExchangeMesos(mesos);
                 MesosTransfer.PlayerTradeReverted(pCharacter.ID, mesos, _transaction);
                 Mesos[pCharacter.RoomSlotId] = 0;
             }
@@ -246,7 +246,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             return;
                         }
 
-                        pCharacter.AddMesos(-amount, true);
+                        pCharacter.Inventory.ExchangeMesos(-amount, true);
                         MesosTransfer.PlayerTradePutUp(pCharacter.ID, amount, _transaction);
                         Mesos[pCharacter.RoomSlotId] += amount;
 

@@ -8,8 +8,7 @@ namespace WvsBeta.Common
         {
             return (MasterThread.CurrentDate + span).ToFileTimeUtc();
         }
-
-
+        
         public static long GetTimeAsMilliseconds(DateTime pNow)
         {
             return pNow.ToFileTime() / 10000;

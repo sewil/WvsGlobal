@@ -1,19 +1,21 @@
-﻿using WvsBeta.Game;
+﻿using WvsBeta.Common;
+using WvsBeta.Game;
+using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
 {
     class Market
     {
-        public static readonly int QUEST_ID = 7600;
+        public static readonly short QUEST_ID = 7600;
     }
     [Script("market00")]
     class Market00 : Market, IPortalScript
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            var val = quest.Data;
+            var qr = target.Quests;
+            var val = qr.Get(QUEST_ID);
 
             if (val == "0") target.ChangeMap(100000100, "in04");
             else if (val == "1") target.ChangeMap(220000000, "st00");
@@ -28,7 +30,7 @@ namespace WvsBeta.Scripts.Scripts
             else if (val == "10") target.ChangeMap(251000000, "st00");
             else if (val == "11") target.ChangeMap(600000000, "st00");
             else target.ChangeMap(102000000, "st00");
-            quest.Data = "-1";
+            qr.SetComplete(QUEST_ID);
         }
     }
     [Script("market01")]
@@ -36,8 +38,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "0";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "0");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -46,8 +49,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "1";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "1");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -56,8 +60,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "2";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "2");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -66,8 +71,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "4";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "3");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -76,8 +82,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "3";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "4");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -86,8 +93,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "5";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "5");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -96,8 +104,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "6";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "6");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -106,8 +115,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "7";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "7");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -116,8 +126,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var quest = ScriptStandard.GetQuestData(target, QUEST_ID);
-            quest.Data = "8";
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "8");
+            target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }
     }

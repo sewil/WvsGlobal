@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -442,7 +443,7 @@ namespace WvsBeta.Game
                                 chr.PrimaryStats.BuffMesoGuard.MesosLeft -= mesoLoss;
                                 MesosTransfer.PlayerUsedSkill(chr.ID, mesoLoss, skillId);
 
-                                chr.AddMesos(-(mesoLoss), false);
+                                chr.Inventory.ExchangeMesos(-(mesoLoss), false);
 
                                 Trace.WriteLine($"Reducing damage by mesos. Mesos: {mesoLoss}, maxMesos {maxMesosUsable}, reduction {damageReduction}");
                                 actualHPEffect += damageReduction;
@@ -619,8 +620,8 @@ namespace WvsBeta.Game
 
             if (!isMesos)
             {
-                byte inv = (byte)(idOrMesosAmount / 1000000);
-                pw.WriteInt(inv == 1 ? 1 : amount);
+                Inventory inv = Constants.getInventory(idOrMesosAmount);
+                pw.WriteInt(inv == Inventory.Equip ? 1 : amount);
             }
             chr.SendPacket(pw);
         }

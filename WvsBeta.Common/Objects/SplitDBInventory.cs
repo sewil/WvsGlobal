@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using WvsBeta.Common.Enums;
 using WvsBeta.Database;
 
 namespace WvsBeta.Common.Objects
@@ -26,7 +27,7 @@ namespace WvsBeta.Common.Objects
             }
         }
 
-        public delegate void AddItemCallback(InventoryType type, byte inventory, short slot, BaseItem item);
+        public delegate void AddItemCallback(InventoryType type, Inventory inventory, short slot, BaseItem item);
 
         public static void Load(MySQL_Connection connection, string baseTableName, string whereStatement, AddItemCallback callback)
         {
@@ -36,7 +37,7 @@ namespace WvsBeta.Common.Objects
                 {
                     var item = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
-                    callback(InventoryType.Eqp, 1, data.GetInt16("slot"), item);
+                    callback(InventoryType.Eqp, Inventory.Equip, data.GetInt16("slot"), item);
                 }
             }
 
@@ -46,13 +47,13 @@ namespace WvsBeta.Common.Objects
                 {
                     var item = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
-                    callback(InventoryType.Bundle, (byte)data.GetInt16("inv"), data.GetInt16("slot"), item);
+                    callback(InventoryType.Bundle, (Inventory)data.GetInt16("inv"), data.GetInt16("slot"), item);
                 }
             }
         }
 
 
-        public delegate IEnumerable<BaseItem> StoredItemsCallback(InventoryType type, byte inventory);
+        public delegate IEnumerable<BaseItem> StoredItemsCallback(InventoryType type, Inventory inventory);
         public static void Save(MySQL_Connection connection, string baseTableName, string columnsBeforeItemInfo, string whereStatement, StoredItemsCallback callback, MySQL_Connection.LogAction dbgCallback)
         {
 
@@ -70,7 +71,7 @@ namespace WvsBeta.Common.Objects
 
                 bool firstrun = true;
                 // Inventories
-                for (byte inventory = 2; inventory <= 5; inventory++)
+                for (Inventory inventory = Inventory.Use; inventory <= Inventory.Cash; inventory++)
                 {
                     var items = callback(InventoryType.Bundle, inventory);
 
@@ -89,7 +90,7 @@ namespace WvsBeta.Common.Objects
                         }
 
                         itemQuery.Append(columnsBeforeItemInfo);
-                        itemQuery.Append(inventory + ", ");
+                        itemQuery.Append((int)inventory + ", ");
                         itemQuery.Append(item.InventorySlot + ", ");
                         itemQuery.Append(item.GetFullSaveColumns());
                         itemQuery.AppendLine(")");
@@ -119,7 +120,7 @@ namespace WvsBeta.Common.Objects
 
                 bool firstrun = true;
 
-                var equips = callback(InventoryType.Eqp, 1);
+                var equips = callback(InventoryType.Eqp, Inventory.Equip);
                 foreach (var item in equips)
                 {
                     if (item == null) continue;

@@ -11,6 +11,7 @@ using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -69,7 +70,7 @@ namespace WvsBeta.Game
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
 
-        public override BaseCharacterInventory Inventory { get; set; }
+        public CharacterInventory Inventory { get => (CharacterInventory)BaseInventory; }
         public override BaseCharacterSkills Skills { get => base.Skills; protected set => base.Skills = value; }
         public CharacterBuffs Buffs { get; private set; }
         public override BaseCharacterPrimaryStats PrimaryStats { get => base.PrimaryStats; protected set => base.PrimaryStats = value; }
@@ -77,7 +78,7 @@ namespace WvsBeta.Game
         public Rand32 RndActionRandomizer { get; private set; }
         public CharacterSummons Summons { get; private set; }
         public CharacterStorage Storage { get; private set; }
-        public override BaseCharacterQuests Quests { get; protected set; }
+        public CharacterQuests Quests { get => (CharacterQuests)BaseQuests; }
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
         public long PetLastInteraction { get; set; }
@@ -140,7 +141,7 @@ namespace WvsBeta.Game
         public PetItem GetSpawnedPet()
         {
             if (CharacterStat.PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Pet) as PetItem;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
         }
 
         public void EncodeForRemote(Packet packet)
@@ -567,7 +568,7 @@ namespace WvsBeta.Game
                 lastSaveStep = CalculateSaveStep();
             }
 
-            Inventory = new CharacterInventory(this);
+            BaseInventory = new CharacterInventory(this);
             Inventory.LoadInventory();
 
             UserID = tmpUserId;
@@ -584,7 +585,7 @@ namespace WvsBeta.Game
 
             Summons = new CharacterSummons(this);
 
-            Quests = new CharacterQuests(this);
+            BaseQuests = new CharacterQuests(this);
             Quests.LoadQuests();
 
             Variables = new CharacterVariables(this);
@@ -642,5 +643,11 @@ namespace WvsBeta.Game
             ThreadContext.Properties.Remove("CharacterName");
             ThreadContext.Properties.Remove("MapID");
         }
+        #region Script helpers
+        public void SendSound(string path)
+        {
+            SendPacket(FieldEffectPacket.Sound(path));
+        }
+        #endregion
     }
 }

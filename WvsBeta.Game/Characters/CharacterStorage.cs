@@ -11,7 +11,7 @@ namespace WvsBeta.Game
     public class CharacterStorage
     {
         public GameCharacter Character { get; set; }
-        private BaseItem[][] _items { get; set; }
+        private Dictionary<Inventory, BaseItem[]> _items { get; set; }
 
         public byte MaxSlots { get; set; }
         public byte TotalSlotsUsed { get; set; } = 0;
@@ -55,7 +55,7 @@ namespace WvsBeta.Game
                 );
             }
 
-            _items = new BaseItem[5][];
+            _items = new Dictionary<Inventory, BaseItem[]>();
             SetSlots(MaxSlots);
 
             SplitDBInventory.Load(
@@ -84,11 +84,11 @@ namespace WvsBeta.Game
                 "world_id = " + worldId);
 
             short slot = 0;
-            for (var i = 0; i < _items.Length; i++)
+            foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
             {
                 for (var j = 0; j < MaxSlots; j++)
                 {
-                    var x = _items[i][j];
+                    var x = _items[inventory][j];
                     if (x != null) x.InventorySlot = slot++;
                 }
             }
@@ -101,7 +101,7 @@ namespace WvsBeta.Game
                 (type, inventory) =>
                 {
                     Inventory inv = (Inventory)inventory;
-                    if (inv == Inventory.Pet) return new List<BaseItem>();
+                    if (inv == Inventory.Cash) return new List<BaseItem>();
                     return GetInventoryItems(inv);
                 },
                 Program.MainForm.LogAppend
@@ -112,7 +112,7 @@ namespace WvsBeta.Game
         public bool AddItem(BaseItem item)
         {
             Inventory inv = Constants.getInventory(item.ItemID);
-            var items = _items[(byte)inv - 1];
+            var items = _items[inv];
             // Find first empty slot
             for (var i = 0; i < MaxSlots; i++)
             {
@@ -128,12 +128,12 @@ namespace WvsBeta.Game
 
         public IEnumerable<BaseItem> GetInventoryItems(Inventory inv)
         {
-            return _items[(byte)inv - 1].Where(x => x != null && Constants.getInventory(x.ItemID) == inv);
+            return _items[inv].Where(x => x != null && Constants.getInventory(x.ItemID) == inv);
         }
 
-        public void TakeItemOut(byte inv, byte slot)
+        public void TakeItemOut(Inventory inv, byte slot)
         {
-            var items = _items[inv - 1];
+            var items = _items[inv];
             var tmp = new BaseItem[MaxSlots];
             var tmpOffset = 0;
 
@@ -148,13 +148,13 @@ namespace WvsBeta.Game
                 tmp[tmpOffset++] = items[i];
             }
 
-            _items[inv - 1] = tmp;
+            _items[inv] = tmp;
         }
 
-        public BaseItem GetItem(byte inv, byte slot)
+        public BaseItem GetItem(Inventory inv, byte slot)
         {
             if (slot >= MaxSlots) return null;
-            return _items[inv - 1][slot];
+            return _items[inv][slot];
         }
 
         public bool SetSlots(byte amount)
@@ -168,12 +168,17 @@ namespace WvsBeta.Game
 
             MaxSlots = amount;
 
-            for (var i = 0; i < 5; i++)
+            foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
             {
-                if (_items[i] == null)
-                    _items[i] = new BaseItem[MaxSlots];
+                if (!_items.ContainsKey(inventory))
+                {
+                    _items.Add(inventory, new BaseItem[MaxSlots]);
+                }
                 else
-                    Array.Resize(ref _items[i], MaxSlots);
+                {
+                    var items = _items[inventory];
+                    Array.Resize(ref items, MaxSlots);
+                }
             }
 
             return true;

@@ -16,6 +16,16 @@ namespace WvsBeta.Game
         }
     }
 
+    public enum NpcState
+    {
+        Next = 0,
+        YesNo = 1,
+        Text = 2,
+        RequestInteger = 3,
+        Menu = 4,
+        Style = 5,
+        Pet = 6
+    }
     public class NpcChatSession : INpcHost
     {
         public int mID { get; set; }
@@ -26,7 +36,7 @@ namespace WvsBeta.Game
         private Dictionary<string, object> _savedObjects = new Dictionary<string, object>();
 
         private byte mState { get; set; } = 0;
-        public byte mLastSentType { get; set; }
+        public NpcState mLastSentType { get; set; }
         public byte mRealState { get; set; }
         public bool WaitingForResponse { get; set; }
 
@@ -64,12 +74,12 @@ namespace WvsBeta.Game
             _compiledScript = script;
         }
 
-        public void HandleThing(byte state = 0, byte action = 0, string text = "", int integer = 0)
+        public void HandleThing(byte state = 0, byte nRet = 0, string stringAnswer = "", int nRetNum = 0)
         {
             #if DEBUG
-                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "state:" + state + ",answer:" + action + ",stringAnswer:" + text + ",integerAnswer:" + integer, mCharacter, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "state:" + state + ",nRet:" + nRet + ",stringAnswer:" + stringAnswer + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
             #endif
-            _compiledScript.Run(this, mCharacter, state, action, text, integer);
+            _compiledScript.Run(this, mCharacter, state, nRet, stringAnswer, nRetNum);
         }
 
         public void Stop()
@@ -121,7 +131,22 @@ namespace WvsBeta.Game
                 }
             }
         }
-
+        public void Say(string message)
+        {
+            SendNext(message);
+        }
+        public void Say(int offset, bool stopOnEnd, params string[] messages)
+        {
+            int i = mRealState - offset;
+            if (i > messages.Length - 1)
+            {
+                if (stopOnEnd) Stop();
+                return;
+            }
+            string msg = messages[i];
+            if (i == 0) SendNext(msg);
+            else SendBackNext(msg);
+        }
         public void SendNext(string Message)
         {
             if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
@@ -217,6 +242,32 @@ namespace WvsBeta.Game
             mRealState++;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mID, Message, Values);
+        }
+
+        public void AskPet(string message)
+        {
+            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
+            mState = 0;
+            mRealState++;
+            WaitingForResponse = true;
+
+            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message);
+        }
+
+        public void AskPetAllExcept(string message, string petid)
+        {
+            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
+            mState = 0;
+            mRealState++;
+            WaitingForResponse = true;
+
+            int petskip = -1;
+            try
+            {
+                petskip = int.Parse(petid);
+            }
+            catch { }
+            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message, petskip);
         }
 
         public object GetSessionValue(string pName)

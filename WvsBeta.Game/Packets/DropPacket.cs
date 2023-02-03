@@ -28,7 +28,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            chr.AddMesos(-amount, true);
+            chr.Inventory.ExchangeMesos(-amount, true);
             Common.Tracking.MesosTransfer.PlayerDropMesos(chr.ID, amount, chr.MapID.ToString());
 
             chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
@@ -88,7 +88,7 @@ namespace WvsBeta.Game
                                 mesosGiven += Bonus;
                             }
                             // Now figure out what we really gave the user
-                            BonusUser.AddMesos(mesosGiven, true, out mesosGiven);
+                            BonusUser.Inventory.ExchangeMesos(mesosGiven, true, out mesosGiven);
 
                             Common.Tracking.MesosTransfer.PlayerLootMesos(drop.SourceID, chr.ID, mesosGiven, "Party " + chr.PartyID + ", " + chr.MapID + ", " + drop.GetHashCode());
 
@@ -99,7 +99,7 @@ namespace WvsBeta.Game
 
                 if (!SentDropNotice)
                 {
-                    chr.AddMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
+                    chr.Inventory.ExchangeMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
                     Common.Tracking.MesosTransfer.PlayerLootMesos(
                         drop.SourceID,
                         chr.ID,
@@ -110,17 +110,17 @@ namespace WvsBeta.Game
             }
             else if (Constants.isStar(reward.ItemID))
             {
-                if (!chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount, Constants.isStackable(reward.ItemID)))
+                if (!chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount))
                 {
                     CannotLoot(chr, -1);
                     InventoryPacket.NoChange(chr);
                     return;
                 }
                 var rewardItem = drop.Reward.GetData();
-                chr.Inventory.AddItem2(rewardItem);
+                chr.Inventory.AddItem(rewardItem);
                 ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), rewardItem);
             }
-            else if (chr.Inventory.AddItem2(drop.Reward.GetData()) == drop.Reward.Amount)
+            else if (chr.Inventory.AddItem(drop.Reward.GetData()) == drop.Reward.Amount)
             {
                 CannotLoot(chr, -1);
                 InventoryPacket.NoChange(chr); // ._. stupid nexon

@@ -168,6 +168,12 @@ namespace WvsBeta.Game
             CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, value);
         }
 
+        public bool LevelUP()
+        {
+            if (CharacterStat.Level == 200) return false;
+            SetLevel((byte)(CharacterStat.Level + 1));
+            return true;
+        }
         public void SetLevel(byte value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "level", add = false });
@@ -377,35 +383,6 @@ namespace WvsBeta.Game
         public void IncreaseBuddySlots()
         {
             Server.Instance.CenterConnection.BuddyListExpand(this);
-        }
-
-        public bool TryExchange(int mesos, int itemId, short itemAmount)
-        {
-            if (mesos < 0 && Inventory.Mesos < Math.Abs(mesos)) return false;
-            if (Inventory.AddNewItem(itemId, itemAmount) == 0) return false;
-            AddMesos(mesos);
-            return true;
-        }
-        public bool TryExchange(int mesos)
-        {
-            return TryAddMesos(mesos);
-        }
-        public bool TryAddMesos(int value, bool isSelf = false)
-        {
-            if (value < 0 && Inventory.Mesos < Math.Abs(value)) return false;
-            AddMesos(value, isSelf, out int _);
-            return true;
-        }
-        public void AddMesos(int value, bool isSelf = false)
-        {
-            AddMesos(value, isSelf, out int _);
-        }
-        public void AddMesos(int value, bool isSelf, out int mesosDiff)
-        {
-            int newMesos = Math.Max(0, Math.Min(int.MaxValue, Inventory.Mesos + value));
-            mesosDiff = newMesos - Inventory.Mesos;
-            Inventory.Mesos = newMesos;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mesos, Inventory.Mesos, isSelf);
         }
 
         public void AddMaplePoints(int value, GameCharacter chr)

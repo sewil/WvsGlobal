@@ -1,28 +1,34 @@
 ﻿using System.Collections.Generic;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
 {
-
-    public static class QuestPacket
+    public class QuestPacket : Packet
     {
-
-        public static void SendQuestDataUpdate(GameCharacter chr, int QuestID, string Data)
+        private QuestPacket(short questID, QuestState state) : base(ServerMessages.MESSAGE)
         {
-            Packet pw = new Packet(ServerMessages.MESSAGE);
-            pw.WriteByte(0x01);
-            pw.WriteBool(true);
-            pw.WriteInt(QuestID);
-            pw.WriteString(Data);
+            WriteByte((byte)MessageType.QuestRecord);
+            WriteShort(questID);
+            WriteByte((byte)state);
+        }
+
+        public static void SendRemoveQuest(GameCharacter chr, short questID)
+        {
+            var pw = new QuestPacket(questID, QuestState.NotStarted);
+            chr.SendPacket(pw);
+        }
+        public static void SendQuestUpdateData(GameCharacter chr, short questID, string data)
+        {
+            var pw = new QuestPacket(questID, QuestState.Started);
+            pw.WriteString(data);
             chr.SendPacket(pw);
         }
 
-        public static void SendQuestRemove(GameCharacter chr, int QuestID)
+        public static void SendCompleteQuest(GameCharacter chr, short questID, long filetime)
         {
-            Packet pw = new Packet(ServerMessages.MESSAGE);
-            pw.WriteByte(0x01);
-            pw.WriteBool(false);
-            pw.WriteInt(QuestID);
+            var pw = new QuestPacket(questID, QuestState.Completed);
+            pw.WriteLong(filetime);
             chr.SendPacket(pw);
         }
 

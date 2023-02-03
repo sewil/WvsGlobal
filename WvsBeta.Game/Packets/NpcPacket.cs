@@ -18,7 +18,7 @@ namespace WvsBeta.Game
                 return;
 
             NpcChatSession session = chr.NpcSession;
-            byte state = packet.ReadByte();
+            NpcState state = (NpcState)packet.ReadByte();
             if (state != session.mLastSentType)
             {
                 InventoryPacket.NoChange(chr);
@@ -54,7 +54,7 @@ namespace WvsBeta.Game
                         }
                         break;
 
-                    case 1:
+                    case NpcState.YesNo:
                         switch (option)
                         {
                             case 0: // No.
@@ -69,7 +69,7 @@ namespace WvsBeta.Game
                         }
                         break;
 
-                    case 2:
+                    case NpcState.Text:
                         switch (option)
                         {
                             case 0: // No text :(
@@ -84,7 +84,7 @@ namespace WvsBeta.Game
                         }
                         break;
 
-                    case 3:
+                    case NpcState.RequestInteger:
                         switch (option)
                         {
                             case 0: // No int :(
@@ -99,8 +99,8 @@ namespace WvsBeta.Game
                         }
                         break;
 
-                    case 4:
-                    case 5:
+                    case NpcState.Menu:
+                    case NpcState.Style:
                         switch (option)
                         {
                             case 0: // Stopping.
@@ -116,7 +116,22 @@ namespace WvsBeta.Game
                                 break;
                         }
                         break;
-
+                    case NpcState.Pet: // Pet selection
+                        switch (option)
+                        {
+                            case 0: // Stopping
+                                session.Stop();
+                                break;
+                            case 1:
+                                // 26 06 01 18 5E 89 B8 86 02 B5 00
+                                string cashIdStr = packet.ReadLong().ToString();
+                                session.HandleThing(session.mRealState, stringAnswer: cashIdStr);
+                                break;
+                            default:
+                                session.Stop();
+                                break;
+                        }
+                        break;
                     default:
                         session.Stop();
                         Program.MainForm.LogAppend("Unknown NPC chat action: " + packet);
@@ -216,7 +231,7 @@ namespace WvsBeta.Game
                         }
 
 
-                        if (!chr.Inventory.HasSlotsFreeForItem(itemid, amount, true))
+                        if (!chr.Inventory.HasSlotsFreeForItem(itemid, amount))
                         {
                             SendShopResult(chr, ShopRes.BuyUnknown);
                             return;
@@ -230,7 +245,7 @@ namespace WvsBeta.Game
                         chr.Inventory.AddNewItem(itemid, amount);
                         SendShopResult(chr, ShopRes.BuySuccess);
                         sid.Stock -= amount;
-                        chr.AddMesos(-costs);
+                        chr.Inventory.ExchangeMesos(-costs);
 
                         break;
                     }
@@ -297,7 +312,7 @@ namespace WvsBeta.Game
                             item.Amount -= amount;
                             InventoryPacket.AddItem(chr, inv, item, false);
                         }
-                        chr.AddMesos(sellPrice);
+                        chr.Inventory.ExchangeMesos(sellPrice);
 
                         SendShopResult(chr, ShopRes.SellSuccess);
                         break;
@@ -345,7 +360,7 @@ namespace WvsBeta.Game
 
                             item.Amount = maxslot;
 
-                            chr.AddMesos(sellPrice);
+                            chr.Inventory.ExchangeMesos(sellPrice);
                             InventoryPacket.AddItem(chr, inv, item, false);
                             SendShopResult(chr, ShopRes.RechargeSuccess);
                         }
@@ -430,7 +445,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextMenu(GameCharacter chr, int NpcID, string Text)
         {
-            chr.NpcSession.mLastSentType = 4;
+            chr.NpcSession.mLastSentType = NpcState.Menu;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
@@ -442,7 +457,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextYesNo(GameCharacter chr, int NpcID, string Text)
         {
-            chr.NpcSession.mLastSentType = 1;
+            chr.NpcSession.mLastSentType = NpcState.YesNo;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
@@ -454,7 +469,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextRequestText(GameCharacter chr, int NpcID, string Text, string Default, short MinLength, short MaxLength)
         {
-            chr.NpcSession.mLastSentType = 2;
+            chr.NpcSession.mLastSentType = NpcState.Text;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
@@ -469,7 +484,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextRequestInteger(GameCharacter chr, int NpcID, string Text, int Default, int MinValue, int MaxValue)
         {
-            chr.NpcSession.mLastSentType = 3;
+            chr.NpcSession.mLastSentType = NpcState.RequestInteger;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
@@ -484,7 +499,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextRequestStyle(GameCharacter chr, int NpcID, string Text, List<int> values)
         {
-            chr.NpcSession.mLastSentType = 5;
+            chr.NpcSession.mLastSentType = NpcState.Style;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
@@ -499,16 +514,16 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestPet(GameCharacter chr, int NpcID, string Text)
+        public static void SendNPCChatTextRequestPet(GameCharacter chr, int NpcID, string Text, int skipPet = -1)
         {
-            chr.NpcSession.mLastSentType = 5;
+            chr.NpcSession.mLastSentType = NpcState.Pet;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);
             pw.WriteByte(0x06);
             pw.WriteString(Text);
 
-            var pets = chr.Inventory.GetAlivePets().ToList();
+            var pets = chr.Inventory.GetPets().Where(p => skipPet > -1 ? p.ItemID != skipPet : true).ToList();
 
             pw.WriteByte((byte)pets.Count());
             foreach (var petItem in pets)

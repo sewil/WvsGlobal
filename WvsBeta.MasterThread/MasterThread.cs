@@ -16,8 +16,14 @@ namespace WvsBeta
         
         public static DateTime CurrentDate { get; private set; }
 
-        
         public static long CurrentTime => (long)((Stopwatch.GetTimestamp() * (1.0 / Stopwatch.Frequency)) * 1000.0);
+        public static long UnixTime => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        public static long GetFileTime(long unix, int tzOffset = 0)
+        {
+            long offset = tzOffset * 3600 * 1000 * 10000L;
+            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unix);
+            return dateTimeOffset.ToFileTime() + offset;
+        }
 
         public bool Stop { get; set; }
         public string ServerName { get; private set; }

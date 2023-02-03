@@ -22,7 +22,7 @@ namespace WvsBeta.Shop
 
         public struct BuySlotIncrease
         {
-            public byte inventory { get; set; }
+            public Inventory inventory { get; set; }
             public byte newSlots { get; set; }
             public bool withMaplePoints { get; set; }
             public int cashAmount { get; set; }
@@ -130,9 +130,9 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_IncreaseSlots:
                     {
                         var maplepoints = packet.ReadBool();
-                        var inventory = packet.ReadByte();
+                        Inventory inventory = (Inventory)packet.ReadByte();
 
-                        if (!(inventory >= 1 && inventory <= 5))
+                        if (!Enum.IsDefined(typeof(Inventory), inventory))
                         {
                             _log.Warn("Increase slots failed: Invalid inventory");
                             SendError(chr, CashPacketOpcodes.S_IncSlotCount_Failed, CashErrors.OutOfStock);
@@ -409,7 +409,7 @@ namespace WvsBeta.Shop
                             return;
                         }
 
-                        if (slot < 1 || slot > chr.Inventory.MaxSlots[(byte)inv - 1])
+                        if (slot < 1 || slot > chr.Inventory.MaxSlots[inv])
                         {
                             _log.Warn($"Moving Locker to Storage failed: not enough slots left.");
                             SendError(chr, CashPacketOpcodes.S_MoveLtoS_Failed, CashErrors.CheckFullInventory);
@@ -506,10 +506,10 @@ namespace WvsBeta.Shop
         }
 
 
-        public static void SendIncreasedSlots(Character chr, byte inventory, short slots)
+        public static void SendIncreasedSlots(Character chr, Inventory inventory, short slots)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_IncSlotCount_Done);
-            pw.WriteByte(inventory);
+            pw.WriteByte((byte)inventory);
             pw.WriteShort(slots);
             chr.SendPacket(pw);
         }

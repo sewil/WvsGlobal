@@ -121,9 +121,12 @@
     <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
     <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
+    <Compile Include="Enums\EquippedVisibility.cs" />
+    <Compile Include="Enums\QuestState.cs" />
     <Compile Include="Enums\TransactionType.cs" />
     <Compile Include="Extensions\CrossThreadExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Objects\CompletedQuest.cs" />
     <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />

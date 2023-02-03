@@ -53,7 +53,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 {
                     if (pst.Value.sItem.Amount != 0) //If an item is set to 0, no point of adding it.
                     {
-                        pOwner.Inventory.AddItem2(pst.Value.sItem);
+                        pOwner.Inventory.AddItem(pst.Value.sItem);
                         ItemTransfer.PersonalShopGetBackItem(pOwner.ID, pst.Value.sItem.ItemID, pst.Value.sItem.Amount, _transaction, pst.Value.sItem);
                         pst.Value.sItem = null;
                     }
@@ -144,7 +144,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             if (Items.TryGetValue(slot, out PlayerShopItem pst))
             {
-                pCharacter.Inventory.AddItem2(pst.sItem);
+                pCharacter.Inventory.AddItem(pst.sItem);
                 ItemTransfer.PersonalShopGetBackItem(pCharacter.ID, pst.sItem.ItemID, pst.sItem.Amount, _transaction, pst.sItem);
                 var x = pst.sItem.Amount;
                 if (x == 1)
@@ -203,8 +203,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
 
             pCharacter.Inventory.AddNewItem(pst.sItem.ItemID, realAmount);
-            pCharacter.AddMesos(-cost);
-            Owner.AddMesos(cost);
+            pCharacter.Inventory.ExchangeMesos(-cost);
+            Owner.Inventory.ExchangeMesos(cost);
 
             MesosTransfer.PlayerBuysFromPersonalShop(pCharacter.ID, Owner.ID, cost, _transaction);
             ItemTransfer.PersonalShopBoughtItem(Owner.ID, pCharacter.ID, pst.sItem.ItemID, realAmount, TransactionID, pst.sItem);

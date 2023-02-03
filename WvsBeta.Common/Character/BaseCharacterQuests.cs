@@ -2,40 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common.DataProviders;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Common.Character
 {
     public class BaseCharacterQuests
     {
-        public Dictionary<int, QuestData> Quests { get; } = new Dictionary<int, QuestData>();
+        public Dictionary<short, QuestData> Quests { get; } = new Dictionary<short, QuestData>();
+        public Dictionary<short, CompletedQuest> CompletedQuests { get; } = new Dictionary<short, CompletedQuest>();
+
         public virtual void SaveQuests() { throw new NotImplementedException(); }
         public virtual bool LoadQuests() { throw new NotImplementedException(); }
-        public virtual bool AddNewQuest(int QuestID, string Data = "") { throw new NotImplementedException(); }
-        public bool HasQuest(int questID)
+        public virtual bool AddNewQuest(short questID, string data = "") { throw new NotImplementedException(); }
+        public bool HasQuest(short questID)
         {
             return Quests.ContainsKey(questID);
         }
-        // Used by scripts because they can't use out
-        public QuestData GetQuest(int questID)
+        public bool HasCompletedQuest(short questID)
         {
-            if (HasQuest(questID)) return Quests[questID];
-            else return null;
+            return CompletedQuests.ContainsKey(questID);
         }
-        public Dictionary<int, QuestData> GetWZExistingQuests()
+        public Dictionary<short, QuestData> GetQuests(bool wzFilter = true)
         {
-            return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
+            if (wzFilter) return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
+            else return Quests;
         }
-        public int GetState(int questID)
+        public Dictionary<short, CompletedQuest> GetCompletedQuests(bool wzFilter = true)
         {
-            try
-            {
-                return int.Parse(Quests[questID].Data);
-            }
-            catch
-            {
-                return -1;
-            }
+            if (wzFilter) return CompletedQuests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
+            else return CompletedQuests;
         }
     }
 }

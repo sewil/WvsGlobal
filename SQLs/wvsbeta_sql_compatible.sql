@@ -373,7 +373,7 @@ DROP TABLE IF EXISTS `character_quests`;
 CREATE TABLE `character_quests` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `charid` int(11) NOT NULL,
-  `questid` int(16) NOT NULL,
+  `questid` smallint(5) NOT NULL,
   `data` varchar(40) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -522,7 +522,7 @@ DROP TABLE IF EXISTS `completed_quests`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `completed_quests` (
   `charid` int(11) NOT NULL,
-  `questid` smallint(6) NOT NULL,
+  `questid` smallint(5) NOT NULL,
   `endtime` bigint(20) DEFAULT 0,
   PRIMARY KEY (`charid`,`questid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;

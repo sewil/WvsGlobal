@@ -723,7 +723,7 @@ namespace WvsBeta.Common.Objects
         {
             var inventory = Constants.getInventory(i.ItemID);
             if (inventory == Enums.Inventory.Equip) return i.ToEquipItem();
-            if (inventory == Enums.Inventory.Pet) return null; // TODO: ???
+            if (inventory == Enums.Inventory.Cash) return null; // TODO: ???
             return i.ToBundleItem();
         }
     }

@@ -302,6 +302,7 @@ namespace WvsBeta.Common
         {
             public static readonly string EnchantSuccess = "Enchant/Success";
             public static readonly string EnchantFailure  = "Enchant/Failure";
+            public static readonly string Portal = "Portal";
         }
         public static class MobSkills
         {
@@ -381,7 +382,7 @@ namespace WvsBeta.Common
         public static bool isStar(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ItemStar); }
         public static bool isRechargeable(int itemid) { return isStar(itemid); }
         public static bool isEquip(int itemid) { return (getInventory(itemid) == Inventory.Equip); }
-        public static bool isPet(int itemid) { return (getInventory(itemid) == Inventory.Pet); }
+        public static bool isPet(int itemid) { return (getInventory(itemid) == Inventory.Cash); }
         public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isPet(itemid)); }
         public static bool isOverall(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorOverall); }
         public static bool isTop(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorTop); }
@@ -393,7 +394,6 @@ namespace WvsBeta.Common
         public static bool isCrossbow(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.WeaponCrossbow); }
         public static bool isSword(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.Weapon1hSword || getItemType(itemid) == (int)Items.Types.ItemTypes.Weapon2hSword); }
         public static bool isMace(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.Weapon1hMace || getItemType(itemid) == (int)Items.Types.ItemTypes.Weapon2hMace); }
-        public static bool isValidInventory(byte inv) { return (inv > 0 && inv <= 5); }
 
         public static bool isPuppet(int skillid) { return (skillid == Sniper.Skills.Puppet || skillid == Ranger.Skills.Puppet); }
         public static bool isSummon(int skillid) { return (isPuppet(skillid) || skillid == Priest.Skills.SummonDragon || skillid == Ranger.Skills.SilverHawk || skillid == Sniper.Skills.GoldenEagle); }

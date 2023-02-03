@@ -40,7 +40,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (answer == 1)
             {
-                if (!target.TryAddMesos(-fee)) self.SendOK("You do not have enough mesos. I'm sorry, but without enough mesos you won't be able to ride the taxi.");
+                if (!target.Inventory.TryExchange(-fee)) self.SendOK("You do not have enough mesos. I'm sorry, but without enough mesos you won't be able to ride the taxi.");
                 else target.ChangeMap(mapID);
             }
             else
@@ -138,7 +138,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else
             {
-                if (!target.TryAddMesos(-fee))
+                if (!target.Inventory.TryExchange(-fee))
                 {
                     self.SendNext("It looks like you don't have enough mesos. Sorry, but you won't be able to use this without it.");
                 }

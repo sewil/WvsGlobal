@@ -6,6 +6,6 @@
         Use = 2,
         Setup = 3,
         Etc = 4,
-        Pet = 5,
+        Cash = 5,
     }
 }

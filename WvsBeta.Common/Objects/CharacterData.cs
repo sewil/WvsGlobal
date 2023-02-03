@@ -22,7 +22,7 @@ namespace WvsBeta.Common.Objects
                 packet.WriteByte(chr.BuddyListCapacity);
             }
 
-            chr.Inventory.GenerateInventoryPacket(packet, flags);
+            chr.BaseInventory.GenerateInventoryPacket(packet, flags);
 
             if (flags.HasFlag(CharacterDataFlag.Skills))
             {
@@ -31,18 +31,24 @@ namespace WvsBeta.Common.Objects
 
             if (flags.HasFlag(CharacterDataFlag.Quests))
             {
-                var questsWithData = chr.Quests.GetWZExistingQuests();
-                packet.WriteShort((short)questsWithData.Count); // Running quests
-                foreach (var kvp in questsWithData)
+                var quests = chr.BaseQuests.GetQuests();
+                packet.WriteShort((short)quests.Count); // Running quests
+                foreach (var quest in quests)
                 {
-                    packet.WriteShort((short)kvp.Key);
-                    packet.WriteString(kvp.Value.Data);
+                    packet.WriteShort(quest.Key);
+                    packet.WriteString(quest.Value.Data);
                 }
             }
 
-            if (flags.HasFlag(CharacterDataFlag.Unk4000))
+            if (flags.HasFlag(CharacterDataFlag.CompletedQuests))
             {
-                packet.WriteShort(0);
+                var completedQuests = chr.BaseQuests.GetCompletedQuests();
+                packet.WriteShort((short)completedQuests.Count); // Completed quests
+                foreach (var completedQuest in completedQuests)
+                {
+                    packet.WriteShort(completedQuest.Key);
+                    packet.WriteLong(completedQuest.Value.FileTime);
+                }
             }
 
             if (flags.HasFlag(CharacterDataFlag.MinigameStats))
@@ -57,7 +63,7 @@ namespace WvsBeta.Common.Objects
 
             if (flags.HasFlag(CharacterDataFlag.TeleportRock)) // 5 locations
             {
-                chr.Inventory.AddRockPacket(packet);
+                chr.BaseInventory.AddRockPacket(packet);
             }
         }
     }

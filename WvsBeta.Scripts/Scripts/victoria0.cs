@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game;
@@ -27,7 +28,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (state == 4 && nRet == 1)
             {
-                if (!target.TryAddMesos(-fee, true)) self.SendNext("You do not have enough money. With your skills, you should have more than that!");
+                if (!target.Inventory.TryExchange(-fee)) self.SendNext("You do not have enough money. With your skills, you should have more than that!");
                 else target.ChangeMap(mapNum);
             }
             else if(state == 4) self.SendNext("There's a lot to see in this town too. Let me know if you want to go somewhere else.");
@@ -152,8 +153,9 @@ namespace WvsBeta.Scripts.Scripts
         {
             if (state == 0)
             {
-                var val = target.Quests.GetQuest(2013);
-                if (val != null && val.Data == "2")
+                var qr = target.Quests;
+                var val = qr.GetState(2013);
+                if (val == QuestState.Completed)
                 {
                     questComplete = true;
                     self.SendOK("It's you... thanks to you I managed to do a lot. I'm currently making an item pack. If you need anything, just let me know.");
@@ -207,7 +209,7 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        if (!target.TryExchange(-totalPrice, itemId, (short)nRetNum))
+                        if (!target.Inventory.TryExchange(-totalPrice, itemId, (short)nRetNum))
                         {
                             self.SendOK("Are you running out of money? Please check if you have an empty slot in your inventory and that you have at least #r" + totalPrice.ToFormattedString() + "#k mesos.");
                         }
@@ -227,8 +229,9 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost host, GameCharacter target)
         {
-            var val = target.Quests.GetQuest(2073);
-            if (val != null && val.Data == "1")
+            var qr = target.Quests;
+            var val = qr.GetState(2073);
+            if (val == QuestState.Started)
             {
                 var quest = FieldSet.Instances["Utah"];
                 if (!quest.Enter(target, 0))

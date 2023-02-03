@@ -180,7 +180,7 @@ namespace WvsBeta.Game
                 {
                     if (swordOrTop != null)
                     {
-                        if (!chr.Inventory.HasSlotsFreeForItem(bottomOrShield.ItemID, 1, false))
+                        if (!chr.Inventory.HasSlotsFreeForItem(bottomOrShield.ItemID, 1))
                         {
                             NoChange(chr);
                             return;
@@ -293,7 +293,7 @@ namespace WvsBeta.Game
 
             BaseItem swap = chr.Inventory.GetItem(inventory, slotTo);
 
-            if (swap == null && !chr.Inventory.HasSlotsFreeForItem(equip.ItemID, 1, false))  // Client checks this for us, but in case of PE
+            if (swap == null && !chr.Inventory.HasSlotsFreeForItem(equip.ItemID, 1)) // Client checks this for us, but in case of PE
             {
                 NoChange(chr);
                 return;
@@ -321,7 +321,7 @@ namespace WvsBeta.Game
                 short slotFrom = packet.ReadShort(); // Slot from
                 short slotTo = packet.ReadShort(); // Slot to
 
-                if (slotFrom == 0 || inventory < 0 || inventory > Inventory.Pet) goto no_op;
+                if (slotFrom == 0 || inventory < 0 || inventory > Inventory.Cash) goto no_op;
 
                 Trace.WriteLine($"Trying to swap from {slotFrom} to {slotTo}, inventory {inventory}");
                 if (slotFrom < 0) Trace.WriteLine("From: " + (Constants.EquipSlots.Slots)((-slotFrom) % 100));
@@ -647,10 +647,10 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void IncreaseSlots(GameCharacter chr, byte inventory, byte amount)
+        public static void IncreaseSlots(GameCharacter chr, Inventory inventory, byte amount)
         {
             Packet pw = new Packet(ServerMessages.INVENTORY_GROW);
-            pw.WriteByte(inventory);
+            pw.WriteByte((byte)inventory);
             pw.WriteByte(amount);
             pw.WriteLong(0);
             chr.SendPacket(pw);

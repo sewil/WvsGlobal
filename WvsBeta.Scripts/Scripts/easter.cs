@@ -4,7 +4,6 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
-using WvsBeta.Scripts.Scripts;
 
 namespace WvsBeta.Scripts
 {
@@ -13,14 +12,14 @@ namespace WvsBeta.Scripts
     {
         public void Run(INpcHost self, GameCharacter target, byte State, byte Answer, string StringAnswer, int IntegerAnswer)
         {
+            var qr = target.Quests;
+            var val = qr.Get(8876);
+
             if(target.Level < 8)
             {
                 self.SendNext(" Sup. I'm Roy, but my boys call me 'The Mad Bunny'. I hate Easter and I'm going to bring it down this year. I don't think you can help us out right now, cuz you seem weak. Go get yourself stronger, and maybe we'll talk business. ");
                 return;
             }
-            var quests = target.Quests.Quests;
-            int questID = 8876;
-            var quest = ScriptStandard.GetQuestData(target, questID, "uns");
             var inventory = target.Inventory;
             var cTime = MasterThread.CurrentDate;
             var esTime = cTime.CompareTo(new DateTime(cTime.Year, 3, 11, 0, 0, 0));
@@ -38,7 +37,7 @@ namespace WvsBeta.Scripts
                 return;
             }
 
-            if (quest.Data == "end") // if a user already finished the quest
+            if (val == "end") // if a user already finished the quest
             {
                 if (State == 0)
                 {
@@ -52,11 +51,11 @@ namespace WvsBeta.Scripts
                 else
                 {
                     self.SendOK("Sweet. That sounds like good news. I'll be here waiting.");
-                    quests[questID].Data = "ing";
+                    qr.Set(8876, "ing");
                 }
                 self.Stop();
             }
-            else if (quest.Data == "ing")
+            else if (val == "ing")
             {
                 if (inventory.GetItemAmount(Inventory.Etc, 4031284) >= 1)
                 {
@@ -72,7 +71,7 @@ namespace WvsBeta.Scripts
                     }
                     else if (State == 2)
                     {
-                        inventory.TakeInventoryItem(4031284, 1);
+                        inventory.TakeItem(4031284, 1);
                         var exp = 0;
                         var rn1 = Rand32.NextBetween(1, 10000);
                         if (1 <= rn1 && rn1 <= 5000) exp = 100;
@@ -81,7 +80,7 @@ namespace WvsBeta.Scripts
                         if (9999 < rn1 && rn1 <= 10000) exp = 100000;
                         target.AddEXP(exp);
                         self.SendOK("I'm giving you " + exp + " EXP. Peace out!");
-                        quests[questID].Data = "end";
+                        qr.Set(8876, "end");
                     }
                     self.Stop();
                 }
@@ -102,7 +101,7 @@ namespace WvsBeta.Scripts
                 {
                     //user accepts the quest
                     self.SendOK("Okay... Good luck!!!");
-                    quests[questID].Data = "ing";
+                    qr.Set(8876, "ing");
                 }
                 else //user doesn't accept the quest
                 {

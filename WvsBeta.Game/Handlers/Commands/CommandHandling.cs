@@ -962,11 +962,11 @@ namespace WvsBeta.Game.Handlers.Commands
 
                         case "maxslots":
                             {
-                                character.Inventory.SetInventorySlots(1, 100);
-                                character.Inventory.SetInventorySlots(2, 100);
-                                character.Inventory.SetInventorySlots(3, 100);
-                                character.Inventory.SetInventorySlots(4, 100);
-                                character.Inventory.SetInventorySlots(5, 100);
+                                character.Inventory.SetInventorySlots(Inventory.Equip, 100);
+                                character.Inventory.SetInventorySlots(Inventory.Use, 100);
+                                character.Inventory.SetInventorySlots(Inventory.Setup, 100);
+                                character.Inventory.SetInventorySlots(Inventory.Etc, 100);
+                                character.Inventory.SetInventorySlots(Inventory.Cash, 100);
                                 return true;
                             }
 
@@ -2361,11 +2361,11 @@ namespace WvsBeta.Game.Handlers.Commands
                                     short pickupAmount = drop.Reward.Amount;
                                     if (drop.Reward.Mesos)
                                     {
-                                        character.AddMesos(drop.Reward.Drop);
+                                        character.Inventory.ExchangeMesos(drop.Reward.Drop);
                                     }
                                     else
                                     {
-                                        if (character.Inventory.AddItem2(drop.Reward.GetData()) == drop.Reward.Amount)
+                                        if (character.Inventory.AddItem(drop.Reward.GetData()) == drop.Reward.Amount)
                                         {
                                             continue;
                                         }

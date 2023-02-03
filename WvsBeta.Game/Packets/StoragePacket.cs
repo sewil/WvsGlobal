@@ -56,7 +56,7 @@ namespace WvsBeta.Game
             {
                 case StorageAction.Withdraw: // Remove
                     {
-                        byte inventory = pr.ReadByte();
+                        Inventory inventory = (Inventory)pr.ReadByte();
                         byte slot = pr.ReadByte();
                         BaseItem item = chr.Storage.GetItem(inventory, slot);
                         if (item == null)
@@ -70,10 +70,10 @@ namespace WvsBeta.Game
                             amount = 1; // 1 'set'
                         }
 
-                        if (chr.Inventory.HasSlotsFreeForItem(item.ItemID, amount, inventory != 1))
+                        if (chr.Inventory.HasSlotsFreeForItem(item.ItemID, amount))
                         {
                             // AddItem2 will distribute stackable items
-                            chr.Inventory.AddItem2(item);
+                            chr.Inventory.AddItem(item);
                             chr.Storage.TakeItemOut(inventory, slot);
 
                             ItemTransfer.PlayerStorageWithdraw(chr.ID, chr.TrunkNPCID, item.ItemID, item.Amount, null, item);
@@ -124,7 +124,7 @@ namespace WvsBeta.Game
 
                         EncodeStorage(chr, StorageEncode.EncodeDeposit, GetEncodeFlagForInventory(Constants.getInventory(item.ItemID)));
                         
-                        chr.AddMesos(-storageCost); //why did you forget this diamondo :P
+                        chr.Inventory.ExchangeMesos(-storageCost); //why did you forget this diamondo :P
                         
                         MesosTransfer.PlayerGaveToNPC(chr.ID, chr.TrunkNPCID, storageCost, "" + item.GetHashCode());
                         break;
@@ -138,7 +138,7 @@ namespace WvsBeta.Game
                             if (chr.AssertForHack(Math.Abs(mesos) > chr.Inventory.Mesos, "Trying to store more mesos than he has") == false)
                             {
                                 Common.Tracking.MesosTransfer.PlayerStoreMesos(chr.ID, Math.Abs(mesos));
-                                chr.AddMesos(mesos);
+                                chr.Inventory.ExchangeMesos(mesos);
                                 chr.Storage.ChangeMesos(mesos);
                             }
                         }
@@ -148,7 +148,7 @@ namespace WvsBeta.Game
                             if (chr.AssertForHack(Math.Abs(mesos) > chr.Storage.Mesos, "Trying to withdraw more mesos than he has") == false)
                             {
                                 Common.Tracking.MesosTransfer.PlayerRetrieveMesos(chr.ID, Math.Abs(mesos));
-                                chr.AddMesos(mesos);
+                                chr.Inventory.ExchangeMesos(mesos);
                                 chr.Storage.ChangeMesos(mesos);
                             }
 
@@ -211,7 +211,7 @@ namespace WvsBeta.Game
                 case Inventory.Use: flag = StorageEncodeFlags.EncodeInventoryUse; break;
                 case Inventory.Setup: flag = StorageEncodeFlags.EncodeInventorySetUp; break;
                 case Inventory.Etc: flag = StorageEncodeFlags.EncodeInventoryEtc; break;
-                case Inventory.Pet: flag = StorageEncodeFlags.EncodeInventoryPet; break;
+                case Inventory.Cash: flag = StorageEncodeFlags.EncodeInventoryPet; break;
                 default: flag = 0; break;
             }
             return flag;

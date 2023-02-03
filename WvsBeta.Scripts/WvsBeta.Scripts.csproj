@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\admin.cs" />
     <Compile Include="Scripts\easter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="Scripts\taxi.cs" />
     <Compile Include="Scripts\victoria0.cs" />
     <Compile Include="Scripts\victoria1.cs" />
+    <Compile Include="Scripts\victoria2.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

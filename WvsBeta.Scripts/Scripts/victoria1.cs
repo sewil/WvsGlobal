@@ -20,7 +20,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (target.Level > 24)
             {
-                if (val == 1)
+                if (val == QuestState.Started)
                 {
                     if (state == 0)
                     {
@@ -29,13 +29,13 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else if (nRet != 0)
                     {
-                        if (!target.TryExchange(0, 4031020, 1)) self.SendNext("Your etc inventory seems to be full. Please make some room to get the item.");
+                        if (!target.Inventory.TryExchange(0, 4031020, 1)) self.SendNext("Your etc inventory seems to be full. Please make some room to get the item.");
                         else target.ChangeMap(101000000);
                     }
                 }
-                else if (val == 2)
+                else if (val == QuestState.Completed)
                 {
-                    if (inventory.GetOpenSlotsInInventory(Inventory.Etc) >= 1)
+                    if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
                     {
                         var nNewItemID = 0;
                         var rnum = Rand32.NextBetween(0, 12);
@@ -53,7 +53,7 @@ namespace WvsBeta.Scripts.Scripts
                         else if (rnum == 11) nNewItemID = 4020005;
                         else if (rnum == 12) nNewItemID = 4020006;
 
-                        var ret = target.TryExchange(0, nNewItemID, 2);
+                        var ret = target.Inventory.TryExchange(0, nNewItemID, 2);
                         if (!ret) self.SendNext("Your etc inventory seems to be full. Please make some room to take the item.");
                         else target.ChangeMap(101000000);
                     }
@@ -79,7 +79,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (target.Level > 49)
             {
-                if (val == 1)
+                if (val == QuestState.Started)
                 {
                     if (state == 0)
                     {
@@ -88,14 +88,14 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else if (nRet != 0)
                     {
-                        var ret = target.TryExchange(0, 4031032, 1);
+                        var ret = target.Inventory.TryExchange(0, 4031032, 1);
                         if (!ret) self.SendNext("Your etc inventory seems to be full. Please make some room to take the item.");
                         else target.ChangeMap(101000000);
                     }
                 }
-                else if (val == 2)
+                else if (val == QuestState.Completed)
                 {
-                    if (inventory.GetOpenSlotsInInventory(Inventory.Etc) >= 1 && inventory.GetOpenSlotsInInventory(Inventory.Equip) >= 1)
+                    if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc) && inventory.SlotCount(Inventory.Equip) > inventory.HoldCount(Inventory.Equip))
                     {
                         int nNewItemID = 0;
                         int rnum = Rand32.NextBetween(1, 30);
@@ -118,7 +118,7 @@ namespace WvsBeta.Scripts.Scripts
                             itemNumber = 1;
                         }
 
-                        var ret = target.TryExchange(0, nNewItemID, itemNumber);
+                        var ret = target.Inventory.TryExchange(0, nNewItemID, itemNumber);
                         if (!ret) self.SendNext("Your equipment and etc inventory are full, which does not allow you to accept more items. You need to free up space in your inventory of etc.");
                         else target.ChangeMap(101000000);
                     }
@@ -160,7 +160,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (val2 == 0)
             {
-                if (val == 1)
+                if (val == QuestState.Started)
                 {
                     var nPrice = target.Level * 100;
                     if (state == 0)
@@ -171,19 +171,19 @@ namespace WvsBeta.Scripts.Scripts
                     else if (nRet == 0) self.SendNext("I understand... but understand my side too, you can't stay here for free.");
                     else
                     {
-                        var ret = target.TryExchange(-nPrice);
+                        var ret = target.Inventory.TryExchange(-nPrice);
                         if (!ret) self.SendNext("Are you running out of money? See if you have more than #r" + nPrice.ToFormattedString() + "#k mesos on hand. Don't expect me to give any discount.");
                         else target.ChangeMap(101000100);
                     }
                 }
-                else if (val == 2)
+                else if (val == QuestState.Completed)
                 {
                     self.SendNext("Is that you from the other day... Is #p1061005# working hard on the diet medicine? Anyway, I was kind of surprised you got around this place without difficulty. As a reward, I'll let you stay a while without paying. You might even find some cool items there along the way.");
                     target.ChangeMap(101000100);
                 }
                 else self.SendNext("Want to come in? You must have heard that there are precious medicinal herbs here, huh? But I can't leave a stranger like you around, who doesn't even know I own this land. I'm sorry, but that's all.");
             }
-            else if (val2 == 1)
+            else if (val2 == QuestState.Started)
             {
                 var nPrice = target.Level * 200;
                 if (state == 0)
@@ -193,12 +193,12 @@ namespace WvsBeta.Scripts.Scripts
                 else if (nRet == 0) self.SendNext("I understand... but understand my side too, you can't stay here for free.");
                 else
                 {
-                    var ret = target.TryExchange(-nPrice);
+                    var ret = target.Inventory.TryExchange(-nPrice);
                     if (!ret) self.SendNext("Are you running out of money? See if you have more than #r" + nPrice.ToFormattedString() + "#k mesos in hand. Don't expect me to give any discount.");
                     else target.ChangeMap(101000102);
                 }
             }
-            else if (val2 == 2)
+            else if (val2 == QuestState.Completed)
             {
                 if (state == 0)
                 {

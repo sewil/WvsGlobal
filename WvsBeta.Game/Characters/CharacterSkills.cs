@@ -118,7 +118,7 @@ namespace WvsBeta.Game
                 if (Character.AssertForHack(((long)Character.Inventory.Mesos - realAmount) < 0,
                     "Player tried to use skill with meso consumption. Not enough mesos.")) return;
 
-                Character.AddMesos(-realAmount);
+                ((CharacterInventory)Character.Inventory).ExchangeMesos(-realAmount);
                 MesosTransfer.PlayerUsedSkill(Character.ID, realAmount, skillid);
             }
         }

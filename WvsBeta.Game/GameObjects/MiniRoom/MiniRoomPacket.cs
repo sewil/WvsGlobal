@@ -473,7 +473,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             omok.AddPlayer(chr);
                             MiniGamePacket.AddVisitor(chr, mrb);
                             MiniGamePacket.ShowWindow(chr, mrb, omok.OmokType);
-                            chr.AddMesos(-100);
+                            chr.Inventory.ExchangeMesos(-100);
                             miniroomLog.Info($"{chr.Name} entered omok");
                         }
                         else

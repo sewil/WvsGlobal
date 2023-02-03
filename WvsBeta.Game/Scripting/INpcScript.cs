@@ -10,6 +10,8 @@ namespace WvsBeta.Game.Scripting
     public interface INpcHost
     {
         int mID { get; }
+        void Say(int offset, bool stopOnEnd, params string[] messages);
+        void Say(string message);
         void SendNext(string Message);
         void SendBackNext(string Message);
         void SendBackOK(string Message);
@@ -19,6 +21,8 @@ namespace WvsBeta.Game.Scripting
         void AskText(string Message, string Default, short MinLength, short MaxLength);
         void AskNumber(string Message, int Default, int MinValue, int MaxValue);
         void AskStyle(string Message, List<int> Values);
+        void AskPet(string message);
+        void AskPetAllExcept(string message, string petcashid);
         void Stop();
 
         object GetSessionValue(string pName);

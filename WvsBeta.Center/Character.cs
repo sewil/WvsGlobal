@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using static WvsBeta.Common.Constants;
@@ -19,6 +20,7 @@ namespace WvsBeta.Center
 
         public Messenger Messenger { get; set; }
         public byte MessengerSlot { get; set; }
+        public CharacterInventory Inventory { get => (CharacterInventory)BaseInventory; }
 
         private int _PartyID;
         public override int PartyID
@@ -47,7 +49,7 @@ namespace WvsBeta.Center
             this.isCCing = isCCing;
             GMLevel = gmLevel;
             IsOnline = isOnline;
-            Inventory = new CharacterInventory(0, id);
+            BaseInventory = new CharacterInventory(0, id);
         }
 
         public Character(Packet pr)
@@ -56,15 +58,15 @@ namespace WvsBeta.Center
             LastChannel = pr.ReadByte();
             FriendsList = new BuddyList(pr);
             base.DecodeForTransfer(pr);
-            Inventory = new CharacterInventory(UserID, ID);
+            BaseInventory = new CharacterInventory(UserID, ID);
         }
 
         public void SetFromAvatarLook(AvatarLook avatar)
         {
-            int hairi = avatar.CashInUnseen ? 0 : 1;
-            int unseeni = avatar.CashInUnseen ? 1 : 0;
-            Inventory.Equips[hairi] = avatar.HairEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
-            Inventory.Equips[unseeni] = avatar.UnseenEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
+            var hairi = avatar.CashInUnseen ? EquippedVisibility.Visible : EquippedVisibility.Hidden;
+            var unseeni = avatar.CashInUnseen ? EquippedVisibility.Hidden : EquippedVisibility.Visible;
+            Inventory.Equipped[hairi] = avatar.HairEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
+            Inventory.Equipped[unseeni] = avatar.UnseenEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
 
             Gender = avatar.Gender;
             Skin = avatar.Skin;
