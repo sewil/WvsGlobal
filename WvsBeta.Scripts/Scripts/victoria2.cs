@@ -439,7 +439,7 @@ namespace WvsBeta.Scripts.Scripts
                         {
                             if (state == 2)
                             {
-                                self.AskYesNo("Você comprou a #b#t5180000##k e #b#t4031034##k... Com eles eu posso trazer o boneco de volta à vida com meu poder mágico. O que você acha? Você quer usar os itens e despertar seu bichinho...?");
+                                self.AskYesNo("You bought #b#t5180000##k and #b#t4031034##k... With them I can bring the doll back to life with my magic power. What do you think? Do you want to use the items and wake up your pet...?");
                                 return;
                             }
                             if (state == 3)
@@ -447,11 +447,11 @@ namespace WvsBeta.Scripts.Scripts
                                 nRet3 = nRet;
                                 if (nRet3 == 0)
                                 {
-                                    self.Say("Entendo... você não tá 100% pronto pra isso, né? Você não tá pensando em deixar esse bichinho como boneco, certo? Por favor, volte se mudar de opinião...");
+                                    self.Say("I understand... you're not 100% ready for this, are you? You're not thinking of leaving this little animal as a doll, right? Please come back if you change your mind...");
                                 }
                                 else
                                 {
-                                    self.AskPet("Então, qual bichinho você quer recuperar? Escolha o bichinho que você mais quer vivo...");
+                                    self.AskPet("So which pet do you want to revive? Choose the pet you most want alive...");
                                     return;
                                 }
                             }
@@ -460,18 +460,18 @@ namespace WvsBeta.Scripts.Scripts
                                 petcashid = stringAnswer;
 
                                 var okPet = inventory.SetPetLife(petcashid, 5180000, 4031034);
-                                if (!okPet) self.Say("Alguma coisa não está certa... você tem certeza de que tem #b#t5180000##k e #b#t4031034##k? Sem esses dois eu não posso fazer o boneco voltar a ser bichinho.");
+                                if (!okPet) self.Say("Something is not right... are you sure you have #b#t5180000##k and #b#t4031034##k? Without these two I can't make the doll go back to being a pet.");
                             }
                         }
                         else
                         {
                             qr.SetComplete(2049);
-                            self.Say("Seu boneco agora voltou a ser seu bichinho. Entretanto, minha magia não é perfeita. Assim, não posso prometer vida eterna... por favor cuide bem desse bichinho antes que #t5180000# esgote. Bem, então... tchau...");
+                            self.Say("Your doll is now your pet again. However, my magic is not perfect, so I can't promise it eternal life... Please take good care of this pet before #t5180000# runs out. Well then... bye...");
                         }
                     }
                     else
                     {
-                        self.Say("Ainda não conseguiu #b#t5180000##k e #b#t4031034##k, certo? Vá ver #b#p1012006##k, de #m100000000#, essa pessoa deve saber sobre o pergaminho. Por favor, reúna esses itens rapidamente...");
+                        self.Say("Still didn't get #b#t5180000##k and #b#t4031034##k, right? Go see #b#p1012006##k, from #m100000000#, that person should know about the scroll. Please gather these items quickly...");
                     }
                 }
                 else
@@ -492,19 +492,19 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (state == 2)
                     {
-                        self.AskPetAllExcept("Então você quer transferir a proximidade existente do seu bichinho? Se você fizer isso, a proximidade e o nível do seu bichinho ficarão em 0, e o novo bichinho ficará com a proximidade e o nível dele. Por favor, escolha o bichinho para o qual você deseja transferir sua proximidade.", "");
+                        self.AskPetAllExcept("So you want to transfer your pet's existing closeness? If you do this, your pet's closeness and level will be set to 0, and the new pet will have its closeness and level. Please choose the pet you want to transfer your proximity to.", "");
                         return;
                     }
                     if (state == 3)
                     {
                         petcashid = stringAnswer;
-                        self.AskPetAllExcept("É hora de transferir a proximidade do bichinho escolhido para o novo bichinho. Por favor, escolha o novo bichinho.", petcashid);
+                        self.AskPetAllExcept("It's time to transfer the closeness of the chosen pet to the new pet. Please choose the new pet.", petcashid);
                         return;
                     }
                     if (state == 4)
                     {
                         petcashid2 = stringAnswer;
-                        self.AskYesNo("Agora a magia vai começar. Tem certeza de que você quer fazer esta transferência?");
+                        self.AskYesNo("Now the magic will begin. Are you sure you want to make this transfer?");
                         return;
                     }
                     if (state == 5)
@@ -513,13 +513,13 @@ namespace WvsBeta.Scripts.Scripts
                         if (nRet4 != 0)
                         {
                             var okPet = inventory.MovePetStat(petcashid, petcashid2, 4160011);
-                            if (okPet == 0) self.Say("A proximidade do bichinho foi transferida com sucesso.");
-                            else if (okPet == 1) self.Say("Por favor, veja se você tem o item apropriado.");
-                            else if (okPet == 2) self.Say("A proximidade do novo bichinho parece ser mais alta do que a do bichinho existente. Verifique novamente.");
+                            if (okPet == 0) self.Say("Pet closeness transferred successfully.");
+                            else if (okPet == 1) self.Say("Please check that you have the required item.");
+                            else if (okPet == 2) self.Say("The closeness of the new pet appears to be higher than that of the existing pet. Check again.");
                         }
                         else
                         {
-                            self.Say("Eu não acho que você tem #t4160011# ou um bichinho para a proximidade ser transferida...  Cloy de Henesys definitivamente saberia sobre #t4160011#...");
+                            self.Say("I don't think you have #t4160011# or a pet for closeness to be transferred... Cloy of Henesys would definitely know about #t4160011#...");
                         }
                     }
                 }
