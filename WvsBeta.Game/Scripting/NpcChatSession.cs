@@ -70,7 +70,7 @@ namespace WvsBeta.Game
             {
                 compiledScript.Run(s, s.mCharacter);
             }
-            catch { }
+            catch (ThreadAbortException) { }
             finally
             {
                 s.Stop();

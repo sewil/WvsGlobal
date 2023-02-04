@@ -406,29 +406,27 @@ namespace WvsBeta.Game
         /// <summary>
         /// Mass exchange
         /// </summary>
-        /// <param name="items">mesos, itemid, itemAmount...</param>
+        /// <param name="items">mesos, [itemid,amount,itemid,amount]...</param>
         /// <returns></returns>
-        public bool TryExchange(params int[] items)
+        public bool TryExchange(int mesos, params int[] items)
         {
             if (items.Length == 0) return false;
+            if (!CanExchangeMesos(mesos)) return false;
+            if (items.Length % 2 != 0) throw new ArgumentException("Invalid items arg");
             // Check first
             for (int i = 0; i < items.Length; i++)
             {
-                int t = i % 3;
                 int item = items[i];
-                if (t == 0 && !CanExchangeMesos(item)) return false;
-                else if (t == 1) // Item
+                if (i % 2 == 0) // itemid
                 {
-                    short amount = items.Length > i + 1 ? (short)items[i + 1] : (short)1;
-                    if (!CanExchangeItem(item, amount)) return false;
+                    if (!CanExchangeItem(item, (short)items[i+1])) return false;
                 }
             }
+            ExchangeMesos(mesos);
             for (int i = 0; i < items.Length; i++)
             {
-                int t = i % 3;
                 int item = items[i];
-                if (t == 0) ExchangeMesos(item);
-                else if (t == 1) // Item
+                if (i % 2 == 0) // itemid
                 {
                     short amount = items.Length > i + 1 ? (short)items[i + 1] : (short)1;
                     ExchangeItem(item, amount);
@@ -452,12 +450,6 @@ namespace WvsBeta.Game
         {
             long newM = (long)Mesos + (long)value;
             return 0 <= newM && newM <= int.MaxValue;
-        }
-        public bool TryExchangeMesos(int value, bool isSelf = false)
-        {
-            if (!CanExchangeMesos(value)) return false;
-            ExchangeMesos(value, isSelf, out int _);
-            return true;
         }
         public bool CanExchangeItem(int itemId, short amount)
         {
