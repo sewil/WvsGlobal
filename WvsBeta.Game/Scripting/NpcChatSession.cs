@@ -106,7 +106,7 @@ namespace WvsBeta.Game
             mCharacter.NpcSession = null;
             compiledScript = null;
             ewh = null;
-            if (thread != null && thread.IsAlive) thread.Abort();
+            thread?.Abort();
             thread = null;
             nRet = 0;
             nRetStr = "";
