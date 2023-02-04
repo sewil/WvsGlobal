@@ -40,7 +40,6 @@ namespace WvsBeta.Game
     {
         public int mID { get; set; }
         public GameCharacter mCharacter { get; set; }
-        public bool Stopped => mCharacter.NpcSession == null;
         private INpcScript compiledScript = null;
 
         private List<string> sayLines { get; set; } = new List<string>();
