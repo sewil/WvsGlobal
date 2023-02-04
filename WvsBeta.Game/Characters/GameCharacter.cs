@@ -70,8 +70,8 @@ namespace WvsBeta.Game
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
 
-        public CharacterInventory Inventory { get => (CharacterInventory)BaseInventory; }
-        public override BaseCharacterSkills Skills { get => base.Skills; protected set => base.Skills = value; }
+        public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
+        public new CharacterSkills Skills => (CharacterSkills)base.Skills;
         public CharacterBuffs Buffs { get; private set; }
         public override BaseCharacterPrimaryStats PrimaryStats { get => base.PrimaryStats; protected set => base.PrimaryStats = value; }
         public Rand32 CalcDamageRandomizer { get; private set; }
@@ -567,14 +567,14 @@ namespace WvsBeta.Game
                 lastSaveStep = CalculateSaveStep();
             }
 
-            BaseInventory = new CharacterInventory(this);
+            base.Inventory = new CharacterInventory(this);
             Inventory.LoadInventory();
 
             UserID = tmpUserId;
 
             Ring.LoadRings(this);
 
-            Skills = new CharacterSkills(this);
+            base.Skills = new CharacterSkills(this);
             Skills.LoadSkills();
 
             Storage = new CharacterStorage(this);
@@ -643,9 +643,36 @@ namespace WvsBeta.Game
             ThreadContext.Properties.Remove("MapID");
         }
         #region Script helpers
+        public CharacterQuests QuestRecord => Quests;
+        public short AP => CharacterStat.AP;
+        public short SP => CharacterStat.SP;
+        public short POP => CharacterStat.Fame;
+        public bool IsClosedBetaTester => false;
         public void SendSound(string path)
         {
             SendPacket(FieldEffectPacket.Sound(path));
+        }
+        public void IncAP(short ap, int isSelf)
+        {
+            AddAP(ap, isSelf == 1);
+        }
+        public void IncSP(short sp, int isSelf)
+        {
+            AddSP(sp);
+        }
+        public void IncPetTame(short inc)
+        {
+            var pet = GetSpawnedPet();
+            if (pet == null) return;
+            Pet.IncreaseCloseness(this, pet, inc);
+        }
+        public void IncPOP(short inc, int isSelf)
+        {
+            AddFame(inc);
+        }
+        public void LearnSkill(int skillid)
+        {
+            this.Skills.AddSkillPoint(skillid);
         }
         #endregion
     }

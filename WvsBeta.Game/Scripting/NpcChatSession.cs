@@ -25,6 +25,7 @@ namespace WvsBeta.Game
 
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
+        void Log(string text);
     }
     public enum NpcState
     {
@@ -59,6 +60,7 @@ namespace WvsBeta.Game
             mCharacter = chr;
             mCharacter.NpcSession = this;
             compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
+            if (chr.IsGM) SetStrReg("name", chr.Name);
             ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
             thread = new Thread(new ParameterizedThreadStart(RunScript));
             thread.Start(this);
@@ -235,6 +237,11 @@ namespace WvsBeta.Game
                 _savedObjects.Add(pName, pValue);
             else
                 _savedObjects[pName] = pValue;
+        }
+
+        public void Log(string text)
+        {
+            Program.MainForm.LogAppend(text);
         }
     }
 }

@@ -410,7 +410,6 @@ namespace WvsBeta.Game
         /// <returns></returns>
         public bool TryExchange(int mesos, params int[] items)
         {
-            if (items.Length == 0) return false;
             if (!CanExchangeMesos(mesos)) return false;
             if (items.Length % 2 != 0) throw new ArgumentException("Invalid items arg");
             // Check first
@@ -773,6 +772,36 @@ namespace WvsBeta.Game
                 2 = The closeness of the new pet seems to be higher than the existing pet. Check again.
             */
             return -1; // TODO: Implement move pet closeness, useItem is pet ap reset scroll
+        }
+        public int Exchange(int mesos, params int[] items)
+        {
+            return TryExchange(mesos, items) ? 1 : 0;
+        }
+        // Exchange stars
+        // ExchangeEx(0, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800)
+        public int ExchangeEx(int mesos, params object[] items)
+        {
+            int[] parsedItems = new int[items.Length];
+            try
+            {
+                for (int i = 0; i < items.Length; i++)
+                {
+                    object item = items[i];
+                    if (item is string)
+                    {
+                        int itemid = string.Join(",", item.ToString())[0];
+                        int amount = (int)items[i + 1];
+                        parsedItems[i] = itemid;
+                        parsedItems[i + 1] = amount;
+                    }
+                }
+            }
+            catch
+            {
+             // fu then
+                throw new ArgumentException();
+            }
+            return Exchange(mesos, parsedItems);
         }
         #endregion
     }

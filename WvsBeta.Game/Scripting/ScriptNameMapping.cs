@@ -28,8 +28,8 @@ namespace WvsBeta.Game.Scripting
             { "bush2", "victoria1" },
             { "herb_out", "victoria1" },
             { "herb_in", "victoria1" },
-            { "levelUP", "admin" },
-            { "levelUP2", "admin" },
+            { "levelUP", "etc" },
+            { "levelUP2", "etc" },
         };
     }
 }

@@ -22,7 +22,7 @@ namespace WvsBeta.Common
         public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
         public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
         public int MapID { get => CharacterStat.MapID; set => CharacterStat.MapID = value; }
-        public EquipItem WeaponSticker { get => BaseInventory.Equipped[EquippedVisibility.Hidden][(byte)Constants.EquipSlots.Slots.Weapon]; }
+        public EquipItem WeaponSticker { get => Inventory.Equipped[EquippedVisibility.Hidden][(byte)Constants.EquipSlots.Slots.Weapon]; }
         public int WeaponStickerID { get => WeaponSticker?.ItemID ?? 0; }
         public byte PortalID { get; set; }
         public virtual int PartyID { get; set; }
@@ -32,8 +32,8 @@ namespace WvsBeta.Common
         public byte GMLevel { get; set; }
         public bool IsGM { get => GMLevel > 0; }
         public bool IsAdmin { get => GMLevel >= 3; }
-        public BaseCharacterInventory BaseInventory { get; set; }
-        public virtual BaseCharacterSkills Skills { get; protected set; }
+        public BaseCharacterInventory Inventory { get; set; }
+        public BaseCharacterSkills Skills { get; protected set; }
         public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
         public BaseCharacterQuests BaseQuests { get; protected set; }
         public virtual void DamageHP(short amount) => throw new NotImplementedException();
@@ -78,7 +78,7 @@ namespace WvsBeta.Common
         public PetItem GetSpawnedPet()
         {
             if (CharacterStat.PetCashId == 0) return null;
-            return BaseInventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
         }
 
         #region Character Hack Logic

@@ -18,8 +18,8 @@ namespace WvsBeta.Common.Character
 
         public AvatarLook(CharacterBase character, bool putCashInUnseen = false) : this(
             character.CharacterStat,
-            character.BaseInventory?.Equipped[Enums.EquippedVisibility.Visible].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
-            character.BaseInventory?.Equipped[Enums.EquippedVisibility.Hidden].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
+            character.Inventory?.Equipped[Enums.EquippedVisibility.Visible].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
+            character.Inventory?.Equipped[Enums.EquippedVisibility.Hidden].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
             putCashInUnseen
         ) { }
         public AvatarLook(GW_CharacterStat cs, int[] equips, int[] equipsCash, bool putCashInUnseen)

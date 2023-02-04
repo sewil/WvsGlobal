@@ -20,7 +20,7 @@ namespace WvsBeta.Center
 
         public Messenger Messenger { get; set; }
         public byte MessengerSlot { get; set; }
-        public CharacterInventory Inventory { get => (CharacterInventory)BaseInventory; }
+        public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
 
         private int _PartyID;
         public override int PartyID
@@ -49,7 +49,7 @@ namespace WvsBeta.Center
             this.isCCing = isCCing;
             GMLevel = gmLevel;
             IsOnline = isOnline;
-            BaseInventory = new CharacterInventory(0, id);
+            base.Inventory = new CharacterInventory(0, id);
         }
 
         public Character(Packet pr)
@@ -58,7 +58,7 @@ namespace WvsBeta.Center
             LastChannel = pr.ReadByte();
             FriendsList = new BuddyList(pr);
             base.DecodeForTransfer(pr);
-            BaseInventory = new CharacterInventory(UserID, ID);
+            base.Inventory = new CharacterInventory(UserID, ID);
         }
 
         public void SetFromAvatarLook(AvatarLook avatar)

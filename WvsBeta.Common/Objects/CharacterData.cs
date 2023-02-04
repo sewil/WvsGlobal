@@ -22,7 +22,7 @@ namespace WvsBeta.Common.Objects
                 packet.WriteByte(chr.BuddyListCapacity);
             }
 
-            chr.BaseInventory.GenerateInventoryPacket(packet, flags);
+            chr.Inventory.GenerateInventoryPacket(packet, flags);
 
             if (flags.HasFlag(CharacterDataFlag.Skills))
             {
@@ -63,7 +63,7 @@ namespace WvsBeta.Common.Objects
 
             if (flags.HasFlag(CharacterDataFlag.TeleportRock)) // 5 locations
             {
-                chr.BaseInventory.AddRockPacket(packet);
+                chr.Inventory.AddRockPacket(packet);
             }
         }
     }
