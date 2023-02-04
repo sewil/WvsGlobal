@@ -5,7 +5,7 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
-    static class Pet
+    public static class Pet
     {
         public static void IncreaseCloseness(GameCharacter chr, PetItem petItem, short inc)
         {

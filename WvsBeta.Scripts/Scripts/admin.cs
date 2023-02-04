@@ -13,52 +13,31 @@ namespace WvsBeta.Scripts.Scripts
     [Script("levelUP")]
     class LevelUP : INpcScript
     {
-        int nRet1;
-        int nRet2;
-        short qid;
-        long qendtime;
-        public void Run(INpcHost self, GameCharacter target, byte state, byte nRet, string stringAnswer, int nRetNum)
+        public void Run(INpcHost self, GameCharacter target)
         {
             if (!target.IsGM)
             {
                 self.Say("Hey, how'd you get here?!");
-                self.Stop();
                 return;
             }
-            if (state == 0)
-            {
-                self.AskMenu("Hey there! What would you like to test?\r\n#L0##bAsk pet\r\n#L1#Send yes no\r\n#L2#Say lines\r\n#L3#Print pet ids\r\n#L4#Ask style\r\n#L5#Quests");
-                return;
-            }
-            else if (state == 1) nRet1 = nRet;
+            int nRet1 = self.AskMenu("Hey there! What would you like to test?\r\n#L0##bAsk pet\r\n#L1#Send yes no\r\n#L2#Say lines\r\n#L3#Print pet ids\r\n#L4#Ask style\r\n#L5#Quests");
             if (nRet1 == 0) // Ask pet
             {
-                if (state == 1)
-                {
-                    self.AskPet("Select pet");
-                    return;
-                }
-                else self.SendNext("Selected pet: " + stringAnswer);
+                string stringAnswer = self.AskPet("Select pet");
+                self.Say("Selected pet: " + stringAnswer);
             }
             else if (nRet1 == 1) // Ask yes no
             {
-                if (state == 1)
-                {
-                    self.AskYesNo("Yes no question");
-                    return;
-                }
-                else if (nRet == 0) self.SendNext("You answered no");
-                else self.SendNext("You answered yes");
+                int nRet = self.AskYesNo("Yes no question");
+                if (nRet == 0) self.Say("You answered no");
+                else self.Say("You answered yes");
             }
             else if (nRet1 == 2) // Say lines
             {
-                self.Say(1, true,
-                    "Line 1",
-                    "Line 2",
-                    "Line 3",
-                    "Line 4"
-                );
-                return;
+                self.Say("Line 1");
+                self.Say("Line 2");
+                self.Say("Line 3");
+                self.Say("Line 4");
             }
             else if (nRet1 == 3) // Print pet ids
             {
@@ -67,82 +46,52 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (nRet1 == 4)
             {
-                if (state == 1)
-                {
-                    self.AskStyle("Select style", new List<int> { 0, 1, 2, 3, 4 });
-                    return;
-                }
+                int nRet = self.AskStyle("Select style", new List<int> { 0, 1, 2, 3, 4 });
                 self.Say("Selected style: " + nRet);
             }
             else if (nRet1 == 5)
             {
-                if (state == 1)
+                int nRet2 = self.AskMenu("Select an option\r\n#L0##bComplete quest (manual)\r\n#L1#Complete quest (auto)");
+                short qid = (short)self.AskNumber("QuestID:", -1, short.MinValue, short.MaxValue);
+                if (nRet2 == 0)
                 {
-                    self.AskMenu("Select an option\r\n#L0##bComplete quest (manual)\r\n#L1#Complete quest (auto)");
-                    return;
-                }
-                else if (state == 2)
-                {
-                    nRet2 = nRet;
-                    self.AskNumber("QuestID:", -1, short.MinValue, short.MaxValue);
-                    return;
-                }
-                else if (state == 3)
-                {
-                    qid = (short)nRetNum;
-                    if (nRet2 == 0)
-                    {
-                        self.AskText("EndTime (UNIX):", "0", 0, (short)long.MaxValue.ToString().Length);
-                        return;
-                    }
-                    else
-                    {
-                        self.Say("Quest #b" + qid + "#k set as complete.");
-                        target.Quests.SetComplete(qid);
-                    }
-                }
-                else if(state == 4)
-                {
+                    string nRetStr = self.AskText("EndTime (UNIX):", "0", 0, (short)long.MaxValue.ToString().Length);
                     long unixtime;
                     try
                     {
-                        unixtime = long.Parse(stringAnswer);
+                        unixtime = long.Parse(nRetStr);
                     }
                     catch
                     {
-                        self.Say("Failed to parse '" + stringAnswer + "' to long");
-                        self.Stop();
+                        self.Say("Failed to parse long '" + nRetStr + "'");
                         return;
                     }
 
                     long filetime = MasterThread.GetFileTime(unixtime);
-                    self.Say("QuestID: #b" + qid + "#k. EndTime: #b" + unixtime + "#k. FileTime: #b" + filetime + "#k");
                     QuestPacket.SendCompleteQuest(target, qid, filetime);
+                    self.Say("QuestID: #b" + qid + "#k. EndTime: #b" + unixtime + "#k. FileTime: #b" + filetime + "#k");
+                }
+                else
+                {
+                    target.Quests.SetComplete(qid);
+                    self.Say("Quest #b" + qid + "#k set as complete.");
                 }
             }
-            self.Stop();
         }
     }
     // NimaKIN
     [Script("levelUP2")]
     class LevelUP2 : INpcScript
     {
-        int nRet1;
-        public void Run(INpcHost self, GameCharacter target, byte state, byte nRet, string stringAnswer, int nRetNum)
+        public void Run(INpcHost self, GameCharacter target)
         {
-            if (state == 0)
-            {
-                self.AskMenu("Hey, what's up? I'm NimaKIN. What do you want to do?\r\n#L0##bLevel up");
-                return;
-            }
-            if (state == 1) nRet1 = nRet;
+            int nRet1 = self.AskMenu("Hey, what's up? I'm NimaKIN. What do you want to do?\r\n#L0##bLevel up");
             if (nRet1 == 0) // Level up
             {
                 bool nRet2 = target.LevelUP();
                 if (!nRet2) self.Say("Looks like you've already reached max level, congratulations!");
                 else self.Say("It is done.");
             }
-            self.Stop();
         }
     }
 }

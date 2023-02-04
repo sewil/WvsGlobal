@@ -1,21 +1,35 @@
-﻿using Org.BouncyCastle.Asn1.X509;
+﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
-    public class NpcUsedLines
+    public interface INpcScript : IGameScript
     {
-        public byte mWhat { get; set; }
-        public string mText { get; set; }
-        public NpcUsedLines(byte what, string text)
-        {
-            mWhat = what;
-            mText = text;
-        }
+        void Run(INpcHost self, GameCharacter target);
     }
 
+    public interface INpcHost
+    {
+        int mID { get; }
+        void Say(string message);
+        int AskYesNo(string Message);
+        int AskMenu(string Message);
+        int AskNumber(string Message, int Default, int MinValue, int MaxValue);
+        string AskPet(string message);
+        string AskText(string Message, string Default, short MinLength, short MaxLength);
+        string AskPetAllExcept(string message, string petcashid);
+        int AskStyle(string Message, List<int> Values);
+
+        object GetStrReg(string pName);
+        void SetStrReg(string pName, object pValue);
+    }
+    public class NpcEscapeException : Exception { }
     public enum NpcState
     {
         Next = 0,
@@ -30,21 +44,38 @@ namespace WvsBeta.Game
     {
         public int mID { get; set; }
         public GameCharacter mCharacter { get; set; }
-        private INpcScript _compiledScript = null;
+        public bool Stopped => mCharacter.NpcSession == null;
+        private INpcScript compiledScript = null;
 
-        private List<NpcUsedLines> mLines { get; set; } = new List<NpcUsedLines>();
+        private List<string> sayLines { get; set; } = new List<string>();
         private Dictionary<string, object> _savedObjects = new Dictionary<string, object>();
 
-        private byte mState { get; set; } = 0;
+        private int sayIndex { get; set; } = 0;
+        private byte nRet = 0;
+        private string nRetStr;
+        private int nRetNum = 0;
         public NpcState mLastSentType { get; set; }
-        public byte mRealState { get; set; }
         public bool WaitingForResponse { get; set; }
 
-        public NpcChatSession(int id, GameCharacter chr)
+        private Task task;
+        public NpcChatSession(int id, GameCharacter chr, INpcScript npcScript)
         {
             mID = id;
             mCharacter = chr;
             mCharacter.NpcSession = this;
+            compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
+            task = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    compiledScript.Run(this, mCharacter);
+                }
+                catch { }
+                finally
+                {
+                    Stop();
+                }
+            });
         }
         
         public static void Start(int npcId, string script, GameCharacter chr, Action<string> errorHandlerFnc)
@@ -52,213 +83,159 @@ namespace WvsBeta.Game
             Start(npcId, (INpcScript)ScriptAccessor.GetScript(Server.Instance, script, errorHandlerFnc), chr);
         }
         
-        public static void Start(int npcId, INpcScript NPC, GameCharacter chr)
+        public static void Start(int npcId, INpcScript npcScript, GameCharacter chr)
         {
-            if (NPC == null) return;
+            if (npcScript == null || chr.NpcSession != null) return;
 
-            if (chr.NpcSession != null)
-                return;
-
-            var session = new NpcChatSession(npcId, chr);
-            session.SetScript((INpcScript)NPC.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(NPC, null));
-            session.HandleThing();
+            new NpcChatSession(npcId, chr, npcScript);
         }
 
-        public INpcScript CompiledScript
+        public void HandleResponse(byte nRet = 0, string nRetStr = "", int nRetNum = 0)
         {
-            get { return _compiledScript; }
-        }
-
-        public void SetScript(INpcScript script)
-        {
-            _compiledScript = script;
-        }
-
-        public void HandleThing(byte state = 0, byte nRet = 0, string stringAnswer = "", int nRetNum = 0)
-        {
+            this.nRet = nRet;
+            this.nRetStr = nRetStr;
+            this.nRetNum = nRetNum;
+            WaitingForResponse = false;
             #if DEBUG
-                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "state:" + state + ",nRet:" + nRet + ",stringAnswer:" + stringAnswer + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",stringAnswer:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
             #endif
-            _compiledScript.Run(this, mCharacter, state, nRet, stringAnswer, nRetNum);
         }
 
         public void Stop()
         {
-            WaitingForResponse = false;
             mCharacter.NpcSession = null;
-            _compiledScript = null;
+            WaitingForResponse = false;
+            compiledScript = null;
+            task = null;
+            nRet = 0;
+            nRetStr = "";
+            nRetNum = 0;
         }
 
-        public void SendPreviousMessage()
+        private void WaitForResponse()
         {
-            if (mState == 0 || mLines.Count == 0) return;
-            mState--;
-            if (mLines.Count < mState) return;
+            while (WaitingForResponse) continue;
+            if (Stopped) throw new NpcEscapeException();
+        }
+
+        public void RespondPrevious()
+        {
+            if (sayIndex == 0 || sayLines.Count == 0) return;
+            sayIndex--;
+            if (sayLines.Count < sayIndex) return;
 
             WaitingForResponse = true;
-            NpcUsedLines line = mLines[mState];
-            switch (line.mWhat)
-            {
-                case 0: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, false, true); break;
-                case 1: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, true, true); break;
-                case 2: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, true, false); break;
-                case 3: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, false, false); break;
-                default: Stop(); return;
-            }
+            string line = sayLines[sayIndex];
+            bool hasBack = sayIndex > 0;
+            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, hasBack, true);
         }
 
-        public void SendNextMessage()
+        public void RespondNext()
         {
-            //Program.MainForm.LogAppend("SENDNEXTMESSAGE START");
-            if (mLines.Count == mState + 1)
+            if (sayLines.Count == sayIndex + 1) // Last say, continue script execution
             {
-                HandleThing(mRealState, 0, "", 0);
+                HandleResponse(0, "", 0);
             }
             else
             {
-                mState++;
-                if (mLines.Count < mState) return;
+                sayIndex++;
+                if (sayLines.Count < sayIndex) return;
 
                 WaitingForResponse = true;
-                NpcUsedLines line = mLines[mState];
-                switch (line.mWhat)
-                {
-                    case 0: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, false, true); break;
-                    case 1: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, true, true); break;
-                    case 2: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, true, false); break;
-                    case 3: NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line.mText, false, false); break;
-                    default: Stop(); return;
-                }
+                string line = sayLines[sayIndex];
+                NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, true, true);
             }
         }
         public void Say(string message)
         {
-            SendNext(message);
-        }
-        public void Say(int offset, bool stopOnEnd, params string[] messages)
-        {
-            int i = mRealState - offset;
-            if (i > messages.Length - 1)
-            {
-                if (stopOnEnd) Stop();
-                return;
-            }
-            string msg = messages[i];
-            if (i == 0) SendNext(msg);
-            else SendBackNext(msg);
-        }
-        public void SendNext(string Message)
-        {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            // First line, always clear
-            mLines.Clear();
-            mLines.Add(new NpcUsedLines(0, Message));
-            mState = 0;
-            mRealState++;
+            if (Stopped) throw new NpcEscapeException();
+            sayLines.Add(message);
+            sayIndex = sayLines.Count - 1;
             WaitingForResponse = true;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, Message, false, true);
+            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, message, sayIndex > 0, true);
+            WaitForResponse();
         }
 
-        public void SendBackNext(string Message)
+        public int AskMenu(string Message)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mLines.Add(new NpcUsedLines(1, Message));
-            mState++;
-            mRealState++;
-            WaitingForResponse = true;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, Message, true, true);
-        }
-
-        public void SendBackOK(string Message)
-        {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mLines.Add(new NpcUsedLines(2, Message));
-            mState++;
-            mRealState++;
-            WaitingForResponse = true;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, Message, true, false);
-        }
-
-        public void SendOK(string Message)
-        {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mLines.Clear();
-            mLines.Add(new NpcUsedLines(3, Message));
-            mState = 0;
-            mRealState++;
-            WaitingForResponse = true;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, Message, false, false);
-        }
-
-        public void AskMenu(string Message)
-        {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mState = 0;
-            mRealState++;
+            if (Stopped) throw new NpcEscapeException();
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextMenu(mCharacter, mID, Message);
+            WaitForResponse();
+            return nRet;
         }
 
-        public void AskYesNo(string Message)
+        public int AskYesNo(string Message)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mState = 0;
-            mRealState++;
+            if (Stopped) throw new NpcEscapeException();
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextYesNo(mCharacter, mID, Message);
+            WaitForResponse();
+            return nRet;
         }
 
-        public void AskText(string Message, string Default, short MinLength, short MaxLength)
+        public string AskText(string Message, string Default, short MinLength, short MaxLength)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-
-            mState = 0;
-            mRealState++;
+            if (Stopped) throw new NpcEscapeException();
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestText(mCharacter, mID, Message, Default, MinLength, MaxLength);
+            WaitForResponse();
+            return nRetStr;
         }
 
-        public void AskNumber(string Message, int Default, int MinValue, int MaxValue)
+        public int AskNumber(string Message, int Default, int MinValue, int MaxValue)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
+            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
 
-            mState = 0;
-            mRealState++;
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestInteger(mCharacter, mID, Message, Default, MinValue, MaxValue);
+            WaitForResponse();
+            return nRetNum;
         }
 
-        public void AskStyle(string Message, List<int> Values)
+        public int AskStyle(string Message, List<int> Values)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
+            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
 
-            mState = 0;
-            mRealState++;
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mID, Message, Values);
+            WaitForResponse();
+            return nRet;
         }
 
-        public void AskPet(string message)
+        public string AskPet(string message)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-            mState = 0;
-            mRealState++;
-            WaitingForResponse = true;
-
-            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message);
+            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
+            sayLines.Clear();
+            sayIndex = 0;
+            if (string.IsNullOrWhiteSpace(message)) // Check if have any pets
+            {
+                return mCharacter.Inventory.GetPets().FirstOrDefault()?.CashId.ToString() ?? "";
+            }
+            else
+            {
+                WaitingForResponse = true;
+                NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message);
+                WaitForResponse();
+                return nRetStr;
+            }
         }
 
-        public void AskPetAllExcept(string message, string petid)
+        public string AskPetAllExcept(string message, string petid)
         {
-            if (mCharacter.NpcSession == null) throw new Exception("NpcSession has been nulled already!!!!");
-            mState = 0;
-            mRealState++;
+            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
+            sayLines.Clear();
+            sayIndex = 0;
             WaitingForResponse = true;
 
             int petskip = -1;
@@ -268,15 +245,17 @@ namespace WvsBeta.Game
             }
             catch { }
             NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message, petskip);
+            WaitForResponse();
+            return nRetStr;
         }
 
-        public object GetSessionValue(string pName)
+        public object GetStrReg(string pName)
         {
             if (_savedObjects.ContainsKey(pName)) return _savedObjects[pName];
             return null;
         }
 
-        public void SetSessionValue(string pName, object pValue)
+        public void SetStrReg(string pName, object pValue)
         {
             if (!_savedObjects.ContainsKey(pName))
                 _savedObjects.Add(pName, pValue);

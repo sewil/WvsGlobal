@@ -30,7 +30,6 @@ namespace WvsBeta.Game
                 InventoryPacket.NoChange(chr);
                 return;
             }
-            session.WaitingForResponse = false;
 
             Trace.WriteLine(packet.ToString());
 
@@ -43,10 +42,10 @@ namespace WvsBeta.Game
                         switch (option)
                         {
                             case 0: // Back button...
-                                session.SendPreviousMessage();
+                                session.RespondPrevious();
                                 break;
                             case 1: // Next button...
-                                session.SendNextMessage();
+                                session.RespondNext();
                                 break;
                             default:
                                 session.Stop();
@@ -58,10 +57,10 @@ namespace WvsBeta.Game
                         switch (option)
                         {
                             case 0: // No.
-                                session.HandleThing(session.mRealState, 0, "", 0);
+                                session.HandleResponse(0, "", 0);
                                 break;
                             case 1: // Yes.
-                                session.HandleThing(session.mRealState, 1, "", 0);
+                                session.HandleResponse(1, "", 0);
                                 break;
                             default:
                                 session.Stop();
@@ -76,7 +75,7 @@ namespace WvsBeta.Game
                                 session.Stop();
                                 break;
                             case 1: // Oh yea, text
-                                session.HandleThing(session.mRealState, 1, packet.ReadString(), 0);
+                                session.HandleResponse(1, packet.ReadString(), 0);
                                 break;
                             default:
                                 session.Stop();
@@ -91,7 +90,7 @@ namespace WvsBeta.Game
                                 session.Stop();
                                 break;
                             case 1: // Oh yea, int
-                                session.HandleThing(session.mRealState, 1, "", packet.ReadShort());
+                                session.HandleResponse(1, "", packet.ReadShort());
                                 break;
                             default:
                                 session.Stop();
@@ -109,7 +108,7 @@ namespace WvsBeta.Game
                             case 1: // Got answer
                                 var val = packet.ReadByte();
                                 if (val == 255) val = 0; // Menus do not correctly work when holding enter key
-                                session.HandleThing(session.mRealState, val, "", 0);
+                                session.HandleResponse(val, "", 0);
                                 break;
                             default:
                                 session.Stop();
@@ -125,7 +124,7 @@ namespace WvsBeta.Game
                             case 1:
                                 // 26 06 01 18 5E 89 B8 86 02 B5 00
                                 string cashIdStr = packet.ReadLong().ToString();
-                                session.HandleThing(session.mRealState, stringAnswer: cashIdStr);
+                                session.HandleResponse(nRetStr: cashIdStr);
                                 break;
                             default:
                                 session.Stop();
@@ -141,7 +140,7 @@ namespace WvsBeta.Game
             }
             catch (Exception ex)
             {
-                Program.MainForm.LogAppend($"Exception while handling NPC {session.mID} {session.mRealState}. Packet: " + packet + ". Exception: " + ex);
+                Program.MainForm.LogAppend($"Exception while handling NPC {session.mID}. Packet: " + packet + ". Exception: " + ex);
                 InventoryPacket.NoChange(chr);
                 session?.Stop();
             }

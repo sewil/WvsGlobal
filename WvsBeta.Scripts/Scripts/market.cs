@@ -30,7 +30,6 @@ namespace WvsBeta.Scripts.Scripts
             else if (val == "10") target.ChangeMap(251000000, "st00");
             else if (val == "11") target.ChangeMap(600000000, "st00");
             else target.ChangeMap(102000000, "st00");
-            qr.SetComplete(QUEST_ID);
         }
     }
     [Script("market01")]

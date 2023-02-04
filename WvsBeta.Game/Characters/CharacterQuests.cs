@@ -138,7 +138,7 @@ namespace WvsBeta.Game
             if (Quests.ContainsKey(questID))
                 return false;
 
-            Server.Instance.CharacterDatabase.RunQuery("INSERT INTO character_quests (id, charid, questid, data, state) VALUES (NULL, " + Character.ID.ToString() + ", " + questID + ", '" + MySqlHelper.EscapeString(data) + "')");
+            Server.Instance.CharacterDatabase.RunQuery("INSERT INTO character_quests (id, charid, questid, data) VALUES (NULL, " + Character.ID.ToString() + ", " + questID + ", '" + MySqlHelper.EscapeString(data) + "')");
             int ID = Server.Instance.CharacterDatabase.GetLastInsertId();
 
             var quest = new QuestData
