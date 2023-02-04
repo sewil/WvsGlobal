@@ -369,7 +369,7 @@ namespace WvsBeta.Game
                         }
                         break;
                     }
-                case ShopReq.Close: chr.ShopNPCID = 0; chr.NpcSession = null; break;
+                case ShopReq.Close: chr.ShopNPCID = 0; chr.NpcSession?.Stop(); break;
                 default:
                     {
                         Program.MainForm.LogAppend("Unknown NPC shop action: " + packet);

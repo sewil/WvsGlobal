@@ -1,10 +1,7 @@
-﻿using log4net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -29,7 +26,6 @@ namespace WvsBeta.Game
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
     }
-    public class NpcEscapeException : Exception { }
     public enum NpcState
     {
         Next = 0,
@@ -55,27 +51,31 @@ namespace WvsBeta.Game
         private string nRetStr;
         private int nRetNum = 0;
         public NpcState mLastSentType { get; set; }
-        public bool WaitingForResponse { get; set; }
-
-        private Task task;
+        public bool WaitingForResponse => thread.ThreadState == ThreadState.WaitSleepJoin;
+        private EventWaitHandle ewh;
+        private Thread thread;
         public NpcChatSession(int id, GameCharacter chr, INpcScript npcScript)
         {
             mID = id;
             mCharacter = chr;
             mCharacter.NpcSession = this;
             compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
-            task = Task.Factory.StartNew(() =>
+            ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            thread = new Thread(new ParameterizedThreadStart(RunScript));
+            thread.Start(this);
+        }
+        private void RunScript(object o)
+        {
+            NpcChatSession s = (NpcChatSession)o;
+            try
             {
-                try
-                {
-                    compiledScript.Run(this, mCharacter);
-                }
-                catch { }
-                finally
-                {
-                    Stop();
-                }
-            });
+                compiledScript.Run(s, s.mCharacter);
+            }
+            catch { }
+            finally
+            {
+                s.Stop();
+            }
         }
         
         public static void Start(int npcId, string script, GameCharacter chr, Action<string> errorHandlerFnc)
@@ -95,7 +95,7 @@ namespace WvsBeta.Game
             this.nRet = nRet;
             this.nRetStr = nRetStr;
             this.nRetNum = nRetNum;
-            WaitingForResponse = false;
+            ewh.Set();
             #if DEBUG
                 ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",stringAnswer:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
             #endif
@@ -104,18 +104,13 @@ namespace WvsBeta.Game
         public void Stop()
         {
             mCharacter.NpcSession = null;
-            WaitingForResponse = false;
             compiledScript = null;
-            task = null;
+            ewh = null;
+            if (thread != null && thread.IsAlive) thread.Abort();
+            thread = null;
             nRet = 0;
             nRetStr = "";
             nRetNum = 0;
-        }
-
-        private void WaitForResponse()
-        {
-            while (WaitingForResponse) continue;
-            if (Stopped) throw new NpcEscapeException();
         }
 
         public void RespondPrevious()
@@ -123,8 +118,7 @@ namespace WvsBeta.Game
             if (sayIndex == 0 || sayLines.Count == 0) return;
             sayIndex--;
             if (sayLines.Count < sayIndex) return;
-
-            WaitingForResponse = true;
+            
             string line = sayLines[sayIndex];
             bool hasBack = sayIndex > 0;
             NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, hasBack, true);
@@ -141,81 +135,65 @@ namespace WvsBeta.Game
                 sayIndex++;
                 if (sayLines.Count < sayIndex) return;
 
-                WaitingForResponse = true;
                 string line = sayLines[sayIndex];
                 NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, true, true);
             }
         }
         public void Say(string message)
         {
-            if (Stopped) throw new NpcEscapeException();
             sayLines.Add(message);
             sayIndex = sayLines.Count - 1;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextSimple(mCharacter, mID, message, sayIndex > 0, true);
-            WaitForResponse();
+            ewh.WaitOne();
         }
 
         public int AskMenu(string Message)
         {
-            if (Stopped) throw new NpcEscapeException();
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextMenu(mCharacter, mID, Message);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRet;
         }
 
         public int AskYesNo(string Message)
         {
-            if (Stopped) throw new NpcEscapeException();
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextYesNo(mCharacter, mID, Message);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRet;
         }
 
         public string AskText(string Message, string Default, short MinLength, short MaxLength)
         {
-            if (Stopped) throw new NpcEscapeException();
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestText(mCharacter, mID, Message, Default, MinLength, MaxLength);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRetStr;
         }
 
         public int AskNumber(string Message, int Default, int MinValue, int MaxValue)
         {
-            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
-
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestInteger(mCharacter, mID, Message, Default, MinValue, MaxValue);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRetNum;
         }
 
         public int AskStyle(string Message, List<int> Values)
         {
-            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
-
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
             NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mID, Message, Values);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRet;
         }
 
         public string AskPet(string message)
         {
-            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
             sayLines.Clear();
             sayIndex = 0;
             if (string.IsNullOrWhiteSpace(message)) // Check if have any pets
@@ -224,19 +202,16 @@ namespace WvsBeta.Game
             }
             else
             {
-                WaitingForResponse = true;
                 NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message);
-                WaitForResponse();
+                ewh.WaitOne();
                 return nRetStr;
             }
         }
 
         public string AskPetAllExcept(string message, string petid)
         {
-            if (mCharacter.NpcSession == null) throw new NpcEscapeException();
             sayLines.Clear();
             sayIndex = 0;
-            WaitingForResponse = true;
 
             int petskip = -1;
             try
@@ -245,7 +220,7 @@ namespace WvsBeta.Game
             }
             catch { }
             NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message, petskip);
-            WaitForResponse();
+            ewh.WaitOne();
             return nRetStr;
         }
 

@@ -308,7 +308,6 @@ namespace WvsBeta.Game
             TrunkNPCID = 0;
 
             NpcSession?.Stop();
-            NpcSession = null;
         }
 
         public void TryActivateHide()
