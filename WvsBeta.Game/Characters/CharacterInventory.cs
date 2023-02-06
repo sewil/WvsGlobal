@@ -738,9 +738,17 @@ namespace WvsBeta.Game
             });
         }
         #region Script helpers
+        public int SlotCount(byte inventory)
+        {
+            return SlotCount((Inventory)inventory);
+        }
         public int SlotCount(Inventory inventory)
         {
             return MaxSlots[inventory];
+        }
+        public int HoldCount(byte inventory)
+        {
+            return HoldCount((Inventory)inventory);
         }
         public int HoldCount(Inventory inventory)
         {

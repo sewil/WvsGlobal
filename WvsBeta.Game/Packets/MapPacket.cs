@@ -182,6 +182,13 @@ namespace WvsBeta.Game
 
         public static void OnEnterPortal(Packet packet, GameCharacter chr)
         {
+            // 16
+            // 14
+            // int targetid = FF FF FF FF
+            // String startwp = 05 00 6F 75 74 30 30
+            // 29 00
+            // C6 01
+            // 00 00 00
             if (packet.ReadByte() != chr.PortalCount)
             {
                 InventoryPacket.NoChange(chr);
@@ -189,12 +196,17 @@ namespace WvsBeta.Game
             }
 
             int status = packet.ReadInt();
+            // 04 00 69 6E 30 33
             string portalName = packet.ReadString();
             if (portalName.Length > 0)
             {
+                // 33 03 03 F4
                 new Pos(packet); // Current pos
             }
+
+            // 00 00 00
             packet.ReadByte(); // Related to teleporting to party member? Always 0
+            packet.ReadByte(); // unk
             packet.ReadByte(); // unk
 
             switch (status)
@@ -688,8 +700,9 @@ namespace WvsBeta.Game
                     WriteInt(chr.MapID);
                     WriteByte(chr.PortalID);
                     WriteShort(chr.HP);
-                    WriteBool(false);
-                    if (true)
+                    bool writePos = true;
+                    WriteBool(writePos);
+                    if (writePos)
                     {
                         WriteInt(chr.Position.X);
                         WriteInt(chr.Position.Y);

@@ -9,6 +9,14 @@
 
 Utah = {
     0 = 900000000
-    timeOut = 60
+    timeOut = 600
     returnMap = 100030000
 }
+
+#Subway = {
+    #0 = 103000900
+    #1 = 103000903
+    #2 = 103000906
+    #timeOut = 
+    #returnMap = 0
+#}

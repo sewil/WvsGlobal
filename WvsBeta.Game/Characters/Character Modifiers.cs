@@ -597,10 +597,7 @@ namespace WvsBeta.Game
 
         private void StartChangeMap(Map prevMap, Map newMap)
         {
-            CleanupInstances();
-
             prevMap.RemovePlayer(this);
-
             PortalCount++;
             Field = newMap;
         }
@@ -618,6 +615,7 @@ namespace WvsBeta.Game
             Summons.MigrateSummons(prevMap, newMap);
             Server.Instance.CenterConnection.PlayerUpdateMap(this);
             PartyHPUpdate();
+            CleanupInstances();
         }
 
         // Change map, but take random spawn
@@ -629,6 +627,11 @@ namespace WvsBeta.Game
         // Change map, but go to a specific portal
         public void ChangeMap(int toMapId, string toPortalName)
         {
+            if (string.IsNullOrWhiteSpace(toPortalName))
+            {
+                ChangeMap(toMapId);
+                return;
+            }
             var newMap = DataProvider.Maps[toMapId];
             if (newMap.Portals.TryGetValue(toPortalName, out var portal))
                 ChangeMap(toMapId, portal);

@@ -75,7 +75,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 var qr = target.Quests;
                 var val = qr.GetState(2048);
-                if (val == QuestState.Started)
+                if (val == 1)
                 {
                     self.Say("Hmm... so you want to know how to get #b#t4021009##k, #b#t4003002##k, #b#t4001005##k and #b#t4001006##k? What do you plan to do with these precious materials? I've heard... since I studied a bit about the island before working as a guard...");
                     self.Say("#b#t4021009##k and #b#t4003002##k huh... I have a feeling the fairies from #m101000000# must know something about them. It's the faeries if it really is the #t4003002# that never melts we're talking about... they're probably making #t4003002# too.");
@@ -138,8 +138,8 @@ namespace WvsBeta.Scripts.Scripts
 
             var inventory = target.Inventory;
 
-            if (val == QuestState.NotStarted) self.Say("Many flowers are blooming around here, except the one for #b#t" + flowerID + "##k.");
-            else if (val == QuestState.Completed)
+            if (val == 0) self.Say("Many flowers are blooming around here, except the one for #b#t" + flowerID + "##k.");
+            else if (val == 2)
             {
                 if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
                 {
@@ -308,7 +308,7 @@ namespace WvsBeta.Scripts.Scripts
                 string isPet = self.AskPet("");
                 if (isPet != "")
                 {
-                    if (val == QuestState.NotStarted || val == QuestState.Completed)
+                    if (val == 0 || val == 2)
                     {
                         self.Say("Nice to meet you! I'm #p1032102# and I study various types of spells here at #m101000000#. I am especially fascinated by the magic of life. The mystery that has no end, the mystery known as life... I'm trying to figure out how to create life.");
                         int nRet1 = self.AskYesNo("Looks like you already found #p1012005#. #p1012005# is a person who studied the magic of life with me. I heard that he used an incomplete life spell on a doll to create a living animal... Is the doll you have the same one that #p1012005# created, called #bPet#k?");
@@ -332,7 +332,7 @@ namespace WvsBeta.Scripts.Scripts
                             }
                         }
                     }
-                    else if (val == QuestState.Started)
+                    else if (val == 1)
                     {
                         inventory = target.Inventory;
                         if (inventory.ItemCount(5180000) > 0 && inventory.ItemCount(4031034) > 0)
@@ -362,7 +362,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    if (val == QuestState.Completed) self.Say("Hi... how is the pet with this new life? I feel very good to see you happy with your pet. Well, then... I'll have to go back to my studies...");
+                    if (val == 2) self.Say("Hi... how is the pet with this new life? I feel very good to see you happy with your pet. Well, then... I'll have to go back to my studies...");
                     else self.Say("Hi, I'm #p1032102# and I study various types of spells here at #m101000000#. I've been studying the magic of life for hundreds of years, but it's never ending... Well, then I'll have to go back to my studies...");
                 }
             }
@@ -419,7 +419,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (v == 1)
             {
-                if (isPet != "" && val == QuestState.Started)
+                if (isPet != "" && val == 1)
                 {
                     var inventory = target.Inventory;
                     if (inventory.ItemCount(4031034) > 0) self.Say("Hmm... you already have #b#t4031034##k. Take this scroll to #b#p1032102##k of #m101000000#.");

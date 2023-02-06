@@ -254,11 +254,11 @@ namespace WvsBeta.Game
         {
             AddCompletedQuest(questID);
         }
-        public QuestState GetState(short questID)
+        public byte GetState(short questID)
         {
-            if (HasQuest(questID)) return QuestState.Started;
-            else if (HasCompletedQuest(questID)) return QuestState.Completed;
-            else return QuestState.NotStarted;
+            if (HasQuest(questID)) return (byte)QuestState.Started;
+            else if (HasCompletedQuest(questID)) return (byte)QuestState.Completed;
+            else return (byte)QuestState.NotStarted;
         }
         #endregion
     }

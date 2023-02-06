@@ -37,16 +37,18 @@ namespace WvsBeta.Game.Scripting
                 IncludeDebugInformation = false
             };
 
-            var mainPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var exc = Assembly.GetExecutingAssembly();
+            var mainPath = Path.GetDirectoryName(exc.Location);
 
-            foreach (var r in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+            foreach (var r in exc.GetReferencedAssemblies())
             {
                 if (File.Exists(Path.Combine(mainPath, r.Name + ".dll")))
                     parms.ReferencedAssemblies.Add(Path.Combine(mainPath, r.Name + ".dll"));
                 else
                     parms.ReferencedAssemblies.Add(r.Name + ".dll");
             }
-            parms.ReferencedAssemblies.Add(Assembly.GetExecutingAssembly().Location);
+            parms.ReferencedAssemblies.Add(Path.Combine(mainPath, "Microsoft.CSharp.dll"));
+            parms.ReferencedAssemblies.Add(exc.Location);
 
             return compiler.CompileAssemblyFromFile(parms, filePath);
         }

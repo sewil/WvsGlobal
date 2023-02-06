@@ -666,6 +666,12 @@ namespace WvsBeta.Game
             if (pet == null) return;
             Pet.IncreaseCloseness(this, pet, inc);
         }
+        public byte IncMoney(int inc, int isSelf)
+        {
+            if (!Inventory.CanExchangeMesos(inc)) return 0;
+            Inventory.ExchangeMesos(inc, isSelf == 1);
+            return 1;
+        }
         public void IncPOP(short inc, int isSelf)
         {
             AddFame(inc);

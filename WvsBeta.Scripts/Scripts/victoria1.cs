@@ -20,7 +20,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (target.Level > 24)
             {
-                if (val == QuestState.Started)
+                if (val == 1)
                 {
                     int nRet = self.AskYesNo("Are you sure you want to take #b#t4031020##k with you?");
                     if (nRet != 0)
@@ -29,7 +29,7 @@ namespace WvsBeta.Scripts.Scripts
                         else target.ChangeMap(101000000);
                     }
                 }
-                else if (val == QuestState.Completed)
+                else if (val == 2)
                 {
                     if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
                     {
@@ -74,7 +74,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (target.Level > 49)
             {
-                if (val == QuestState.Started)
+                if (val == 1)
                 {
                     int nRet = self.AskYesNo("Are you sure you want to take #b#t4031032##k with you?");
                     if (nRet != 0)
@@ -84,7 +84,7 @@ namespace WvsBeta.Scripts.Scripts
                         else target.ChangeMap(101000000);
                     }
                 }
-                else if (val == QuestState.Completed)
+                else if (val == 2)
                 {
                     if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc) && inventory.SlotCount(Inventory.Equip) > inventory.HoldCount(Inventory.Equip))
                     {
@@ -145,7 +145,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (val2 == 0)
             {
-                if (val == QuestState.Started)
+                if (val == 1)
                 {
                     var nPrice = target.Level * 100;
                     int nRet = self.AskYesNo("So you came here on #b#p1061005##k's request to pick up medicinal herbs? Well... I inherited this land from my father, and I can't leave some stranger here for nothing... But, with #r" + nPrice.ToFormattedString() + "#k mesos, it's a totally different story... So, you want to pay the entrance fee?");
@@ -157,14 +157,14 @@ namespace WvsBeta.Scripts.Scripts
                         else target.ChangeMap(101000100);
                     }
                 }
-                else if (val == QuestState.Completed)
+                else if (val == 2)
                 {
                     self.Say("Is that you from the other day... Is #p1061005# working hard on the diet medicine? Anyway, I was kind of surprised you got around this place without difficulty. As a reward, I'll let you stay a while without paying. You might even find some cool items there along the way.");
                     target.ChangeMap(101000100);
                 }
                 else self.Say("Want to come in? You must have heard that there are precious medicinal herbs here, huh? But I can't leave a stranger like you around, who doesn't even know I own this land. I'm sorry, but that's all.");
             }
-            else if (val2 == QuestState.Started)
+            else if (val2 == 1)
             {
                 var nPrice = target.Level * 200;
                 int nRet = self.AskYesNo("Is that you from the other day... #b#p1061005##k made another order for you? What? Do you need to stay longer? Hmm... it's very dangerous there, but... that's ok, with #r" + nPrice.ToFormattedString() + "#k mesos I'll let you rummage around. So, will you pay for admission?");
@@ -176,7 +176,7 @@ namespace WvsBeta.Scripts.Scripts
                     else target.ChangeMap(101000102);
                 }
             }
-            else if (val2 == QuestState.Completed)
+            else if (val2 == 2)
             {
                 self.Say("Is that you from the other day... Is #p1061005# working hard on the anti-aging medicine? Anyway, I was kind of surprised you got around this place without difficulty. As a reward, I'll let you stay a while without paying. You might even find some cool items there along the way.");
                 self.Say("Oh yea... #p1032100#, from this very town, tried to sneak in. I caught him, and in the process #p1032100# dropped something over there. I tried looking, but I have no idea where it is. What do you think about looking?");

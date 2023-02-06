@@ -118,7 +118,6 @@ namespace WvsBeta.Scripts.Scripts
     [Script("jane")]
     class Jane : INpcScript
     {
-        bool questComplete = false;
         int itemId;
         int itemPrice;
         int totalPrice;
@@ -126,9 +125,8 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             var val = qr.GetState(2013);
-            if (val == QuestState.Completed)
+            if (val == 2)
             {
-                questComplete = true;
                 self.Say("It's you... thanks to you I managed to do a lot. I'm currently making an item pack. If you need anything, just let me know.");
                 int nRet = self.AskMenu("Which item would you like to buy? \r\n#b#L0##t2000002# (cost: 310 mesos) #l\r\n#L1##t2022003# (cost: 1,060 mesos) #l\r\n#L2##t2022000# (cost: 1,600 mesos) #l\r\n#L3##t2001000# (cost: 3,120 mesos)#l");
                 int nRetNum = 0;
@@ -188,7 +186,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             var val = qr.GetState(2073);
-            if (val == QuestState.Started)
+            if (val == 1)
             {
                 var quest = FieldSet.Instances["Utah"];
                 if (!quest.Enter(target, 0))
