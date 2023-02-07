@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
-using WvsBeta.Game.Events.PartyQuests;
 
 namespace WvsBeta.Game
 {

@@ -1101,7 +1101,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             amount = -amount
                                         }
                                     });
-                                    ChatPacket.SendNotice($"You have been gifted {amount.ToFormattedString()} NX cash.", victim);
+                                    ChatPacket.SendNotice($"You have been gifted {amount.Culture()} NX cash.", victim);
                                 }
                                 catch(Exception e)
                                 {

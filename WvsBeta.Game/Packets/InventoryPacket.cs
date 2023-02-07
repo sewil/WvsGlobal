@@ -660,7 +660,7 @@ namespace WvsBeta.Game
         {
             chr.SendPacket(MessagePacket.ScrollResult(success));
             PlayerEffectPacket.SendSkill(chr, (int)(success ? Constants.Skills.EnchantSuccess : Constants.Skills.EnchantFailure), 1);
-            chr.Field.SendPacket(FieldEffectPacket.Sound(success ? Constants.Sounds.EnchantSuccess : Constants.Sounds.EnchantFailure));
+            chr.Field.SendPacket(FieldEffectPacket.EffectSound(success ? Constants.Sounds.EnchantSuccess : Constants.Sounds.EnchantFailure));
         }
 
         public static void InventoryFull(GameCharacter chr)

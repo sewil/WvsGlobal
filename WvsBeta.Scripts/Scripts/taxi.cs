@@ -3,6 +3,7 @@ using WvsBeta.Game;
 using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -12,7 +13,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             bool isBeginner = target.Job == 0;
             int i = 0;
-            string priceList = string.Join("\r\n", priceMap.Select((p) => string.Format("#b#L{0}##m{1}# ({2} mesos)#l", i++, p.Key, (isBeginner ? p.Value * 0.1 : p.Value).ToString("N0", new CultureInfo("en-US")))));
+            string priceList = string.Join("\r\n", priceMap.Select((p) => string.Format("#b#L{0}##m{1}# ({2} mesos)#l", i++, p.Key, (isBeginner ? (int)(p.Value * 0.1) : p.Value).Culture())));
             self.Say("How's it going? I drive the #p1022001#. If you want to go from town to town safely and fast, then ride our cab. We'll gladly take you to your destination for an affordable price.");
             int nRet;
             if (isBeginner)
@@ -26,7 +27,7 @@ namespace WvsBeta.Scripts.Scripts
             var selected = priceMap.ElementAt(nRet);
             int mapID = selected.Key;
             int fee = isBeginner ? (int)(selected.Value * 0.1) : selected.Value;
-            nRet = self.AskYesNo("You have nothing else to do here, huh? Would you like to go to #b#m" + mapID + "##k? It will cost #b" + fee.ToString("N0", new CultureInfo("en-US")) + " mesos#k.");
+            nRet = self.AskYesNo("You have nothing else to do here, huh? Would you like to go to #b#m" + mapID + "##k? It will cost #b" + fee.Culture() + " mesos#k.");
             if (nRet == 1)
             {
                 if (!target.Inventory.TryExchange(-fee)) self.Say("You do not have enough mesos. I'm sorry, but without enough mesos you won't be able to ride the taxi.");

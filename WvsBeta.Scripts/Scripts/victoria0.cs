@@ -17,7 +17,7 @@ namespace WvsBeta.Scripts.Scripts
         GameCharacter target;
         public void GoTel(int mapNum, int fee)
         {
-            int nRet = self.AskYesNo("I don't think you need to be here. Do you really want to go to #b#m" + mapNum + "##k? Well, it will cost #b" + fee.ToFormattedString() + " mesos#k. What do you think?");
+            int nRet = self.AskYesNo("I don't think you need to be here. Do you really want to go to #b#m" + mapNum + "##k? Well, it will cost #b" + fee.Culture() + " mesos#k. What do you think?");
             if (nRet == 1)
             {
                 if (!target.Inventory.TryExchange(-fee)) self.Say("You do not have enough money. With your skills, you should have more than that!");
@@ -156,7 +156,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
 
                 totalPrice = itemPrice * nRetNum;
-                self.AskYesNo("Will you buy #r" + nRetNum + "#k #b#t" + itemId + "#(s) #k? #b#t" + itemId + "# costs " + itemPrice.ToFormattedString() + " a piece, so the total cost will be #k" + totalPrice.ToFormattedString() + "#k mesos.");
+                self.AskYesNo("Will you buy #r" + nRetNum + "#k #b#t" + itemId + "#(s) #k? #b#t" + itemId + "# costs " + itemPrice.Culture() + " a piece, so the total cost will be #k" + totalPrice.Culture() + "#k mesos.");
                 if (nRet == 0)
                 {
                     self.Say("I still have some of the materials you already bought from me. It's all there, you can choose as you please.");
@@ -165,7 +165,7 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (!target.Inventory.TryExchange(-totalPrice, itemId, (short)nRetNum))
                     {
-                        self.Say("Are you running out of money? Please check if you have an empty slot in your inventory and that you have at least #r" + totalPrice.ToFormattedString() + "#k mesos.");
+                        self.Say("Are you running out of money? Please check if you have an empty slot in your inventory and that you have at least #r" + totalPrice.Culture() + "#k mesos.");
                     }
                     else
                     {
@@ -189,7 +189,7 @@ namespace WvsBeta.Scripts.Scripts
             if (val == 1)
             {
                 var quest = FieldSet.Instances["Utah"];
-                if (!quest.Enter(target, 0))
+                if (quest.Enter(target, 0) != FieldSet.EnterStatus.Success)
                 {
                     target.SendPacket(MessagePacket.RedText("Looks like someone is already visiting Utah's Farm."));
                 }

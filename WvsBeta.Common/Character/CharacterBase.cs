@@ -80,6 +80,10 @@ namespace WvsBeta.Common
             if (CharacterStat.PetCashId == 0) return null;
             return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
         }
+        public bool InPartyWith(CharacterBase chr)
+        {
+            return PartyID > 0 && PartyID == chr.PartyID;
+        }
 
         #region Character Hack Logic
         public static ILog HackLog = LogManager.GetLogger("HackLog");

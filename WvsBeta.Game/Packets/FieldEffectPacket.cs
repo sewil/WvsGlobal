@@ -16,13 +16,13 @@ namespace WvsBeta.Game.Packets
         {
             WriteByte((byte)type);
         }
-        public static FieldEffectPacket Effect(string path)
+        public static FieldEffectPacket EffectScreen(string path)
         {
             var pw = new FieldEffectPacket(Type.Effect);
             pw.WriteString(path);
             return pw;
         }
-        public static FieldEffectPacket Sound(string path)
+        public static FieldEffectPacket EffectSound(string path)
         {
             var pw = new FieldEffectPacket(Type.Sound);
             pw.WriteString(path);
@@ -38,11 +38,11 @@ namespace WvsBeta.Game.Packets
             return pw;
         }
 
-        public static FieldEffectPacket QuestEffect()
+        public static FieldEffectPacket EffectObject(string objectName)
         {
             var pw = new FieldEffectPacket(Type.QuestEffect);
             pw.WriteByte(2); // Portal type? 0 1 2 3 4
-            pw.WriteString("gate");
+            pw.WriteString(objectName);
             return pw;
         }
     }

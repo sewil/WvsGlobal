@@ -98,13 +98,13 @@ namespace WvsBeta.Game.Events
 
             Winners.ForEach(c =>
             {
-                c.SendPacket(FieldEffectPacket.Sound("Coconut/Victory"));
-                c.SendPacket(FieldEffectPacket.Effect("event/coconut/victory"));
+                c.SendPacket(FieldEffectPacket.EffectSound("Coconut/Victory"));
+                c.SendPacket(FieldEffectPacket.EffectScreen("event/coconut/victory"));
             });
             Losers.ForEach(c =>
             {
-                c.SendPacket(FieldEffectPacket.Sound("Coconut/Failed"));
-                c.SendPacket(FieldEffectPacket.Effect("event/coconut/lose"));
+                c.SendPacket(FieldEffectPacket.EffectSound("Coconut/Failed"));
+                c.SendPacket(FieldEffectPacket.EffectScreen("event/coconut/lose"));
             });
 
             RepeatingAction.Start("snowball warper", e =>

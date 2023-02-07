@@ -125,6 +125,7 @@
     <Compile Include="Enums\QuestState.cs" />
     <Compile Include="Enums\TransactionType.cs" />
     <Compile Include="Extensions\CrossThreadExtensions.cs" />
+    <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Objects\CompletedQuest.cs" />
     <Compile Include="Objects\MovableLife.cs" />

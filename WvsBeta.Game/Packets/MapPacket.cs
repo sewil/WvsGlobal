@@ -10,7 +10,6 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
-using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
@@ -131,7 +130,7 @@ namespace WvsBeta.Game
                 toMap.Portals.TryGetValue(toPortalName, out Portal toPortal)
             )
             {
-                if (chr.Field.PQPortalOpen)
+                if (toPortal.Enabled)
                 {
                     chr.ChangeMap(toMapID, toPortal);
                 }

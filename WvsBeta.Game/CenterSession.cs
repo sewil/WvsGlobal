@@ -6,7 +6,7 @@ using System.Net;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Events.PartyQuests;
+using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -499,7 +499,6 @@ namespace WvsBeta.Game
                         {
                             pd = PartyData.Parties[ptId] = new PartyData(leader, members, ptId);
                         }
-                        PartyData.TryUpdatePartyDataInInstances(pd);
                         break;
                     }
 

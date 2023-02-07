@@ -148,12 +148,12 @@ namespace WvsBeta.Scripts.Scripts
                 if (val == 1)
                 {
                     var nPrice = target.Level * 100;
-                    int nRet = self.AskYesNo("So you came here on #b#p1061005##k's request to pick up medicinal herbs? Well... I inherited this land from my father, and I can't leave some stranger here for nothing... But, with #r" + nPrice.ToFormattedString() + "#k mesos, it's a totally different story... So, you want to pay the entrance fee?");
+                    int nRet = self.AskYesNo("So you came here on #b#p1061005##k's request to pick up medicinal herbs? Well... I inherited this land from my father, and I can't leave some stranger here for nothing... But, with #r" + nPrice.Culture() + "#k mesos, it's a totally different story... So, you want to pay the entrance fee?");
                     if (nRet == 0) self.Say("I understand... but understand my side too, you can't stay here for free.");
                     else
                     {
                         var ret = target.Inventory.TryExchange(-nPrice);
-                        if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.ToFormattedString() + "#k mesos on hand. Don't expect me to give any discount.");
+                        if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos on hand. Don't expect me to give any discount.");
                         else target.ChangeMap(101000100);
                     }
                 }
@@ -167,12 +167,12 @@ namespace WvsBeta.Scripts.Scripts
             else if (val2 == 1)
             {
                 var nPrice = target.Level * 200;
-                int nRet = self.AskYesNo("Is that you from the other day... #b#p1061005##k made another order for you? What? Do you need to stay longer? Hmm... it's very dangerous there, but... that's ok, with #r" + nPrice.ToFormattedString() + "#k mesos I'll let you rummage around. So, will you pay for admission?");
+                int nRet = self.AskYesNo("Is that you from the other day... #b#p1061005##k made another order for you? What? Do you need to stay longer? Hmm... it's very dangerous there, but... that's ok, with #r" + nPrice.Culture() + "#k mesos I'll let you rummage around. So, will you pay for admission?");
                 if (nRet == 0) self.Say("I understand... but understand my side too, you can't stay here for free.");
                 else
                 {
                     var ret = target.Inventory.TryExchange(-nPrice);
-                    if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.ToFormattedString() + "#k mesos in hand. Don't expect me to give any discount.");
+                    if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos in hand. Don't expect me to give any discount.");
                     else target.ChangeMap(101000102);
                 }
             }

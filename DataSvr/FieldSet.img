@@ -1,22 +1,19 @@
-# Name = {
-#     0 = 900000000
-#     1 = 900000001
-#     2 = 900000002
-#     timeOut = 1000 # Seconds
-#     returnMap = 100030000 # 0 = Nearest town
-# }
-
-
 Utah = {
     0 = 900000000
     timeOut = 600
     returnMap = 100030000
 }
 
-#Subway = {
-    #0 = 103000900
-    #1 = 103000903
-    #2 = 103000906
-    #timeOut = 
-    #returnMap = 0
-#}
+# KPQ
+Party1 = {
+    0 = 103000800
+    1 = 103000801
+    2 = 103000802
+    3 = 103000803
+    4 = 103000804
+    5 = 103000805
+    returnMap = 103000890
+    timeOut = 1800
+    enterAsParty = 1
+    ptParams = 2,4,21,30
+}

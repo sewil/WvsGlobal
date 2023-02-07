@@ -129,8 +129,7 @@
     <Compile Include="Events\GMEvents\MapleJewelEvent.cs" />
     <Compile Include="Events\GMEvents\MapleQuizEvent.cs" />
     <Compile Include="Events\GMEvents\MapleSnowballEvent.cs" />
-    <Compile Include="Events\PartyQuests\KPQ.cs" />
-    <Compile Include="Events\PartyQuests\PartyData.cs" />
+    <Compile Include="GameObjects\PartyData.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

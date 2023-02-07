@@ -10,6 +10,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Packets;
 
@@ -84,6 +85,14 @@ namespace WvsBeta.Game
         public long PetLastInteraction { get; set; }
 
         public Ring pRing { get; set; }
+        public PartyData Party
+        {
+            get
+            {
+                if (!PartyData.Parties.ContainsKey(PartyID)) return null;
+                else return PartyData.Parties[PartyID];
+            }
+        }
 
         public List<int> Wishlist { get; private set; }
 
@@ -643,6 +652,7 @@ namespace WvsBeta.Game
             ThreadContext.Properties.Remove("MapID");
         }
         #region Script helpers
+        public bool IsPartyBoss => Party?.Leader == ID;
         public CharacterQuests QuestRecord => Quests;
         public short AP => CharacterStat.AP;
         public short SP => CharacterStat.SP;
@@ -650,7 +660,7 @@ namespace WvsBeta.Game
         public bool IsClosedBetaTester => false;
         public void SendSound(string path)
         {
-            SendPacket(FieldEffectPacket.Sound(path));
+            SendPacket(FieldEffectPacket.EffectSound(path));
         }
         public void IncAP(short ap, int isSelf)
         {

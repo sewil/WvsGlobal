@@ -93,7 +93,6 @@ namespace WvsBeta.Game
 
         public const double MAP_PREMIUM_EXP = 1.0;
         public bool PortalsOpen { get; set; } = true;
-        public bool PQPortalOpen = true;
         public Action<GameCharacter, Map> OnEnter { get; set; }
         public Action<GameCharacter, Map> OnExit { get; set; }
 
@@ -126,7 +125,7 @@ namespace WvsBeta.Game
         internal Mob GetMob(int SpawnID) => Mobs.TryGetValue(SpawnID, out Mob ret) ? ret : null;
         internal NpcLife GetNPC(int SpawnID) => NPC.FirstOrDefault(n => n.SpawnID == SpawnID);
         public GameCharacter GetPlayer(int id) => Characters.FirstOrDefault(a => a.ID == id);
-        public IEnumerable<GameCharacter> GetInParty(int ptId) => Characters.Where(c => c.PartyID == ptId);
+        public IEnumerable<GameCharacter> GetInParty(int ptId) => Characters.Where(c => ptId > 0 && c.PartyID == ptId);
         public List<int> GetIDsInParty(int ptId) => GetInParty(ptId).Select(x => x.ID).ToList();
 
         public virtual bool FilterAdminCommand(GameCharacter character, CommandHandling.CommandArgs command)
@@ -700,12 +699,8 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
         public void AddArea(MapArea area)
         {
-            if (ID >= 103000800 && ID <= 103000805)
-            {
-                this.PQPortalOpen = false;
-                Program.MainForm.LogDebug("Closed Kerning City PQ Portal " + PT.Name);
-            }
             Areas.Add(area.ID, area);
+        }
 
         public void AddPortal(Portal PT)
         {

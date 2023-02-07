@@ -607,10 +607,6 @@ namespace WvsBeta.Game
             TryActivateHide();
             MapPacket.SendChangeMap(this);
 
-            if (newMap.PQPortalOpen)
-            {
-                Field.SendPacket(FieldEffectPacket.QuestEffect());
-            }
             newMap.AddPlayer(this);
             Summons.MigrateSummons(prevMap, newMap);
             Server.Instance.CenterConnection.PlayerUpdateMap(this);

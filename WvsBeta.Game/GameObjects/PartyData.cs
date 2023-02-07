@@ -1,14 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Game.Events.PartyQuests
+namespace WvsBeta.Game.GameObjects
 {
     public class PartyData
     {
         public readonly int PartyID;
         public readonly int Leader;
         public int[] Members;
+        public IEnumerable<GameCharacter> Characters => Members.Select(m => Server.Instance.GetCharacter(m)).Where(c => c != null);
 
         public PartyData(int ldr, int[] pt, int id)
         {
@@ -49,12 +51,6 @@ namespace WvsBeta.Game.Events.PartyQuests
 
         /*****************************************************************/
         public static Dictionary<int, PartyData> Parties { get; private set; } = new Dictionary<int, PartyData>();
-
-        public static void TryUpdatePartyDataInInstances(PartyData pd)
-        {
-            KPQ.GetInstance()?.UpdateParty(pd);
-
-        }
 
         public static byte? GetMemberIdx(int charid)
         {

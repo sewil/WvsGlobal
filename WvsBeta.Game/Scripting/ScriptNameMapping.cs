@@ -49,6 +49,9 @@ namespace WvsBeta.Game.Scripting
             { "subway_get3", "victoria3" },
             { "subway_out", "victoria3" },
             { "hotel1", "victoria3" },
+            { "party1_enter", "party" },
+            { "party1_play", "party" },
+            { "party1_out", "party" },
         };
     }
 }

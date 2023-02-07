@@ -4,7 +4,6 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Events.PartyQuests;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 
