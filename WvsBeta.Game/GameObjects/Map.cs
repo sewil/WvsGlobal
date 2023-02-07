@@ -67,6 +67,7 @@ namespace WvsBeta.Game
         public Dictionary<int, PlayerShop> PlayerShops { get; } = new Dictionary<int, PlayerShop>();
         public Dictionary<int, Omok> Omoks { get; } = new Dictionary<int, Omok>();
         public List<Kite> Kites { get; } = new List<Kite>();
+        public Dictionary<string, MapArea> Areas { get; } = new Dictionary<string, MapArea>();
         public Dictionary<int, Reactor> Reactors { get; } = new Dictionary<int, Reactor>();
         public Rectangle MBR { get; private set; }
         public Rectangle VRLimit { get; private set; }
@@ -697,14 +698,17 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             TryCreateMobs(MasterThread.CurrentTime, true);
         }
 
-        public void AddPortal(Portal PT)
+        public void AddArea(MapArea area)
         {
             if (ID >= 103000800 && ID <= 103000805)
             {
                 this.PQPortalOpen = false;
                 Program.MainForm.LogDebug("Closed Kerning City PQ Portal " + PT.Name);
             }
+            Areas.Add(area.ID, area);
 
+        public void AddPortal(Portal PT)
+        {
             if (PT.Name == "sp")
             {
                 SpawnPoints.Add(PT);
@@ -1487,5 +1491,13 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 r.HitBy(chr);
             }
         }
+
+        #region Script helpers
+        public int CountUserInArea(string areaId)
+        {
+            if (!Areas.TryGetValue(areaId, out MapArea area)) return 0;
+            return Characters.Where(c => area.IntersectsWith(c.Position)).Count();
+        }
+        #endregion
     }
 }

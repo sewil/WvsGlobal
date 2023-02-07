@@ -476,6 +476,7 @@ namespace WvsBeta.Game
                 ReadLife(mapNode, map);
                 ReadPortals(mapNode, map);
                 ReadSeats(mapNode, map);
+                ReadAreas(mapNode, map);
                 ReadReactors(mapNode, map);
 
                 return map;
@@ -521,6 +522,15 @@ namespace WvsBeta.Game
             }
         }
 
+        static void ReadAreas(NXNode mapNode, Map map)
+        {
+            if (!mapNode.ContainsChild("area")) return;
+
+            foreach (var pNode in mapNode["area"])
+            {
+                map.AddArea(new MapArea(pNode));
+            }
+        }
         static void ReadReactors(NXNode mapNode, Map map)
         {
             return; //we handle only with commands for now
