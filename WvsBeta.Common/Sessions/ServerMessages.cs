@@ -162,7 +162,9 @@
         NPC_SET_SPECIAL_ACTION = 145,
         NPC_ANIMATE = 146,
         ___END_NPCPOOL,
+
         __PADDING_148,
+        
         ___START_DROPPOOL,
         DROP_ENTER_FIELD = 150,
         DROP_LEAVE_FIELD = 151,

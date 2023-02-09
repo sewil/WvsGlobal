@@ -6,6 +6,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.Commands;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -176,7 +177,7 @@ namespace WvsBeta.Game
             // Block find or whisper
             if (victimChar != null && (victimChar.IsGM && !chr.IsGM))
             {
-                Find(chr, victim, -1, 0, false);
+                WhisperPacket.Find(chr, victim, -1, 0, false);
                 return;
             }
 
@@ -186,7 +187,7 @@ namespace WvsBeta.Game
                     log.Info("[FIND][ " + chr.Name + " ] " + victim);
                     if (victimChar != null)
                     {
-                        Find(chr, victim, victimChar.MapID, 0, true);
+                        WhisperPacket.Find(chr, victim, victimChar.MapID, 0, true);
                     }
                     else
                     {
@@ -206,8 +207,8 @@ namespace WvsBeta.Game
                     whisperLog.Info("[to " + victim + "] " + chr.Name + ":  " + message);
                     if (victimChar != null)
                     {
-                        Find(chr, victim, -1, 1, false);
-                        Whisper(victimChar, chr.Name, Server.Instance.ID, message, 18);
+                        WhisperPacket.Find(chr, victim, -1, 1, false);
+                        WhisperPacket.Whisper(victimChar, chr.Name, Server.Instance.ID, message, false);
                     }
                     else
                     {
@@ -383,56 +384,6 @@ namespace WvsBeta.Game
                     chr.Field.SendPacket(pw);
                     break;
             }
-        }
-
-        public static void Whisper(GameCharacter victim, string who, byte channel, string message, byte msgDirection)
-        {
-            Packet pw = new Packet(ServerMessages.WHISPER);
-            pw.WriteByte(msgDirection);
-            pw.WriteString(who);
-            pw.WriteByte(channel);
-            pw.WriteString(message);
-            victim.SendPacket(pw);
-        }
-
-        enum WhisperType : byte
-        {
-            Find = 9,
-            NotFound = 10
-        }
-        enum FindType : byte
-        {
-            Map = 1,
-            CashShop = 2,
-            Channel = 3,
-        }
-
-        public static void Find(GameCharacter victim, string who, int map, sbyte dunno, bool sameChannel)
-        {
-            Packet pw = new Packet(ServerMessages.WHISPER);
-            
-            if (map != -1)
-            {
-                pw.WriteByte((byte)WhisperType.Find);
-                pw.WriteString(who);
-                FindType findType = map == -2 ? FindType.CashShop : sameChannel ? FindType.Map : FindType.Channel;
-                int mapId = Math.Max(0, map);
-                pw.WriteByte((byte)findType);
-                pw.WriteInt(mapId);
-
-                if (findType == FindType.Map)
-                {
-                    pw.WriteInt(0);
-                    pw.WriteInt(0);
-                }
-            }
-            else
-            {
-                pw.WriteByte((byte)WhisperType.NotFound);
-                pw.WriteString(who);
-                pw.WriteSByte(dunno);
-            }
-            victim.SendPacket(pw);
         }
     }
 }

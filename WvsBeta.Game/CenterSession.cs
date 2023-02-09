@@ -7,6 +7,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -359,18 +360,14 @@ namespace WvsBeta.Game
                                 string sender = packet.ReadString();
                                 byte channel = packet.ReadByte();
                                 string message = packet.ReadString();
-                                bool direction = packet.ReadBool();
-                                byte directionByte = 18;
-                                if (direction)
-                                {
-                                    directionByte = 10;
-                                }
-                                ChatPacket.Whisper(victimChar, sender, channel, message, directionByte);
+                                bool direcionTo = packet.ReadBool();
+                                
+                                WhisperPacket.Whisper(victimChar, sender, channel, message, direcionTo);
                             }
                             else
                             {
                                 string sender = packet.ReadString();
-                                ChatPacket.Find(victimChar, sender, -1, 0, false);
+                                WhisperPacket.Find(victimChar, sender, -1, 0, false);
 
                             }
                         }
@@ -381,12 +378,12 @@ namespace WvsBeta.Game
                                 string sender = packet.ReadString();
                                 sbyte channel = packet.ReadSByte();
                                 sbyte wat = packet.ReadSByte();
-                                ChatPacket.Find(victimChar, sender, channel, wat, false);
+                                WhisperPacket.Find(victimChar, sender, channel, wat, false);
                             }
                             else
                             {
                                 string sender = packet.ReadString();
-                                ChatPacket.Find(victimChar, sender, -1, 0, false);
+                                WhisperPacket.Find(victimChar, sender, -1, 0, false);
                             }
 
 
