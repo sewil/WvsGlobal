@@ -250,25 +250,28 @@ namespace WvsBeta.Game.Handlers.Commands
             {
                 var Args = new CommandArgs(text);
 
+                // Pleb commands
+                switch (Args.Command.ToLowerInvariant())
+                {
+                    case "roll":
+                        {
+                            int roll = Rand32.NextBetween(1, 100);
+                            ChatPacket.SendText(ChatPacket.MessageTypes.Notice, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
+                            return true;
+                        }
+                }
+                #if !DEBUG
                 if (!character.IsGM)
                 {
-                    switch (Args.Command.ToLowerInvariant())
-                    {
-                        case "roll":
-                            {
-                                int roll = Rand32.NextBetween(1, 100);
-                                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
-                                break;
-                            }
-                    }
                     return true;
                 }
 
                 if (character.GMLevel >= 1) //Intern commands
                 {
+                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
-                        #region Map / Goto
+#region Map / Goto
 
                         case "m":
                         case "map":
@@ -310,9 +313,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Chase / Warp
+#region Chase / Warp
 
                         case "chase":
                         case "warp":
@@ -341,9 +344,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region ChaseHere / WarpHere
+#region ChaseHere / WarpHere
 
                         case "chasehere":
                         case "warphere":
@@ -371,9 +374,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Online
+#region Online
 
                         case "online":
                             {
@@ -388,9 +391,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region DC / Kick
+#region DC / Kick
 
                         case "dc":
                         case "kick":
@@ -410,9 +413,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Ban
+#region Ban
 
                         case "ban":
                         case "banhelp":
@@ -503,9 +506,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Unban
+#region Unban
 
                         case "unban":
                             {
@@ -544,9 +547,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Muting
+#region Muting
 
                         case "muteban":
                         case "mute":
@@ -659,9 +662,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Hackmute / Hackunmute
+#region Hackmute / Hackunmute
 
                         case "hackmute":
                             {
@@ -710,9 +713,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MoveTrace
+#region MoveTrace
 
                         case "movetracepet":
                         case "movetraceplayer":
@@ -776,9 +779,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Warn
+#region Warn
 
                         case "w":
                         case "warn":
@@ -816,9 +819,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MaxSkills
+#region MaxSkills
 
                         case "maxskills":
                             {
@@ -834,9 +837,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Job
+#region Job
 
                         case "job":
                             {
@@ -845,9 +848,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MP
+#region MP
 
                         case "mp":
                             {
@@ -856,9 +859,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region HP
+#region HP
 
                         case "hp":
                             {
@@ -867,9 +870,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Str
+#region Str
 
                         case "str":
                             {
@@ -878,9 +881,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Dex
+#region Dex
 
                         case "dex":
                             {
@@ -889,9 +892,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Int
+#region Int
 
                         case "int":
                             {
@@ -900,9 +903,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Luk
+#region Luk
 
                         case "luk":
                             {
@@ -911,9 +914,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region AP
+#region AP
 
                         case "ap":
                             {
@@ -922,9 +925,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region SP
+#region SP
 
                         case "sp":
                             {
@@ -933,9 +936,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region AddSP
+#region AddSP
 
                         case "addsp":
                             {
@@ -944,9 +947,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region level/lvl
+#region level/lvl
 
                         case "level":
                         case "lvl":
@@ -956,9 +959,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MaxSlots
+#region MaxSlots
 
                         case "maxslots":
                             {
@@ -970,9 +973,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MaxStats
+#region MaxStats
 
                         case "maxstats":
                             {
@@ -987,9 +990,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Pos
+#region Pos
 
                         case "pos":
                         case "pos1": //prevent client limitation when spamming this command during testing.
@@ -1002,9 +1005,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Undercover
+#region Undercover
 
                         case "undercover":
                             if (Args.Count == 1)
@@ -1020,9 +1023,9 @@ namespace WvsBeta.Game.Handlers.Commands
                             ChatPacket.SendNotice("Usage: !undercover <true/false>", character);
                             return true;
 
-                        #endregion
+#endregion
 
-                        #region reportlog/reports
+#region reportlog/reports
 
                         case "reportlog":
                         case "reports":
@@ -1033,9 +1036,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region whowashere
+#region whowashere
 
                         case "whowashere":
                             {
@@ -1057,9 +1060,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region runscript
+#region runscript
 
                         case "run":
                         case "runscript":
@@ -1079,9 +1082,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Cash Shop
+#region Cash Shop
                         case "cash":
                         case "nxcash":
                         case "givecash":
@@ -1109,15 +1112,17 @@ namespace WvsBeta.Game.Handlers.Commands
                                 }
                                 return true;
                             }
-                        #endregion
+#endregion
                     }
+                #if !DEBUG
                 }
 
                 if (character.GMLevel >= 2) //Full GMs
                 {
+                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
-                        #region Create / Item
+#region Create / Item
 
                         case "create":
                         case "item":
@@ -1185,9 +1190,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 }
                             }
 
-                        #endregion
+#endregion
 
-                        #region Summon / Spawn
+#region Summon / Spawn
 
                         case "summon":
                         case "spawn":
@@ -1220,9 +1225,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region VarSet
+#region VarSet
 
                         case "varset":
                             {
@@ -1264,9 +1269,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region GetID
+#region GetID
 
                         case "getid":
                             {
@@ -1284,9 +1289,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region d / delete
+#region d / delete
 
                         case "d":
                         case "delete":
@@ -1309,9 +1314,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region ClearDrops
+#region ClearDrops
 
                         case "cleardrops":
                             {
@@ -1319,9 +1324,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region KillMobs / KillAll
+#region KillMobs / KillAll
 
                         case "killmobs":
                         case "killall":
@@ -1331,9 +1336,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region KillMobsDMG
+#region KillMobsDMG
 
                         case "killalldmg":
                         case "killmobsdmg":
@@ -1344,9 +1349,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MapNotice
+#region MapNotice
 
                         case "mapnotice":
                             {
@@ -1357,9 +1362,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region ditto/datto
+#region ditto/datto
 
                         case "ditto":
                             {
@@ -1395,9 +1400,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Notice
+#region Notice
 
                         case "notice":
                             {
@@ -1409,9 +1414,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region SetSP
+#region SetSP
 
                         case "setsp":
                             {
@@ -1440,9 +1445,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Job
+#region Job
 
                         case "job":
                             {
@@ -1451,9 +1456,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Heal
+#region Heal
 
                         case "heal":
                             {
@@ -1464,9 +1469,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region AP
+#region AP
 
                         case "ap":
                             {
@@ -1475,9 +1480,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region SP
+#region SP
 
                         case "sp":
                             {
@@ -1486,9 +1491,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region AddSP
+#region AddSP
 
                         case "addsp":
                             {
@@ -1497,9 +1502,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region GiveEXP
+#region GiveEXP
 
                         case "giveexp":
                             {
@@ -1508,9 +1513,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Mesos
+#region Mesos
 
                         case "mesos":
                             {
@@ -1519,9 +1524,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region pton/ptoff
+#region pton/ptoff
 
                         case "pton":
                         case "ptoff":
@@ -1544,9 +1549,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region portals
+#region portals
 
                         case "portals":
                             {
@@ -1568,10 +1573,10 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
                         //Event Stuff
-                        #region EventReset
+#region EventReset
                         case "eventreset":
                             {
                                 var ytd = new DateTime(2010, 1, 1);
@@ -1579,9 +1584,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 ChatPacket.SendNotice("Reset event participation time.", character);
                                 return true;
                             }
-                        #endregion
+#endregion
 
-                        #region EventHelp
+#region EventHelp
 
                         case "event":
                         case "events":
@@ -1604,18 +1609,18 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region eventdesc
+#region eventdesc
 
                         case "eventdesc":
                             MapPacket.SendGMEventInstructions(character.Field);
                             ChatPacket.SendNotice("Sent event description to everybody", character);
                             return true;
 
-                        #endregion
+#endregion
 
-                        #region Find The Jewel
+#region Find The Jewel
 
                         case "ftjhelp":
                             {
@@ -1733,9 +1738,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Snowball
+#region Snowball
 
                         case "snowballhelp":
                             {
@@ -1793,9 +1798,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Fitness
+#region Fitness
 
                         case "fitnesshelp":
                         case "fithelp":
@@ -1855,9 +1860,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Quiz
+#region Quiz
 
                         case "quizhelp":
                             {
@@ -1910,15 +1915,17 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                            #endregion
+#endregion
                     }
+                #if !DEBUG
                 }
 
                 if (character.GMLevel >= 3) //Admin
                 {
+                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
-                        #region Shutdown
+#region Shutdown
 
                         case "shutdown":
                             {
@@ -1949,9 +1956,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Clock
+#region Clock
 
                         case "clock":
                             {
@@ -1960,9 +1967,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Header
+#region Header
 
                         case "header":
                             {
@@ -1986,9 +1993,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Packet
+#region Packet
 
                         case "packet":
                             {
@@ -2044,9 +2051,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Drop
+#region Drop
 
                         case "drop":
                             {
@@ -2167,9 +2174,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region TogglePortal
+#region TogglePortal
 
                         case "toggleportal":
                             {
@@ -2190,9 +2197,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region PTInvite
+#region PTInvite
 
                         case "ptinvite":
                             {
@@ -2212,9 +2219,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MakeDonator
+#region MakeDonator
 
                         case "makedonator":
                             {
@@ -2238,9 +2245,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Participate
+#region Participate
 
                         case "participate":
                             {
@@ -2261,9 +2268,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region GetID2
+#region GetID2
 
                         case "getid2":
                             {
@@ -2278,9 +2285,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region Save
+#region Save
 
                         case "save":
                             {
@@ -2289,9 +2296,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region SaveAll
+#region SaveAll
 
                         case "saveall":
                             {
@@ -2307,9 +2314,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region PetName
+#region PetName
 
                         case "petname":
                             {
@@ -2327,9 +2334,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region VAC
+#region VAC
 
                         case "vac":
                             {
@@ -2387,9 +2394,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MobInfo
+#region MobInfo
 
                         case "mobinfo":
                             {
@@ -2408,9 +2415,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region MobChase
+#region MobChase
 
                         case "mobchase":
                             {
@@ -2431,9 +2438,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region npcreload
+#region npcreload
 
                         case "scriptreload":
                         case "reloadscript":
@@ -2476,9 +2483,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                        #endregion
+#endregion
 
-                        #region reload cashshop data
+#region reload cashshop data
 
                         case "csreload":
                         case "cashshopreload":
@@ -2493,9 +2500,9 @@ namespace WvsBeta.Game.Handlers.Commands
                             }
                             return true;
 
-                        #endregion
+#endregion
 
-                        #region reload world events
+#region reload world events
 
                         case "reloadevents":
                         case "eventsreload":
@@ -2507,9 +2514,9 @@ namespace WvsBeta.Game.Handlers.Commands
                             }
                             return true;
 
-                        #endregion
+#endregion
 
-                        #region Reactors
+#region Reactors
 
                         case "reactor":
                             {
@@ -2529,9 +2536,11 @@ namespace WvsBeta.Game.Handlers.Commands
                                 return true;
                             }
 
-                            #endregion
+#endregion
                     }
+                #if !DEBUG
                 }
+                #endif
 
                 ChatPacket.SendNotice($"Unknown command: {text}", character);
                 return true;
