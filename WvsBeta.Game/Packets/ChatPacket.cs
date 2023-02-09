@@ -25,7 +25,8 @@ namespace WvsBeta.Game
             Megaphone = 0x02, // Blue text with highlight
             SuperMegaphone = 0x03, // Red text with bright pink highlight
             Header = 0x04, // Scrolling header
-            RedText = 0x05 // Red text with no highlight
+            RedText = 0x05, // Red text with no highlight
+            Blue = 0x06 // Blue text without [Notice]
         }
 
         public enum MessageMode : byte
