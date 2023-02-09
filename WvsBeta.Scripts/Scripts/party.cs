@@ -369,7 +369,7 @@ namespace WvsBeta.Scripts.Scripts
             }
 
             var field = target.Field;
-            if (checkall == 1 && quest.Party.Members.Length != field.Characters.Count)
+            if (checkall == 1 && quest.Party.Characters.Count() != field.Characters.Count)
             {
                 self.Say("It seems that not all members of the group are together. Everyone in your party needs to come from the previous stage to participate in the quest. Please have all members ready here...");
                 return 0;
@@ -586,7 +586,7 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (inven.Exchange(0, 4001008, -count) == 0)
                     {
-                        self.Say("Tem certeza de que possui a quantidade exata de passes? Por favor, verifique novamente.");
+                        self.Say("Are you sure you have the exact amount of passes? Please check again.");
                         return;
                     }
                 }

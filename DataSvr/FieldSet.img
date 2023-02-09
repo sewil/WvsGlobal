@@ -15,5 +15,5 @@ Party1 = {
     returnMap = 103000890
     timeOut = 1800
     enterAsParty = 1
-    ptParams = 2,4,21,30
+    ptParams = 4,4,21,30
 }

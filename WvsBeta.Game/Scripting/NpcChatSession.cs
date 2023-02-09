@@ -98,7 +98,7 @@ namespace WvsBeta.Game
             this.nRetNum = nRetNum;
             ewh.Set();
             #if DEBUG
-                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",stringAnswer:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",nRetStr:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
             #endif
         }
 
