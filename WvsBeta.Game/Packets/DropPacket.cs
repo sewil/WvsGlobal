@@ -147,7 +147,7 @@ namespace WvsBeta.Game
             pw.WriteInt(drop.DropID);
             pw.WriteBool(drop.Reward.Mesos);
             pw.WriteInt(drop.Reward.Drop);
-            pw.WriteInt(drop.OwnerID);
+            pw.WriteInt(drop.OwnPartyID > 0 ? drop.OwnPartyID : drop.OwnerID);
             pw.WriteByte((byte)drop.OwnType);
             pw.WriteShort(drop.Pt2.X);
             pw.WriteShort(drop.Pt2.Y);
