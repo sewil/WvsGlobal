@@ -1491,7 +1491,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         public int CountUserInArea(string areaId)
         {
             if (!Areas.TryGetValue(areaId, out MapArea area)) return 0;
-            return Characters.Where(c => area.IntersectsWith(c.Position)).Count();
+            return Characters.Where(chr => area.Contains(chr)).Count();
         }
         #endregion
     }
