@@ -18,6 +18,7 @@ namespace WvsBeta
 
         public static long CurrentTime => (long)((Stopwatch.GetTimestamp() * (1.0 / Stopwatch.Frequency)) * 1000.0);
         public static long UnixTime => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+        public static long FileTime => GetFileTime(UnixTime);
         public static long GetFileTime(long unix, int tzOffset = 0)
         {
             long offset = tzOffset * 3600 * 1000 * 10000L;

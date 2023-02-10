@@ -229,6 +229,9 @@ namespace WvsBeta.Game
                         case ClientMessages.CHAT:
                             ChatPacket.HandleChat(character, packet);
                             break;
+                        case ClientMessages.QUEST_ACTION:
+                            QuestPacket.HandleAction(character, packet);
+                            break;
                         case ClientMessages.GROUP_MESSAGE:
                             ChatPacket.HandleSpecialChat(character, packet);
                             break;

@@ -79,7 +79,7 @@
         CLOCK = 69,
         CONTI_TARGET_FIELD = 70,
         CONTISTATE = 71,
-        __UNKNOWN_72,
+        __UNKNOWN_72, // Decodes filetime?
         WARN_MESSAGE = 73,
 
         ___START_USERPOOL,

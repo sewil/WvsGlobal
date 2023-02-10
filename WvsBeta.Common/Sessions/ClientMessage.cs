@@ -77,7 +77,7 @@
         ENTER_SCRIPTED_PORTAL = 61,
         MAP_TRANSFER_REQUEST, // Teleport rock stuff
 
-        START_QUEST = 66,
+        QUEST_ACTION = 66,
         REPORT_USER = 67,
         GROUP_MESSAGE = 70,
         WHISPER = 71,
