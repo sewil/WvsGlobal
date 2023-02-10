@@ -1,0 +1,2301 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<imgdir name="Npc.img">
+<imgdir name="2000">
+<string name="name" value="Roger"/>
+<string name="n0" value="Open your item inventory and you&apos;ll find equip., use, set-up, etc. and cash tabs."/>
+<string name="n1" value="The item you pick up is automatically stored in an appropriate item category. What do you think? Isn&apos;t  it cool?"/>
+<string name="n2" value="Double-click on an item in the item inventory and you&apos;ll be able to use it"/>
+<string name="f0" value="You want to discard an item? Then click on an item in the inventory, and drag it out of the window."/>
+<string name="f1" value="If your item inventory is full, you won&apos;t be able to take in new items. You should take care of the unimportant ones by either discarding them or selling them at a store."/>
+<string name="f2" value="Use items can also be stored on the bottom right trey where you can assign HotKey&apos;s..."/>
+<string name="w0" value="You&apos;ll die once your HP reaches 0, so it&apos;s for your own good to take a potion or food before it&apos;s too late."/>
+<string name="w1" value="You want to go travel now? Then come talk to me..."/>
+<string name="w2" value="If you want to talk to someone, double-click on them "/>
+</imgdir>
+<imgdir name="2001">
+<string name="name" value="Sen"/>
+<string name="n0" value="I&apos;m... so ... hungry!"/>
+<string name="n1" value="Can... I... eat this ...?"/>
+<string name="d0" value="There is nothing to eat in here~ oh..."/>
+<string name="d1" value="What did my sister say? oh... I am so hungry... "/>
+</imgdir>
+<imgdir name="2002">
+<string name="name" value="Peter"/>
+<string name="n0" value="You should train yourself well before going on the journey."/>
+<string name="n1" value="Well done getting here!"/>
+<string name="n2" value="This is the exit to the Mushroom Town."/>
+<string name="f0" value="If you want to move on to the next stage, talk to me."/>
+<string name="f1" value="Be careful...once you leave this place, you&apos;ll see monsters roaming around."/>
+<string name="w0" value="So you&apos;re ready for the adventure?"/>
+<string name="w1" value="Now it&apos;s all up to you to train yourself. Good luck!"/>
+<string name="w2" value="We instructors are all related. Roger, my older brother, and Robin, my younger brother, all work together here."/>
+<string name="h0" value="Yoohoo~"/>
+<string name="h1" value="So what&apos;s my relationship with Roger? Hahaha...he&apos;s my older brother!"/>
+</imgdir>
+<imgdir name="2003">
+<string name="name" value="Robin"/>
+<string name="n0" value="Be careful! You&apos;ll see monsters around here."/>
+<string name="n1" value="Press &apos;v&apos; to attack the monster."/>
+<string name="n2" value="Press Z and you&apos;ll be able to pick up the item the monster drops."/>
+<string name="n3" value="If it&apos;s a powerful monster, how about teaming up with someone else?"/>
+<string name="f0" value="You need to time the attack right to take down the monsters easily."/>
+<string name="f1" value="The town you just saw is called Mushroom Town. You&apos;ll also find places called Southperry and Amherst on this island."/>
+<string name="f2" value="If you want to head over to a bigger, wider area, try heading up northeast."/>
+<string name="w0" value="You met up with my brothers Roger and Peter before, right?"/>
+<string name="w1" value="Best of luck to you!"/>
+<string name="h0" value="Yoohoo~"/>
+</imgdir>
+<imgdir name="2004">
+<string name="name" value="Todd"/>
+<string name="n0" value="Watch out for the monsters"/>
+<string name="n1" value="You can attack the monsters, if you press &quot;Ctrl&quot;."/>
+<string name="n2" value="You can pick up the items, if you press &quot;z&quot;."/>
+<string name="n3" value="If the monsters are strong, how about making a party with other players?"/>
+<string name="f0" value="You should attack the monsters with the right timing"/>
+<string name="f1" value="That was &quot;Mushroom Town&quot;. There are Amherst and South Perry in this Island"/>
+<string name="f2" value="Go to North-East~"/>
+<string name="w0" value="If you go there, you might see Robin"/>
+<string name="w1" value="Good Luck"/>
+<string name="h0" value="Hewh~~~"/>
+<string name="d0" value="If you don&apos;t know where to go, I will let you know"/>
+<string name="d1" value="So... did you see Robin?"/>
+</imgdir>
+<imgdir name="2005">
+<string name="name" value="Sam"/>
+<string name="n0" value="You can be even stronger, if you get a lesson from Mai"/>
+<string name="n1" value="Go to the right and then you can meet bunch of other people"/>
+<string name="n2" value="Press &quot;w&quot; to see the current position."/>
+<string name="n3" value="How about partying with other players?"/>
+<string name="f0" value="You should attack the monsters with the right timing"/>
+<string name="f1" value="You would see lot of new things if you go to Amherst"/>
+<string name="f2" value="Go to North-East~"/>
+<string name="w0" value="Even if you don&apos;t know the way, just go~"/>
+<string name="w1" value="Good Luck"/>
+<string name="h0" value="Hewh~"/>
+<string name="d0" value="huh? My name is Sam..."/>
+<string name="d1" value="So you did see Mia huh?"/>
+</imgdir>
+<imgdir name="2100">
+<string name="name" value="Sera"/>
+<string name="n0" value="It&apos;s a neverending pile of laundry I&apos;m hanging up here."/>
+<string name="n1" value="Have you met up with my sister Heena before?"/>
+<string name="n2" value="Press↑ and you&apos;ll be able to climb up the ladder or a rope."/>
+<string name="n3" value="Double-click on us, and you&apos;ll be able to talk to us."/>
+<string name="a0" value="Why isn&apos;t Heena helping me hang this load of laundry up? "/>
+<string name="s0" value="You must be on a journey for the first time, huh?"/>
+<string name="i0" value="What should I make for dinner...?"/>
+<string name="l0" value="Oh my gosh, I still have a lot of laundry to take care of..."/>
+<string name="h0" value="Haven&apos;t washed my hair in days...and..."/>
+<string name="d0" value="It is a fine day to do the laundry~ Don&apos;t you think so?"/>
+<string name="d1" value="Did you give my mirror to Sarah? When will she help me to do this..."/>
+</imgdir>
+<imgdir name="2101">
+<string name="name" value="Heena"/>
+<string name="n0" value="Beautiful day today!"/>
+<string name="n1" value="Press left Alt key and  you&apos;ll be able to jump."/>
+<string name="n2" value="Press the arrow keys to move around here and there."/>
+<string name="s0" value="Ha!"/>
+<string name="s1" value="Hehe..."/>
+<string name="s2" value="How&apos;s the traveling?"/>
+<string name="b0" value="Whoa...you look awkward there."/>
+<string name="c0" value="Arrghh, my beautiful skin..."/>
+<string name="d0" value="You must be a new traveler. I will give some of the instruction, which will be very useful. If you want to speak with us, you can just simply double-click us. You can move by pressing #bLeft, Right Key#k and jump by pressing #bSpace Bar#k. Come on~ Try! Also, sometimes, you had to climb up the ladder or use the rope to get to the destination, where you want. You can do that by pressing #bup arrow#k. Please keep this in mind."/>
+<string name="d1" value="Now I can take a look at my face with this mirror. It looks alright."/>
+</imgdir>
+<imgdir name="2102">
+<string name="name" value="Nina"/>
+<string name="n0" value="What would be good for dinner?"/>
+<string name="s0" value="I&apos;m cute, right? "/>
+<string name="d0" value="What is #p2001# doing, now?..."/>
+<string name="d1" value="I will make a mushroom soup for #p2001#. Is there a fresh mushroom?"/>
+</imgdir>
+<imgdir name="2103">
+<string name="name" value="Maria"/>
+<string name="n0" value="Ahh...I need to get this letter sent..."/>
+<string name="a0" value="Why isn&apos;t anyone passing by!!"/>
+<string name="l0" value="Whoa, time&apos;s going fast...it may be too late..."/>
+<string name="h0" value="Ahh...what should I do..."/>
+<string name="d0" value="I should bring this to #m1010000#... What should I do… hmm…"/>
+<string name="d1" value="Now I can deliver important news to the town. Thanks a lot. Are you using the hat, I gave you? How is that? Pretty good, huh?"/>
+</imgdir>
+<imgdir name="10000">
+<string name="name" value="Pio"/>
+<string name="n0" value="Do you need my help by any chance? I can handle machinery really well..."/>
+<string name="n1" value="I just ate a little bit ago...and yet I&apos;m hungry already...!!"/>
+<string name="n2" value="Phew...work is hard. I need to take a break."/>
+<string name="d0" value="Hmmm… I guess these things must be very useful in some places…"/>
+<string name="d1" value="Ah~~~ You are the one who collected stuff for me. You will get to have a job, soon. Oh, you didn&apos;t know that? If you get to the lv. 8, you can be a magician. Also, you should be at least lv. 10 to become a bowman, warrior and thief. You cannot do those in this Island, so take a ship from the South Perry and go to the Victoria Island."/>
+</imgdir>
+<imgdir name="11000">
+<string name="name" value="Sid"/>
+<string name="n0" value="On sale! Really CHEAP!"/>
+<string name="n1" value="Welcome!! Hahahaha!"/>
+</imgdir>
+<imgdir name="11100">
+<string name="name" value="Lucy"/>
+<string name="n0" value="Ok, cheap goods! Really cheap!!"/>
+<string name="n1" value="Hey you!! Don&apos;t even think about stealing in here..."/>
+<string name="n2" value="You definitely need potions to travel"/>
+</imgdir>
+<imgdir name="12000">
+<string name="name" value="Lucas"/>
+<string name="n0" value="Stranger...what are you doing here?"/>
+<string name="n1" value="I&apos;m not too fond of the strangers. I&apos;m only worried about the peace of this town."/>
+<string name="n2" value="You...if you&apos;re strong and powerful, can you take care of the monsters around town?"/>
+<string name="d0" value="A letter from #r#p2103##k should be here, any minute. Is there something wrong? Hmm… "/>
+<string name="d1" value="You safely delivered my reply to #r#p2103##k? Thanks~ so #r#p2103##k gave you a present? Haha… He is one of the best for making a hat…."/>
+</imgdir>
+<imgdir name="12100">
+<string name="name" value="Mai"/>
+<string name="n0" value="Do you know me by any chance? You don&apos;t? What&apos;s wrong with you? "/>
+<string name="n1" value="If you are thinking of challenging me, I suggest you keep dreaming..."/>
+<string name="n2" value="Is there anyone that can satisfy my desire to fight...?"/>
+<string name="d0" value="You can be much stronger, if you get to be trained by me. Come to me, whenever you are ready."/>
+<string name="d1" value="How about going to the world out there?"/>
+</imgdir>
+<imgdir name="12101">
+<string name="name" value="Rain"/>
+<string name="n0" value="Isn&apos;t it nice out here today?"/>
+<string name="n1" value="To jump, press the left Alt key."/>
+<string name="n2" value="Press the arrow keys to move around here and there."/>
+<string name="s0" value="Ha~!"/>
+<string name="s1" value="Hehe..."/>
+<string name="s2" value="How&apos;s the traveling?"/>
+<string name="b0" value="Whoa...you look awkward there."/>
+<string name="c0" value="Arrghh, my beautiful skin..."/>
+<string name="d0" value="You want to try Maple Quiz? Please feel free to tell me, when you are ready."/>
+<string name="d1" value="Right~! You are the one who solved all the quiz. Anyway, How are you?"/>
+</imgdir>
+<imgdir name="20000">
+<string name="name" value="John"/>
+<string name="n0" value="How about buying one of these fishes?"/>
+<string name="n1" value="I used to be an adventurer myself...but now I don&apos;t mind living a normal life..."/>
+<string name="n2" value="You don&apos;t need to be that scared of it. I&apos;ve walked away from that lifestyle long ago."/>
+<string name="d0" value="Is there anyone who can help me? Well… I would like to go by myself, but as you can see, I have lots of stuff to do…"/>
+<string name="d1" value="You are the one, who brought the flower to me. Again, thanks a lot.. Feel free to stay in this town."/>
+</imgdir>
+<imgdir name="20001">
+<string name="name" value="Bari"/>
+<string name="n0" value="Working hard there~"/>
+<string name="s0" value="Salute~"/>
+</imgdir>
+<imgdir name="20002">
+<string name="name" value="Biggs"/>
+<string name="n0" value="Hmm...looks like I&apos;m still the best looking man in this town."/>
+<string name="n1" value="Hey you! What are you looking at! If you&apos;re admiring at my good looks, might as well say it!!"/>
+<string name="n2" value="One of these days, I&apos;ll be the one operating that huge ship, and take off to a far bigger land..."/>
+<string name="d0" value="I can&apos;t stay in this town forever. Is there anyone who can help me?"/>
+<string name="d1" value="Thanks for the last time. Now, if I get just little more money, I probably can start the business. Are you still using the weapon, which I gave you?"/>
+</imgdir>
+<imgdir name="20100">
+<string name="name" value="Yoona"/>
+<string name="n0" value="Whoa, what are you looking at?!?!"/>
+</imgdir>
+<imgdir name="21000">
+<string name="name" value="Pan"/>
+<string name="n0" value="Let&apos;s see...I&apos;m ready to make some money..."/>
+<string name="n1" value="Hello everyone! I&apos;ve got some goods here for sale!!"/>
+<string name="n2" value="Anyone that steals will not go unpunished!!"/>
+</imgdir>
+<imgdir name="22000">
+<string name="name" value="Shanks"/>
+<string name="n0" value="I am the captain, dang it!! Don&apos;t be looking down on me!"/>
+<string name="n1" value="I&apos;ll take you anywhere you want"/>
+</imgdir>
+<imgdir name="1001000">
+<string name="name" value="Silver"/>
+<string name="n0" value="On Sale!! Crazy Prices!!!"/>
+<string name="n1" value="Come check it out!! Hahahahah!"/>
+</imgdir>
+<imgdir name="1001001">
+<string name="name" value="Natasha"/>
+<string name="n0" value="Let&apos;s see...I&apos;m ready to start doing some business here..."/>
+<string name="n1" value="Welcome everyone! I&apos;ve got some goods you will definitely be interested in...!"/>
+<string name="n2" value="Anyone that steals will feel my wrath!!!"/>
+</imgdir>
+<imgdir name="1001100">
+<string name="name" value="Mina"/>
+<string name="n2" value="It&apos;s a must that you get some potions if you want to go on a journey."/>
+<string name="n0" value="Low price! Really loooow!"/>
+<string name="n1" value="Whoa there, no stealing around here!!!"/>
+</imgdir>
+<imgdir name="1002000">
+<string name="name" value="Phil"/>
+<string name="n0" value="Open your item inventory and you&apos;ll find equip., use, set-up, and etc. and cash tabs."/>
+<string name="n1" value="The item you pick up is automatically stored in an appropriate item category. What do you think? Isn&apos;t  it cool?"/>
+<string name="n2" value="Double-click on an item in the item inventory and you&apos;ll be able to use it"/>
+</imgdir>
+<imgdir name="1002001">
+<string name="name" value="Teo"/>
+<string name="n0" value="Hey, have you seen a whale around here? Hmmm... where did it go ..."/>
+<string name="n1" value="Haven&apos;t been able to shave in months ... now my chin is starting to itch like crazy"/>
+<string name="n2" value="The incredible feeling of sailing along the beautiful coast ... that&apos;s what life is all about!"/>
+<string name="d0" value="I heard that #p1012101# is sick again. Sad…"/>
+<string name="d1" value="Oh~ So it seems that you have delievered #b#t4031006##k to #p1012101#...! Thanks. Now #p1012101# can get better now. huh? #t4031004# It is still very beautiful~"/>
+</imgdir>
+<imgdir name="1002002">
+<string name="name" value="Pason"/>
+<string name="n0" value="Do you want to head over to Florina Beach?"/>
+<string name="n1" value="There&apos;s a gorgeous beach called Florina Beach near Victoria Island..."/>
+</imgdir>
+<imgdir name="1002003">
+<string name="name" value="Mr. Goldstein"/>
+<string name="n0" value="Hey, there! Is your buddy list full by any chance?"/>
+<string name="n1" value="If you need to expand your buddy list, how about doing some business with me? Harharhar..."/>
+</imgdir>
+<imgdir name="1002004">
+<string name="name" value="VIP Cab"/>
+</imgdir>
+<imgdir name="1002005">
+<string name="name" value="Mr. Kim"/>
+<string name="n0" value="You need a place to store your items and mesos? This is just the place for you!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1002006">
+<string name="name" value="Chef"/>
+<string name="n0" value="Who am I? Well...who AM I?"/>
+<string name="n1" value="If you have a secret scroll by any chance, would you mind showing that to me?"/>
+</imgdir>
+<imgdir name="1002100">
+<string name="name" value="Jane"/>
+<string name="n0" value="I wanna travel too..."/>
+<string name="n1" value="Why does my dad not want me to travel around?"/>
+<string name="s0" value="Am I cute?"/>
+<string name="d0" value="My dream is to travel all over the world…. Just like you… But my father just doesn&apos;t let me…"/>
+<string name="d1" value="So It is you. Thanks for the materials you get. If you need something, please let me know."/>
+</imgdir>
+<imgdir name="1002101">
+<string name="name" value="Olaf"/>
+<string name="n0" value="Huh? Hey you come here!"/>
+<string name="n1" value="Look at me~ Do you want to be strong like me?"/>
+<string name="s0" value="You know that it is about time to choose your job!"/>
+<string name="s1" value="What? Strong Warrior? Dances with Barlog will help you~"/>
+<string name="s2" value="If you want to become a bowman, go and meet Athena Pierce in Henessys."/>
+<string name="s3" value="If you choose to become a magician, you can have a job faster than anybody. Go and meet Grendel the Really Old in Ellinia"/>
+<string name="s4" value="You want to be a thief like Dark Lord? You know where to go~"/>
+</imgdir>
+<imgdir name="1010100">
+<string name="name" value="Rina"/>
+<string name="n0" value="Have you met up with Athena Pierce, the one that watches over and takes care of our town?"/>
+<string name="n1" value="If you want to become a bowman, please go see Athena Pierce, who resides in the inner part of the park."/>
+<string name="n2" value="Hmm...is Ronnie doing well? I can&apos;t find him...I was thinking of fixing him a nice plate of Unagi."/>
+<string name="d0" value="This town is made by the group of bowmen. If you want to become a bowman, please meet with #r#p1012100##k… She will help you. What? You don&apos;t know #r#p1012100##k? She saved our town long time ago from the monsters. Of course, it is safe now. She is the hero of our town."/>
+<string name="d1" value="Oh… You are the one who gave the stuff back? So what&apos;s up? Is #p1012102 doing fine? If you get to #m100000000# someday, please say hello to #p1012102# for me"/>
+</imgdir>
+<imgdir name="1011000">
+<string name="name" value="Karl"/>
+<string name="n0" value="Really cheap around here!!!"/>
+<string name="n1" value="Come check it out! Ahahahah!!"/>
+</imgdir>
+<imgdir name="1011001">
+<string name="name" value="Sam"/>
+<string name="n0" value="Hmm...I&apos;m ready for business now..."/>
+<string name="n1" value="Ahem, I only deal with the finest of all items..."/>
+</imgdir>
+<imgdir name="1011100">
+<string name="name" value="Luna"/>
+<string name="n0" value="Yawn, I&apos;m tired... just go choose an item you want ..."/>
+</imgdir>
+<imgdir name="1012000">
+<string name="name" value="Regular Cab"/>
+</imgdir>
+<imgdir name="1012001">
+<string name="name" value="Dr. Squint"/>
+<string name="n0" value="I&apos;ve been wearing these for so long, I can barely see what&apos;s in front of me..."/>
+<string name="n1" value="Ah, you want to get your face done? Cough, cough..."/>
+<string name="n2" value="Plastic surgery..let me take care of it...haha...wait, where&apos;s the face? "/>
+</imgdir>
+<imgdir name="1012002">
+<string name="name" value="Vicious"/>
+<string name="n0" value="You need something?"/>
+</imgdir>
+<imgdir name="1012003">
+<string name="name" value="Chief Stan"/>
+<string name="n0" value="Where did my son go..."/>
+<string name="n1" value="Hey, you! I strongly suggest you don&apos;t do anything stupid around this town..."/>
+<string name="d0" value="My Son…! That ungrateful kid… He just didn&apos;t listen to me and ran out. I can never ever forgive him…! He can never come to this town again…! "/>
+<string name="d1" value="Did you give the gold watch to Alex? I feel so lonely without him… Anyway, can you please tell him that I will forgive him and he can come home now."/>
+</imgdir>
+<imgdir name="1012004">
+<string name="name" value="Doofus"/>
+<string name="n0" value="Pet food for your precious pet!! On Sale!!"/>
+<string name="n1" value="Do you need to get some food for your pet?"/>
+</imgdir>
+<imgdir name="1012005">
+<string name="name" value="Cloy"/>
+<string name="n0" value="Do you have any questions about pets? Ask me anything about them..."/>
+<string name="n1" value="Are you raising a pet? If you have any questions, feel free to ask"/>
+</imgdir>
+<imgdir name="1012006">
+<string name="name" value="Trainer Bartos"/>
+<string name="n0" value="What? Your pet turned into a doll? Of course... it&apos;s originally a doll that came to life through a special magic."/>
+<string name="n1" value="Hehehe ... if you need to train your pet, I&apos;ll take care of it..."/>
+</imgdir>
+<imgdir name="1012007">
+<string name="name" value="Trainer Frod"/>
+<string name="n0" value="Hmmm ... my brother keeps making me do these dumb assignments ..."/>
+<string name="n1" value="Taking a walk around town with your pet...isn&apos;t that the best feeling in the world??"/>
+</imgdir>
+<imgdir name="1012008">
+<string name="name" value="Casey"/>
+<string name="n0" value="You tired of hunting? How about playing a minigame?"/>
+<string name="n1" value="Still no one to beat me...I&apos;m the master of minigames..."/>
+</imgdir>
+<imgdir name="1012009">
+<string name="name" value="Mr. Lee"/>
+<string name="n0" value="You need a place to store your items and mesos? This is just the place for you!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1012100">
+<string name="name" value="Athena Pierce"/>
+<string name="n0" value="Do you want to become a bowman?"/>
+<string name="d0" value="Those who want to become a bowman... Please come..."/>
+<string name="d1" value="Those who want to become a bowman... Please come..."/>
+</imgdir>
+<imgdir name="1012101">
+<string name="name" value="Maya"/>
+<string name="n0" value="Cough, cough..."/>
+<string name="d0" value="Cough… Cough… Ah… Headache… Can somebody help me?..."/>
+<string name="d1" value="Thanks for the last time. Now I feel much better. Thanks for everything."/>
+</imgdir>
+<imgdir name="1012102">
+<string name="name" value="Pia"/>
+<string name="n0" value="I wanna do something..."/>
+<string name="n1" value="Ahhhh...it&apos;s trying to eat me!!"/>
+<string name="n2" value="Ahh...I like it...sooo comfortable..."/>
+<string name="d0" value="Ah~! It is really getting to me!!! #o2220100#... Oh… Are you a stranger?"/>
+<string name="d1" value="Thanks for the last time. Now #o2220100# is about to extinct. So how was the scroll?"/>
+</imgdir>
+<imgdir name="1012103">
+<string name="name" value="Natalie the Owner"/>
+<string name="n0" value="You like my hairstyle? We hairdressers are supposed to keep up with the latest trends, you know?"/>
+<string name="n1" value="Are you tired of your hairdo? Here, let me make it look nice and pretty for you..."/>
+</imgdir>
+<imgdir name="1012104">
+<string name="name" value="Brittany the Assistant"/>
+<string name="n0" value="I&apos;m Brittany the assistant, in charge of dying hair..."/>
+<string name="n1" value="Natalie is my mother and the owner of this place."/>
+</imgdir>
+<imgdir name="1012105">
+<string name="name" value="Ms. Tan"/>
+<string name="n0" value="These days, everyone wants to tan their skin..."/>
+<string name="n1" value="There&apos;s nothing as healthy-looking as a well-tanned skin. What do you think? Do you want to tan it like me?"/>
+<string name="n2" value="Every once in a while, someone comes along that wants a clean, white skin. That&apos;s ok, too."/>
+</imgdir>
+<imgdir name="1012106">
+<string name="name" value="Mrs. Ming Ming"/>
+<string name="s0" value="With my food, I can definitely win the trophy in the festival."/>
+<string name="s1" value="Hmmm... Now... I need more ingredients..."/>
+<string name="s2" value="It will be great... I guarantee you..."/>
+<string name="d0" value="We are lacking man power. We should get some help from the people who came from other places..."/>
+<string name="d1" value="Thanks for doing that. Now we can prepare for the festival."/>
+</imgdir>
+<imgdir name="1012107">
+<string name="name" value="Utah"/>
+<string name="s0" value="What should I do after feeding the pigs?"/>
+<string name="s1" value="Today is my birthday... Probably something good will happen to me"/>
+<string name="s2" value="Hmm... I should talk to Camilla after feeding the pigs..."/>
+<string name="d0" value="Hi. Welcome to my farm."/>
+<string name="d1" value="I should rush back to Camila. You can exit the farm, if you take left here."/>
+</imgdir>
+<imgdir name="1012108">
+<string name="name" value="Camila"/>
+<string name="s0" value="Today is Utah&apos;s birthday... I should give a birthday present to him..."/>
+<string name="s1" value="I don&apos;t really like angry ribbon pigs."/>
+<string name="s2" value="Utah may get really disappointed if I don&apos;t get him the presents."/>
+<string name="d0" value="Hey there, I&apos;m Camila..."/>
+<string name="d1" value="Ah, you&apos;re the one that helped me out the other day. Thank you so much for that time!"/>
+</imgdir>
+<imgdir name="1012109">
+<string name="name" value="Jay"/>
+<string name="s0" value="I need to take great care of the Maple History Book. It contains lots of important information, you know!"/>
+<string name="s1" value="I really hope Henesys stays peaceful. I grew up here!"/>
+<string name="d0" value="I really love it here, and my goal is to make Henesys an even better place to live."/>
+<string name="d1" value="You&apos;re the one that helped me recover the history book. Your good deeds will be remembered for generations to come!"/>
+</imgdir>
+<imgdir name="1012110">
+<string name="name" value="Anne"/>
+<string name="n0" value="When&apos;s Mom coming? She must be busy..."/>
+<string name="n1" value="I can only do this by myself for so long..."/>
+<string name="d0" value="I&apos;m Anne, the daughter of Dr. Betty"/>
+<string name="d1" value="Hey, you wanna hang out with me?"/>
+<string name="f0" value="Hmmm..."/>
+</imgdir>
+<imgdir name="1012111">
+<string name="name" value="Bruce"/>
+<string name="s0" value="Sometimes you can find amazing things, if you study monsters."/>
+<string name="s1" value="I am a scholar who studies animals and monsters"/>
+<string name="d0" value="My name is Bruce."/>
+<string name="d1" value="You are the one who helped me on the other day. How are you?"/>
+</imgdir>
+<imgdir name="1020000">
+<string name="name" value="Blackbull"/>
+<string name="n0" value="Haven&apos;t seen you before...better be careful around here."/>
+<string name="n1" value="Don&apos;t worry, we aren&apos;t cannibals here...*gulp*"/>
+<string name="n2" value="Don&apos;t you like my hair? It&apos;s very popular around town."/>
+<string name="d0" value="Our family grew, and I&apos;ll have to fix the house to make it bigger, but I need materials to do so..."/>
+<string name="d1" value="Hey, it&apos;s you! Thanks to you, the building of the house for my cousins are well on their way. You should come check it out when it&apos;s completed."/>
+</imgdir>
+<imgdir name="1021000">
+<string name="name" value="River"/>
+<string name="n0" value="Cheap~! Sooo cheap!!"/>
+<string name="n1" value="Come check it out!! Hahahah"/>
+</imgdir>
+<imgdir name="1021001">
+<string name="name" value="Harry"/>
+<string name="n0" value="Let&apos;s see...I&apos;m ready for some work here!"/>
+<string name="n1" value="Hello everyone! I&apos;ve got some fiiine goods for ya!"/>
+<string name="n2" value="I will never let go of the thieves trying to steal things here."/>
+</imgdir>
+<imgdir name="1021100">
+<string name="name" value="Arturo"/>
+<string name="n0" value="I made this potion myself!!"/>
+<string name="n1" value="Hey, you! No stealing around here..."/>
+</imgdir>
+<imgdir name="1022000">
+<string name="name" value="Dances with Balrog"/>
+<string name="n0" value="Do you want to become a warrior?"/>
+<string name="n1" value="For those that want to become a warrior, come see me..."/>
+<string name="d0" value="For those that want to become a warrior, come see me..."/>
+<string name="d1" value="For those that want to become a warrior, come see me..."/>
+</imgdir>
+<imgdir name="1022001">
+<string name="name" value="Regular Cab"/>
+</imgdir>
+<imgdir name="1022002">
+<string name="name" value="Manji"/>
+<string name="n0" value="..."/>
+<string name="n1" value="Don&apos;t talk to me"/>
+<string name="n2" value="Leave now...or you&apos;ll get hurt"/>
+<string name="d0" value="Anyone who dares to stand in my path will be punished dearly..."/>
+<string name="d1" value="Hah... I was wondering who&apos;s bothering me, and it&apos;s you. Alright, I won&apos;t call you a nobody anymore..."/>
+</imgdir>
+<imgdir name="1022003">
+<string name="name" value="Mr. Thunder"/>
+<string name="n0" value="There is nothing in this world that I can&apos;t make...hahah"/>
+<string name="n1" value="Do you have a jewel or a mineral by any chance? Show me then!"/>
+</imgdir>
+<imgdir name="1022004">
+<string name="name" value="Mr. Smith"/>
+<string name="n0" value="I&apos;m Mr. Thunder&apos;s apprentice"/>
+<string name="n1" value="If you need something made, just come find me."/>
+</imgdir>
+<imgdir name="1022005">
+<string name="name" value="Mr. Wang"/>
+<string name="n0" value="You need a place to store your items and mesos? This is just the place for you!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1022006">
+<string name="name" value="Winston"/>
+<string name="s0" value="The fossils contain important information from the past."/>
+<string name="s1" value="Do you think I can ... recover all that data that I&apos;ve lost?"/>
+<string name="n0" value="Look around the cliff and you may be able to find the fossils."/>
+<string name="d0" value="I&apos;m Winston the archeologist."/>
+<string name="d1" value="You&apos;re the one that helped me out the other day. Unfortunately I&apos;m really busy right this minute. I&apos;ll talk to you later."/>
+</imgdir>
+<imgdir name="1022007">
+<string name="name" value="Ayan"/>
+<string name="s0" value="My name is Ayan. Nice to meet you~"/>
+<string name="s1" value="I have been living in this town ever since I was rescued by the people here."/>
+<string name="d0" value="Hi~"/>
+<string name="d1" value="You are the one who helped me the other day. Thank you~"/>
+</imgdir>
+<imgdir name="1022100">
+<string name="name" value="Sophia"/>
+<string name="n0" value="Ok...I&apos;m ready to do business..."/>
+<string name="n1" value="It&apos;s so boring around here..."/>
+<string name="n2" value="Is Maya getting better from her sickness?"/>
+<string name="s0" value="Not a bad day at work today!"/>
+<string name="s1" value="Please don&apos;t bargain with me too much~"/>
+<string name="s2" value="Don&apos;t they look good today? I put great effort to today&apos;s stock"/>
+<string name="h0" value="Hey...you&apos;re back!"/>
+<string name="h1" value="Please don&apos;t try to bargain with me too much~"/>
+<string name="h2" value="Isn&apos;t it just gorgeous out here today?"/>
+<string name="d0" value="Man, I want to travel around and stuff. I don&apos;t want to be stuck here working. This stinks!! I&apos;m stuck here making potions everyday thanks to my mom opening up a convenient store. This is definitely NOT fun."/>
+<string name="d1" value="What did you do with #b#t4031004##k? That&apos;s a coveted rock and all, but it requires so many items to make that you&apos;re the first one to actually gather them all up! Anyway, hope this is put to good use."/>
+</imgdir>
+<imgdir name="1022101">
+<string name="name" value="Rooney"/>
+<string name="n0" value="Did you hear about a town nearby Ellinia that&apos;s covered in snow?"/>
+<string name="n1" value="Don&apos;t you wanna check out the town that&apos;s covered in snow??"/>
+</imgdir>
+<imgdir name="1031000">
+<string name="name" value="Flora the Fairy"/>
+<string name="n0" value="Welcome to Ellinia~"/>
+<string name="n1" value="I have many good available here. Come check them out!"/>
+</imgdir>
+<imgdir name="1031001">
+<string name="name" value="Serabi the Fairy"/>
+<string name="n0" value="We sell various kinds of armors here..."/>
+<string name="n1" value="Come take a look."/>
+</imgdir>
+<imgdir name="1031100">
+<string name="name" value="Len the Fairy"/>
+<string name="n0" value="Do you need potions by any chance? I have plenty in store..."/>
+<string name="n1" value="If you want to return to Ellinia at will, then try buying the return scroll to this place."/>
+</imgdir>
+<imgdir name="1032000">
+<string name="name" value="Regular Cab"/>
+</imgdir>
+<imgdir name="1032001">
+<string name="name" value="Grendel the Really Old"/>
+<string name="n0" value="To all that desire to become a magician...talk to me..."/>
+<string name="d0" value="To all that desire to become a magician...talk to me..."/>
+<string name="d1" value="To all that desire to become a magician...talk to me..."/>
+</imgdir>
+<imgdir name="1032002">
+<string name="name" value="Francois"/>
+<string name="n0" value="Do you need anything...?"/>
+<string name="n1" value="Here...I have some goods here, so come take a look at them!"/>
+</imgdir>
+<imgdir name="1032003">
+<string name="name" value="Shane"/>
+<string name="n0" value="Are you here at the request of Sabitrama?"/>
+<string name="n1" value="I heard there&apos;s an incredible herb that can be found in here...but I can&apos;t just let you easily like that..."/>
+<string name="d0" value="Do you want to enter this place? I&apos;m sure you&apos;ve heard of the fact that there are some rare herbs in here, but I can&apos;t let some stranger like you enter my property. I&apos;m sorry, but you&apos;ll have to leave."/>
+<string name="d1" value="Do you want to enter this place? I&apos;m sure you&apos;ve heard of the fact that there are some rare herbs in here, but I can&apos;t let some stranger like you enter my property. I&apos;m sorry, but you&apos;ll have to leave."/>
+<string name="n2" value="Not everyone can enter this place~"/>
+</imgdir>
+<imgdir name="1032004">
+<string name="name" value="Louis"/>
+<string name="n0" value="If you want to leave this place, come talk to me."/>
+</imgdir>
+<imgdir name="1032005">
+<string name="name" value="VIP Cab"/>
+</imgdir>
+<imgdir name="1032006">
+<string name="name" value="Mr. Park"/>
+<string name="n0" value="You need a place to store your items and mesos? This is just the place for you!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1032007">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="You need to purchase the ticket to get on board the ship that heads to Orbis Station."/>
+<string name="n1" value="Please purchase ticket from me and get on the board."/>
+</imgdir>
+<imgdir name="1032008">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="If you want to get on board the ship that heads to Orbis Station, please give me the ticket."/>
+<string name="n1" value="There&apos;s a limited capacity for this ship, so please get on right now...it&apos;ll be leaving shortly."/>
+<string name="n2" value="The ship is about to leave, so please wait~"/>
+</imgdir>
+<imgdir name="1032009">
+<string name="name" value="Crewmember Purin"/>
+<string name="n0" value="Is anything bothering you on this trip? I hope you enjoy the ride."/>
+<string name="n1" value="Anyone that wants to leave the ship and return to the starting point, please come talk to me."/>
+<string name="n2" value="The ship is about to leave, so please wait~"/>
+</imgdir>
+<imgdir name="1032100">
+<string name="name" value="Arwen the Fairy"/>
+<string name="n0" value="Ah... my precious collection ... where are they???"/>
+<string name="n1" value="I don&apos;t want to ask humans for a favor ... but ... there&apos;s no choice."/>
+<string name="d0" value="I lost a very important item ..."/>
+<string name="d1" value="You&apos;re the one that recovered the glass shoes from the menacing #o3210100# the other day. Thank you so much, and if you need my help, feel free to come talk to me."/>
+</imgdir>
+<imgdir name="1032101">
+<string name="name" value="Rowen the Fairy"/>
+<string name="n0" value="Do you think my friend Ronnie is doing well...?"/>
+<string name="n1" value="Deep in the forest, Zombie Lupin&apos;s are threatening the safety of our town ..."/>
+<string name="n2" value="A few days ago, my friend Arwen lost her red heart-shaped earrings in the middle of the forrest owned by Shane ..."/>
+<string name="d0" value="Do you need me for something? Please don&apos;t bother me unless you need me right this minute."/>
+<string name="d1" value="It&apos;s you, my savior. #o4230101# hasn&apos;t been attacking our town ever since you helped us out the other day. How are you doing these days?"/>
+</imgdir>
+<imgdir name="1032102">
+<string name="name" value="Mar the Fairy"/>
+<string name="n0" value="Did your pet turned back into a doll by any chance?"/>
+<string name="n1" value="If you have an unmoving pet with you, please take it to me."/>
+</imgdir>
+<imgdir name="1032103">
+<string name="name" value="El Moth"/>
+<string name="n0" value="I can make scrolls easily!"/>
+<string name="n1" value="I know exactly what kind of scrolls you want."/>
+</imgdir>
+<imgdir name="1032104">
+<string name="name" value="Betty"/>
+<string name="s0" value="Lots of work, not enough help..."/>
+<string name="n0" value="Hey, if you got some time, can you help me out here?"/>
+<string name="d0" value="I&apos;m Betty the biologist. There are so many things to work on, but I&apos;m always lacking time."/>
+<string name="d1" value="Thank you so much for your help! Couldn&apos;t have come at a better time!"/>
+</imgdir>
+<imgdir name="1032105">
+<string name="name" value="Estelle"/>
+<string name="n0" value="It&apos;s not easy to make a new sauce."/>
+<string name="n1" value="No, this is not it! I need a distinctive flavor."/>
+<string name="d0" value="I&apos;m Estelle, and I love to cook!"/>
+<string name="d1" value="Did you like the sauce I made the other day? Did it help you on your cooking?"/>
+<string name="f0" value="Man..."/>
+</imgdir>
+<imgdir name="1032106">
+<string name="name" value="Wing the Fairy"/>
+<string name="n0" value="..."/>
+<string name="n1" value="So much homework ... and so much studying to do ... man I&apos;m swamped ..."/>
+<string name="d0" value="..."/>
+<string name="d1" value="I&apos;ve got a lot of work to do! I&apos;d appreciate it if you don&apos;t bother me for now."/>
+</imgdir>
+<imgdir name="1040000">
+<string name="name" value="Luke"/>
+<string name="n0" value="zzz..."/>
+<string name="n1" value="... ... ... zzz..."/>
+<string name="n2" value="This is the way to the ... dun ... geon ... zzzzzzzz ...."/>
+<string name="d0" value="Okay, who just woke me up?? I hate anyone that wakes me up from my nap … huh? What am I doing? What do you think I&apos;m doing? Of course I&apos;m guarding the entrance!! This is the entrance to the #bVictoria Island : Center Dungeon#k. You have to be careful in there; the monsters you&apos;ve faced don&apos;t even compare to the ones you&apos;re about to face in here. I suggest you don&apos;t go in there unless you can protect yourself. Okay, nap time!"/>
+<string name="d1" value="Hey, it&apos;s you! Am I falling asleep again? Well, I was actually called out the other day for doing that, so I&apos;ve been trying NOT to these days. It&apos;s dangerous around here, so please be careful."/>
+</imgdir>
+<imgdir name="1040001">
+<string name="name" value="Mike"/>
+<string name="n0" value="zzz..."/>
+<string name="n1" value="... ... ... zzz..."/>
+<string name="n2" value="This is the way to the...dun...geon...zz.zzzzzz...."/>
+<string name="d0" value="I found this old document the other day and it had something about this mythical item. #b#t4021009##k and #b#t4003002##k seem like items that have something to do with the fairies at Ellinia. Maybe #t4001005# has to do with the Golems that the old mages made. #b#t4001006##k reminds me of a flaming dragon…"/>
+<string name="d1" value="I found this old document the other day and it had something about this mythical item. #b#t4021009##k and #b#t4003002##k seem like items that have something to do with the fairies at Ellinia. Maybe #t4001005# has to do with the Golems that the old mages made. #b#t4001006##k reminds me of a flaming dragon…"/>
+</imgdir>
+<imgdir name="1043000">
+<string name="name" value="a pile of flowers"/>
+<string name="d0" value="In the midst of the pile of flowers, I can feel some strange aura in there. Unfortunately, I feel something strange around the flowers and I don&apos;t think I can take them with me."/>
+<string name="d1" value="In the midst of the pile of flowers, I can feel some strange aura in there. Unfortunately, I feel something strange around the flowers and I don&apos;t think I can take them with me."/>
+</imgdir>
+<imgdir name="1043001">
+<string name="name" value="a pile of herbs"/>
+</imgdir>
+<imgdir name="1051000">
+<string name="name" value="Cutthroat Manny"/>
+<string name="n0" value="You need a weapon? Our store specializes in weapons for thieves..."/>
+<string name="n1" value="Alright! Pick and choose!"/>
+</imgdir>
+<imgdir name="1051001">
+<string name="name" value="Don Hwang"/>
+<string name="n0" value="Hello there, do you need something?"/>
+<string name="n1" value="There is no way in the world you&apos;re going to overpay for an item here~"/>
+</imgdir>
+<imgdir name="1051002">
+<string name="name" value="Dr. Faymus"/>
+<string name="n0" value="You need potions? Here you go...I have PLENTY!!"/>
+<string name="n1" value="Here! Pick and choose!!"/>
+</imgdir>
+<imgdir name="1052000">
+<string name="name" value="Alex"/>
+<string name="n0" value="Ah... I&apos;m bored ..."/>
+<string name="d0" value="It&apos;s been a months since I ran away from home, and frankly I&apos;m sick of wandering around strange places now. But I feel weird about going back home..."/>
+<string name="d1" value="Thanks for the help the other day. I&apos;d love to go back home, but I have to at least say my goodbyes to everyone that helped me out here. These people will actually miss me, you know …"/>
+</imgdir>
+<imgdir name="1052001">
+<string name="name" value="Dark Lord"/>
+<string name="n0" value="To those that want to be a thief, come..."/>
+<string name="d0" value="To those that want to be a thief, come..."/>
+<string name="d1" value="To those that want to be a thief, come..."/>
+</imgdir>
+<imgdir name="1052002">
+<string name="name" value="JM From tha Streetz"/>
+<string name="n0" value="Hmm... can I see you for a sec ...?"/>
+<string name="n1" value="Hmm ... the items you may need ... I have them all."/>
+</imgdir>
+<imgdir name="1052003">
+<string name="name" value="Chris"/>
+<string name="n0" value="Do you have a raw ore of a mineral or a jewel by any chance? Allow me to do the rest for you..."/>
+<string name="n1" value="Phew ... I&apos;m tired. I&apos;ll rest up a little bit for now."/>
+</imgdir>
+<imgdir name="1052004">
+<string name="name" value="Denma the Owner"/>
+<string name="n0" value="Do you want to have plastic surgery? Let me take care of you then..."/>
+<string name="n1" value="It&apos;s not a bad idea to change your face up every once in a while"/>
+</imgdir>
+<imgdir name="1052005">
+<string name="name" value="Dr. Feeble"/>
+<string name="n0" value="I&apos;ve been wearing these for so long, I can barely see what&apos;s in front of me now..."/>
+<string name="n1" value="Ah ... you want a plastic surgery? Cough cough ..."/>
+<string name="n2" value="Plastic surgery ... allow me to handle it ... haha ... by the way, where is the face ... ?"/>
+</imgdir>
+<imgdir name="1052006">
+<string name="name" value="Subway Worker"/>
+<string name="n0" value="Do you want in? Then please purchase a ticket here."/>
+<string name="n1" value="No one is allowed in without a ticket."/>
+</imgdir>
+<imgdir name="1052007">
+<string name="name" value="The Ticket Gate"/>
+</imgdir>
+<imgdir name="1052008">
+<string name="name" value="Treasure Chest"/>
+</imgdir>
+<imgdir name="1052009">
+<string name="name" value="Treasure Chest"/>
+</imgdir>
+<imgdir name="1052010">
+<string name="name" value="Treasure Chest"/>
+</imgdir>
+<imgdir name="1052011">
+<string name="name" value="Exit"/>
+</imgdir>
+<imgdir name="1052012">
+<string name="name" value="Mong from Kong"/>
+<string name="n0" value="Hey...are you logged on at Internet Cafe? Then come in..."/>
+<string name="n1" value="It&apos;s an Internet Cafe right here, but not everyone can go in..."/>
+</imgdir>
+<imgdir name="1052013">
+<string name="name" value="Computer"/>
+</imgdir>
+<imgdir name="1052014">
+<string name="name" value="Vending Machine"/>
+</imgdir>
+<imgdir name="1052015">
+<string name="name" value="Billy"/>
+<string name="n0" value="Is the game not working? Ahhh...then restart the computer."/>
+<string name="n1" value="Do you keep seeing blue screen? Ahh...then please restart the computer."/>
+</imgdir>
+<imgdir name="1052016">
+<string name="name" value="Regular Cab"/>
+</imgdir>
+<imgdir name="1052017">
+<string name="name" value="Mr. Hong"/>
+<string name="n0" value="You need a place to store your items and mesos? Here it is!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1052100">
+<string name="name" value="Don Giovanni"/>
+<string name="n0" value="Hey, you! You seem to be having a bad-hair day...how about letting me take care of it??"/>
+<string name="n1" value="Hahahah! Welcome to my hair salon! Have a seat!"/>
+</imgdir>
+<imgdir name="1052101">
+<string name="name" value="Andre"/>
+<string name="n0" value="Oh no no no no no~~!! YOU need a haircut!!"/>
+<string name="n1" value="I may not be as good as the Don, but I&apos;m close enough~"/>
+</imgdir>
+<imgdir name="1052102">
+<string name="name" value="Shumi"/>
+<string name="n0" value="Oh no... where could it be ...??"/>
+<string name="n1" value="Crap~~!! I lost my money!!!!"/>
+<string name="n2" value="I hope someone can help me out ..."/>
+<string name="d0" value="Oh my gosh ... I lost the coin that my friend lent me ... I can&apos;t find it!!"/>
+<string name="d1" value="You&apos;re the one that helped me out three times!!!! I can&apos;t thank you enough for getting me out of trouble. I mean, you helped me out three times!! I&apos;ve been much more careful these days. Isn&apos;t that an improvement or what?"/>
+</imgdir>
+<imgdir name="1052103">
+<string name="name" value="Nella"/>
+<string name="n0" value="Man, I&apos;m soooo busy! Anyone around here willing to help?"/>
+<string name="n1" value="Strangers walking around everywhere here today."/>
+<string name="d0" value="I got so many requests from the townspeople today! I need help here..."/>
+<string name="d1" value="Aren&apos;t you the one that helped me take care of #b#p1051000##k&apos;s request? He should be at home fixing himself a hearty dinner right about now. Unfortunately, I haven&apos;t gotten any new requests today. Come talk to me some other time, alright?"/>
+</imgdir>
+<imgdir name="1052104">
+<string name="name" value="Tulcus"/>
+<string name="n0" value="If you need any scrolls, come talk to me."/>
+<string name="n1" value="It&apos;s a piece of cake for me to make scrolls, you know."/>
+</imgdir>
+<imgdir name="1052105">
+<string name="name" value="Jane Doe"/>
+<string name="s0" value="I need to get these bandages off, but where&apos;d Dr. Niora??"/>
+<string name="s1" value="Something&apos;s not right ... hey you ... you know of anything?"/>
+<string name="d0" value="It&apos;s...so...cold"/>
+<string name="d1" value="Well ... where should I go now ...? What do I do now?"/>
+</imgdir>
+<imgdir name="1052106">
+<string name="name" value="Icarus"/>
+<string name="n0" value="..."/>
+<string name="d0" value="Look... the sky..."/>
+<string name="d1" value="Someday... Someday... I will fly..."/>
+</imgdir>
+<imgdir name="1061000">
+<string name="name" value="Chrishrama"/>
+<string name="n0" value="You need something...?"/>
+</imgdir>
+<imgdir name="1061001">
+<string name="name" value="24 Hr Mobile Store"/>
+<string name="n0" value="We have everything except the ones we don&apos;t have~"/>
+<string name="n1" value="Alright, everyone come check it out!"/>
+</imgdir>
+<imgdir name="1061002">
+<string name="name" value="Mr. Sweatbottom"/>
+<string name="n0" value="A few minutes in sauna, and you&apos;ll feel much better. What do you think? Already working for you?"/>
+<string name="n1" value="If you need an item, I have some available, so go take a look..."/>
+</imgdir>
+<imgdir name="1061003">
+<string name="name" value="Mr. Wetbottom"/>
+<string name="n0" value="Ah... you&apos;re using the VIP sauna. What do you think? Do you want to make a deal with me?"/>
+<string name="d0" value="Welcome to the VIP sauna of the #m105040300# Hotel. Actually I need some help here ..."/>
+<string name="d1" value="I&apos;m so glad I got this book back safely. It&apos;s my number one treasure, you know. Am I not worried about #p1061004#? The fairies are taking care of him alright, so I&apos;m not worried one bit."/>
+</imgdir>
+<imgdir name="1061004">
+<string name="name" value="Ronnie"/>
+<string name="n0" value="I... actually snuck out with my dad&apos;s book."/>
+<string name="n1" value="I&apos;m still a kid so I don&apos;t know much... but what exactly is in this book?"/>
+<string name="d0" value="Now what exactly is in this book that makes my dad take care of it so much? I want to know what&apos;s inside, but I don&apos;t think I&apos;ll understand it one bit..."/>
+<string name="d1" value="You got him the book, right? I still don&apos;t think he even cares about me. I should just go back to the fairy town and stay there."/>
+</imgdir>
+<imgdir name="1061005">
+<string name="name" value="Sabitrama"/>
+<string name="n0" value="I&apos;m collecting herbs..."/>
+<string name="d0" value="Lots of medicinal herbs in this forest. Nothing makes me happier than finding new herbs here!"/>
+<string name="d1" value="It&apos;s you!! Thanks to the herbs you got me, the medicine is well on its way. It should be done pretty soon. Thanks again for your help."/>
+</imgdir>
+<imgdir name="1061006">
+<string name="name" value="Mysterious Statue"/>
+</imgdir>
+<imgdir name="1061007">
+<string name="name" value="Crumbling Statue"/>
+</imgdir>
+<imgdir name="1061008">
+<string name="name" value="Mr. Oh"/>
+<string name="n0" value="You need a place to store your items and mesos? This is just the place for you!"/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="1061009">
+<string name="name" value="Door of Dimension"/>
+</imgdir>
+<imgdir name="1061010">
+<string name="name" value="Sparkling Crystal"/>
+</imgdir>
+<imgdir name="1061100">
+<string name="name" value="Hotel Receptionist"/>
+<string name="n0" value="Hello. Welcome to Sleepywood Hotel"/>
+<string name="n1" value="Please use our hotel if you want to regain your health."/>
+<string name="a0" value="Ahh... as usual, a lot of work to do today."/>
+<string name="s0" value="How&apos;s traveling?"/>
+<string name="i0" value="What kind of ppl are coming today ..."/>
+<string name="l0" value="Whoa!"/>
+<string name="h0" value="My hair isn&apos;t messed up by any chance ... right?"/>
+</imgdir>
+<imgdir name="1063000">
+<string name="name" value="a pile of pink flowers"/>
+</imgdir>
+<imgdir name="1063001">
+<string name="name" value="a pile of blue flowers"/>
+</imgdir>
+<imgdir name="1063002">
+<string name="name" value="a pile of white flowers"/>
+</imgdir>
+<imgdir name="1072000">
+<string name="name" value="Warrior Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the warrior? Go see &quot;Dances with Balrog&quot; of Perion first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the warrior."/>
+</imgdir>
+<imgdir name="1072001">
+<string name="name" value="Magician Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the magician? Go see &quot;Grendel the Really Old&quot; of Ellinia first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the magician."/>
+</imgdir>
+<imgdir name="1072002">
+<string name="name" value="Bowman Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the bowman? Go see &quot;Athena Pierce&quot; of Henesys first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the bowman."/>
+</imgdir>
+<imgdir name="1072003">
+<string name="name" value="Thief Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the thief? Go see &quot;Dark Lord&quot; of Kerning City first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the thief."/>
+</imgdir>
+<imgdir name="1072004">
+<string name="name" value="Warrior Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the warrior? Go see &quot;Dances with Balrog&quot; of Perion first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the warrior."/>
+</imgdir>
+<imgdir name="1072005">
+<string name="name" value="Magician Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the magician? Go see &quot;Grendel the Really Old&quot; of Ellinia first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the magician."/>
+</imgdir>
+<imgdir name="1072006">
+<string name="name" value="Bowman Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the bowman? Go see &quot;Athena Pierce&quot; of Henesys first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the bowman."/>
+</imgdir>
+<imgdir name="1072007">
+<string name="name" value="Thief Job Instructor"/>
+<string name="n0" value="Do you want to make the 2nd job advancement as the thief? Go see &quot;Dark Lord&quot; of Kerning City first."/>
+<string name="n1" value="Only the ones that pass my test can make the 2nd job advancement as the thief"/>
+</imgdir>
+<imgdir name="1081000">
+<string name="name" value="Valen"/>
+<string name="n0" value="Here you go! Delicious food fresh and homemade!"/>
+<string name="n1" value="On a hot day like this, Ice with Red-Beans is the way to go!"/>
+</imgdir>
+<imgdir name="1081001">
+<string name="name" value="Pison"/>
+<string name="n0" value="This is Florina Beach!"/>
+<string name="n1" value="If you want to head back to where you were before, feel free to talk to me."/>
+</imgdir>
+<imgdir name="1081100">
+<string name="name" value="Riel"/>
+<string name="n0" value="Welcome to Florina Beach~!"/>
+<string name="n1" value="Aren&apos;t we hot?"/>
+<string name="d0" value="Welcome to Florina Beach! How can I help you?"/>
+<string name="d1" value="You&apos;re the one that&apos;s famous for getting the job done. Are you looking for more tasks?"/>
+</imgdir>
+<imgdir name="1081101">
+<string name="name" value="Roel"/>
+<string name="n0" value="Welcome to Florina Beach~!"/>
+<string name="n1" value="Aren&apos;t we hot?"/>
+</imgdir>
+<imgdir name="1081102">
+<string name="name" value="Rael"/>
+<string name="n0" value="Welcome to Florina Beach~!"/>
+<string name="n1" value="Aren&apos;t we hot?"/>
+</imgdir>
+<imgdir name="2001000">
+<string name="name" value="Cliff"/>
+<string name="n0" value="There&apos;s a huge tree in this town..."/>
+<string name="n1" value="Do you want to know how to decorate the tree?"/>
+</imgdir>
+<imgdir name="2001001">
+<string name="name" value="Branch Snowman"/>
+<string name="n0" value="You&apos;ll enter the room with trees through me."/>
+<string name="n1" value="Please hurry...there aren&apos;t many rooms with trees left!"/>
+</imgdir>
+<imgdir name="2001002">
+<string name="name" value="Metal Bucket Snowman"/>
+<string name="n0" value="You&apos;ll enter the room with trees through me."/>
+<string name="n1" value="Please hurry...there aren&apos;t many rooms with trees left!"/>
+</imgdir>
+<imgdir name="2001003">
+<string name="name" value="Strawhat Snowman"/>
+<string name="n0" value="You&apos;ll enter the room with trees through me."/>
+<string name="n1" value="Please hurry...there aren&apos;t many rooms with trees left!"/>
+</imgdir>
+<imgdir name="2001004">
+<string name="name" value="Scarf Snowman"/>
+<string name="n0" value="Come talk to me if you want to head out."/>
+<string name="n1" value="Everyone decorate your trees!"/>
+</imgdir>
+<imgdir name="2001005">
+<string name="name" value="Rupert"/>
+<string name="n0" value="Do you want to make the 3rd job advancement? If so, then talk to me..."/>
+<string name="n1" value="To those that want a 3rd job advancement, here..."/>
+</imgdir>
+<imgdir name="2002000">
+<string name="name" value="Rupi"/>
+<string name="n0" value="Come talk to me if you want to head back to Ellinia of Victoria Island."/>
+<string name="n1" value="Welcome~!"/>
+</imgdir>
+<imgdir name="2002001">
+<string name="name" value="Rudi"/>
+<string name="n0" value="Looking for ornaments? Look no further!!"/>
+<string name="n1" value="My ornaments are the best~!"/>
+</imgdir>
+<imgdir name="2002002">
+<string name="name" value="Torr"/>
+<string name="n0" value="My horn ... where .. is .. my horn!!!"/>
+<string name="n1" value="Please, someone find my horn!!"/>
+<string name="d0" value="No~~~ My horn!!!! Where is it??? Help me find my horn!"/>
+<string name="d1" value="Thanks for finding my horn. I&apos;ll do my best not to lose it."/>
+</imgdir>
+<imgdir name="2010000">
+<string name="name" value="Staff Sergeant Charlie"/>
+<string name="n0" value="Oh no...I need to get things on board and take off..."/>
+<string name="n1" value="Are you interested, by any chance, in trading items with me?"/>
+<string name="d0" value="How can I help you today?"/>
+<string name="d1" value="Did you get the #b#t4031049##k to #b#p2020003##k? Do I want anything? Well, not for now. But come talk to me later, okay? I may have something for you by then."/>
+</imgdir>
+<imgdir name="2010001">
+<string name="name" value="Mino the Owner"/>
+<string name="n0" value="Welcome. Oh no...your hair&apos;s been through tough times, huh? It needs some treatment..."/>
+<string name="n1" value="Would you like to have a soft, silky-smooth, beautiful hair? Then let me take care of you..."/>
+<string name="s0" value="Oh...you aren&apos;t interested in me, by any chance, right?"/>
+<string name="s1" value="It&apos;s a fact that you don&apos;t have much time to take care of your hair while on the journey"/>
+<string name="l0" value="The only way you can keep your hair in perfect condition is through continuous effort!"/>
+<string name="l1" value="To keep your hair as beautiful as mine requires major, maaajor effort."/>
+</imgdir>
+<imgdir name="2010002">
+<string name="name" value="Franz the Owner"/>
+<string name="n0" value="Do you want a plastic surgery? Let me help you out then..."/>
+<string name="n1" value="There&apos;s nothing wrong with changing your face every once in a while..."/>
+</imgdir>
+<imgdir name="2010003">
+<string name="name" value="Neve"/>
+<string name="n0" value="How about making a glove? I can take care of the rest..."/>
+<string name="n1" value="You&apos;ll need a nice glove to handle your weapon better...how about making one here?"/>
+</imgdir>
+<imgdir name="2010004">
+<string name="name" value="Corporal Wilson"/>
+<string name="n0" value="I&apos;m here selling food for pets!"/>
+<string name="n1" value="Don&apos;t you need some food for your pet?"/>
+</imgdir>
+<imgdir name="2010005">
+<string name="name" value="Shuri"/>
+<string name="n0" value="How about heading over to an exotic island called Florina Beach?"/>
+<string name="n1" value="Do you have the free pass by any chance? If so, then let&apos;s go to Florina Beach right this minute!"/>
+<string name="d0" value="Don&apos;t you want to head off to Florina Beach?"/>
+<string name="d1" value="You look tired and exhausted. How about spending some relaxing time at Florina Beach?"/>
+</imgdir>
+<imgdir name="2010006">
+<string name="name" value="Trina"/>
+<string name="n0" value="You need a place to store your mesos and items? Look no further!"/>
+<string name="n1" value="Don&apos;t worry, my storage is safe and secure."/>
+</imgdir>
+<imgdir name="2010007">
+<string name="name" value="Heracle"/>
+<string name="s0" value="Do you want to form a guild?"/>
+<string name="s1" value="Only the strong and the brave should come talk to me."/>
+</imgdir>
+<imgdir name="2012000">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="You need to purchase the ticket to get on the ride to Victoria Island"/>
+<string name="n1" value="Please purchase ticket from me and get on the board."/>
+</imgdir>
+<imgdir name="2012001">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="If you want to get on the ride to Victoria, please give me the ticket for it."/>
+<string name="n1" value="There&apos;s a limited capacity for this ship, so please get on right now...it&apos;ll be leaving shortly."/>
+<string name="n2" value="The ship is about to leave, so please wait~"/>
+</imgdir>
+<imgdir name="2012002">
+<string name="name" value="Crewmember Erin"/>
+<string name="n0" value="Anything I can do to help? Hope you enjoy the trip."/>
+<string name="n1" value="If you want to leave the ship and go back to the place of takeoff, please come talk to me"/>
+<string name="n2" value="The ship is about to leave, so please wait~"/>
+</imgdir>
+<imgdir name="2012003">
+<string name="name" value="Neri the Fairy"/>
+<string name="n0" value="You&apos;ll need a great weapon or two to survive here in Ossyria..."/>
+<string name="n1" value="You can&apos;t fool these set of fairy eyes, so I suggest you don&apos;t think of stealing around here."/>
+<string name="c0" value="To make great weapons, I need great materials to start with..."/>
+<string name="c1" value="It&apos;s been 150 years since I last saw Rowen from Ellinia...I wonder how he&apos;s doing..."/>
+</imgdir>
+<imgdir name="2012004">
+<string name="name" value="Nuri the Fairy"/>
+<string name="n0" value="You may want to grab an armor before heading out of town..."/>
+<string name="n1" value="I have many goods that are perfect for humans, so come check them out."/>
+<string name="c0" value="Monsters seem to be more ferocious these days...armors are definitely a must for each and every one of you travelers"/>
+<string name="c1" value="How&apos;s Victoria Island these days?"/>
+</imgdir>
+<imgdir name="2012005">
+<string name="name" value="Edel the Fairy"/>
+<string name="n0" value="There&apos;s no telling when and where you may face a powerful monster! Potions are definitely a must for every traveler!"/>
+<string name="n1" value="I also have various tasty dishes made by the fairies ourselves."/>
+<string name="c0" value="To make a good potion like this, I need to go around from place to place everyday looking for only the finest ingredients available."/>
+<string name="c1" value="I&apos;m sure the fairies at Ellinia are doing well...right?"/>
+</imgdir>
+<imgdir name="2012006">
+<string name="name" value="Platform Usher"/>
+<string name="n0" value="Orbis Station is huge. I&apos;ll take you to the station platform, so talk to me."/>
+<string name="n1" value="The platform is different according to the final destination. Go through me to use the platforms!"/>
+</imgdir>
+<imgdir name="2012007">
+<string name="name" value="Rinz the Assistant"/>
+<string name="n0" value="Hello~! Thanks for visiting our hair salon!"/>
+<string name="n1" value="I may not be as good as the owner, but...how about letting me take care of your hair still?"/>
+<string name="s0" value="Do you want to know about the latest trends in hairstyle? I&apos;ll do it for you!"/>
+<string name="s1" value="Fairies love beautiful things, so I&apos;m thinking it may help you on your journey down the road with a beautiful-looking hair."/>
+<string name="c0" value="Wow, the owner is still the best of the best at this!"/>
+<string name="c1" value="Please don&apos;t just leave...check out the hairstyles available for a change..."/>
+</imgdir>
+<imgdir name="2012008">
+<string name="name" value="Romi"/>
+<string name="n0" value="Welcome to Orbis Skin-Care~!"/>
+<string name="n1" value="So you want the most popular skin color these days, right?"/>
+<string name="s0" value="What&apos;s the popular skin-color at Victoria Island?"/>
+<string name="s1" value="It&apos;s good to look healthy with a nicely-tanned skin"/>
+</imgdir>
+<imgdir name="2012009">
+<string name="name" value="Riza the Assistant"/>
+<string name="n0" value="You...look like someone that may need a plastic surgery."/>
+<string name="n1" value="How about completely redoing your face with the most popular look these days?"/>
+</imgdir>
+<imgdir name="2010008">
+<string name="name" value="Lea"/>
+<string name="s0" value="Hello~ My name is Lea, and I am in charge of the Guild Emblem."/>
+<string name="s1" value="I am always busy! I have too much stuff to do."/>
+</imgdir>
+<imgdir name="2012010">
+<string name="name" value="Elma the Housekeeper"/>
+<string name="n0" value="Where did my master go...sigh..."/>
+<string name="n1" value="What&apos;s going to happen to my next paycheck if the master isn&apos;t coming back..."/>
+<string name="d0" value="It&apos;s been months since she left out of the blue. I haven&apos;t had much to work lately, so that&apos;s good, but I also haven&apos;t been paid in months because she&apos;s not here. I&apos;m just worried someone else may take over this house and I may never get paid…"/>
+<string name="d1" value="It looks like you&apos;ve been looking for her too. Do you have any idea how this all happened? I wonder where she is."/>
+</imgdir>
+<imgdir name="2012011">
+<string name="name" value="Kriel the Fairy"/>
+<string name="n0" value="Humans are just so shameless these days...they ask for favors as if it&apos;s nothing."/>
+<string name="n1" value="Wow...I definitely need a hand here. I better be working hard."/>
+<string name="d0" value="Lately humans have been asking for favors as if it&apos;s nothing. If they think we fairies will say yes to their every demand, well that&apos;s WRONG! Anyway, what do you want from me?"/>
+<string name="d1" value="Did #b#t4031051##k help you in any way shape or form? Anyway, that assistant of Spiruna … is she doing alright? If you ever see her again, then please say hi to her for me."/>
+</imgdir>
+<imgdir name="2012012">
+<string name="name" value="Lisa"/>
+<string name="n0" value="Where did Hella go...?"/>
+<string name="n1" value="I&apos;m worried that monsters these days are much more ferocious..."/>
+</imgdir>
+<imgdir name="2012013">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="We hope you enjoy your trip!"/>
+<string name="n1" value="There&apos;s a set capacity for this trip, so please hurry! It&apos;s ready for takeoff really soon!"/>
+<string name="n2" value="The ship is about to leave, so please wait~"/>
+</imgdir>
+<imgdir name="2012014">
+<string name="name" value="Orbis Magic Spot"/>
+</imgdir>
+<imgdir name="2012015">
+<string name="name" value="El Nath Magic Spot"/>
+</imgdir>
+<imgdir name="2012016">
+<string name="name" value="Ticketing"/>
+<string name="n0" value="Please purchase ticket from me and get on the board."/>
+<string name="n1" value="We sincerely hope you enjoy your trip!"/>
+</imgdir>
+<imgdir name="2012017">
+<string name="name" value="Hughes the Fuse"/>
+<string name="s0" value="HAHAHAHA........"/>
+<string name="s1" value="I can make everything ... I am a genious. HAHA..."/>
+<string name="d0" value="I need to invent something else. This is going to be good..."/>
+<string name="d1" value="What? What do you need?"/>
+</imgdir>
+<imgdir name="2012018">
+<string name="name" value="Ericsson"/>
+<string name="e0" value="I love the kitties..."/>
+<string name="m0" value="hmm~ I can&apos;t remember"/>
+<string name="d0" value="Look at my kitty! Isn&apos;t she cute?"/>
+<string name="d1" value="Look at my kitty! Isn&apos;t she cute?"/>
+</imgdir>
+<imgdir name="2012019">
+<string name="name" value="Moppie"/>
+<string name="t0" value="Bark~ Bark~"/>
+<string name="d0" value="T.T"/>
+<string name="d1" value="......"/>
+</imgdir>
+<imgdir name="2012020">
+<string name="name" value="Alfonse Green"/>
+<string name="s0" value="Hello~ My name is Alfonse Green~"/>
+<string name="s1" value="There are many delicious food in the world~ I love eating~"/>
+<string name="d0" value="Have a nice day~"/>
+<string name="d1" value="I just drank Nependeath juice~ It is so good."/>
+</imgdir>
+<imgdir name="2020000">
+<string name="name" value="Vogen"/>
+<string name="n0" value="If you have a set of raw ores of a mineral or a jewel, you should let me take care of the rest..."/>
+<string name="n1" value="I&apos;ve been handling various ores for decades now...so long, that I can refine them with my eyes closed..."/>
+</imgdir>
+<imgdir name="2020001">
+<string name="name" value="Scott"/>
+<string name="n0" value="You won&apos;t find these weapons anywhere else...haha"/>
+<string name="n1" value="Our weapon store only deals with the finest weapons around..."/>
+</imgdir>
+<imgdir name="2020002">
+<string name="name" value="Gordon"/>
+<string name="n0" value="Hey, there! Your shoes look worn out...how about trying on MY pair of shoes?"/>
+<string name="n1" value="I have been making shoes in this town for over 50 years now...hahah"/>
+</imgdir>
+<imgdir name="2020003">
+<string name="name" value="Master Sergeant Fox"/>
+<string name="n0" value="Arrgh...WHERE DID MY MEN GO?!?!"/>
+<string name="n1" value="I need to find them fast...hey you! Can you help me out here?"/>
+<string name="d0" value="Because of an accident, all my men have been separated and spread out everywhere. I hope they&apos;re alright."/>
+<string name="d1" value="Oh… thanks for locating all my men for me the other day. Have you ever run into any one of them since? If not, then you should go see them. They may ask you for some help."/>
+</imgdir>
+<imgdir name="2020004">
+<string name="name" value="Mr. Mohammed"/>
+<string name="n0" value="You need a place to store your items and mesos? Then you came to the right place."/>
+<string name="n1" value="My storage is safe and secure, so no worries!"/>
+</imgdir>
+<imgdir name="2020005">
+<string name="name" value="Alcaster"/>
+<string name="n0" value="Hmmm...another new set of datas...the more I work on it, the more it seems to never end..."/>
+<string name="n1" value="I found something very interesting, but it&apos;s not something I can work on just by myself..."/>
+<string name="d0" value="I&apos;m Alcaster the sorcerer, and I&apos;ve been working on various spells and magic here for over 300 years."/>
+<string name="d1" value="Hey, how have you been? Thanks to you, I can now live out the remaining days of my life in peace. All I want to do now is just study things in life."/>
+</imgdir>
+<imgdir name="2020006">
+<string name="name" value="Jade"/>
+<string name="n0" value="An old friend of mine is suddenly nowhere to be found...I wonder how she&apos;s doing these days... "/>
+<string name="n1" value="I&apos;ve been investigating around this town lately and found some very interesting facts in the process..."/>
+<string name="d0" value="I&apos;ve been studying the geography of this island for a long time, and I still don&apos;t know a lot of things. I need more data. Anyway, I&apos;m worried about this friend of mine in Orbis who disappeared out of the blue one day. I wonder what happened to her."/>
+<string name="d1" value="I have no clue where Hella may be, or what she is doing, but I&apos;m sure she&apos;s doing just fine there. I&apos;ll be here living just fine, waiting for the day when I see her again."/>
+</imgdir>
+<imgdir name="2020007">
+<string name="name" value="Scadur"/>
+<string name="n0" value="Hey, back in the day, I could have taken down some Yeti&apos;s if I felt like it..."/>
+<string name="n1" value="The hunting hasn&apos;t been easy these days...those monsters out there got pretty ferocious..."/>
+<string name="d0" value="Monsters have been getting much more ferocious lately. It&apos;s gotten to the point where I am worried about getting killed out there. I used to go hunt down a number of Yeti&apos;s a day, but those days are now over. I&apos;m old."/>
+<string name="d1" value="Monsters have been getting much more ferocious lately. It&apos;s gotten to the point where I am worried about getting killed out there. I used to go hunt down a number of Yeti&apos;s a day, but those days are now over. I&apos;m old."/>
+</imgdir>
+<imgdir name="2020008">
+<string name="name" value="Tylus"/>
+<string name="n0" value="Do you want to be a more powerful warrior than you ever were?"/>
+<string name="n1" value="This is a sacred ground, so please try to stay calm."/>
+</imgdir>
+<imgdir name="2020009">
+<string name="name" value="Robeira"/>
+<string name="n0" value="You&apos;ll need to see me in order to become the best magician in the world."/>
+<string name="n1" value="Can anyone pass my test ...?"/>
+</imgdir>
+<imgdir name="2020010">
+<string name="name" value="Rene"/>
+<string name="n0" value="The path of the bowman is long and treacherous."/>
+<string name="n1" value="Please be quiet so we can concentrate on our work here."/>
+</imgdir>
+<imgdir name="2020011">
+<string name="name" value="Arec"/>
+<string name="n0" value="You want to become a powerful thief? Then you&apos;ve come to the right person."/>
+<string name="n1" value="Please try not to make any noise around here."/>
+</imgdir>
+<imgdir name="2022000">
+<string name="name" value="Rumi"/>
+<string name="n0" value="I personally welcome you to El Nath...and for that, how about taking a look at some nice armors around here?"/>
+<string name="n1" value="Without armors, you may run into some trouble against the monsters...so take a look around them and see if you like any one of them."/>
+</imgdir>
+<imgdir name="2022001">
+<string name="name" value="Hana"/>
+<string name="n0" value="Hello I&apos;m Hana, the master alchemist in this town. Go take a look around and see if you find anything you like."/>
+<string name="n1" value="Welcome~! Whatever you may need for your journey, I have them all."/>
+</imgdir>
+<imgdir name="2022002">
+<string name="name" value="Barun"/>
+<string name="n0" value="I made these scrolls, so I can guarantee that these all work to perfection!"/>
+<string name="n1" value="Making scrolls is even easier than hunting down slimes."/>
+</imgdir>
+<imgdir name="2030000">
+<string name="name" value="Jeff"/>
+<string name="n0" value="Don&apos;t even think about entering here...it&apos;s not some place where anyone can just waltz in..."/>
+<string name="n1" value="Only the strongest can enter here...if you want in, talk to me"/>
+</imgdir>
+<imgdir name="2030001">
+<string name="name" value="Sergeant Bravo"/>
+<string name="n0" value="Where is this? Where&apos;s Master Sergeant Fox?"/>
+<string name="n1" value="Ahh...it&apos;s cold here...but I can&apos;t be stopped!!"/>
+<string name="d0" value="It&apos;s so cold around here! I&apos;m #b#p2030001##k, member of the Alpha Platoon. We got on an accident in mid-flight and made an emergency landing here, but I can&apos;t find the others. I&apos;m pretty confident that they&apos;re all okay, though."/>
+<string name="d1" value="Did you get #b#t4031049##k to #b#p2020003##k? Do I need anything? Well, not for now. But come see me later, alright?"/>
+</imgdir>
+<imgdir name="2030002">
+<string name="name" value="Corporal Easy"/>
+<string name="n0" value="Where did the Sergeant and Staff Sergeant go???"/>
+<string name="n1" value="Eh...?? I don&apos;t think this is where I was supposed to land..."/>
+<string name="d0" value="This is a strange place. It looks like an abandoned tower. Oh, I&apos;m #b#p2030002##k, member of the Alpha Platoon. We got on an accident in mid-flight and made an emergency landing here, but I can&apos;t find the others. I&apos;m pretty confident that they&apos;re all okay, though."/>
+<string name="d1" value="This is a strange place. It looks like an abandoned tower. Oh, I&apos;m #b#p2030002##k, member of the Alpha Platoon. We got on an accident in mid-flight and made an emergency landing here, but I can&apos;t find the others. I&apos;m pretty confident that they&apos;re all okay, though."/>
+</imgdir>
+<imgdir name="2030003">
+<string name="name" value="Rock Covered in Snow"/>
+</imgdir>
+<imgdir name="2030004">
+<string name="name" value="Small Tomb"/>
+</imgdir>
+<imgdir name="2030005">
+<string name="name" value="Statue"/>
+</imgdir>
+<imgdir name="2030006">
+<string name="name" value="Holy Stone"/>
+</imgdir>
+<imgdir name="2030007">
+<string name="name" value="Piece of Statue"/>
+</imgdir>
+<imgdir name="2030008">
+<string name="name" value="Adobis"/>
+<string name="n0" value="This used to be a peaceful town ... until one day, monsters started popping out of everywhere."/>
+<string name="n1" value="In the deepest part of the Zakum Dungeon rest the strongest of the foes."/>
+<string name="n2" value="Does anyone want to try the Zakum Quest?"/>
+</imgdir>
+<imgdir name="2030009">
+<string name="name" value="Glibber"/>
+<string name="n0" value="Welcome to the retreat."/>
+<string name="n1" value="I have various items here for you. Go take a look."/>
+<string name="n2" value="The items may not be upto par with the town, but feel free to look around."/>
+</imgdir>
+<imgdir name="2030010">
+<string name="name" value="Amon"/>
+<string name="n0" value="Talk to me if you want to drop out any time."/>
+<string name="n1" value="It won&apos;t get any easier as you move on..."/>
+</imgdir>
+<imgdir name="2030011">
+<string name="name" value="Ali"/>
+<string name="n0" value="The only way out is to talk to me."/>
+<string name="n1" value="If you want out, then talk to me."/>
+</imgdir>
+<imgdir name="2030012">
+<string name="name" value="Huckle"/>
+<string name="n0" value="I&apos;ve been in here for 30 years now..."/>
+<string name="n1" value="I&apos;m working on gathering up the materials for some spells."/>
+<string name="d0" value="It&apos;s been a while since I last saw a person here, a place far far away from humanity. I&apos;ve been in need of help, and I&apos;m glad to see you here. "/>
+<string name="d1" value="You&apos;re the one that helped me gather up samples of the monsters. Thanks to you the research has picked up steam, but honestly, I can use some more samples. If you see me by the time I run out of these samples, who knows, I may ask you for more."/>
+</imgdir>
+<imgdir name="2032000">
+<string name="name" value="????"/>
+<string name="n0" value="Spiruna tend to get overly aggressive at times...but once you get to know her, she is really a nice person at heart."/>
+<string name="n1" value="I&apos;ve been assisting Spiruna while working hard myself, but it hasn&apos;t been easy..."/>
+<string name="d0" value="I&apos;m #bSpiruna#k&apos;s assistant. Please forgive me for not giving you my name. Spiruna has been busy working on a new, difficult spell, and so she&apos;s quite edgy right now. Unless it&apos;s an urgent matter, I suggest you leave her alone."/>
+<string name="d1" value="I&apos;m #bSpiruna#k&apos;s assistant. Please forgive me for not giving you my name. Spiruna has been busy working on a new, difficult spell, and so she&apos;s quite edgy right now. Unless it&apos;s an urgent matter, I suggest you leave her alone."/>
+</imgdir>
+<imgdir name="2032001">
+<string name="name" value="Spiruna"/>
+<string name="n0" value="I&apos;m working on an important magic, so please don&apos;t bother me."/>
+<string name="n1" value="Kids these days...they just barge into someone else&apos;s home as if it&apos;s nothing..."/>
+<string name="d0" value="I&apos;m in the middle of a very important work here so please don&apos;t bother me and leave this place. I can&apos;t concentrate when a stranger is around."/>
+<string name="d1" value="I&apos;m in the middle of a very important work here so please don&apos;t bother me and leave this place. I can&apos;t concentrate when a stranger is around."/>
+</imgdir>
+<imgdir name="2032002">
+<string name="name" value="Aura"/>
+<string name="n0" value="Please gather up the ore of fire and the paper document. The more documents you have, the better it is."/>
+<string name="n1" value="You&apos;ll need a special item to go into the inner part of Zakum."/>
+</imgdir>
+<imgdir name="2032003">
+<string name="name" value="Lira"/>
+<string name="n0" value="Apparently there is an unfathomably powerful monster inside Zakum."/>
+<string name="n1" value="Wow, you definitely worked your way up here."/>
+</imgdir>
+<imgdir name="2032004">
+<string name="name" value="Suspicious Lava"/>
+</imgdir>
+<imgdir name="2040000">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="You&apos;ll need to purchase the ticket in order to get on board to go to Orbis."/>
+<string name="n1" value="If you want to check out the schedule, then talk to me."/>
+</imgdir>
+<imgdir name="2040001">
+<string name="name" value="Delv the Toy Soldier"/>
+<string name="n0" value="I can&apos;t let anyone and everyone in."/>
+<string name="n1" value="It&apos;s my job to protect this place."/>
+<string name="d0" value="I&apos;m sorry, but I cannot let anyone inside this place. There&apos;s a monster that has invaded Ludibrium, and is currently hidden in this place. It&apos;s very dangerous here, so I advise you to leave this minute unless you&apos;re involved in this. Now, if you&apos;ll excuse me..."/>
+<string name="d1" value="You&apos;re the one that gathered up the #b#t4031093##k for me. I am still eating those every now and then. Oh, by the way, have you talked to #b#p2040002##k, the guy next to me?"/>
+</imgdir>
+<imgdir name="2040002">
+<string name="name" value="Olson the Toy Soldier"/>
+<string name="n0" value="You&apos;ll need to find the ones that are different in shapes."/>
+<string name="n1" value="This room is not available for the public."/>
+<string name="d0" value="Thanks to the crack of dimension, a monster from other dimension entered this place, stole a very important item, and is currently hidden in this room. I don&apos;t know how strong the monster it is, but no one wants to enter this room. Hmmm... we need to locate this monster and kill it, and recover the important item. We are in trouble..."/>
+<string name="d1" value="You&apos;re the one that not only defeated the monster from the other dimension, but also helped us fix the Ludibrium Clocktower. I can&apos;t thank you enough for all your hard work. Thanks to you, everything is alright now. Hope you have a great time here at Ludibrium!"/>
+</imgdir>
+<imgdir name="2040003">
+<string name="name" value="Assistant Cheng"/>
+<string name="n0" value="This castle possesses many hidden towers."/>
+<string name="n1" value="Please try to be quiet once inside."/>
+<string name="d0" value="Lately we&apos;ve been experiencing the disapperance of mechanical parts here at the factory, and we have no idea who&apos;s been committing this dastardly act. The factory can&apos;t run if the parts keep disappearing."/>
+<string name="d1" value="Aren&apos;t you the one that helped me find the lost #b#t4031092##k here at the Toy Factory? Thanks to you, this place is running smoothly these days."/>
+</imgdir>
+<imgdir name="2040004">
+<string name="name" value="Roly-Poly 1"/>
+<string name="n0" value="Ludibrium is SO enormous, I can&apos;t ever take a day off here."/>
+<string name="n1" value="There are so many places that need some fixing."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040005">
+<string name="name" value="Roly-Poly 2"/>
+<string name="n0" value="Sigh ... hopefully I get done with work soon."/>
+<string name="n1" value="I fix and fix and fix and still, the work never ends."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040006">
+<string name="name" value="Roly-Poly 3"/>
+<string name="n0" value="I&apos;m in charge of fixing things here."/>
+<string name="n1" value="It&apos;s dangerous around here, so stay away from me!"/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040007">
+<string name="name" value="Roly-Poly 4"/>
+<string name="n0" value="Fixing is hard, but it is worth doing."/>
+<string name="n1" value="I&apos;m sure other workers are also working hard, right?"/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040008">
+<string name="name" value="Roly-Poly 5"/>
+<string name="n0" value="Hey! It&apos;s dangerous around there!"/>
+<string name="n1" value="This is nothing compared to the days of making the towers ourselves."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040009">
+<string name="name" value="Roly-Poly 6"/>
+<string name="n0" value="I&apos;ve always longed to work at a huge tower like this."/>
+<string name="n1" value="If you find any spot that needs some fixing, then let me know, okay?"/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040010">
+<string name="name" value="Roly-Poly 7"/>
+<string name="n0" value="My eyes? It&apos;s just an eye disease."/>
+<string name="n1" value="It would be awesome if my daily commute isn&apos;t so long."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040011">
+<string name="name" value="Roly-Poly 8"/>
+<string name="n0" value="Oh my gosh, I&apos;m tired. I think I&apos;ll rest for a second."/>
+<string name="n1" value="I forgot to eat breakfast, so I&apos;m hungry like no other right now."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040012">
+<string name="name" value="Roly-Poly 9"/>
+<string name="n0" value="I may be the youngest worker around, but I work my butt off everyday!"/>
+<string name="n1" value="Oh, that place has been fixed, so it&apos;s fine."/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040013">
+<string name="name" value="Roly-Poly 10"/>
+<string name="n0" value="Am I working hard? Can&apos;t you tell just from looking?"/>
+<string name="n1" value="I want to get this done with and go home...!!"/>
+<string name="d0" value="I used to work at the Toy Factory inside the Ludibrium Clocktower, but I&apos;ve been sent here to fix the destroyed parts of Eos Tower. The number of monsters have steadily increased, though, making this job very difficult for myself and other Roly-Poly&apos;s."/>
+<string name="d1" value="You&apos;re the one that took my picture the other day. Have you met up with all 10 of us Roly Poly&apos;s? And you gave those pictures to #b#p2040015##k, right? I think our manager will be relieved after seeing those pictures and concentrate on his work."/>
+</imgdir>
+<imgdir name="2040014">
+<string name="name" value="Chico"/>
+<string name="n0" value="If you want to know anything about minigames, then talk to me."/>
+<string name="n1" value="You may try hard, but you&apos;ll never, ever beat me."/>
+</imgdir>
+<imgdir name="2040015">
+<string name="name" value="Manager Karl"/>
+<string name="n0" value="Those workers ...  are they working hard even when I&apos;m not around?"/>
+<string name="n1" value="Oh no, I forgot to bring my lunchbox to work today..."/>
+<string name="n2" value="I&apos;m #p2040015# for this place. There are many dangerous machines around, so please be careful."/>
+<string name="d0" value="Helow there! I&apos;m #b#p2040015##k, the one in charge of the Toy Factory. Today&apos;s another one of those busy days..."/>
+<string name="d1" value="Oh~ You&apos;re the one that met up with our Roly Poly&apos;s at the Eos Tower for me! How can I help you here? Huh? Haha, of course, I did not forget the lunch box my daughter made for me. I&apos;m just waiting for lunch so I can eat them! I&apos;ll see you around!"/>
+</imgdir>
+<imgdir name="2040016">
+<string name="name" value="Pi"/>
+<string name="n0" value="Don&apos;t you want to make something? It&apos;s a piece of cake for me~"/>
+<string name="n1" value="Hmmm ... you can gather up some really fine materials here at Ludibrium."/>
+</imgdir>
+<imgdir name="2040017">
+<string name="name" value="Green Mesoranger"/>
+<string name="n0" value="As long as we&apos;re here, everything will be fine!"/>
+<string name="n1" value="Did we ... miss our takeoff?"/>
+<string name="d0" value="I&apos;m here taking care of a very important mission given to me by the Omega Sector. It is very dangerous around here, so I suggest you run right now."/>
+<string name="d1" value="The Roswell Field is prone to aliens making apperances, so this place is under special constant watch. The attack is still on, so I suggest you and others not to get too comfortable in this place. I&apos;ll have to head back to the Sector for some more work, so I&apos;ll see you around! "/>
+</imgdir>
+<imgdir name="2040018">
+<string name="name" value="Black Mesoranger"/>
+<string name="n0" value="Pink Mesoranger is ALWAYS late ... we can&apos;t be at our 100% strength unless all 5 of us are here."/>
+<string name="n1" value="Nothing scares us when all 5 of us are here!"/>
+<string name="d0" value="Hello! I&apos;m #b#p2040018##k, in charge of a mission to prevent the aliens from invading this place. It seems like they have been acting up more lately. It&apos;s very dangerous around here, so I suggest you run back to the Omega Sector for safety."/>
+<string name="d1" value="You&apos;re the one that helped me get rid of #b#o4230116##k here at the Coolan Field. It feels good to find someone like you here at a place where dangerous aliens are a common sight. I&apos;m still investigating on the mastermind behind these aliens. I&apos;m going up against yet another alien, so it&apos;s not easy..."/>
+</imgdir>
+<imgdir name="2040019">
+<string name="name" value="Everton"/>
+<string name="n0" value="Welcome to our hospital! Your face looks terrrrrible. Need my help? "/>
+<string name="n1" value="Every once in a while comes a person whose face is a little hard to touch. You happen to be that person, haha... how do you want it?"/>
+</imgdir>
+<imgdir name="2040020">
+<string name="name" value="Sarah"/>
+<string name="n0" value="It is easy to make gloves~"/>
+<string name="n1" value="I have a special glove for you... You want to take a look?"/>
+</imgdir>
+<imgdir name="2040021">
+<string name="name" value="Tara"/>
+<string name="n0" value="People are looking for my shoes in these days."/>
+<string name="n1" value="Have you ever heard about stimulator? With this... haha... yeah..."/>
+</imgdir>
+<imgdir name="2040022">
+<string name="name" value="Rydole"/>
+<string name="n0" value="Do you want to make a weapon? This is the perfect place."/>
+<string name="n1" value="You need to have manuals to make weapons"/>
+</imgdir>
+<imgdir name="2040023">
+<string name="name" value="Lost Soldier"/>
+<string name="n0" value="Can anyone help me?"/>
+<string name="n1" value="Where am I...?"/>
+<string name="d0" value="Eos Tower is humongous ... so big that we have gotten ourselves lost in this place every once in a while."/>
+<string name="d1" value="Hmmm ... where am I?? I&apos;m in charge of security for the 59th floor of Eos Tower, but I have nooo idea where I am at right this minute. Hmmm ... "/>
+</imgdir>
+<imgdir name="2040024">
+<string name="name" value="First Eos Rock"/>
+</imgdir>
+<imgdir name="2040025">
+<string name="name" value="Second Eos Rock"/>
+</imgdir>
+<imgdir name="2040026">
+<string name="name" value="Third Eos Rock"/>
+</imgdir>
+<imgdir name="2040027">
+<string name="name" value="Fourth Eos Rock"/>
+</imgdir>
+<imgdir name="2040050">
+<string name="name" value="Eurek the Alchemist"/>
+<string name="m0" value="hmm..."/>
+<string name="s0" value="With a few materials, you can make summoning rocks and magic rocks"/>
+</imgdir>
+<imgdir name="2041000">
+<string name="name" value="Ticketing Usher"/>
+<string name="n0" value="If you want to get on board to the ship that heads to Orbis, then please hand me the ticket."/>
+<string name="n1" value="There&apos;s a limited capacity on this trip, so please get on board now! We&apos;re about to take off!"/>
+<string name="n2" value="Please be aware that if you go into the Cash Shop while on board, you&apos;ll be sent back to Ludibrium. "/>
+</imgdir>
+<imgdir name="2041001">
+<string name="name" value="Rosey"/>
+<string name="n0" value="Can I help you with anything? Enjoy your trip~"/>
+<string name="n1" value="Anyone that wants to leave the ship and head back to the original spot, talk to me."/>
+<string name="n2" value="Please be aware that if you go into the Cash Shop while on board, you&apos;ll be sent back to where you were before. "/>
+</imgdir>
+<imgdir name="2041002">
+<string name="name" value="Hid"/>
+<string name="n0" value="There are places in Ludibrium where the monsters pop out of nowhere."/>
+<string name="n1" value="We have a weapon JUST FOR YOU!"/>
+</imgdir>
+<imgdir name="2041003">
+<string name="name" value="Miru"/>
+<string name="n0" value="Welcome! Look around, see what you like."/>
+<string name="n1" value="A tough armor is necessary, for the monsters may pop up anywhere inside the castle."/>
+</imgdir>
+<imgdir name="2041004">
+<string name="name" value="Marcel"/>
+<string name="n0" value="Make sure you don&apos;t get lost inside the castle."/>
+<string name="n1" value="Welcome to Ludibrium!"/>
+<string name="d0" value="Hello, there! I&apos;m #b#p2041004##k, in charge of the security for Ludibrium. Lately there have been some filthy creatures dirtying up Eos Tower, and I don&apos;t like it one bit."/>
+<string name="d1" value="Hey! You&apos;re the one that cleaned out the Eos Tower for me last time! How have you been? I&apos;m so glad the number of monsters have generally decreased, and they aren&apos;t as wild as they were before. I really appreciate all your hard work. Oh well, hope you have a great day at Ludibrium!"/>
+</imgdir>
+<imgdir name="2041005">
+<string name="name" value="Nemi"/>
+<string name="n0" value="Hey, there!! How&apos;s it going??"/>
+<string name="n1" value="Isn&apos;t it beautiful today? I would like nothing more than just go somewhere..."/>
+<string name="d0" value="Oh, hi! I don&apos;t think I&apos;ve met you before... have you been traveling around? I&apos;m #b#p2041005##k, residing here in Ludibrium, and my father is the manager of the Toy Factory. If you have time, you should go see that place."/>
+<string name="d1" value="Hello~! Thanks to you, my dad got his appetite back. He really enjoys it. How can I help you today? Oh no!!! You shouldn&apos;t enter this place with your shoes on! I cleaned up this place just now, you know!!! If you don&apos;t have much else to do, then please come back some other time!"/>
+</imgdir>
+<imgdir name="2041006">
+<string name="name" value="Misky"/>
+<string name="n0" value="We sell stuff that you can&apos;t find anywhere else!"/>
+<string name="n1" value="Need potions or some food? You&apos;ve come to the right place."/>
+<string name="a0" value="You!! You aren&apos;t jacking anything from here, right?"/>
+<string name="a1" value="Touch anything here, and I&apos;ll be very very angry with you!"/>
+<string name="g0" value="It&apos;s tougher than you think, making new potions"/>
+<string name="g1" value="Hah! Just making new potions here ..."/>
+</imgdir>
+<imgdir name="2041007">
+<string name="name" value="Miyu"/>
+<string name="n0" value="Oh my, you still have that hairdo? That&apos;s sooo yesterday ..."/>
+<string name="n1" value="If you want to try a different hair style, then just talk to me!"/>
+</imgdir>
+<imgdir name="2041008">
+<string name="name" value="Seppy"/>
+<string name="n0" value="Looking for a place to store your mesos or items? Then look no further!"/>
+<string name="n1" value="Our storage is safe as a lock, so feel free to leave your stuff here!"/>
+</imgdir>
+<imgdir name="2041009">
+<string name="name" value="Mini"/>
+<string name="n0" value="Welcome to our hair salon! I may be still in training, but how about letting me do your hair?"/>
+<string name="n1" value="It&apos;s a tough act being a hair stylist..."/>
+</imgdir>
+<imgdir name="2041010">
+<string name="name" value="Ellie"/>
+<string name="n0" value="Wanna change your face into something ... much more beautiful?"/>
+<string name="n1" value="You look fine now, but with a little touch here and there, you&apos;ll look FANTABULOUS"/>
+</imgdir>
+<imgdir name="2041011">
+<string name="name" value="Yellow Mesoranger"/>
+<string name="n0" value="Worried about monsters? Let us handle them!"/>
+<string name="n1" value="It&apos;s our job to protect everyone here!"/>
+<string name="d0" value="Hi. I&apos;m #b#p2041011##k, in charge of a special mission here. Have you seen an alien around here? Apparently they attract innocent strangers by sweet-talking to them, so please be aware of that. "/>
+<string name="d1" value="Hi. I&apos;m #b#p2041011##k, in charge of a special mission here. Have you seen an alien around here? Apparently they attract innocent strangers by sweet-talking to them, so please be aware of that. "/>
+</imgdir>
+<imgdir name="2041012">
+<string name="name" value="Pink Mesoranger"/>
+<string name="n0" value="It&apos;s so hard to wake up early each morning. I should stop being late ..."/>
+<string name="n1" value="I&apos;m more than happy to protect you all, except for the fact that I sleep waaay too much..."/>
+<string name="d0" value="Hello, there. I&apos;m #b#p2041012##k of Omega Sector, currently in a secret mission to prevent the alien invasion here. I&apos;ve been really busy these days taking care of important missions. This place is very dangerous, so I suggest you get out of here and go to a safer place."/>
+<string name="d1" value="You&apos;re back~ I&apos;ve been getting up on time these days, and I&apos;m never late on missions. I&apos;m also glad the people upstairs are taking notice. It&apos;s all thanks to you. Now, I have something important to do, so please excuse me~"/>
+</imgdir>
+<imgdir name="2041013">
+<string name="name" value="Gina"/>
+<string name="n0" value="You want to have a slim &amp; sexy body like me? I will make your skin beautiful~"/>
+<string name="n1" value="Wow... you must be traveling all around... your skin got damaged a lot..."/>
+</imgdir>
+<imgdir name="2041014">
+<string name="name" value="Patricia"/>
+<string name="n0" value="Are you looking for the pet food?"/>
+<string name="n1" value="Aren&apos;t your pets hungry? I got some food for them~"/>
+</imgdir>
+<imgdir name="2041015">
+<string name="name" value="Korin"/>
+<string name="n0" value="......Hmmm..."/>
+<string name="f0" value="I feel like I&apos;ve witnessed something incredible."/>
+<string name="f1" value="...I don&apos;t remember...the last few months...that I&apos;ve been...missing..."/>
+<string name="f2" value="I&apos;ve been trying to remember things, but it&apos;s hard."/>
+<string name="f3" value="Did something terrible happen to me?"/>
+<string name="w0" value="Whenever I think about that day ... I get swept with fear, and tears would just come out."/>
+<string name="w1" value="Please ... someone help me regain my lost memory."/>
+<string name="d0" value="Hmmm...? I don&apos;t think we&apos;ve ever met. What are you doing at my house? If you don&apos;t have anything to talk about, then please leave."/>
+<string name="d1" value="You&apos;re the one that helped me find my lost memories. I can&apos;t thank you enough for your effort. I&apos;ve been trying to live a normal life these days."/>
+</imgdir>
+<imgdir name="2041016">
+<string name="name" value="Vega"/>
+<string name="n0" value="I admit, I have failed in making scrolls every once in a while, but that&apos;s few and far between!"/>
+<string name="n1" value="I&apos;ve made my share of mistakes making these scrolls, but don&apos;t worry, I&apos;m good at this!"/>
+</imgdir>
+<imgdir name="2041017">
+<string name="name" value="Ace of Hearts"/>
+<string name="n0" value="A sweet chocolate can go a long way towards helping you say I LOVE YOU!"/>
+<string name="n1" value="I, Mr. Ace of Hearts, will let you in on a secret recipe to a sweet chocolate of love ~"/>
+<string name="d0" value="I am here to bake lovely goods for everyone needing my service! Doesn&apos;t it smell good around here? Mmmm Hmmm!"/>
+<string name="d1" value="I can only make so much of it by myself. Please bear with me, for I can only make one per hour for you."/>
+</imgdir>
+<imgdir name="2041018">
+<string name="name" value="Hans the Assembler"/>
+<string name="n0" value="What should I make today?"/>
+<string name="f0" value="I am the best when it comes to assembling toys here at the Toy Factory."/>
+<string name="f1" value="Gather up the materials I ask of you, and I&apos;ll make something nice for you in return~"/>
+<string name="d0" value="I just need few things to make a fun toy to play around with...but I don&apos;t know if I&apos;m even allowed to make this."/>
+<string name="d1" value="Hey, what&apos;s going on? Have you tried using the stuff I gave you the other day? That item had some experimental elements to it, and therefore a little dangerous, but it was fun making something I&apos;ve always wanted to make. I have to get back to work now!"/>
+</imgdir>
+<imgdir name="2041019">
+<string name="name" value="Rocky the Repairman"/>
+<string name="n0" value="Why does this keep breaking down?"/>
+<string name="d0" value="It&apos;s broken again…and I just fixed this not too long ago! Who did this?! If only I can get my hands on whoever that&apos;s responsible for this...ARRGH!!!"/>
+<string name="d1" value="Oh no, it must be the monsters again. As soon as I fix this, they come rushing back and break things again. Oh hey, how long have you been there? Thanks to the parts you got me, I&apos;ve been fixing machines here and there, but they seem to break every other day, so I have no time to rest. I gotta go! Bye! "/>
+</imgdir>
+<imgdir name="2041020">
+<string name="name" value="Mac the Mechanic"/>
+<string name="n0" value="These machines should be taken care of on a daily basis..."/>
+<string name="d0" value="Great weather today. I&apos;m #b#p2041020##k, working here at the Toy Factory. I&apos;m in charge of making blueprints for the machines around here, as well as fixing them if necessary."/>
+<string name="d1" value="You&apos;re back. I&apos;ve been busy here working thanks to the documents you got me. Oh, and this time, I hid it in a safe just in a case. I have to get back to work now. See you around!"/>
+</imgdir>
+<imgdir name="2041021">
+<string name="name" value="Mr. Bouffon"/>
+<string name="n0" value="We need to find the source of power for the time sphere which is at the center of Ludibrium."/>
+<string name="n1" value="We need an energy replacement for the time sphere. Please gather up Tachion."/>
+<string name="s0" value="It is important to seal up the cracked dimension in order to prevent it from running away."/>
+<string name="s1" value="If you break the time sphere, you&apos;ll see the source of all evil face to face!!!"/>
+<string name="d0" value="I&apos;m Mr. Bouffon, in charge of protecting the tunnel of time."/>
+<string name="d1" value="Thanks to you the root of all evil in Ludibrium is gone forever! Only the peaceful days shall lay ahead."/>
+</imgdir>
+<imgdir name="2041022">
+<string name="name" value="Tigun the Advisor"/>
+<string name="s0" value="Are you the one delivering the history book? Let&apos;s see..."/>
+<string name="d0" value="I, Tigun the Advisor, am responsible for helping the King of Ludibrium run this place as smooth as possible... hmmm..."/>
+<string name="d1" value="Aren&apos;t you the honorable traveler? Did you meet with #t1012109#? You remind me of my own traveling days...I was one fearless kid back then..."/>
+</imgdir>
+<imgdir name="2041023">
+<string name="name" value="Flo"/>
+<string name="s0" value="Magic show!!!!"/>
+<string name="s1" value="Check out this eye-popping magic!"/>
+<string name="m0" value="Boom~!!"/>
+<string name="d0" value="I&apos;m Flo, in charge of protecting the time tunnel. Would you like to see my magic?"/>
+<string name="d1" value="Showtime!! Am I good or what?"/>
+</imgdir>
+<imgdir name="2041024">
+<string name="name" value="Tombstone"/>
+</imgdir>
+<imgdir name="2041025">
+<string name="name" value="Machine Apparatus"/>
+</imgdir>
+<imgdir name="2041026">
+<string name="name" value="Ghosthunter Bob"/>
+<string name="s0" value="When was the last time I had a decent meal? Urgh urgh"/>
+<string name="s1" value="They are hard to handle!"/>
+<string name="t0" value="Hey who do you think you are, roaming around this place that easily?"/>
+<string name="d0" value="Hmmm ... gotta concentrate!"/>
+<string name="d1" value="I feel a negative vibe around here..."/>
+</imgdir>
+<imgdir name="2041027">
+<string name="name" value="Mason the Collector"/>
+<string name="m0" value="Look, but don&apos;t touch! Precious items here!"/>
+<string name="m1" value="I need to collect, collect, and collect..."/>
+<string name="d0" value="I want this, this, this, and that..."/>
+<string name="d1" value="Anything else to collect???"/>
+</imgdir>
+<imgdir name="2050000">
+<string name="name" value="Mountain"/>
+<string name="n0" value="I have lots of weapons for you. Pick one~"/>
+<string name="n1" value="It is so hard to find the materials for the weapon in these days. There are just too many monsters."/>
+</imgdir>
+<imgdir name="2050001">
+<string name="name" value="Dr. Kim"/>
+<string name="n0" value="We need to get going soon, but where is everyone?"/>
+<string name="n1" value="hmm... You guys are not strong enough to fight against aliens, yet..."/>
+<string name="d0" value="Ohh ... the greatest masterpiece of all time, by me! With this blueprint, I can make the most indestructable robot ever!"/>
+<string name="d1" value="Hmmm ... the fuel&apos;s fine, the parts are fine ... and, by debugging this critical error of the Alpha system ... huh? Can I help you? I&apos;m busy developing new machines, so unless you need me for something, talk to someone else. I need to get back to work now."/>
+</imgdir>
+<imgdir name="2050002">
+<string name="name" value="Alien Gray"/>
+<string name="n0" value="My name is Gray from the space..."/>
+<string name="n1" value="I want to be a friend with you"/>
+<string name="d0" value="The Omega Sector is busy attacking innocent aliens again ... it&apos;s just unfortunate ..."/>
+<string name="d1" value="Hahaha, you fool. The critical document you gave me is currently in the process of deciphering. Omega Sector has been impossible to attack because of their tight security, but I&apos;m sure the deciphering will be done soon. I don&apos;t need you anymore, so get away from me!"/>
+</imgdir>
+<imgdir name="2050003">
+<string name="name" value="Spacen"/>
+<string name="n0" value="We have lots of excellent armors in Omega Sceptor"/>
+<string name="n1" value="You must have good armors to fight against aliens"/>
+</imgdir>
+<imgdir name="2050004">
+<string name="name" value="Storage Guard Gubo"/>
+<string name="n0" value="Are you looking for the storage place?"/>
+<string name="n1" value="My storage is totally safe~! I guarantee you..."/>
+</imgdir>
+<imgdir name="2050005">
+<string name="name" value="Mirol"/>
+<string name="n0" value="Tsk, Tsk... I&apos;ll be late if I don&apos;t get going!"/>
+<string name="n1" value="As long as I am here, this place is safe!!!"/>
+<string name="d0" value="Sigh ... This is the first time I&apos;m resting in a long time. I&apos;ve been up the past few days on missions. The aliens always make noise after dark... anyway, it&apos;s the first break I&apos;ve had in a while, so I need to enjoy this as much as I can. But then again, I should still be aware on guard..."/>
+<string name="d1" value="You&apos;re the one that brought #b#p2050001#&apos;s#k #b#t4031100##k here and showed it to me. I can&apos;t thank you enough for that. How&apos;s the robot coming along? I can&apos;t wait for the day I get to have my hands on that robot. Now, I need to finish the training, so please excuse me"/>
+</imgdir>
+<imgdir name="2050006">
+<string name="name" value="Hoon"/>
+<string name="n0" value="Where is Mirol?..."/>
+<string name="n1" value="I&apos;m getting tired of going on missions every day."/>
+<string name="d0" value="I&apos;m #b#p2050006##k from the Omega Sector, currently on a secret mission. You look like a traveler, and eventhough you seem to be on our side, I can&apos;t divulge any information regarding this mission."/>
+<string name="d1" value="You&apos;re the one that brought #b#p2050001#&apos;s#k #b#t4031100##k here and showed it to me. I can&apos;t thank you enough for that. How&apos;s the robot coming along? I can&apos;t wait for the day I get to have my hands on that robot. Now I need to get back to work..."/>
+</imgdir>
+<imgdir name="2050007">
+<string name="name" value="Gwin"/>
+<string name="n0" value="Hoon is always whining"/>
+<string name="n1" value="We need to have female pilots"/>
+<string name="d0" value="I&apos;m #b#p2050007##k from the Omega Sector, currently on a secret mission. You look like a traveler, and eventhough you seem to be on our side, I can&apos;t divulge any information regarding this mission."/>
+<string name="d1" value="You&apos;re the one that brought #b#p2050001#&apos;s#k #b#t4031100##k here and showed it to me. I can&apos;t thank you enough for that. How&apos;s the robot coming along? I can&apos;t wait for the day I get to have my hands on that robot. Now I need to get back to work..."/>
+</imgdir>
+<imgdir name="2050008">
+<string name="name" value="General Maester"/>
+<string name="n0" value="My army is here to protect this place, yesterday, today and tomorrow."/>
+<string name="n1" value="I have no time to talk, for I am in the middle of an important operation."/>
+<string name="d0" value="Thanks for coming to the Omega Sector. Please stay on your toes, because the aliens may attack any minute. Oh, by the way, someone in the Sector needs your help. If you&apos;re interested, go see that person."/>
+<string name="d1" value="The weather is just perfect outside. This place is full of security, protecting itself from the aliens. It&apos;s been awfully quiet these past few days, which troubles me, but I can&apos;t stand pat. Oh, by the way, the work you did for me the other day, that&apos;s going great now."/>
+</imgdir>
+<imgdir name="2050009">
+<string name="name" value="Jr. Officer Medin"/>
+<string name="n0" value="I&apos;m in charge of protecting the general as well as directing the army."/>
+<string name="n1" value="I am not going to tolerate anyone slacking off!"/>
+</imgdir>
+<imgdir name="2050010">
+<string name="name" value="Rice the Medic"/>
+<string name="n0" value="I&apos;ve studied a lot, but I don&apos;t have the real working experience yet."/>
+<string name="n1" value="The red medicine should take care of most injuries."/>
+<string name="d0" value="Please be careful of your every act here in Omega Sector. How can I help you? My name is #b#p2050010##k, and as you can see, I take care of the wounded here. I&apos;m always on my toes here, in case aliens attacked."/>
+<string name="d1" value="Please be careful of your every act here in Omega Sector. How can I help you? My name is #b#p2050010##k, and as you can see, I take care of the wounded here. I&apos;m always on my toes here, in case aliens attacked."/>
+</imgdir>
+<imgdir name="2050011">
+<string name="name" value="Soldier Kevin"/>
+<string name="n0" value="I heard that it&apos;s full of aliens outside... I wish I could go there and fight them too."/>
+<string name="n1" value="Jr. Officer Medin is famous for being so strict."/>
+<string name="d0" value="Sigh. I wish I could go outside and defeat the aliens myself, but the only work I am getting is restricted to here at the headquarters. I am confident that I can do a good job too. When can I go out and combat them...?"/>
+<string name="d1" value="Sigh. I wish I could go outside and defeat the aliens myself, but the only work I am getting is restricted to here at the headquarters. I am confident that I can do a good job too. When can I go out and combat them...?"/>
+</imgdir>
+<imgdir name="2050012">
+<string name="name" value="Agent M"/>
+<string name="n0" value="Have you ever seen an alien...?"/>
+<string name="n1" value="Make sure not to tell anyone about me."/>
+<string name="d0" value="Shhh… I advise you not to act like you know me here. The Omega Sector is the safest place in this world, as well as the most threatened. Unless you need me for something important, please excuse me right this minute."/>
+<string name="d1" value="Hmmm... Fortunately #b#p2041015##k seems to have found his memory back. Please warn him not to get abducted by the aliens again. Now, please excuse me, for I have business to take care of. "/>
+</imgdir>
+<imgdir name="2050013">
+<string name="name" value="Porter"/>
+<string name="n0" value="I&apos;m Porter, a researcher here at Omega Sector."/>
+<string name="n1" value="I have so much to research, I don&apos;t even have time to sleep."/>
+<string name="d0" value="Hello, there. My name is #b#p2050013##k, and I work here at the headquarters helping #b#p2050001##k out develop a new robot. (sniff) The new robot is coming out nicely, but I have been suffering from cold for a while. (sniff) Now, if you&apos;ll excuse me, I&apos;ll have to get back to work. I can&apos;t be caught slacking off, you know..."/>
+<string name="d1" value="Hello, there. My name is #b#p2050013##k, and I work here at the headquarters helping #b#p2050001##k out develop a new robot. (sniff) The new robot is coming out nicely, but I have been suffering from cold for a while. (sniff) Now, if you&apos;ll excuse me, I&apos;ll have to get back to work. I can&apos;t be caught slacking off, you know..."/>
+</imgdir>
+<imgdir name="2050014">
+<string name="name" value="운석1"/>
+</imgdir>
+<imgdir name="2050015">
+<string name="name" value="운석2"/>
+</imgdir>
+<imgdir name="2050016">
+<string name="name" value="운석3"/>
+</imgdir>
+<imgdir name="2050017">
+<string name="name" value="운석4"/>
+</imgdir>
+<imgdir name="2050018">
+<string name="name" value="운석5"/>
+</imgdir>
+<imgdir name="2050019">
+<string name="name" value="운석6"/>
+</imgdir>
+<imgdir name="2050020">
+<string name="name" value="수송선"/>
+</imgdir>
+<imgdir name="2051000">
+<string name="name" value="Pepper"/>
+<string name="n0" value="I hope these potions can help you out here"/>
+<string name="n1" value="My potion is excellent! Completely different from other potions~!"/>
+</imgdir>
+<imgdir name="2051001">
+<string name="name" value="Kay"/>
+<string name="n0" value="The Omega Sector contains many important mechanical parts."/>
+<string name="n1" value="My job is to maintain these machines."/>
+<string name="d0" value="Hi! I&apos;m the head engineer of the Omega Sector, #b#p2051001##k. I don&apos;t have too much work with me, but I&apos;m really busy because I don&apos;t have any assistants here with me."/>
+<string name="d1" value="You&apos;re back again. Thanks for investigating the transporter last time. I still have no idea what happened to the pilot, but ... at least we found a letter that he wrote, so that&apos;ll do for now. Hopefully he&apos;s doing fine somewhere in the world, just the way he said it in the letter."/>
+</imgdir>
+<imgdir name="2060000">
+<string name="name" value="Nanuke"/>
+<string name="m0" value="I feel safe going around with my friends"/>
+<string name="m1" value="Huskey is a trustworthy friend."/>
+<string name="d0" value="Hi! Aren&apos;t these huskies adorable?"/>
+<string name="d1" value="Long time! Are you here to check out the huskies? Then you&apos;ve come to the right place!"/>
+</imgdir>
+<imgdir name="9000000">
+<string name="name" value="Paul"/>
+<string name="n0" value="Where&apos;s my brother...?"/>
+<string name="n1" value="I need to get to where the event takes place..."/>
+</imgdir>
+<imgdir name="9000001">
+<string name="name" value="Jean"/>
+<string name="n0" value="Where&apos;s my lil bro...?"/>
+<string name="n1" value="I need to get to where the event takes place..."/>
+</imgdir>
+<imgdir name="9000002">
+<string name="name" value="Pietro"/>
+<string name="n0" value="Come talk to me, if you&apos;re one of those that won the prizes."/>
+</imgdir>
+<imgdir name="9000003">
+<string name="name" value="Vikan"/>
+<string name="n0" value="We&apos;re the descendants of Viking, the king of the sea."/>
+</imgdir>
+<imgdir name="9000004">
+<string name="name" value="Vikon"/>
+<string name="n0" value="We&apos;re the descendants of Viking, the king of the sea."/>
+</imgdir>
+<imgdir name="9000005">
+<string name="name" value="Vikone"/>
+<string name="n0" value="We&apos;re the descendants of Viking, the king of the sea."/>
+</imgdir>
+<imgdir name="9000006">
+<string name="name" value="Vikoon"/>
+<string name="n0" value="We&apos;re the descendants of Viking, the king of the sea."/>
+</imgdir>
+<imgdir name="9000007">
+<string name="name" value="Chun Ji"/>
+<string name="n0" value="Don&apos;t talk to me..."/>
+<string name="n1" value="Leave now...before you get hurt"/>
+<string name="n2" value="Are you telling me I&apos;m worse than Man Ji??"/>
+</imgdir>
+<imgdir name="9000008">
+<string name="name" value="Mr. Pickall"/>
+<string name="n0" value="There is no lock in the world that I can&apos;t pick...!"/>
+</imgdir>
+<imgdir name="9000009">
+<string name="name" value="Vikin"/>
+<string name="n0" value="We&apos;re the descendants of Viking, the king of the sea."/>
+</imgdir>
+<imgdir name="9000010">
+<string name="name" value="Pietra"/>
+<string name="n0" value="Click me and you&apos;ll go back to where you were."/>
+<string name="n1" value="Come back for another event."/>
+</imgdir>
+<imgdir name="9000011">
+<string name="name" value="Martin"/>
+<string name="n0" value="The event starts any minute ..."/>
+<string name="n1" value="The bros aren&apos;t ... coming ..."/>
+</imgdir>
+<imgdir name="9000012">
+<string name="name" value="Harry"/>
+<string name="n0" value="There are coconuts that drop, and the ones that don&apos;t."/>
+<string name="n1" value="Please make sure you don&apos;t use up all your stamina."/>
+<string name="n2" value="Wanna know how to play this?"/>
+<string name="n3" value="Need weapons? I&apos;m offering a beginner&apos;s bat for 1 meso."/>
+</imgdir>
+<imgdir name="9000013">
+<string name="name" value="Tony"/>
+<string name="n0" value="Where are my bros?"/>
+<string name="n1" value="I should get to where the event is ..."/>
+</imgdir>
+<imgdir name="9000014">
+<string name="name" value="Geanie"/>
+<string name="n0" value="If you have a Scroll of Secret, give it to me~"/>
+<string name="d0" value="If you have a Scroll of Secret, give it to me~"/>
+<string name="d1" value="If you have a Scroll of Secret, give it to me~"/>
+</imgdir>
+<imgdir name="9000015">
+<string name="name" value="Tamis"/>
+<string name="n0" value="To break the treasure box, you need short-range weapon. So~ you need one?"/>
+</imgdir>
+<imgdir name="9000017">
+<string name="name" value="Coco"/>
+<string name="n0" value="Happy Valentine&apos;s Day, everyone!"/>
+</imgdir>
+<imgdir name="9010000">
+<string name="name" value="Maple Administrator"/>
+<string name="n0" value="Hello, all"/>
+<string name="n1" value="To play the game the right way, we strongly suggest you don&apos;t use hacking tools to ruin it for others."/>
+<string name="d0" value="Hello! Make sure to check www.mapleglobal.com for even schedule!"/>
+<string name="d1" value="Hello there! Hope you have a great time here at MapleStory! I&apos;ll see you at the next great event!"/>
+</imgdir>
+<imgdir name="9010001">
+<string name="name" value="Tia"/>
+<string name="n0" value="Hey all!"/>
+<string name="n1" value="Hope you all have a wonderful day today"/>
+</imgdir>
+<imgdir name="9010002">
+<string name="name" value="Mia"/>
+<string name="n0" value="Hey all!"/>
+<string name="n1" value="Hope you all have a wonderful day today"/>
+</imgdir>
+<imgdir name="9010003">
+<string name="name" value="Ria"/>
+<string name="n0" value="Hey all!"/>
+<string name="n1" value="Hope you all have a wonderful day today"/>
+</imgdir>
+<imgdir name="9010004">
+<string name="name" value="Mia"/>
+<string name="n0" value="There is an event for New Castle Ludibrium~"/>
+<string name="n1" value="Join the Ludibrium opening sweepstakes~ we&apos;re giving away tons of prizes!"/>
+</imgdir>
+<imgdir name="9020000">
+<string name="name" value="Lakelis"/>
+<string name="n0" value="Do you want to combine powers of your party members to solve this quest?"/>
+<string name="n1" value="There are lots of obstacles here where the only way you&apos;ll pass is by joining forces with your party members."/>
+</imgdir>
+<imgdir name="9020001">
+<string name="name" value="Cloto"/>
+<string name="n0" value="You need to answer my question in order to move on to the next level."/>
+<string name="n1" value="The difficulty of this problem depends on how you relate to one another."/>
+</imgdir>
+<imgdir name="9020002">
+<string name="name" value="Nella"/>
+<string name="n0" value="If you want to leave this place, come talk to me."/>
+<string name="n1" value="You can always get out of here through me."/>
+</imgdir>
+<imgdir name="9100000">
+<string name="name" value="Kerning City Manekineko"/>
+</imgdir>
+<imgdir name="9100001">
+<string name="name" value="Henesys Manekineko"/>
+</imgdir>
+<imgdir name="9100002">
+<string name="name" value="Ellinia Manekineko"/>
+</imgdir>
+<imgdir name="9100003">
+<string name="name" value="Perion Manekineko"/>
+</imgdir>
+<imgdir name="9100004">
+<string name="name" value="Sleepywood Manekineko"/>
+</imgdir>
+<imgdir name="9110000">
+<string name="name" value="Perry"/>
+<string name="n0" value="No, you don&apos;t eat it! This is how you move it!"/>
+<string name="n1" value="Let me take care of it! I can make you fly~"/>
+<string name="n2" value="I may look like this, but I&apos;m a peaceful person...BELIEVE IT!"/>
+</imgdir>
+<imgdir name="9110001">
+<string name="name" value="Raimu the Warrior"/>
+<string name="n0" value="This is a Mushroom Shrine"/>
+<string name="n1" value="Yap...yap!!"/>
+<string name="n2" value="I may be a wanderer, but I am a man of integrity, so trust me."/>
+</imgdir>
+<imgdir name="9110002">
+<string name="name" value="Kino Konoko"/>
+<string name="n0" value="Cleaning isn&apos;t fun..."/>
+<string name="n1" value="The Mushroom Shrine is always in spring..."/>
+<string name="n2" value="Musssshhhhroooom Shrine~~~"/>
+</imgdir>
+<imgdir name="9110003">
+<string name="name" value="Jakken"/>
+<string name="n0" value="Sorry...the tempura is still cooking"/>
+<string name="n1" value="Who&apos;s winning the baseball game right now?"/>
+<string name="n2" value="Rest up buddy!"/>
+</imgdir>
+<imgdir name="9110004">
+<string name="name" value="Taru"/>
+<string name="n0" value="Chest~"/>
+<string name="n1" value="If I don&apos;t create a new menu..."/>
+<string name="n2" value="Hold on one sec. I&apos;m making Dango..."/>
+</imgdir>
+<imgdir name="9110005">
+<string name="name" value="Bronze"/>
+<string name="n0" value="Hold on hold on...takoyaki isn&apos;t made in an instant!"/>
+<string name="n1" value="Huh? I have something stuck on my teeth?"/>
+<string name="n2" value="If you don&apos;t rest up well, your skin may go bad..."/>
+</imgdir>
+<imgdir name="9110006">
+<string name="name" value="Jin Jia"/>
+<string name="n0" value="Please hold on one second. It&apos;s not done yet."/>
+<string name="n1" value="Phew...I should rest up a bit."/>
+<string name="n2" value="Hahaha...the sauce is the reason for this awesome taste."/>
+</imgdir>
+<imgdir name="9110007">
+<string name="name" value="Robo"/>
+<string name="n0" value="OK, weeelcoooome!"/>
+<string name="n1" value="The combination of the noodles and the seasoning...it&apos;s the bomb!"/>
+<string name="n2" value="No substitutions. Sorry."/>
+</imgdir>
+<imgdir name="9110008">
+<string name="name" value="Perry"/>
+<string name="n0" value="No, you don&apos;t eat it! This is how you move it!"/>
+<string name="n1" value="Let me take care of it! I can make you fly~"/>
+<string name="n2" value="I may look like this, but I&apos;m a peaceful person...BELIEVE IT!"/>
+</imgdir>
+<imgdir name="9110009">
+<string name="name" value="Ellinia Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110010">
+<string name="name" value="Henesys Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110011">
+<string name="name" value="Perion Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110012">
+<string name="name" value="Kerning City Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110013">
+<string name="name" value="Sleepywood Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110014">
+<string name="name" value="El Nath Ga-cha-pon"/>
+</imgdir>
+<imgdir name="9110015">
+<string name="name" value="Mushroom Statue"/>
+</imgdir>
+<imgdir name="9120000">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120001">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120002">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120003">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120004">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120005">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120006">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120007">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120008">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120009">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120010">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120011">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120012">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120013">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120014">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120015">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120016">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120017">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120018">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120019">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120020">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120021">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120100">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120101">
+<string name="name" value="일본 NPC"/>
+</imgdir>
+<imgdir name="9120102">
+<string name="name" value="일본 의사NPC"/>
+</imgdir>
+<imgdir name="9120103">
+<string name="name" value="일본간호사 NPC"/>
+</imgdir>
+<imgdir name="9120200">
+<string name="name" value="コンペイ"/>
+<string name="n0" value="引き返すなら今のうちだ。死に急ぐのは無謀者がすることだ。"/>
+<string name="n1" value="まだ戦えるか？なら先へ…アジトの中へ進むんだ！"/>
+</imgdir>
+<imgdir name="9120201">
+<string name="name" value="コンペイ"/>
+<string name="n0" value="とうとうここまで来ちまったな。ほれ、上の奴さんも必死みたいだぜ"/>
+<string name="n1" value="シッ！静かに。オイラだってただ突っ立ってるんじゃないぜ。偵察中さ。"/>
+</imgdir>
+<imgdir name="9120202">
+<string name="name" value="コンペイ"/>
+<string name="n0" value="手下共は俺や仲間が食い止めている！今のうちに奴さんを頼む！"/>
+<string name="n1" value="歯が立たないなら撤退も作戦のうちだぜ！逃げじゃない。"/>
+</imgdir>
+<imgdir name="9120203">
+<string name="name" value="コンペイ"/>
+<string name="n0" value="とうとうやったな。お前さん達は救世主だ！"/>
+<string name="n1" value="しばらくは奴さんも動けんだろう。恩にきるぜ。"/>
+</imgdir>
+<imgdir name="9900000">
+<string name="name" value="KIN"/>
+<string name="n0" value="If you want to make the job adv. as the GM, come talk to me."/>
+</imgdir>
+<imgdir name="9900001">
+<string name="name" value="NimaKIN"/>
+<string name="n0" value="You&apos;ll be able to level up if you&apos;re here with the GM"/>
+</imgdir>
+<imgdir name="9200000">
+<string name="name" value="Cody"/>
+<string name="n0" value="Hey, care to help me out??"/>
+<string name="n1" value="I&apos;m telling you, I really AM from WIZET!"/>
+</imgdir>
+<imgdir name="2040028">
+<string name="name" value="Mark the Toy Soldier"/>
+<string name="n0" value="Please find the dollhouse that looks different from the others."/>
+<string name="n1" value="If you wish to leave this place, then talk to me."/>
+</imgdir>
+<imgdir name="2040029">
+<string name="name" value="Grandpa Clock"/>
+<string name="n0" value="What can I do for you today? It&apos;s dangerous around here, so I suggest you move to a safe place nearby?"/>
+<string name="n1" value="I&apos;m hard at work here."/>
+<string name="d0" value="I&apos;m #b#p2040029##k, and I&apos;ve been sent here to see what&apos;s wrong with the Ludibrium Clocktower, but I can&apos;t seem to find any errors in this."/>
+<string name="d1" value="You must have told #b#p2040002##k the Clocktower has been fixed. Hopefully the soldiers can trust the time now. Thank you so much for your hard work. I&apos;ll have to get back to work now. Please head back to Ludibrium, as this place is too dangerous a place to just hang out."/>
+</imgdir>
+<imgdir name="2040030">
+<string name="name" value="Wisp"/>
+<string name="n0" value="Any questions on pets?"/>
+<string name="n1" value="If you want your pet back alive, then talk to me."/>
+</imgdir>
+<imgdir name="2040031">
+<string name="name" value="Document Roll"/>
+</imgdir>
+<imgdir name="2040032">
+<string name="name" value="Weaver the Trainer"/>
+<string name="n0" value="Do you want to train your pet? Then you&apos;ve come to the right place."/>
+<string name="n1" value="Raising pets can be a tough task at times."/>
+</imgdir>
+<imgdir name="2040033">
+<string name="name" value="Neru the Trainer"/>
+<string name="n0" value="My brother and I majored in pet training."/>
+<string name="n1" value="The more you train your pet, the closer you two will become."/>
+</imgdir>
+<imgdir name="2040034">
+<string name="name" value="Red Sign"/>
+<string name="n0" value="You may not go higher than where you are right now."/>
+<string name="n1" value="What are you doing here?"/>
+</imgdir>
+<imgdir name="2040035">
+<string name="name" value="Arturo"/>
+<string name="n0" value="For the glory of one..."/>
+<string name="f0" value="Your accomplishments will be remembered forever."/>
+<string name="f1" value="I had no doubt in my mind that you&apos;d succeed."/>
+<string name="f2" value="It must have been a dangerous situation for you... how did you manage to beat it?"/>
+</imgdir>
+<imgdir name="2040036">
+<string name="name" value="Red Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040037">
+<string name="name" value="Orange Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040038">
+<string name="name" value="Yellow Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040039">
+<string name="name" value="Lime Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040040">
+<string name="name" value="Green Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040041">
+<string name="name" value="Aqua Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040042">
+<string name="name" value="Sky-Blue Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040043">
+<string name="name" value="Blue Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040044">
+<string name="name" value="Violet Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040045">
+<string name="name" value="Pink Balloon"/>
+<string name="n0" value="I can help you out on many levels."/>
+</imgdir>
+<imgdir name="2040046">
+<string name="name" value="Robert Holly"/>
+<string name="n0" value="Hey, you there! You look like you have a lot of friends. Do you need help?"/>
+<string name="n1" value="If your buddy list is full, then come see me."/>
+</imgdir>
+<imgdir name="2040047">
+<string name="name" value="Sgt. Anderson"/>
+<string name="n0" value="Please take care of th Alishar the gatekeeper of this world."/>
+<string name="n1" value="I&apos;ll take you to the path that&apos;ll lead you to the 101st floor of the Eos Tower."/>
+<string name="n2" value="Please don&apos;t tell me you&apos;re giving up already."/>
+</imgdir>
+<imgdir name="2040048">
+<string name="name" value="Nana the Tour Guide"/>
+<string name="n0" value="How about taking a ride to the most exotic island in MapleStory, the Florina Beach?"/>
+<string name="n1" value="Do you have the power ticket by any chance? Then you should get on the ride and enjoy the fun."/>
+<string name="d0" value="Don&apos;t you want to head off to Florina Beach?"/>
+<string name="d1" value="You look tired and exhausted. How about spending some relaxing time at Florina Beach?"/>
+</imgdir>
+<imgdir name="2040049">
+<string name="name" value="Gumball Machine"/>
+</imgdir>
+<imgdir name="2040051">
+<string name="name" value="Toly"/>
+<string name="s0" value="This is what you call the best medicine one can ever make!"/>
+<string name="s1" value="You can recover quickly, or can temporarily move to avoid yourself from the chips."/>
+<string name="s2" value="I sell potions! Good potions!"/>
+<string name="a0" value="What do you think?"/>
+<string name="a1" value="Check out this place; this place is cool"/>
+<string name="s3" value="I made this myself, so there just aren&apos;t many left. You should buy them now before it gets too late."/>
+</imgdir>
+<imgdir name="9010005">
+<string name="name" value="Diane"/>
+<string name="n0" value="착한 일을 많이 하면..어린이날에 선물을 준다고 했는데 많이 늦네.."/>
+<string name="n1" value="오래 기다렸는데... 어린이날 선물은 언제 도착하는거지..."/>
+<string name="f0" value="히잉..."/>
+</imgdir>
+<imgdir name="9010006">
+<string name="name" value="Sally"/>
+<string name="n0" value="착한 일을 많이 하면..어린이날에 선물을 준다고 했는데 많이 늦네.."/>
+<string name="n1" value="오래 기다렸는데... 어린이날 선물은 언제 도착하는거지..."/>
+<string name="f0" value="히잉..."/>
+</imgdir>
+<imgdir name="9010007">
+<string name="name" value="Josh"/>
+<string name="n0" value="착한 일을 많이 하면..어린이날에 선물을 준다고 했는데 많이 늦네.."/>
+<string name="n1" value="오래 기다렸는데... 어린이날 선물은 언제 도착하는거지..."/>
+<string name="f0" value="히잉..."/>
+</imgdir>
+<imgdir name="9100100">
+<string name="name" value="Ka"/>
+</imgdir>
+<imgdir name="9100101">
+<string name="name" value="Na"/>
+</imgdir>
+<imgdir name="9100102">
+<string name="name" value="Da"/>
+</imgdir>
+<imgdir name="9100103">
+<string name="name" value="Ra"/>
+</imgdir>
+<imgdir name="9100104">
+<string name="name" value="Ma"/>
+</imgdir>
+<imgdir name="9100105">
+<string name="name" value="Ba"/>
+</imgdir>
+<imgdir name="9100106">
+<string name="name" value="Sa"/>
+</imgdir>
+<imgdir name="9100107">
+<string name="name" value="Ah"/>
+</imgdir>
+<imgdir name="9100108">
+<string name="name" value="Ja"/>
+</imgdir>
+<imgdir name="9300010">
+<string name="name" value="Mr. Moneybags"/>
+<string name="n0" value="Hey!! Happy New Year!!"/>
+<string name="n1" value="I wonder who can bring me some red envelopes..."/>
+</imgdir>
+<imgdir name="9200001">
+<string name="name" value="Mad Bunny"/>
+<string name="n0" value="I&apos;ve got a new plan for Easter this year. Talk to me..."/>
+<string name="n1" value="Find a Golden Egg? Let&apos;s talk..."/>
+<string name="d0" value="Sup. I&apos;m Roy, but my boys call me &quot;The Mad Bunny&quot;. I hate Easter and I&apos;m going to bring it down this year. There are two ways to help my gang, and you can help us out by giving us either the Easter Egg or the Golden Egg. Which one of them can you give us? "/>
+<string name="d1" value="Sup. I&apos;m Roy, but my boys call me &quot;The Mad Bunny&quot;. I hate Easter and I&apos;m going to bring it down this year. There are two ways to help my gang, and you can help us out by giving us the Golden Egg. "/>
+</imgdir>
+</imgdir>
