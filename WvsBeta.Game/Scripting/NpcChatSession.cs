@@ -13,7 +13,7 @@ namespace WvsBeta.Game
 
     public interface INpcHost
     {
-        int mID { get; }
+        int mNpcID { get; }
         void Say(string message);
         int AskYesNo(string Message);
         int AskMenu(string Message);
@@ -22,6 +22,7 @@ namespace WvsBeta.Game
         string AskText(string Message, string Default, short MinLength, short MaxLength);
         string AskPetAllExcept(string message, string petcashid);
         int AskStyle(string Message, List<int> Values);
+        void AskShop(params ShopItemData[] items);
 
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
@@ -39,7 +40,7 @@ namespace WvsBeta.Game
     }
     public class NpcChatSession : INpcHost
     {
-        public int mID { get; set; }
+        public int mNpcID { get; set; }
         public GameCharacter mCharacter { get; set; }
         private INpcScript compiledScript = null;
 
@@ -54,9 +55,9 @@ namespace WvsBeta.Game
         public bool WaitingForResponse => thread.ThreadState == ThreadState.WaitSleepJoin;
         private EventWaitHandle ewh;
         private Thread thread;
-        public NpcChatSession(int id, GameCharacter chr, INpcScript npcScript)
+        public NpcChatSession(int npcId, GameCharacter chr, INpcScript npcScript)
         {
-            mID = id;
+            mNpcID = npcId;
             mCharacter = chr;
             mCharacter.NpcSession = this;
             compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
@@ -105,6 +106,7 @@ namespace WvsBeta.Game
         public void Stop()
         {
             mCharacter.NpcSession = null;
+            mCharacter.ShopNPCID = 0;
             compiledScript = null;
             ewh = null;
             thread?.Abort();
@@ -122,7 +124,7 @@ namespace WvsBeta.Game
             
             string line = sayLines[sayIndex];
             bool hasBack = sayIndex > 0;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, hasBack, true);
+            NpcPacket.SendNPCChatTextSimple(mCharacter, mNpcID, line, hasBack, true);
         }
 
         public void RespondNext()
@@ -137,14 +139,14 @@ namespace WvsBeta.Game
                 if (sayLines.Count < sayIndex) return;
 
                 string line = sayLines[sayIndex];
-                NpcPacket.SendNPCChatTextSimple(mCharacter, mID, line, true, true);
+                NpcPacket.SendNPCChatTextSimple(mCharacter, mNpcID, line, true, true);
             }
         }
         public void Say(string message)
         {
             sayLines.Add(message);
             sayIndex = sayLines.Count - 1;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mID, message, sayIndex > 0, true);
+            NpcPacket.SendNPCChatTextSimple(mCharacter, mNpcID, message, sayIndex > 0, true);
             ewh.WaitOne();
         }
 
@@ -152,7 +154,7 @@ namespace WvsBeta.Game
         {
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextMenu(mCharacter, mID, Message);
+            NpcPacket.SendNPCChatTextMenu(mCharacter, mNpcID, Message);
             ewh.WaitOne();
             return nRet;
         }
@@ -161,7 +163,7 @@ namespace WvsBeta.Game
         {
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextYesNo(mCharacter, mID, Message);
+            NpcPacket.SendNPCChatTextYesNo(mCharacter, mNpcID, Message);
             ewh.WaitOne();
             return nRet;
         }
@@ -170,7 +172,7 @@ namespace WvsBeta.Game
         {
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextRequestText(mCharacter, mID, Message, Default, MinLength, MaxLength);
+            NpcPacket.SendNPCChatTextRequestText(mCharacter, mNpcID, Message, Default, MinLength, MaxLength);
             ewh.WaitOne();
             return nRetStr;
         }
@@ -179,7 +181,7 @@ namespace WvsBeta.Game
         {
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextRequestInteger(mCharacter, mID, Message, Default, MinValue, MaxValue);
+            NpcPacket.SendNPCChatTextRequestInteger(mCharacter, mNpcID, Message, Default, MinValue, MaxValue);
             ewh.WaitOne();
             return nRetNum;
         }
@@ -188,7 +190,7 @@ namespace WvsBeta.Game
         {
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mID, Message, Values);
+            NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mNpcID, Message, Values);
             ewh.WaitOne();
             return nRet;
         }
@@ -203,7 +205,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message);
+                NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message);
                 ewh.WaitOne();
                 return nRetStr;
             }
@@ -220,9 +222,19 @@ namespace WvsBeta.Game
                 petskip = int.Parse(petid);
             }
             catch { }
-            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mID, message, petskip);
+            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message, petskip);
             ewh.WaitOne();
             return nRetStr;
+        }
+        public void AskShop(params ShopItemData[] items)
+        {
+            sayLines.Clear();
+            sayIndex = 0;
+            mCharacter.ShopNPCID = mNpcID;
+            if (DataProvider.NPCs[mNpcID].Shop.Count == 0)
+                DataProvider.NPCs[mNpcID].Shop = items.ToList();
+            NpcPacket.SendShowNPCShop(mCharacter, mNpcID);
+            ewh.WaitOne();
         }
 
         public object GetStrReg(string pName)

@@ -785,7 +785,7 @@ namespace WvsBeta.Game
                                 {
                                     ShopItemData item = new ShopItemData()
                                     {
-                                        ID = (int)Utils.ConvertNameToID(iNode.Name)
+                                        ItemID = (int)Utils.ConvertNameToID(iNode.Name)
                                     };
                                     foreach (var subNode in iNode)
                                     {

@@ -141,7 +141,7 @@ namespace WvsBeta.Game
             }
             catch (Exception ex)
             {
-                Program.MainForm.LogAppend($"Exception while handling NPC {session.mID}. Packet: " + packet + ". Exception: " + ex);
+                Program.MainForm.LogAppend($"Exception while handling NPC {session.mNpcID}. Packet: " + packet + ". Exception: " + ex);
                 InventoryOperationPacket.NoChange(chr);
                 session?.Stop();
             }
@@ -209,7 +209,7 @@ namespace WvsBeta.Game
                             SendShopResult(chr, ShopRes.BuyNoStock);
                             return;
                         }
-                        if (sid.ID != itemid)
+                        if (sid.ItemID != itemid)
                         {
                             SendShopResult(chr, ShopRes.BuyUnknown);
                             return;
@@ -331,7 +331,7 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        ShopItemData sid = shopInfo.FirstOrDefault((a) => a.ID == item.ItemID);
+                        ShopItemData sid = shopInfo.FirstOrDefault((a) => a.ItemID == item.ItemID);
                         if (sid == null)
                         {
                             Program.MainForm.LogAppend("Disconnecting player: Item not found in shop; not rechargeable?");
@@ -393,10 +393,10 @@ namespace WvsBeta.Game
             pw.WriteShort((short)ShopItems.Count);
             foreach (ShopItemData item in ShopItems)
             {
-                pw.WriteInt(item.ID);
+                pw.WriteInt(item.ItemID);
                 pw.WriteInt(item.Price);
 
-                if (DataProvider.Items.TryGetValue(item.ID, out ItemData id))
+                if (DataProvider.Items.TryGetValue(item.ItemID, out ItemData id))
                 {
                     maxSlots = id.MaxSlot;
                     if (maxSlots == 0)
@@ -405,7 +405,7 @@ namespace WvsBeta.Game
                         maxSlots = 100;
                     }
                 }
-                if (Constants.isRechargeable(item.ID))
+                if (Constants.isRechargeable(item.ItemID))
                 {
                     pw.WriteLong(BitConverter.DoubleToInt64Bits(item.UnitRechargeRate));
                     maxSlots += chr.Skills.GetRechargeableBonus();
