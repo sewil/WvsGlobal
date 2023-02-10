@@ -1164,7 +1164,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         if (Amount == 0)
                                         {
                                             DropPacket.CannotLoot(character, -1);
-                                            InventoryPacket.NoChange(character);
+                                            InventoryOperationPacket.NoChange(character);
                                         }
                                         else
                                         {
@@ -1302,7 +1302,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                     var slot = character.Inventory.DeleteFirstItemInInventory(inv);
                                     if (slot != 0)
                                     {
-                                        InventoryPacket.SwitchSlots(character, slot, 0, inv);
+                                        InventoryOperationPacket.SwitchSlots(character, inv, slot, 0);
                                     }
                                     else
                                     {

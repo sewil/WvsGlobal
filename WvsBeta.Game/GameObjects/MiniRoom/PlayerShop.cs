@@ -3,6 +3,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
@@ -82,7 +83,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             {
                 //Doesn't have item in inventory
                 ReportManager.FileNewReport("Tried adding an item into player shop without having it.", pCharacter.ID, 0);
-                InventoryPacket.NoChange(pCharacter);
+                InventoryOperationPacket.NoChange(pCharacter);
                 return;
             }
 
@@ -93,7 +94,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             {
                 //Packet edits 
                 ReportManager.FileNewReport("Tried adding an item into player shop with an incorrect amount/incorrect itemid.", pCharacter.ID, 0);
-                InventoryPacket.NoChange(pCharacter);
+                InventoryOperationPacket.NoChange(pCharacter);
                 return;
             }
 
@@ -116,7 +117,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             ItemTransfer.PersonalShopPutUpItem(pCharacter.ID, pst.sItem.ItemID, pst.sItem.Amount, mrb.TransactionID, pst.sItem);
 
-            InventoryPacket.NoChange(pCharacter); //-.-
+            InventoryOperationPacket.NoChange(pCharacter); //-.-
 
         }
 
@@ -158,7 +159,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     PlayerShopPackets.MoveItemToInventory(pCharacter, left, slot);
                 }
             }
-            InventoryPacket.NoChange(pCharacter);
+            InventoryOperationPacket.NoChange(pCharacter);
         }
 
         public void BuyItem(GameCharacter pCharacter, byte slot, short quantity)

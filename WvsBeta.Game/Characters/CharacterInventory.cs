@@ -8,6 +8,7 @@ using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -153,7 +154,7 @@ namespace WvsBeta.Game
                             item.Amount -= amount;
                             temp.Amount = maxSlots;
                             if (sendpacket)
-                                InventoryPacket.AddItem(Character, inventory, temp, false);
+                                InventoryOperationPacket.ChangeAmount(Character, temp, inventory);
                         }
                         else
                         {
@@ -162,7 +163,7 @@ namespace WvsBeta.Game
                             SetItem(inventory, i, null);
                             AddItem(inventory, i, item, false);
                             if (sendpacket)
-                                InventoryPacket.AddItem(Character, inventory, item, false);
+                                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
                             return 0;
                         }
                     }
@@ -180,7 +181,7 @@ namespace WvsBeta.Game
             {
                 SetItem(inventory, slot, item);
                 if (sendpacket)
-                    InventoryPacket.AddItem(Character, inventory, item, true);
+                    InventoryOperationPacket.Add(Character, item, inventory);
                 return 0;
             }
             else
@@ -376,12 +377,12 @@ namespace WvsBeta.Game
                 // Your item. Gone.
                 SetItem(inventory, slot, null);
                 TryRemoveCashItem(item);
-                InventoryPacket.SwitchSlots(Character, slot, 0, inventory);
+                InventoryOperationPacket.SwitchSlots(Character, inventory, slot, 0);
             }
             else
             {
                 // Update item with new amount
-                InventoryPacket.AddItem(Character, inventory, item, false);
+                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
             }
         }
 
@@ -514,12 +515,12 @@ namespace WvsBeta.Game
                     // Your item. Gone.
                     SetItem(inventory, slot, null);
                     TryRemoveCashItem(item);
-                    InventoryPacket.SwitchSlots(Character, slot, 0, inventory);
+                    InventoryOperationPacket.SwitchSlots(Character, inventory, slot, 0);
                 }
                 else
                 {
                     // Update item with new amount
-                    InventoryPacket.AddItem(Character, inventory, item, false);
+                    InventoryOperationPacket.ChangeAmount(Character, item, inventory);
                 }
             }
         }
@@ -553,12 +554,12 @@ namespace WvsBeta.Game
             {
                 SetItem(inventory, slot, null);
                 TryRemoveCashItem(item);
-                InventoryPacket.SwitchSlots(Character, slot, 0, inventory);
+                InventoryOperationPacket.SwitchSlots(Character, inventory, slot, 0);
             }
             else
             {
                 // Update item
-                InventoryPacket.AddItem(Character, inventory, item, false);
+                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
             }
 
             return newItem;
@@ -709,7 +710,7 @@ namespace WvsBeta.Game
                     RemoveLockerItem(x, baseItem, true);
                 });
 
-                dict.ForEach(x => InventoryPacket.MultiDelete(Character, x.Key, x.Value.ToArray()));
+                dict.ForEach(x => InventoryOperationPacket.MultiDelete(Character, x.Key, x.Value.ToArray()));
             });
 
             GetExpiredItems(currentTime, expiredItems =>
@@ -734,7 +735,7 @@ namespace WvsBeta.Game
                 });
 
                 InventoryPacket.SendItemsExpired(Character, itemIds);
-                dict.ForEach(x => InventoryPacket.MultiDelete(Character, x.Key, x.Value.ToArray()));
+                dict.ForEach(x => InventoryOperationPacket.MultiDelete(Character, x.Key, x.Value.ToArray()));
             });
         }
         #region Script helpers

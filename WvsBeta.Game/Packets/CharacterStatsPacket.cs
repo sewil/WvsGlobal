@@ -5,6 +5,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -48,7 +49,7 @@ namespace WvsBeta.Game
             uint flag = packet.ReadUInt();
             if (chr.AssertForHack(chr.CharacterStat.AP <= 0, "Trying to use AP, but nothing left."))
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -60,7 +61,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.Str >= Constants.MaxStat)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         chr.AddStr(1);
@@ -70,7 +71,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.Dex >= Constants.MaxStat)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         chr.AddDex(1);
@@ -80,7 +81,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.Int >= Constants.MaxStat)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         chr.AddInt(1);
@@ -90,7 +91,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.Luk >= Constants.MaxStat)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         chr.AddLuk(1);
@@ -100,7 +101,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.MaxHP >= Constants.MaxMaxHp)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         short hpGain = 0;
@@ -124,7 +125,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.CharacterStat.MaxMP >= Constants.MaxMaxMp)
                         {
-                            InventoryPacket.NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                         short mpGain = 0;

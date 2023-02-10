@@ -19,7 +19,7 @@ namespace WvsBeta.Game
         {
             if (chr.HP < 1)
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -74,11 +74,11 @@ namespace WvsBeta.Game
             if (delete) // possible location of the switching to USE inventory bug - Joren
             {
                 chr.Inventory.SetItem(Inventory.Use, slot, null);
-                SwitchSlots(chr, slot, 0, Inventory.Use);
+                InventoryOperationPacket.SwitchSlots(chr, Inventory.Use, slot, 0);
             }
             else
             {
-                AddItem(chr, Inventory.Use, item, false);
+                InventoryOperationPacket.ChangeAmount(chr, item, Inventory.Use);
             }
         }
 
@@ -86,7 +86,7 @@ namespace WvsBeta.Game
         {
             if (chr.AssertForHack(chr.Room != null, "Trying to drop item while in a 'room'"))
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -96,7 +96,7 @@ namespace WvsBeta.Game
             if (drop == null)
             {
                 // Item not found or quantity not enough
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -133,7 +133,7 @@ namespace WvsBeta.Game
             chr.Inventory.SetItem(inventory, slotFrom, to);
             chr.Inventory.SetItem(inventory, slotTo, from);
 
-            SwitchSlots(chr, slotFrom, slotTo, inventory);
+            InventoryOperationPacket.SwitchSlots(chr, inventory, slotFrom, slotTo);
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
@@ -154,15 +154,15 @@ namespace WvsBeta.Game
                 {
                     to.Amount += leftover;
                     from.Amount -= leftover;
-                    AddItem2(chr, inventory, to, false, to.Amount);
-                    AddItem2(chr, inventory, from, false, from.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, to, inventory, to.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, from, inventory, from.Amount);
                 }
                 else if (leftover >= from.Amount)
                 {
                     to.Amount += from.Amount;
-                    AddItem2(chr, inventory, to, false, to.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, to, inventory, to.Amount);
                     chr.Inventory.TakeItemAmountFromSlot(inventory, slotFrom, from.Amount, false);
-                    NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
 
             }
@@ -182,7 +182,7 @@ namespace WvsBeta.Game
                     {
                         if (!chr.Inventory.HasSlotsFreeForItem(bottomOrShield.ItemID, 1))
                         {
-                            NoChange(chr);
+                            InventoryOperationPacket.NoChange(chr);
                             return;
                         }
                     }
@@ -213,7 +213,7 @@ namespace WvsBeta.Game
             Inventory inventory = Constants.getInventory(from.ItemID);
             chr.Inventory.SetItem(inventory, slotFrom, to);
             chr.Inventory.SetItem(inventory, slotTo, from);
-            SwitchSlots(chr, slotFrom, slotTo, inventory);
+            InventoryOperationPacket.SwitchSlots(chr, inventory, slotFrom, slotTo);
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
@@ -268,7 +268,7 @@ namespace WvsBeta.Game
             {
                 // This should be handled by the client unless data.wz is editted
                 // Possible actions: Error message, D/C, Ban / Warning
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -295,7 +295,7 @@ namespace WvsBeta.Game
 
             if (swap == null && !chr.Inventory.HasSlotsFreeForItem(equip.ItemID, 1)) // Client checks this for us, but in case of PE
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -308,7 +308,7 @@ namespace WvsBeta.Game
             chr.Inventory.SetItem(inventory, slotFrom, swap);
             chr.Inventory.SetItem(inventory, slotTo, equip);
 
-            SwitchSlots(chr, slotFrom, slotTo, inventory);
+            InventoryOperationPacket.SwitchSlots(chr, inventory, slotFrom, slotTo);
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
 
         }
@@ -348,7 +348,7 @@ namespace WvsBeta.Game
                     if (chr.IsGM && !chr.IsAdmin)
                     {
                         ChatPacket.SendAdminWarning(chr, "You cannot drop items.");
-                        NoChange(chr);
+                        InventoryOperationPacket.NoChange(chr);
                     }
                     else
                     {
@@ -375,7 +375,7 @@ namespace WvsBeta.Game
 
             no_op:
             Trace.WriteLine($"Sending nochange!");
-            NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static void HandleUseSummonSack(GameCharacter chr, Packet packet)
@@ -386,13 +386,13 @@ namespace WvsBeta.Game
             BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             if (data.Summons.Count == 0)
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -418,7 +418,7 @@ namespace WvsBeta.Game
                     Program.MainForm.LogAppend("Summon sack {0} has mobid that doesn't exist: {1}", itemid, isi.MobID);
                 }
             }
-            NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static void HandleUseReturnScroll(GameCharacter chr, Packet packet)
@@ -429,13 +429,13 @@ namespace WvsBeta.Game
             BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             if (data == null || data.MoveTo == 0)
             {
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
             int map;
@@ -472,7 +472,7 @@ namespace WvsBeta.Game
             if (itemslot < -100)
             {
                 _scrollingLog.Warn($"Tried to scroll a cashequip on slot {scrollslot}");
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -485,14 +485,14 @@ namespace WvsBeta.Game
                 )
             {
                 _scrollingLog.Warn($"Tried to use a scroll that didn't exist {scroll == null}, equip that didnt exist {equip == null}, scroll types that didnt match or no scroll data available.");
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             if (scrollData.ScrollSuccessRate == 0 || equip.Slots == 0)
             {
                 _scrollingLog.Warn($"Tried to scroll, but the equip has no scrolls left {equip.Slots} or zero success rate {scrollData.ScrollSuccessRate}");
-                NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -523,7 +523,7 @@ namespace WvsBeta.Game
 
                 scrollSuccess = true;
 
-                AddItem(chr, Inventory.Equip, equip, true);
+                InventoryOperationPacket.Add(chr, equip, Inventory.Equip);
                 MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
             }
             else
@@ -533,14 +533,14 @@ namespace WvsBeta.Game
                     scrollCursed = true;
                     chr.Inventory.TryRemoveCashItem(equip);
 
-                    SwitchSlots(chr, itemslot, 0, Inventory.Equip);
+                    InventoryOperationPacket.SwitchSlots(chr, Inventory.Equip, itemslot, 0);
                     chr.Inventory.SetItem(Inventory.Equip, itemslot, null);
                     chr.PrimaryStats.CheckBoosters();
                 }
                 else
                 {
                     equip.Slots--;
-                    AddItem(chr, Inventory.Equip, equip, true);
+                    InventoryOperationPacket.Add(chr, equip, Inventory.Equip);
                 }
             }
 
@@ -555,96 +555,6 @@ namespace WvsBeta.Game
                 succeeded = scrollSuccess,
                 cursed = scrollCursed
             });
-        }
-
-        public static void SwitchSlots(GameCharacter chr, short slot1, short slot2, Inventory inventory)
-        {
-            Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-            pw.WriteByte(0x01);
-            pw.WriteByte(0x01);
-            pw.WriteByte(0x02);
-            pw.WriteByte((byte)inventory);
-            pw.WriteShort(slot1);
-            pw.WriteShort(slot2);
-            pw.WriteByte(0); // FIX: This should be the 'movement info index'
-            chr.SendPacket(pw);
-        }
-
-        public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
-        {
-            const byte MaxSizePerPacket = 100;
-            int slotsToWipe = slots.Length;
-            for (var i = 0; i < slotsToWipe;)
-            {
-                var chunk = Math.Min(MaxSizePerPacket, slotsToWipe - i);
-                Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-                pw.WriteByte(0x01);
-                pw.WriteByte((byte)chunk);
-                for (var j = 0; j < chunk; j++)
-                {
-                    pw.WriteByte(0x02);
-                    pw.WriteByte((byte)inventory);
-                    pw.WriteShort(slots[i + j]);
-                    pw.WriteShort(0);
-                }
-                pw.WriteByte(0x00);
-                chr.SendPacket(pw);
-
-                i += chunk;
-            }
-        }
-
-        public static void AddItem(GameCharacter chr, Inventory inventory, BaseItem item, bool isNew)
-        {
-            Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-            pw.WriteByte(0x01);
-            pw.WriteByte(0x01);
-            pw.WriteBool(!isNew);
-            pw.WriteByte((byte)inventory);
-            if (isNew)
-            {
-                new GW_ItemSlotBase(item).Encode(pw, true, true);
-            }
-            else
-            {
-                pw.WriteShort(item.InventorySlot);
-                pw.WriteShort(item.Amount);
-            }
-            pw.WriteLong(0x00);
-            pw.WriteLong(0x00);
-            pw.WriteLong(0x00);
-            chr.SendPacket(pw);
-        }
-
-        public static void AddItem2(GameCharacter chr, Inventory inventory, BaseItem item, bool isNew, short amount)
-        {
-            Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-            pw.WriteByte(0x01);
-            pw.WriteByte(0x01);
-            pw.WriteBool(!isNew);
-            pw.WriteByte((byte)inventory);
-            if (isNew)
-            {
-                new GW_ItemSlotBase(item).Encode(pw, true, true);
-            }
-            else
-            {
-                pw.WriteShort(item.InventorySlot);
-                pw.WriteShort(amount);
-            }
-            pw.WriteLong(0x00);
-            pw.WriteLong(0x00);
-            pw.WriteLong(0x00);
-            chr.SendPacket(pw);
-        }
-
-        public static void NoChange(GameCharacter chr)
-        {
-            Packet pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-            pw.WriteByte(0x01);
-            pw.WriteByte(0x00);
-            pw.WriteByte(0x00);
-            chr.SendPacket(pw);
         }
 
         public static void IncreaseSlots(GameCharacter chr, Inventory inventory, byte amount)

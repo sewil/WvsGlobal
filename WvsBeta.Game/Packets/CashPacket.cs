@@ -4,6 +4,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -205,7 +206,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
             }
         }
 

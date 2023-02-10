@@ -12,7 +12,7 @@ namespace WvsBeta.Game
         {
             if (!(chr.Inventory.GetItem(Common.Enums.Inventory.Cash, slot) is PetItem petItem))
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
             
@@ -26,14 +26,14 @@ namespace WvsBeta.Game
                 {
                     // Spawned the same mob
                     chr.CharacterStat.PetCashId = 0;
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                     return;
                 }
             }
             
             chr.CharacterStat.PetCashId = petItem.CashId;
             DoPetSpawn(chr);
-            InventoryPacket.NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static void DoPetSpawn(GameCharacter chr)
@@ -131,7 +131,7 @@ namespace WvsBeta.Game
                 if (chr.Inventory.AddItem2(drop.Reward.GetData()) == drop.Reward.Amount)
                 {
                     DropPacket.CannotLoot(chr, -1);
-                    InventoryPacket.NoChange(chr); // ._. stupid nexon
+                    InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
                     return;
                 }
                 

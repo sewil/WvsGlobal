@@ -6,6 +6,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -21,13 +22,13 @@ namespace WvsBeta.Game
             NpcState state = (NpcState)packet.ReadByte();
             if (state != session.mLastSentType)
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             if (!session.WaitingForResponse)
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -141,7 +142,7 @@ namespace WvsBeta.Game
             catch (Exception ex)
             {
                 Program.MainForm.LogAppend($"Exception while handling NPC {session.mID}. Packet: " + packet + ". Exception: " + ex);
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 session?.Stop();
             }
         }
@@ -304,12 +305,12 @@ namespace WvsBeta.Game
                         {
                             chr.Inventory.SetItem(inv, itemslot, null);
                             chr.Inventory.TryRemoveCashItem(item);
-                            InventoryPacket.SwitchSlots(chr, itemslot, 0, inv);
+                            InventoryOperationPacket.SwitchSlots(chr, inv, itemslot, 0);
                         }
                         else
                         {
                             item.Amount -= amount;
-                            InventoryPacket.AddItem(chr, inv, item, false);
+                            InventoryOperationPacket.ChangeAmount(chr, item, inv);
                         }
                         chr.Inventory.ExchangeMesos(sellPrice);
 
@@ -360,7 +361,7 @@ namespace WvsBeta.Game
                             item.Amount = maxslot;
 
                             chr.Inventory.ExchangeMesos(sellPrice);
-                            InventoryPacket.AddItem(chr, inv, item, false);
+                            InventoryOperationPacket.ChangeAmount(chr, item, inv);
                             SendShopResult(chr, ShopRes.RechargeSuccess);
                         }
                         else

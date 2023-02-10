@@ -4,6 +4,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
@@ -188,7 +189,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         if (!IsFull())
                         {
                             // You can't put items while the second char isn't there yet
-                            InventoryPacket.NoChange(pCharacter);
+                            InventoryOperationPacket.NoChange(pCharacter);
                             return;
                         }
 
@@ -205,7 +206,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             var msg = $"Player tried to add an item in trade with to an incorrect slot. Item = null? {demItem == null}; toSlot {toslot}";
                             Program.MainForm.LogAppend(msg);
                             ReportManager.FileNewReport(msg, pCharacter.ID, 0);
-                            InventoryPacket.NoChange(pCharacter);
+                            InventoryOperationPacket.NoChange(pCharacter);
                             return;
                         }
 
@@ -228,7 +229,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         MiniRoomPacket.AddItem(Users[0], toslot, pTradeItem, (byte)(isUser0 ? 0 : 1));
                         MiniRoomPacket.AddItem(Users[1], toslot, pTradeItem, (byte)(isUser0 ? 1 : 0));
 
-                        InventoryPacket.NoChange(pCharacter); // -.-
+                        InventoryOperationPacket.NoChange(pCharacter); // -.-
                         break;
                     }
 

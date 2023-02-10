@@ -3,6 +3,7 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -17,14 +18,14 @@ namespace WvsBeta.Game
                 chr.AssertForHack(amount > chr.Inventory.Mesos, "Trying to drop more mesos than he's got") || 
                 chr.AssertForHack(chr.Room != null, "Trying to drop mesos while in a 'room'"))
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             if (chr.IsGM && !chr.IsAdmin)
             {
                 ChatPacket.SendNotice("You cannot drop mesos.", chr);
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -33,7 +34,7 @@ namespace WvsBeta.Game
 
             chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
             // This shouldn't be required
-            InventoryPacket.NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static void HandlePickupDrop(GameCharacter chr, Packet packet)
@@ -46,7 +47,7 @@ namespace WvsBeta.Game
                 !chr.Field.DropPool.Drops.TryGetValue(dropid, out Drop drop) ||
                 !drop.CanTakeDrop(chr))
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -113,7 +114,7 @@ namespace WvsBeta.Game
                 if (!chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount))
                 {
                     CannotLoot(chr, -1);
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                     return;
                 }
                 var rewardItem = drop.Reward.GetData();
@@ -123,7 +124,7 @@ namespace WvsBeta.Game
             else if (chr.Inventory.AddItem(drop.Reward.GetData()) == drop.Reward.Amount)
             {
                 CannotLoot(chr, -1);
-                InventoryPacket.NoChange(chr); // ._. stupid nexon
+                InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
                 return;
             }
             else

@@ -33,7 +33,7 @@ namespace WvsBeta.Game
 
         public static void UpdatePet(GameCharacter chr, PetItem petItem)
         {
-            InventoryPacket.AddItem(chr, Constants.getInventory(petItem.ItemID), petItem, false);
+            InventoryOperationPacket.ChangeAmount(chr, petItem, Constants.getInventory(petItem.ItemID));
         }
 
         public static bool IsNamedPet(PetItem petItem)

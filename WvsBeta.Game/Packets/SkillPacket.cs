@@ -16,7 +16,7 @@ namespace WvsBeta.Game
             if (chr.HP == 0)
             {
                 // We don't like zombies
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -29,7 +29,7 @@ namespace WvsBeta.Game
             if (SkillID == Constants.Priest.Skills.MysticDoor && MasterThread.CurrentTime - chr.tLastDoor < 3000)
             {
                 //hack fix for door dc bug
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -476,7 +476,7 @@ namespace WvsBeta.Game
                 chr.Buffs.AddBuff(SkillID, SkillLevel, skillDelay);
             }
 
-            InventoryPacket.NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
             chr.Skills.DoSkillCost(SkillID, SkillLevel);
 
             if (sld.Speed > 0)
@@ -512,7 +512,7 @@ namespace WvsBeta.Game
             if (chr.CharacterStat.SP <= 0)
             {
                 // No SP left...
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -526,7 +526,7 @@ namespace WvsBeta.Game
                 skillLevel >= sd.MaxLevel)
             {
                 // Reached max points, stop
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -539,7 +539,7 @@ namespace WvsBeta.Game
                         Program.MainForm.LogAppend(
                             "Character {0} tried to put points in a skill ({1}) without having enough points in {2} (req {3})",
                             chr.ID, SkillID, sdRequiredSkill.Key, sdRequiredSkill.Value);
-                        InventoryPacket.NoChange(chr);
+                        InventoryOperationPacket.NoChange(chr);
                         return;
                     }
                 }

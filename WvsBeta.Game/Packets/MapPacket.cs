@@ -82,14 +82,14 @@ namespace WvsBeta.Game
 
             if (chr.AssertForHack(!chr.CanAttachAdditionalProcess, "Tried to chat to npc while not able to attach additional process"))
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             // Npc doesnt exist
             if (npc == null)
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -110,13 +110,17 @@ namespace WvsBeta.Game
             else
             {
                 Action<string> errorHandlerFnc = null;
+#if !DEBUG
                 if (chr.IsGM)
                 {
+#endif
                     errorHandlerFnc = (error) =>
                     {
                         ChatPacket.SendNotice("Error compiling script '" + error + "'!", chr);
                     };
+#if !DEBUG
                 }
+#endif
 
                 INpcScript npcScript = (INpcScript)ScriptAccessor.GetScript(npcData, errorHandlerFnc);
                 NpcChatSession.Start(RealID, npcScript, chr);
@@ -153,19 +157,19 @@ namespace WvsBeta.Game
                 var dist = chr.Position - pos;
                 if (chr.AssertForHack(dist > 300, "Portal distance hack (" + dist + ")", dist > 600))
                 {
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
                 else if (!portal.Enabled)
                 {
                     Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter a disabled portal.");
                     BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
                 else if (!chr.Field.PortalsOpen)
                 {
                     Program.MainForm.LogDebug(chr.CharacterStat.Name + " tried to enter a disabled portal.");
                     BlockedMessage(chr, PortalBlockedMessage.ClosedForNow);
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
                 else
                 {
@@ -190,7 +194,7 @@ namespace WvsBeta.Game
             // 00 00 00
             if (packet.ReadByte() != chr.PortalCount)
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -272,7 +276,7 @@ namespace WvsBeta.Game
                 }
                 else
                 {
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
             }
             else
@@ -285,7 +289,7 @@ namespace WvsBeta.Game
                 }
                 else
                 {
-                    InventoryPacket.NoChange(chr);
+                    InventoryOperationPacket.NoChange(chr);
                 }
             }
         }
@@ -545,7 +549,7 @@ namespace WvsBeta.Game
             GameCharacter victim = chr.Field.GetPlayer(id);
             if (victim == null)
             {
-                InventoryPacket.NoChange(chr);
+                InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -772,7 +776,7 @@ namespace WvsBeta.Game
                 }
             }
 
-            InventoryPacket.NoChange(chr);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static Packet ShowSummon(Summon summon, byte enterType)
