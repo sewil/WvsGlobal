@@ -18,10 +18,12 @@ output = [
     "",
     "namespace WvsBeta.Scripts.Scripts",
     "{",
-    "    public class " + file_name,
+    "    public static class " + file_name,
     "    {",
-    "    }"
+    "        static INpcHost self;",
+    "        static GameCharacter target;",
 ]
+class_offset = 10
 with open(args.input) as f:
     lines = f.read().splitlines()
     nLine=0
@@ -31,7 +33,11 @@ with open(args.input) as f:
     func_name = None
     func_idx = 0
     func_vars = set()
+    ignore_next = False
     for line in lines:
+        if ignore_next:
+            ignore_next = False
+            continue
         line = line.replace("\t", "    ")
         line = line.replace("registerTransferField", "target.ChangeMap")
         line = line.replace(" = random(", " = Rand32.NextBetween(")
@@ -41,27 +47,26 @@ with open(args.input) as f:
         line = line.replace("end;", "return;")
         if re.match(r'\s+(else )?if\s+\(.*( and | or ).*\)\s+\{?', line):
             line = line.replace(" or ", " || ").replace(" and ", " && ")
-        # if (target.Level > 29 and target.Level < 40 ) {
         for idx, x in enumerate(alpha):
             a = alpha[idx]
             A = ALPHA[idx]
             line = line.replace("." + a, "." + A)
         fcall_m = re.search(r'\s+(?!return)([a-z][a-z\d_]+);', line)
-        if fcall_m is not None: # Func call
-            fname = fcall_m.group(1)
-            print('Call ' + fname)
-            line = line.replace(fname, file_name + "." + fname + "(self, target)")
+        # if fcall_m is not None: # Func call
+        #     fname = fcall_m.group(1)
+        #     print('Call ' + fname)
+        #     line = line.replace(fname, file_name + "." + fname + "(self, target)")
         if re.match(r'\}\s*', line):
             if script_name is not None: # Close script
-                output.insert(var_idx, "        dynamic " + ", ".join(vars) + ";") # Insert vars
+                output.insert(var_idx, "            dynamic " + ", ".join(vars) + ";") # Insert vars
                 print("Close " + script_name)
                 vars.clear()
                 script_name = None
+                output.append("            }")
                 output.append("        }")
-                output.append("    }")
             elif func_name is not None: # Close func
                 print("Close func ", func_name)
-                output.insert(8 + func_idx, "        }")
+                output.insert(class_offset + func_idx, "        }")
                 func_idx = 0
                 func_name = None
         if script_name is not None or func_name is not None:
@@ -73,34 +78,44 @@ with open(args.input) as f:
                     if func_name is not None: func_vars.add(var_name)
                     print(var_name)
             if script_name is not None:
-                output.append("        " + line)
+                output.append("            " + line)
             else:
-                output.insert(8 + func_idx, "        " + line)
+                output.insert(class_offset + func_idx, "            " + line)
                 func_idx += 1
-        func_m = re.match(r'function(\([a-z,]+\))?\s+([A-Za-z_\d]+)(\([a-z, ]+\))?\s*\{?', line)
+        func_m = re.match(r'function(\([a-z,]+\))?\s+([A-Za-z_\d]+)(\([a-zA-Z, ]+\))?\s*\{?', line)
         if func_m is not None: # Open func
             func_idx = 1
             func_name = func_m.group(2)
-            print("Open func ", func_name)
-            output.insert(8, "        public static void " + func_name + "(INpcHost self, GameCharacter target)\n        {")
+            func_args = func_m.group(3)
+            if (func_args is None): func_args = '()'
+            func_args = func_args.replace("integer", "int")
+            print("Open func ", func_name, func_args)
+            output.insert(class_offset, "        public static void " + func_name + func_args + "\n        {")
         cmt_m = re.match(r'^\/\/.+', line) # Script comment
         if cmt_m is not None:
             scr_cmt = cmt_m.group(0)
             cmt_line = nLine
         scr_m = re.match(r'script "([a-z_\d]+)"', line)
         if scr_m: # Open script
+            if (re.search(r'\{', line) is None): ignore_next = True
             script_name = scr_m.group(1)
             print("\r\nOpen " + script_name + "")
             if cmt_line == nLine - 1:
-                output.append("    " + scr_cmt)
-            output.append("    [Script(\"" + script_name + "\")]")
-            output.append("    class " + script_name + " : INpcScript\n    {")
+                output.append("        " + scr_cmt)
+            output.append("        [Script(\"" + script_name + "\")]")
+            output.append("        class " + script_name + " : INpcScript")
+            output.append("        {")
             var_idx = len(output)
-            output.append("        public void Run(INpcHost self, GameCharacter target)\n        {")
+            output.append("            public void Run(INpcHost self, GameCharacter target)")
+            output.append("            {")
+            output.append("                " + file_name + ".self = self;")
+            output.append("                " + file_name + ".target = target;")
         nLine+=1
-    output.insert(8, "        static dynamic " + ", ".join(func_vars) + ";") # Insert func vars
+    output.insert(class_offset, "        static dynamic " + ", ".join(func_vars) + ";") # Insert func vars
 
+output.append("    }")
 output.append("}")
+output.append("")
 output_s = "\n".join(output)
 # print(output_s)
 
