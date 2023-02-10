@@ -73,7 +73,6 @@ namespace WvsBeta.Common.Character
         }
         public virtual bool TryExchangeItem(int itemId, short amount) { throw new NotImplementedException(); }
         public virtual int ItemAmountAvailable(int itemid) { throw new NotImplementedException(); }
-        public virtual void TakeItem(int itemid, int amount) { throw new NotImplementedException(); }
         public virtual bool HasSlotsFreeForItem(int itemid, short amount) { throw new NotImplementedException(); }
         public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
         public virtual void SetItem(Inventory inventory, short slot, BaseItem item) { throw new NotImplementedException(); }

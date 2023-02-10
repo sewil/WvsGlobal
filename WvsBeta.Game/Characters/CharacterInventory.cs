@@ -470,7 +470,7 @@ namespace WvsBeta.Game
             if (amount < 0) // Take item
             {
                 if (!HasItemAmount(itemId, Math.Abs(amount), out Inventory _)) return false;
-                TakeItem(itemId, amount);
+                TakeItem(itemId, (short)-amount);
             }
             else // Give item
             {
@@ -483,7 +483,7 @@ namespace WvsBeta.Game
         {
             if (amount < 0) // Take item
             {
-                TakeItem(itemId, -amount);
+                TakeItem(itemId, (short)-amount);
             }
             else // Give item
             {
@@ -497,19 +497,22 @@ namespace WvsBeta.Game
         /// <param name="itemid">The Item ID</param>
         /// <param name="amount">Amount</param>
         /// <returns>Amount of items that were _not_ taken away</returns>
-        public override void TakeItem(int itemid, int amount)
+        public void TakeItem(int itemid, short amount)
         {
             if (amount == 0) return;
 
             var isRechargeable = Constants.isRechargeable(itemid);
             Inventory inventory = Constants.getInventory(itemid);
+            short amountLeft = (short)amount;
             for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
             {
+                if (amountLeft == 0) break; // Nothing more to take
                 BaseItem item = GetItem(inventory, slot);
                 if (item == null || item.ItemID != itemid) continue;
 
-                int maxTake = Math.Min(item.Amount, amount);
+                short maxTake = Math.Min(item.Amount, amountLeft);
                 item.Amount -= (short)maxTake;
+                amountLeft -= maxTake;
                 if (item.Amount == 0 && !isRechargeable)
                 {
                     // Your item. Gone.

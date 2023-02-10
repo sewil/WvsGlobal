@@ -690,6 +690,29 @@ namespace WvsBeta.Game
         {
             this.Skills.AddSkillPoint(skillid);
         }
+
+        public AvatarSelectState ChangeAvatar(int coupon, int avatarID)
+        {
+            if (0 <= avatarID && avatarID <= 4) // Skin
+            {
+                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                SetSkin((byte)avatarID);
+                return AvatarSelectState.Success;
+            }
+            else if (avatarID % (20000 + (Gender*1000)) < 1000) // Face
+            {
+                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                SetFace(avatarID);
+                return AvatarSelectState.Success;
+            }
+            else if (avatarID % (30000 + (Gender*1000)) < 1000) // Hair & hair color
+            {
+                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                SetHair(avatarID);
+                return AvatarSelectState.Success;
+            }
+            return AvatarSelectState.SysError;
+        }
         #endregion
     }
 }

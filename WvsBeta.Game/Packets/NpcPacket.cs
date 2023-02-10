@@ -100,7 +100,6 @@ namespace WvsBeta.Game
                         break;
 
                     case NpcState.Menu:
-                    case NpcState.Style:
                         switch (option)
                         {
                             case 0: // Stopping.
@@ -109,7 +108,22 @@ namespace WvsBeta.Game
                             case 1: // Got answer
                                 var val = packet.ReadByte();
                                 if (val == 255) val = 0; // Menus do not correctly work when holding enter key
-                                session.HandleResponse(val, "", 0);
+                                session.HandleResponse(val);
+                                break;
+                            default:
+                                session.Stop();
+                                break;
+                        }
+                        break;
+                    case NpcState.Style:
+                        switch (option)
+                        {
+                            case 0: // Stopping.
+                                session.Stop();
+                                break;
+                            case 1: // Got answer
+                                var val = packet.ReadByte();
+                                session.RespondAvatar(val);
                                 break;
                             default:
                                 session.Stop();

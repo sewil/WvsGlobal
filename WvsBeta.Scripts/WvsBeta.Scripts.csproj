@@ -43,13 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Scripts\1011100.cs" />
+    <Compile Include="Scripts\face.cs" />
+    <Compile Include="Scripts\hair.cs" />
+    <Compile Include="Scripts\make1.cs" />
+    <Compile Include="Scripts\minigame.cs" />
+    <Compile Include="Scripts\shop.cs" />
     <Compile Include="Scripts\etc.cs" />
     <Compile Include="Scripts\easter.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scripts\market.cs" />
     <Compile Include="Scripts\party.cs" />
+    <Compile Include="Scripts\skin.cs" />
     <Compile Include="Scripts\standard.cs" />
     <Compile Include="Scripts\taxi.cs" />
     <Compile Include="Scripts\victoria0.cs" />

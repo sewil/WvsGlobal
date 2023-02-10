@@ -393,8 +393,8 @@ namespace WvsBeta.Scripts.Scripts
         dynamic mon, v1, nRet;
         public void Run(INpcHost self, GameCharacter target)
         {
-            self.Say("Welcome. We are Hotel #m105040300#. Our hotel works hard to serve you better at all times. If you're tired or feeling exhausted from hunting, how about a relaxing stay at our hotel?");
-            v1 = self.AskMenu("We offer two types of room service. Please choose the one you prefer. \r\n#L0##bRegular sauna (499 mesos per use) #k#l\r\n#L1##bVIP sauna (999 mesos per use)#k#l");
+            self.Say("Welcome to the #m105040300# hotel. We work hard to serve you better at all times. If you're tired or feeling exhausted from hunting, how about a relaxing stay at our hotel?");
+            v1 = self.AskMenu("We offer two types of room service. Please choose the one you prefer. \r\n#L0##bRegular Sauna (499 mesos per use) #k#l\r\n#L1##bVIP Sauna (999 mesos per use)#k#l");
             if (v1 == 0)
             {
                 nRet = self.AskYesNo("You have chosen the regular sauna. Your HP and MP will quickly restore itself and you can even buy some items there. Are you sure you want to enter?");

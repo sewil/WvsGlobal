@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using WvsBeta.Common;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -21,9 +22,10 @@ namespace WvsBeta.Game
         string AskPet(string message);
         string AskText(string Message, string Default, short MinLength, short MaxLength);
         string AskPetAllExcept(string message, string petcashid);
-        int AskStyle(string Message, List<int> Values);
+        int AskAvatar(string message, int coupon, params int[] values);
+        int MakeRandAvatar(int coupon, params int[] values);
+        bool AskShop();
         void AskShop(params ShopItemData[] items);
-
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
         void Log(string text);
@@ -38,6 +40,13 @@ namespace WvsBeta.Game
         Style = 5,
         Pet = 6
     }
+    public enum AvatarSelectState
+    {
+        SysError = -3,
+        Error = -2,
+        MissingCoupon = -1,
+        Success = 1,
+    }
     public class NpcChatSession : INpcHost
     {
         public int mNpcID { get; set; }
@@ -49,6 +58,8 @@ namespace WvsBeta.Game
 
         private int sayIndex { get; set; } = 0;
         private byte nRet = 0;
+
+        private AvatarSelectState nAvatarSelectState;
         private string nRetStr;
         private int nRetNum = 0;
         public NpcState mLastSentType { get; set; }
@@ -102,7 +113,6 @@ namespace WvsBeta.Game
                 ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",nRetStr:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
             #endif
         }
-
         public void Stop()
         {
             mCharacter.NpcSession = null;
@@ -186,15 +196,29 @@ namespace WvsBeta.Game
             return nRetNum;
         }
 
-        public int AskStyle(string Message, List<int> Values)
+        public int MakeRandAvatar(int coupon, params int[] values)
         {
+            var r = Rand32.NextBetween(0, values.Length - 1);
+            var state = mCharacter.ChangeAvatar(coupon, values[r]);
+            return (int)state;
+        }
+        private int[] avatars;
+        private int coupon;
+        public int AskAvatar(string message, int coupon, params int[] values)
+        {
+            avatars = values;
+            this.coupon = coupon;
             sayLines.Clear();
             sayIndex = 0;
-            NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mNpcID, Message, Values);
+            NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mNpcID, message, values.ToList());
             ewh.WaitOne();
-            return nRet;
+            return (int)nAvatarSelectState;
         }
-
+        public void RespondAvatar(byte nRet)
+        {
+            nAvatarSelectState = mCharacter.ChangeAvatar(coupon, avatars[nRet]);
+            HandleResponse(nRet, "", 0);
+        }
         public string AskPet(string message)
         {
             sayLines.Clear();
@@ -226,15 +250,21 @@ namespace WvsBeta.Game
             ewh.WaitOne();
             return nRetStr;
         }
-        public void AskShop(params ShopItemData[] items)
+        public bool AskShop()
         {
-            sayLines.Clear();
-            sayIndex = 0;
-            mCharacter.ShopNPCID = mNpcID;
             if (DataProvider.NPCs[mNpcID].Shop.Count == 0)
-                DataProvider.NPCs[mNpcID].Shop = items.ToList();
+            {
+                return false;
+            }
+            mCharacter.ShopNPCID = mNpcID;
             NpcPacket.SendShowNPCShop(mCharacter, mNpcID);
             ewh.WaitOne();
+            return true;
+        }
+        public void AskShop(params ShopItemData[] items)
+        {
+            DataProvider.NPCs[mNpcID].Shop = items.ToList();
+            AskShop();
         }
 
         public object GetStrReg(string pName)
