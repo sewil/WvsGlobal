@@ -49,8 +49,17 @@ namespace WvsBeta.Game.Scripting
             var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "WvsBeta.Scripts", "Scripts");
 
             string scriptPath = Path.Combine(scriptsDir, scriptName + ".cs");
-            if (!File.Exists(scriptPath) && ScriptNameMapping.Map.TryGetValue(scriptName, out string mapValue))
-                scriptPath = Path.Combine(scriptsDir, mapValue + ".cs");
+            if (!File.Exists(scriptPath))
+            {
+                if (!Server.Instance.AvailableScripts.TryGetValue("standard", out IGameScript script))
+                {
+                    script = GetScript(Server.Instance, "standard", null);
+                }
+                if (((IStandardScript)script).ScriptNameMap.TryGetValue(scriptName, out string mapValue))
+                {
+                    scriptPath = Path.Combine(scriptsDir, mapValue + ".cs");
+                }
+            }
             if (!File.Exists(scriptPath)) return null;
             return scriptPath;
         }
