@@ -340,7 +340,7 @@ namespace WvsBeta.Scripts.Scripts
                 field.SendPacket(FieldEffectPacket.EffectObject("gate"));
                 field.Portals["next00"].Enabled = true; // ?
                 quest.SetVar("stage", "2");
-                quest.Party.Characters.ForEach(m => m.AddEXP(100));
+                quest.Party.Characters.ForEach(m => m.AddEXP(100, isGray: true));
             }
         }
 
@@ -406,7 +406,7 @@ namespace WvsBeta.Scripts.Scripts
                 field.SendPacket(FieldEffectPacket.EffectObject("gate"));
                 field.Portals["next00"].Enabled = true; // ?
                 quest.SetVar("stage", "3");
-                quest.Party.Characters.ForEach(m => m.AddEXP(200));
+                quest.Party.Characters.ForEach(m => m.AddEXP(200, isGray: true));
             }
         }
         public static void party1_stage3(INpcHost self, GameCharacter target)
@@ -438,7 +438,7 @@ namespace WvsBeta.Scripts.Scripts
                 field.SendPacket(FieldEffectPacket.EffectObject("gate"));
                 field.Portals["next00"].Enabled = true; // ?
                 quest.SetVar("stage", "4");
-                quest.Party.Characters.ForEach(m => m.AddEXP(400));
+                quest.Party.Characters.ForEach(m => m.AddEXP(400, isGray: true));
             }
         }
         public static void party1_stage4(INpcHost self, GameCharacter target)
@@ -468,7 +468,7 @@ namespace WvsBeta.Scripts.Scripts
                 field.SendPacket(FieldEffectPacket.EffectObject("gate"));
                 field.Portals["next00"].Enabled = true; // ?
                 quest.SetVar( "stage", "5" );
-                quest.Party.Characters.ForEach(m => m.AddEXP(800));
+                quest.Party.Characters.ForEach(m => m.AddEXP(800, isGray: true));
             } 
         } 
 
@@ -490,7 +490,7 @@ namespace WvsBeta.Scripts.Scripts
                 field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
                 field.SendPacket(FieldEffectPacket.EffectObject("gate"));
                 quest.SetVar( "stage", "clear" );
-                quest.Party.Characters.ForEach(m => m.AddEXP(1500));
+                quest.Party.Characters.ForEach(m => m.AddEXP(1500, isGray: true));
                 self.Say("Here is the portal that leads to the last bonus stage. It's a stage that lets you defeat common monsters a little easier. You will have a limited time to defeat as many of them as possible, but you can leave the stage whenever you want by talking to the NPC. Once again, congratulations on completing all stages. Be careful...");
                 return; 
             } 

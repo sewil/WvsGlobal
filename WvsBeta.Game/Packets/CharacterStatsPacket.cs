@@ -602,13 +602,13 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendGainEXP(GameCharacter chr, int amount, bool IsLastHit, bool Quest = false)
+        public static void SendGainEXP(GameCharacter chr, int amount, bool isMine, bool isGray = false)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(3);
-            pw.WriteBool(IsLastHit);
+            pw.WriteBool(isMine);
             pw.WriteInt(amount);
-            pw.WriteBool(Quest);
+            pw.WriteBool(isGray);
             chr.SendPacket(pw);
         }
 

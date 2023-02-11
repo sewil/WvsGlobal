@@ -46,6 +46,7 @@
     <Compile Include="Scripts\face.cs" />
     <Compile Include="Scripts\hair.cs" />
     <Compile Include="Scripts\make1.cs" />
+    <Compile Include="Scripts\mapleIsland.cs" />
     <Compile Include="Scripts\minigame.cs" />
     <Compile Include="Scripts\shop.cs" />
     <Compile Include="Scripts\etc.cs" />

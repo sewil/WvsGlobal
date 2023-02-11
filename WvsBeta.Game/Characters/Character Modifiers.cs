@@ -226,16 +226,16 @@ namespace WvsBeta.Game
             return (byte)(percentage / percentagePerLevel);
         }
 
-        public void AddEXP(double value, bool Gray = false, bool Quest = false) { AddEXP((uint)value, Gray, Quest); }
+        public void AddEXP(double value, bool isMine = false, bool isGray = false) { AddEXP((uint)value, isMine, isGray); }
 
-        public void AddEXP(uint value, bool IsLastHit = false, bool Quest = false)
+        public void AddEXP(uint value, bool isMine = false, bool isGray = false)
         {
             if (value == 0 || PrimaryStats.Level >= 200 || HP <= 0) return;
 
             var amount = (int)(value > Int32.MaxValue ? Int32.MaxValue : value);
             var amnt = (uint)(CharacterStat.EXP + amount);
 
-            CharacterStatsPacket.SendGainEXP(this, amount, IsLastHit, Quest);
+            CharacterStatsPacket.SendGainEXP(this, amount, isMine, isGray);
             var level = PrimaryStats.Level;
 
             var save = false;

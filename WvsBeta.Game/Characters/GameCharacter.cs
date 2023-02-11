@@ -657,10 +657,19 @@ namespace WvsBeta.Game
         public short AP => CharacterStat.AP;
         public short SP => CharacterStat.SP;
         public short POP => CharacterStat.Fame;
+        public short MHP => CharacterStat.MaxHP;
         public bool IsClosedBetaTester => false;
         public void SendSound(string path)
         {
             SendPacket(FieldEffectPacket.EffectSound(path));
+        }
+        public void IncEXP(short amount, int notGrey)
+        {
+            AddEXP(amount, true, notGrey == 0);
+        }
+        public void IncHP(double value, int sendPacket)
+        {
+            ModifyHP((short)value, sendPacket == 1);
         }
         public void IncAP(short ap, int isSelf)
         {

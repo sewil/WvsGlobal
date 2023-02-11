@@ -58,7 +58,8 @@ with open(args.input) as f:
         #     line = line.replace(fname, file_name + "." + fname + "(self, target)")
         if re.match(r'\}\s*', line):
             if script_name is not None: # Close script
-                output.insert(var_idx, "            dynamic " + ", ".join(vars) + ";") # Insert vars
+                if len(vars) > 0:
+                    output.insert(var_idx, "            dynamic " + ", ".join(vars) + ";") # Insert vars
                 print("Close " + script_name)
                 vars.clear()
                 script_name = None
@@ -111,7 +112,8 @@ with open(args.input) as f:
             output.append("                " + file_name + ".self = self;")
             output.append("                " + file_name + ".target = target;")
         nLine+=1
-    output.insert(class_offset, "        static dynamic " + ", ".join(func_vars) + ";") # Insert func vars
+    if len(func_vars) > 0:
+        output.insert(class_offset, "        static dynamic " + ", ".join(func_vars) + ";") # Insert func vars
 
 output.append("    }")
 output.append("}")
