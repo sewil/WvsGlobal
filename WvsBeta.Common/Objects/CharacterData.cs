@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Linq;
+using System.Runtime.InteropServices;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
@@ -29,25 +30,29 @@ namespace WvsBeta.Common.Objects
                 chr.Skills.AddSkills(packet);
             }
 
-            if (flags.HasFlag(CharacterDataFlag.Quests))
+            if (flags.HasFlag(CharacterDataFlag.AnyQuests))
             {
                 var quests = chr.BaseQuests.GetQuests();
-                packet.WriteShort((short)quests.Count); // Running quests
-                foreach (var quest in quests)
+                if (flags.HasFlag(CharacterDataFlag.Quests))
                 {
-                    packet.WriteShort(quest.Key);
-                    packet.WriteString(quest.Value.Data);
+                    var questsInProgress = quests.Where(q => q.Value.State == QuestState.InProgress).ToList();
+                    packet.WriteShort((short)questsInProgress.Count); // Running quests
+                    foreach (var quest in questsInProgress)
+                    {
+                        packet.WriteShort(quest.Key);
+                        packet.WriteString(quest.Value.Data);
+                    }
                 }
-            }
 
-            if (flags.HasFlag(CharacterDataFlag.CompletedQuests))
-            {
-                var completedQuests = chr.BaseQuests.GetCompletedQuests();
-                packet.WriteShort((short)completedQuests.Count); // Completed quests
-                foreach (var completedQuest in completedQuests)
+                if (flags.HasFlag(CharacterDataFlag.CompletedQuests))
                 {
-                    packet.WriteShort(completedQuest.Key);
-                    packet.WriteLong(completedQuest.Value.FileTime);
+                    var completedQuests = quests.Where(q => q.Value.State == QuestState.Completed).ToList();
+                    packet.WriteShort((short)completedQuests.Count); // Completed quests
+                    foreach (var completedQuest in completedQuests)
+                    {
+                        packet.WriteShort(completedQuest.Key);
+                        packet.WriteLong(completedQuest.Value.FileTime);
+                    }
                 }
             }
 

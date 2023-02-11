@@ -22,6 +22,7 @@ namespace WvsBeta.Common.Enums
         CompletedQuests = 0x4000,
         All = 0xFFFF,
 
+        AnyQuests = Quests|CompletedQuests,
         Items = Equips | Consume | Install | Etc | Pet
     }
 }

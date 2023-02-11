@@ -34,18 +34,19 @@ namespace WvsBeta.Game
 
             query = "DELETE mobs.* FROM character_quest_mobs mobs LEFT JOIN character_quests quests ON mobs.id = quests.id WHERE quests.charid = " + charid + "; ";
             query += "DELETE FROM character_quests WHERE charid = " + charid + "; ";
-            query += "DELETE FROM completed_quests WHERE charid = " + charid + "; ";
 
             if (Quests.Count > 0)
             {
-                query += "INSERT INTO character_quests (id, charid, questid, data) VALUES ";
+                query += "INSERT INTO character_quests (id, charid, questid, data, state, endtime) VALUES ";
                 query += string.Join(", ", Quests.Select(kvp =>
                 {
                     return "(" +
                            kvp.Value.ID + ", " +
                            charid + ", " +
                            kvp.Key + ", " +
-                           "'" + MySqlHelper.EscapeString(kvp.Value.Data) + "'" +
+                           "'" + MySqlHelper.EscapeString(kvp.Value.Data) + "', " +
+                           (byte)kvp.Value.State + ", " +
+                           kvp.Value.EndTime + " " +
                            ")";
                 }));
                 query += ";";
@@ -61,20 +62,6 @@ namespace WvsBeta.Game
                                                                        ")"));
                     query += ";";
                 }
-            }
-
-            if (CompletedQuests.Count > 0)
-            {
-                query += "INSERT INTO completed_quests (charid, questid, endtime) VALUES ";
-                query += string.Join(", ", CompletedQuests.Select(kvp =>
-                {
-                    return "(" +
-                           charid + ", " +
-                           kvp.Key + ", " +
-                           kvp.Value.EndTime + " " +
-                           ")";
-                }));
-                query += ";";
             }
 
             Server.Instance.CharacterDatabase.RunQuery(query);
@@ -93,7 +80,9 @@ namespace WvsBeta.Game
                     {
                         ID = data.GetInt32("id"),
                         QuestID = data.GetInt16("questid"),
-                        Data = data.GetString("data")
+                        Data = data.GetString("data"),
+                        State = (QuestState)data.GetByte("state"),
+                        EndTime = data.GetInt64("endtime")
                     };
                     Quests[qd.QuestID] = qd;
                 }
@@ -119,18 +108,6 @@ namespace WvsBeta.Game
                     }
                 }
             }
-
-            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
-                    "SELECT * FROM completed_quests WHERE charid = @charid",
-                    "@charid", Character.ID
-            ))
-            {
-                while (data.Read())
-                {
-                    var qd = new CompletedQuest(data.GetInt16("questid"), data.GetInt64("endtime"));
-                    CompletedQuests[qd.QuestID] = qd;
-                }
-            }
             return true;
         }
         public override bool AddNewQuest(short questID, string data = "")
@@ -138,57 +115,33 @@ namespace WvsBeta.Game
             if (Quests.ContainsKey(questID))
                 return false;
 
-            Server.Instance.CharacterDatabase.RunQuery("INSERT INTO character_quests (id, charid, questid, data) VALUES (NULL, " + Character.ID.ToString() + ", " + questID + ", '" + MySqlHelper.EscapeString(data) + "')");
+            Server.Instance.CharacterDatabase.RunQuery("INSERT INTO character_quests (id, charid, questid, data, state, endtime) VALUES (NULL, " + Character.ID.ToString() + ", " + questID + ", '" + MySqlHelper.EscapeString(data) + "', 1, 0)");
             int ID = Server.Instance.CharacterDatabase.GetLastInsertId();
 
             var quest = new QuestData
             {
                 ID = ID,
                 Data = data,
-                QuestID = questID
+                QuestID = questID,
+                State = QuestState.InProgress
             };
             Quests[questID] = quest;
+
+            if (DataProvider.Quests.TryGetValue(questID, out WZQuestData wzq) && wzq.Mobs.Count > 0)
+            {
+                QuestMobs.AddRange(wzq.Mobs.Select(m => new QuestMobData {
+                    QuestDataId = ID,
+                    MobID = m.MobID,
+                    Needed = m.ReqKills
+                }));
+            }
+
             QuestPacket.SendQuestUpdateData(Character, questID, data);
             return true;
         }
-        public bool AddCompletedQuest(short questID)
+
+        public void UpdateMobKillCount(int questID, int mobID)
         {
-            if (CompletedQuests.ContainsKey(questID))
-                return false;
-
-            long unix = MasterThread.UnixTime;
-
-            Server.Instance.CharacterDatabase.RunQuery("DELETE FROM character_quests WHERE charid = " + Character.ID + " AND questid = " + questID);
-            Server.Instance.CharacterDatabase.RunQuery("INSERT INTO completed_quests (charid, questid, endtime) VALUES (" + Character.ID.ToString() + ", " + questID + ", " + unix + ")");
-
-            var quest = new CompletedQuest(questID, unix);
-            Quests.Remove(questID);
-            CompletedQuests[questID] = quest;
-            QuestPacket.SendCompleteQuest(Character, questID, quest.FileTime);
-            return true;
-        }
-        public void AddOrSetQuestMob(short questID, int mobID, int needed)
-        {
-            if (!Quests.TryGetValue(questID, out var qd)) return;
-
-            var questDataId = qd.ID;
-
-            var mobData = QuestMobs.FirstOrDefault(x => x.QuestDataId == questDataId && x.MobID == mobID);
-
-            if (mobData == null)
-            {
-                QuestMobs.Add(new QuestMobData
-                {
-                    Killed = 0,
-                    Needed = needed,
-                    MobID = mobID,
-                    QuestDataId = questDataId
-                });
-            }
-            else
-            {
-                mobData.Needed = needed;
-            }
         }
 
         public bool HasQuestMob(short questID, int MobID)
@@ -223,6 +176,16 @@ namespace WvsBeta.Game
             if (pSendPacket) QuestPacket.SendQuestUpdateData(Character, questID, pData);
         }
 
+        public void SetQuestComplete(short questID, bool pSendPacket = true)
+        {
+            if (!HasQuest(questID)) return;
+
+            var quest = Quests[questID];
+            quest.State = QuestState.Completed;
+            quest.EndTime = MasterThread.UnixTime;
+            if (pSendPacket) QuestPacket.SendCompleteQuest(Character, questID, quest.FileTime);
+        }
+
         #region Script helpers
         /// <summary>
         /// Get quest data
@@ -243,7 +206,7 @@ namespace WvsBeta.Game
         {
             if (HasQuest(questID))
             {
-                Quests[questID].Data = data;
+                SetQuestData(questID, data);
             }
             else
             {
@@ -252,13 +215,12 @@ namespace WvsBeta.Game
         }
         public void SetComplete(short questID)
         {
-            AddCompletedQuest(questID);
+            SetQuestComplete(questID);
         }
         public byte GetState(short questID)
         {
-            if (HasQuest(questID)) return (byte)QuestState.Started;
-            else if (HasCompletedQuest(questID)) return (byte)QuestState.Completed;
-            else return (byte)QuestState.NotStarted;
+            if (!HasQuest(questID)) return (byte)QuestState.NotStarted;
+            return (byte)Quests[questID].State;
         }
         #endregion
     }

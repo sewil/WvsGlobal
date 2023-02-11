@@ -375,6 +375,8 @@ CREATE TABLE `character_quests` (
   `charid` int(11) NOT NULL,
   `questid` smallint(5) NOT NULL,
   `data` varchar(40) DEFAULT NULL,
+  `state` TINYINT(3) NOT NULL DEFAULT '-1',
+  `endtime` BIGINT(19) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -511,30 +513,6 @@ CREATE TABLE `characters` (
 LOCK TABLES `characters` WRITE;
 /*!40000 ALTER TABLE `characters` DISABLE KEYS */;
 /*!40000 ALTER TABLE `characters` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `completed_quests`
---
-
-DROP TABLE IF EXISTS `completed_quests`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `completed_quests` (
-  `charid` int(11) NOT NULL,
-  `questid` smallint(5) NOT NULL,
-  `endtime` bigint(20) DEFAULT 0,
-  PRIMARY KEY (`charid`,`questid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `completed_quests`
---
-
-LOCK TABLES `completed_quests` WRITE;
-/*!40000 ALTER TABLE `completed_quests` DISABLE KEYS */;
-/*!40000 ALTER TABLE `completed_quests` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

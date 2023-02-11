@@ -10,7 +10,6 @@ namespace WvsBeta.Common.Character
     public class BaseCharacterQuests
     {
         public Dictionary<short, QuestData> Quests { get; } = new Dictionary<short, QuestData>();
-        public Dictionary<short, CompletedQuest> CompletedQuests { get; } = new Dictionary<short, CompletedQuest>();
 
         public virtual void SaveQuests() { throw new NotImplementedException(); }
         public virtual bool LoadQuests() { throw new NotImplementedException(); }
@@ -19,19 +18,10 @@ namespace WvsBeta.Common.Character
         {
             return Quests.ContainsKey(questID);
         }
-        public bool HasCompletedQuest(short questID)
-        {
-            return CompletedQuests.ContainsKey(questID);
-        }
         public Dictionary<short, QuestData> GetQuests(bool wzFilter = true)
         {
             if (wzFilter) return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
             else return Quests;
-        }
-        public Dictionary<short, CompletedQuest> GetCompletedQuests(bool wzFilter = true)
-        {
-            if (wzFilter) return CompletedQuests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
-            else return CompletedQuests;
         }
     }
 }

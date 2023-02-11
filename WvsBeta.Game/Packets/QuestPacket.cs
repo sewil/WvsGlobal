@@ -22,7 +22,7 @@ namespace WvsBeta.Game
         }
         public static void SendQuestUpdateData(GameCharacter chr, short questID, string data)
         {
-            var pw = new QuestPacket(questID, QuestState.Started);
+            var pw = new QuestPacket(questID, QuestState.InProgress);
             pw.WriteString(data);
             chr.SendPacket(pw);
         }

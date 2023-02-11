@@ -4,7 +4,7 @@
     {
         Unavailable = 0xFF,
         NotStarted = 0,
-        Started = 1,
+        InProgress = 1,
         Completed = 2
     }
 }
