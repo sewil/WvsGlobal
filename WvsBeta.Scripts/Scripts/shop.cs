@@ -1,199 +1,198 @@
-﻿using WvsBeta.Game;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.InteropServices;
+using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
 {
+    class Shop
+    {
+        public ShopItemData[] Rechargables = new ShopItemData[]
+        {
+            new ShopItemData(2070000),
+            new ShopItemData(2070001),
+            new ShopItemData(2070002),
+            new ShopItemData(2070003),
+            new ShopItemData(2070004),
+            new ShopItemData(2070005),
+            new ShopItemData(2070006),
+            new ShopItemData(2070007),
+            new ShopItemData(2070008),
+            new ShopItemData(2070009),
+            new ShopItemData(2070010),
+            new ShopItemData(2070011),
+            new ShopItemData(2070012),
+            new ShopItemData(2070013),
+        };
+    }
     // Karl Henesys Weapon Seller
     [Script("1011000")]
-    class Karl : INpcScript
+    class Karl : Shop, INpcScript
     {
         public void Run(INpcHost self, GameCharacter target)
         {
-            if (self.AskShop()) return;
-            self.AskShop(
-                new ShopItemData { ItemID = 1452002, Price = 3000 },
-                new ShopItemData { ItemID = 1452003, Price = 6000 },
-                new ShopItemData { ItemID = 1452001, Price = 10000 },
-                new ShopItemData { ItemID = 1452000, Price = 20000 },
-                new ShopItemData { ItemID = 1462001, Price = 4000 },
-                new ShopItemData { ItemID = 1462002, Price = 8000 },
-                new ShopItemData { ItemID = 1462003, Price = 12000 },
-                new ShopItemData { ItemID = 1462000, Price = 30000 },
-                new ShopItemData { ItemID = 1302007, Price = 3000 },
-                new ShopItemData { ItemID = 1322007, Price = 6000 },
-                new ShopItemData { ItemID = 1322008, Price = 12000 },
-                new ShopItemData { ItemID = 1422004, Price = 20000 },
-                new ShopItemData { ItemID = 1442004, Price = 24000 }
-            );
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1452002, 3000),
+                new ShopItemData(1452003, 6000),
+                new ShopItemData(1452001, 10000),
+                new ShopItemData(1452000, 20000),
+                new ShopItemData(1462001, 4000),
+                new ShopItemData(1462002, 8000),
+                new ShopItemData(1462003, 12000),
+                new ShopItemData(1462000, 30000),
+                new ShopItemData(1302007, 3000),
+                new ShopItemData(1322007, 6000),
+                new ShopItemData(1322008, 12000),
+                new ShopItemData(1422004, 20000),
+                new ShopItemData(1442004, 24000),
+            }.Concat(Rechargables));
         }
     }
     // Sam Henesys Weapon Seller
     [Script("1011001")]
-    class Sam : INpcScript
+    class Sam : Shop, INpcScript
     {
         public void Run(INpcHost self, GameCharacter target)
         {
-            if (self.AskShop()) return;
-            self.AskShop(
-                new ShopItemData { ItemID = 1002008, Price = 500 },
-                new ShopItemData { ItemID = 1002033, Price = 3000 },
-                new ShopItemData { ItemID = 1002060, Price = 3000 },
-                new ShopItemData { ItemID = 1002061, Price = 3000 },
-                new ShopItemData { ItemID = 1002062, Price = 3000 },
-                new ShopItemData { ItemID = 1002063, Price = 3000 },
-                new ShopItemData { ItemID = 1002012, Price = 3000 },
-                new ShopItemData { ItemID = 1002112, Price = 4000 },
-                new ShopItemData { ItemID = 1002113, Price = 4000 },
-                new ShopItemData { ItemID = 1002114, Price = 4000 },
-                new ShopItemData { ItemID = 1002115, Price = 4000 },
-                new ShopItemData { ItemID = 1002116, Price = 4000 },
-                new ShopItemData { ItemID = 1002117, Price = 12000 },
-                new ShopItemData { ItemID = 1002118, Price = 12000 },
-                new ShopItemData { ItemID = 1002119, Price = 12000 },
-                new ShopItemData { ItemID = 1002120, Price = 12000 },
-                new ShopItemData { ItemID = 1002121, Price = 12000 },
-                new ShopItemData { ItemID = 1002057, Price = 800 },
-                new ShopItemData { ItemID = 1002010, Price = 800 },
-                new ShopItemData { ItemID = 1002156, Price = 20000 },
-                new ShopItemData { ItemID = 1002157, Price = 20000 },
-                new ShopItemData { ItemID = 1002158, Price = 20000 },
-                new ShopItemData { ItemID = 1002160, Price = 20000 },
-                new ShopItemData { ItemID = 1002159, Price = 20000 },
-                new ShopItemData { ItemID = 1002161, Price = 30000 },
-                new ShopItemData { ItemID = 1002162, Price = 30000 },
-                new ShopItemData { ItemID = 1002163, Price = 30000 },
-                new ShopItemData { ItemID = 1002164, Price = 30000 },
-                new ShopItemData { ItemID = 1002165, Price = 30000 },
-                new ShopItemData { ItemID = 1032003, Price = 7000 },
-                new ShopItemData { ItemID = 1032001, Price = 7000 },
-                new ShopItemData { ItemID = 1040008, Price = 3200 },
-                new ShopItemData { ItemID = 1040071, Price = 3200 },
-                new ShopItemData { ItemID = 1040007, Price = 5500 },
-                new ShopItemData { ItemID = 1040011, Price = 5500 },
-                new ShopItemData { ItemID = 1040003, Price = 9000 },
-                new ShopItemData { ItemID = 1041032, Price = 15000 },
-                new ShopItemData { ItemID = 1040023, Price = 15000 },
-                new ShopItemData { ItemID = 1041034, Price = 15000 },
-                new ShopItemData { ItemID = 1041033, Price = 15000 },
-                new ShopItemData { ItemID = 1040067, Price = 50000 },
-                new ShopItemData { ItemID = 1040068, Price = 50000 },
-                new ShopItemData { ItemID = 1040069, Price = 50000 },
-                new ShopItemData { ItemID = 1040070, Price = 50000 },
-                new ShopItemData { ItemID = 1041007, Price = 3200 },
-                new ShopItemData { ItemID = 1041061, Price = 3200 },
-                new ShopItemData { ItemID = 1041008, Price = 5500 },
-                new ShopItemData { ItemID = 1041062, Price = 5500 },
-                new ShopItemData { ItemID = 1041063, Price = 5500 },
-                new ShopItemData { ItemID = 1041027, Price = 9000 },
-                new ShopItemData { ItemID = 1041028, Price = 9000 },
-                new ShopItemData { ItemID = 1041013, Price = 9000 },
-                new ShopItemData { ItemID = 1041032, Price = 15000 },
-                new ShopItemData { ItemID = 1041033, Price = 15000 },
-                new ShopItemData { ItemID = 1041034, Price = 15000 },
-                new ShopItemData { ItemID = 1041035, Price = 15000 },
-                new ShopItemData { ItemID = 1041054, Price = 50000 },
-                new ShopItemData { ItemID = 1041055, Price = 50000 },
-                new ShopItemData { ItemID = 1041056, Price = 50000 },
-                new ShopItemData { ItemID = 1060005, Price = 14000 },
-                new ShopItemData { ItemID = 1060056, Price = 44000 },
-                new ShopItemData { ItemID = 1060057, Price = 44000 },
-                new ShopItemData { ItemID = 1060058, Price = 44000 },
-                new ShopItemData { ItemID = 1060059, Price = 44000 },
-                new ShopItemData { ItemID = 1061057, Price = 3000 },
-                new ShopItemData { ItemID = 1061009, Price = 3000 },
-                new ShopItemData { ItemID = 1061006, Price = 5000 },
-                new ShopItemData { ItemID = 1061058, Price = 5000 },
-                new ShopItemData { ItemID = 1061059, Price = 5000 },
-                new ShopItemData { ItemID = 1061024, Price = 9000 },
-                new ShopItemData { ItemID = 1061025, Price = 9000 },
-                new ShopItemData { ItemID = 1061026, Price = 9000 },
-                new ShopItemData { ItemID = 1061050, Price = 44000 },
-                new ShopItemData { ItemID = 1061051, Price = 44000 },
-                new ShopItemData { ItemID = 1061052, Price = 44000 },
-                new ShopItemData { ItemID = 1062004, Price = 3000 },
-                new ShopItemData { ItemID = 1062002, Price = 9000 },
-                new ShopItemData { ItemID = 1062006, Price = 13000 },
-                new ShopItemData { ItemID = 1072059, Price = 1800 },
-                new ShopItemData { ItemID = 1072015, Price = 1800 },
-                new ShopItemData { ItemID = 1072060, Price = 4500 },
-                new ShopItemData { ItemID = 1072061, Price = 4500 },
-                new ShopItemData { ItemID = 1072016, Price = 4500 },
-                new ShopItemData { ItemID = 1072067, Price = 9000 },
-                new ShopItemData { ItemID = 1072068, Price = 9000 },
-                new ShopItemData { ItemID = 1072025, Price = 9000 },
-                new ShopItemData { ItemID = 1072026, Price = 9000 },
-                new ShopItemData { ItemID = 1072012, Price = 15000 },
-                new ShopItemData { ItemID = 1072054, Price = 15000 },
-                new ShopItemData { ItemID = 1072055, Price = 15000 },
-                new ShopItemData { ItemID = 1072056, Price = 15000 },
-                new ShopItemData { ItemID = 1072064, Price = 30000 },
-                new ShopItemData { ItemID = 1072018, Price = 30000 }
-            );
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1002008, 500),
+                new ShopItemData(1002033, 3000),
+                new ShopItemData(1002060, 3000),
+                new ShopItemData(1002061, 3000),
+                new ShopItemData(1002062, 3000),
+                new ShopItemData(1002063, 3000),
+                new ShopItemData(1002012, 3000),
+                new ShopItemData(1002112, 4000),
+                new ShopItemData(1002113, 4000),
+                new ShopItemData(1002114, 4000),
+                new ShopItemData(1002115, 4000),
+                new ShopItemData(1002116, 4000),
+                new ShopItemData(1002117, 12000),
+                new ShopItemData(1002118, 12000),
+                new ShopItemData(1002119, 12000),
+                new ShopItemData(1002120, 12000),
+                new ShopItemData(1002121, 12000),
+                new ShopItemData(1002057, 800),
+                new ShopItemData(1002010, 800),
+                new ShopItemData(1002156, 20000),
+                new ShopItemData(1002157, 20000),
+                new ShopItemData(1002158, 20000),
+                new ShopItemData(1002160, 20000),
+                new ShopItemData(1002159, 20000),
+                new ShopItemData(1002161, 30000),
+                new ShopItemData(1002162, 30000),
+                new ShopItemData(1002163, 30000),
+                new ShopItemData(1002164, 30000),
+                new ShopItemData(1002165, 30000),
+                new ShopItemData(1032003, 7000),
+                new ShopItemData(1032001, 7000),
+                new ShopItemData(1040008, 3200),
+                new ShopItemData(1040071, 3200),
+                new ShopItemData(1040007, 5500),
+                new ShopItemData(1040011, 5500),
+                new ShopItemData(1040003, 9000),
+                new ShopItemData(1041032, 15000),
+                new ShopItemData(1040023, 15000),
+                new ShopItemData(1041034, 15000),
+                new ShopItemData(1041033, 15000),
+                new ShopItemData(1040067, 50000),
+                new ShopItemData(1040068, 50000),
+                new ShopItemData(1040069, 50000),
+                new ShopItemData(1040070, 50000),
+                new ShopItemData(1041007, 3200),
+                new ShopItemData(1041061, 3200),
+                new ShopItemData(1041008, 5500),
+                new ShopItemData(1041062, 5500),
+                new ShopItemData(1041063, 5500),
+                new ShopItemData(1041027, 9000),
+                new ShopItemData(1041028, 9000),
+                new ShopItemData(1041013, 9000),
+                new ShopItemData(1041032, 15000),
+                new ShopItemData(1041033, 15000),
+                new ShopItemData(1041034, 15000),
+                new ShopItemData(1041035, 15000),
+                new ShopItemData(1041054, 50000),
+                new ShopItemData(1041055, 50000),
+                new ShopItemData(1041056, 50000),
+                new ShopItemData(1060005, 14000),
+                new ShopItemData(1060056, 44000),
+                new ShopItemData(1060057, 44000),
+                new ShopItemData(1060058, 44000),
+                new ShopItemData(1060059, 44000),
+                new ShopItemData(1061057, 3000),
+                new ShopItemData(1061009, 3000),
+                new ShopItemData(1061006, 5000),
+                new ShopItemData(1061058, 5000),
+                new ShopItemData(1061059, 5000),
+                new ShopItemData(1061024, 9000),
+                new ShopItemData(1061025, 9000),
+                new ShopItemData(1061026, 9000),
+                new ShopItemData(1061050, 44000),
+                new ShopItemData(1061051, 44000),
+                new ShopItemData(1061052, 44000),
+                new ShopItemData(1062004, 3000),
+                new ShopItemData(1062002, 9000),
+                new ShopItemData(1062006, 13000),
+                new ShopItemData(1072059, 1800),
+                new ShopItemData(1072015, 1800),
+                new ShopItemData(1072060, 4500),
+                new ShopItemData(1072061, 4500),
+                new ShopItemData(1072016, 4500),
+                new ShopItemData(1072067, 9000),
+                new ShopItemData(1072068, 9000),
+                new ShopItemData(1072025, 9000),
+                new ShopItemData(1072026, 9000),
+                new ShopItemData(1072012, 15000),
+                new ShopItemData(1072054, 15000),
+                new ShopItemData(1072055, 15000),
+                new ShopItemData(1072056, 15000),
+                new ShopItemData(1072064, 30000),
+                new ShopItemData(1072018, 30000)
+            }.Concat(Rechargables));
         }
     }
     // Luna Henesys Grocer
     [Script("1011100")]
-    class Luna : INpcScript
+    class Luna : Shop, INpcScript
     {
         public void Run(INpcHost self, GameCharacter target)
         {
-            if (self.AskShop()) return;
-            self.AskShop(
-                new ShopItemData { ItemID = 2000000, Price = 50 },
-                new ShopItemData { ItemID = 2000001, Price = 160 },
-                new ShopItemData { ItemID = 2000002, Price = 320 },
-                new ShopItemData { ItemID = 2000003, Price = 200 },
-                new ShopItemData { ItemID = 2000006, Price = 620 },
-                new ShopItemData { ItemID = 2002000, Price = 500 },
-                new ShopItemData { ItemID = 2002001, Price = 400 },
-                new ShopItemData { ItemID = 2002002, Price = 500 },
-                new ShopItemData { ItemID = 2002004, Price = 500 },
-                new ShopItemData { ItemID = 2002005, Price = 500 },
-                new ShopItemData { ItemID = 2010000, Price = 30 },
-                new ShopItemData { ItemID = 2010002, Price = 50 },
-                new ShopItemData { ItemID = 2010001, Price = 106 },
-                new ShopItemData { ItemID = 2010003, Price = 100 },
-                new ShopItemData { ItemID = 2010004, Price = 310 },
-                new ShopItemData { ItemID = 2060000, Price = 1, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2061000, Price = 1, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2030000, Price = 400 },
-                new ShopItemData { ItemID = 2030004, Price = 500 },
-                new ShopItemData { ItemID = 2050000, Price = 200 },
-                new ShopItemData { ItemID = 2050001, Price = 200 },
-                new ShopItemData { ItemID = 2050002, Price = 300 },
-                new ShopItemData { ItemID = 2020003, Price = 500 },
-                new ShopItemData { ItemID = 2070000, Price = 500, UnitRechargeRate = 1 },
-
-                new ShopItemData { ItemID = 2060001, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2060002, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2060003, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2061001, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2061002, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2061003, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070001, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070002, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070003, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070004, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070005, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070006, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070007, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070008, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070009, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070010, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070011, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070012, UnitRechargeRate = 0 },
-                new ShopItemData { ItemID = 2070013, UnitRechargeRate = 0 }
-            );
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(2000000, 50),
+                new ShopItemData(2000001, 160),
+                new ShopItemData(2000002, 320),
+                new ShopItemData(2000003, 200),
+                new ShopItemData(2000006, 620),
+                new ShopItemData(2002000, 500),
+                new ShopItemData(2002001, 400),
+                new ShopItemData(2002002, 500),
+                new ShopItemData(2002004, 500),
+                new ShopItemData(2002005, 500),
+                new ShopItemData(2010000, 30),
+                new ShopItemData(2010002, 50),
+                new ShopItemData(2010001, 106),
+                new ShopItemData(2010003, 100),
+                new ShopItemData(2010004, 310),
+                new ShopItemData(2060000, 1),
+                new ShopItemData(2061000, 1),
+                new ShopItemData(2030000, 400),
+                new ShopItemData(2030004, 500),
+                new ShopItemData(2050000, 200),
+                new ShopItemData(2050001, 200),
+                new ShopItemData(2050002, 300),
+                new ShopItemData(2020003, 500),
+                new ShopItemData(2070000, 500),
+            }.Concat(Rechargables));
         }
     }
     [Script("1012004")]
-    class Doofus : INpcScript
+    class Doofus : Shop, INpcScript
     {
         public void Run(INpcHost self, GameCharacter target)
         {
-            if (self.AskShop()) return;
             self.AskShop(
-                new ShopItemData { ItemID = 2120000, Price = 30}
+                new ShopItemData(2120000, 30)
             );
         }
     }

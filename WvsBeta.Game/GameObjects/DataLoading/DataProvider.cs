@@ -783,10 +783,7 @@ namespace WvsBeta.Game
                             {
                                 foreach (var iNode in node)
                                 {
-                                    ShopItemData item = new ShopItemData()
-                                    {
-                                        ItemID = (int)Utils.ConvertNameToID(iNode.Name)
-                                    };
+                                    ShopItemData item = new ShopItemData((int)Utils.ConvertNameToID(iNode.Name));
                                     foreach (var subNode in iNode)
                                     {
                                         switch (subNode.Name)
@@ -799,9 +796,6 @@ namespace WvsBeta.Game
                                                 break;
                                             case "stock":
                                                 item.Stock = subNode.ValueInt32();
-                                                break;
-                                            case "unitPrice":
-                                                item.UnitRechargeRate = subNode.ValueFloat();
                                                 break;
                                             default:
                                                 Console.WriteLine($"Unhandled node {subNode.Name} in shop of NPC {npc.ID}");

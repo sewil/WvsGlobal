@@ -353,17 +353,17 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        if (sid.UnitRechargeRate <= 0.0)
+                        ItemData data = DataProvider.Items[item.ItemID];
+                        if (data.UnitPrice <= 0.0)
                         {
                             SendShopResult(chr, ShopRes.RechargeIncorrectRequest);
                             return;
                         }
 
-                        ItemData data = DataProvider.Items[item.ItemID];
                         short maxslot = (short)(data.MaxSlot + chr.Skills.GetRechargeableBonus());
                         short toFill = (short)(maxslot - item.Amount);
 
-                        int sellPrice = (int)Math.Ceiling(-1.0 * sid.UnitRechargeRate * toFill);
+                        int sellPrice = (int)Math.Ceiling(-1.0 * data.UnitPrice * toFill);
                         sellPrice = Math.Max(sellPrice, 1);
                         if (chr.Inventory.Mesos > -sellPrice)
                         {
@@ -410,8 +410,10 @@ namespace WvsBeta.Game
                 pw.WriteInt(item.ItemID);
                 pw.WriteInt(item.Price);
 
+                float unitPrice = 0;
                 if (DataProvider.Items.TryGetValue(item.ItemID, out ItemData id))
                 {
+                    unitPrice = id.UnitPrice;
                     maxSlots = id.MaxSlot;
                     if (maxSlots == 0)
                     {
@@ -421,7 +423,7 @@ namespace WvsBeta.Game
                 }
                 if (Constants.isRechargeable(item.ItemID))
                 {
-                    pw.WriteLong(BitConverter.DoubleToInt64Bits(item.UnitRechargeRate));
+                    pw.WriteLong(BitConverter.DoubleToInt64Bits(unitPrice * maxSlots));
                     maxSlots += chr.Skills.GetRechargeableBonus();
                 }
 

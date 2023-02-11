@@ -23,6 +23,7 @@ namespace WvsBeta.Common.Objects
         public short Avoidance { get; set; }
         public short Speed { get; set; }
         public int BuffTime { get; set; }
+        public float UnitPrice { get; set; }
         public short Thaw { get; set; }
         public CureFlag Cures { get; set; }
 

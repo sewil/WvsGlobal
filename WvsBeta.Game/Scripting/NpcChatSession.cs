@@ -24,7 +24,7 @@ namespace WvsBeta.Game
         string AskPetAllExcept(string message, string petcashid);
         int AskAvatar(string message, int coupon, params int[] values);
         int MakeRandAvatar(int coupon, params int[] values);
-        bool AskShop();
+        void AskShop(IEnumerable<ShopItemData> items);
         void AskShop(params ShopItemData[] items);
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
@@ -250,21 +250,16 @@ namespace WvsBeta.Game
             ewh.WaitOne();
             return nRetStr;
         }
-        public bool AskShop()
+        public void AskShop(params ShopItemData[] items)
         {
-            if (DataProvider.NPCs[mNpcID].Shop.Count == 0)
-            {
-                return false;
-            }
+            AskShop(items.ToList());
+        }
+        public void AskShop(IEnumerable<ShopItemData> items)
+        {
+            DataProvider.NPCs[mNpcID].Shop = items.ToList();
             mCharacter.ShopNPCID = mNpcID;
             NpcPacket.SendShowNPCShop(mCharacter, mNpcID);
             ewh.WaitOne();
-            return true;
-        }
-        public void AskShop(params ShopItemData[] items)
-        {
-            DataProvider.NPCs[mNpcID].Shop = items.ToList();
-            AskShop();
         }
 
         public object GetStrReg(string pName)

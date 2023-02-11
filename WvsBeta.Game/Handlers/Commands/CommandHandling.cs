@@ -2471,6 +2471,10 @@ namespace WvsBeta.Game.Handlers.Commands
                                         ChatPacket.SendNotice("Error while recompiling " + scriptName + ". See logs. Script: " + script, character);
                                     }, true) != null)
                                     {
+                                        if (int.TryParse(scriptName, out int npcid) && DataProvider.NPCs.TryGetValue(npcid, out NPCData data))
+                                        {
+                                            data.Shop.Clear();
+                                        }
                                         ChatPacket.SendNotice("Recompiled the script.", character);
                                     }
                                 }
@@ -2482,7 +2486,6 @@ namespace WvsBeta.Game.Handlers.Commands
                                 }
                                 return true;
                             }
-
 #endregion
 
 #region reload cashshop data

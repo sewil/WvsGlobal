@@ -268,9 +268,11 @@ namespace WvsBeta.Common.DataProviders
                     {
                         switch (node.Name)
                         {
+                            case "unitPrice":
+                                item.UnitPrice = node.ValueFloat();
+                                break;
                             case "path":
                             case "floatType":
-                            case "unitPrice": // Pricing of recharging???
                             case "icon":
                             case "iconRaw":
                             case "iconReward": break;
