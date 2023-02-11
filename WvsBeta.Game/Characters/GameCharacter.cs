@@ -667,9 +667,9 @@ namespace WvsBeta.Game
         {
             AddEXP(amount, true, notGrey == 0);
         }
-        public void IncHP(double value, int sendPacket)
+        public void IncHP(double value, int isSelf)
         {
-            ModifyHP((short)value, sendPacket == 1);
+            ModifyHP((short)value);
         }
         public void IncAP(short ap, int isSelf)
         {

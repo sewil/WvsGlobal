@@ -20,7 +20,7 @@ namespace WvsBeta.Common.DataProviders
         public static IDictionary<int, PetData> Pets { get;
         protected set; }
         public static IDictionary<int, SkillData> Skills { get; protected set; }
-        public static IDictionary<int, WZQuestData> Quests { get; protected set; }
+        public static IDictionary<short, WZQuestData> Quests { get; protected set; }
         public static List<int> UntradeableDrops { get; } = new List<int>();
         public static List<int> QuestItems { get; } = new List<int>();
 

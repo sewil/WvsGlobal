@@ -133,6 +133,7 @@
         __MISSING_118,
         MESOBAG_SUCCEED = 119,
         MESOBAG_FAILED = 120,
+        QUEST_ACTION_RESULT = 121,
         ___END_USERLOCAL,
 
         // ___START_MOBPOOL
@@ -211,7 +212,9 @@
         SHOP = 182,
         SHOP_TRANSACTION = 183,
         ___END_SHOP,
+
         __PADDING_186,
+
         ___START_STORAGE,
         STORAGE = 187,
         STORAGE_RESULT = 188,

@@ -3,7 +3,7 @@
     public enum QuestState : byte
     {
         Unavailable = 0xFF,
-        NotStarted = 0,
+        Available = 0,
         InProgress = 1,
         Completed = 2
     }

@@ -181,7 +181,7 @@
     <Compile Include="Objects\EquipData.cs" />
     <Compile Include="Objects\GW_ItemSlotBase.cs" />
     <Compile Include="Objects\ItemData.cs" />
-    <Compile Include="Objects\ItemReward.cs" />
+    <Compile Include="Objects\QuestItem.cs" />
     <Compile Include="Objects\ItemSummonInfo.cs" />
     <Compile Include="Objects\LockerItem.cs" />
     <Compile Include="Objects\MovePath.cs" />

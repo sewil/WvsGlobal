@@ -27,5 +27,11 @@ namespace WvsBeta.Game.Packets
             pw.WriteBool(success);
             return pw;
         }
+        public static MessagePacket MesosChanged(int amount)
+        {
+            var pw = new MessagePacket(MessageType.MesosChanged);
+            pw.WriteInt(amount);
+            return pw;
+        }
     }
 }

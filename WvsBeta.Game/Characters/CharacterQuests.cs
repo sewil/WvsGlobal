@@ -127,14 +127,14 @@ namespace WvsBeta.Game
             };
             Quests[questID] = quest;
 
-            if (DataProvider.Quests.TryGetValue(questID, out WZQuestData wzq) && wzq.Mobs.Count > 0)
-            {
-                QuestMobs.AddRange(wzq.Mobs.Select(m => new QuestMobData {
-                    QuestDataId = ID,
-                    MobID = m.MobID,
-                    Needed = m.ReqKills
-                }));
-            }
+            //if (DataProvider.Quests.TryGetValue(questID, out WZQuestData wzq) && wzq.Mobs.Count > 0)
+            //{
+            //    QuestMobs.AddRange(wzq.Mobs.Select(m => new QuestMobData {
+            //        QuestDataId = ID,
+            //        MobID = m.MobID,
+            //        Needed = m.ReqKills
+            //    }));
+            //}
 
             QuestPacket.SendQuestUpdateData(Character, questID, data);
             return true;
@@ -219,7 +219,7 @@ namespace WvsBeta.Game
         }
         public byte GetState(short questID)
         {
-            if (!HasQuest(questID)) return (byte)QuestState.NotStarted;
+            if (!HasQuest(questID)) return (byte)QuestState.Available;
             return (byte)Quests[questID].State;
         }
         #endregion
