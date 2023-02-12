@@ -119,13 +119,19 @@ namespace WvsBeta.Game
             if (act.Mesos > 0 && !chr.Inventory.CanExchangeMesos(act.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
 
-            if (act.Items.Count > 0) { foreach (var item in act.Items) { chr.Inventory.ExchangeItem(item.ItemID, item.Amount); } }
-            if (act.Mesos > 0)
+            if (act.Items.Count > 0)
             {
-                chr.Inventory.ExchangeMesos(act.Mesos);
-                chr.SendPacket(MessagePacket.MesosChanged(act.Mesos));
+                foreach (var item in act.Items)
+                {
+                    chr.Inventory.ExchangeItem(item.ItemID, item.Amount);
+                    if (item.Amount > 0) chr.SendPacket(MessagePacket.GainItem(item.ItemID, item.Amount));
+                }
             }
-            if (act.Exp > 0) chr.AddEXP(act.Exp, false, true);
+            if (act.Mesos != 0)
+            {
+                chr.IncMoney(act.Mesos, MessageAppearType.ChatGrey);
+            }
+            if (act.Exp != 0) chr.IncEXP(act.Exp, MessageAppearType.ChatGrey);
 
             if (act.Stage.Stage == QuestStage.Start)
             {
@@ -172,6 +178,7 @@ namespace WvsBeta.Game
                         {
                             SendQuestActionResultError(chr, QuestActionResult.InventoryFull);
                         }
+                        chr.SendPacket(MessagePacket.GainItem(itemid, (short)amount));
                         break;
                     }
                 case 1:

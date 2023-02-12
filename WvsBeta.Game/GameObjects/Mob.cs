@@ -516,7 +516,7 @@ namespace WvsBeta.Game
                                         IncEXP *= 0.5;
 
                                     User.SetupLogging();
-                                    User.AddEXP(IncEXP, User.ID == Chr.ID);
+                                    User.AddEXP(IncEXP, User.ID == Chr.ID ? MessageAppearType.SideWhite : MessageAppearType.SideYellow);
                                 }
                                 else
                                 {
@@ -601,7 +601,7 @@ namespace WvsBeta.Game
                                     IncExpUser = IncExpUser - (IncExpUser * 0.1666666666666667);
 
                                     User.SetupLogging();
-                                    User.AddEXP(IncExpUser, User.ID == Chr.ID);
+                                    User.AddEXP(IncExpUser, User.ID == Chr.ID ? MessageAppearType.SideWhite : MessageAppearType.SideYellow);
                                 }
                             }
                         }
@@ -729,7 +729,7 @@ namespace WvsBeta.Game
                         Trace.WriteLine($"{User.Name} gets {IncEXP} EXP for {Log.Damage} damage");
 
                         User.SetupLogging();
-                        User.AddEXP(IncEXP, true);
+                        User.AddEXP(IncEXP, MessageAppearType.SideWhite);
                     }
                     else
                     {
@@ -884,7 +884,7 @@ namespace WvsBeta.Game
 
                             Trace.WriteLine($"[party {damage.PartyID}] {User.Name} gets {IncExpUser} EXP");
                             User.SetupLogging();
-                            User.AddEXP(IncExpUser, User.ID == Chr.ID);
+                            User.AddEXP(IncExpUser, User.ID == Chr.ID ? MessageAppearType.SideWhite : MessageAppearType.SideYellow);
                         }
                     }
                 }

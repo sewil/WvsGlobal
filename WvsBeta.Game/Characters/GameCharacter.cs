@@ -663,9 +663,13 @@ namespace WvsBeta.Game
         {
             SendPacket(FieldEffectPacket.EffectSound(path));
         }
-        public void IncEXP(short amount, int notGrey)
+        public void IncEXP(int amount, int isQuest)
         {
-            AddEXP(amount, true, notGrey == 0);
+            IncEXP(amount, isQuest == 1 ? MessageAppearType.ChatGrey : MessageAppearType.SideWhite);
+        }
+        public void IncEXP(int amount, MessageAppearType appearType)
+        {
+            AddEXP(amount, appearType);
         }
         public void IncHP(double value, int isSelf)
         {
@@ -685,11 +689,16 @@ namespace WvsBeta.Game
             if (pet == null) return;
             Pet.IncreaseCloseness(this, pet, inc);
         }
-        public byte IncMoney(int inc, int isSelf)
+        public byte IncMoney(int inc, int isQuest)
         {
-            if (!Inventory.CanExchangeMesos(inc)) return 0;
-            Inventory.ExchangeMesos(inc, isSelf == 1);
-            return 1;
+            return (byte)(IncMoney(inc, isQuest == 1 ? MessageAppearType.ChatGrey : MessageAppearType.SideWhite) ? 1 : 0);
+        }
+        public bool IncMoney(int inc, MessageAppearType appearType = MessageAppearType.None)
+        {
+            if (!Inventory.CanExchangeMesos(inc)) return false;
+            Inventory.ExchangeMesos(inc);
+            if (appearType != MessageAppearType.None) SendPacket(MessagePacket.GainMesos(inc, appearType));
+            return true;
         }
         public void IncPOP(short inc, int isSelf)
         {

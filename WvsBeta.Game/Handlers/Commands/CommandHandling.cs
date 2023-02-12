@@ -1169,7 +1169,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         else
                                         {
                                             character.Inventory.AddNewItem(ItemID, Amount);
-                                            CharacterStatsPacket.SendGainDrop(character, false, ItemID, Amount);
+                                            character.SendPacket(MessagePacket.GainItem(ItemID, Amount));
                                         }
                                     }
                                     else
@@ -1509,7 +1509,7 @@ namespace WvsBeta.Game.Handlers.Commands
                         case "giveexp":
                             {
                                 if (Args.Count > 0 && Args[0].IsNumber())
-                                    character.AddEXP(Args[0].GetInt32());
+                                    character.AddEXP(Args[0].GetInt32(), MessageAppearType.SideWhite);
                                 return true;
                             }
 
@@ -2377,8 +2377,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                             continue;
                                         }
                                     }
-                                    CharacterStatsPacket.SendGainDrop(character, drop.Reward.Mesos, drop.Reward.Drop,
-                                        pickupAmount);
+                                    if (drop.Reward.Mesos) character.SendPacket(MessagePacket.GainMesos(drop.Reward.Drop, MessageAppearType.SideWhite));
+                                    else character.SendPacket(MessagePacket.GainItem(drop.Reward.Drop, pickupAmount));
                                     if (mobLoot)
                                     {
                                         var mob = mobs[(int)(Rand32.Next() % mobs.Count)];
@@ -2576,7 +2576,7 @@ namespace WvsBeta.Game.Handlers.Commands
                     {
                         // /exp (int amount) 
                         int exp = packet.ReadInt();
-                        chr.AddEXP(exp);
+                        chr.AddEXP(exp, MessageAppearType.SideWhite);
                         break;
                     }
                 case 0x03:

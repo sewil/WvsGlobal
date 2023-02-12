@@ -232,7 +232,7 @@ namespace WvsBeta.Game
                         {
                             int oldHP = victim.HP;
                             victim.ModifyHP((short)Math.Min(heal, (victim.PrimaryStats.GetMaxHP() - victim.HP)));
-                            chr.AddEXP(20 * ((victim.HP - oldHP) / (8 * victim.Level + 190)), true);
+                            chr.AddEXP(20 * ((victim.HP - oldHP) / (8 * victim.Level + 190)), MessageAppearType.SideWhite);
                         });
 
                         break;

@@ -187,7 +187,7 @@ namespace WvsBeta.Game
 
                     for (byte j = 0; j < hits; j++)
                     {
-                        int dmg = packet.ReadInt();
+                        int dmg = packet.ReadInt(); // Verify with dmg randomizer?
                         ad.TotalDamage += dmg;
                         ai.Damages.Add(dmg);
                     }

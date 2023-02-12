@@ -703,7 +703,7 @@ namespace WvsBeta.Game
                     WriteInt(chr.MapID);
                     WriteByte(chr.PortalID);
                     WriteShort(chr.HP);
-                    bool writePos = true;
+                    bool writePos = false;
                     WriteBool(writePos);
                     if (writePos)
                     {

@@ -139,11 +139,6 @@ namespace WvsBeta.Game
             }
         }
 
-        private static readonly HashSet<ClientMessages> logPackets = new HashSet<ClientMessages>
-        {
-            ClientMessages.MINI_ROOM_OPERATION, ClientMessages.STORAGE_ACTION, ClientMessages.SHOP_ACTION
-        };
-
         private static readonly HashSet<ClientMessages> ignoreClientPackets = new HashSet<ClientMessages>
         {
             ClientMessages.PONG, ClientMessages.MOVE_PLAYER, ClientMessages.HEAL_OVER_TIME, ClientMessages.MOB_MOVE, ClientMessages.MOB_APPLY_CONTROL,
@@ -182,9 +177,6 @@ namespace WvsBeta.Game
 
                     if (!ignoreClientPackets.Contains(header))
                         Program.MainForm.LogAppend($"[{character.Name}->CH{Player.Channel}][{header}] {packet}");
-
-                    if (logPackets.Contains(header))
-                        PacketLog.ReceivedPacket(packet, (byte)header, Server.Instance.Name, IP);
 
                     switch (header)
                     {
