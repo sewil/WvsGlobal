@@ -12,6 +12,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -66,7 +67,6 @@ namespace WvsBeta.Game
         public bool GMHideEnabled { get; private set; }
         public bool Donator { get; private set; }
         public bool BetaPlayer { get; private set; }
-
         public MiniRoomBase Room { get; set; }
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
@@ -321,7 +321,7 @@ namespace WvsBeta.Game
 
         public void TryActivateHide()
         {
-            if (!IsGM || GMHideEnabled) return;
+            if (!IsGM || GMHideEnabled || true) return;
 
             var hideSkill = Constants.Gm.Skills.Hide;
             // Make sure that the user has the skill
@@ -730,6 +730,62 @@ namespace WvsBeta.Game
                 return AvatarSelectState.Success;
             }
             return AvatarSelectState.SysError;
+        }
+        #endregion
+        #region Guild
+        public enum GuildCreateStatus
+        {
+            Success = 0,
+            TooLowLv = 1,
+            NotInParty = 2,
+            NotPartyLeader = 3,
+            NotEnoughMembers = 4,
+            PartyTraitor = 5,
+            NotEnoughMesos = 6
+        }
+        public GuildData Guild
+        {
+            get
+            {
+                if (!GuildData.Guilds.ContainsKey(GuildID)) return null;
+                else return GuildData.Guilds[GuildID];
+            }
+        }
+        public int GuildID { get; set; }
+        public bool IsGuildMaster { get; set; }
+        public bool IsGuildMember { get; set; }
+        public int GetGuildCountMax { get; set; }
+        public bool IsGuildMarkExist { get; set; }
+        public GuildCreateStatus IsCreateGuildPossible(int mesos)
+        {
+            if (Level < 10) return GuildCreateStatus.TooLowLv;
+            else if (PartyID == 0) return GuildCreateStatus.NotInParty;
+            else if (!IsPartyBoss) return GuildCreateStatus.NotPartyLeader;
+            else if (Party.Characters.Where(c => c.Field.ID == Field.ID).Count() < 6) return GuildCreateStatus.NotEnoughMembers;
+            else if (Party.Characters.Any(c => c.IsGuildMember)) return GuildCreateStatus.PartyTraitor;
+            else if (!Inventory.CanExchangeMesos(-mesos)) return GuildCreateStatus.NotEnoughMesos;
+            return GuildCreateStatus.Success;
+        }
+        public void SetGuildMark(int mesos)
+        {
+
+        }
+        public void RemoveGuildMark(int mesos)
+        {
+        }
+        public bool CreateNewGuild(int mesos)
+        {
+            Inventory.ExchangeMesos(mesos);
+            return false;
+        }
+
+        public bool IncGuildCountMax(int slots, int mesos)
+        {
+            return false;
+        }
+        public bool RemoveGuild(int mesos)
+        {
+            return false;
         }
         #endregion
     }

@@ -61,6 +61,8 @@ namespace WvsBeta.Scripts.Scripts
                 { "subway_get3", "victoria3" },
                 { "subway_out", "victoria3" },
                 { "hotel1", "victoria3" },
+                { "guild_proc", "ossyria2" },
+                { "guild_mark", "ossyria2" },
                 { "party1_enter", "party" },
                 { "party1_play", "party" },
                 { "party1_out", "party" },
