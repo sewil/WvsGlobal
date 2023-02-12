@@ -116,7 +116,6 @@ namespace WvsBeta.Game
         public void Stop()
         {
             mCharacter.NpcSession = null;
-            mCharacter.ShopNPCID = 0;
             compiledScript = null;
             ewh = null;
             thread?.Abort();
@@ -256,10 +255,9 @@ namespace WvsBeta.Game
         }
         public void AskShop(IEnumerable<ShopItemData> items)
         {
-            DataProvider.NPCs[mNpcID].Shop = items.ToList();
+            DataProvider.NPCs[mNpcID].Shop = items.ToList(); // MapPacket takes over handling once shop is loaded. Reload shop with /reloadscript
             mCharacter.ShopNPCID = mNpcID;
             NpcPacket.SendShowNPCShop(mCharacter, mNpcID);
-            ewh.WaitOne();
         }
 
         public object GetStrReg(string pName)
