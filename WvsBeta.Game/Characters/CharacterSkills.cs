@@ -110,17 +110,17 @@ namespace WvsBeta.Game
                 ItemTransfer.PlayerUsedSkill(Character.ID, skillid, item, data.ItemAmountUsage);
             }
 
-            if (cash > 0 && false)
-            {
-                var min = (short)(cash - (80 + level * 5));
-                var max = (short)(cash + (80 + level * 5));
-                var realAmount = (short)Character.CalcDamageRandomizer.ValueBetween(min, max);
-                if (Character.AssertForHack(((long)Character.Inventory.Mesos - realAmount) < 0,
-                    "Player tried to use skill with meso consumption. Not enough mesos.")) return;
+            //if (cash > 0)
+            //{
+            //    var min = (short)(cash - (80 + level * 5));
+            //    var max = (short)(cash + (80 + level * 5));
+            //    var realAmount = (short)Character.CalcDamageRandomizer.ValueBetween(min, max);
+            //    if (Character.AssertForHack(((long)Character.Inventory.Mesos - realAmount) < 0,
+            //        "Player tried to use skill with meso consumption. Not enough mesos.")) return;
 
-                ((CharacterInventory)Character.Inventory).ExchangeMesos(-realAmount);
-                MesosTransfer.PlayerUsedSkill(Character.ID, realAmount, skillid);
-            }
+            //    ((CharacterInventory)Character.Inventory).ExchangeMesos(-realAmount);
+            //    MesosTransfer.PlayerUsedSkill(Character.ID, realAmount, skillid);
+            //}
         }
 
         private short GetElemAmpInc(int skillId, short mp)
