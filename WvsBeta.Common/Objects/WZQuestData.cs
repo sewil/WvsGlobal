@@ -9,23 +9,15 @@ namespace WvsBeta.Common.Objects
     public class WZQuestData
     {
         public short QuestID { get; private set; }
-        public WZQuestStage OnStart { get; private set; }
-        public WZQuestStage OnComplete { get; private set; }
-        public WZQuestData(NXFile pFile, NXNode node)
+        public IDictionary<QuestStage, WZQuestStage> Stages { get; private set; } = new Dictionary<QuestStage, WZQuestStage>();
+        public WZQuestData(NXFile pFile, NXNode checkNode)
         {
-            short qid = short.Parse(node.Name);
-            foreach (NXNode cStage in node)
+            short qid = short.Parse(checkNode.Name);
+            foreach (NXNode cStage in checkNode)
             {
                 NXNode aStage = pFile.ResolvePath($"Quest/Act.img/{qid}/{cStage.Name}");
                 WZQuestStage stage = new WZQuestStage(this, cStage, aStage);
-                if (stage.Stage == QuestStage.Start)
-                {
-                    OnStart = stage;
-                }
-                else
-                {
-                    OnComplete = stage;
-                }
+                Stages.Add(stage.Stage, stage);
             }
             QuestID = qid;
         }
@@ -65,7 +57,7 @@ namespace WvsBeta.Common.Objects
                         foreach (var itemNode in subNode)
                         {
                             var item = new QuestItem();
-                            item.Count = itemNode["count"].ValueInt16();
+                            item.Amount = itemNode["count"].ValueInt16();
                             item.ItemID = itemNode["id"].ValueInt32();
                             Items.Add(item);
                         }
@@ -118,7 +110,7 @@ namespace WvsBeta.Common.Objects
                         foreach (var itemNode in subNode)
                         {
                             var item = new QuestItem();
-                            item.Count = itemNode["count"].ValueInt16();
+                            item.Amount = itemNode["count"].ValueInt16();
                             item.ItemID = itemNode["id"].ValueInt32();
                             Items.Add(item);
                         }

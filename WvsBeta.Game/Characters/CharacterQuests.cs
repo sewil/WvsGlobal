@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
@@ -184,6 +183,13 @@ namespace WvsBeta.Game
             quest.State = QuestState.Completed;
             quest.EndTime = MasterThread.UnixTime;
             if (pSendPacket) QuestPacket.SendCompleteQuest(Character, questID, quest.FileTime);
+        }
+
+        public void RemoveQuest(short qid, bool sendPacket = true)
+        {
+            if (!HasQuest(qid)) return;
+            Quests.Remove(qid);
+            if (sendPacket) QuestPacket.SendRemoveQuest(Character, qid);
         }
 
         #region Script helpers

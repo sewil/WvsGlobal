@@ -93,7 +93,7 @@ namespace WvsBeta.Game
 
                             Common.Tracking.MesosTransfer.PlayerLootMesos(drop.SourceID, chr.ID, mesosGiven, "Party " + chr.PartyID + ", " + chr.MapID + ", " + drop.GetHashCode());
 
-                            CharacterStatsPacket.SendGainDrop(BonusUser, true, mesosGiven, 0);
+                            BonusUser.SendPacket(MessagePacket.DropPickUpMesos(mesosGiven));
                         }
                     }
                 }
@@ -136,7 +136,8 @@ namespace WvsBeta.Game
             }
             if (!SentDropNotice)
             {
-                CharacterStatsPacket.SendGainDrop(chr, reward.Mesos, dropNoticeItemIdOrMesos, pickupAmount);
+                if (reward.Mesos) chr.SendPacket(MessagePacket.DropPickUpMesos(dropNoticeItemIdOrMesos));
+                else chr.SendPacket(MessagePacket.DropPickUpItem(dropNoticeItemIdOrMesos, pickupAmount));
             }
             chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.FreeForAll, chr.ID);
         }

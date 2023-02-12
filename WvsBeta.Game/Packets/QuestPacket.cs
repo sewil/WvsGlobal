@@ -53,11 +53,11 @@ namespace WvsBeta.Game
             pw.WriteShort(qid);
             chr.SendPacket(pw);
         }
-        public static void ShowQuestActionResultError(GameCharacter chr, QuestActionResult result)
+        public static void SendQuestActionResultError(GameCharacter chr, QuestActionResult result)
         {
-            ShowQuestActionResult(chr, result, 0, 0);
+            SendQuestActionResult(chr, result, 0, 0);
         }
-        public static void ShowQuestActionResult(GameCharacter chr, QuestActionResult result, int npcID, short currentQuest, params short[] nextQuests)
+        public static void SendQuestActionResult(GameCharacter chr, QuestActionResult result, int npcID, short currentQuest, params short[] nextQuests)
         {
             var pw = new Packet(ServerMessages.QUEST_ACTION_RESULT);
 
@@ -90,7 +90,7 @@ namespace WvsBeta.Game
             FailedRetrieveEquippedItem = 8,
             CannotCarryMoreThanOne = 9
         }
-        class QuestException:Exception
+        class QuestException : Exception
         {
             public QuestActionResult Result { get; private set; }
             public QuestException(QuestActionResult result)
@@ -100,7 +100,7 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestCheck(GameCharacter chr, WZQuestCheck check)
         {
-            foreach (var item in check.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, (short)-item.Count)) throw new QuestException(QuestActionResult.FailedRetrieveEquippedItem); }
+            foreach (var item in check.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.FailedRetrieveEquippedItem); }
             if (check.Mesos > 0 && !chr.Inventory.CanExchangeMesos(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (check.LvMin > 0 && chr.Level < check.LvMin) throw new QuestException(QuestActionResult.UnknownError);
             if (check.LvMax > 0 && chr.Level > check.LvMax) throw new QuestException(QuestActionResult.UnknownError);
@@ -113,13 +113,13 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public static void HandleQuestAct(GameCharacter chr, WZQuestAct act)
+        public static void HandleQuestAct(GameCharacter chr, int npcid, WZQuestAct act)
         {
-            foreach (var item in act.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, item.Count)) throw new QuestException(QuestActionResult.InventoryFull); }
+            foreach (var item in act.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull); }
             if (act.Mesos > 0 && !chr.Inventory.CanExchangeMesos(act.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
 
-            if (act.Items.Count > 0) { foreach (var item in act.Items) { chr.Inventory.ExchangeItem(item.ItemID, item.Count); } }
+            if (act.Items.Count > 0) { foreach (var item in act.Items) { chr.Inventory.ExchangeItem(item.ItemID, item.Amount); } }
             if (act.Mesos > 0)
             {
                 chr.Inventory.ExchangeMesos(act.Mesos);
@@ -136,43 +136,31 @@ namespace WvsBeta.Game
                 if (act.NextQuest > 0)
                 {
                     if (!DataProvider.Quests.TryGetValue(act.NextQuest, out WZQuestData nextQuest)) throw new QuestException(QuestActionResult.UnknownError);
-                    ShowQuestActionResult(chr, QuestActionResult.Success, nextQuest.OnStart.Check.NpcID, 0, act.NextQuest);
+                    SendQuestActionResult(chr, QuestActionResult.Success, npcid, 0, act.NextQuest);
                 }
                 else
                 {
                     chr.Quests.SetComplete(act.Stage.Quest.QuestID);
-                    ShowQuestActionResult(chr, QuestActionResult.Success, act.Stage.Check.NpcID, act.Stage.Quest.QuestID);
+                    SendQuestActionResult(chr, QuestActionResult.Success, npcid, act.Stage.Quest.QuestID);
                 }
             }
         }
-        public static void HandleQuestStage(GameCharacter chr, WZQuestStage stage)
+        public static void HandleQuestStage(GameCharacter chr, int npcid, WZQuestStage stage)
         {
             try
             {
                 HandleQuestCheck(chr, stage.Check);
-                HandleQuestAct(chr, stage.Act);
+                HandleQuestAct(chr, npcid, stage.Act);
             }
             catch (QuestException e)
             {
-                ShowQuestActionResultError(chr, e.Result);
+                SendQuestActionResultError(chr, e.Result);
             }
         }
         public static void HandleAction(GameCharacter chr, Packet packet)
         {
             byte type = packet.ReadByte(); // 0 = lost item, 1 = start, 2 = complete, 3 = forfeit
             short qid = packet.ReadShort();
-            int npcID = 0;
-            NPCData npc;
-            if (type != 3 && type != 0)
-            {
-                npcID = packet.ReadInt();
-                if (!DataProvider.NPCs.TryGetValue(npcID, out npc))
-                {
-                    Program.MainForm.LogAppend("Npc " + npcID + " not found!");
-                    ShowQuestActionResultError(chr, QuestActionResult.UnknownError);
-                    return;
-                }
-            }
             switch (type)
             {
                 case 0:
@@ -182,37 +170,38 @@ namespace WvsBeta.Game
                         int itemid = packet.ReadInt();
                         if (!chr.Inventory.TryExchangeItem(itemid, (short)amount))
                         {
-                            ShowQuestActionResultError(chr, QuestActionResult.InventoryFull);
+                            SendQuestActionResultError(chr, QuestActionResult.InventoryFull);
                         }
                         break;
                     }
                 case 1:
                     {
-                        //start quest 42 01 E8 03 35 08 00 00
+                        int npcid = packet.ReadInt();
+                        // start quest [42] [01] [E8 03] [35 08 00 00]
                         if (!DataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
-                            ShowQuestActionResult(chr, QuestActionResult.UnknownError, npcID, qid);
+                            SendQuestActionResultError(chr, QuestActionResult.UnknownError);
                             return;
                         }
-                        HandleQuestStage(chr, qd.OnStart);
+                        HandleQuestStage(chr, npcid, qd.Stages[QuestStage.Start]);
                     }
                     break;
                 case 2:
                     {
-                        // complete quest  42 02 E8 03 34 08 00 00 FF FF FF FF
+                        int npcid = packet.ReadInt();
+                        // complete quest [42] [02] [E8 03] [34 08 00 00] [FF FF FF FF]
                         packet.ReadInt();
 
                         if (!DataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
-                            ShowQuestActionResult(chr, QuestActionResult.UnknownError, npcID, qid);
+                            SendQuestActionResultError(chr, QuestActionResult.UnknownError);
                             return;
                         }
-                        HandleQuestStage(chr, qd.OnComplete);
+                        HandleQuestStage(chr, npcid, qd.Stages[QuestStage.Complete]);
                     }
                     break;
-                case 3: // Forfeit
-                        // 42 03 EB 03
-                    QuestPacket.SendRemoveQuest(chr, qid);
+                case 3: // forfeit quest [42] [03] [EB 03]
+                    chr.Quests.RemoveQuest(qid);
                     break;
                 default:
                     break;

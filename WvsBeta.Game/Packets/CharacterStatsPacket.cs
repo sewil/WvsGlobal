@@ -601,31 +601,5 @@ namespace WvsBeta.Game
 
             chr.Field.SendPacket(chr, pw);
         }
-
-        public static void SendGainEXP(GameCharacter chr, int amount, bool isMine, bool isGray = false)
-        {
-            Packet pw = new Packet(ServerMessages.MESSAGE);
-            pw.WriteByte(3);
-            pw.WriteBool(isMine);
-            pw.WriteInt(amount);
-            pw.WriteBool(isGray);
-            chr.SendPacket(pw);
-        }
-
-        public static void SendGainDrop(GameCharacter chr, bool isMesos, int idOrMesosAmount, short amount)
-        {
-            Packet pw = new Packet(ServerMessages.MESSAGE);
-            pw.WriteByte(0x00);
-            pw.WriteBool(isMesos);
-            pw.WriteInt(idOrMesosAmount);
-
-            if (!isMesos)
-            {
-                Inventory inv = Constants.getInventory(idOrMesosAmount);
-                pw.WriteInt(inv == Inventory.Equip ? 1 : amount);
-            }
-            chr.SendPacket(pw);
-        }
-
     }
 }
