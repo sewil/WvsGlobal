@@ -641,6 +641,71 @@ LOCK TABLES `gamestats` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `guilds`
+--
+
+DROP TABLE IF EXISTS `guilds`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guilds` (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(13) NOT NULL,
+	`capacity` INT(10) NOT NULL,
+	`emblem_bg` SMALLINT(5) NOT NULL DEFAULT '0',
+	`emblem_bgc` TINYINT(3) NOT NULL DEFAULT '0',
+	`emblem_logo` SMALLINT(5) NOT NULL DEFAULT '0',
+	`emblem_logoc` TINYINT(3) NOT NULL DEFAULT '0',
+	`rank1` VARCHAR(50) NOT NULL DEFAULT '',
+	`rank2` VARCHAR(50) NOT NULL DEFAULT '',
+	`rank3` VARCHAR(50) NOT NULL DEFAULT '',
+	`rank4` VARCHAR(50) NOT NULL DEFAULT '',
+	`rank5` VARCHAR(50) NOT NULL DEFAULT '',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `id` (`id`) USING BTREE,
+	UNIQUE INDEX `name` (`name`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `guilds`
+--
+
+LOCK TABLES `guilds` WRITE;
+/*!40000 ALTER TABLE `guilds` DISABLE KEYS */;
+/*!40000 ALTER TABLE `guilds` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `guild_members`
+--
+
+DROP TABLE IF EXISTS `guild_members`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `guild_members` (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+	`guild_id` INT(10) NOT NULL,
+	`character_id` INT(10) NOT NULL,
+	`rank` INT(10) NOT NULL DEFAULT '0',
+	PRIMARY KEY (`id`) USING BTREE,
+	UNIQUE INDEX `id` (`id`) USING BTREE,
+	INDEX `FK__guilds` (`guild_id`) USING BTREE,
+	INDEX `FK__characters` (`character_id`) USING BTREE,
+	CONSTRAINT `FK__characters` FOREIGN KEY (`character_id`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT `FK__guilds` FOREIGN KEY (`guild_id`) REFERENCES `wvsbeta`.`guilds` (`id`) ON UPDATE NO ACTION ON DELETE CASCADE
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `guild_members`
+--
+
+LOCK TABLES `guild_members` WRITE;
+/*!40000 ALTER TABLE `guild_members` DISABLE KEYS */;
+/*!40000 ALTER TABLE `guild_members` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `inc_table`
 --
 
