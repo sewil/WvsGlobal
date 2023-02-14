@@ -9,8 +9,17 @@ namespace WvsBeta.Game.GameObjects
     {
         public readonly int PartyID;
         public readonly int Leader;
-        public int[] Members;
-        public IEnumerable<GameCharacter> Characters => Members.Select(m => Server.Instance.GetCharacter(m)).Where(c => c != null);
+        private int[] _members;
+        public int[] Members
+        {
+            get => _members;
+            set
+            {
+                _members = value;
+                Characters = _members.Select(m => Server.Instance.GetCharacter(m)).Where(c => c != null);
+            }
+        }
+        public IEnumerable<GameCharacter> Characters { get; private set; }
 
         public PartyData(int ldr, int[] pt, int id)
         {

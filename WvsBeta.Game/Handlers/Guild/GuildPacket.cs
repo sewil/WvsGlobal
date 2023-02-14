@@ -1,4 +1,6 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using log4net.Core;
+using System;
+using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.Handlers.Guild
 {
@@ -7,13 +9,17 @@ namespace WvsBeta.Game.Handlers.Guild
         EnterGuildName = 1,
         ShowGuildContract = 3,
         GuildInvitation = 5,
+        GuildInfo = 17,
         GuildNameAlreadyInUse = 19,
-        GuildContractNonAgreement = 22,
+        NpcContractAgreementError = 22,
         GuildCreate = 23,
-        Unk35 = 35,
-        Err36,
-        Err37,
-        Err38,
+        NpcContractSomebodyDisagreed = 27,
+        NpcFormError = 29,
+        TheGuildHasBeenMade = 30,
+        MemberQuit = 35,
+        YouAreNotInTheGuild = 36,
+        GuildRequestNotAccepted = 37,
+        MemberExpelled = 38,
         Err39,
         Err40,
         Err41,
@@ -26,13 +32,13 @@ namespace WvsBeta.Game.Handlers.Guild
         Err48,
         Err49,
         NpcErrorExpandingGuild = 50,
-        Unk51,
-        Err52,
-        Err53,
+        MemberUpdateLevelJob = 51,
+        MemberSetOnline = 52,
+        RanksUpdated = 53,
         Err54,
-        Err55,
+        MemberChangeRank = 55,
         Unk56,
-        Unk57
+        UpdateGuildEmblem = 57
     }
     public class GuildPacket : Packet
     {
@@ -40,16 +46,80 @@ namespace WvsBeta.Game.Handlers.Guild
         {
             WriteByte((byte)type);
         }
-        public static void SendGuildCreate(GameCharacter chr, GuildData guild)
+        public static GuildPacket GuildInfo(GuildData guild)
+        {
+            var pw = new GuildPacket(GuildResultType.GuildInfo);
+            guild.Encode(pw);
+            return pw;
+        }
+        public static GuildPacket UpdateRanks(int guildId, string[] ranks)
+        {
+            var pw = new GuildPacket(GuildResultType.RanksUpdated);
+            pw.WriteInt(guildId);
+            foreach (var rank in ranks)
+            {
+                pw.WriteString(rank);
+            }
+            return pw;
+        }
+        public static GuildPacket MemberExpelled(int guildId, int cid, string name)
+        {
+            var pw = new GuildPacket(GuildResultType.MemberExpelled);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteString(name);
+            return pw;
+        }
+        public static GuildPacket MemberQuit(int guildId, int cid, string name)
+        {
+            var pw = new GuildPacket(GuildResultType.MemberQuit);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteString(name);
+            return pw;
+        }
+        public static GuildPacket ChangeMemberRank(int guildId, int cid, GuildRank rank)
+        {
+            var pw = new GuildPacket(GuildResultType.MemberChangeRank);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteByte((byte)rank);
+            return pw;
+        }
+        public static GuildPacket UpdateMemberLevelJob(int guildId, int cid, int level, int job)
+        {
+            var pw = new GuildPacket(GuildResultType.MemberUpdateLevelJob);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteInt(level);
+            pw.WriteInt(job);
+            return pw;
+        }
+        public static GuildPacket UpdateGuildEmblem(int guildId, GuildEmblem emblem)
+        {
+            var pw = new GuildPacket(GuildResultType.UpdateGuildEmblem);
+            pw.WriteInt(guildId);
+            emblem.Encode(pw);
+            return pw;
+        }
+        public static GuildPacket MemberSetOnline(int guildId, int cid, bool isOnline)
+        {
+            var pw = new GuildPacket(GuildResultType.MemberSetOnline);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteBool(isOnline);
+            return pw;
+        }
+        public static GuildPacket GuildCreate(GuildData guild)
         {
             var pw = new GuildPacket(GuildResultType.GuildCreate);
             guild.Encode(pw);
-            // Send to party
-            chr.SendPacket(pw);
+            return pw;
         }
-        public static void SendResult(GameCharacter chr, GuildResultType type)
+        public static GuildPacket GuildResult(GuildResultType type)
         {
-            var pw = new Packet(ServerMessages.GUILD_RESULT);
+        // 30 33 01 00 00 00 05 00 00 00 00 00 00 00 0A 00 00 00
+            var pw = new GuildPacket(type);
             pw.WriteByte(0);
             int guildID = 0;
             string guildName = "guildName";
@@ -71,18 +141,16 @@ namespace WvsBeta.Game.Handlers.Guild
                     break;
                 case GuildResultType.GuildNameAlreadyInUse: // No data
                     break;
-                case GuildResultType.GuildContractNonAgreement: // No data
+                case GuildResultType.NpcContractAgreementError: // No data
                     break;
-                case GuildResultType.Unk35:
+                case GuildResultType.MemberQuit:
                     pw.WriteInt(0);
                     pw.WriteInt(0);
                     pw.WriteString("");
                     break;
-                case GuildResultType.Err36:
+                case GuildResultType.YouAreNotInTheGuild:
                     break;
-                case GuildResultType.Err37:
-                    break;
-                case GuildResultType.Err38:
+                case GuildResultType.MemberExpelled:
                     break;
                 case GuildResultType.Err39:
                     break;
@@ -114,44 +182,25 @@ namespace WvsBeta.Game.Handlers.Guild
                     break;
                 case GuildResultType.NpcErrorExpandingGuild: // No data
                     break;
-                case GuildResultType.Unk51:
+                case GuildResultType.MemberUpdateLevelJob:
                     pw.WriteInt(0);
                     pw.WriteInt(0);
                     pw.WriteInt(0);
                     pw.WriteInt(0);
-                    break;
-                case GuildResultType.Err52:
-                    pw.WriteInt(0);
-                    pw.WriteInt(0);
-                    pw.WriteByte(0);
-                    break;
-                case GuildResultType.Err53:
-                    pw.WriteInt(0);
-                    pw.WriteString("");
-                    pw.WriteString("");
-                    pw.WriteString("");
-                    pw.WriteString("");
-                    pw.WriteString("");
                     break;
                 case GuildResultType.Err54:
                     break;
-                case GuildResultType.Err55:
+                case GuildResultType.MemberChangeRank:
                     pw.WriteInt(0);
                     pw.WriteInt(0);
                     pw.WriteByte(0);
                     break;
                 case GuildResultType.Unk56:
                     break;
-                case GuildResultType.Unk57:
-                    pw.WriteInt(0);
-                    pw.WriteShort(0);
-                    pw.WriteByte(0);
-                    pw.WriteShort(0);
-                    pw.WriteByte(0);
-                    break;
                 default:
                     break;
             }
+            return pw;
         }
     }
 }

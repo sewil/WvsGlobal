@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common.Sessions;
 
@@ -6,35 +8,160 @@ namespace WvsBeta.Game.Handlers.Guild
 {
     public enum GuildRank : int
     {
-        Member1 = 1,
-        Member2 = 2,
-        Member3 = 3,
-        JrMaster = 4,
-        Master = 5,
+        Master = 1,
+        JrMaster = 2,
+        Member1 = 3,
+        Member2 = 4,
+        Member3 = 5,
     }
     public class GuildMember
     {
-        public int ID { get; set; }
-        public GuildRank Rank { get; set; }
+        public GuildRank Rank { get; private set; }
+        public string Name { get; private set; }
+        public int Job { get; private set; }
+        public int Level { get; private set; }
+        public bool IsOnline { get; set; }
+
+        private GuildMember(MySqlDataReader reader, bool isOnline)
+        {
+            Rank = (GuildRank)reader.GetInt32("rank");
+            Name = reader.GetString("name");
+            Job = reader.GetInt16("job");
+            Level = reader.GetByte("level");
+            IsOnline = isOnline;
+        }
+        public static GuildMember LoadFromReader(MySqlDataReader reader, bool isOnline)
+        {
+            return new GuildMember(reader, isOnline);
+        }
+        private GuildMember(Packet pr)
+        {
+            Decode(pr);
+        }
+        public static GuildMember DecodeNew(Packet pr)
+        {
+            return new GuildMember(pr);
+        }
+        public GuildMember Decode(Packet pr)
+        {
+            Name = pr.ReadString(13); // 13
+            Job = pr.ReadInt(); // 17
+            Level = pr.ReadInt(); // 21
+            Rank = (GuildRank)pr.ReadInt(); // 25
+            IsOnline = pr.ReadInt() == 1; // 29
+            return this;
+        }
+        public void Encode(Packet pw)
+        {
+            pw.WriteString13(Name);
+            pw.WriteInt(Job);
+            pw.WriteInt(Level);
+            pw.WriteInt((int)Rank);
+            pw.WriteInt(IsOnline ? 1 : 0);
+        }
+    }
+    public class GuildEmblem
+    {
+        public static readonly GuildEmblem Default = new GuildEmblem();
+        public short Background { get; private set; }
+        public byte BackgroundColor { get; private set; }
+        public short Logo { get; private set; }
+        public byte LogoColor { get; private set; }
+        private GuildEmblem()
+        {
+        }
+        public GuildEmblem(short background, byte backgroundColor, short logo, byte logoColor)
+        {
+            Background = background;
+            BackgroundColor = backgroundColor;
+            Logo = logo;
+            LogoColor = logoColor;
+        }
+        private GuildEmblem(Packet pr)
+        {
+            Background = pr.ReadShort();
+            BackgroundColor = pr.ReadByte();
+            Logo = pr.ReadShort();
+            LogoColor = pr.ReadByte();
+        }
+        public static GuildEmblem Decode(Packet pr)
+        {
+            return new GuildEmblem(pr);
+        }
+        public void Encode(Packet pw)
+        {
+            pw.WriteShort(Background);
+            pw.WriteByte(BackgroundColor);
+            pw.WriteShort(Logo);
+            pw.WriteByte(LogoColor);
+        }
+        public void EncodeForRemote(Packet pw)
+        {
+            Encode(pw);
+        }
+        private GuildEmblem(MySqlDataReader reader)
+        {
+            Background = reader.GetInt16("emblem_bg");
+            BackgroundColor = reader.GetByte("emblem_bgc");
+            Logo = reader.GetInt16("emblem_logo");
+            LogoColor = reader.GetByte("emblem_logoc");
+        }
+        public static GuildEmblem LoadFromReader(MySqlDataReader reader)
+        {
+            return new GuildEmblem(reader);
+        }
     }
     public class GuildData
     {
-        public int ID { get; private set; }
-        public string Name { get; private set; }
-        public int Capacity { get; private set; }
-        public string[] RankNames { get; private set; }
-        public GuildMember[] Members { get; private set; }
-        public static Dictionary<int, GuildData> Guilds { get; private set; } = new Dictionary<int, GuildData>();
-
-        public GuildData(int id, string name, int capacity, string[] rankNames, GuildMember[] members)
+        public static readonly GuildData Default = new GuildData();
+        public const int RANKS = 5;
+        public int ID { get; protected set; }
+        public string Name { get; protected set; }
+        public int Capacity { get; protected set; }
+        public string[] RankNames { get; protected set; } = new string[RANKS] { "", "", "", "", "" };
+        public Dictionary<int, GuildMember> Members = new Dictionary<int, GuildMember>();
+        public IEnumerable<GameCharacter> Characters => Members.Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
+        public GuildEmblem Emblem { get; protected set; }
+        protected GuildData()
+        {
+            Name = "";
+            Emblem = GuildEmblem.Default;
+        }
+        public GuildData(int id, string name, int capacity, string[] rankNames, Dictionary<int, GuildMember> members, GuildEmblem emblem)
         {
             ID = id;
             Name = name;
             Capacity = capacity;
             Members = members;
             RankNames = rankNames;
+            Emblem = emblem;
         }
-
+        protected GuildData(Packet pr)
+        {
+            ID = pr.ReadInt();
+            Name = pr.ReadString();
+            for (int i = 0; i < RANKS; i++)
+            {
+                RankNames[i] = pr.ReadString();
+            }
+            byte memberLength = pr.ReadByte();
+            var ids = new List<int>();
+            for (int i = 0; i < memberLength; i++)
+            {
+                ids.Add(pr.ReadInt());
+            }
+            for (int i = 0; i < memberLength; i++)
+            {
+                var member = GuildMember.DecodeNew(pr);
+                Members[ids[i]] = member;
+            }
+            Capacity = pr.ReadInt();
+            Emblem = GuildEmblem.Decode(pr);
+        }
+        public static GuildData Decode(Packet pr)
+        {
+            return new GuildData(pr);
+        }
         public void Encode(Packet pw)
         {
             pw.WriteInt(ID);
@@ -43,27 +170,60 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 pw.WriteString(rankName);
             }
-            var chars = Members.Select(m => Server.Instance.GetCharacter(m.ID)).Where(c => c != null).ToArray();
-            pw.WriteByte((byte)chars.Length);
-            for (int i = 0; i < chars.Length; i++)
+            pw.WriteByte((byte)Members.Count);
+            foreach (int cid in Members.Keys)
             {
-                var member = chars[i];
-                pw.WriteInt(member.ID);
-                // 29
-                pw.WriteString13(member.Name);
-                pw.WriteInt(member.Job);
-                pw.WriteInt(member.Level);
-                pw.WriteInt((int)Members[i].Rank);
-                pw.WriteInt(member.IsOnline ? 1 : 0);
-                //pw.WriteInt(memIdx);
+                pw.WriteInt(cid);
+            }
+            foreach (var member in Members.Values)
+            {
+                member.Encode(pw);
             }
             pw.WriteInt(Capacity);
 
-            pw.WriteShort(1030); // logo background
-            pw.WriteByte(3); // Logo bg color
+            Emblem.Encode(pw);
+        }
 
-            pw.WriteShort(4017); // logo
-            pw.WriteByte(2); // logo color
+        public void EncodeForRemote(Packet pw)
+        {
+            pw.WriteString(Name);
+            Emblem.EncodeForRemote(pw);
+        }
+
+        public void EncodeInfo(Packet pw)
+        {
+            pw.WriteInt(ID);
+            pw.WriteInt(Capacity);
+            for (int i = 0; i < GuildData.RANKS; i++)
+            {
+                pw.WriteString(RankNames[i]);
+            }
+            Emblem.Encode(pw);
+        }
+        public static GuildData DecodeInfo(Packet pr)
+        {
+            string[] rankNames = new string[RANKS];
+            for (int i = 0; i < RANKS; i++)
+            {
+                rankNames[i] = pr.ReadString();
+            }
+            var guild = new GuildData(pr.ReadInt(), "", pr.ReadInt(), rankNames, null, GuildEmblem.Decode(pr));
+            return guild;
+        }
+        protected GuildData(MySqlDataReader reader)
+        {
+            ID = reader.GetInt32("id");
+            Name = reader.GetString("name");
+            Capacity = reader.GetInt32("capacity");
+            Emblem = GuildEmblem.LoadFromReader(reader);
+            for (int i = 0; i < RANKS; i++)
+            {
+                RankNames[i] = reader.GetString("rank" + (i+1));
+            }
+        }
+        public static GuildData LoadFromReader(MySqlDataReader reader)
+        {
+            return new GuildData(reader);
         }
     }
 }

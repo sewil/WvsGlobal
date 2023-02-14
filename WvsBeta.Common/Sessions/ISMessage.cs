@@ -60,7 +60,8 @@
         KickPlayer,
         UpdatePlayerJobLevel,
 
-        BroadcastPacketToGameservers,
+        BroadcastPacketToGameServers,
+        BroadcastPacketToGameServersExcept,
         BroadcastPacketToShopservers,
         ReloadEvents,
     }
@@ -103,6 +104,13 @@
         PartyDisbanded,
         PartyMemberJoined,
         PartyMemberLeft,
+
+        GuildLoad,
+        GuildUpdateRanks,
+        GuildMemberIsOnline,
+        GuildMemberDisconnect,
+        GuildMemberJoin,
+        GuildMemberLeave,
 
         Test,
         MessengerOperation,

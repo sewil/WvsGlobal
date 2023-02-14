@@ -1,17 +1,15 @@
 ﻿using System;
-using System.CodeDom.Compiler;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using Newtonsoft.Json;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
-using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -57,6 +55,7 @@ namespace WvsBeta.Game
         public Dictionary<int, Tuple<Packet, long>> CCIngPlayerList { get; } = new Dictionary<int, Tuple<Packet, long>>();
         public ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string, Player>();
         public Dictionary<int, GameCharacter> CharacterList { get; } = new Dictionary<int, GameCharacter>();
+        public Dictionary<int, GuildData> Guilds { get; } = new Dictionary<int, GuildData>();
         public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
 
         public Dictionary<int, (string reason, string name, byte level, GameCharacter.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, GameCharacter.BanReasons, long)>();

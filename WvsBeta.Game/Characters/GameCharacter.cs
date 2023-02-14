@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
-using Org.BouncyCastle.Crypto;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
 
@@ -157,12 +157,7 @@ namespace WvsBeta.Game
         {
             packet.WriteString(Name);
 
-            packet.WriteString(""); // Guild?
-
-            packet.WriteShort(0); // ?
-            packet.WriteByte(0); // ?
-            packet.WriteShort(0); // ?
-            packet.WriteByte(0); // ?
+            (Guild ?? GuildData.Default).EncodeForRemote(packet);
 
             BuffPacket.EncodeForRemote(this, packet);
             new AvatarLook(this).Encode(packet);
@@ -400,6 +395,7 @@ namespace WvsBeta.Game
             Quests.SaveQuests();
             Variables.Save();
             GameStats.Save();
+            if (GuildID > 0) GuildHandler.SaveMember(this);
 
             _characterLog.Debug("Saving finished!");
         }
@@ -441,76 +437,23 @@ namespace WvsBeta.Game
 
         public LoadFailReasons Load(string IP)
         {
-
-            var imitateId = RedisBackend.Instance.GetImitateID(CharacterStat.ID);
-            var imitating = imitateId.HasValue;
-            var originalId = CharacterStat.ID;
-            if (imitating)
-            {
-                CharacterStat.ID = imitateId.Value;
-                _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}... (IMITATION from ID {originalId})");
-            }
-            else
-            {
-                _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
-            }
+            _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
 
             // Initial load
-
-            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
-                "SELECT " +
-                "characters.*, users.admin, users.superadmin, users.donator, users.beta, users.last_ip, users.online " +
-                "FROM characters " +
-                "LEFT JOIN users ON users.id = characters.userid " +
-                "WHERE characters.id = @id",
-                "@id", originalId))
-            {
-                if (!data.Read())
-                {
-                    _characterLog.Debug("Loading failed: unknown character.");
-                    return LoadFailReasons.UnknownCharacter;
-                }
-
-                if (data.GetString("last_ip") != IP && !imitating)
-                {
-#if DEBUG
-                    Program.MainForm.LogAppend("Allowed player " + this.CharacterStat.ID +
-                                               " to log in from different IP because source is running in debug mode!");
-#else
-                    _characterLog.Debug("Loading failed: not from previous IP.");
-                    return LoadFailReasons.NotFromPreviousIP;
-#endif
-                }
-                UserID = data.GetInt32("userid");
-                CharacterStat.Name = data.GetString("name");
-                GMLevel = data.GetByte("admin");
-                Donator = data.GetBoolean("donator");
-                BetaPlayer = data.GetBoolean("beta");
-
-
-                if (imitating) ImitatorName = CharacterStat.Name;
-                else ImitatorName = null;
-            }
-
             var tmpUserId = UserID;
 
-            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
-                "SELECT " +
-                "characters.*, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason " +
-                "FROM characters " +
-                "LEFT JOIN users ON users.id = characters.userid " +
-                "WHERE characters.id = @id",
-                "@id", CharacterStat.ID))
+            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
+                SELECT c.*, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
+                FROM characters c
+                LEFT JOIN users ON users.id = c.userid
+                LEFT JOIN guild_members g ON c.id = g.character_id
+                WHERE c.id = @id",
+                "@id", CharacterStat.ID
+            ))
             {
                 if (!data.Read())
                 {
                     _characterLog.Debug("Loading failed: unknown character.");
-                    if (imitating)
-                    {
-                        // Reset!
-                        RedisBackend.Instance.SetImitateID(originalId, 0);
-                    }
-
                     return LoadFailReasons.UnknownCharacter;
                 }
 
@@ -518,6 +461,7 @@ namespace WvsBeta.Game
                 MutedUntil = data.GetDateTime("quiet_ban_expire");
                 MuteReason = data.GetByte("quiet_ban_reason");
                 LastSavepoint = data.GetDateTime("last_savepoint");
+                GuildID = data.GetInt32("guild_id");
                 LastPlayTimeSave = MasterThread.CurrentTime;
 
                 var _mapId = data.GetInt32("map");
@@ -602,6 +546,9 @@ namespace WvsBeta.Game
             GameStats = new CharacterGameStats(this);
             GameStats.Load();
 
+            if (GuildID > 0 && Guild == null) GuildHandler.LoadGuild(this);
+            else if (GuildID > 0) GuildHandler.SendMemberIsOnline(this, true);
+
             Wishlist = new List<int>();
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT serial FROM character_wishlist WHERE charid = " + CharacterStat.ID))
             {
@@ -610,9 +557,6 @@ namespace WvsBeta.Game
                     Wishlist.Add(data.GetInt32(0));
                 }
             }
-
-            // Loading done, switch back ID
-            CharacterStat.ID = originalId;
 
             InitDamageLog();
 
@@ -743,19 +687,13 @@ namespace WvsBeta.Game
             PartyTraitor = 5,
             NotEnoughMesos = 6
         }
-        public GuildData Guild
-        {
-            get
-            {
-                if (!GuildData.Guilds.ContainsKey(GuildID)) return null;
-                else return GuildData.Guilds[GuildID];
-            }
-        }
         public int GuildID { get; set; }
-        public bool IsGuildMaster { get; set; }
-        public bool IsGuildMember { get; set; }
-        public int GetGuildCountMax { get; set; }
-        public bool IsGuildMarkExist { get; set; }
+        public GuildData Guild => Server.Instance.Guilds.ContainsKey(GuildID) ? Server.Instance.Guilds[GuildID] : null;
+        public GuildMember GuildMember => Guild?.Members.ContainsKey(ID) == true ? Guild.Members[ID] : null;
+        public bool IsGuildMaster => GuildMember?.Rank == GuildRank.Master;
+        public bool IsGuildMember => GuildMember != null;
+        public int GetGuildCountMax => Guild?.Capacity ?? 0;
+        public bool IsGuildMarkExist => Guild?.Emblem.Background != 0;
         public GuildCreateStatus IsCreateGuildPossible(int mesos)
         {
             if (Level < 10) return GuildCreateStatus.TooLowLv;
@@ -768,24 +706,24 @@ namespace WvsBeta.Game
         }
         public void SetGuildMark(int mesos)
         {
-
+            throw new NotImplementedException();
         }
         public void RemoveGuildMark(int mesos)
         {
+            throw new NotImplementedException();
         }
         public bool CreateNewGuild(int mesos)
         {
-            Inventory.ExchangeMesos(mesos);
-            return false;
+            throw new NotImplementedException();
         }
 
         public bool IncGuildCountMax(int slots, int mesos)
         {
-            return false;
+            throw new NotImplementedException();
         }
         public bool RemoveGuild(int mesos)
         {
-            return false;
+            throw new NotImplementedException();
         }
         #endregion
     }

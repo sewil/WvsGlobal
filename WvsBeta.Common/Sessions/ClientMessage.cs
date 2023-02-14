@@ -85,7 +85,7 @@
         MINI_ROOM_OPERATION = 73,
         PARTY_OPERATION,
         DENY_PARTY_REQUEST,
-        __PADDING_76,
+        GUILD_ACTION = 76,
         __PADDING_77,
         __PADDING_78,
         __PADDING_79,

@@ -12,7 +12,6 @@ using WvsBeta.Database;
 
 namespace WvsBeta.Center
 {
-
     public class CenterServer
     {
         public static CenterServer Instance { get; set; }
@@ -35,7 +34,6 @@ namespace WvsBeta.Center
 
         public List<Character> CharacterStore { get; } = new List<Character>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
-
         public void LogToLogfile(string what)
         {
             Program.LogFile.WriteLine(what);

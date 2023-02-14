@@ -7,9 +7,7 @@ using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
-using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Login;
 
 namespace WvsBeta.Center
 {
@@ -375,13 +373,19 @@ namespace WvsBeta.Center
                             }
 
 
-                        case ISClientMessages.BroadcastPacketToGameservers:
+                        case ISClientMessages.BroadcastPacketToGameServers:
                             {
                                 var p = new Packet(packet.ReadLeftoverBytes());
                                 World.SendPacketToEveryGameserver(p);
                                 break;
                             }
-
+                        case ISClientMessages.BroadcastPacketToGameServersExcept:
+                            {
+                                int channelId = packet.ReadInt();
+                                var pw = new Packet(packet.ReadLeftoverBytes());
+                                World.SendPacketToEveryGameserver(pw, channelId);
+                                break;
+                            }
                         case ISClientMessages.BroadcastPacketToShopservers:
                             {
                                 var p = new Packet(packet.ReadLeftoverBytes());

@@ -2459,7 +2459,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                     var toAllChannels = Args.Count > 1 && Args[1].GetBool();
                                     if (toAllChannels)
                                     {
-                                        var p = new Packet(ISClientMessages.BroadcastPacketToGameservers);
+                                        var p = new Packet(ISClientMessages.BroadcastPacketToGameServers);
                                         p.WriteByte((byte)ISServerMessages.ReloadNPCScript);
                                         p.WriteString(scriptName);
                                         Server.Instance.CenterConnection.SendPacket(p);

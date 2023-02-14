@@ -1,6 +1,5 @@
 ﻿using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
-using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -65,14 +64,15 @@ namespace WvsBeta.Scripts.Scripts
             int nRequiredMeso;
             public void Run(INpcHost self, GameCharacter target)
             {
-                var members = new GuildMember[]
-                {
-                    new GuildMember { ID = 4, Rank = GuildRank.Master }
-                };
-                var rankNames = new string[] { "pelle1", "pelle2", "pelle3", "pelle4", "pelle5", };
-                var guild = new GuildData(1, "guildmaster", 100, rankNames, members);
-                GuildPacket.SendGuildCreate(target, guild);
-                return;
+                //var members = new GuildMember[]
+                //{
+                //    new GuildMember { ID = 4, Rank = GuildRank.Master }
+                //};
+                //var emblem = new GuildEmblem(1030, 3, 4017, 2);
+                //var rankNames = new string[] { "pelle1", "pelle2", "pelle3", "pelle4", "pelle5", };
+                //var guild = new GuildData(1, "guildmaster", 100, rankNames, members, emblem);
+                //GuildPacket.SendGuildCreate(target, guild);
+                //return;
                 /**/
                 
                 ossyria2.self = self;

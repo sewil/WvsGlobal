@@ -153,6 +153,7 @@
     <Compile Include="GameObjects\IFieldObj.cs" />
     <Compile Include="GameObjects\MiniRoom\Enums.cs" />
     <Compile Include="Handlers\Guild\GuildData.cs" />
+    <Compile Include="Handlers\Guild\GuildHandler.cs" />
     <Compile Include="Handlers\Guild\GuildPacket.cs" />
     <Compile Include="Packets\FieldEffectPacket.cs" />
     <Compile Include="Packets\InventoryOperationPacket.cs" />

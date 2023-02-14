@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using static WvsBeta.Common.Constants;
 
 namespace WvsBeta.Center
 {
@@ -15,7 +13,6 @@ namespace WvsBeta.Center
         public bool isConnectingFromLogin { get; set; }
         public bool InCashShop { get; set; }
         public byte LastChannel { get; set; }
-
         public BuddyList FriendsList { get; set; }
 
         public Messenger Messenger { get; set; }

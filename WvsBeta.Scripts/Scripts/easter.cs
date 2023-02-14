@@ -4,6 +4,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game;
+using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts
@@ -63,7 +64,7 @@ namespace WvsBeta.Scripts
                         if (5000 < rn1 && rn1 <= 8500) exp = 1000;
                         if (8500 < rn1 && rn1 <= 9999) exp = 10000;
                         if (9999 < rn1 && rn1 <= 10000) exp = 100000;
-                        target.AddEXP(exp);
+                        target.AddEXP(exp, MessageAppearType.SideWhite);
                         self.Say("I'm giving you " + exp + " EXP. Peace out!");
                         qr.Set(8876, "end");
                     }

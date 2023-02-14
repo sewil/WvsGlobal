@@ -26,12 +26,12 @@ namespace WvsBeta.Center
             ID = id;
         }
 
-        public IEnumerable<LocalServer> GetOnlineGameServers() => GameServers.Select(x => x.Value).Where(x => x.Connected);
+        public IEnumerable<LocalServer> GetOnlineGameServers(int skip = -1) => GameServers.Select(x => x.Value).Where(x => x.ChannelID != skip && x.Connected);
         public IEnumerable<LocalServer> GetOnlineShopServers() => ShopServers.Select(x => x.Value).Where(x => x.Connected);
 
-        public void SendPacketToEveryGameserver(Packet packet)
+        public void SendPacketToEveryGameserver(Packet packet, int skip = -1)
         {
-            GetOnlineGameServers().ForEach(x => x.ActiveServerConnection?.SendPacket(packet));
+            GetOnlineGameServers(skip).ForEach(x => x.ActiveServerConnection?.SendPacket(packet));
         }
         public void SendPacketToEveryShopserver(Packet packet)
         {

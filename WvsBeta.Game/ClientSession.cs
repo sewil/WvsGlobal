@@ -8,6 +8,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
+using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -102,6 +103,18 @@ namespace WvsBeta.Game
                     try
                     {
                         chr.FlushDamageLog(true);
+                    }
+                    catch (Exception ex)
+                    {
+                        Program.MainForm.LogAppend(ex.ToString());
+                    }
+
+                    try
+                    {
+                        if (chr.GuildID > 0)
+                        {
+                            GuildHandler.SendMemberIsOnline(chr, false);
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -300,7 +313,9 @@ namespace WvsBeta.Game
                         case ClientMessages.SUMMON_MOVE:
                             MapPacket.HandleSummonMove(character, packet);
                             break;
-
+                        case ClientMessages.GUILD_ACTION:
+                            GuildHandler.HandleAction(character, packet);
+                            break;
                         case ClientMessages.SUMMON_ATTACK:
                             AttackPacket.HandleSummonAttack(character, packet);
                             break;
@@ -590,6 +605,10 @@ namespace WvsBeta.Game
             character.PrimaryStats.CheckHPMP();
 
             MapPacket.SendSetField(character);
+            if (character.Guild != null)
+            {
+                GuildHandler.SendGuild(character, character.Guild);
+            }
 
             if (character.IsGM)
             {

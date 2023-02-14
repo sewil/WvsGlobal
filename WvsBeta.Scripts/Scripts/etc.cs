@@ -50,7 +50,7 @@ namespace WvsBeta.Scripts.Scripts
             var cName = (string)self.GetStrReg("name");
 
             if (target.Name == cName && target.Level < 200 ) {
-                target.AddEXP(999999999);
+                target.AddEXP(999999999, Game.Packets.MessageAppearType.SideWhite);
                 target.Inventory.ExchangeMesos(10000);
                 var strLog = "[" + target.Name + "] Level UP " + target.Level;
                 self.Log(strLog);
