@@ -301,65 +301,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberIsOnline:
                         GuildHandler.HandleMemberIsOnline(packet);
                         break;
-                    //case ISServerMessages.GuildCreated:
-                    //    {
-                    //        var guild = GuildData.DecodeForTransfer(packet);
-                    //        Server.Instance.Guilds[guild.ID] = guild;
-                    //        foreach (var m in guild.Members)
-                    //        {
-                    //            var c = Server.Instance.GetCharacter(m.CharacterID);
-                    //            if (c != null)
-                    //            {
-                    //                c.GuildID = guild.ID;
-                    //            }
-                    //        }
-                    //        break;
-                    //    }
-                    //case ISServerMessages.GuildDisbanded:
-                    //    {
-                    //        int guildId = packet.ReadInt();
-                    //        var guild = Server.Instance.Guilds[guildId];
-                    //        foreach (var m in guild.Members)
-                    //        {
-                    //            var c = Server.Instance.GetCharacter(m.CharacterID);
-                    //            if (c != null)
-                    //            {
-                    //                c.GuildID = 0;
-                    //            }
-                    //        }
-                    //        Server.Instance.Guilds.Remove(guildId);
-                    //        break;
-                    //    }
-                    //case ISServerMessages.GuildMemberJoined:
-                    //    {
-                    //        int guildId = packet.ReadInt();
-                    //        GuildMember member = GuildMember.DecodeForTransfer(packet);
-                    //        var guild = Server.Instance.Guilds[guildId];
-                    //        guild.AddMember(member);
-                    //        if (Server.Instance.CharacterList.TryGetValue(member.CharacterID, out GameCharacter c))
-                    //        {
-                    //            c.GuildID = guildId;
-                    //        }
-                    //        break;
-                    //    }
-                    //case ISServerMessages.GuildMemberLeft:
-                    //    {
-                    //        int guildId = packet.ReadInt();
-                    //        int memberId = packet.ReadInt();
-                    //        Server.Instance.Guilds[guildId].RemoveMember(memberId);
-                    //        if (Server.Instance.CharacterList.TryGetValue(memberId, out GameCharacter c))
-                    //        {
-                    //            c.GuildID = 0;
-                    //        }
-                    //        break;
-                    //    }
-                    //case ISServerMessages.GuildMemberJoined:
-                    //    {
-                    //        //int guildId = packet.ReadInt();
-                    //        //var member = GuildMember.DecodeForTransfer(packet);
-                    //        //Server.Instance.Guilds[guildId].Members.getinde
-                    //        break;
-                    //    }
+                    case ISServerMessages.GuildMemberChangeRank:
+                        GuildHandler.HandleMemberChangeRank(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))

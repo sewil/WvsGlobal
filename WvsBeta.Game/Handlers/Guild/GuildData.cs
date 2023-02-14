@@ -16,7 +16,7 @@ namespace WvsBeta.Game.Handlers.Guild
     }
     public class GuildMember
     {
-        public GuildRank Rank { get; private set; }
+        public GuildRank Rank { get; set; }
         public string Name { get; private set; }
         public int Job { get; private set; }
         public int Level { get; private set; }
@@ -120,7 +120,7 @@ namespace WvsBeta.Game.Handlers.Guild
         public int Capacity { get; protected set; }
         public string[] RankNames { get; protected set; } = new string[RANKS] { "", "", "", "", "" };
         public Dictionary<int, GuildMember> Members = new Dictionary<int, GuildMember>();
-        public IEnumerable<GameCharacter> Characters => Members.Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
+        public IEnumerable<GameCharacter> Characters => Members.Where(m => m.Value.IsOnline).Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
         public GuildEmblem Emblem { get; protected set; }
         protected GuildData()
         {

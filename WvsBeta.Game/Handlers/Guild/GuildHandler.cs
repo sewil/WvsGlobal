@@ -1,8 +1,9 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.Handlers.Guild
 {
@@ -10,22 +11,34 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         Invite = 5,
         SaveRanks = 13,
+        ChangeMemberRank = 14,
     }
-    public class GuildException : Exception
+    class GuildException : Exception
     {
-        public GuildResultType Type { get; private set; }
-        public GuildException(GuildResultType type)
+        public GuildException(string message) : base(message)
         {
-            Type = type;
         }
     }
     public static class GuildHandler
     {
-        public static void SendUpdateRanks(GameCharacter chr, GuildData guild)
+        private static Dictionary<int, GuildData> Guilds => Server.Instance.Guilds;
+        private static void BroadcastPacket(Packet packet, Action<Packet> packetHandler = null)
         {
-            var pw = new Packet(ISClientMessages.BroadcastPacketToGameServers);
-            pw.WriteByte((byte)ISServerMessages.GuildUpdateRanks);
-            pw.WriteInt(chr.ID);
+            var pw = new Packet(ISClientMessages.BroadcastPacketToGameServersExcept);
+            pw.WriteInt(Server.Instance.ID);
+
+            var pr = new Packet(packet.ToArray());
+            pw.WriteBytes(pr.ReadLeftoverBytes());
+            Server.Instance.CenterConnection.SendPacket(pw);
+            if (packetHandler != null)
+            {
+                pr.Position = 1;
+                packetHandler(pr);
+            }
+        }
+        public static void SendDbUpdateRanks(GuildData guild)
+        {
+            var pw = new Packet(ISClientMessages.GuildDbUpdateRanks);
             pw.WriteInt(guild.ID);
             for (int i = 0; i < GuildData.RANKS; i++)
             {
@@ -33,18 +46,56 @@ namespace WvsBeta.Game.Handlers.Guild
             }
             Server.Instance.CenterConnection.SendPacket(pw);
         }
+        public static void SendUpdateRanks(GuildData guild)
+        {
+            var pw = new Packet(ISServerMessages.GuildUpdateRanks);
+            pw.WriteInt(guild.ID);
+            for (int i = 0; i < GuildData.RANKS; i++)
+            {
+                pw.WriteString(guild.RankNames[i]);
+            }
+            BroadcastPacket(pw, HandleUpdateRanks);
+            SendDbUpdateRanks(guild);
+        }
         public static void HandleUpdateRanks(Packet pr)
         {
-            int cid = pr.ReadInt();
             int guildId = pr.ReadInt();
             GuildData guild = Server.Instance.Guilds[guildId];
             for (int i = 0; i < GuildData.RANKS; i++)
             {
                 guild.RankNames[i] = pr.ReadString();
             }
-            foreach (var c in guild.Members.Where(m => m.Key != cid && m.Value.IsOnline).Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null))
+            foreach (var c in guild.Characters)
             {
                 c.SendPacket(GuildPacket.UpdateRanks(guildId, guild.RankNames));
+            }
+        }
+        public static void SendDbUpdateMember(int guildId, int cid, GuildRank rank)
+        {
+            var pw = new Packet(ISClientMessages.GuildDbUpdateMember);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteByte((byte)rank);
+            Server.Instance.CenterConnection.SendPacket(pw);
+        }
+        public static void SendChangeMemberRank(int guildId, int cid, GuildRank rank)
+        {
+            var pw = new Packet(ISServerMessages.GuildUpdateRanks);
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteByte((byte)rank);
+            BroadcastPacket(pw, HandleMemberChangeRank);
+        }
+        public static void HandleMemberChangeRank(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            GuildData guild = Server.Instance.Guilds[guildId];
+            int cid = pr.ReadInt();
+            GuildRank rank = (GuildRank)pr.ReadByte();
+            guild.Members[cid].Rank = rank;
+            foreach (var c in guild.Characters)
+            {
+                c.SendPacket(GuildPacket.ChangeMemberRank(guildId, cid, rank));
             }
         }
         public static void HandleAction(GameCharacter chr, Packet pr)
@@ -55,21 +106,31 @@ namespace WvsBeta.Game.Handlers.Guild
                 switch (action)
                 {
                     case GuildAction.Invite:
+                        // 4C 05 04 00 61 73 64 66 = invite
                         break;
                     case GuildAction.SaveRanks:
                         {
-                            if (!chr.IsGuildMaster) throw new GuildException(GuildResultType.ErrorNotAcceptingInviteMsg);
-                            // 4C 0D 04 00 42 6F 73 73 00 00 00 00 00 00 00 00 = save ranks (Master to Boss)
+                            if (!chr.IsGuildMaster) throw new GuildException("You need to be the Guild Master to do this.");
+                            // 4C [0D] [04 00 42 6F 73 73] [00 00] [00 00] [00 00] [00 00] = save ranks (Master to Boss)
                             var guild = chr.Guild;
                             for (int i = 0; i < GuildData.RANKS; i++)
                             {
                                 guild.RankNames[i] = pr.ReadString();
                             }
-                            
-                            foreach (var c in guild.Members.Select(i => i.Key).Where(cid => cid != chr.ID).Select(cid => Server.Instance.GetCharacter(cid)).Where(i => i != null))
-                            {
-                                c.SendPacket(GuildPacket.UpdateRanks(guild.ID, guild.RankNames));
-                            }
+
+                            SendUpdateRanks(guild);
+                            break;
+                        }
+                    case GuildAction.ChangeMemberRank:
+                        {
+                            // 4C 0E [05 00 00 00] [03] = title down from jr to mem1
+                            if (!chr.CanChangeRank) throw new GuildException("You need to be at least a Jr. Master to do this.");
+                            int cid = pr.ReadInt();
+                            GuildMember member = chr.Guild.Members[cid];
+                            if (member == null) throw new GuildException("This member does not exist.");
+                            GuildRank newRank = (GuildRank)pr.ReadByte();
+                            if (newRank < member.Rank && !chr.IsGuildMaster) throw new GuildException("You need to be a Guild Master to do this.");
+                            SendChangeMemberRank(chr.GuildID, cid, newRank);
                             break;
                         }
                     default:
@@ -78,9 +139,8 @@ namespace WvsBeta.Game.Handlers.Guild
             }
             catch (GuildException e)
             {
-                chr.SendPacket(GuildPacket.GuildResult(e.Type));
+                chr.SendPacket(MessagePacket.RedText(e.Message));
             }
-            // 4C 05 04 00 61 73 64 66 = invite
         }
         public static void SendGuild(GameCharacter chr, GuildData guild)
         {
@@ -90,13 +150,11 @@ namespace WvsBeta.Game.Handlers.Guild
         public static void SendMemberIsOnline(GameCharacter chr, bool isOnline)
         {
             GuildData guild = chr.Guild;
-            var pw = new Packet(ISClientMessages.BroadcastPacketToGameServers);
-            pw.WriteByte((byte)ISServerMessages.GuildMemberIsOnline);
+            var pw = new Packet(ISServerMessages.GuildMemberIsOnline);
             pw.WriteInt(guild.ID);
             pw.WriteInt(chr.ID);
             pw.WriteBool(isOnline);
-            guild.Members[chr.ID].IsOnline = isOnline;
-            Server.Instance.CenterConnection.SendPacket(pw);
+            BroadcastPacket(pw, HandleMemberIsOnline);
         }
         public static void HandleMemberIsOnline(Packet pr)
         {
@@ -110,19 +168,6 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 c.SendPacket(GuildPacket.MemberSetOnline(guildId, cid, isOnline));
             }
-        }
-        public static void SaveMember(GameCharacter chr)
-        {
-            if (chr.GuildMember == null) throw new Exception("Error saving guild member " + chr.ID + " in guild " + chr.GuildID + ". Guild member is null");
-            int cid = chr.ID;
-            int guildId = chr.GuildID;
-            GuildRank rank = chr.GuildMember.Rank;
-            // Save rank
-            Server.Instance.CharacterDatabase.RunQuery(@"
-                UPDATE guild_members
-                SET `rank` = @rank
-                WHERE character_id = @cid AND guild_id = @guildId
-            ", "@rank", (int)rank, "@cid", cid, "@guildId", guildId);
         }
         public static GuildData LoadGuild(GameCharacter chr)
         {
@@ -152,13 +197,9 @@ namespace WvsBeta.Game.Handlers.Guild
                         guild.Members[cid] = member;
                     }
 
-                    Server.Instance.Guilds[guildId] = guild;
-                    var pw = new Packet(ISClientMessages.BroadcastPacketToGameServersExcept);
-                    pw.WriteInt(Server.Instance.ID);
-                    pw.WriteByte((byte)ISServerMessages.GuildLoad);
+                    var pw = new Packet(ISServerMessages.GuildLoad);
                     guild.Encode(pw);
-                    Server.Instance.CenterConnection.SendPacket(pw);
-
+                    BroadcastPacket(pw, HandleLoadGuild);
                     return guild;
                 }
             }

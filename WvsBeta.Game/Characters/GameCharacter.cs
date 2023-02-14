@@ -395,7 +395,7 @@ namespace WvsBeta.Game
             Quests.SaveQuests();
             Variables.Save();
             GameStats.Save();
-            if (GuildID > 0) GuildHandler.SaveMember(this);
+            if (GuildID > 0) GuildHandler.SendDbUpdateMember(GuildID, ID, GuildMember.Rank);
 
             _characterLog.Debug("Saving finished!");
         }
@@ -691,6 +691,7 @@ namespace WvsBeta.Game
         public GuildData Guild => Server.Instance.Guilds.ContainsKey(GuildID) ? Server.Instance.Guilds[GuildID] : null;
         public GuildMember GuildMember => Guild?.Members.ContainsKey(ID) == true ? Guild.Members[ID] : null;
         public bool IsGuildMaster => GuildMember?.Rank == GuildRank.Master;
+        public bool CanChangeRank => GuildMember?.Rank <= GuildRank.JrMaster;
         public bool IsGuildMember => GuildMember != null;
         public int GetGuildCountMax => Guild?.Capacity ?? 0;
         public bool IsGuildMarkExist => Guild?.Emblem.Background != 0;

@@ -38,6 +38,15 @@
         PartyChat,
         PartyDoorChanged,
 
+        GuildDbAdd,
+        GuildDbRemove,
+        GuildDbUpdateEmblem,
+        GuildDbUpdateRanks,
+        GuildDbUpdateCapacity,
+        GuildDbAddMember,
+        GuildDbUpdateMember,
+        GuildDbRemoveMember,
+
         RequestBuddylist,
         BuddyUpdate,
         BuddyInvite,
@@ -111,6 +120,7 @@
         GuildMemberDisconnect,
         GuildMemberJoin,
         GuildMemberLeave,
+        GuildMemberChangeRank,
 
         Test,
         MessengerOperation,
