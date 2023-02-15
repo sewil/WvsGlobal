@@ -1,5 +1,6 @@
 ﻿using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
+using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -60,26 +61,15 @@ namespace WvsBeta.Scripts.Scripts
         [Script("guild_proc")]
         class guild_proc : INpcScript
         {
-            dynamic v1, nRet, nCountMax, isGuildMaster, isGuildMember, retPos, nRet2, nRet1;
-            int nRequiredMeso;
+            bool isGuildMaster, isGuildMember;
+            int nRequiredMeso, nRet1, v1, nRet, nCountMax;
             public void Run(INpcHost self, GameCharacter target)
             {
-                //var members = new GuildMember[]
-                //{
-                //    new GuildMember { ID = 4, Rank = GuildRank.Master }
-                //};
-                //var emblem = new GuildEmblem(1030, 3, 4017, 2);
-                //var rankNames = new string[] { "pelle1", "pelle2", "pelle3", "pelle4", "pelle5", };
-                //var guild = new GuildData(1, "guildmaster", 100, rankNames, members, emblem);
-                //GuildPacket.SendGuildCreate(target, guild);
-                //return;
-                /**/
-                
                 ossyria2.self = self;
                 ossyria2.target = target;
                 isGuildMaster = target.IsGuildMaster;
                 isGuildMember = target.IsGuildMember;
-                if (isGuildMember == 0)
+                if (!isGuildMember)
                 {
                     self.Say("Hey... would you happen to be interested in GUILDs by any chance?");
 
@@ -101,7 +91,7 @@ namespace WvsBeta.Scripts.Scripts
 
                         if (nRet1 == 1)
                         {
-                            nRet2 = target.IsCreateGuildPossible(1500000);
+                            int nRet2 = (int)target.IsCreateGuildPossible(1500000);
                             if (nRet2 == 0)
                             {
                                 self.Say("Enter your guild name and it will be created. The Guild will also be officially registered at our Guild Headquarters. So good luck to you and your guild!");
@@ -122,7 +112,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    v1 = self.AskMenu("So how can I help?\r\n#b#L0#I want to expand my guild#l\r\n#L1#I want to disband my guild#l");
+                    v1 = self.AskMenu("So, how can I help?\r\n#b#L0#I want to expand my guild#l\r\n#L1#I want to disband my guild#l");
 
                     if (isGuildMaster)
                     {
@@ -169,16 +159,16 @@ namespace WvsBeta.Scripts.Scripts
                         }
                         else if (v1 == 1)
                         {
-                            nRet = self.AskYesNo("Tem certeza de que deseja desfazer seu clã? Sério... lembre-se, se você desfizer o clã, ele será eliminado para sempre. Ah, e mais uma coisa. Se você quiser desfazer seu clã, vai precisar pagar 200.000 mesos pelo custo do serviço. Ainda quer fazer isto?");
-                            if (nRet == 0) self.Say("Bem pensado. Eu não gostaria de desfazer meu clã que já está tão forte...");
+                            nRet = self.AskYesNo("Are you sure you want to disband your guild? Seriously... Remember, if you disband the guild, it will be gone forever. Oh, and one more thing. If you want to disband your guild, you will need to pay 200,000 mesos for the service cost. Are you sure you still want to do this?");
+                            if (nRet == 0) self.Say("Well thought. I wouldn't want to disband my already strong guild...");
                             else
                             {
                                 bool fRet = target.RemoveGuild(-200000);
-                                if (!fRet) self.Say("Ei, você não tem o dinheiro para o serviço... tem certeza de que tem dinheiro suficiente aí?");
+                                if (!fRet) self.Say("Hey, you don't have the mesos for the service... are you sure you have enough mesos there?");
                             }
                         }
                     }
-                    else self.Say("Ei, você não é o Mestre do Clã!! Esta decisão só pode ser tomada pelo Mestre do Clã.");
+                    else self.Say("Hey, you're not the Guild Master! This decision can only be made by the Guild Master.");
                 }
             }
         }

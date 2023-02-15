@@ -47,18 +47,40 @@ namespace WvsBeta.Game.Handlers.Guild
     }
     public class GuildPacket : Packet
     {
-        private GuildPacket(byte type) : base(ServerMessages.GUILD_RESULT)
+        public GuildPacket(byte type) : base(ServerMessages.GUILD_RESULT)
         {
             WriteByte(type);
         }
-        private GuildPacket(byte type, int guildId) : this(type)
+        public GuildPacket(byte type, int guildId) : this(type)
         {
             WriteInt(guildId);
+        }
+        public static GuildPacket GuildDisbanded(int guildId)
+        {
+            return new GuildPacket((byte)GuildActionResultType.GuildDisbanded, guildId);
         }
         public static GuildPacket GuildInfo(GuildData guild)
         {
             var pw = new GuildPacket((byte)GuildFormType.GuildInfo);
             guild.Encode(pw);
+            return pw;
+        }
+        public static GuildPacket GuildHasBeenMade(int guildId, int cid)
+        {
+            var pw = new GuildPacket((byte)GuildFormType.TheGuildHasBeenMade, guildId);
+            pw.WriteInt(cid);
+            return pw;
+        }
+        public static GuildPacket NpcContractDisagreedMsg()
+        {
+            return new GuildPacket((byte)GuildFormType.NpcContractSomebodyDisagreed);
+        }
+        public static GuildPacket ShowGuildContract(int partyId, string guildMaster, string guildName)
+        {
+            var pw = new GuildPacket((byte)GuildFormType.ShowGuildContract);
+            pw.WriteInt(partyId);
+            pw.WriteString(guildMaster);
+            pw.WriteString(guildName);
             return pw;
         }
         public static GuildPacket UpdateRanks(int guildId, string[] ranks)
@@ -102,6 +124,10 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(cid);
             pw.WriteBool(isOnline);
             return pw;
+        }
+        public static GuildPacket EnterName()
+        {
+            return new GuildPacket((byte)GuildFormType.EnterGuildName);
         }
         public static GuildPacket GuildCreate(GuildData guild)
         {

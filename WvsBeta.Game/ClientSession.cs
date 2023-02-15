@@ -164,7 +164,8 @@ namespace WvsBeta.Game
             ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
             ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
             ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK, ServerMessages.MOB_ENTER_FIELD,
-            ServerMessages.DAMAGE_PLAYER
+            ServerMessages.DAMAGE_PLAYER,
+            ServerMessages.UPDATE_PARTYMEMBER_HP
         };
 
         public override void AC_OnPacketInbound(Packet packet)

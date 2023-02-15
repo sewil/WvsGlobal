@@ -122,8 +122,8 @@
         GIVE_FOREIGN_BUFF = 108, // CUserRemote::OnSetTemporaryStat
         RESET_TEMPORARY_STAT = 109, // CUserRemote::OnResetTemporaryStat
         UPDATE_PARTYMEMBER_HP = 110,
-        __UNKNOWN_111 = 111,
-        __UNKNOWN_112 = 112,
+        REMOTE_GUILD_NAME = 111,
+        REMOTE_GUILD_EMBLEM = 112,
         ___END_USERREMOTE,
 
         ___START_USERLOCAL,

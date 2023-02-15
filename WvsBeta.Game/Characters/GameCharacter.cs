@@ -395,7 +395,7 @@ namespace WvsBeta.Game
             Quests.SaveQuests();
             Variables.Save();
             GameStats.Save();
-            if (GuildID > 0) GuildHandler.SendDbUpdateMember(GuildID, ID, GuildMember.Rank);
+            if (GuildID > 0) GuildDbHandler.SaveMember(GuildID, ID, GuildMember.Rank);
 
             _characterLog.Debug("Saving finished!");
         }
@@ -546,7 +546,7 @@ namespace WvsBeta.Game
             GameStats = new CharacterGameStats(this);
             GameStats.Load();
 
-            if (GuildID > 0 && Guild == null) GuildHandler.LoadGuild(this);
+            if (GuildID > 0 && Guild == null) GuildHandler.SendLoadGuild(this, GuildID);
             else if (GuildID > 0) GuildHandler.SendMemberIsOnline(this, true);
 
             Wishlist = new List<int>();
@@ -700,7 +700,11 @@ namespace WvsBeta.Game
             if (Level < 10) return GuildCreateStatus.TooLowLv;
             else if (PartyID == 0) return GuildCreateStatus.NotInParty;
             else if (!IsPartyBoss) return GuildCreateStatus.NotPartyLeader;
+#if DEBUG
+            else if (Party.Characters.Where(c => c.Field.ID == Field.ID).Count() < 2) return GuildCreateStatus.NotEnoughMembers;
+#else
             else if (Party.Characters.Where(c => c.Field.ID == Field.ID).Count() < 6) return GuildCreateStatus.NotEnoughMembers;
+#endif
             else if (Party.Characters.Any(c => c.IsGuildMember)) return GuildCreateStatus.PartyTraitor;
             else if (!Inventory.CanExchangeMesos(-mesos)) return GuildCreateStatus.NotEnoughMesos;
             return GuildCreateStatus.Success;
@@ -713,9 +717,13 @@ namespace WvsBeta.Game
         {
             throw new NotImplementedException();
         }
-        public bool CreateNewGuild(int mesos)
+        public int _guildPendingFee;
+        public string _guildNamePending;
+        public List<bool> _guildContractPending;
+        public void CreateNewGuild(int mesos)
         {
-            throw new NotImplementedException();
+            _guildPendingFee = mesos;
+            GuildHandler.SendCreateGuildEnterName(this);
         }
 
         public bool IncGuildCountMax(int slots, int mesos)
@@ -724,7 +732,7 @@ namespace WvsBeta.Game
         }
         public bool RemoveGuild(int mesos)
         {
-            throw new NotImplementedException();
+            return GuildHandler.HandleDisbandGuild(this, mesos, GuildID);
         }
         #endregion
     }

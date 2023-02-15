@@ -304,6 +304,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberChangeRank:
                         GuildHandler.HandleMemberChangeRank(packet);
                         break;
+                    case ISServerMessages.GuildUnload:
+                        GuildHandler.HandleUnloadGuild(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))

@@ -21,7 +21,14 @@ namespace WvsBeta.Game.Handlers.Guild
         public int Job { get; private set; }
         public int Level { get; private set; }
         public bool IsOnline { get; set; }
-
+        public GuildMember(GuildRank rank, string name, int job, int level, bool isOnline)
+        {
+            Rank = rank;
+            Name = name;
+            Job = job;
+            Level = level;
+            IsOnline = isOnline;
+        }
         private GuildMember(MySqlDataReader reader, bool isOnline)
         {
             Rank = (GuildRank)reader.GetInt32("rank");
@@ -115,7 +122,7 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         public static readonly GuildData Default = new GuildData();
         public const int RANKS = 5;
-        public int ID { get; protected set; }
+        public int ID { get; set; }
         public string Name { get; protected set; }
         public int Capacity { get; protected set; }
         public string[] RankNames { get; protected set; } = new string[RANKS] { "", "", "", "", "" };
@@ -126,6 +133,12 @@ namespace WvsBeta.Game.Handlers.Guild
         {
             Name = "";
             Emblem = GuildEmblem.Default;
+        }
+        public GuildData(int id, string name, Dictionary<int, GuildMember> members)
+        :this(id, name, 20, new string[]{"Master","Jr. Master","Member", "Member", "Member"}, members, GuildEmblem.Default)
+        {
+
+            
         }
         public GuildData(int id, string name, int capacity, string[] rankNames, Dictionary<int, GuildMember> members, GuildEmblem emblem)
         {

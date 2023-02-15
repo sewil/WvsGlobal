@@ -2,6 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.ConstrainedExecution;
+using System.Text;
+using System.Web;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
 
@@ -9,9 +13,11 @@ namespace WvsBeta.Game.Handlers.Guild
 {
     public enum GuildAction
     {
+        EnterGuildName = 2,
         Invite = 5,
         SaveRanks = 13,
         ChangeMemberRank = 14,
+        ContractRespond = 21,
     }
     class GuildException : Exception
     {
@@ -21,31 +27,23 @@ namespace WvsBeta.Game.Handlers.Guild
     }
     public static class GuildHandler
     {
-        private static Dictionary<int, GuildData> Guilds => Server.Instance.Guilds;
+        private static Server S => Server.Instance;
+
         private static void BroadcastPacket(Packet packet, Action<Packet> packetHandler = null)
         {
             var pw = new Packet(ISClientMessages.BroadcastPacketToGameServersExcept);
-            pw.WriteInt(Server.Instance.ID);
+            pw.WriteInt(S.ID);
 
             var pr = new Packet(packet.ToArray());
             pw.WriteBytes(pr.ReadLeftoverBytes());
-            Server.Instance.CenterConnection.SendPacket(pw);
+            S.CenterConnection.SendPacket(pw);
             if (packetHandler != null)
             {
                 pr.Position = 1;
                 packetHandler(pr);
             }
         }
-        public static void SendDbUpdateRanks(GuildData guild)
-        {
-            var pw = new Packet(ISClientMessages.GuildDbUpdateRanks);
-            pw.WriteInt(guild.ID);
-            for (int i = 0; i < GuildData.RANKS; i++)
-            {
-                pw.WriteString(guild.RankNames[i]);
-            }
-            Server.Instance.CenterConnection.SendPacket(pw);
-        }
+        #region Ranks
         public static void SendUpdateRanks(GuildData guild)
         {
             var pw = new Packet(ISServerMessages.GuildUpdateRanks);
@@ -55,12 +53,12 @@ namespace WvsBeta.Game.Handlers.Guild
                 pw.WriteString(guild.RankNames[i]);
             }
             BroadcastPacket(pw, HandleUpdateRanks);
-            SendDbUpdateRanks(guild);
+            GuildDbHandler.SaveRanks(guild.ID, guild.RankNames);
         }
         public static void HandleUpdateRanks(Packet pr)
         {
             int guildId = pr.ReadInt();
-            GuildData guild = Server.Instance.Guilds[guildId];
+            GuildData guild = S.Guilds[guildId];
             for (int i = 0; i < GuildData.RANKS; i++)
             {
                 guild.RankNames[i] = pr.ReadString();
@@ -69,14 +67,6 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 c.SendPacket(GuildPacket.UpdateRanks(guildId, guild.RankNames));
             }
-        }
-        public static void SendDbUpdateMember(int guildId, int cid, GuildRank rank)
-        {
-            var pw = new Packet(ISClientMessages.GuildDbUpdateMember);
-            pw.WriteInt(guildId);
-            pw.WriteInt(cid);
-            pw.WriteByte((byte)rank);
-            Server.Instance.CenterConnection.SendPacket(pw);
         }
         public static void SendChangeMemberRank(int guildId, int cid, GuildRank rank)
         {
@@ -89,7 +79,7 @@ namespace WvsBeta.Game.Handlers.Guild
         public static void HandleMemberChangeRank(Packet pr)
         {
             int guildId = pr.ReadInt();
-            GuildData guild = Server.Instance.Guilds[guildId];
+            GuildData guild = S.Guilds[guildId];
             int cid = pr.ReadInt();
             GuildRank rank = (GuildRank)pr.ReadByte();
             guild.Members[cid].Rank = rank;
@@ -98,6 +88,132 @@ namespace WvsBeta.Game.Handlers.Guild
                 c.SendPacket(GuildPacket.ChangeMemberRank(guildId, cid, rank));
             }
         }
+        #endregion
+        #region Create guild
+        public static void SendCreateGuildEnterName(GameCharacter chr)
+        {
+            chr.SendPacket(GuildPacket.EnterName());
+        }
+        public static void HandleCreateGuildEnterName(GameCharacter chr, string guildName)
+        {
+            // Check name not taken
+            if (GuildDbHandler.IsNameTaken(guildName))
+            {
+                chr.SendPacket(new GuildPacket((byte)GuildFormType.GuildNameAlreadyInUse));
+                return;
+            }
+
+            // Deduct fee
+            if (!chr.IncMoney(chr._guildPendingFee, MessageAppearType.ChatGrey))
+            {
+                chr.SendPacket(new GuildPacket((byte)GuildFormType.NpcFormError));
+                return;
+            }
+
+            // Send contract to party
+            chr._guildNamePending = guildName;
+            chr._guildContractPending = new List<bool>();
+            chr.Field.SendPacket(GuildPacket.ShowGuildContract(chr.PartyID, chr.Name, guildName));
+        }
+        public static void HandleContractResponse(int cid, bool response)
+        {
+            var c = S.GetCharacter(cid);
+            if (c.Party == null) return;
+            var ldr = S.GetCharacter(c.Party.Leader);
+            lock (ldr._guildContractPending)
+            {
+                if (ldr._guildContractPending == null) return;
+                if (!response)
+                {
+                    ldr._guildContractPending = null;
+                    ldr.SendPacket(GuildPacket.NpcContractDisagreedMsg());
+                    return;
+                }
+                ldr._guildContractPending.Add(response);
+#if DEBUG
+                if (ldr._guildContractPending.Count == c.Party.Characters.Count() - 1)
+#else
+                if (ldr._guildContractPending.Count == 5)
+#endif
+                {
+                    ldr._guildContractPending = null;
+                    goto CREATE;
+                }
+                else
+                {
+                    goto END;
+                }
+            }
+        CREATE:
+            HandleGuildCreate(ldr);
+        END:
+            return;
+        }
+        public static void HandleGuildCreate(GameCharacter ldr)
+        {
+            if (ldr.Party == null || string.IsNullOrWhiteSpace(ldr._guildNamePending))
+            {
+                ldr.SendPacket(new GuildPacket((byte)GuildFormType.NpcFormError));
+                return;
+            }
+            // Handle create guild, db insert, etc
+            var partyChars = ldr.Party.Characters.ToList();
+            var members = partyChars.Select(c => new KeyValuePair<int, GuildMember>(c.ID, new GuildMember(
+                c.ID == ldr.ID ? GuildRank.Master : GuildRank.JrMaster,
+                c.Name,
+                c.Job,
+                c.Level,
+                true
+            ))).ToDictionary(c => c.Key, c => c.Value);
+            var guild = new GuildData(0, ldr._guildNamePending, members);
+
+            if (!GuildDbHandler.AddGuild(guild))
+            {
+                ldr.SendPacket(new GuildPacket((byte)GuildFormType.NpcFormError));
+                return;
+            }
+
+            SendLoadGuild(guild);
+
+            ldr.SendPacket(GuildPacket.GuildHasBeenMade(guild.ID, ldr.ID));
+            foreach (var c in partyChars)
+            {
+                c.GuildID = guild.ID;
+                c.SendPacket(GuildPacket.GuildCreate(guild));
+                RemotePacket.SendCharacterGuildInfo(c);
+            }
+        }
+        #endregion
+
+        #region Disband guild
+        public static bool HandleDisbandGuild(GameCharacter chr, int fee, int guildId)
+        {
+            if (chr.GuildID == 0) return false;
+            if (!S.Guilds.ContainsKey(guildId)) return false;
+            if (!chr.IncMoney(fee, MessageAppearType.ChatGrey)) return false;
+            if (!GuildDbHandler.RemoveGuild(guildId)) return false;
+            SendUnloadGuild(guildId);
+            return true;
+        }
+        public static void SendUnloadGuild(int guildId)
+        {
+            var pw = new Packet(ISServerMessages.GuildUnload);
+            pw.WriteInt(guildId);
+            BroadcastPacket(pw, HandleUnloadGuild);
+        }
+        public static void HandleUnloadGuild(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            GuildData guild = S.Guilds[guildId];
+            foreach (var c in guild.Characters)
+            {
+                c.GuildID = 0;
+                c.SendPacket(GuildPacket.GuildDisbanded(guildId));
+                RemotePacket.SendCharacterGuildInfo(c);
+            }
+            S.Guilds.Remove(guildId);
+        }
+        #endregion
         public static void HandleAction(GameCharacter chr, Packet pr)
         {
             GuildAction action = (GuildAction)pr.ReadByte();
@@ -105,6 +221,11 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 switch (action)
                 {
+                    case GuildAction.EnterGuildName:
+                        // 4C 02 06 00 61 73 64 66 66 66
+                        string guildName = pr.ReadString();
+                        HandleCreateGuildEnterName(chr, guildName);
+                        break;
                     case GuildAction.Invite:
                         // 4C 05 04 00 61 73 64 66 = invite
                         break;
@@ -131,6 +252,16 @@ namespace WvsBeta.Game.Handlers.Guild
                             GuildRank newRank = (GuildRank)pr.ReadByte();
                             if (newRank < member.Rank && !chr.IsGuildMaster) throw new GuildException("You need to be a Guild Master to do this.");
                             SendChangeMemberRank(chr.GuildID, cid, newRank);
+                            break;
+                        }
+                    case GuildAction.ContractRespond:
+                        {
+                            // contract decline 4C 15 [05 00 00 00] 00
+                            // contract timeout 4C 15 [05 00 00 00] 00
+                            // contract accept  4C 15 [05 00 00 00] [01]
+                            int cid = pr.ReadInt();
+                            bool response = pr.ReadBool();
+                            HandleContractResponse(cid, response);
                             break;
                         }
                     default:
@@ -161,7 +292,7 @@ namespace WvsBeta.Game.Handlers.Guild
             int guildId = pr.ReadInt();
             int cid = pr.ReadInt();
             bool isOnline = pr.ReadBool();
-            var guild = Server.Instance.Guilds[guildId];
+            var guild = S.Guilds[guildId];
             guild.Members[cid].IsOnline = isOnline;
 
             foreach (var c in guild.Characters.Where(c => c.ID != cid))
@@ -169,50 +300,22 @@ namespace WvsBeta.Game.Handlers.Guild
                 c.SendPacket(GuildPacket.MemberSetOnline(guildId, cid, isOnline));
             }
         }
-        public static GuildData LoadGuild(GameCharacter chr)
+        public static void SendLoadGuild(GameCharacter chr, int guildId)
         {
-            int guildId = chr.GuildID;
-            try
-            {
-                GuildData guild;
-                using (var guildReader = Server.Instance.CharacterDatabase.RunQuery(@"SELECT * FROM guilds WHERE id = @id", "@id", guildId) as MySqlDataReader)
-                {
-                    if (!guildReader.Read())
-                    {
-                        throw new ArgumentException("Failed reading guild with guild id " + guildId);
-                    }
-                    guild = GuildData.LoadFromReader(guildReader);
-                }
-                using (var membersReader = Server.Instance.CharacterDatabase.RunQuery(@"
-                    SELECT g.*, c.level, c.job, c.name
-                    FROM guild_members g
-                    LEFT JOIN characters c ON c.id = g.character_id
-                    WHERE g.guild_id = @guild_id
-                ", "@guild_id", guildId) as MySqlDataReader)
-                {
-                    while (membersReader.Read())
-                    {
-                        int cid = membersReader.GetInt32("character_id");
-                        GuildMember member = GuildMember.LoadFromReader(membersReader, cid == chr.ID);
-                        guild.Members[cid] = member;
-                    }
-
-                    var pw = new Packet(ISServerMessages.GuildLoad);
-                    guild.Encode(pw);
-                    BroadcastPacket(pw, HandleLoadGuild);
-                    return guild;
-                }
-            }
-            catch (Exception e)
-            {
-                Program.MainForm.LogAppend($"Loading guild {guildId} failed! {e.Message}");
-                return null;
-            }
+            GuildData guild = GuildDbHandler.LoadGuild(chr, guildId);
+            if (guild == null) return;
+            SendLoadGuild(guild);
+        }
+        public static void SendLoadGuild(GuildData guild)
+        {
+            var pw = new Packet(ISServerMessages.GuildLoad);
+            guild.Encode(pw);
+            BroadcastPacket(pw, HandleLoadGuild);
         }
         public static void HandleLoadGuild(Packet pr)
         {
             var guild = GuildData.Decode(pr);
-            Server.Instance.Guilds[guild.ID] = guild;
+            S.Guilds[guild.ID] = guild;
         }
     }
 }

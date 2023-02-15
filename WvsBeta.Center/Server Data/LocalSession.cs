@@ -793,48 +793,6 @@ namespace WvsBeta.Center
                     }
                 #endregion
 
-                #region Guild Db
-                case ISClientMessages.GuildDbUpdateRanks:
-                    {
-                        int guildId = packet.ReadInt();
-                        string[] ranks = new string[5];
-                        for (int i = 0; i < ranks.Length; i++)
-                        {
-                            ranks[i] = packet.ReadString();
-                        }
-                        CenterServer.Instance.CharacterDatabase.RunQuery(@"
-                            UPDATE guilds
-                            SET
-                              `rank1` = @rank1,
-                              `rank2` = @rank2,
-                              `rank3` = @rank3,
-                              `rank4` = @rank4,
-                              `rank5` = @rank5
-                            WHERE id = @guildId
-                        ",
-                        "@rank1", ranks[0],
-                        "@rank2", ranks[1],
-                        "@rank3", ranks[2],
-                        "@rank4", ranks[3],
-                        "@rank5", ranks[4],
-                        "@guildId", guildId
-                        );
-                        break;
-                    }
-                case ISClientMessages.GuildDbUpdateMember:
-                    {
-                        int guildId = packet.ReadInt();
-                        int cid = packet.ReadInt();
-                        byte rank = packet.ReadByte();
-                        CenterServer.Instance.CharacterDatabase.RunQuery(@"
-                            UPDATE guild_members
-                            SET `rank` = @rank
-                            WHERE character_id = @cid AND guild_id = @guildId
-                        ", "@rank", (int)rank, "@cid", cid, "@guildId", guildId);
-                        break;
-                    }
-                #endregion
-
                 #region Buddy
 
                 case ISClientMessages.BuddyInvite:
