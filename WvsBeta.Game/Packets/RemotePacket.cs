@@ -7,13 +7,21 @@ namespace WvsBeta.Game.Packets
     {
         public static void SendCharacterGuildInfo(GameCharacter chr)
         {
+            SendCharacterGuildName(chr);
+            SendCharacterGuildEmblem(chr);
+        }
+        public static void SendCharacterGuildName(GameCharacter chr)
+        {
             GuildData guild = chr.Guild ?? GuildData.Default;
             var pw = new Packet(ServerMessages.REMOTE_GUILD_NAME);
             pw.WriteInt(chr.ID);
             pw.WriteString(guild.Name);
             chr.Field.SendPacket(pw);
-
-            pw = new Packet(ServerMessages.REMOTE_GUILD_EMBLEM);
+        }
+        public static void SendCharacterGuildEmblem(GameCharacter chr)
+        {
+            GuildData guild = chr.Guild ?? GuildData.Default;
+            var pw = new Packet(ServerMessages.REMOTE_GUILD_EMBLEM);
             pw.WriteInt(chr.ID);
             guild.Emblem.EncodeForRemote(pw);
             chr.Field.SendPacket(pw);

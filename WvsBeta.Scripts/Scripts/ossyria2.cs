@@ -182,37 +182,37 @@ namespace WvsBeta.Scripts.Scripts
                 ossyria2.target = target;
                 if (target.IsGuildMaster)
                 {
-                    v1 = self.AskMenu("Oi? Meu nome é #bLea#k. Estou responsável pelo #bEmblema do Clã#k.\r\n#b#L0#Eu gostaria de cadastrar o emblema de um clã.#l\r\n#L1#Eu gostaria de excluir o emblema de um clã.#l");
+                    v1 = self.AskMenu("Hey? My name is #bLea#k. I am responsible for the #bGuild Emblem#k.\r\n#b#L0#I'd like to register a guild emblem.#l\r\n#L1#I' like to delete a guild emblem.#l");
                     if (v1 == 0)
                     {
-                        if (target.IsGuildMarkExist) self.Say("O Emblema do Clã já foi feito. Por favor, exclua o emblema do clã primeiro para refazê-lo.");
+                        if (target.IsGuildMarkExist) self.Say("Looks like you've already registered a Guild Emblem. Please delete your guild emblem first in order to register a new one.");
                         else
                         {
-                            nRet = self.AskYesNo("Você precisa de #r5.000.000 de Mesos#k para criar um emblema de clã. Para explicar melhor, o emblema de um clã é um modelo único para cada clã. Ele irá aparecer ao lado do nome do clã no jogo.\nEntão, você vai criar um emblema de clã?");
+                            nRet = self.AskYesNo("There is a fee of #r5,000,000 mesos#k for creating a Guild Emblem. To further explain, a Guild Emblem is like a coat of arms that is unique to a guild. It will be displayed to the left of the guild name. How does that sound? Would you like to create a Guild Emblem?");
                             if (nRet == 1)
                             {
                                 if (target.Inventory.Mesos >= 5000000) target.SetGuildMark(-5000000);
-                                else self.Say("Você não tem Mesos suficientes. Você precisa de #b5.000.000 de Mesos#.");
+                                else self.Say("You don't have enough mesos. You need at least #b5,000,000 mesos# to register a Guild Emblem.");
                             }
-                            else self.Say("Oh... ok... O emblema deixaria o clã mais unido. Você precisa de mais tempo para preparar o emblema do clã? Por favor, volte quando quiser.");
+                            else self.Say("Oh... I see... The emblem would bring the guild closer together. Do you need more time to prepare the Guild Emblem? Please come back whenever you want.");
                         }
                     }
                     else if (v1 == 1)
                     {
                         if (target.IsGuildMarkExist)
                         {
-                            nRet = self.AskYesNo("Se você excluir o atual emblema do clã, poderá criar um novo. Você precisa de #r1.000.000 de Mesos#k para excluir um emblema de clã. Você gostaria de excluir?");
+                            nRet = self.AskYesNo("If you delete your current Guild Emblem, you can create a new one. You need #r1,000,000 mesos#k to delete it. Would you like to delete your Guild Emblem?");
                             if (nRet == 1)
                             {
                                 if (target.Inventory.Mesos >= 1000000) target.RemoveGuildMark(-1000000);
-                                else self.Say("Você não tem Mesos suficientes para excluir o emblema do clã. Você precisa de #b1.000.000 de Mesos#k para excluir o emblema do clã.");
+                                else self.Say("You don't have enough mesos to delete your Guild Emblem. You need #b1,000,000 mesos #k to delete it.");
                             }
-                            else self.Say("Por favor, volte quando quiser.");
+                            else self.Say("Please come back whenever you want.");
                         }
-                        else self.Say("Hã? Estranho... você não tem um emblema de clã para excluir.");
+                        else self.Say("Huh? Weird... You don't have a Guild Emblem to delete.");
                     }
                 }
-                else self.Say("Oh... Você não é o mestre do clã. O Emblema do Clã pode ser feito, excluído ou modificado apenas pelo #rMestre do Clã#k.");
+                else self.Say("Oh... You are not the Guild Master. The Guild Emblem can only be created, deleted or modified by the #rGuild Master#k.");
             }
         }
     }

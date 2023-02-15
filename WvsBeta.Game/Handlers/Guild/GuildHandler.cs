@@ -1,11 +1,6 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Runtime.ConstrainedExecution;
-using System.Text;
-using System.Web;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
 
@@ -17,6 +12,7 @@ namespace WvsBeta.Game.Handlers.Guild
         Invite = 5,
         SaveRanks = 13,
         ChangeMemberRank = 14,
+        SelectGuildEmblem = 15,
         ContractRespond = 21,
     }
     class GuildException : Exception
@@ -180,7 +176,7 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 c.GuildID = guild.ID;
                 c.SendPacket(GuildPacket.GuildCreate(guild));
-                RemotePacket.SendCharacterGuildInfo(c);
+                RemotePacket.SendCharacterGuildName(c);
             }
         }
         #endregion
@@ -212,6 +208,45 @@ namespace WvsBeta.Game.Handlers.Guild
                 RemotePacket.SendCharacterGuildInfo(c);
             }
             S.Guilds.Remove(guildId);
+        }
+        #endregion
+        #region Guild emblem
+        public static void HandleCreateGuildEmblem(GameCharacter chr)
+        {
+            if (!chr.IsGuildMaster) return;
+            chr.SendPacket(GuildPacket.GuildEmblemSelector());
+        }
+        public static void SendUpdateGuildEmblem(GameCharacter chr, GuildEmblem emblem)
+        {
+            if (!chr.IsGuildMaster) throw new GuildException("You need to be a Guild Master to do this.");
+            if (!chr.IncMoney(chr._guildPendingFee, MessageAppearType.ChatGrey)) throw new GuildException("You don't have enough mesos to do this.");
+            if (!GuildDbHandler.SaveGuildEmblem(chr.GuildID, emblem)) throw new GuildException("Something went wrong. Please try again later.");
+            var pw = new Packet(ISServerMessages.GuildEmblemUpdated);
+            pw.WriteInt(chr.GuildID);
+            emblem.Encode(pw);
+            BroadcastPacket(pw, HandleGuildEmblemUpdated);
+        }
+        public static void HandleGuildEmblemUpdated(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            GuildData guild = S.Guilds[guildId];
+            guild.Emblem = GuildEmblem.Decode(pr);
+            foreach (var c in guild.Characters)
+            {
+                c.SendPacket(GuildPacket.SetGuildEmblem(guildId, guild.Emblem));
+                RemotePacket.SendCharacterGuildEmblem(c);
+            }
+        }
+        public static void HandleRemoveGuildEmblem(GameCharacter chr)
+        {
+            try
+            {
+                SendUpdateGuildEmblem(chr, GuildEmblem.Default);
+            }
+            catch (GuildException e)
+            {
+                chr.SendPacket(MessagePacket.RedText(e.Message));
+            }
         }
         #endregion
         public static void HandleAction(GameCharacter chr, Packet pr)
@@ -252,6 +287,12 @@ namespace WvsBeta.Game.Handlers.Guild
                             GuildRank newRank = (GuildRank)pr.ReadByte();
                             if (newRank < member.Rank && !chr.IsGuildMaster) throw new GuildException("You need to be a Guild Master to do this.");
                             SendChangeMemberRank(chr.GuildID, cid, newRank);
+                            break;
+                        }
+                    case GuildAction.SelectGuildEmblem:
+                        {
+                            GuildEmblem emblem = GuildEmblem.Decode(pr);
+                            SendUpdateGuildEmblem(chr, emblem);
                             break;
                         }
                     case GuildAction.ContractRespond:

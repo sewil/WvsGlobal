@@ -711,11 +711,13 @@ namespace WvsBeta.Game
         }
         public void SetGuildMark(int mesos)
         {
-            throw new NotImplementedException();
+            _guildPendingFee = mesos;
+            GuildHandler.HandleCreateGuildEmblem(this);
         }
         public void RemoveGuildMark(int mesos)
         {
-            throw new NotImplementedException();
+            _guildPendingFee = mesos;
+            GuildHandler.HandleRemoveGuildEmblem(this);
         }
         public int _guildPendingFee;
         public string _guildNamePending;

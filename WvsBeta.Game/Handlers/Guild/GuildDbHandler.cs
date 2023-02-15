@@ -50,17 +50,17 @@ namespace WvsBeta.Game.Handlers.Guild
                 Db.RunTransaction(comm =>
                 {
                     comm.CommandText = @"
-                    INSERT INTO guilds (name, capacity, rank1, rank2, rank3, rank4, rank5)
-                    VALUES (
-                        @name,
-                        @capacity,
-                        @rank1,
-                        @rank2,
-                        @rank3,
-                        @rank4,
-                        @rank5
-                    )
-                ";
+                        INSERT INTO guilds (name, capacity, rank1, rank2, rank3, rank4, rank5)
+                        VALUES (
+                            @name,
+                            @capacity,
+                            @rank1,
+                            @rank2,
+                            @rank3,
+                            @rank4,
+                            @rank5
+                        )
+                    ";
                     comm.Parameters.AddWithValue("@name", guild.Name);
                     comm.Parameters.AddWithValue("@capacity", guild.Capacity);
                     comm.Parameters.AddWithValue("@rank1", guild.RankNames[0]);
@@ -135,6 +135,28 @@ namespace WvsBeta.Game.Handlers.Guild
                 comm.Parameters.AddWithValue("@guildId", guildId);
                 int r = comm.ExecuteNonQuery();
                 result = r > 0;
+            }, Program.MainForm.LogAppend);
+            return result;
+        }
+        public static bool SaveGuildEmblem(int guildId, GuildEmblem emblem)
+        {
+            bool result = false;
+            Db.RunTransaction(comm => {
+                comm.CommandText = @"
+                    UPDATE guilds
+                    SET
+                        emblem_bg = @emblemBg,
+                        emblem_bgc = @emblemBgColor,
+                        emblem_logo = @emblemLogo,
+                        emblem_logoc = @emblemLogoColor
+                    WHERE id = @guildId
+                ";
+                comm.Parameters.AddWithValue("@guildId", guildId);
+                comm.Parameters.AddWithValue("@emblemBg", emblem.Background);
+                comm.Parameters.AddWithValue("@emblemBgColor", emblem.BackgroundColor);
+                comm.Parameters.AddWithValue("@emblemLogo", emblem.Logo);
+                comm.Parameters.AddWithValue("@emblemLogoColor", emblem.LogoColor);
+                result = comm.ExecuteNonQuery() > 0;
             }, Program.MainForm.LogAppend);
             return result;
         }

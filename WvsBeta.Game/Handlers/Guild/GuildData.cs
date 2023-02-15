@@ -128,7 +128,7 @@ namespace WvsBeta.Game.Handlers.Guild
         public string[] RankNames { get; protected set; } = new string[RANKS] { "", "", "", "", "" };
         public Dictionary<int, GuildMember> Members = new Dictionary<int, GuildMember>();
         public IEnumerable<GameCharacter> Characters => Members.Where(m => m.Value.IsOnline).Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
-        public GuildEmblem Emblem { get; protected set; }
+        public GuildEmblem Emblem { get; set; }
         protected GuildData()
         {
             Name = "";

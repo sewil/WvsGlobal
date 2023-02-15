@@ -16,6 +16,7 @@ namespace WvsBeta.Game.Handlers.Guild
         EnterGuildName = 1,
         ShowGuildContract = 3,
         GuildInvitation = 5,
+        GuildEmblemSelector = 16,
         GuildInfo = 17,
         GuildNameAlreadyInUse = 19,
         NpcContractAgreementError = 22,
@@ -43,7 +44,7 @@ namespace WvsBeta.Game.Handlers.Guild
         MemberSetOnline = 52,
         RanksUpdated = 53,
         MemberChangeRank = 55,
-        UpdateGuildEmblem = 57
+        SetGuildEmblem = 57
     }
     public class GuildPacket : Packet
     {
@@ -64,6 +65,13 @@ namespace WvsBeta.Game.Handlers.Guild
             var pw = new GuildPacket((byte)GuildFormType.GuildInfo);
             guild.Encode(pw);
             return pw;
+        }
+        /// <summary>
+        /// Only works for Guild Masters at Guild HQ
+        /// </summary>
+        public static GuildPacket GuildEmblemSelector()
+        {
+            return new GuildPacket((byte)GuildFormType.GuildEmblemSelector);
         }
         public static GuildPacket GuildHasBeenMade(int guildId, int cid)
         {
@@ -110,9 +118,9 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(job);
             return pw;
         }
-        public static GuildPacket UpdateGuildEmblem(int guildId, GuildEmblem emblem)
+        public static GuildPacket SetGuildEmblem(int guildId, GuildEmblem emblem)
         {
-            var pw = new GuildPacket((byte)GuildActionResultType.UpdateGuildEmblem);
+            var pw = new GuildPacket((byte)GuildActionResultType.SetGuildEmblem);
             pw.WriteInt(guildId);
             emblem.Encode(pw);
             return pw;

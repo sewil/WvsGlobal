@@ -307,6 +307,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildUnload:
                         GuildHandler.HandleUnloadGuild(packet);
                         break;
+                    case ISServerMessages.GuildEmblemUpdated:
+                        GuildHandler.HandleGuildEmblemUpdated(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))
