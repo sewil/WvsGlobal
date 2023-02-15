@@ -5,8 +5,10 @@ using System.Linq;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
+using WvsBeta.Center.Packets;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center
@@ -649,6 +651,24 @@ namespace WvsBeta.Center
             switch (opcode)
             {
 
+                case ISClientMessages.GroupMessage:
+                    {
+                        string fromName = packet.ReadString();
+                        GroupMessageType type = (GroupMessageType)packet.ReadByte();
+                        int[] recipients = new int[packet.ReadByte()];
+                        for (int i = 0; i < recipients.Length; i++)
+                        {
+                            recipients[i] = packet.ReadInt();
+                        }
+                        string message = packet.ReadString();
+                        var victims = recipients.Select(r => CenterServer.Instance.FindCharacter(r, true)).Where(c => c != null);
+                        foreach (Character victim in victims)
+                        {
+                            ChatPacket.SendGroupMessage(victim, type, fromName, message);
+                        }
+                        break;
+                    }
+
                 #region Messenger
 
 
@@ -747,19 +767,6 @@ namespace WvsBeta.Center
                         }
                         break;
                     }
-
-                case ISClientMessages.PartyChat:
-                    {
-                        int chatter = packet.ReadInt();
-                        string msg = packet.ReadString();
-                        Character chr = CenterServer.Instance.FindCharacter(chatter);
-                        if (chr != null && Party.Parties.TryGetValue(chr.PartyID, out Party party))
-                        {
-                            party.Chat(chatter, msg);
-                        }
-                        break;
-                    }
-
                 case ISClientMessages.PlayerUpdateMap:
                     {
                         int id = packet.ReadInt();
@@ -890,20 +897,6 @@ namespace WvsBeta.Center
                 case ISClientMessages.BuddyListExpand:
                     {
                         CenterServer.Instance.FindCharacter(packet.ReadInt()).FriendsList.IncreaseCapacity();
-                        break;
-                    }
-                case ISClientMessages.BuddyChat:
-                    {
-                        int fWho = packet.ReadInt();
-                        string Who = packet.ReadString();
-                        string what = packet.ReadString();
-                        int recipientCount = packet.ReadByte();
-                        int[] recipients = new int[recipientCount];
-                        for (var i = 0; i < recipientCount; i++) recipients[i] = packet.ReadInt();
-
-                        Character pWho = CenterServer.Instance.FindCharacter(fWho);
-
-                        pWho?.FriendsList.BuddyChat(what, recipients);
                         break;
                     }
                 case ISClientMessages.BuddyDecline:

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.Commands;
 using WvsBeta.Game.Packets;
@@ -16,6 +17,7 @@ namespace WvsBeta.Game
         private static ILog commandLog = LogManager.GetLogger("CommandLog");
         private static ILog buddyLog = LogManager.GetLogger("BuddyChatLog");
         private static ILog partyLog = LogManager.GetLogger("PartyChatLog");
+        private static ILog guildLog = LogManager.GetLogger("GuildChatLog");
         private static ILog whisperLog = LogManager.GetLogger("WhisperChatLog");
 
         public enum MessageTypes : byte
@@ -123,49 +125,53 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void HandleSpecialChat(GameCharacter chr, Packet packet)
+        public static void HandleGroupMessage(GameCharacter chr, Packet packet)
         {
             if (!chr.Field.ChatEnabled) return;
 
             //to be handled via center server
-            byte Type = packet.ReadByte();
-            byte CountOfRecipients = packet.ReadByte();
+            GroupMessageType type = (GroupMessageType)packet.ReadByte();
+            byte recipientsLen = packet.ReadByte();
             // Not used
-            int[] Recipients = new int[CountOfRecipients];
+            int[] recipients = new int[recipientsLen];
 
-            for (int i = 0; i < CountOfRecipients; i++)
+            for (int i = 0; i < recipientsLen; i++)
             {
-                Recipients[i] = packet.ReadInt();
+                recipients[i] = packet.ReadInt();
             }
 
-            string Message = packet.ReadString();
+            string message = packet.ReadString();
 
             ILog logger = log;
-            switch (Type)
+            switch (type)
             {
-                case 0: logger = buddyLog; break;
-                case 1: logger = partyLog; break;
+                case GroupMessageType.Buddy: logger = buddyLog; break;
+                case GroupMessageType.Party: logger = partyLog; break;
+                case GroupMessageType.Guild: logger = guildLog; break;
             }
 
             if (ShowMuteMessage(chr))
             {
-                logger.Info("[MUTED] " + chr.Name + ": " + Message);
+                logger.Info("[MUTED] " + chr.Name + ": " + message);
                 return;
             }
 
-            logger.Info(chr.Name + ": " + Message);
-
-            switch (Type)
-            {
-                case 0: //Buddy chat
-                    Server.Instance.CenterConnection.BuddyChat(chr, Message, Recipients);
-                    break;
-                case 1: //Party Chat
-                    Server.Instance.CenterConnection.PartyChat(chr.ID, Message);
-                    break;
-            }
+            logger.Info(chr.Name + ": " + message);
+            SendGroupMessageToCenter(chr.Name, type, recipients, message);
         }
-
+        public static void SendGroupMessageToCenter(string fromName, GroupMessageType type, int[] recipients, string message)
+        {
+            Packet pw = new Packet(ISClientMessages.GroupMessage);
+            pw.WriteString(fromName);
+            pw.WriteByte((byte)type);
+            pw.WriteByte((byte)recipients.Length);
+            for (int i = 0; i < recipients.Length; i++)
+            {
+                pw.WriteInt(recipients[i]);
+            }
+            pw.WriteString(message);
+            Server.Instance.CenterConnection.SendPacket(pw);
+        }
         public static void HandleCommand(GameCharacter chr, Packet packet)
         {
             if (!chr.Field.ChatEnabled) return;

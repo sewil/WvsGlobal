@@ -129,6 +129,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Messenger.cs" />
+    <Compile Include="Packets\ChatPacket.cs" />
     <Compile Include="PartyData\Party.cs" />
     <Compile Include="PartyData\PartyPacket.cs" />
     <Compile Include="Program.cs" />

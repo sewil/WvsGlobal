@@ -19,6 +19,8 @@
         PlayerWhisperOrFindOperation,
         PlayerUsingSuperMegaphone,
         PlayerBuffUpdate,
+        
+        GroupMessage,
 
         MessengerJoin,
         MessengerLeave,
@@ -35,7 +37,6 @@
         PartyExpel,
         PartyDisconnect,
         PartyDecline,
-        PartyChat,
         PartyDoorChanged,
 
         RequestBuddylist,
@@ -44,7 +45,6 @@
         BuddyInviteAnswer,
         BuddyListExpand,
         BuddyDisconnect,
-        BuddyChat,
         BuddyDecline,
 
         AdminMessage,

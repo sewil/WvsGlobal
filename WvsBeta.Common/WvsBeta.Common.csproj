@@ -199,6 +199,7 @@
     <Compile Include="Objects\WZQuestData.cs" />
     <Compile Include="Objects\CharacterData.cs" />
     <Compile Include="Packets\CashPacket.cs" />
+    <Compile Include="Enums\GroupMessageType.cs" />
     <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />

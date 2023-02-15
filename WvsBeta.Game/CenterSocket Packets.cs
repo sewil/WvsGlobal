@@ -73,14 +73,6 @@ namespace WvsBeta.Game
             SendPacket(pw);
         }
 
-        public void PartyChat(int blabber, string msg)
-        {
-            Packet pw = new Packet(ISClientMessages.PartyChat);
-            pw.WriteInt(blabber);
-            pw.WriteString(msg);
-            SendPacket(pw);
-        }
-
         public void PartyDoorCreated(MysticDoor door)
         {
             Packet pw = new Packet(ISClientMessages.PartyDoorChanged);
@@ -315,17 +307,6 @@ namespace WvsBeta.Game
             packet.WriteInt(pCharacter.ID);
             packet.WriteInt(pCharacter.MapID);
             packet.WriteInt(pCharacter.PartyID);
-            SendPacket(packet);
-        }
-
-        public void BuddyChat(GameCharacter chr, string what, int[] recipients)
-        {
-            Packet packet = new Packet(ISClientMessages.BuddyChat);
-            packet.WriteInt(chr.ID);
-            packet.WriteString(chr.Name);
-            packet.WriteString(what);
-            packet.WriteByte((byte)recipients.Length);
-            recipients.ForEach(packet.WriteInt);
             SendPacket(packet);
         }
 

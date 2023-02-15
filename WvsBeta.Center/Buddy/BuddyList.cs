@@ -200,15 +200,6 @@ namespace WvsBeta.Center
             pw.WriteInt(dc == true ? -1 : buddy.GetChannel());
             Owner.SendPacket(pw);
         }
-
-        public void BuddyChat(string message, int[] recipients)
-        {
-            Buddies.Values
-                .Where(e => Owner.IsVisibleTo(e))
-                .Where(x => recipients.Contains(x.charId))
-                .ForEach(b => b.GetBuddyList().SendBuddyChat(Owner.charName, message, 0));
-        }
-
         public void SendBuddyList()
         {
             Packet pw = new Packet(ServerMessages.FRIEND_RESULT);
@@ -263,17 +254,6 @@ namespace WvsBeta.Center
             pw.WriteByte(21);
             Owner.SendPacket(pw);
         }
-
-        public void SendBuddyChat(String fromName, string text, byte group)
-        {
-            //!packet 2D 01 04 00 6A 6F 65 70 01003400000000000000
-            Packet pw = new Packet(ServerMessages.GROUP_MESSAGE);
-            pw.WriteByte(group);
-            pw.WriteString(fromName);
-            pw.WriteString(text);
-            Owner.SendPacket(pw);
-        }
-
         #endregion
 
         #region Database Stuff

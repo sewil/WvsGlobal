@@ -423,20 +423,6 @@ namespace WvsBeta.Center
             UpdateAllDoors();
         });
 
-        public void Chat(int chatter, string text)
-        {
-            PartyMember chr = GetById(chatter);
-            if (members.Count(e => e?.IsOnline ?? false) <= 1)
-            {
-                chr.SendPacket(PartyPacket.NoneOnline());
-            }
-            else
-            {
-                // Send to all other members
-                ForAllMembers(m => m.SendPacket(PartyPacket.PartyChat(chr.name, text, 1)), chatter);
-            }
-        }
-
         public void OnlyWithLeader(int lid, Action<PartyMember> action)
         {
             if (lid == leader.id)

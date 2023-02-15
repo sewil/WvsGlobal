@@ -164,15 +164,6 @@ namespace WvsBeta.Center
             return pw;
         }
 
-        public static Packet PartyChat(string fromName, string text, byte group)
-        {
-            Packet pw = new Packet(ServerMessages.GROUP_MESSAGE);
-            pw.WriteByte(group);
-            pw.WriteString(fromName);
-            pw.WriteString(text);
-            return pw;
-        }
-
         public static Packet RequestHpUpdate(int id)
         {
             Packet pw = new Packet(ISServerMessages.UpdateHpParty);

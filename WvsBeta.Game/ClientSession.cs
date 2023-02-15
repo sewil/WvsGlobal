@@ -239,7 +239,7 @@ namespace WvsBeta.Game
                             QuestPacket.HandleAction(character, packet);
                             break;
                         case ClientMessages.GROUP_MESSAGE:
-                            ChatPacket.HandleSpecialChat(character, packet);
+                            ChatPacket.HandleGroupMessage(character, packet);
                             break;
                         case ClientMessages.WHISPER:
                             ChatPacket.HandleCommand(character, packet);
