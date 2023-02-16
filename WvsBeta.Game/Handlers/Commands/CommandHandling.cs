@@ -253,7 +253,7 @@ namespace WvsBeta.Game.Handlers.Commands
                     case "roll":
                         {
                             int roll = Rand32.NextBetween(1, 100);
-                            ChatPacket.SendText(ChatPacket.MessageTypes.Notice, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
+                            ChatPacket.SendText(ChatPacket.MessageTypes.Blue, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
                             return true;
                         }
                 }
@@ -268,6 +268,15 @@ namespace WvsBeta.Game.Handlers.Commands
                 #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
+#region Whereami
+                        case "whereami":
+                        case "currentmap":
+                            {
+                                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, string.Format("You are currently at map {0}.", character.Field.ID),
+                                            character, ChatPacket.MessageMode.ToPlayer);
+                                return true;
+                            }
+#endregion
 #region Map / Goto
 
                         case "m":
