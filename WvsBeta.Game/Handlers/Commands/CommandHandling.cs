@@ -59,10 +59,7 @@ namespace WvsBeta.Game.Handlers.Commands
             { "subwayb2", 103000905 },
             { "subwayb3", 103000909 },
             // Free Markets
-            { "henfm", 100000110 },
-            { "perionfm", 102000100 },
-            { "elnathfm", 211000110 },
-            { "ludifm", 220000200 },
+            { "fm", 910000000 },
             // Dungeon areas
             { "dungeon", 105090200 },
             { "mine", 211041400 },
