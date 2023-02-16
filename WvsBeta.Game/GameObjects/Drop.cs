@@ -12,7 +12,7 @@ namespace WvsBeta.Game
         public bool ByUser { get; set; }
         public bool Everlasting { get; set; }
         public bool ConsumeOnPickup { get; set; }
-        public DropType OwnType { get; set; }
+        public DropType DropType { get; set; }
         public int OwnerID { get; set; }
         public int OwnPartyID { get; set; }
         public long CreateTime { get; set; }
@@ -35,7 +35,7 @@ namespace WvsBeta.Game
             this.Reward = reward;
             this.OwnerID = OwnerID;
             this.OwnPartyID = OwnPartyID;
-            this.OwnType = OwnType;
+            this.DropType = OwnType;
             this.SourceID = SourceID;
             this.Pt1 = new Pos(x1, y1);
             this.Pt2 = new Pos(x2, y2);
@@ -90,10 +90,10 @@ namespace WvsBeta.Game
                 {
                     if (User.Quests.HasQuest(QuestID))
                     {
-                        if (OwnType == DropType.Normal && User.ID == OwnerID ||
-                            OwnType == DropType.Party && User.PartyID == OwnPartyID ||
-                            OwnType == DropType.FreeForAll ||
-                            OwnType == DropType.Explosive)
+                        if (DropType == DropType.Normal && User.ID == OwnerID ||
+                            DropType == DropType.Party && User.PartyID == OwnPartyID ||
+                            DropType == DropType.FreeForAll ||
+                            DropType == DropType.Explosive)
                         {
                             Result = true;
                         }
@@ -112,7 +112,7 @@ namespace WvsBeta.Game
             this.Reward.EncodeForMigration(pw);
             pw.WriteInt(OwnerID);
             pw.WriteInt(OwnPartyID);
-            pw.WriteByte((byte)OwnType);
+            pw.WriteByte((byte)DropType);
             pw.WriteInt(SourceID);
             pw.WriteShort(Pt1.X);
             pw.WriteShort(Pt1.Y);

@@ -150,10 +150,10 @@ namespace WvsBeta.Game
             pw.WriteBool(drop.Reward.Mesos);
             pw.WriteInt(drop.Reward.Drop);
             pw.WriteInt(drop.OwnPartyID > 0 ? drop.OwnPartyID : drop.OwnerID);
-            pw.WriteByte((byte)drop.OwnType);
+            pw.WriteByte((byte)drop.DropType);
             pw.WriteShort(drop.Pt2.X);
             pw.WriteShort(drop.Pt2.Y);
-            pw.WriteInt(drop.SourceID);
+            pw.WriteInt(drop.DropType == DropType.Normal ? drop.SourceID : 0);
 
             if (EnterType == RewardEnterType.ShowDrop ||
                 EnterType == RewardEnterType.DropAnimation ||

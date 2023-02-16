@@ -231,6 +231,7 @@ namespace WvsBeta.Game.Handlers.Commands
         }
 
         static bool shuttingDown = false;
+        static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
         public static bool HandleChat(GameCharacter character, string text)
         {
             string logtext = string.Format("[{0,-9}] {1,-13}: {2}", character.MapID, character.Name, text);
@@ -2003,14 +2004,35 @@ namespace WvsBeta.Game.Handlers.Commands
 
 #region Packet
 
+                        case "beginpacket":
+                            {
+                                pendingPackets[character] = new Packet();
+                                ChatPacket.SendNotice("Packet initiated. Use /packet to write your packet.", character);
+                                return true;
+                            }
+                        case "endpacket":
+                            {
+                                if (!pendingPackets.TryGetValue(character, out Packet packet))
+                                {
+                                    ChatPacket.SendNotice("You haven't started a packet! Use /beginpacket to initiate a packet.", character);
+                                    return true;
+                                }
+                                character.SendPacket(packet);
+                                pendingPackets.Remove(character);
+                                return true;
+                            }
                         case "packet":
                             {
                                 if (Args.Count > 0)
                                 {
-                                    Packet pw = new Packet();
+                                    bool pending = pendingPackets.TryGetValue(character, out Packet pw);
+                                    if (!pending)
+                                    {
+                                        pw = new Packet();
+                                    }
                                     pw.WriteHexString(Args.CommandText);
-                                    ////Console.WriteLine(packdata);
-                                    character.SendPacket(pw);
+                                    if (!pending) character.SendPacket(pw);
+                                    else ChatPacket.SendNotice("Packet: " + pw + ". Use /endpacket to send.", character);
                                 }
                                 return true;
                             }
