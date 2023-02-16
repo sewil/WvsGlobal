@@ -17,6 +17,8 @@ namespace WvsBeta.Scripts.Scripts
             var qr = target.Quests;
             var val = qr.Get(QUEST_ID);
 
+            target.SendSound(Constants.Sounds.Portal);
+
             if (val == "0") target.ChangeMap(100000100, "in04");
             else if (val == "1") target.ChangeMap(220000000, "st00");
             else if (val == "2") target.ChangeMap(211000100, "st00");
