@@ -9,8 +9,6 @@ WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts
 - [ ] Update drop data
 
 ## Notes
-- AES no worky, use maplecrypt (shanda).
-- Running Tespia or any other world other than Scania disables char creation for some reason. Tespia is assumed to have ID 20 (wz edited).
 - Config options for Redis, ElasticSearch/logging and some others are missing
 - ReNX has been modified to support merging of NX files
 - log4net.ElasticSearch was made a bit better in terms of memory usage and logging
