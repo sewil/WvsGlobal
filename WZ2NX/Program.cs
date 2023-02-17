@@ -234,7 +234,7 @@ namespace WZ2NX {
             }
             List<WZObject> @out = new List<WZObject>();
             foreach (WZObject levelNode in nodeLevel.Where(n => n.ChildCount > 0))
-                @out.AddRange(levelNode.OrderBy(f => f.Name, StringComparer.Ordinal));
+                @out.AddRange(levelNode);
             nodeLevel.Clear();
             nodeLevel = @out;
         }
