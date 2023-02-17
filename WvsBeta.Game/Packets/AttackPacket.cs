@@ -146,10 +146,7 @@ namespace WvsBeta.Game
                 ai.ForeAction = (byte)(b & 0x7F);
                 ai.FacesLeft = b >> 7 == 1;
                 ai.FrameIndex = packet.ReadByte();
-                if (!ad.IsMesoExplosion)
-                {
-                    ai.CalcDamageStatIndex = packet.ReadByte();
-                }
+                ai.CalcDamageStatIndex = packet.ReadByte();
                 ai.HitPosition = new Pos(packet);
                 ai.PreviousMobPosition = new Pos(packet);
 
