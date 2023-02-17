@@ -1420,7 +1420,7 @@ CREATE TABLE `users` (
   `password` char(130) COLLATE latin1_general_ci NOT NULL,
   `salt` char(10) COLLATE latin1_general_ci DEFAULT NULL,
   `email` varchar(255) COLLATE latin1_general_ci NOT NULL,
-  `pin` int(4) unsigned DEFAULT NULL,
+  `pin` varchar(4) COLLATE latin1_general_ci DEFAULT NULL,
   `gender` tinyint(1) unsigned DEFAULT NULL,
   `gm` tinyint(4) NOT NULL DEFAULT 0,
   `admin` tinyint(1) NOT NULL DEFAULT 0,

@@ -10,6 +10,8 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         EnterGuildName = 2,
         Invite = 5,
+        Leave = 7,
+        Expel = 8,
         SaveRanks = 13,
         ChangeMemberRank = 14,
         SelectGuildEmblem = 15,

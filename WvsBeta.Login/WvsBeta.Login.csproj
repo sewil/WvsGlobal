@@ -110,7 +110,7 @@
     <Compile Include="PacketHandlers\ChannelSelectHandler.cs" />
     <Compile Include="PacketHandlers\CharacterSelectHandler.cs" />
     <Compile Include="PacketHandlers\SetGenderHandler.cs" />
-    <Compile Include="PacketHandlers\UpdatePINHandler.cs" />
+    <Compile Include="PacketHandlers\PINHandler.cs" />
     <Compile Include="PacketHandlers\WorldInfoHandler.cs" />
     <Compile Include="Packets\ChannelSelectResultPacket.cs" />
     <Compile Include="Packets\CharacterSelectPacket.cs" />

@@ -93,6 +93,7 @@ namespace WvsBeta.Login.PacketHandlers
                     dbpass = data.GetString("password");
                     banReason = (BanReason)data.GetByte("ban_reason");
                     banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeUtc();
+                    string pin = data.IsDBNull(5) ? null : data.GetString("pin");
 
                     if (RedisBackend.Instance.IsPlayerOnline(userId))
                     {
@@ -136,6 +137,7 @@ namespace WvsBeta.Login.PacketHandlers
                         }
                         else
                         {
+                            session.Player.PIN = pin;
                             session.Player.GMLevel = data.GetByte("admin");
                             session.Player.Gender = (PlayerGender)data.GetByte("gender");
                             session.Player.DateOfBirth = data.GetInt32("char_delete_password");
