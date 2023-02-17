@@ -4,9 +4,9 @@ namespace WvsBeta.Game
 {
     public class Portal
     {
-        public Portal(NXNode node)
+        public Portal(NXNode node, byte portalId)
         {
-            ID = (byte)int.Parse(node.Name);
+            ID = portalId;
             Type = node["pt"].ValueByte();
             X = node["x"].ValueInt16();
             Y = node["y"].ValueInt16();

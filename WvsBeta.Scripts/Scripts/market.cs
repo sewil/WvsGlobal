@@ -19,7 +19,7 @@ namespace WvsBeta.Scripts.Scripts
 
             target.SendSound(Constants.Sounds.Portal);
 
-            if (val == "0") target.ChangeMap(100000100, "in04");
+            if (val == "0") target.ChangeMap(100000100, "st00");
             else if (val == "1") target.ChangeMap(220000000, "st00");
             else if (val == "2") target.ChangeMap(211000100, "st00");
             else target.ChangeMap(102000000, "st00");

@@ -551,9 +551,10 @@ namespace WvsBeta.Game
         {
             if (!mapNode.ContainsChild("portal")) return;
 
+            byte portalId = 0;
             foreach (var pNode in mapNode["portal"])
             {
-                map.AddPortal(new Portal(pNode));
+                map.AddPortal(new Portal(pNode, portalId++));
             }
         }
 
