@@ -59,6 +59,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.Scripts", "WvsBeta.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.DropDataWriter", "WvsBeta.DropDataWriter\WvsBeta.DropDataWriter.csproj", "{391E1B5C-4F23-449F-A690-143B5F5415D2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reWZ", "reWZ\reWZ.csproj", "{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WZ2NX", "WZ2NX\WZ2NX.csproj", "{33BF1B82-6AC2-4330-BE73-52F61A840E4B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -119,6 +123,14 @@ Global
 		{391E1B5C-4F23-449F-A690-143B5F5415D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{391E1B5C-4F23-449F-A690-143B5F5415D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{391E1B5C-4F23-449F-A690-143B5F5415D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33BF1B82-6AC2-4330-BE73-52F61A840E4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33BF1B82-6AC2-4330-BE73-52F61A840E4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33BF1B82-6AC2-4330-BE73-52F61A840E4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33BF1B82-6AC2-4330-BE73-52F61A840E4B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
