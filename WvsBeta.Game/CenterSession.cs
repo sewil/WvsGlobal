@@ -292,6 +292,7 @@ namespace WvsBeta.Game
                             }
                             break;
                         }
+                    #region Guild
                     case ISServerMessages.GuildLoad:
                         GuildHandler.HandleLoadGuild(packet);
                         break;
@@ -316,6 +317,7 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberJobLevelUpdate:
                         GuildHandler.HandleUpdatePlayerJob(packet);
                         break;
+                    #endregion
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))
