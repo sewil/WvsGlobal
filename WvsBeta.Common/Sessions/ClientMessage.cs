@@ -86,7 +86,7 @@
         PARTY_OPERATION,
         DENY_PARTY_REQUEST,
         GUILD_ACTION = 76,
-        __PADDING_77,
+        GUILD_DECLINE_INVITATION = 77,
         __PADDING_78,
         __PADDING_79,
         FRIEND_OPERATION = 80,

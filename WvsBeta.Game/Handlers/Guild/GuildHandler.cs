@@ -10,6 +10,7 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         EnterGuildName = 2,
         Invite = 5,
+        AcceptInvitation = 6,
         Leave = 7,
         Expel = 8,
         SaveRanks = 13,
@@ -19,8 +20,33 @@ namespace WvsBeta.Game.Handlers.Guild
     }
     class GuildException : Exception
     {
+        public GuildErrorType ErrorType { get; private set; }
+        public Packet Packet { get; private set; }
+        public GuildException(Packet packet)
+        {
+            Packet = packet;
+        }
+        public GuildException(GuildErrorType errorType)
+        {
+            ErrorType = errorType;
+        }
         public GuildException(string message) : base(message)
         {
+        }
+        public void SendPacket(GameCharacter chr)
+        {
+            if (Packet != null)
+            {
+                chr.SendPacket(Packet);
+            }
+            else if (ErrorType != 0)
+            {
+                chr.SendPacket(new GuildPacket((byte)ErrorType));
+            }
+            else if (!string.IsNullOrWhiteSpace(Message))
+            {
+                chr.SendPacket(MessagePacket.RedText(Message));
+            }
         }
     }
     public static class GuildHandler
@@ -251,6 +277,172 @@ namespace WvsBeta.Game.Handlers.Guild
             }
         }
         #endregion
+        #region Invite/Join
+        public class GuildInvite
+        {
+            public GameCharacter Invitee { get; private set; }
+            public GameCharacter Inviter { get; private set; }
+            public GuildData Guild { get; private set; }
+            public GuildInvite(GameCharacter invitee, GameCharacter inviter, GuildData guild)
+            {
+                Invitee = invitee;
+                Inviter = inviter;
+                Guild = guild;
+            }
+        }
+        public static Dictionary<int, GuildInvite> Invites = new Dictionary<int, GuildInvite>();
+        public static void HandleInvite(GameCharacter chr, string victimName)
+        {
+            if (!chr.CanChangeRank)
+            {
+                throw new GuildException("You need to be at least a Jr. Master to do this.");
+            }
+            else if (chr.Guild.Members.Count >= chr.Guild.Capacity)
+            {
+                throw new GuildException("The guild has already reached maximum capacity.");
+            }
+            GameCharacter victim = S.GetCharacter(victimName);
+            if (victim == null)
+            {
+                throw new GuildException(string.Format("Unable to find '{0}'", victimName));
+            }
+            else if (victim.IsGuildMember)
+            {
+                throw new GuildException(string.Format("{0} is already a member of another guild.", victimName));
+            }
+            else if (Invites.ContainsKey(victim.ID))
+            {
+                throw new GuildException(GuildPacket.InviteBusy(victimName));
+            }
+            else
+            {
+                victim.SendPacket(GuildPacket.Invite(chr.GuildID, victimName));
+                Invites.Add(victim.ID, new GuildInvite(victim, chr, chr.Guild));
+            }
+        }
+        public static void HandleAcceptInvitation(GameCharacter chr)
+        {
+            if (!Invites.TryGetValue(chr.ID, out GuildInvite invite))
+            {
+                throw new GuildException("Guild invite not found.");
+            }
+            else if (invite.Guild.Capacity == invite.Guild.Members.Count)
+            {
+                throw new GuildException("The guild has already reached maximum capacity.");
+            }
+            else if (chr.IsGuildMember)
+            {
+                throw new GuildException("You are already a guild member.");
+            }
+            else
+            {
+                SendMemberJoined(invite.Guild, chr);
+                Invites.Remove(chr.ID);
+            }
+        }
+        public static void SendMemberJoined(GuildData guild, GameCharacter chr)
+        {
+            var pw = new Packet(ISServerMessages.GuildMemberJoin);
+            pw.WriteInt(guild.ID);
+            pw.WriteInt(chr.ID);
+            var guildMember = new GuildMember(GuildRank.Member3, chr.Name, chr.Job, chr.Level, true);
+            guildMember.Encode(pw);
+            if (!GuildDbHandler.AddMember(guild.ID, chr.ID, guildMember.Rank))
+            {
+                chr.SendPacket(MessagePacket.RedText("Something went wrong. Please try again later."));
+                return;
+            }
+            chr.GuildID = guild.ID;
+            BroadcastPacket(pw, HandleMemberJoined);
+            RemotePacket.SendCharacterGuildInfo(chr);
+            chr.SendPacket(GuildPacket.GuildInfo(guild));
+        }
+        public static void HandleMemberJoined(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            int cid = pr.ReadInt();
+            GuildData guild = S.Guilds[guildId];
+            GuildMember member = GuildMember.DecodeNew(pr);
+            var chars = guild.Characters.ToList();
+            guild.Members.Add(cid, member);
+            foreach (var c in chars)
+            {
+                c.SendPacket(MessagePacket.RedText(string.Format("'{0}' has joined the guild", member.Name)));
+                c.SendPacket(GuildPacket.GuildInfo(guild));
+            }
+        }
+        public static void HandleDeclineInvitation(GameCharacter chr, Packet pr)
+        {
+            // 4D 2E 0A 00 73 65 77 69 6C 6E 6F 6F 6F 62 0A 00 73 65 77 69 6C 6E 6F 6F 6F 62
+            byte type = pr.ReadByte();
+            string name = pr.ReadString();
+            string name2 = pr.ReadString();
+            if (Invites.TryGetValue(chr.ID, out GuildInvite invite))
+            {
+                invite.Inviter.SendPacket(GuildPacket.InviteDecline(name));
+                Invites.Remove(chr.ID);
+            }
+        }
+        #endregion
+        #region Leave/Expel
+        public static void HandleLeave(GameCharacter chr)
+        {
+            SendMemberLeave(chr, chr, false);
+        }
+        public static void HandleExpel(GameCharacter chr, int cid, string name)
+        {
+            if (!S.CharacterList.TryGetValue(cid, out GameCharacter victim))
+            {
+                chr.SendPacket(MessagePacket.RedText(string.Format("Unable to find '{0}'", name)));
+                return;
+            }
+            SendMemberLeave(chr, victim, true);
+        }
+        public static void SendMemberLeave(GameCharacter chr, GameCharacter victim, bool kicked)
+        {
+            if (!GuildDbHandler.RemoveMember(victim.GuildID, victim.ID))
+            {
+                chr.SendPacket(MessagePacket.RedText("Something went wrong. Please try again later."));
+                return;
+            }
+            var pw = new Packet(ISServerMessages.GuildMemberLeave);
+            pw.WriteBool(kicked);
+            pw.WriteInt(victim.GuildID);
+            pw.WriteInt(victim.ID);
+            pw.WriteString(victim.Name);
+            if (kicked)
+            {
+                victim.SendPacket(GuildPacket.GuildMemberAction(victim.GuildID, victim.ID, victim.Name, GuildMemberActionType.MemberExpelled));
+            }
+            else
+            {
+                victim.SendPacket(GuildPacket.GuildMemberAction(victim.GuildID, victim.ID, victim.Name, GuildMemberActionType.MemberQuit));
+            }
+            victim.GuildID = 0;
+            BroadcastPacket(pw, HandleMemberLeft);
+            RemotePacket.SendCharacterGuildInfo(victim);
+        }
+        public static void HandleMemberLeft(Packet pr)
+        {
+            bool kicked = pr.ReadBool();
+            int guildId = pr.ReadInt();
+            int charId = pr.ReadInt();
+            string charName = pr.ReadString();
+            var guild = S.Guilds[guildId];
+            guild.Members.Remove(charId);
+            foreach (var c in guild.Characters)
+            {
+                if (kicked)
+                {
+                    c.SendPacket(GuildPacket.GuildMemberAction(guildId, charId, charName, GuildMemberActionType.MemberExpelled));
+                }
+                else
+                {
+                    c.SendPacket(GuildPacket.GuildMemberAction(guildId, charId, charName, GuildMemberActionType.MemberQuit));
+                }
+            }
+        }
+        #endregion
         public static void HandleAction(GameCharacter chr, Packet pr)
         {
             GuildAction action = (GuildAction)pr.ReadByte();
@@ -264,8 +456,33 @@ namespace WvsBeta.Game.Handlers.Guild
                         HandleCreateGuildEnterName(chr, guildName);
                         break;
                     case GuildAction.Invite:
-                        // 4C 05 04 00 61 73 64 66 = invite
+                        {
+                            string name = pr.ReadString();
+                            HandleInvite(chr, name);
+                            break;
+                        }
+                    case GuildAction.AcceptInvitation:
+                        // 4C 06 14 00 00 00 09 00 00 00
+                        int guildId = pr.ReadInt();
+                        int charId = pr.ReadInt();
+                        HandleAcceptInvitation(chr);
                         break;
+                    case GuildAction.Leave:
+                        {
+                            // 4C 07 09 00 00 00 0A 00 73 65 77 69 6C 6E 6F 6F 6F 62
+                            int cid = pr.ReadInt();
+                            string name = pr.ReadString();
+                            HandleLeave(chr);
+                            break;
+                        }
+                    case GuildAction.Expel:
+                        {
+                            // 4C 08 09 00 00 00 0A 00 73 65 77 69 6C 6E 6F 6F 6F 62
+                            int cid = pr.ReadInt();
+                            string name = pr.ReadString();
+                            HandleExpel(chr, cid, name);
+                            break;
+                        }
                     case GuildAction.SaveRanks:
                         {
                             if (!chr.IsGuildMaster) throw new GuildException("You need to be the Guild Master to do this.");
@@ -313,7 +530,7 @@ namespace WvsBeta.Game.Handlers.Guild
             }
             catch (GuildException e)
             {
-                chr.SendPacket(MessagePacket.RedText(e.Message));
+                e.SendPacket(chr);
             }
         }
         public static void SendGuild(GameCharacter chr, GuildData guild)

@@ -73,6 +73,24 @@ namespace WvsBeta.Game.Handlers.Guild
         {
             return new GuildPacket((byte)GuildFormType.GuildEmblemSelector);
         }
+        public static GuildPacket Invite(int guildId, string victimName)
+        {
+            var pw = new GuildPacket((byte)GuildFormType.GuildInvitation, guildId);
+            pw.WriteString(victimName);
+            return pw;
+        }
+        public static GuildPacket InviteBusy(string victimName)
+        {
+            var pw = new GuildPacket((byte)GuildErrorType.ErrorTakingCareOfAnotherInvitation);
+            pw.WriteString(victimName);
+            return pw;
+        }
+        public static GuildPacket InviteDecline(string victimName)
+        {
+            var pw = new GuildPacket((byte)GuildErrorType.ErrorInvitationDenied);
+            pw.WriteString(victimName);
+            return pw;
+        }
         public static GuildPacket GuildHasBeenMade(int guildId, int cid)
         {
             var pw = new GuildPacket((byte)GuildFormType.TheGuildHasBeenMade, guildId);
@@ -143,7 +161,7 @@ namespace WvsBeta.Game.Handlers.Guild
             guild.Encode(pw);
             return pw;
         }
-        public static GuildPacket GuildMemberAction(int guildId, int cid, string name, GuildActionResultType type)
+        public static GuildPacket GuildMemberAction(int guildId, int cid, string name, GuildMemberActionType type)
         {
             var pw = new GuildPacket((byte)type, guildId);
             pw.WriteInt(cid);

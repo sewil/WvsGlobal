@@ -121,6 +121,9 @@ namespace WvsBeta.Game
                         Program.MainForm.LogAppend(ex.ToString());
                     }
 
+                    // Clean up potential guild invites
+                    GuildHandler.Invites.Remove(chr.ID);
+
                     Server.Instance.CharacterList.Remove(chr.ID);
                     Server.Instance.StaffCharacters.Remove(chr);
 
@@ -316,6 +319,9 @@ namespace WvsBeta.Game
                             break;
                         case ClientMessages.GUILD_ACTION:
                             GuildHandler.HandleAction(character, packet);
+                            break;
+                        case ClientMessages.GUILD_DECLINE_INVITATION:
+                            GuildHandler.HandleDeclineInvitation(character, packet);
                             break;
                         case ClientMessages.SUMMON_ATTACK:
                             AttackPacket.HandleSummonAttack(character, packet);

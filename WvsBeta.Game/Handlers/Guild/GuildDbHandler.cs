@@ -35,6 +35,30 @@ namespace WvsBeta.Game.Handlers.Guild
                 return !nameCount.Read() || nameCount.GetInt32("count") > 0;
             }
         }
+        public static bool RemoveMember(int guildId, int charId)
+        {
+            bool result = false;
+            Db.RunTransaction(comm => {
+                comm.CommandText = "DELETE FROM guild_members WHERE guild_id = @guildId AND character_id = @charId";
+                comm.Parameters.AddWithValue("@guildId", guildId);
+                comm.Parameters.AddWithValue("@charId", charId);
+                result = comm.ExecuteNonQuery() == 1;
+            }, Program.MainForm.LogAppend);
+            return result;
+        }
+        public static bool AddMember(int guildId, int charId, GuildRank rank)
+        {
+            bool result = false;
+            Db.RunTransaction(comm =>
+            {
+                comm.CommandText = @"INSERT INTO guild_members (guild_id, character_id, `rank`) VALUES (@guildId, @charId, @rank)";
+                comm.Parameters.AddWithValue("@guildId", guildId);
+                comm.Parameters.AddWithValue("@charId", charId);
+                comm.Parameters.AddWithValue("@rank", (int)rank);
+                result = comm.ExecuteNonQuery() == 1;
+            }, Program.MainForm.LogAppend);
+            return result;
+        }
         public static void SaveMember(int guildId, int charId, GuildRank rank)
         {
             Db.RunQuery(@"

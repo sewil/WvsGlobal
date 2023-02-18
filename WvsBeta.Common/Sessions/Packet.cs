@@ -198,7 +198,7 @@ namespace WvsBeta.Common.Sessions
         public double ReadDouble() { return _binReader.ReadDouble(); }
         public float ReadFloat() { return _binReader.ReadSingle(); }
         public string ReadString(short pLen = -1) { short len = pLen == -1 ? _binReader.ReadInt16() : pLen; return new string(_binReader.ReadChars(len)); }
-
+        public string ReadString(short pLen, bool trimEnd) { return trimEnd ? ReadString(pLen).TrimEnd('\0') : ReadString(pLen); }
         public void SetBytes(int pPosition, byte[] val) { int tmp = (int)_memoryStream.Position; Reset(pPosition); _binWriter.Write(val); Reset(tmp); }
         public void SetByte(int pPosition, byte val) { int tmp = (int)_memoryStream.Position; Reset(pPosition); _binWriter.Write(val); Reset(tmp); }
         public void SetSByte(int pPosition, sbyte val) { int tmp = (int)_memoryStream.Position; Reset(pPosition); _binWriter.Write(val); Reset(tmp); }

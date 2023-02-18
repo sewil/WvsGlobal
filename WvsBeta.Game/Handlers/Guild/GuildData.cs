@@ -51,7 +51,7 @@ namespace WvsBeta.Game.Handlers.Guild
         }
         public GuildMember Decode(Packet pr)
         {
-            Name = pr.ReadString(13); // 13
+            Name = pr.ReadString(13, true); // 13
             Job = pr.ReadInt(); // 17
             Level = pr.ReadInt(); // 21
             Rank = (GuildRank)pr.ReadInt(); // 25

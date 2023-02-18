@@ -310,6 +310,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildEmblemUpdated:
                         GuildHandler.HandleGuildEmblemUpdated(packet);
                         break;
+                    case ISServerMessages.GuildMemberJoin:
+                        GuildHandler.HandleMemberJoined(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))
