@@ -313,6 +313,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberJoin:
                         GuildHandler.HandleMemberJoined(packet);
                         break;
+                    case ISServerMessages.GuildMemberJobLevelUpdate:
+                        GuildHandler.HandleUpdatePlayerJob(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))
