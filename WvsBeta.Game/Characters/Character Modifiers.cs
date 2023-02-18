@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -21,6 +22,8 @@ namespace WvsBeta.Game
 
             this.FlushDamageLog();
             Server.Instance.CenterConnection.UpdatePlayerJobLevel(this);
+            if (IsGuildMember)
+                GuildHandler.SendUpdatePlayerJob(this);
         }
 
         public void SetEXP(int value)
@@ -183,6 +186,8 @@ namespace WvsBeta.Game
 
             this.FlushDamageLog();
             Server.Instance.CenterConnection.UpdatePlayerJobLevel(this);
+            if (IsGuildMember)
+                GuildHandler.SendUpdatePlayerJob(this);
         }
 
         public void AddFame(short value)

@@ -114,6 +114,7 @@
         GuildMemberJoin,
         GuildMemberLeave,
         GuildMemberChangeRank,
+        GuildMemberJobLevelUpdate,
 
         Test,
         MessengerOperation,

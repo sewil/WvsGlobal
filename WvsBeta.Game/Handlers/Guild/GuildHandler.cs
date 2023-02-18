@@ -443,6 +443,29 @@ namespace WvsBeta.Game.Handlers.Guild
             }
         }
         #endregion
+        #region Update level/job
+        public static void SendUpdatePlayerJob(GameCharacter chr)
+        {
+            var pw = new Packet(ISServerMessages.GuildMemberJobLevelUpdate);
+            pw.WriteInt(chr.GuildID);
+            pw.WriteInt(chr.ID);
+            pw.WriteInt(chr.Level);
+            pw.WriteInt(chr.Job);
+            BroadcastPacket(pw, HandleUpdatePlayerJob);
+        }
+        public static void HandleUpdatePlayerJob(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            var guild = S.Guilds[guildId];
+            int chrId = pr.ReadInt();
+            int level = pr.ReadInt();
+            int job = pr.ReadInt();
+            foreach (var c in guild.Characters)
+            {
+                c.SendPacket(GuildPacket.UpdateMemberLevelJob(guildId, chrId, level, job));
+            }
+        }
+        #endregion
         public static void HandleAction(GameCharacter chr, Packet pr)
         {
             GuildAction action = (GuildAction)pr.ReadByte();
