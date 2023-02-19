@@ -109,6 +109,7 @@
         GuildUnload,
         GuildUpdateRanks,
         GuildEmblemUpdated,
+        GuildExpand,
         GuildMemberIsOnline,
         GuildMemberDisconnect,
         GuildMemberJoin,

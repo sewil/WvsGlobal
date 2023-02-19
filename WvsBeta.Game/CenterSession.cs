@@ -320,6 +320,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberLeave:
                         GuildHandler.HandleMemberLeft(packet);
                         break;
+                    case ISServerMessages.GuildExpand:
+                        GuildHandler.HandleGuildExpand(packet);
+                        break;
                     #endregion
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&

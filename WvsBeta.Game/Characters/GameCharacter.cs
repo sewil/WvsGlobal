@@ -728,9 +728,9 @@ namespace WvsBeta.Game
             GuildHandler.SendCreateGuildEnterName(this);
         }
 
-        public bool IncGuildCountMax(int slots, int mesos)
+        public int IncGuildCountMax(int slots, int mesos)
         {
-            throw new NotImplementedException();
+            return GuildHandler.SendExpandGuild(this, slots, mesos);
         }
         public bool RemoveGuild(int mesos)
         {

@@ -453,6 +453,34 @@ namespace WvsBeta.Game.Handlers.Guild
             }
         }
         #endregion
+        public static int SendExpandGuild(GameCharacter chr, int slots, int mesos)
+        {
+            try
+            {
+                if (!chr.IncMoney(mesos, MessageAppearType.ChatGrey)) return 0;
+                if (!chr.IsGuildMaster) throw new Exception();
+                int newCapacity = Math.Min(chr.Guild.Capacity + slots, GuildData.MAX_CAPACITY);
+                if (!GuildDbHandler.UpdateGuildCapacity(chr.GuildID, newCapacity)) throw new Exception();
+
+                var pw = new Packet(ISServerMessages.GuildExpand);
+                pw.WriteInt(chr.GuildID);
+                pw.WriteInt(newCapacity);
+                BroadcastPacket(pw, HandleGuildExpand);
+                chr.SendPacket(GuildPacket.NpcExpandSuccessMsg(chr.GuildID, (byte)newCapacity));
+                return 1;
+            }
+            catch
+            {
+                chr.SendPacket(GuildPacket.NpcError(GuildNpcErrorType.NpcErrorExpandingGuild));
+                return -1;
+            }
+        }
+        public static void HandleGuildExpand(Packet pr)
+        {
+            int guildId = pr.ReadInt();
+            int newCapacity = pr.ReadInt();
+            S.Guilds[guildId].Capacity = newCapacity;
+        }
         public static void HandleAction(GameCharacter chr, Packet pr)
         {
             GuildAction action = (GuildAction)pr.ReadByte();

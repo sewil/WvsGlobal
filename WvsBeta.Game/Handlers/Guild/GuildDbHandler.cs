@@ -162,6 +162,17 @@ namespace WvsBeta.Game.Handlers.Guild
             }, Program.MainForm.LogAppend);
             return result;
         }
+        public static bool UpdateGuildCapacity(int guildId, int capacity)
+        {
+            bool result = false;
+            Db.RunTransaction(comm => {
+                comm.CommandText = "UPDATE guilds SET capacity = @capacity WHERE id = @guildId";
+                comm.Parameters.AddWithValue("@guildId", guildId);
+                comm.Parameters.AddWithValue("@capacity", capacity);
+                result = comm.ExecuteNonQuery() > 0;
+            }, Program.MainForm.LogAppend);
+            return result;
+        }
         public static bool SaveGuildEmblem(int guildId, GuildEmblem emblem)
         {
             bool result = false;

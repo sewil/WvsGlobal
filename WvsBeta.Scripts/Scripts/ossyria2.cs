@@ -148,8 +148,8 @@ namespace WvsBeta.Scripts.Scripts
 
                                 if (nRet == 1)
                                 {
-                                    bool fRet = target.IncGuildCountMax(5, -nRequiredMeso);
-                                    if (!fRet)
+                                    int fRet = target.IncGuildCountMax(5, -nRequiredMeso);
+                                    if (fRet == 0)
                                     {
                                         self.Say("Do you have enough mesos or people to form a guild...? Please check again and come back here.");
                                         self.Say("Check again.You will need to pay the service cost to expand and re-register your guild...");

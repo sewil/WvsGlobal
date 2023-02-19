@@ -122,10 +122,13 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         public static readonly GuildData Default = new GuildData();
         public const int RANKS = 5;
+        public const int MAX_CAPACITY = 100;
+        public const int INITIAL_CAPACITY = 10;
+        public static readonly string[] INITIAL_RANKS = new string[RANKS] { "Master", "Jr. Master", "Member", "Member", "Member" };
         public int ID { get; set; }
         public string Name { get; protected set; }
-        public int Capacity { get; protected set; }
-        public string[] RankNames { get; protected set; } = new string[RANKS] { "", "", "", "", "" };
+        public int Capacity { get; set; }
+        public string[] RankNames { get; protected set; } = INITIAL_RANKS;
         public Dictionary<int, GuildMember> Members = new Dictionary<int, GuildMember>();
         public IEnumerable<GameCharacter> Characters => Members.Where(m => m.Value.IsOnline).Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
         public GuildEmblem Emblem { get; set; }
@@ -135,10 +138,8 @@ namespace WvsBeta.Game.Handlers.Guild
             Emblem = GuildEmblem.Default;
         }
         public GuildData(int id, string name, Dictionary<int, GuildMember> members)
-        :this(id, name, 20, new string[]{"Master","Jr. Master","Member", "Member", "Member"}, members, GuildEmblem.Default)
+        :this(id, name, INITIAL_CAPACITY, INITIAL_RANKS, members, GuildEmblem.Default)
         {
-
-            
         }
         public GuildData(int id, string name, int capacity, string[] rankNames, Dictionary<int, GuildMember> members, GuildEmblem emblem)
         {

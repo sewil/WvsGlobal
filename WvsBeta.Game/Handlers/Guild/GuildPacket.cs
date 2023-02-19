@@ -97,6 +97,10 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(cid);
             return pw;
         }
+        public static GuildPacket NpcError(GuildNpcErrorType type)
+        {
+            return new GuildPacket((byte)type);
+        }
         public static GuildPacket NpcContractDisagreedMsg()
         {
             return new GuildPacket((byte)GuildFormType.NpcContractSomebodyDisagreed);
