@@ -317,6 +317,9 @@ namespace WvsBeta.Game
                     case ISServerMessages.GuildMemberJobLevelUpdate:
                         GuildHandler.HandleUpdatePlayerJob(packet);
                         break;
+                    case ISServerMessages.GuildMemberLeave:
+                        GuildHandler.HandleMemberLeft(packet);
+                        break;
                     #endregion
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&

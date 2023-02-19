@@ -94,7 +94,7 @@ namespace WvsBeta.Game.Handlers.Guild
         }
         public static void SendChangeMemberRank(int guildId, int cid, GuildRank rank)
         {
-            var pw = new Packet(ISServerMessages.GuildUpdateRanks);
+            var pw = new Packet(ISServerMessages.GuildMemberChangeRank);
             pw.WriteInt(guildId);
             pw.WriteInt(cid);
             pw.WriteByte((byte)rank);
@@ -308,7 +308,7 @@ namespace WvsBeta.Game.Handlers.Guild
             }
             else if (victim.IsGuildMember)
             {
-                throw new GuildException(string.Format("{0} is already a member of another guild.", victimName));
+                throw new GuildException(string.Format("{0} has already joined the guild", victimName));
             }
             else if (Invites.ContainsKey(victim.ID))
             {
@@ -387,40 +387,25 @@ namespace WvsBeta.Game.Handlers.Guild
         #region Leave/Expel
         public static void HandleLeave(GameCharacter chr)
         {
-            SendMemberLeave(chr, chr, false);
+            SendMemberLeave(chr, chr.ID, chr.GuildID, chr.Name, false);
         }
         public static void HandleExpel(GameCharacter chr, int cid, string name)
         {
-            if (!S.CharacterList.TryGetValue(cid, out GameCharacter victim))
-            {
-                chr.SendPacket(MessagePacket.RedText(string.Format("Unable to find '{0}'", name)));
-                return;
-            }
-            SendMemberLeave(chr, victim, true);
+            SendMemberLeave(chr, cid, chr.GuildID, name, true);
         }
-        public static void SendMemberLeave(GameCharacter chr, GameCharacter victim, bool kicked)
+        public static void SendMemberLeave(GameCharacter chr, int cid, int guildId, string name, bool kicked)
         {
-            if (!GuildDbHandler.RemoveMember(victim.GuildID, victim.ID))
+            if (!GuildDbHandler.RemoveMember(guildId, cid))
             {
                 chr.SendPacket(MessagePacket.RedText("Something went wrong. Please try again later."));
                 return;
             }
             var pw = new Packet(ISServerMessages.GuildMemberLeave);
             pw.WriteBool(kicked);
-            pw.WriteInt(victim.GuildID);
-            pw.WriteInt(victim.ID);
-            pw.WriteString(victim.Name);
-            if (kicked)
-            {
-                victim.SendPacket(GuildPacket.GuildMemberAction(victim.GuildID, victim.ID, victim.Name, GuildMemberActionType.MemberExpelled));
-            }
-            else
-            {
-                victim.SendPacket(GuildPacket.GuildMemberAction(victim.GuildID, victim.ID, victim.Name, GuildMemberActionType.MemberQuit));
-            }
-            victim.GuildID = 0;
+            pw.WriteInt(guildId);
+            pw.WriteInt(cid);
+            pw.WriteString(name);
             BroadcastPacket(pw, HandleMemberLeft);
-            RemotePacket.SendCharacterGuildInfo(victim);
         }
         public static void HandleMemberLeft(Packet pr)
         {
@@ -428,18 +413,20 @@ namespace WvsBeta.Game.Handlers.Guild
             int guildId = pr.ReadInt();
             int charId = pr.ReadInt();
             string charName = pr.ReadString();
-            var guild = S.Guilds[guildId];
-            guild.Members.Remove(charId);
-            foreach (var c in guild.Characters)
+            
+            GuildData guild = S.Guilds[guildId];
+            GuildMemberActionType actionType = kicked ? GuildMemberActionType.MemberExpelled : GuildMemberActionType.MemberQuit;
+            foreach (GameCharacter c in guild.Characters)
             {
-                if (kicked)
-                {
-                    c.SendPacket(GuildPacket.GuildMemberAction(guildId, charId, charName, GuildMemberActionType.MemberExpelled));
-                }
-                else
-                {
-                    c.SendPacket(GuildPacket.GuildMemberAction(guildId, charId, charName, GuildMemberActionType.MemberQuit));
-                }
+                c.SendPacket(GuildPacket.GuildMemberAction(guildId, charId, charName, actionType));
+            }
+            guild.Members.Remove(charId);
+
+            GameCharacter victim = S.GetCharacter(charId);
+            if (victim != null)
+            {
+                victim.GuildID = 0;
+                RemotePacket.SendCharacterGuildInfo(victim);
             }
         }
         #endregion
