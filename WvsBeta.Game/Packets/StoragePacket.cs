@@ -11,27 +11,27 @@ namespace WvsBeta.Game
     public static class StoragePacket
     {
 
-        public enum StorageErrors
+        public enum StorageResultOp : byte
         {
-            InventoryFullOrNot = 8, // Please check if your inventory is full or not
-            NotEnoughMesos = 11, // You have not enough mesos. (Yes, that's a typo).
-            StorageIsFull = 12, // The storage is full.
-            DueToAnError = 13, // Due to an error, the trade did not happen.
+            InventoryFullOrNot = 9, // Please check if your inventory is full or not
+            NotEnoughMesos = 12, // You have not enough mesos. (Yes, that's a typo).
+            StorageIsFull = 13, // The storage is full.
+            DueToAnError = 14, // Due to an error, the trade did not happen.
+            Success = 15,
         }
 
         public enum StorageEncode
         {
-            EncodeMesos = 2,
-            EncodeWithdraw = 7,
-            EncodeDeposit = 9
+            EncodeWithdraw = 8,
+            EncodeDeposit = 10
         }
 
         public enum StorageAction
         {
-            Withdraw = 3,
-            Deposit = 4,
-            StoreMesos = 5,
-            Exit = 6
+            Withdraw = 4,
+            Deposit = 5,
+            StoreMesos = 6,
+            Exit = 7,
         }
 
         [Flags]
@@ -41,8 +41,8 @@ namespace WvsBeta.Game
             EncodeInventoryEquip = 0x04,
             EncodeInventoryUse = 0x08,
             EncodeInventorySetUp = 0x10,
-            EncodeInventoryEtc = EncodeInventoryEquip, // FIX for old versions, put in 0x20 when client is fixed
-            EncodeInventoryPet = 0x40, // Cash in newer versions
+            EncodeInventoryEtc = 0x20,
+            EncodeInventoryPet = 0x40,
 
             EncodeAll = EncodeMesos | EncodeInventoryEquip | EncodeInventoryUse | EncodeInventorySetUp | EncodeInventoryEtc | EncodeInventoryPet,
         }
@@ -82,7 +82,7 @@ namespace WvsBeta.Game
                         }
                         else
                         {
-                            SendError(chr, StorageErrors.InventoryFullOrNot);
+                            SendError(chr, StorageResultOp.InventoryFullOrNot);
                         }
                         break;
                     }
@@ -95,7 +95,7 @@ namespace WvsBeta.Game
                         var storageCost = data.Trunk;
                         if (chr.Inventory.Mesos < storageCost)
                         {
-                            SendError(chr, StorageErrors.NotEnoughMesos);
+                            SendError(chr, StorageResultOp.NotEnoughMesos);
                             return;
                         }
 
@@ -108,7 +108,7 @@ namespace WvsBeta.Game
                         }
                         if (!chr.Storage.SlotsAvailable())
                         {
-                            SendError(chr, StorageErrors.StorageIsFull);
+                            SendError(chr, StorageResultOp.StorageIsFull);
                             return;
                         }
 
@@ -151,7 +151,6 @@ namespace WvsBeta.Game
                                 chr.Inventory.ExchangeMesos(mesos);
                                 chr.Storage.ChangeMesos(mesos);
                             }
-
                         }
                         break;
                     }
@@ -181,13 +180,12 @@ namespace WvsBeta.Game
         public static void SendChangedMesos(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.STORAGE_RESULT);
-            pw.WriteByte(14);
+            pw.WriteByte((byte)StorageResultOp.Success);
             EncodeStorage(chr, pw, StorageEncodeFlags.EncodeMesos);
             chr.SendPacket(pw);
         }
 
-
-        public static void SendError(GameCharacter chr, StorageErrors what)
+        public static void SendError(GameCharacter chr, StorageResultOp what)
         {
             Packet pw = new Packet(ServerMessages.STORAGE_RESULT);
             pw.WriteByte((byte)what);
@@ -243,7 +241,7 @@ namespace WvsBeta.Game
 
             foreach (BaseItem item in itemsInInventory)
             {
-                item.Encode(pw);
+                new GW_ItemSlotBase(item).Encode(pw, false, false);
             }
         }
     }
