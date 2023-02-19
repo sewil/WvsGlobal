@@ -1,0 +1,5 @@
+new ShopItemData(2000000, 50),
+new ShopItemData(2000001, 160),
+new ShopItemData(2000002, 320),
+new ShopItemData(2010000, 30),
+new ShopItemData(2010002, 50),
