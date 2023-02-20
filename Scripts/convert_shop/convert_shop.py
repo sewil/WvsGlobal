@@ -67,7 +67,7 @@ for line in open('raw.txt', 'r').readlines():
 		continue
 	item_name = re.match(r'^[a-zA-Z- \'\/]+', line).group(0).strip()
 	# print(line, re.match(r'^[a-zA-Z- \']+', line))
-	mesos = re.search(r'([\d,]+) mesos', line).group(1)
+	mesos = re.search(r'([\d,]+) mesos', line).group(1).replace(",","")
 	item_id = item_names[item_name]
 	shop += "						new ShopItemData(" + item_id + ", " + mesos + "),\n"
 
