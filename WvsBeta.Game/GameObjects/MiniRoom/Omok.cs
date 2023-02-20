@@ -35,7 +35,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public byte[,] Board { get; set; }
         public List<OmokStone> Stones { get; set; }
 
-        public Omok(GameCharacter owner) : base(owner, 4, MiniRoomType.Omok)
+        public Omok(GameCharacter owner) : base(owner, 2, MiniRoomType.Omok)
         {
             mCurrentTurnIndex = 0;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
