@@ -965,9 +965,9 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // ShowPlayer also redistibutes mobs, we want this
             ShowPlayer(chr, false);
 
-            PlayerShops.ForEach(ps => new MiniRoomBalloonPacket(ps.Value).Send());
+            PlayerShops.ForEach(ps => MiniRoomBalloonPacket.Send(ps.Value.Owner, ps.Value));
 
-            Omoks.ForEach(omok => new MiniRoomBalloonPacket(omok.Value).Send());
+            Omoks.ForEach(omok => MiniRoomBalloonPacket.Send(omok.Value.Owner, omok.Value));
 
             Kites.ForEach(kite => MapPacket.Kite(chr, kite));
 

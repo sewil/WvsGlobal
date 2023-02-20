@@ -194,7 +194,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 case MiniRoomAction.AddAnnounceBox: //Add announce box
                     {
                         if (pCharacter.Room == null) return;
-                        new MiniRoomBalloonPacket(pCharacter.Room, pCharacter).Send();
+                        MiniRoomBalloonPacket.Send(pCharacter, pCharacter.Room);
                         var roomType = pCharacter.Room.Type;
 
                         switch (roomType)
@@ -355,7 +355,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         chr.Room = omok;
 
                         MiniGamePacket.ShowWindow(chr, omok, MiniRoomBase.Omoks[chr.Room.ID].OmokType);
-                        new MiniRoomBalloonPacket(omok, chr).Send();
+                        MiniRoomBalloonPacket.Send(chr, omok);
                         break;
                     }
 
@@ -450,7 +450,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             omok.AddPlayer(chr);
                             MiniGamePacket.AddVisitor(chr, mrb);
                             MiniGamePacket.ShowWindow(chr, mrb, omok.OmokType);
-                            new MiniRoomBalloonPacket(omok, omok.Owner).Send();
+                            MiniRoomBalloonPacket.Send(omok.Owner, omok);
                             chr.Inventory.ExchangeMesos(-100);
                             miniroomLog.Info($"{chr.Name} entered omok");
                         }

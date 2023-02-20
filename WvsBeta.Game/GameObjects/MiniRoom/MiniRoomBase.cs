@@ -128,7 +128,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                 PlayerShop ps = PlayerShops[mrb.ID];
                 ps.RevertItems(pCharacter);
-                MiniRoomBalloonPacket.Remove(pCharacter).Send();
+                MiniRoomBalloonPacket.Remove(pCharacter);
                 PlayerShops.Remove(mrb.ID);
                 pCharacter.Field.PlayerShops.Remove(mrb.ID);
                 pCharacter.Room = null;
