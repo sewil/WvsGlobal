@@ -108,10 +108,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Stones.Clear();
             UpdateBalloon();
         }
-
-        public void UpdateAnnounceBox(GameCharacter pOwner)
+        public void Start(GameCharacter chr)
         {
-
+            MiniGamePacket.Start(chr, chr.Room);
+            GameStarted = true;
+            UpdateBalloon();
         }
 
         public byte GetOtherType(byte type)

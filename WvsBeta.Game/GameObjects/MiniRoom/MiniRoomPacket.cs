@@ -277,8 +277,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         Omok omok = MiniRoomBase.Omoks[pCharacter.Room.ID];
                         if (omok != null)
                         {
-                            MiniGamePacket.Start(pCharacter, pCharacter.Room);
-                            omok.GameStarted = true;
+                            omok.Start(pCharacter);
                         }
                         break;
                     }
