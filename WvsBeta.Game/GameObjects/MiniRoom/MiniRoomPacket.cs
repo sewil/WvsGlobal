@@ -244,6 +244,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         }
                         break;
                     }
+                case MiniRoomAction.GiveUp:
+                    {
+                        if (MiniRoomBase.Omoks.TryGetValue(pCharacter.Room.ID, out Omok omok))
+                        {
+                            GameCharacter winner = omok.Users[pCharacter.RoomSlotId == 0 ? 1 : 0];
+                            omok.UpdateGame(winner, GameResult.Forfeit);
+                        }
                         break;
                     }
 

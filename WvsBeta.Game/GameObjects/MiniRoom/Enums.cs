@@ -14,6 +14,7 @@
         MoveItemShopToInv = 23,
         RequestTie = 24,
         RequestTieResult = 25,
+        GiveUp = 26,
         RequestHandicap = 28,
         RequestHandicapResult = 29,
         Ready = 32,
