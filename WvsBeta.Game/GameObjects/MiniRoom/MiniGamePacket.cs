@@ -120,7 +120,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x18);
-            mrb.BroadcastPacket(pw, chr, true);
+            mrb.BroadcastPacket(pw, chr);
         }
 
         public static void RequestTieDeny(GameCharacter chr, MiniRoomBase mrb)
@@ -128,7 +128,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x19);
-            mrb.BroadcastPacket(pw, chr, true);
+            mrb.BroadcastPacket(pw, chr);
         }
 
         public static void RequestHandicap(GameCharacter chr, MiniRoomBase mrb)
@@ -136,7 +136,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //Your opponent has requested for a handicap. Will you accept it? 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x1C);
-            mrb.BroadcastPacket(pw, chr, true);
+            mrb.BroadcastPacket(pw, chr);
         }
 
         public static void RequestHandicapResult(GameCharacter chr, MiniRoomBase mrb, bool result, byte countBack)
@@ -147,7 +147,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteBool(result); //deny or not ?
             pw.WriteByte(countBack);
             pw.WriteByte(chr.RoomSlotId == 0 ? (byte)1 : (byte)0);
-            mrb.BroadcastPacket(pw, null, true);
+            mrb.BroadcastPacket(pw, null);
         }
 
         public static void MoveOmokPiece(GameCharacter chr, MiniRoomBase mrb, int X, int Y, byte Piece)
