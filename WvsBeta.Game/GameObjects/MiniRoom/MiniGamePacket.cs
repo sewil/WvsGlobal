@@ -32,17 +32,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             IncorrectPassword = 0x10,
         }
 
-        public static void Test(GameCharacter chr)
-        {
-            Packet pw = new Packet();
-            pw.WriteByte(0xAF);
-            pw.WriteByte(4);
-            pw.WriteByte(0);
-            new AvatarLook(chr).Encode(pw);
-            pw.WriteString(chr.Name);
-            chr.SendPacket(pw);
-        }
-
         public static void ShowWindow(GameCharacter pOwner, MiniRoomBase mrb, byte OmokType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -101,35 +90,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pOwner.SendPacket(pw);
         }
 
-        public static void ShowWindowTest(GameCharacter chr)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(5);
-            pw.WriteByte((byte)MiniRoomTypes.Omok);
-            pw.WriteByte(2);
-            pw.WriteBool(true);
-
-            pw.WriteByte(0);
-            new AvatarLook(chr).Encode(pw);
-            pw.WriteString(chr.Name);
-
-            pw.WriteByte(0xFF);
-            pw.WriteByte(0);
-
-            pw.WriteInt(1);
-            pw.WriteInt(1);
-            pw.WriteInt(1);
-            pw.WriteInt(1);
-            pw.WriteInt(2000);
-
-            pw.WriteString("lolo");
-            pw.WriteByte(4); //Pieces type
-
-            //Continue, no idea what this part is.
-            pw.WriteByte(0);
-
-            chr.SendPacket(pw);
-        }
         public static void AddVisitor(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
