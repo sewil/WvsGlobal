@@ -110,20 +110,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw, chr);
 
         }
-
-        public static void AddVisitor(GameCharacter chr, GameCharacter to)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x04);
-            pw.WriteByte(0x01);
-            new AvatarLook(chr).Encode(pw);
-            pw.WriteString("lolwat123");
-            pw.WriteInt(1);
-            pw.WriteInt(0);
-            pw.WriteInt(0);
-            pw.WriteInt(0);
-            pw.WriteInt(2000); //total score: should be 0 
-            to.SendPacket(pw);
         }
 
         public static void ErrorMessage(GameCharacter chr, MiniGameError error)
