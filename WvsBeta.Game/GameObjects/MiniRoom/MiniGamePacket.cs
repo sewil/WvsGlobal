@@ -6,24 +6,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class MiniGamePacket
     {
-        public enum MiniGameError : byte
-        {
-            RoomAlreadyClosed = 0x01,
-            FullCapacity = 0x02,
-            OtherRequests = 0x03,
-            CantWhileDead = 0x04,
-            CantInMiddleOfEvent = 0x05,
-            UnableToDoIt = 0x06,
-            OtherItemsAtPoint = 0x07, // or 0x0E
-            CantEstablishRoom = 0x0A,
-            Trade2OnSameMap = 0x09,
-            NotEnoughMesos = 0x0F,
-            CantStartGameHere = 0x0B,
-            BuiltAtMainTown = 0x0C,
-            UnableToEnterTournament = 0x0D,
-            IncorrectPassword = 0x10,
-        }
-
         public static void ShowWindow(GameCharacter pOwner, MiniRoomBase mrb, byte OmokType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);

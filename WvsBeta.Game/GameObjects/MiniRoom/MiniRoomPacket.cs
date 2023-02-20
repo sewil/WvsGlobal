@@ -435,7 +435,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             if (password != omok.Password)
                             {
                                 miniroomLog.Info($"{chr.Name} cannot enter omok: invalid password");
-                                MiniGamePacket.ErrorMessage(chr, MiniGamePacket.MiniGameError.IncorrectPassword);
+                                MiniGamePacket.ErrorMessage(chr, MiniGameError.IncorrectPassword);
                                 chr.Room = null;
                                 break;
                             }
@@ -452,7 +452,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         else
                         {
                             miniroomLog.Info($"{chr.Name} cannot enter omok: not enough mesos");
-                            MiniGamePacket.ErrorMessage(chr, MiniGamePacket.MiniGameError.NotEnoughMesos);
+                            MiniGamePacket.ErrorMessage(chr, MiniGameError.NotEnoughMesos);
                         }
                         break;
                     }
