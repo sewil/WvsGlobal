@@ -37,8 +37,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public Dictionary<byte, OmokStone> LastPlacedStone { get; set; }
         public GameCharacter Owner { get; private set; }
 
-        public Omok(GameCharacter pOwner)
-            : base(2, MiniRoomType.Omok)
+        public Omok(GameCharacter pOwner) : base(4, MiniRoomType.Omok)
         {
             mCurrentTurnIndex = 0;
             Stones = new byte[15, 15];
