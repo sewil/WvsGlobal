@@ -226,9 +226,24 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         break;
                     }
 
-                case MiniRoomAction.RequestTie: //Request tie result
+                case MiniRoomAction.RequestTie:
+                    {
+                        MiniGamePacket.RequestTie(pCharacter, pCharacter.Room);
+                        break;
+                    }
+                case MiniRoomAction.RequestTieResult:
                     {
                         bool result = pPacket.ReadBool();
+                        if (result && MiniRoomBase.Omoks.TryGetValue(pCharacter.Room.ID, out Omok omok))
+                        {
+                            omok.UpdateGame(pCharacter, GameResult.Tie);
+                        }
+                        else
+                        {
+                            MiniGamePacket.RequestTieDeny(pCharacter, pCharacter.Room);
+                        }
+                        break;
+                    }
                         break;
                     }
 

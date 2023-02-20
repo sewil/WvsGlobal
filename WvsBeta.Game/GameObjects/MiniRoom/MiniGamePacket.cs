@@ -122,7 +122,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x18);
-            mrb.BroadcastPacket(pw);
+            mrb.BroadcastPacket(pw, chr, true);
         }
 
         public static void RequestTieResult(GameCharacter chr, MiniRoomBase mrb)
@@ -130,7 +130,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x19);
-            mrb.BroadcastPacket(pw);
+            mrb.BroadcastPacket(pw, chr, true);
         }
 
         public static void RequestHandicap(GameCharacter chr, MiniRoomBase mrb)
