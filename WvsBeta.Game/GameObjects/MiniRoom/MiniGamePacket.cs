@@ -6,14 +6,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class MiniGamePacket
     {
-        public enum MiniRoomTypes
-        {
-            Omok = 1,
-            CardGame = 2,
-            Shop = 4,
-            EntrustedShop = 5,
-        }
-
         public enum MiniGameError : byte
         {
             RoomAlreadyClosed = 0x01,
@@ -36,7 +28,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(5);
-            pw.WriteByte((byte)MiniRoomTypes.Omok);
+            pw.WriteByte((byte)MiniRoomType.Omok);
             pw.WriteByte(mrb.MaxUsers);
             pw.WriteBool(mrb.Users[0] == pOwner ? false : true);
             for (byte i = 0; i < 2; i++)
