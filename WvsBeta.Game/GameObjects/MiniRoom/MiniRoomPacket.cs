@@ -277,23 +277,24 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         {
                             int X = pPacket.ReadInt();
                             int Y = pPacket.ReadInt();
-                            byte Piece = pPacket.ReadByte();
+                            byte type = pPacket.ReadByte();
 
-                            if (omok.Stones[X, Y] != Piece && omok.Stones[X, Y] != omok.GetOtherPiece(Piece))
+                            if (omok.Board[X, Y] != type && omok.Board[X, Y] != omok.GetOtherType(type))
                             {
-                                MiniGamePacket.MoveOmokPiece(pCharacter, pCharacter.Room, X, Y, Piece);
-                                omok.AddStone(X, Y, Piece, pCharacter);
+                                MiniGamePacket.MoveOmokPiece(pCharacter, pCharacter.Room, X, Y, type);
+                                var stone = new OmokStone(X, Y, type);
+                                omok.AddStone(stone, pCharacter);
                             }
                             else
                             {
                                 MiniGamePacket.OmokMessage(pCharacter, pCharacter.Room, 0);
                             }
                             //MessagePacket.SendNotice("X : " + X + " Y : " + Y, pCharacter);
-                            if (omok.CheckStone(Piece))
+                            if (omok.CheckStone(type))
                             {
                                 //MessagePacket.SendNotice("Win!", pCharacter);
                                 omok.UpdateGame(pCharacter);
-                                Piece = 0xFF;
+                                type = 0xFF;
                                 omok.GameStarted = false;
                             }
                         }
@@ -303,14 +304,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                 case MiniRoomAction.RequestHandicap:
                     {
-                        for (int i = 0; i < 2; i++)
-                        {
-                            if (pCharacter.Room.Users[i] != pCharacter)
-                            {
-                                MiniGamePacket.RequestHandicap(pCharacter.Room.Users[i], pCharacter.Room);
-                            }
-                        }
-
+                        MiniGamePacket.RequestHandicap(pCharacter, pCharacter.Room);
                         break;
                     }
 
@@ -318,33 +312,16 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     {
                         bool result = pPacket.ReadBool();
                         Omok omok = MiniRoomBase.Omoks[pCharacter.Room.ID];
+                        if (omok == null) break;
 
-                        if (omok != null)
+                        int otherPlrIdx = pCharacter.RoomSlotId == 0 ? 1 : 0;
+                        byte countBack = omok.mCurrentTurnIndex == otherPlrIdx ? (byte)2 : (byte)1;
+                        for (byte i = 0; i < countBack; i++)
                         {
-                            if (result == true)
-                            {
-                                for (int i = 0; i < 2; i++)
-                                {
-                                    if (pCharacter.Room.Users[i] != pCharacter)
-                                    {
-                                        if (omok.PlacedStone[i] == false)
-                                        {
-                                            MiniGamePacket.RequestHandicapResult(pCharacter, pCharacter.Room, result, 2);
-                                            omok.TotalStones -= 2;
-                                            //MessagePacket.SendNotice("removed", pCharacter);
-                                        }
-                                        else
-                                        {
-                                            MiniGamePacket.RequestHandicapResult(pCharacter, pCharacter.Room, result, 1);
-                                            omok.TotalStones--;
-                                            //omok.Stones[omok.LastPlacedStone[(byte)(pCharacter.RoomSlotId + 1)].mX, omok.LastPlacedStone[(byte)(pCharacter.RoomSlotId + 1)].mY] = 0xFF;
-                                            //MessagePacket.SendNotice("Removed stone", pCharacter);
-                                        }
-                                    }
-
-                                }
-                            }
+                            int stoneIdx = omok.Stones.Count - 1;
+                            omok.RemoveStone(stoneIdx);
                         }
+                        MiniGamePacket.RequestHandicapResult(pCharacter, pCharacter.Room, result, countBack);
                         break;
                     }
 

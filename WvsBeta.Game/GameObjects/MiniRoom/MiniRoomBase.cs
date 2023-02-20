@@ -6,6 +6,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public class MiniRoomBase
     {
+        public const int MAX_PLAYERS = 2;
         protected string _transaction = Cryptos.GetNewSessionHash();
         public string TransactionID => _transaction;
 
@@ -73,9 +74,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             return pCharacter.RoomSlotId;
         }
 
-        public void BroadcastPacket(Packet pPacket, GameCharacter pSkipMeh = null)
+        public void BroadcastPacket(Packet pPacket, GameCharacter pSkipMeh = null, bool playersOnly = false)
         {
-            foreach (GameCharacter chr in Users) if (chr != null && chr != pSkipMeh) chr.SendPacket(pPacket);
+            for (int i = 0; i < Users.Length; i++)
+            {
+                if (playersOnly && i > (MAX_PLAYERS-1)) break;
+                GameCharacter user = Users[i];
+                if (user == null || (pSkipMeh != null && user == pSkipMeh)) continue;
+                user.SendPacket(pPacket);
+            }
         }
 
         public bool IsFull()

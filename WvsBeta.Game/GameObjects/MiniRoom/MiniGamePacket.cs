@@ -218,21 +218,18 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //Your opponent has requested for a handicap. Will you accept it? 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x1C);
-            chr.SendPacket(pw);
+            mrb.BroadcastPacket(pw, chr, true);
         }
 
-        public static void RequestHandicapResult(GameCharacter chr, MiniRoomBase mrb, bool Accepted, byte CountBack)
+        public static void RequestHandicapResult(GameCharacter chr, MiniRoomBase mrb, bool result, byte countBack)
         {
             //Your opponent denied your request for a handicap
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x1D);
-            pw.WriteBool(Accepted); //deny or not ?
-            pw.WriteByte(CountBack);
-            if (chr.RoomSlotId == 0)
-                pw.WriteByte(1);
-            else
-                pw.WriteByte(0);
-            mrb.BroadcastPacket(pw);
+            pw.WriteBool(result); //deny or not ?
+            pw.WriteByte(countBack);
+            pw.WriteByte(chr.RoomSlotId == 0 ? (byte)1 : (byte)0);
+            mrb.BroadcastPacket(pw, null, true);
         }
 
         public static void MoveOmokPiece(GameCharacter chr, MiniRoomBase mrb, int X, int Y, byte Piece)

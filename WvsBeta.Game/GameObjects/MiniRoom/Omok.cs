@@ -20,6 +20,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
     public class Omok : MiniRoomBase
     {
+        private const int BOARD_WIDTH = 15;
+        private const int BOARD_HEIGHT = 15;
+
         public bool[] mLeaveBooked { get; set; }
         public bool[] mRetreat { get; set; }
         public int mGameResult { get; set; }
@@ -29,23 +32,16 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public int mLastStoneChecker { get; set; }
         public bool mUserReady { get; set; }
         public byte OmokType { get; set; }
-        public byte[,] Stones { get; set; }
-        public byte[,] LastPlaced { get; set; }
-        public int TotalStones { get; set; }
-        public bool[] PlacedStone { get; set; }
-
-        public Dictionary<byte, OmokStone> LastPlacedStone { get; set; }
+        public byte[,] Board { get; set; }
+        public List<OmokStone> Stones { get; set; }
         public GameCharacter Owner { get; private set; }
 
         public Omok(GameCharacter pOwner) : base(4, MiniRoomType.Omok)
         {
             mCurrentTurnIndex = 0;
-            Stones = new byte[15, 15];
-            LastPlaced = new byte[15, 15];
-            PlacedStone = new bool[2] { false, false };
+            Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Owner = pOwner;
-            TotalStones = 0;
-            LastPlacedStone = new Dictionary<byte, OmokStone>();
+            Stones = new List<OmokStone>();
         }
 
         public void AddOwner(GameCharacter pOwner)
@@ -108,8 +104,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             if (Forfeit) MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, 2);
             else MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, 0);
 
-            //Reset all values
-            Stones = new byte[15, 15];
+            // Reset all values
+            Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
+            Stones.Clear();
         }
 
         public void UpdateAnnounceBox(GameCharacter pOwner)
@@ -117,40 +114,23 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         }
 
-        public byte GetOtherPiece(byte Piece)
+        public byte GetOtherType(byte type)
         {
-            if (Piece == 1) return 2;
-            if (Piece == 2) return 1;
+            if (type == 1) return 2;
+            if (type == 2) return 1;
             return 0xFF;
         }
-
-        public void AddStone(int X, int Y, byte Piece, GameCharacter chr)
+        public void RemoveStone(int stoneIdx)
         {
-            this.Stones[X, Y] = Piece;
-
-            if (!LastPlacedStone.ContainsKey(Piece))
-            {
-                LastPlacedStone.Add(Piece, new OmokStone(X, Y, Piece));
-            }
-            else
-            {
-                LastPlacedStone[Piece].mX = X;
-                LastPlacedStone[Piece].mX = Y;
-            }
-
-            for (int i = 0; i < 2; i++)
-            {
-                if (Users[i] == chr)
-                {
-                    PlacedStone[i] = true;
-                }
-                else
-                {
-                    PlacedStone[i] = false;
-                }
-            }
-            TotalStones++;
-
+            var stone = Stones[stoneIdx];
+            Board[stone.mX, stone.mY] = 0;
+            Stones.Remove(stone);
+        }
+        public void AddStone(OmokStone stone, GameCharacter chr)
+        {
+            Stones.Add(stone);
+            Board[stone.mX, stone.mY] = stone.mType;
+            mCurrentTurnIndex = chr.RoomSlotId == 0 ? (byte)1 : (byte)0;
         }
 
         public bool CheckStone(byte Piece)
@@ -164,7 +144,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             int count(int xPos, int yPos, Func<int, int> xInc, Func<int, int> yInc, int result = 0)
             {
-                if (x >= Stones.GetLength(0) || y >= Stones.GetLength(1) || x < 0 || y < 0 || Stones[x, y] != piece)
+                if (x >= Board.GetLength(0) || y >= Board.GetLength(1) || x < 0 || y < 0 || Board[x, y] != piece)
                     return result;
                 else
                     return count(xInc(x), yInc(y), xInc, yInc, result + 1);
@@ -184,15 +164,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             if (Up) //from Top left to bottom right or vice versa
             {
-                for (int i = 4; i < 15; i++)
+                for (int y = 4; y < 15; y++)
                 {
-                    for (int j = 0; j < 11; j++)
+                    for (int x = 0; x < 11; x++)
                     {
-                        if (this.Stones[j, i] == Piece &&
-                        this.Stones[j + 1, i - 1] == Piece &&
-                        this.Stones[j + 2, i - 2] == Piece &&
-                        this.Stones[j + 3, i - 3] == Piece &&
-                        this.Stones[j + 4, i - 4] == Piece)
+                        if (this.Board[x, y] == Piece &&
+                        this.Board[x + 1, y - 1] == Piece &&
+                        this.Board[x + 2, y - 2] == Piece &&
+                        this.Board[x + 3, y - 3] == Piece &&
+                        this.Board[x + 4, y - 4] == Piece)
                         {
                             return true;
                         }
@@ -202,15 +182,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
             else
             {
-                for (int i = 0; i < 11; i++)
+                for (int y = 0; y < 11; y++)
                 {
-                    for (int j = 0; j < 11; j++)
+                    for (int x = 0; x < 11; x++)
                     {
-                        if (this.Stones[j, i] == Piece &&
-                        this.Stones[j + 1, i + 1] == Piece &&
-                        this.Stones[j + 2, i + 2] == Piece &&
-                        this.Stones[j + 3, i + 3] == Piece &&
-                        this.Stones[j + 4, i + 4] == Piece)
+                        if (this.Board[x, y] == Piece &&
+                        this.Board[x + 1, y + 1] == Piece &&
+                        this.Board[x + 2, y + 2] == Piece &&
+                        this.Board[x + 3, y + 3] == Piece &&
+                        this.Board[x + 4, y + 4] == Piece)
                         {
                             return true;
                         }
@@ -222,15 +202,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public bool CheckStoneHorizontal(byte Piece)
         {
-            for (int i = 0; i < 15; i++)
+            for (int y = 0; y < 15; y++)
             {
-                for (int j = 0; j < 11; j++)
+                for (int x = 0; x < 11; x++)
                 {
-                    if (this.Stones[j, i] == Piece &&
-                    this.Stones[j + 1, i] == Piece &&
-                    this.Stones[j + 2, i] == Piece &&
-                    this.Stones[j + 3, i] == Piece &&
-                    this.Stones[j + 4, i] == Piece)
+                    if (this.Board[x, y] == Piece &&
+                    this.Board[x + 1, y] == Piece &&
+                    this.Board[x + 2, y] == Piece &&
+                    this.Board[x + 3, y] == Piece &&
+                    this.Board[x + 4, y] == Piece)
                     {
                         return true;
                     }
@@ -241,15 +221,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public bool CheckStoneVertical(byte Piece)
         {
-            for (int i = 0; i < 11; i++)
+            for (int y = 0; y < 11; y++)
             {
-                for (int j = 0; j < 15; j++)
+                for (int x = 0; x < 15; x++)
                 {
-                    if (this.Stones[j, i] == Piece &&
-                    this.Stones[j, i + 1] == Piece &&
-                    this.Stones[j, i + 2] == Piece &&
-                    this.Stones[j, i + 3] == Piece &&
-                    this.Stones[j, i + 4] == Piece)
+                    if (this.Board[x, y] == Piece &&
+                    this.Board[x, y + 1] == Piece &&
+                    this.Board[x, y + 2] == Piece &&
+                    this.Board[x, y + 3] == Piece &&
+                    this.Board[x, y + 4] == Piece)
                     {
                         return true;
                     }
