@@ -54,11 +54,17 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public virtual void Close(byte pReason)
         {
             MiniRooms.Remove(ID);
+            MiniRoomBalloonPacket.Remove(Owner);
             Owner = null;
             for (var i = 0; i < MaxUsers; i++)
                 Users[i] = null;
         }
 
+        public void UpdateBalloon()
+        {
+            if (Owner == null) return;
+            MiniRoomBalloonPacket.Send(Owner, this);
+        }
         public byte GetEmptySlot()
         {
             for (byte i = 0; i < MaxUsers; i++)
@@ -108,6 +114,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             {
                 this.Close(0);
             }
+            UpdateBalloon();
         }
 
         public void RemovePlayerFromShop(GameCharacter pCharacter)
@@ -155,6 +162,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pCharacter.RoomSlotId = GetEmptySlot();
             Users[pCharacter.RoomSlotId] = pCharacter;
             pCharacter.Room = this;
+            UpdateBalloon();
         }
 
         public bool CheckPassword(string pPass)

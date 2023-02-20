@@ -47,6 +47,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             EnteredUsers++;
             pOwner.RoomSlotId = GetEmptySlot();
             Users[pOwner.RoomSlotId] = pOwner;
+            UpdateBalloon();
         }
 
         public void AddUser(GameCharacter pTo)
@@ -54,6 +55,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             EnteredUsers++;
             pTo.RoomSlotId = GetEmptySlot();
             Users[pTo.RoomSlotId] = pTo;
+            UpdateBalloon();
         }
 
         public void CloseOmok(GameCharacter pOwner)
@@ -104,6 +106,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             GameStarted = false;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones.Clear();
+            UpdateBalloon();
         }
 
         public void UpdateAnnounceBox(GameCharacter pOwner)
