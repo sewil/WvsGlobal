@@ -1,4 +1,6 @@
-﻿namespace WvsBeta.Game
+﻿using WvsBeta.Common.Sessions;
+
+namespace WvsBeta.Game
 {
     public class CharacterGameStats
     {
@@ -7,6 +9,7 @@
         public int OmokWins { get; set; }
         public int OmokTies { get; set; }
         public int OmokLosses { get; set; }
+        public int OmokPoints { get; set; }
 
         public int MatchCardWins { get; set; }
         public int MatchCardTies { get; set; }
@@ -49,6 +52,18 @@
             return; // We don't use it anyway?
             Server.Instance.CharacterDatabase.RunQuery("UPDATE gamestats SET omokwins = " + mCharacter.GameStats.OmokWins + ", omokties = " + mCharacter.GameStats.OmokTies + ", omoklosses = " + mCharacter.GameStats.OmokLosses + ", matchcardwins = "
                 + mCharacter.GameStats.MatchCardWins + ", matchcardties = " + mCharacter.GameStats.MatchCardTies + ", matchcardlosses = " + mCharacter.GameStats.MatchCardLosses + " WHERE id = " + mCharacter.ID.ToString());
+        }
+        public void Decode(Packet pw)
+        {
+            //GW_Minigamerecord_Decode
+            pw.WriteInt(1);
+            //pw.WriteInt(0);
+            //pw.WriteInt(0);
+            //pw.WriteInt(0);
+            pw.WriteInt(OmokWins);
+            pw.WriteInt(OmokTies);
+            pw.WriteInt(OmokLosses);
+            pw.WriteInt(OmokPoints);
         }
     }
 }
