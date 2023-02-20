@@ -37,8 +37,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             WriteString(room.Title);
             WriteBool(room.Private); //0 : public 1 : private
             WriteByte((byte)room.CardType);
-            WriteByte(1); // Current slots (1-4)
-            WriteByte(2); // Max slots (1-4)
+            WriteByte(room.EnteredUsers); // Current slots (1-4)
+            WriteByte(room.MaxUsers); // Max slots (1-4)
             WriteBool(room.GameStarted);
         }
         public MiniRoomBalloonPacket(MiniRoomBase room) : this(room, room?.Users[0])
