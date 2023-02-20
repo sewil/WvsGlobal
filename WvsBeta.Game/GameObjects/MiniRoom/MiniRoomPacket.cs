@@ -162,7 +162,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                                     continue;
                                 }
 
-                                mr.RemovePlayer(chr, 1);
+                                mr.RemovePlayer(chr, MiniRoomLeaveReason.Unk1);
                                 //mr.Users[i] = null; //send this after all characters are removed
                             }
                         }
@@ -183,8 +183,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             }
                             else
                             {
-                                ShowLeaveRoom(pCharacter.Room, pCharacter, 2);
-                                omok.RemovePlayer(pCharacter, 1);
+                                omok.RemovePlayer(pCharacter, MiniRoomLeaveReason.GameHasEnded);
                             }
                         }
 
@@ -266,9 +265,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         break;
                     }
 
-                case MiniRoomAction.Expel: //Expell user
+                case MiniRoomAction.Expel:
                     {
-                        //Todo : expell
+                        pCharacter.Room.RemovePlayer(pCharacter.Room.Users[1], MiniRoomLeaveReason.Expelled);
                         break;
                     }
 
@@ -543,21 +542,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pRoom.BroadcastPacket(pw, pWho);
         }
 
-        public static void ShowLeave(MiniRoomBase pRoom, GameCharacter pWho, byte pReason)
+        public static void ShowLeaveRoom(MiniRoomBase pRoom, GameCharacter pWho, MiniRoomLeaveReason pReason)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0xA);
             pw.WriteByte(pWho.RoomSlotId);
-            pw.WriteByte(pReason);
-            pWho.SendPacket(pw);
-        }
-
-        public static void ShowLeaveRoom(MiniRoomBase pRoom, GameCharacter pWho, byte pReason)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0xA);
-            pw.WriteByte(pWho.RoomSlotId);
-            pw.WriteByte(pReason);
+            pw.WriteByte((byte)pReason);
             pRoom.BroadcastPacket(pw);
         }
 

@@ -60,7 +60,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
         }
 
-        public override void RemovePlayer(GameCharacter pCharacter, byte pReason)
+        public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
             if (pCharacter.Room.Type == MiniRoomType.PersonalShop)
             {

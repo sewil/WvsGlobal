@@ -97,16 +97,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             return EnteredUsers == MaxUsers;
         }
 
-        public virtual void RemovePlayer(GameCharacter pCharacter, byte pReason)
+        public virtual void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
-            //Users[pCharacter.RoomSlotId] = null;
-
-            MiniRoomPacket.ShowLeave(this, pCharacter, pReason);
+            MiniRoomPacket.ShowLeaveRoom(pCharacter.Room, pCharacter, pReason);
             Users[pCharacter.RoomSlotId] = null;
             pCharacter.Room = null;
             pCharacter.RoomSlotId = 0;
             EnteredUsers--;
-
 
             if (EnteredUsers == 0)
             {

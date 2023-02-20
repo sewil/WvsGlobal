@@ -72,6 +72,16 @@
         Unk = 2,
         Closed = 3
     }
+    public enum MiniRoomLeaveReason : byte
+    {
+        YouHaveLeft = 0,
+        Unk1 = 1,
+        GameHasEnded = 2,
+        RoomIsClosed = 3,
+        Expelled = 4,
+        Unk5 = 5,
+        TradeUnsuccessful = 6
+    }
     public enum GameResult
     {
         Win = 0,

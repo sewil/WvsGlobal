@@ -158,7 +158,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         }
 
 
-        public override void RemovePlayer(GameCharacter pCharacter, byte pReason)
+        public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
             // Give items back
             RevertItems();
@@ -286,8 +286,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             else
                             {
                                 // Unsuccessful error
-                                RemovePlayer(chr, 6);
-                                RemovePlayer(chr2, 6);
+                                RemovePlayer(chr, MiniRoomLeaveReason.TradeUnsuccessful);
+                                RemovePlayer(chr2, MiniRoomLeaveReason.TradeUnsuccessful);
                             }
                         }
                         break;

@@ -172,7 +172,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw);
         }
 
-        public static void Skip(MiniRoomBase mrb, byte pWho)
+        public static void Expel(MiniRoomBase mrb, byte pWho)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x25);
