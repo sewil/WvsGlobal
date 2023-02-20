@@ -53,7 +53,7 @@ namespace WvsBeta.Game
             Server.Instance.CharacterDatabase.RunQuery("UPDATE gamestats SET omokwins = " + mCharacter.GameStats.OmokWins + ", omokties = " + mCharacter.GameStats.OmokTies + ", omoklosses = " + mCharacter.GameStats.OmokLosses + ", matchcardwins = "
                 + mCharacter.GameStats.MatchCardWins + ", matchcardties = " + mCharacter.GameStats.MatchCardTies + ", matchcardlosses = " + mCharacter.GameStats.MatchCardLosses + " WHERE id = " + mCharacter.ID.ToString());
         }
-        public void Decode(Packet pw)
+        public void Encode(Packet pw)
         {
             //GW_Minigamerecord_Decode
             pw.WriteInt(1);
