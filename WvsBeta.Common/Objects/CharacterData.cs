@@ -30,7 +30,7 @@ namespace WvsBeta.Common.Objects
                 chr.Skills.AddSkills(packet);
             }
 
-            if (flags.HasFlag(CharacterDataFlag.AnyQuests))
+            if ((flags & CharacterDataFlag.AnyQuests) != 0)
             {
                 var quests = chr.BaseQuests.GetQuests();
                 if (flags.HasFlag(CharacterDataFlag.Quests))
