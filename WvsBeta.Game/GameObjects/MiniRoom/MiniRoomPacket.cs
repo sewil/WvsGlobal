@@ -422,14 +422,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 return;
             }
 
-            chr.Room = mrb;
-            byte nType = (byte)chr.Room.Type;
-            switch (nType)
+            switch (mrb.Type)
             {
-                case 1: // Omok
+                case MiniRoomType.Omok:
                     {
                         bool usePassword = packet.ReadBool();
-                        Omok omok = MiniRoomBase.Omoks[chr.Room.ID];
+                        Omok omok = MiniRoomBase.Omoks[mrb.ID];
 
                         if (usePassword)
                         {
@@ -458,7 +456,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         }
                         break;
                     }
-                case 3: // Trade
+                case MiniRoomType.Trade:
                     {
                         miniroomLog.Info($"{chr.Name} entered trade");
                         mrb.AddPlayer(chr);
@@ -466,7 +464,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         MiniRoomPacket.ShowWindow(mrb, chr);
                         break;
                     }
-                case 4: // Player Shop
+                case MiniRoomType.PersonalShop:
                     {
                         miniroomLog.Info($"{chr.Name} entered playershop");
                         PlayerShop shop = MiniRoomBase.PlayerShops[roomId];

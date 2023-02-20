@@ -154,6 +154,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             EnteredUsers++;
             pCharacter.RoomSlotId = GetEmptySlot();
             Users[pCharacter.RoomSlotId] = pCharacter;
+            pCharacter.Room = this;
         }
 
         public bool CheckPassword(string pPass)
