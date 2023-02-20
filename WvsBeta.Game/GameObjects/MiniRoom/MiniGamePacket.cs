@@ -82,8 +82,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteInt(chr.GameStats.OmokLosses);
             pw.WriteInt(2000);
             mrb.BroadcastPacket(pw, chr);
-
-        }
         }
 
         public static void ErrorMessage(GameCharacter chr, MiniGameError error)
@@ -125,7 +123,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw, chr, true);
         }
 
-        public static void RequestTieResult(GameCharacter chr, MiniRoomBase mrb)
+        public static void RequestTieDeny(GameCharacter chr, MiniRoomBase mrb)
         {
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
