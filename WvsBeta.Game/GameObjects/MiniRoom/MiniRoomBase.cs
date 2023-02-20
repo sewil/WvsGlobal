@@ -33,9 +33,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public int ObjectID { get; private set; }
         public byte PieceType { get; private set; }
         public byte mWinnerIndex { get; set; }
+        public GameCharacter Owner { get; private set; }
 
-        public MiniRoomBase(byte pMaxUsers, MiniRoomType pType)
+        public MiniRoomBase(GameCharacter owner, byte pMaxUsers, MiniRoomType pType)
         {
+            Owner = owner;
             ID = Server.Instance.MiniRoomIDs.NextValue();
             MiniRooms.Add(ID, this);
             Title = "";
@@ -52,6 +54,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public virtual void Close(byte pReason)
         {
             MiniRooms.Remove(ID);
+            Owner = null;
             for (var i = 0; i < MaxUsers; i++)
                 Users[i] = null;
         }

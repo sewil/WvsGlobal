@@ -18,13 +18,10 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public bool[] Locked;
         private TradeItem[][] ItemList;
 
-        public GameCharacter Owner { get; private set; }
-
         private int[] Mesos;
 
-        public Trade(GameCharacter pOwner) : base(2, MiniRoomType.Trade)
+        public Trade(GameCharacter pOwner) : base(pOwner, 2, MiniRoomType.Trade)
         {
-            Owner = pOwner;
             ItemList = new TradeItem[2][];
             ItemList[0] = new TradeItem[10];
             ItemList[1] = new TradeItem[10];
@@ -43,7 +40,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public override void Close(byte pReason)
         {
             base.Close(pReason);
-            Owner = null;
             ItemList = null;
         }
 

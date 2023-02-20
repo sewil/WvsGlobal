@@ -29,11 +29,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public Dictionary<byte, PlayerShopItem> Items { get; set; } = new Dictionary<byte, PlayerShopItem>();
         public List<PlayerShopItem> BoughtItems { get; set; } = new List<PlayerShopItem>();
         public int Mesos { get; set; }
-        public GameCharacter Owner { get; private set; }
 
-        public PlayerShop(GameCharacter pOwner) : base(4, MiniRoomType.PersonalShop)
+        public PlayerShop(GameCharacter pOwner) : base(pOwner, 4, MiniRoomType.PersonalShop)
         {
-            Owner = pOwner;
             EnteredUsers++;
             Owner.RoomSlotId = GetEmptySlot();
             Users[Owner.RoomSlotId] = Owner;
