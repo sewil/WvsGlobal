@@ -75,9 +75,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
         }
 
-        public void UpdateGame(GameCharacter pWinnner, bool Draw = false, bool Forfeit = false)
+        public void UpdateGame(GameCharacter pWinnner, GameResult result)
         {
-            if (Draw)
+            if (result == GameResult.Tie)
             {
                 Users[0].GameStats.OmokTies++;
                 Users[1].GameStats.OmokTies++;
@@ -98,11 +98,10 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     }
                 }
             }
-            if (Draw) MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, 1);
-            if (Forfeit) MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, 2);
-            else MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, 0);
+            MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, result);
 
             // Reset all values
+            GameStarted = false;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones.Clear();
         }

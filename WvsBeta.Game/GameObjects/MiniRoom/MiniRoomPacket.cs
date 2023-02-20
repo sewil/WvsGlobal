@@ -264,8 +264,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 case MiniRoomAction.OmokWinner:
                     {
                         Omok omok = MiniRoomBase.Omoks[pCharacter.Room.ID];
-                        omok.UpdateGame(pCharacter);
-                        omok.GameStarted = false;
+                        omok.UpdateGame(pCharacter, GameResult.Win);
                         break;
                     }
 
@@ -293,9 +292,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             if (omok.CheckStone(type))
                             {
                                 //MessagePacket.SendNotice("Win!", pCharacter);
-                                omok.UpdateGame(pCharacter);
-                                type = 0xFF;
-                                omok.GameStarted = false;
+                                omok.UpdateGame(pCharacter, GameResult.Win);
                             }
                         }
 

@@ -279,17 +279,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void UpdateGame(GameCharacter pWinner, MiniRoomBase mrb, byte Type)
+        public static void UpdateGame(GameCharacter pWinner, MiniRoomBase mrb, GameResult result)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x24);
 
-            switch (Type)
-            {
-                case 0: pw.WriteByte(0); break;
-                case 1: pw.WriteByte(1); break;
-                case 2: pw.WriteByte(2); break;
-            }
+            pw.WriteByte((byte)result);
             pw.WriteByte(pWinner.RoomSlotId);
 
             //gamestats

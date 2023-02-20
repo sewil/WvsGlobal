@@ -52,4 +52,10 @@
         Unk = 2,
         Closed = 3
     }
+    public enum GameResult
+    {
+        Win = 0,
+        Tie = 1,
+        Forfeit = 2,
+    }
 }
