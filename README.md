@@ -1,13 +1,6 @@
 # WvsGlobal v22 (WvsBeta_REVAMP)
 WvsGlobal fork targeted for v22 and .net framework 4.8. Includes idb and scripts.
 
-## Todo
-- [ ] Guild
-- [ ] Minigames
-- [ ] Quests
-- [ ] Translate/convert remaining scripts
-- [ ] Update drop data
-
 ## Notes
 - Config options for Redis, ElasticSearch/logging and some others are missing
 - ReNX has been modified to support merging of NX files
