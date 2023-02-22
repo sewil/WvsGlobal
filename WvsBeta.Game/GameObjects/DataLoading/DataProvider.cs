@@ -291,8 +291,8 @@ namespace WvsBeta.Game
                             break;
                         case "hpRecovery": data.HPRecoverAmount = node.ValueInt32(); break;
                         case "mpRecovery": data.MPRecoverAmount = node.ValueInt32(); break;
-                        case "hpTagColor": data.HPTagColor = node.ValueInt32(); break;
-                        case "hpTagBgcolor": data.HPTagBgColor = node.ValueInt32(); break;
+                        case "hpTagColor": data.HPTagColor = node.ValueByte(); break;
+                        case "hpTagBgcolor": data.HPTagBgColor = node.ValueByte(); break;
                         case "boss": data.Boss = node.ValueBool(); break;
                         default:
                             Console.WriteLine($"Did not handle node {node.Name} of mob {data.ID}");

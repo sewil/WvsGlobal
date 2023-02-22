@@ -122,7 +122,7 @@ namespace WvsBeta.Game
 
                     if (IsBoss && Data.HPTagBgColor > 0)
                     {
-                        Field.SendPacket(FieldEffectPacket.BossHPBar(DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
+                        Field.SendPacket(FieldEffectPacket.BossHPBar(MobID, DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
                     }
                 }
 
@@ -186,7 +186,7 @@ namespace WvsBeta.Game
 
                 if (IsBoss && Data.HPTagBgColor > 0) // There's no way to hide this :|
                 {
-                    Field.SendPacket(FieldEffectPacket.BossHPBar(DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
+                    Field.SendPacket(FieldEffectPacket.BossHPBar(MobID, DeadAlreadyHandled ? -1 : HP, MaxHP, Data.HPTagBgColor, Data.HPTagColor));
                 }
             }
             else

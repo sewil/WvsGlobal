@@ -15,8 +15,8 @@ public class MobData
     public int MaxMP { get; set; }
     public int HPRecoverAmount { get; set; }
     public int MPRecoverAmount { get; set; }
-    public int HPTagColor { get; set; }
-    public int HPTagBgColor { get; set; }
+    public byte HPTagColor { get; set; }
+    public byte HPTagBgColor { get; set; }
     public short Speed { get; set; }
     public byte SummonType { get; set; }
     public bool Flies { get; set; }

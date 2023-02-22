@@ -28,13 +28,14 @@ namespace WvsBeta.Game.Packets
             pw.WriteString(path);
             return pw;
         }
-        public static FieldEffectPacket BossHPBar(int pHP, int pMaxHP, int pColorBottom, int pColorTop)
+        public static FieldEffectPacket BossHPBar(int mobId, int pHP, int pMaxHP, byte pColorBottom, byte pColorTop)
         {
             var pw = new FieldEffectPacket(Type.BossHPBar);
+            pw.WriteInt(mobId);
             pw.WriteInt(pHP);
             pw.WriteInt(pMaxHP);
-            pw.WriteInt(pColorTop);
-            pw.WriteInt(pColorBottom);
+            pw.WriteByte(pColorTop);
+            pw.WriteByte(pColorBottom);
             return pw;
         }
 
