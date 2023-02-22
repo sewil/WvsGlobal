@@ -177,13 +177,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             //MessagePacket.SendNotice("leave omok", pCharacter);
                             Omok omok = MiniRoomBase.Omoks[pCharacter.Room.ID];
 
-                            if (pCharacter == omok.Users[0])
+                            if (pCharacter == omok.Owner)
                             {
                                 omok.CloseOmok(pCharacter);
                             }
                             else
                             {
-                                omok.RemovePlayer(pCharacter, MiniRoomLeaveReason.GameHasEnded);
+                                omok.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
                             }
                         }
 

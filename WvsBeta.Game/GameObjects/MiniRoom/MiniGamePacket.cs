@@ -227,24 +227,5 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteLong(0);
             mrb.BroadcastPacket(pw);
         }
-
-        public static void ShowLeaveMessage(GameCharacter pCharacter)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(10);
-            pw.WriteByte(pCharacter.RoomSlotId);
-            pw.WriteByte(1);
-            pCharacter.SendPacket(pw);
-        }
-
-        public static void RoomClosedMessage(GameCharacter pCharacter)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0xA);
-            pw.WriteByte(pCharacter.RoomSlotId);
-            pw.WriteByte(2);
-            pCharacter.SendPacket(pw);
-        }
-        //public static void OnMove
     }
 }

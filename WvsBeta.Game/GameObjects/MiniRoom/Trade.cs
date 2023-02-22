@@ -37,9 +37,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
         }
 
-        public override void Close(byte pReason)
+        public override void Close()
         {
-            base.Close(pReason);
+            base.Close();
             ItemList = null;
         }
 
@@ -83,7 +83,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pCharacter2.Save();
             
             EnteredUsers = 0;
-            Close(0);
+            Close();
         }
 
         private bool ContinueTrade()

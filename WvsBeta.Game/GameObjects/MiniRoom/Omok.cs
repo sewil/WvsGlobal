@@ -60,20 +60,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public void CloseOmok(GameCharacter pOwner)
         {
-            MiniRoomBalloonPacket.Remove(pOwner);
             for (int i = 0; i < 2; i++)
             {
-                if (Users[i] != null)
-                {
-                    if (Users[i].RoomSlotId == 1)
-                    {
-                        MiniGamePacket.RoomClosedMessage(Users[i]);
-                    }
-
-                    Users[i].Room = null;
-                    Users[i].RoomSlotId = 0;
-                    EnteredUsers--;
-                }
+                GameCharacter user = Users[i];
+                if (user == null) continue;
+                RemovePlayer(user, MiniRoomLeaveReason.GameHasEnded);
             }
         }
 

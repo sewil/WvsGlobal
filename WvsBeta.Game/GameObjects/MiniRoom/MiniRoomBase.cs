@@ -50,10 +50,10 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Type = pType;
         }
 
-        public virtual void Close(byte pReason)
+        public virtual void Close()
         {
             MiniRooms.Remove(ID);
-            MiniRoomBalloonPacket.Remove(Owner);
+            //MiniRoomBalloonPacket.Remove(Owner);
             Owner = null;
             for (var i = 0; i < MaxUsers; i++)
                 Users[i] = null;
@@ -99,7 +99,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public virtual void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
-            MiniRoomPacket.ShowLeaveRoom(pCharacter.Room, pCharacter, pReason);
+            MiniRoomPacket.ShowLeaveRoom(this, pCharacter, pReason);
             Users[pCharacter.RoomSlotId] = null;
             pCharacter.Room = null;
             pCharacter.RoomSlotId = 0;
@@ -107,9 +107,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             if (EnteredUsers == 0)
             {
-                this.Close(0);
+                this.Close();
             }
-            UpdateBalloon();
+            else
+            {
+                UpdateBalloon();
+            }
         }
 
         public void RemovePlayerFromShop(GameCharacter pCharacter)
