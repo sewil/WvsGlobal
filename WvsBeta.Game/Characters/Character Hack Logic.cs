@@ -44,6 +44,9 @@ namespace WvsBeta.Game
 
         public bool PermaBan(string reason, BanReasons banReason = BanReasons.Hack, bool doNotBanForNow = false, int extraDelay = 0)
         {
+#if DEBUG
+            return false;
+#endif
             if (IsAdmin) doNotBanForNow = true;
             if (!doNotBanForNow)
             {
