@@ -142,6 +142,7 @@ namespace WvsBeta.Game
 
             if (fucker != null && pWasPoison == false)
             {
+                #if !DEBUG
                 if (!fucker.IsGM)
                 {
                     if (amount >= 60000)
@@ -176,6 +177,7 @@ namespace WvsBeta.Game
                         );
                     }
                 }
+                #endif
 
                 // Normalize damage
                 amount = Math.Min(amount, HP);
