@@ -291,6 +291,14 @@ namespace WvsBeta.Common
                     PetEquip = 8000,
                 }
             }
+
+            public static class Zakum
+            {
+                public const int PAPER_DOCUMENT = 4001015;
+                public const int THE_KEY = 4001016;
+                public const int EYE_OF_FIRE = 4001017;
+                public const int FIRE_ORE = 4001018;
+            }
         }
 
         public enum Skills

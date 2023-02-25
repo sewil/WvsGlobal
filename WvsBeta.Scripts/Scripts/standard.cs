@@ -92,6 +92,16 @@ namespace WvsBeta.Scripts.Scripts
                 { "1011001", "shop" },
                 { "1011100", "shop" },
                 { "1012004", "shop" },
+                { "boxPaper0", "zakum" },
+                { "boxKey0", "zakum" },
+                { "money100", "zakum" },
+                { "money10000", "zakum" },
+                { "boxItem0", "zakum" },
+                { "boxItem1", "zakum" },
+                { "boxItem2", "zakum" },
+                { "boxItem3", "zakum" },
+                { "boxMob0", "zakum" },
+                { "go280010000", "zakum" },
             };
         }
     }

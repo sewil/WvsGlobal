@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common;
+﻿using System.Linq;
+using WvsBeta.Common;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
@@ -86,7 +87,21 @@ namespace WvsBeta.Scripts.Scripts
         {
             if (target.IsAdmin)
             {
-                if (target.Job >= 500) self.Say("You are already a GM...");
+                if (target.Job >= 500)
+                {
+                    var v1 = self.AskMenu("What can I do for you?\r\n#b#L0# Spawn mobs #l");
+                    if (v1 == 0)
+                    {
+                        int mobid = int.Parse(self.AskText("What mob would you like to spawn?", "", 0, short.MaxValue));
+                        int amount = self.AskNumber("How many would you like to spawn?", -1, 0, int.MaxValue);
+                        string options = self.AskText("Please input Foothold, SummonType, and SummonOption (separated by comma)", "", 0, short.MaxValue);
+                        var noptions = options.Split(',').Select(i => int.Parse(i.Trim())).ToArray();
+                        for (int i = 0; i < amount; i++)
+                        {
+                            target.Field.SpawnMob(mobid, null, target.Position, (short)noptions[0], null, (sbyte)noptions[1], noptions[2]);
+                        }
+                    }
+                }
                 else
                 {
                     var nRet = self.AskYesNo("Are you sure you want to become a GM?");

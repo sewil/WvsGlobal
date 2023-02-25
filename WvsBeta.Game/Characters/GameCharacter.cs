@@ -443,7 +443,7 @@ namespace WvsBeta.Game
             var tmpUserId = UserID;
 
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
-                SELECT c.*, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
+                SELECT c.*, users.admin, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
                 FROM characters c
                 LEFT JOIN users ON users.id = c.userid
                 LEFT JOIN guild_members g ON c.id = g.character_id
@@ -462,6 +462,7 @@ namespace WvsBeta.Game
                 MuteReason = data.GetByte("quiet_ban_reason");
                 LastSavepoint = data.GetDateTime("last_savepoint");
                 GuildID = data.GetInt32("guild_id");
+                GMLevel = data.GetByte("admin");
                 LastPlayTimeSave = MasterThread.CurrentTime;
 
                 var _mapId = data.GetInt32("map");

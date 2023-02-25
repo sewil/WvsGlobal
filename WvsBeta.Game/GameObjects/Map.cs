@@ -1164,7 +1164,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             var mob = new Mob(id, this, mobid, position, foothold);
             mob.Owner = ownerMob;
             mob.MobGenItem = mgi;
-            mob.Stance |= (byte)(mgi.FacesLeft ? 1 : 0);
+            mob.Stance |= (byte)(mgi?.FacesLeft == true ? 1 : 0);
             mob.SummonType = summonType;
             mob.SummonOption = summonOption;
 

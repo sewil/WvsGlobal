@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
 using WvsBeta.Common;
-using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Game.GameObjects
 {
@@ -27,24 +24,16 @@ namespace WvsBeta.Game.GameObjects
         }
         public void Clear()
         {
-            foreach (byte rid in ShownReactors.Keys)
+            foreach (var reactor in ShownReactors)
             {
-                DestroyReactor(rid);
+                reactor.Value.Destroy();
+                ShownReactors.Remove(reactor.Key);
             }
         }
 
         public void ShowReactorsTo(GameCharacter chr)
         {
             ShownReactors.Values.ForEach(r => r.ShowTo(chr));
-        }
-
-        public void DestroyReactor(int rid)
-        {
-            if (ShownReactors.TryGetValue(rid, out FieldReactor r))
-            {
-                r.Destroy();
-                ShownReactors.Remove(rid);
-            }
         }
 
         public void PlayerHitReactor(GameCharacter chr, FieldReactor r)

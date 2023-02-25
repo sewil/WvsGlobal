@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace WvsBeta.Game.Scripting
 {
@@ -8,8 +7,6 @@ namespace WvsBeta.Game.Scripting
         private IPortalScript _compiledScript = null;
 
         private GameCharacter mCharacter { get; set; }
-        private byte mState { get; set; } = 0;
-        public byte mRealState { get; set; }
 
         public PortalScriptSession(GameCharacter chr)
         {

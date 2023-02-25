@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using WvsBeta.Common;
 using WvsBeta.Common.Objects;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -74,8 +75,6 @@ namespace WvsBeta.Game
         public readonly int ReactorTime;
         public readonly string Name;
         public GameCharacter Owner { get; private set; }
-        public List<(int itemId, short amount)> ItemDrops { get; set; } = new List<(int itemId, short amount)>();
-        public int MesoDrop { get; set; }
         public FieldReactor ShallowCopy()
         {
             return (FieldReactor)MemberwiseClone();
@@ -125,7 +124,19 @@ namespace WvsBeta.Game
         public void Destroy()
         {
             ReactorPacket.DestroyReactor(this);
-            State = 0;
+            if (Reactor.Action != null)
+            {
+                ReactorScriptSession.Run(this, script => {
+#if !DEBUG
+                    if (Owner != null && Owner.IsGM)
+                    {
+#endif
+                        ChatPacket.SendNoticeMap("Error compiling script: " + script, Field.ID);
+#if !DEBUG
+                    }
+#endif
+                });
+            }
         }
 
         public void HitBy(GameCharacter chr)
@@ -138,16 +149,26 @@ namespace WvsBeta.Game
             }
             else
             {
-                Field.ReactorPool.DestroyReactor(ID);
-                DoDrop();
+                Destroy();
+                Field.ReactorPool.ShownReactors.Remove(ID);
             }
         }
-
-        private void DoDrop()
+        public void DoSpawn(short yOffset, params (int mobid, short amount, sbyte summonType)[] mobs)
         {
-            int x2 = Position.X - 10 * (ItemDrops.Count + MesoDrop > 0 ? 1 : 0) + 10;
+            var pos = new Pos(Position.X, (short)(Position.Y + yOffset));
+            foreach (var mob in mobs)
+            {
+                for (int i = 0; i < mob.amount; i++)
+                {
+                    Field.SpawnMob(mob.mobid, null, pos, 0, null, mob.summonType, 0);
+                }
+            }
+        }
+        public void DoDrop(int mesos, params (int itemId, short amount)[] items)
+        {
+            int x2 = Position.X - 10 * (items.Length + mesos > 0 ? 1 : 0) + 10;
             short delay = 0;
-            foreach (var dropInfo in ItemDrops)
+            foreach (var dropInfo in items)
             {
                 BaseItem it = BaseItem.CreateFromItemID(dropInfo.itemId, dropInfo.amount);
                 it.GiveStats(ItemVariation.None);
@@ -157,9 +178,9 @@ namespace WvsBeta.Game
                 delay += 120;
             }
 
-            if (MesoDrop > 0)
+            if (mesos > 0)
             {
-                Field.DropPool.Create(Reward.Create(MesoDrop), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
+                Field.DropPool.Create(Reward.Create(mesos), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
             }
         }
     }

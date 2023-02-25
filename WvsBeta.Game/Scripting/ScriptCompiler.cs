@@ -1,13 +1,14 @@
 ﻿using System;
-using System.CodeDom.Compiler;
+using Microsoft.CodeDom.Providers.DotNetCompilerPlatform;
 using System.IO;
 using System.Reflection;
+using System.CodeDom.Compiler;
 
 namespace WvsBeta.Game.Scripting
 {
     public class ScriptCompiler
     {
-        private static CodeDomProvider compiler = CodeDomProvider.CreateProvider("CSharp");
+        private static CodeDomProvider compiler = new CSharpCodeProvider();
 
         public static Assembly CompileScript(string scriptPath, Action<string> errorHandlerFnc)
         {
@@ -47,7 +48,7 @@ namespace WvsBeta.Game.Scripting
                 else
                     parms.ReferencedAssemblies.Add(r.Name + ".dll");
             }
-            parms.ReferencedAssemblies.Add(Path.Combine(mainPath, "Microsoft.CSharp.dll"));
+            //parms.ReferencedAssemblies.Add(Path.Combine(mainPath, "Microsoft.CSharp.dll"));
             parms.ReferencedAssemblies.Add(exc.Location);
 
             return compiler.CompileAssemblyFromFile(parms, filePath);
