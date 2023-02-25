@@ -12,13 +12,6 @@ namespace WvsBeta.Game
         Hit = 0,
         Drop = 100
     }
-    public enum ReactorHitDirection : int
-    {
-        RightJump = 0,
-        LeftJump = 1,
-        Right = 2,
-        Left = 3
-    }
     public class ReactorEvent
     {
         public ReactorEventType Type { get; private set; }
