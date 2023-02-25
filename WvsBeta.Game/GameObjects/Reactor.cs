@@ -1,62 +1,113 @@
-﻿using System.Collections.Generic;
+﻿using reNX.NXProperties;
+using System.Collections.Generic;
+using System.Drawing;
 using WvsBeta.Common;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Game
 {
-    public class Reactor
+    public enum ReactorEventType
     {
-        public readonly Map Field;
-
-        public readonly short ID;
-        private byte _state;
-        public readonly short X;
-        public readonly short Y;
-        public readonly byte Z;
-        public readonly byte ZM;
-
+        Hit = 0,
+        Drop = 100
+    }
+    public enum ReactorHitDirection : int
+    {
+        RightJump = 0,
+        LeftJump = 1,
+        Right = 2,
+        Left = 3
+    }
+    public class ReactorEvent
+    {
+        public ReactorEventType Type { get; private set; }
+        public byte State { get; private set; }
+        public Rectangle Rectangle { get; private set; }
+        public int DropID { get; private set; }
+        public ReactorEvent(Reactor reactor, NXNode eNode)
+        {
+            if (eNode.ContainsChild("lt"))
+            {
+                var lt = eNode["lt"].ValueOrDie<Point>();
+                var rb = eNode["rb"].ValueOrDie<Point>();
+                Rectangle = new Rectangle(lt.X, lt.Y, rb.X - lt.X, rb.Y - lt.Y);
+            }
+            foreach (var subNode in eNode)
+            {
+                if (int.TryParse(subNode.Name, out int n))
+                {
+                    if (n == 0)
+                    {
+                        DropID = subNode.ValueInt32();
+                    }
+                    continue;
+                }
+                switch (subNode.Name)
+                {
+                    case "type":
+                        Type = (ReactorEventType)subNode.ValueByte();
+                        break;
+                    case "state":
+                        State = subNode.ValueByte();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        public void Trigger(FieldReactor reactor)
+        {
+            reactor.State = State;
+        }
+    }
+    public class FieldReactor
+    {
+        public int ID { get; private set; }
+        public Map Field { get; private set; }
+        public Reactor Reactor { get; private set; }
+        public byte State { get; set; }
+        public ReactorState ReactorState => Reactor.States[State];
+        public Pos Position { get; private set; }
+        public short FrameDelay { get; set; }
+        public short Z => ReactorState.Z;
+        public bool FacesLeft { get; private set; }
+        public readonly int ReactorTime;
+        public readonly string Name;
         public GameCharacter Owner { get; private set; }
         public List<(int itemId, short amount)> ItemDrops { get; set; } = new List<(int itemId, short amount)>();
         public int MesoDrop { get; set; }
-
-        private static int MaxState = 4;
-
-        public Reactor(Map pField, short pID, short pX, short pY) : this(pField, pID, 0, pX, pY)
+        public FieldReactor ShallowCopy()
         {
+            return (FieldReactor)MemberwiseClone();
         }
-
-        public Reactor(Map pField, short pID, byte pState, short pX, short pY) : this(pField, pID, 0, pX, pY, 3, 100)
+        public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
         {
+            ID = id;
+            Field = map;
+            Reactor = reactor;
+            Position = new Pos(x, y);
+            State = state;
+            FacesLeft = facesLeft;
         }
-
-        public Reactor(Map pField, short pID, byte pState, short pX, short pY, byte pZ, byte pZM)
+        public FieldReactor(Map map, NXNode node)
         {
-            Field = pField;
-            ID = pID;
-            _state = pState;
-            X = pX;
-            Y = pY;
-            Z = pZ;
-            ZM = pZM;
-            Owner = null;
-            MesoDrop = 0;
-        }
-
-        public byte State
-        {
-            get
+            ID = (int)Utils.ConvertNameToID(node.Name);
+            Field = map;
+            int rID = node["id"].ValueInt32();
+            Reactor = DataProvider.Reactors[rID];
+            Position = new Pos(node["x"].ValueInt16(), node["y"].ValueInt16());
+            State = 0;
+            FacesLeft = node["f"].ValueBool();
+            ReactorTime = node["reactorTime"].ValueInt32();
+            foreach (var subNode in node)
             {
-                return _state;
-            }
-            set
-            {
-                _state = value;
-                if (State <= MaxState) //check state before change to avoid invalid pointer errors in client
-                    ReactorPacket.ReactorChangedState(this);
-                if (State >= MaxState)
+                switch (subNode.Name)
                 {
-                    Field.RemoveReactor(ID);
-                    DoDrop();
+                    case "name":
+                        Name = subNode.ValueString();
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -71,35 +122,126 @@ namespace WvsBeta.Game
             ReactorPacket.ShowReactor(this, true, chr);
         }
 
-        public void UnShow()
+        public void Destroy()
         {
             ReactorPacket.DestroyReactor(this);
+            State = 0;
         }
 
         public void HitBy(GameCharacter chr)
         {
             Owner = chr;
-            State++;
+            ReactorState.Event?.Trigger(this);
+            if (State < Reactor.States.Count - 1)
+            {
+                ReactorPacket.ReactorChangedState(this);
+            }
+            else
+            {
+                Field.ReactorPool.DestroyReactor(ID);
+                DoDrop();
+            }
         }
 
         private void DoDrop()
         {
-            int x2 = X - 10 * (ItemDrops.Count + MesoDrop > 0 ? 1 : 0) + 10;
+            int x2 = Position.X - 10 * (ItemDrops.Count + MesoDrop > 0 ? 1 : 0) + 10;
             short delay = 0;
             foreach (var dropInfo in ItemDrops)
             {
                 BaseItem it = BaseItem.CreateFromItemID(dropInfo.itemId, dropInfo.amount);
                 it.GiveStats(ItemVariation.None);
 
-                Field.DropPool.Create(Reward.Create(it), Owner.ID, Owner.PartyID, DropType.Normal, ID, new Pos(X, Y), x2, delay, false, 0, false, false);
+                Field.DropPool.Create(Reward.Create(it), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
                 x2 += 20;
                 delay += 120;
             }
 
             if (MesoDrop > 0)
             {
-                Field.DropPool.Create(Reward.Create(MesoDrop), Owner.ID, Owner.PartyID, DropType.Normal, ID, new Pos(X, Y), x2, delay, false, 0, false, false);
+                Field.DropPool.Create(Reward.Create(MesoDrop), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
             }
         }
+    }
+    public class ReactorState
+    {
+        public byte State { get; private set; }
+        public Point Origin { get; private set; }
+        public short Z { get; private set; }
+        public ReactorEvent Event { get; set; }
+        public ReactorState(Reactor reactor, NXNode node)
+        {
+            State = byte.Parse(node.Name);
+            foreach (var subNode in node)
+            {
+                if (int.TryParse(subNode.Name, out int n))
+                {
+                    foreach (var ssNode in subNode)
+                    {
+                        switch (ssNode.Name)
+                        {
+                            case "origin":
+                                Origin = ssNode.ValueOrDie<Point>();
+                                break;
+                            case "z":
+                                Z = ssNode.ValueInt16();
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    continue;
+                }
+                switch (subNode.Name)
+                {
+                    case "event":
+                        Event = new ReactorEvent(reactor, subNode["0"]);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+    public class Reactor
+    {
+        public int ID { get; private set; }
+        public string Info { get; private set; }
+        public string Action { get; private set; }
+        public int Link { get; private set; }
+        public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();
+
+        public Reactor(NXNode rNode)
+        {
+            ID = (int)Utils.ConvertNameToID(rNode.Name);
+
+            foreach (var subNode in rNode)
+            {
+                if (byte.TryParse(subNode.Name, out byte n))
+                {
+                    States.Add(n, new ReactorState(this, subNode));
+                    continue;
+                }
+                switch (subNode.Name)
+                {
+                    case "info":
+                        {
+                            Info = subNode["info"].ValueString();
+                            if (subNode.ContainsChild("link"))
+                            {
+                                int link = subNode["link"].ValueInt32();
+                                Link = link;
+                            }
+                            break;
+                        }
+                    case "action":
+                        Action = subNode.ValueString();
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
     }
 }

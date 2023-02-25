@@ -23,6 +23,7 @@ namespace WvsBeta.Game
     public class DataProvider : BaseDataProvider
     {
         public static IDictionary<int, Map> Maps { get; private set; }
+        public static IDictionary<int, Reactor> Reactors { get; private set; }
         public static IDictionary<int, NPCData> NPCs { get; private set; }
         public static IDictionary<int, MobData> Mobs { get; private set; }
         public static List<int> Jobs { get; private set; }
@@ -42,6 +43,7 @@ namespace WvsBeta.Game
                 var funcs = new Action[] {
                     LoadBase,
                     ReadMobData,
+                    ReadReactors,
                     ReadMapData,
                     ReadNpcs,
                     ReadSkills,
@@ -477,7 +479,7 @@ namespace WvsBeta.Game
                 ReadPortals(mapNode, map);
                 ReadSeats(mapNode, map);
                 ReadAreas(mapNode, map);
-                ReadReactors(mapNode, map);
+                ReadMapReactors(mapNode, map);
 
                 return map;
             }, x => x.ID);
@@ -531,20 +533,29 @@ namespace WvsBeta.Game
                 map.AddArea(new MapArea(pNode));
             }
         }
-        static void ReadReactors(NXNode mapNode, Map map)
+        static void ReadMapReactors(NXNode mapNode, Map map)
         {
-            return; //we handle only with commands for now
-            /*for (var layerIndex = 0; layerIndex <= 7; layerIndex++)
+            if (!mapNode.ContainsChild("reactor")) return;
+
+            foreach (var rNode in mapNode["reactor"])
             {
-                foreach (var objLayerNode in mapNode[layerIndex.ToString()]["obj"])
-                {
-                    if ((objLayerNode.ContainsChild("reactor") && objLayerNode["reactor"].ValueBool()) ||
-                        (objLayerNode.ContainsChild("oS") && objLayerNode["oS"].ValueString() == "Reactor"))
-                    {
-                        Console.WriteLine("Found reactor under {0}.img/{1}/obj/{2}", map.ID, layerIndex, objLayerNode.Name);
-                    }
-                }
-            }*/
+                var mReactor = new FieldReactor(map, rNode);
+                map.ReactorPool.Show(mReactor);
+            }
+        }
+        static void ReadReactors()
+        {
+            var reactorNodes = pFile.BaseNode["Reactor"];
+            Reactors = new Dictionary<int, Reactor>();
+            foreach (var rNode in reactorNodes)
+            {
+                var reactor = new Reactor(rNode);
+                Reactors.Add(reactor.ID, reactor);
+            }
+            foreach (var r in Reactors.Where(r => r.Value.Link > 0).Select(r => r.Value))
+            {
+                r.States = Reactors[r.Link].States;
+            }
         }
 
         static void ReadPortals(NXNode mapNode, Map map)

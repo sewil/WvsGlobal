@@ -78,7 +78,7 @@ namespace WvsBeta.Game.Events.GMEvents
             foreach (var map in Maps)
             {
                 map.Mobs.Clear();
-                map.Reactors.Clear();
+                map.ReactorPool.Clear();
                 map.DropPool.Clear();
 
                 map.TimerEndTime = MasterThread.CurrentTime;

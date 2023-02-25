@@ -1687,63 +1687,63 @@ namespace WvsBeta.Game.Handlers.Commands
                                 jewelEvent.Stop();
                                 return true;
                             }
-                        case "ftjreactorhere":
-                            {
-                                if (Args.Count < 2)
-                                {
-                                    ChatPacket.SendNotice(
-                                        "Usage: !ftjreactorhere <reactor id> <jewel>, <jewel> = 0 for no treasure or 1 for treasure",
-                                        character);
-                                }
-                                else
-                                {
-                                    int maxFTJReactors()
-                                    {
-                                        switch (character.MapID)
-                                        {
-                                            case 109010100:
-                                            case 109010200:
-                                            case 109010300:
-                                            case 109010400:
-                                                return 20;
-                                            case 109010101:
-                                            case 109010102:
-                                            case 109010103:
-                                            case 109010201:
-                                            case 109010202:
-                                            case 109010203:
-                                            case 109010301:
-                                            case 109010302:
-                                            case 109010303:
-                                            case 109010401:
-                                            case 109010402:
-                                            case 109010403:
-                                                return 1;
-                                            default:
-                                                return -1;
-                                        }
-                                    }
+                        //case "ftjreactorhere":
+                        //    {
+                        //        if (Args.Count < 2)
+                        //        {
+                        //            ChatPacket.SendNotice(
+                        //                "Usage: !ftjreactorhere <reactor id> <jewel>, <jewel> = 0 for no treasure or 1 for treasure",
+                        //                character);
+                        //        }
+                        //        else
+                        //        {
+                        //            int maxFTJReactors()
+                        //            {
+                        //                switch (character.MapID)
+                        //                {
+                        //                    case 109010100:
+                        //                    case 109010200:
+                        //                    case 109010300:
+                        //                    case 109010400:
+                        //                        return 20;
+                        //                    case 109010101:
+                        //                    case 109010102:
+                        //                    case 109010103:
+                        //                    case 109010201:
+                        //                    case 109010202:
+                        //                    case 109010203:
+                        //                    case 109010301:
+                        //                    case 109010302:
+                        //                    case 109010303:
+                        //                    case 109010401:
+                        //                    case 109010402:
+                        //                    case 109010403:
+                        //                        return 1;
+                        //                    default:
+                        //                        return -1;
+                        //                }
+                        //            }
 
-                                    int rid = short.Parse(Args[0]);
-                                    if (rid > maxFTJReactors() || rid < 0)
-                                    {
-                                        ChatPacket.SendNotice(
-                                            "Exceeded max reactor limit for this map!!! Did not place.", character);
-                                        return true;
-                                    }
+                        //            int rid = short.Parse(Args[0]);
+                        //            if (rid > maxFTJReactors() || rid < 0)
+                        //            {
+                        //                ChatPacket.SendNotice(
+                        //                    "Exceeded max reactor limit for this map!!! Did not place.", character);
+                        //                return true;
+                        //            }
 
-                                    Reactor r = new Reactor(character.Field, (short)rid, 0, character.Position.X,
-                                        character.Position.Y, 0, 0);
+                        //            Reactor r = new Reactor(character.Field, (short)rid, 0, character.Position.X,
+                        //                character.Position.Y, 0, 0);
 
-                                    if (int.Parse(Args[1]) == 1)
-                                    {
-                                        r.ItemDrops.Add((4031018, 1));
-                                    }
+                        //            if (int.Parse(Args[1]) == 1)
+                        //            {
+                        //                r.ItemDrops.Add((4031018, 1));
+                        //            }
 
-                                    character.Field.AddReactor(r);
-                                }
-                                return true;
-                            }
+                        //            character.Field.AddReactor(r);
+                        //        }
+                        //        return true;
+                        //    }
 
 #endregion
 
@@ -2545,30 +2545,31 @@ namespace WvsBeta.Game.Handlers.Commands
                             }
                             return true;
 
-#endregion
+                    #endregion
 
 #region Reactors
 
-                        case "reactor":
+                    case "reactor":
+                        {
+                            if (Args.Count < 3)
                             {
-                                if (Args.Count < 6)
-                                {
-                                    ChatPacket.SendNotice("Usage: <short id>, <byte state>, <short x>, <short y>, <bool z>, <byte zm>, [optional] item id", character);
-                                }
-                                else
-                                {
-                                    Reactor r = new Reactor(character.Field, short.Parse(Args[0]), byte.Parse(Args[1]), short.Parse(Args[2]), short.Parse(Args[3]), byte.Parse(Args[4]), byte.Parse(Args[5]));
-                                    Program.MainForm.LogAppend("Added reactor with ID " + r.ID + " on map " + character.Field.ID);
-
-                                    if (Args.Count > 6)
-                                        r.ItemDrops.Add((int.Parse(Args[6]), 1));
-                                    character.Field.AddReactor(r);
-                                }
+                                ChatPacket.SendNotice("Usage: <int reactorId> <byte state> <bool facesLeft>", character);
                                 return true;
                             }
-
+                            if (!int.TryParse(Args[0], out int rid) || !DataProvider.Reactors.TryGetValue(rid, out Reactor reactor))
+                            {
+                                ChatPacket.SendNotice("Unknown reactor id " + Args[0], character);
+                                return true;
+                            }
+                            var pos = character.Position;
+                            byte id = (byte)character.Field.ReactorPool.Reactors.Count;
+                            var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
+                            character.Field.ReactorPool.Show(mr);
+                            Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
+                            return true;
+                        }
 #endregion
-                    }
+                }
                 #if !DEBUG
                 }
                 #endif

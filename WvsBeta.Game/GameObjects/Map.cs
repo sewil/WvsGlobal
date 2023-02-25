@@ -51,7 +51,6 @@ namespace WvsBeta.Game
         public int JukeboxID { get; set; } = -1;
         public string JukeboxUser { get; set; }
 
-        const uint ReactorStart = 200;
         public int MobCapacityMin;
         public int MobCapacityMax;
 
@@ -68,7 +67,6 @@ namespace WvsBeta.Game
         public Dictionary<int, Omok> Omoks { get; } = new Dictionary<int, Omok>();
         public List<Kite> Kites { get; } = new List<Kite>();
         public Dictionary<string, MapArea> Areas { get; } = new Dictionary<string, MapArea>();
-        public Dictionary<int, Reactor> Reactors { get; } = new Dictionary<int, Reactor>();
         public Rectangle MBR { get; private set; }
         public Rectangle VRLimit { get; private set; }
         public Rectangle ReallyOutOfBounds { get; private set; }
@@ -85,6 +83,7 @@ namespace WvsBeta.Game
         public bool PeopleInMap => Characters.Count > 0;
 
         public DropPool DropPool { get; }
+        public ReactorPool ReactorPool { get; }
         public readonly DoorManager DoorPool;
         public readonly SummonPool Summons;
 
@@ -113,6 +112,7 @@ namespace WvsBeta.Game
             ID = id;
 
             DropPool = new DropPool(this);
+            ReactorPool = new ReactorPool(this);
 
             MobRate = 1.0;
             _lastCreateMobTime = MasterThread.CurrentTime;
@@ -977,7 +977,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 MapPacket.SendJukebox(this, chr);
             }
 
-            ShowReactorsTo(chr);
+            ReactorPool.ShowReactorsTo(chr);
 
             SpawnedMists.Values.ForEach(m => MistPacket.SendMistSpawn(m));
 
@@ -1457,34 +1457,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
 
             return new Pos(x, maxy);
-        }
-
-        public void AddReactor(Reactor r)
-        {
-            Reactors.Add(r.ID, r);
-            r.Show();
-        }
-
-        private void ShowReactorsTo(GameCharacter chr)
-        {
-            Reactors.Values.ForEach(r => r.ShowTo(chr));
-        }
-
-        public void RemoveReactor(short rid)
-        {
-            if (Reactors.TryGetValue(rid, out Reactor r))
-            {
-                Reactors.Remove(rid);
-                r.UnShow();
-            }
-        }
-
-        public void PlayerHitReactor(GameCharacter chr, int rid)
-        {
-            if (Reactors.TryGetValue(rid, out Reactor r))
-            {
-                r.HitBy(chr);
-            }
         }
 
         #region Script helpers

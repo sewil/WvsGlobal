@@ -121,6 +121,7 @@
     <Compile Include="CheatInspector.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
     <Compile Include="GameObjects\MiniRoom\MiniRoomBalloonPacket.cs" />
+    <Compile Include="GameObjects\ReactorPool.cs" />
     <Compile Include="Handlers\Commands\CommandHandling.cs" />
     <Compile Include="Events\EventPackets\EventPackets.cs" />
     <Compile Include="Events\GMEvents\EventManager.cs" />
