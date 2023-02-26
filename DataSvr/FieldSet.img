@@ -17,3 +17,8 @@ Party1 = {
     enterAsParty = 1
     ptParams = 4,4,21,30
 }
+
+ZakumEnter = {
+    0 = 280030000
+    returnMap = 211041400
+}

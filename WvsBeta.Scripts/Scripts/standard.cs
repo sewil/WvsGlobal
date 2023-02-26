@@ -100,8 +100,10 @@ namespace WvsBeta.Scripts.Scripts
                 { "boxItem1", "zakum" },
                 { "boxItem2", "zakum" },
                 { "boxItem3", "zakum" },
+                { "boxBItem0", "zakum" },
                 { "boxMob0", "zakum" },
                 { "go280010000", "zakum" },
+                { "boss", "zakum1" },
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 
@@ -73,6 +74,9 @@ namespace WvsBeta.Game
                 {
                     Drops.Add(Drop.DropID, Drop);
                     DropPacket.SendMakeEnterFieldPacket(Drop, RewardEnterType.DropAnimation, Delay);
+                    if (Field.ReactorPool.ShownReactors.Any(i => i.Value.TriggerDrop(Drop, OwnerID)))
+                    {
+                    }
                 }
                 return false;
             }

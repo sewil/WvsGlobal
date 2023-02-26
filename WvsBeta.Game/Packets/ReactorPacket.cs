@@ -4,18 +4,18 @@ namespace WvsBeta.Game
 {
     public static class ReactorPacket
     {
-        public static void ShowReactor(FieldReactor reactor, bool toChar = false, GameCharacter chr = null)
+        public static void ShowReactor(FieldReactor reactor, GameCharacter toChar = null)
         {
             Packet packet = new Packet(ServerMessages.REACTOR_ENTER_FIELD);
             packet.WriteInt(reactor.ID);
             packet.WriteInt(reactor.Reactor.ID);
-            packet.WriteByte(reactor.State);
+            packet.WriteByte(reactor.State.State);
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             packet.WriteBool(reactor.FacesLeft);
 
-            if (toChar && chr != null)
-                chr.SendPacket(packet);
+            if (toChar != null)
+                toChar.SendPacket(packet);
             else
                 reactor.Field.SendPacket(packet);
         }
@@ -24,7 +24,7 @@ namespace WvsBeta.Game
         {
             Packet packet = new Packet(ServerMessages.REACTOR_CHANGE_STATE);
             packet.WriteInt(reactor.ID); // Confirmed
-            packet.WriteByte(reactor.State); // Confirmed
+            packet.WriteByte(reactor.State.State); // Confirmed
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             packet.WriteShort(reactor.FrameDelay); // Frame delay, confirmed
@@ -37,11 +37,10 @@ namespace WvsBeta.Game
         {
             Packet packet = new Packet(ServerMessages.REACTOR_LEAVE_FIELD);
             packet.WriteInt(reactor.ID); // Confirmed
-            packet.WriteByte(reactor.State); // Confirmed
+            packet.WriteByte(reactor.State.State); // Confirmed
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             reactor.Field.SendPacket(packet);
-            //MasterThread.RepeatingAction.Start("dr-" + reactor.Field.ID + "-" + reactor.ID, time => reactor.Field.SendPacket(packet), 650, 0);
         }
 
         public static void HandleReactorHit(GameCharacter chr, Packet packet)

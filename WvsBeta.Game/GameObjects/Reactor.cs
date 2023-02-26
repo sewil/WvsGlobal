@@ -16,8 +16,9 @@ namespace WvsBeta.Game
     {
         public ReactorEventType Type { get; private set; }
         public byte State { get; private set; }
-        public Rectangle Rectangle { get; private set; }
+        public Rectangle? Rectangle { get; private set; }
         public int DropID { get; private set; }
+        public short DropAmount { get; private set; }
         public ReactorEvent(Reactor reactor, NXNode eNode)
         {
             if (eNode.ContainsChild("lt"))
@@ -33,6 +34,10 @@ namespace WvsBeta.Game
                     if (n == 0)
                     {
                         DropID = subNode.ValueInt32();
+                    }
+                    else if (n == 1)
+                    {
+                        DropAmount = subNode.ValueInt16();
                     }
                     continue;
                 }
@@ -51,7 +56,7 @@ namespace WvsBeta.Game
         }
         public void Trigger(FieldReactor reactor)
         {
-            reactor.State = State;
+            reactor.SetState(State);
         }
     }
     public class FieldReactor
@@ -59,27 +64,27 @@ namespace WvsBeta.Game
         public int ID { get; private set; }
         public Map Field { get; private set; }
         public Reactor Reactor { get; private set; }
-        public byte State { get; set; }
-        public ReactorState ReactorState => Reactor.States[State];
+        private byte _state;
+        public ReactorState State => Reactor.States[_state];
+
+        public Rectangle? EventRectangle { get; private set; }
         public Pos Position { get; private set; }
         public short FrameDelay { get; set; }
-        public short Z => ReactorState.Z;
         public bool FacesLeft { get; private set; }
         public readonly int ReactorTime;
         public readonly string Name;
         public GameCharacter Owner { get; private set; }
-        public FieldReactor ShallowCopy()
-        {
-            return (FieldReactor)MemberwiseClone();
-        }
+        public FieldReactor ShallowCopy => (FieldReactor)MemberwiseClone();
         public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
         {
             ID = id;
             Field = map;
             Reactor = reactor;
             Position = new Pos(x, y);
-            State = state;
             FacesLeft = facesLeft;
+            _state = state;
+            ReactorTime = -1;
+            SetState(_state);
         }
         public FieldReactor(Map map, NXNode node)
         {
@@ -88,9 +93,9 @@ namespace WvsBeta.Game
             int rID = node["id"].ValueInt32();
             Reactor = DataProvider.Reactors[rID];
             Position = new Pos(node["x"].ValueInt16(), node["y"].ValueInt16());
-            State = 0;
             FacesLeft = node["f"].ValueBool();
             ReactorTime = node["reactorTime"].ValueInt32();
+            SetState(_state);
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -103,20 +108,36 @@ namespace WvsBeta.Game
                 }
             }
         }
-
-        public void Show()
+        public void SetState(byte state)
         {
-            ReactorPacket.ShowReactor(this);
+            if (!Reactor.States.ContainsKey(state)) return;
+            _state = state;
+            if (State.Event?.Rectangle != null)
+            {
+                var rect = State.Event.Rectangle.Value;
+                rect.Offset(Position);
+                EventRectangle = rect;
+            }
         }
-
-        public void ShowTo(GameCharacter chr)
+        public void Show(GameCharacter toChar = null)
         {
-            ReactorPacket.ShowReactor(this, true, chr);
+            ReactorPacket.ShowReactor(this, toChar);
         }
 
         public void Destroy()
         {
-            ReactorPacket.DestroyReactor(this);
+            if (State.Delay > 0)
+            {
+                ReactorPacket.ReactorChangedState(this);
+            }
+            MasterThread.RepeatingAction.Start("rdstrp-" + Field.ID + "-" + ID, () => {
+                ReactorPacket.DestroyReactor(this);
+                if (ReactorTime > -1)
+                {
+                    MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Field.ReactorPool.Show(ID), ReactorTime * 1000, 0);
+                }
+                Field.ReactorPool.ShownReactors.Remove(ID);
+            }, State.Delay * 1000, 0);
             if (Reactor.Action != null)
             {
                 ReactorScriptSession.Run(this, script => {
@@ -131,33 +152,56 @@ namespace WvsBeta.Game
                 });
             }
         }
-
-        public void HitBy(GameCharacter chr)
+        public void Trigger(GameCharacter chr)
         {
             Owner = chr;
-            ReactorState.Event?.Trigger(this);
-            if (State < Reactor.States.Count - 1)
+            State.Event?.Trigger(this);
+            bool isLast = _state >= Reactor.States.Count - 1;
+            if (isLast)
             {
-                ReactorPacket.ReactorChangedState(this);
+                Destroy();
             }
             else
             {
-                Destroy();
-                Field.ReactorPool.ShownReactors.Remove(ID);
+                ReactorPacket.ReactorChangedState(this);
             }
         }
-        public void DoSpawn(short yOffset, params (int mobid, short amount, sbyte summonType)[] mobs)
+        public bool TriggerDrop(Drop drop, int ownerId)
         {
-            var pos = new Pos(Position.X, (short)(Position.Y + yOffset));
+            var e = State.Event;
+            bool trigger = e?.Type == ReactorEventType.Drop && e?.DropID == drop.Reward.ItemID && e.DropAmount == drop.Reward.Amount && EventRectangle?.Contains(drop.Pt2) == true;
+            if (trigger)
+            {
+                if (!Server.Instance.CharacterList.TryGetValue(ownerId, out GameCharacter owner)) return false;
+                MasterThread.RepeatingAction.Start("rdtr-" + Field.ID + "-" + ID, time =>
+                {
+                    if (Field.DropPool.Drops.ContainsKey(drop.DropID)) // Check drop still exists
+                    {
+                        ReactorPacket.ReactorChangedState(this);
+                        Field.DropPool.RemoveDrop(drop);
+                        Trigger(owner);
+                    }
+                }, 5000, 0);
+            }
+            return trigger;
+        }
+        public IList<Mob> Spawn(short yOffset, params (int mobid, short amount, sbyte summonType, Mob ownerMob)[] mobs)
+        {
+            var pos = new Pos(Position);
+            pos.Offset(0, yOffset);
+            var spawned = new List<Mob>();
+            var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY);
             foreach (var mob in mobs)
             {
                 for (int i = 0; i < mob.amount; i++)
                 {
-                    Field.SpawnMob(mob.mobid, null, pos, 0, null, mob.summonType, 0);
+                    Field.SpawnMobWithoutRespawning(mob.mobid, pos, (short)(fh?.ID ?? 0), mob.ownerMob, mob.summonType, 0, false, out Mob outMob);
+                    spawned.Add(outMob);
                 }
             }
+            return spawned;
         }
-        public void DoDrop(int mesos, params (int itemId, short amount)[] items)
+        public void Drop(int mesos, params (int itemId, short amount)[] items)
         {
             int x2 = Position.X - 10 * (items.Length + mesos > 0 ? 1 : 0) + 10;
             short delay = 0;
@@ -180,9 +224,10 @@ namespace WvsBeta.Game
     public class ReactorState
     {
         public byte State { get; private set; }
-        public Point Origin { get; private set; }
+        public Point? Origin { get; private set; }
         public short Z { get; private set; }
-        public ReactorEvent Event { get; set; }
+        public ReactorEvent Event { get; private set; }
+        public int Delay { get; private set; }
         public ReactorState(Reactor reactor, NXNode node)
         {
             State = byte.Parse(node.Name);
@@ -199,6 +244,9 @@ namespace WvsBeta.Game
                                 break;
                             case "z":
                                 Z = ssNode.ValueInt16();
+                                break;
+                            case "delay":
+                                Delay = ssNode.ValueInt32();
                                 break;
                             default:
                                 break;
@@ -256,6 +304,5 @@ namespace WvsBeta.Game
                 }
             }
         }
-
     }
 }

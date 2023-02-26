@@ -540,7 +540,7 @@ namespace WvsBeta.Game
             foreach (var rNode in mapNode["reactor"])
             {
                 var mReactor = new FieldReactor(map, rNode);
-                map.ReactorPool.Show(mReactor);
+                map.ReactorPool.Add(mReactor, true);
             }
         }
         static void ReadReactors()

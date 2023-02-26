@@ -1103,7 +1103,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 ContinentMan.Instance.OnAllSummonedMobRemoved(ID);
             }
         }
-
         public int SpawnMobWithoutRespawning(
             int mobid,
             Pos position,
@@ -1111,15 +1110,28 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Mob ownerMob = null,
             sbyte summonType = -1,
             int summonOption = 0,
-            bool facesLeft = false)
+            bool facesLeft = false
+            )
         {
+            return SpawnMobWithoutRespawning(mobid, position, foothold, ownerMob, summonType, summonOption, facesLeft, out Mob _);
+        }
+        public int SpawnMobWithoutRespawning(
+            int mobid,
+            Pos position,
+            short foothold,
+            Mob ownerMob,
+            sbyte summonType,
+            int summonOption,
+            bool facesLeft,
+            out Mob mob
+        ) {
             // Make sure the pos is not through the floor
             position = new Pos(position);
             position.Y -= 2;
 
             int id = _objectIDs.NextValue();
 
-            var mob = new Mob(id, this, mobid, position, foothold);
+            mob = new Mob(id, this, mobid, position, foothold);
             mob.Owner = ownerMob;
             mob.Stance |= (byte)(facesLeft ? 1 : 0);
             mob.SummonType = summonType;

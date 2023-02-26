@@ -16,29 +16,38 @@ namespace WvsBeta.Game.GameObjects
         {
             Field = field;
         }
-        public void Show(FieldReactor reactor)
+        public void Add(FieldReactor reactor, bool show)
         {
-            Reactors[reactor.ID] = reactor;
-            ShownReactors[reactor.ID] = reactor;
-            reactor.Show();
+            Reactors.Add(reactor.ID, reactor);
+            if (show)
+            {
+                Show(reactor.ID);
+            }
+        }
+        public FieldReactor Show(int rid)
+        {
+            if (!Reactors.TryGetValue(rid, out FieldReactor reactor) || ShownReactors.ContainsKey(rid)) return null;
+            FieldReactor rclone = reactor.ShallowCopy;
+            ShownReactors[reactor.ID] = rclone;
+            rclone.Show();
+            return rclone;
         }
         public void Clear()
         {
             foreach (var reactor in ShownReactors)
             {
                 reactor.Value.Destroy();
-                ShownReactors.Remove(reactor.Key);
             }
         }
 
         public void ShowReactorsTo(GameCharacter chr)
         {
-            ShownReactors.Values.ForEach(r => r.ShowTo(chr));
+            ShownReactors.Values.ForEach(r => r.Show(chr));
         }
 
         public void PlayerHitReactor(GameCharacter chr, FieldReactor r)
         {
-            r.HitBy(chr);
+            r.Trigger(chr);
         }
         public void PlayerHitReactor(GameCharacter chr, byte rid)
         {

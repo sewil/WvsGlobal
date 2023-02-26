@@ -1208,12 +1208,15 @@ namespace WvsBeta.Game.Handlers.Commands
                                 {
                                     var Amount = 1;
                                     var MobID = -1;
+                                    sbyte summonType = -1;
 
                                     if (Args[0].IsNumber())
                                         MobID = Args[0].GetInt32();
 
                                     if (Args.Count > 1 && Args[1].IsNumber())
                                         Amount = Args[1].GetInt32();
+
+                                    if (Args.Count > 2 && sbyte.TryParse(Args[2], out summonType)){ }
 
                                     Amount = character.IsAdmin ? Amount : Math.Min(Amount, 100);
 
@@ -1222,7 +1225,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         for (int i = 0; i < Amount; i++)
                                         {
                                             character.Field.SpawnMobWithoutRespawning(MobID, character.Position,
-                                                character.Foothold);
+                                                character.Foothold, null, summonType);
                                         }
                                     }
                                     else
@@ -2548,7 +2551,47 @@ namespace WvsBeta.Game.Handlers.Commands
                     #endregion
 
 #region Reactors
-
+                    case "triggerreactor":
+                        {
+                            if (!int.TryParse(Args[0], out int rid))
+                            {
+                                ChatPacket.SendNotice("Invalid rid " + Args[0], character);
+                                return true;
+                            }
+                            var rpool = character.Field.ReactorPool;
+                            if (!rpool.ShownReactors.TryGetValue(rid, out FieldReactor reactor))
+                            {
+                                ChatPacket.SendNotice("This reactor is not shown!", character);
+                            }
+                            else
+                            {
+                                reactor.Trigger(character);
+                            }
+                            return true;
+                        }
+                    case "showreactor":
+                        {
+                            if (!int.TryParse(Args[0], out int rid))
+                            {
+                                ChatPacket.SendNotice("Invalid rid " + Args[0], character);
+                                return true;
+                            }
+                            var rpool = character.Field.ReactorPool;
+                            if (rpool.ShownReactors.ContainsKey(rid))
+                            {
+                                ChatPacket.SendNotice("This reactor is already shown!", character);
+                            }
+                            else if (!rpool.Reactors.ContainsKey(rid))
+                            {
+                                ChatPacket.SendNotice("This map doesn't have reactor " + rid, character);
+                            }
+                            else
+                            {
+                                var reactor = rpool.Show(rid);
+                                ChatPacket.SendNotice("Now showing field reactor " + reactor.ID + " with state " + reactor.State, character);
+                            }
+                            return true;
+                        }
                     case "reactor":
                         {
                             if (Args.Count < 3)
@@ -2564,7 +2607,7 @@ namespace WvsBeta.Game.Handlers.Commands
                             var pos = character.Position;
                             byte id = (byte)character.Field.ReactorPool.Reactors.Count;
                             var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
-                            character.Field.ReactorPool.Show(mr);
+                            character.Field.ReactorPool.Add(mr, true);
                             Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
                             return true;
                         }

@@ -28,6 +28,12 @@ namespace WvsBeta.Game.Packets
             pw.WriteString(path);
             return pw;
         }
+        public static FieldEffectPacket EffectMusic(string path)
+        {
+            var pw = new FieldEffectPacket(Type.Music);
+            pw.WriteString(path);
+            return pw;
+        }
         public static FieldEffectPacket BossHPBar(int mobId, int pHP, int pMaxHP, byte pColorBottom, byte pColorTop)
         {
             var pw = new FieldEffectPacket(Type.BossHPBar);

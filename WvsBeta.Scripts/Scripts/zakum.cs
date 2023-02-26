@@ -11,7 +11,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (Constants.Items.Zakum.PAPER_DOCUMENT, 1));
+            target.Drop(0, (Constants.Items.Zakum.PAPER_DOCUMENT, 1));
         }
     }
     [Script("money100")]
@@ -20,7 +20,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
         public void Run(IReactorHost host, FieldReactor target)
         {
             int meso = Rand32.NextBetween(100, 999);
-            target.DoDrop(meso);
+            target.Drop(meso);
         }
     }
     [Script("money10000")]
@@ -29,7 +29,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
         public void Run(IReactorHost host, FieldReactor target)
         {
             int meso = Rand32.NextBetween(10000,99999);
-            target.DoDrop(meso);
+            target.Drop(meso);
         }
     }
     [Script("boxKey0")]
@@ -37,7 +37,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (Constants.Items.Zakum.THE_KEY, 1));
+            target.Drop(0, (Constants.Items.Zakum.THE_KEY, 1));
         }
     }
     [Script("boxItem0")]
@@ -45,7 +45,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (2022001, 1));
+            target.Drop(0, (2022001, 1));
         }
     }
     [Script("boxItem1")]
@@ -53,7 +53,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (2000006, 1));
+            target.Drop(0, (2000006, 1));
         }
     }
     [Script("boxItem2")]
@@ -61,7 +61,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (2000004, 1));
+            target.Drop(0, (2000004, 1));
         }
     }
     [Script("boxItem3")]
@@ -69,7 +69,15 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoDrop(0, (2000005, 1));
+            target.Drop(0, (2000005, 1));
+        }
+    }
+    [Script("boxBItem0")]
+    class boxBItem0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop(0, (4001018, 1));
         }
     }
     [Script("boxMob0")]
@@ -77,7 +85,7 @@ namespace WvsBeta.Scripts.Scripts.Reactor
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.DoSpawn(-1, (9300004, 3, 1));
+            target.Spawn(-2, (9300004, 3, 1, null));
         }
     }
     [Script("go280010000")]

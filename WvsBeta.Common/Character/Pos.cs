@@ -44,7 +44,12 @@ namespace WvsBeta.Common
         }
 
         public static implicit operator Point(Pos p) => new Point(p.X, p.Y);
-        
+
+        public void Offset(short dx, short dy)
+        {
+            X += dx;
+            Y += dy;
+        }
     }
 
 }
