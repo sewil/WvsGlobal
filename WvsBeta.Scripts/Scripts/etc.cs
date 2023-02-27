@@ -128,7 +128,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else
             {
-                var cName = self.GetStrReg("name");
+                string cName = (string)self.GetStrReg("name");
 
                 if (target.Name == cName)
                 {

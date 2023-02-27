@@ -103,6 +103,13 @@ namespace WvsBeta.Scripts.Scripts
                 { "boxBItem0", "zakum" },
                 { "boxMob0", "zakum" },
                 { "go280010000", "zakum" },
+                { "Zakum00", "zakum" },
+                { "Zakum01", "zakum" },
+                { "Zakum02", "zakum" },
+                { "Zakum03", "zakum" },
+                { "Zakum04", "zakum" },
+                { "Zakum05", "zakum" },
+                { "Zakum06", "zakum" },
                 { "boss", "zakum1" },
             };
         }

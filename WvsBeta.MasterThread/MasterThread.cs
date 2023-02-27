@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using log4net;
+using System.Globalization;
 
 namespace WvsBeta
 {
@@ -13,8 +14,17 @@ namespace WvsBeta
         private static ILog _log = LogManager.GetLogger("MasterThread");
 
         public static MasterThread Instance { get; private set; }
-        
-        public static DateTime CurrentDate { get; private set; }
+
+        private static DateTime _currentDate;
+        public static DateTime CurrentDate
+        {
+            get => _currentDate;
+            private set
+            {
+                _currentDate = value;
+                CurrentTimeStr = value.ToString(DATESTR_FORMAT, CultureInfo.InvariantCulture);
+            }
+        }
 
         public static long CurrentTime => (long)((Stopwatch.GetTimestamp() * (1.0 / Stopwatch.Frequency)) * 1000.0);
         public static long UnixTime => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
@@ -25,7 +35,6 @@ namespace WvsBeta
             DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unix);
             return dateTimeOffset.ToFileTime() + offset;
         }
-
         public bool Stop { get; set; }
         public string ServerName { get; private set; }
 
@@ -125,5 +134,20 @@ namespace WvsBeta
 
             Thread.EndThreadAffinity();
         }
+        #region Script helpers
+        public static string CurrentTimeStr { get; private set; }
+        public const string DATESTR_FORMAT = "yy/MM/dd/HH/mm";
+        public static int CompareTime(string date1, string date2, string format = DATESTR_FORMAT)
+        {
+            if (
+                !DateTime.TryParseExact(date1, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dt1) ||
+                !DateTime.TryParseExact(date2, format, CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime dt2)
+            )
+            {
+                return 0;
+            }
+            return (int)(dt1 - dt2).TotalMinutes;
+        }
+        #endregion
     }
 }

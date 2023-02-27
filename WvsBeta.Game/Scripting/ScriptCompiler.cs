@@ -48,7 +48,7 @@ namespace WvsBeta.Game.Scripting
                 else
                     parms.ReferencedAssemblies.Add(r.Name + ".dll");
             }
-            //parms.ReferencedAssemblies.Add(Path.Combine(mainPath, "Microsoft.CSharp.dll"));
+            parms.ReferencedAssemblies.Add(Path.Combine(mainPath, "Microsoft.CSharp.dll"));
             parms.ReferencedAssemblies.Add(exc.Location);
 
             return compiler.CompileAssemblyFromFile(parms, filePath);

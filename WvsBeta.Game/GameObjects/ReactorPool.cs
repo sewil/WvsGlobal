@@ -6,9 +6,7 @@ namespace WvsBeta.Game.GameObjects
 {
     public class ReactorPool
     {
-        const uint ReactorStart = 200;
         public Map Field { get; set; }
-        public bool DropEverlasting { get; set; }
         public Dictionary<int, FieldReactor> Reactors { get; private set; } = new Dictionary<int, FieldReactor>();
         public Dictionary<int, FieldReactor> ShownReactors { get; private set; } = new Dictionary<int, FieldReactor>();
 
@@ -24,20 +22,25 @@ namespace WvsBeta.Game.GameObjects
                 Show(reactor.ID);
             }
         }
-        public FieldReactor Show(int rid)
+        public void Reset(bool sendPacket = true)
+        {
+            foreach (var reactor in ShownReactors.Values)
+            {
+                reactor.Reset(sendPacket);
+            }
+            foreach (var reactor in Reactors.Values)
+            {
+                Show(reactor.ID, sendPacket);
+            }
+        }
+        public FieldReactor Show(int rid, bool sendPacket = true)
         {
             if (!Reactors.TryGetValue(rid, out FieldReactor reactor) || ShownReactors.ContainsKey(rid)) return null;
             FieldReactor rclone = reactor.ShallowCopy;
             ShownReactors[reactor.ID] = rclone;
-            rclone.Show();
+            if (sendPacket)
+                rclone.Show();
             return rclone;
-        }
-        public void Clear()
-        {
-            foreach (var reactor in ShownReactors)
-            {
-                reactor.Value.Destroy();
-            }
         }
 
         public void ShowReactorsTo(GameCharacter chr)

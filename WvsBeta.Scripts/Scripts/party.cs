@@ -513,7 +513,7 @@ namespace WvsBeta.Scripts.Scripts
             if (res == FieldSet.EnterStatus.Invalid) self.Say("I have reason not to let your party in. Please try again later.");
             else if (res == FieldSet.EnterStatus.NotInParty) self.Say("You are not in a party. You can only do this quest when you are in a party.");
             else if (res == FieldSet.EnterStatus.WrongMemberCount) self.Say("Your party does not have four members. Come back when you have four members.");
-            else if (res == FieldSet.EnterStatus.WrongMemberLevel) self.Say("Someone in your party is not between levels 21~30. Please check again.");
+            else if (res == FieldSet.EnterStatus.TooWeak) self.Say("Someone in your party is not between levels 21~30. Please check again.");
             else if (res == FieldSet.EnterStatus.Full) self.Say("Another party has already entered to complete the quest. Please try again later.");
             else
             {

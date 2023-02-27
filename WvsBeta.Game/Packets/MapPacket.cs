@@ -122,8 +122,7 @@ namespace WvsBeta.Game
                 }
 #endif
 
-                INpcScript npcScript = (INpcScript)ScriptAccessor.GetScript(npcData, errorHandlerFnc);
-                NpcChatSession.Start(RealID, npcScript, chr);
+                NpcChatSession.Start(npcData, chr, errorHandlerFnc);
             }
         }
 

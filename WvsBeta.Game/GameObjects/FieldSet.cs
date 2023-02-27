@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing.Text;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WvsBeta.Common;
 using WvsBeta.Game.GameObjects;
 
@@ -24,8 +20,14 @@ namespace WvsBeta.Game
 
         public int ReturnMap { get; private set; } = -1;
         public string PartyParams { get; private set; }
+        public short ReqQuest { get; private set; }
         public bool EnterAsParty { get; private set; }
         public PartyData Party { get; private set; }
+        public bool CleanupMobs { get; private set; }
+        public bool CleanupDrops { get; private set; }
+        public bool ResetReactors { get; private set; }
+        public int UserCount => Maps.Sum(m => m.Characters.Count);
+        public event EventHandler OnEnd;
         public FieldSet(ConfigReader.Node fsNode)
         {
             Name = fsNode.Name;
@@ -56,6 +58,18 @@ namespace WvsBeta.Game
                             break;
                         case "ptParams":
                             PartyParams = subNode.GetString();
+                            break;
+                        case "cleanupMobs":
+                            CleanupMobs = subNode.GetBool();
+                            break;
+                        case "cleanupDrops":
+                            CleanupDrops = subNode.GetBool();
+                            break;
+                        case "resetReactors":
+                            ResetReactors = subNode.GetBool();
+                            break;
+                        case "reqQuest":
+                            ReqQuest = subNode.GetShort();
                             break;
                     }
             }
@@ -91,9 +105,26 @@ namespace WvsBeta.Game
                         character.ChangeMap(returnMap);
                     }
                 }
+                if (CleanupMobs)
+                {
+                    map.KillAllMobs(0);
+                }
+                if (CleanupDrops)
+                {
+                    map.DropPool.Clear();
+                }
+                if (ResetReactors)
+                {
+                    map.ReactorPool.Reset(false);
+                }
             }
             Started = false;
             Party = null;
+            OnEnd?.Invoke(this, null);
+            foreach (Delegate d in OnEnd?.GetInvocationList())
+            {
+                OnEnd -= (EventHandler)d;
+            }
             _savedVars.Clear();
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);
         }
@@ -104,15 +135,15 @@ namespace WvsBeta.Game
             Success = 0,
             NotInParty = 1,
             WrongMemberCount = 2,
-            WrongMemberLevel = 3,
+            TooWeak = 3,
             Full = 4
         }
         public EnterStatus Enter(GameCharacter chr, int mapIdx)
         {
             if (Started) return EnterStatus.Full;
-            bool ptstuff = (EnterAsParty || !string.IsNullOrWhiteSpace(PartyParams));
+            bool checkPt = (EnterAsParty || !string.IsNullOrWhiteSpace(PartyParams));
             IList<GameCharacter> members = new List<GameCharacter>();
-            if (ptstuff)
+            if (checkPt)
             {
                 if (!PartyData.Parties.TryGetValue(chr.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
                 this.Party = pt;
@@ -121,15 +152,22 @@ namespace WvsBeta.Game
                 if (!string.IsNullOrWhiteSpace(PartyParams))
                 {
                     int[] ptparams = PartyParams.Split(',').Select(s => int.Parse(s)).ToArray();
-                    if (members.Count < ptparams[0] || members.Count > ptparams[1])
+                    int minrequired = Math.Max(pt.MemberCount, ptparams[0]);
+                    if (members.Count < minrequired || members.Count > ptparams[1])
                     {
                         return EnterStatus.WrongMemberCount;
                     }
                     if (members.Any(m => m.Level < ptparams[2] || m.Level > ptparams[3]))
                     {
-                        return EnterStatus.WrongMemberLevel;
+                        return EnterStatus.TooWeak;
                     }
                 }
+            }
+            if (ReqQuest > 0)
+            {
+                bool weak = checkPt ? members.Any(m => !m.Quests.HasQuest(ReqQuest)) : !chr.Quests.HasQuest(ReqQuest);
+                if (weak)
+                    return EnterStatus.TooWeak;
             }
             Start();
             var mapId = Maps[mapIdx].ID;

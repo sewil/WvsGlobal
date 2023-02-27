@@ -149,7 +149,7 @@ namespace WvsBeta.Game
             pw.WriteInt(drop.DropID);
             pw.WriteBool(drop.Reward.Mesos);
             pw.WriteInt(drop.Reward.Drop);
-            pw.WriteInt(drop.OwnPartyID > 0 ? drop.OwnPartyID : drop.OwnerID);
+            pw.WriteInt(drop.DropType == DropType.Party && drop.OwnPartyID > 0 ? drop.OwnPartyID : drop.OwnerID);
             pw.WriteByte((byte)drop.DropType);
             pw.WriteShort(drop.Pt2.X);
             pw.WriteShort(drop.Pt2.Y);

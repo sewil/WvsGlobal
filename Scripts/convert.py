@@ -42,9 +42,26 @@ with open(args.input) as f:
         line = line.replace("registerTransferField", "target.ChangeMap")
         line = line.replace(" = random(", " = Rand32.NextBetween(")
         line = line.replace(".n", ".")
-        line = line.replace(" = currentTime;", " = MasterThread.CurrentDate;")
-        line = line.replace("integer( substring( cTime, 13, 1 ) )", "cTime.Minute")
+        
+        substr_m = re.search(r'substring\(\s*(.+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)', line)
+        if substr_m is not None:
+            line = line.replace(substr_m.group(0), substr_m.group(1) + ".Substring(" + substr_m.group(2) +", " + substr_m.group(3) + ")")
+
+        intcast_m = re.search(r'integer\(\s*(.+)\s*\)', line)
+        if intcast_m is not None:
+            line = line.replace(intcast_m.group(0), 'int.Parse(' + intcast_m.group(1) + ')')
+
+        line = line.replace("currentTime", "MasterThread.CurrentTimeStr")
         line = line.replace("end;", "return;")
+
+        comparetime_m = re.search(r'compareTime\s*\(\s*(.+)\s*,\s*(.+)\s*\)', line)
+        if comparetime_m is not None:
+            line = line.replace(comparetime_m.group(0), 'MasterThread.CompareTime(' + comparetime_m.group(1) + ', ' + comparetime_m.group(2) + ')')
+
+        fieldset_m = re.search(r'FieldSet\s*\(\s*\"([A-Za-z\d]+)\"\s*\)', line)
+        if fieldset_m is not None:
+            line = line.replace(fieldset_m.group(0), 'FieldSet.Instances["' + fieldset_m.group(1) + '"]')
+
         if re.match(r'\s+(else )?if\s+\(.*( and | or ).*\)\s+\{?', line):
             line = line.replace(" or ", " || ").replace(" and ", " && ")
         for idx, x in enumerate(alpha):
@@ -96,7 +113,7 @@ with open(args.input) as f:
         if cmt_m is not None:
             scr_cmt = cmt_m.group(0)
             cmt_line = nLine
-        scr_m = re.match(r'script "([a-z_\d]+)"', line)
+        scr_m = re.match(r'script "([A-Za-z_\d]+)"', line)
         if scr_m: # Open script
             if (re.search(r'\{', line) is None): ignore_next = True
             script_name = scr_m.group(1)

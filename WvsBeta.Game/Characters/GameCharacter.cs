@@ -310,8 +310,6 @@ namespace WvsBeta.Game
 
             ShopNPCID = 0;
             TrunkNPCID = 0;
-
-            NpcSession?.Stop();
         }
 
         public void TryActivateHide()
@@ -478,26 +476,27 @@ namespace WvsBeta.Game
                 Field = field;
 
                 // Push back player when there's a forced return value
-                if (field.ForcedReturn != Constants.InvalidMap)
-                {
-                    _mapId = field.ForcedReturn;
-                    if (!DataProvider.Maps.TryGetValue(_mapId, out field))
-                    {
-                        Program.MainForm.LogAppend(
-                            "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", CharacterStat.ID, _mapId);
-                        // Note: using Field here
-                        Field = DataProvider.Maps[0];
-                    }
-                    else
-                    {
-                        Field = DataProvider.Maps[_mapId];
-                    }
-                    PortalID = 0;
-                }
-                else
-                {
-                    PortalID = (byte)data.GetInt16("pos");
-                }
+                // Forced return is already set on log out
+                //if (field.ForcedReturn != Constants.InvalidMap)
+                //{
+                //    _mapId = field.ForcedReturn;
+                //    if (!DataProvider.Maps.TryGetValue(_mapId, out field))
+                //    {
+                //        Program.MainForm.LogAppend(
+                //            "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", CharacterStat.ID, _mapId);
+                //        // Note: using Field here
+                //        Field = DataProvider.Maps[0];
+                //    }
+                //    else
+                //    {
+                //        Field = DataProvider.Maps[_mapId];
+                //    }
+                //    PortalID = 0;
+                //}
+                //else
+                //{
+                PortalID = (byte)data.GetInt16("pos");
+                //}
 
                 // Select portal to spawn on.
                 {
@@ -604,9 +603,18 @@ namespace WvsBeta.Game
         public short POP => CharacterStat.Fame;
         public short MHP => CharacterStat.MaxHP;
         public bool IsClosedBetaTester => false;
+        public string SCharacterName => Name;
+        public void PlayPortalSE()
+        {
+            SendSound(Constants.Sounds.Portal);
+        }
         public void SendSound(string path)
         {
             SendPacket(FieldEffectPacket.EffectSound(path));
+        }
+        public void Message(string text)
+        {
+            SendPacket(MessagePacket.RedText(text));
         }
         public void IncEXP(int amount, int isQuest)
         {

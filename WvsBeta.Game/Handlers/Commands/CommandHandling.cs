@@ -1069,28 +1069,6 @@ namespace WvsBeta.Game.Handlers.Commands
 
 #endregion
 
-#region runscript
-
-                        case "run":
-                        case "runscript":
-                            {
-                                if (Args.Count == 1)
-                                {
-                                    NpcChatSession.Start(
-                                        2000,
-                                        Args[0].Value,
-                                        character,
-                                        script =>
-                                        {
-                                            ChatPacket.SendNotice("Error compiling script: " + script, character);
-                                        }
-                                    );
-                                }
-                                return true;
-                            }
-
-#endregion
-
 #region Cash Shop
                         case "cash":
                         case "nxcash":
@@ -1341,7 +1319,7 @@ namespace WvsBeta.Game.Handlers.Commands
                         case "killmobs":
                         case "killall":
                             {
-                                int amount = character.Field.KillAllMobs(character, false, 0);
+                                int amount = character.Field.KillAllMobs(0);
                                 ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }
@@ -1354,7 +1332,7 @@ namespace WvsBeta.Game.Handlers.Commands
                         case "killmobsdmg":
                             {
                                 int dmg = Args.Count == 0 ? 0 : Args[0].GetInt32();
-                                int amount = character.Field.KillAllMobs(character, true, dmg);
+                                int amount = character.Field.KillAllMobs(dmg);
                                 ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }

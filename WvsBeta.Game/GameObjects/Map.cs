@@ -1070,7 +1070,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // Update reactors
         }
 
-        public int KillAllMobs(GameCharacter chr, bool damage, int damageAmount)
+        public int KillAllMobs(int damage)
         {
             int amount = 0;
 
@@ -1080,8 +1080,8 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
                 foreach (var mob in mobsBackup)
                 {
-                    if (damage)
-                        MobPacket.SendMobDamageOrHeal(this, mob, damageAmount == 0 ? mob.HP : damageAmount, false, false);
+                    if (damage > 0)
+                        MobPacket.SendMobDamageOrHeal(this, mob, damage == 0 ? mob.HP : damage, false, false);
 
                     mob.ForceDead();
                     amount++;

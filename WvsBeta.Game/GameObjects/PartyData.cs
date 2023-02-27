@@ -9,6 +9,7 @@ namespace WvsBeta.Game.GameObjects
     {
         public readonly int PartyID;
         public readonly int Leader;
+        public int MemberCount => Members.Where(i => i > 0).Count();
         private int[] _members;
         public int[] Members
         {
@@ -52,7 +53,9 @@ namespace WvsBeta.Game.GameObjects
                 var leader = packet.ReadInt();
                 var memberList = new int[Constants.MaxPartyMembers];
                 for (int j = 0; j < memberList.Length; j++)
+                {
                     memberList[i] = packet.ReadInt();
+                }
 
                 Parties[id] = new PartyData(leader, memberList, id);
             }

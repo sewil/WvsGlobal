@@ -65,6 +65,7 @@ namespace WvsBeta.Game
         public DiscordReporter MutebanDiscordReporter { get; private set; }
 
         public Dictionary<string, IGameScript> AvailableScripts { get; } = new Dictionary<string, IGameScript>();
+        public Dictionary<string, Dictionary<string, object>> ScriptVars { get; } = new Dictionary<string, Dictionary<string, object>>();
 
         public string ScrollingHeader { get; private set; }
 

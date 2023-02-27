@@ -1,4 +1,5 @@
 ﻿using reNX.NXProperties;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using WvsBeta.Common;
@@ -54,23 +55,19 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public void Trigger(FieldReactor reactor)
-        {
-            reactor.SetState(State);
-        }
     }
     public class FieldReactor
     {
-        public int ID { get; private set; }
-        public Map Field { get; private set; }
-        public Reactor Reactor { get; private set; }
+        public readonly int ID;
+        public readonly Map Field;
+        public readonly Reactor Reactor;
         private byte _state;
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
-        public Pos Position { get; private set; }
-        public short FrameDelay { get; set; }
-        public bool FacesLeft { get; private set; }
+        public readonly Pos Position;
+        public readonly short FrameDelay;
+        public readonly bool FacesLeft;
         public readonly int ReactorTime;
         public readonly string Name;
         public GameCharacter Owner { get; private set; }
@@ -108,7 +105,7 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public void SetState(byte state)
+        private void SetState(byte state)
         {
             if (!Reactor.States.ContainsKey(state)) return;
             _state = state;
@@ -124,17 +121,32 @@ namespace WvsBeta.Game
             ReactorPacket.ShowReactor(this, toChar);
         }
 
+        public void Reset(bool sendPacket = true)
+        {
+            destroyAction?.Stop();
+            dropAction?.Stop();
+            respawnAction?.Stop();
+            _state = 0;
+            pendingDestroy = false;
+            if (sendPacket)
+                ReactorPacket.ReactorChangedState(this);
+        }
+        private bool pendingDestroy;
+        private MasterThread.RepeatingAction destroyAction;
+        private MasterThread.RepeatingAction dropAction;
+        private MasterThread.RepeatingAction respawnAction;
         public void Destroy()
         {
+            pendingDestroy = true;
             if (State.Delay > 0)
             {
                 ReactorPacket.ReactorChangedState(this);
             }
-            MasterThread.RepeatingAction.Start("rdstrp-" + Field.ID + "-" + ID, () => {
+            destroyAction = MasterThread.RepeatingAction.Start("rdstrp-" + Field.ID + "-" + ID, () => {
                 ReactorPacket.DestroyReactor(this);
                 if (ReactorTime > -1)
                 {
-                    MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Field.ReactorPool.Show(ID), ReactorTime * 1000, 0);
+                    respawnAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Field.ReactorPool.Show(ID), ReactorTime * 1000, 0);
                 }
                 Field.ReactorPool.ShownReactors.Remove(ID);
             }, State.Delay * 1000, 0);
@@ -154,10 +166,14 @@ namespace WvsBeta.Game
         }
         public void Trigger(GameCharacter chr)
         {
+            if (pendingDestroy) return;
             Owner = chr;
-            State.Event?.Trigger(this);
-            bool isLast = _state >= Reactor.States.Count - 1;
-            if (isLast)
+            bool hasAction = Reactor.Action != null;
+            byte newState = (byte)((State.Event != null ? State.Event.State : _state + 1) % Reactor.States.Count);
+            SetState(newState);
+
+            bool isLast = newState >= Reactor.States.Count - 1;
+            if (isLast && hasAction)
             {
                 Destroy();
             }
@@ -173,7 +189,7 @@ namespace WvsBeta.Game
             if (trigger)
             {
                 if (!Server.Instance.CharacterList.TryGetValue(ownerId, out GameCharacter owner)) return false;
-                MasterThread.RepeatingAction.Start("rdtr-" + Field.ID + "-" + ID, time =>
+                dropAction = MasterThread.RepeatingAction.Start("rdtr-" + Field.ID + "-" + ID, time =>
                 {
                     if (Field.DropPool.Drops.ContainsKey(drop.DropID)) // Check drop still exists
                     {

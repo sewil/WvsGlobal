@@ -54,7 +54,7 @@ namespace WvsBeta.Game
         private INpcScript compiledScript = null;
 
         private List<string> sayLines { get; set; } = new List<string>();
-        private Dictionary<string, object> _savedObjects = new Dictionary<string, object>();
+        private readonly Dictionary<string, object> scriptVars;
 
         private int sayIndex { get; set; } = 0;
         private byte nRet = 0;
@@ -66,13 +66,14 @@ namespace WvsBeta.Game
         public bool WaitingForResponse => thread.ThreadState == ThreadState.WaitSleepJoin;
         private EventWaitHandle ewh;
         private Thread thread;
-        public NpcChatSession(int npcId, GameCharacter chr, INpcScript npcScript)
+        public NpcChatSession(int npcId, GameCharacter chr, INpcScript npcScript, string scriptName)
         {
             mNpcID = npcId;
             mCharacter = chr;
             mCharacter.NpcSession = this;
+            scriptVars = Server.Instance.ScriptVars[scriptName];
             compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
-            if (chr.IsGM) SetStrReg("name", chr.Name);
+            if (chr.IsGM && chr.Job == 500) SetStrReg("name", chr.Name);
             ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
             thread = new Thread(new ParameterizedThreadStart(RunScript));
             thread.Start(this);
@@ -90,17 +91,31 @@ namespace WvsBeta.Game
                 s.Stop();
             }
         }
-        
-        public static void Start(int npcId, string script, GameCharacter chr, Action<string> errorHandlerFnc)
+
+        private static INpcScript GetScript(NPCData npc, Action<string> errorHandlerFnc, out string scriptName)
         {
-            Start(npcId, (INpcScript)ScriptAccessor.GetScript(Server.Instance, script, errorHandlerFnc), chr);
+            INpcScript script = null;
+            scriptName = null;
+            if (npc.Quest != null)
+            {
+                scriptName = npc.Quest;
+                script = (INpcScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
+            }
+            if (script == null)
+            {
+                scriptName = npc.ID.ToString();
+                script = (INpcScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
+            }
+            if (script == null) scriptName = null;
+            return script;
         }
         
-        public static void Start(int npcId, INpcScript npcScript, GameCharacter chr)
+        public static void Start(NPCData npc, GameCharacter chr, Action<string> errorHandlerFnc)
         {
-            if (npcScript == null || chr.NpcSession != null) return;
+            INpcScript script = GetScript(npc, errorHandlerFnc, out string scriptName);
+            if (script == null || chr.NpcSession != null) return;
 
-            new NpcChatSession(npcId, chr, npcScript);
+            new NpcChatSession(npc.ID, chr, script, scriptName);
         }
 
         public void HandleResponse(byte nRet = 0, string nRetStr = "", int nRetNum = 0)
@@ -262,16 +277,16 @@ namespace WvsBeta.Game
 
         public object GetStrReg(string pName)
         {
-            if (_savedObjects.ContainsKey(pName)) return _savedObjects[pName];
+            if (scriptVars.ContainsKey(pName)) return scriptVars[pName];
             return null;
         }
 
         public void SetStrReg(string pName, object pValue)
         {
-            if (!_savedObjects.ContainsKey(pName))
-                _savedObjects.Add(pName, pValue);
+            if (!scriptVars.ContainsKey(pName))
+                scriptVars.Add(pName, pValue);
             else
-                _savedObjects[pName] = pValue;
+                scriptVars[pName] = pValue;
         }
 
         public void Log(string text)

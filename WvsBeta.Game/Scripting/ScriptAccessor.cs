@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -6,13 +7,6 @@ namespace WvsBeta.Game.Scripting
 {
     internal class ScriptAccessor
     {
-        public static IGameScript GetScript(NPCData npc, Action<string> errorHandlerFnc)
-        {
-            INpcScript npcScript = null;
-            if (npcScript == null && npc.Quest != null) npcScript = (INpcScript)GetScript(Server.Instance, npc.Quest, errorHandlerFnc);
-            if (npcScript == null) npcScript = (INpcScript)GetScript(Server.Instance, npc.ID.ToString(), errorHandlerFnc);
-            return npcScript;
-        }
         public static IGameScript GetScript(Server server, string scriptName, Action<string> errorHandlerFnc, bool forceRecompile = false)
         {
             if (!forceRecompile && server.AvailableScripts.TryGetValue(scriptName, out IGameScript instance)) return instance;
@@ -29,6 +23,7 @@ namespace WvsBeta.Game.Scripting
             if (instance == null) return null;
 
             server.AvailableScripts[scriptName] = instance;
+            server.ScriptVars[scriptName] = new Dictionary<string, object>();
             return instance;
         }
         public static IGameScript CreateScriptInstance(Assembly dll, string scriptName, Action<string> errorHandlerFnc)
