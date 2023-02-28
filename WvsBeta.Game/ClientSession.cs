@@ -198,9 +198,6 @@ namespace WvsBeta.Game
 
                     switch (header)
                     {
-                        case ClientMessages.RETURN_TO_LOGIN:
-                            ReturnToLoginPacket.Handle(this, packet, log);
-                            break;
                         case ClientMessages.ENTER_PORTAL:
                             MapPacket.OnEnterPortal(packet, character);
                             break;
@@ -667,7 +664,7 @@ namespace WvsBeta.Game
         {
             var header = (ServerMessages)pPacket.Opcode;
             if (!ignoreServerPackets.Contains(header))
-                Program.MainForm.LogAppend($"[CH{Player.Channel}->{Player.Character.Name}][{header}] {pPacket}");
+                Program.MainForm.LogAppend($"[CH{Player.Channel}->{Player.Character?.Name}][{header}] {pPacket}");
             base.SendPacket(pPacket);
         }
     }

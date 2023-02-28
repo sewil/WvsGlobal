@@ -23,7 +23,7 @@
         MIGRATE_COMMAND = 15, // Change channel
         PING = 16,
         __UNKNOWN_17 = 17,
-        __UNKNOWN_18 = 18,
+        SEND_MEMORY_REGIONS = 18,
         __UNKNOWN_19 = 19,
         __MISSING_20 = 20,
         __MISSING_21 = 21,

@@ -234,7 +234,6 @@
     <Compile Include="GameObjects\MiniRoom\PlayerShopPackets.cs" />
     <Compile Include="Packets\QuestPacket.cs" />
     <Compile Include="Packets\ReactorPacket.cs" />
-    <Compile Include="Packets\ReturnToLoginPacket.cs" />
     <Compile Include="Packets\SkillPacket.cs" />
     <Compile Include="Packets\StoragePacket.cs" />
     <Compile Include="GameObjects\MiniRoom\MiniRoomPacket.cs" />

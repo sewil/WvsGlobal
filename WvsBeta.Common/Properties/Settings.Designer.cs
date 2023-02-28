@@ -25,7 +25,7 @@ namespace WvsBeta.Common.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool MemoryCRCEnabled {
             get {
                 return ((bool)(this["MemoryCRCEnabled"]));
@@ -65,6 +65,15 @@ namespace WvsBeta.Common.Properties {
         public bool AesEnabled {
             get {
                 return ((bool)(this["AesEnabled"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("v22 localhost no AES.exe")]
+        public string ClientBinaryName {
+            get {
+                return ((string)(this["ClientBinaryName"]));
             }
         }
     }

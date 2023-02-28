@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using log4net;
+using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common
 {
@@ -46,10 +47,10 @@ namespace WvsBeta.Common
         {
             try
             {
-                if (!File.Exists("MapleStory.exe"))
+                string binPath = Path.Combine("..", "ClientBin", Settings.Default.ClientBinaryName);
+                if (!File.Exists(binPath))
                 {
-                    throw new Exception("Not loading any regions; cannot find MapleStory.exe");
-
+                    throw new Exception("Not loading any regions; cannot find " + Settings.Default.ClientBinaryName);
                 }
 
                 if (!File.Exists("MemoryRegions.tsv"))
@@ -57,7 +58,7 @@ namespace WvsBeta.Common
                     throw new Exception("Unable to load MemoryRegions.tsv");
                 }
 
-                using (var mapleFileStream = File.Open("MapleStory.exe", FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (var mapleFileStream = File.Open(binPath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 using (var mapleReader = new BinaryReader(mapleFileStream))
                 using (var configReader = new StreamReader(File.OpenRead("MemoryRegions.tsv"), Encoding.ASCII))
                 {

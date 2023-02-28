@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="MemoryCRCEnabled" Type="System.Boolean" Scope="Application">
-      <Value Profile="(Default)">False</Value>
+      <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ShandaEnabled" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">True</Value>
@@ -16,6 +16,9 @@
     </Setting>
     <Setting Name="AesEnabled" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ClientBinaryName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">v22 localhost no AES.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>

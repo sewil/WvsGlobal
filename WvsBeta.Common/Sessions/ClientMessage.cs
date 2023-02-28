@@ -24,7 +24,7 @@
         PONG = 16,
         CLIENT_CRASH_REPORT,
         CLIENT_HASH = 18,
-        RETURN_TO_LOGIN,
+        UNKNOWN_19 = 19,
         // __END_SOCKET
 
         ENTER_PORTAL = 22,

@@ -94,9 +94,8 @@ namespace WvsBeta.Common.Sessions
         {
             if (isConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
 
-            var packet = new Packet(ServerMessages.__UNKNOWN_17);
+            var packet = new Packet(ServerMessages.SEND_MEMORY_REGIONS);
             packet.WriteByte(0);
-
             var regions = MemoryRegions.Instance.Regions;
 
             _memoryOffset = rnd.Next(0, MemoryRegions.Instance.MaxRandomMemoryOffset);
@@ -174,10 +173,10 @@ namespace WvsBeta.Common.Sessions
                             bool disconnect = true;
                             if (header == (byte)ClientMessages.CLIENT_HASH)
                             {
-                                var mode = pPacket.ReadByte();
+                                byte mode = pPacket.ReadByte();
                                 if (mode == 1)
                                 {
-                                    var clientCRC = pPacket.ReadUInt();
+                                    uint clientCRC = pPacket.ReadUInt();
                                     if (ValidateCRC(clientCRC))
                                     {
                                         disconnect = false;
