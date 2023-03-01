@@ -1,0 +1,21 @@
+Red Potion	50 mesos
+Orange Potion	Orange Potion	160 mesos
+White Potion	White Potion	320 mesos
+Blue Potion	Blue Potion	200 mesos
+Mana Elixir	Mana Elixir	620 mesos
+Dexterity Potion	Dexterity Potion	500 mesos
+Speed Potion	Speed Potion	400 mesos
+Magic Potion	Magic Potion	500 mesos
+Warrior Potion	Warrior Potion	500 mesos
+Sniper Potion	Sniper Potion	500 mesos
+Apple	Apple	30 mesos
+Egg	Egg	50 mesos
+Meat	Meat	106 mesos
+Orange	Orange	100 mesos
+Lemon	Lemon	310 mesos
+Chocolate	Chocolate	3,000 mesos
+Return Scroll - Nearest Town	Return Scroll - Nearest Town	400 mesos
+Return Scroll to Lith Harbor	Return Scroll to Lith Harbor	500 mesos
+Arrow for Bow	Arrow for Bow	1 mesos
+Arrow for Crossbow	Arrow for Crossbow	1 mesos
+Subi Throwing-Stars	Subi Throwing-Stars	500 mesos

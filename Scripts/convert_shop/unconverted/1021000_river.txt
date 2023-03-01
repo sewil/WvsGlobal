@@ -1,0 +1,34 @@
+Long Sword	3,000 mesos
+Sabre	Sabre	6,000 mesos
+Viking Sword	Viking Sword	10,000 mesos
+Machete	Machete	10,000 mesos
+Eloon	Eloon	20,000 mesos
+Gladius	Gladius	40,000 mesos
+Field Dagger	Field Dagger	7,000 mesos
+Coconut Knife	Coconut Knife	10,000 mesos
+Iron Dagger	Iron Dagger	22,000 mesos
+Battle Axe	Battle Axe	6,000 mesos
+Misthil Axe	Misthil Axe	20,000 mesos
+Fireman's Axe	Fireman's Axe	40,000 mesos
+Mace	Mace	6,000 mesos
+Iron Mace	Iron Mace	10,000 mesos
+Fusion Mace	Fusion Mace	22,000 mesos
+War Hammer	War Hammer	40,000 mesos
+Wooden Sword	Wooden Sword	3,000 mesos
+Two-Handed Sword	Two-Handed Sword	12,000 mesos
+Broadsword	Broadsword	22,000 mesos
+Metal Axe	Metal Axe	3,000 mesos
+Iron Axe 	Iron Axe	10,000 mesos
+Two-Handed Axe	Two-Handed Axe	22,000 mesos
+Blue Axe	Blue Axe	45,000 mesos
+Wooden Mallet	Wooden Mallet	3,000 mesos
+Heavy Mace	Heavy Mace	6,000 mesos
+Square Hammer	Square Hammer	10,000 mesos
+Pickaxe	Pickaxe	10,000 mesos
+Monkey Wrench	Monkey Wrench	20,000 mesos
+Spear	Spear	3,000 mesos
+Fork on a Stick	Fork on a Stick	7,000 mesos
+Pole Arm	Pole Arm	3,000 mesos
+Iron Ball	Iron Ball	8,000 mesos
+Studded Polearm	Studded Polearm	12,000 mesos
+Janitor's Mop	Janitor's Mop	24,000 mesos

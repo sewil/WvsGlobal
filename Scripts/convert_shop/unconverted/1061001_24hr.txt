@@ -1,0 +1,13 @@
+Fried Chicken	220 mesos
+Hot Dog	Hot Dog	320 mesos
+Pizza	Pizza	450 mesos
+Hamburger	Hamburger	450 mesos
+Hot Dog Supreme	Hot Dog Supreme	530 mesos
+Unagi	Unagi	1,100 mesos
+Salad	Salad	420 mesos
+Pure Water	Pure Water	1,650 mesos
+Cake	Cake	320 mesos
+Return Scroll - Nearest Town	Return Scroll - Nearest Town	400 mesos
+Arrow for Bow	Arrow for Bow	2 mesos
+Arrow for Crossbow	Arrow for Crossbow	2 mesos
+Subi Throwing-Stars	Subi Throwing-Stars	500 mesos

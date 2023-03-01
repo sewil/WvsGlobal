@@ -1,0 +1,28 @@
+Orange Potion	166 mesos
+White Potion	White Potion	332 mesos
+Blue Potion	Blue Potion	208 mesos
+Mana Elixir	Mana Elixir	644 mesos
+Dexterity Potion	Dexterity Potion	520 mesos
+Speed Potion	Speed Potion	416 mesos
+Magic Potion	Magic Potion	520 mesos
+Warrior Potion	Warrior Potion	520 mesos
+Sniper Potion	Sniper Potion	520 mesos
+Watermelon	Watermelon	3,328 mesos
+Ice Cream Pop	Ice Cream Pop	2,392 mesos
+Red Bean Sundae	Red Bean Sundae	4,160 mesos
+Hot Dog	Hot Dog	332 mesos
+Lemon	Lemon	322 mesos
+Fried Chicken	Fried Chicken	228 mesos
+Pizza	Pizza	468 mesos
+Hamburger	Hamburger	468 mesos
+Hot Dog Supreme	Hot Dog Supreme	551 mesos
+Unagi	Unagi	1,144 mesos
+Pure Water	Pure Water	1,716 mesos
+Melting Cheese	Melting Cheese	4,680 mesos
+Reindeer Milk	Reindeer Milk	5,824 mesos
+Sunrise Dew	Sunrise Dew	8,424 mesos
+Sunset Dew	Sunset Dew	10,608 mesos
+Return Scroll - Nearest Town	Return Scroll - Nearest Town	400 mesos
+Arrow for Bow	Arrow for Bow	1 mesos
+Arrow for Crossbow	Arrow for Crossbow	1 mesos
+Subi Throwing-Stars	Subi Throwing-Stars	500 mesos

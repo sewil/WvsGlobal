@@ -1,0 +1,64 @@
+Bronze Koif	2,400 mesos
+Bronze Helmet	Bronze Helmet	2,700 mesos
+Bronze Full Helm	Bronze Full Helm	3,500 mesos
+Bronze Football Helmet	Bronze Football Helmet	8,700 mesos
+Bronze Viking Helm	Bronze Viking Helm	8,500 mesos
+Steel Sharp Helm	Steel Sharp Helm	11,500 mesos
+Iron Burgernet Helm	Iron Burgernet Helm	19,000 mesos
+Brown Lolico Armor (M)	Brown Lolico Armor (M)	3,200 mesos
+Blue Lolico Armor (M)	Blue Lolico Armor (M)	3,200 mesos
+Steel Corporal (M)	Steel Corporal (M)	5,500 mesos
+Brown Corporal (M)	Brown Corporal (M)	5,500 mesos
+Blue Sergeant (M)	Blue Sergeant (M)	9,000 mesos
+Red Sergeant (M)	Red Sergeant (M)	9,000 mesos
+Silver Master Sergeant (M)	Silver Master Sergeant (M)	16,000 mesos
+Orihalcon Master Sergeant (M)	Orihalcon Master Sergeant (M)	16,000 mesos
+Dark Master Sergeant (M)	Dark Master Sergeant (M)	16,000 mesos
+Red Hwarang Shirt (M)	Red Hwarang Shirt (M)	40,000 mesos
+Green Hwarang Shirt (M)	Green Hwarang Shirt (M)	40,000 mesos
+Orange Lolica Armor (F)	Orange Lolica Armor (F)	3,200 mesos
+Blueberry Lolica Armor (F)	Blueberry Lolica Armor (F)	3,200 mesos
+Red Lamelle (F)	Red Lamelle (F)	9,000 mesos
+Green Lamelle (F)	Green Lamelle (F)	9,000 mesos
+Brown Lamelle (F)	Brown Lamelle (F)	9,000 mesos
+Blue Shark (F)	Blue Shark (F)	16,000 mesos
+Sky Shark (F)	Sky Shark (F)	16,000 mesos
+Red Shark (F)	Red Shark (F)	16,000 mesos
+Blue Kendo Robe (M)	Blue Kendo Robe (M)	15,000 mesos
+Red Kendo Robe (M)	Red Kendo Robe (M)	15,000 mesos
+White Kendo Robe (M)	White Kendo Robe (M)	15,000 mesos
+Black Dragon Robe (M)	Black Dragon Robe (M)	70,000 mesos
+Steel Fitted Mail (F)	Steel Fitted Mail (F)	8,000 mesos
+Dark Engrit (F)	Dark Engrit (F)	60,000 mesos
+Red Engrit (F)	Red Engrit (F)	60,000 mesos
+Blue Engrit (F)	Blue Engrit (F)	60,000 mesos
+Yellow Engrit (F)	Yellow Engrit (F)	60,000 mesos
+Brown Lolico Pants (M)	Brown Lolico Pants (M)	3,000 mesos
+Blue Lolico Pants (M)	Blue Lolico Pants (M)	3,000 mesos
+Steel Corporal Pants (M)	Steel Corporal Pants (M)	5,000 mesos
+Brown Corporal Pants (M)	Brown Corporal Pants (M)	5,000 mesos
+Steel Sergeant Kilt (M)	Steel Sergeant Kilt (M)	9,000 mesos
+Red Sergeant Kilt (M)	Red Sergeant Kilt (M)	9,000 mesos
+Orihalcon Master Sergeant Kilt (M)	Orihalcon Master Sergeant Kilt (M)	14,000 mesos
+Dark Master Sergeant Kilt (M)	Dark Master Sergeant Kilt (M)	14,000 mesos
+Silver Master Sergeant Kilt (M)	Silver Master Sergeant Kilt (M)	14,000 mesos
+Black Martial Arts Pants (M)	Black Martial Arts Pants (M)	38,000 mesos
+White Martial Arts Pants (M)	White Martial Arts Pants (M)	38,000 mesos
+Red Martial Arts Pants (M)	Red Martial Arts Pants (M)	38,000 mesos
+Brown Martial Arts Pants (M)	Brown Martial Arts Pants (M)	38,000 mesos
+Rookie Pants (F)	Rookie Pants (F)	3,000 mesos
+Sophia Pants (F)	Sophia Pants (F)	3,000 mesos
+Red Ramel Skirt (F)	Red Ramel Skirt (F)	9,000 mesos
+Green Ramel Skirt (F)	Green Ramel Skirt (F)	9,000 mesos
+Brown Ramel Skirt (F)	Brown Ramel Skirt (F)	9,000 mesos
+Blue Shark Skirt (F)	Blue Shark Skirt (F)	14,000 mesos
+Sky Shark Skirt (F)	Sky Shark Skirt (F)	14,000 mesos
+Red Shark Skirt (F)	Red Shark Skirt (F)	14,000 mesos
+Steel Grieves	Steel Grieves	5,000 mesos
+Bronze Grieves	Bronze Grieves	5,000 mesos
+Brown High Boots	Brown High Boots	10,000 mesos
+Orange High Boots	Orange High Boots	10,000 mesos
+Blue High Boots	Blue High Boots	10,000 mesos
+Mithril War Boots	Mithril War Boots	15,000 mesos
+Wooden Buckler	Wooden Buckler	4,000 mesos
+Steel Shield	Steel Shield	6,000 mesos

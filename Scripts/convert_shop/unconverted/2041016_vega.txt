@@ -1,0 +1,26 @@
+Scroll for Earring for INT	34,000 mesos
+Scroll for Helmet for DEF	Scroll for Helmet for DEF	34,000 mesos
+Scroll for Topwear for DEF	Scroll for Topwear for DEF	34,000 mesos
+Scroll for Overall Armor for DEF	Scroll for Overall Armor for DEF	34,000 mesos
+Scroll for Bottomwear for DEF	Scroll for Bottomwear for DEF	34,000 mesos
+Scroll for Shoes for DEX	Scroll for Shoes for DEX	34,000 mesos
+Scroll for Shoes for Jump	Scroll for Shoes for Jump	34,000 mesos
+Scroll for Shoes for Speed	Scroll for Shoes for Speed	34,000 mesos
+Scroll for Gloves for DEX	Scroll for Gloves for DEX	34,000 mesos
+Scroll for Shield for DEF	Scroll for Shield for DEF	34,000 mesos
+Scroll for Cape for Magic Def.	Scroll for Cape for Magic Def	34,000 mesos
+Scroll for Cape for Weapon Def.	Scroll for Cape for Weapon Def	34,000 mesos
+Scroll for One-Handed Sword for ATT	Scroll for One-Handed Sword for ATT	34,000 mesos
+Scroll for One-Handed Axe for ATT	Scroll for One-Handed Axe for ATT	34,000 mesos
+Scroll for One-Handed BW for ATT	Scroll for One-Handed BW for ATT	34,000 mesos
+Scroll for Dagger for ATT	Scroll for Dagger for ATT	34,000 mesos
+Scroll for Two-handed Sword for ATT	Scroll for Two-handed Sword for ATT	70,000 mesos
+Scroll for Two-handed Axe for ATT	Scroll for Two-handed Axe for ATT	70,000 mesos
+Scroll for Two-handed BW for ATT	Scroll for Two-handed BW for ATT	70,000 mesos
+Scroll for Spear for ATT	Scroll for Spear for ATT	70,000 mesos
+Scroll for Pole Arm for ATT	Scroll for Pole Arm for ATT	70,000 mesos
+Scroll for Wand for Magic Att.	Scroll for Wand for Magic Att.	70,000 mesos
+Scroll for Staff for Magic Att.	Scroll for Staff for Magic Att.	70,000 mesos
+Scroll for Bow for ATT	Scroll for Bow for ATT	70,000 mesos
+Scroll for Crossbow for ATT	Scroll for Crossbow for ATT	70,000 mesos
+Scroll for Claw for ATT	Scroll for Claw for ATT	70,000 mesos

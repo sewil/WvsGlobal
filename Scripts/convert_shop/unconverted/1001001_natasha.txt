@@ -1,0 +1,30 @@
+Brown Skullcap	500 mesos
+Red Headband	Red Headband	1,000 mesos
+Black Headband	Black Headband	450 mesos
+Green Headband	Green Headband	450 mesos
+Yellow Headband	Yellow Headband	450 mesos
+Blue Headband	Blue Headband	450 mesos
+Black Swimming Cap	Black Swimming Cap	800 mesos
+Blue Swimming Cap	Blue Swimming Cap	800 mesos
+Red Swimming Cap	Red Swimming Cap	800 mesos
+White Bandana	White Bandana	2,000 mesos
+Metal Gear	Metal Gear	3,000 mesos
+Blue One-lined T-Shirt (M)	Blue One-lined T-Shirt (M)	3,000 mesos
+Orange Sporty T-Shirt (M)	Orange Sporty T-Shirt (M)	3,000 mesos
+Pink Starry Shirt (F)	Pink Starry Shirt (F)	3,000 mesos
+Red-Striped T-Shirt (F)	Red-Striped T-Shirt (F)	3,000 mesos
+Blue Clamdiggers	Blue Clamdiggers	1,000 mesos
+Grey Thick Sweat Pants (M)	Grey Thick Sweat Pants (M)	2,800 mesos
+Ice Jeans	Ice Jeans	4,800 mesos
+Sandblasted Jeans 	Sandblasted Jeans	4,800 mesos
+Yellow Rubber Boots	Yellow Rubber Boots	50 mesos
+Blue Rubber Boots	Blue Rubber Boots	50 mesos
+Red Rubber Boots	Red Rubber Boots	50 mesos
+Leather Sandals	Leather Sandals	50 mesos
+Brown Aroa Boots	Brown Aroa Boots	5,000 mesos
+Green Aroa Boots	Green Aroa Boots	5,000 mesos
+Bronze Aroa Boots	Bronze Aroa Boots	5,000 mesos
+Blue Ankle-strap Sandals	Blue Ankle-strap Sandals	10,000 mesos
+Red Ankle-strap Sandals	Red Ankle-strap Sandals	10,000 mesos
+Brown Ankle-strap Sandals	Brown Ankle-strap Sandals	10,000 mesos
+Stolen Fence	Stolen Fence	2,000 mesos

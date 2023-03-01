@@ -1,0 +1,9 @@
+Scroll for Helmet for DEF	35,000 mesos
+Scroll for Topwear for DEF	Scroll for Topwear for DEF	35,000 mesos
+Scroll for Bottomwear for DEF	Scroll for Bottomwear for DEF	35,000 mesos
+Scroll for Shoes for DEX	Scroll for Shoes for DEX	35,000 mesos
+Scroll for Earring for INT	Scroll for Earring for INT	35,000 mesos
+Scroll for Bow for ATT	Scroll for Bow for ATT	70,000 mesos
+Scroll for Crossbow for ATT	Scroll for Crossbow for ATT	70,000 mesos
+Scroll for Wand for Magic Att.	Scroll for Wand for Magic Att.	70,000 mesos
+Scroll for Staff for Magic Att.	Scroll for Staff for Magic Att.	70,000 mesos

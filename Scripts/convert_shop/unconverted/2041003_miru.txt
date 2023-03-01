@@ -1,0 +1,82 @@
+Great Brown Helmet	160,000 mesos
+Yellow Jangoon Armor (M)	Yellow Jangoon Armor (M)	200,000 mesos
+Maroon Jangoon Armor (M)	Maroon Jangoon Armor (M)	200,000 mesos
+Red Jangoon Armor (F)	Red Jangoon Armor (F)	200,000 mesos
+Brown Jangoon Armor (F)	Brown Jangoon Armor (F)	200,000 mesos
+White Crusader Chainmail (M)	White Crusader Chainmail (M)	112,500 mesos
+Blue Crusader Chainmail (M)	Blue Crusader Chainmail (M)	112,500 mesos
+Emerald Fitted Mail (F)	Emerald Fitted Mail (F)	112,500 mesos
+Sapphire Fitted Mail (F)	Sapphire Fitted Mail (F)	112,500 mesos
+Brown Jangoon Pants (M)	Brown Jangoon Pants (M)	180,000 mesos
+White Jangoon Pants (M)	White Jangoon Pants (M)	180,000 mesos
+Red Jangoon Skirt (F) 	Red Jangoon Skirt (F)	180,000 mesos
+Brown Jangoon Skirt (F)	Brown Jangoon Skirt (F)	180,000 mesos
+Red Triangular Shield	Red Triangular Shield	100,000 mesos
+Red Cross Shield	Red Cross Shield	200,000 mesos
+Red Matty	Red Matty	96,000 mesos
+Blue Matty	Blue Matty	96,000 mesos
+Green Matty	Green Matty	96,000 mesos
+Brown Matty	Brown Matty	96,000 mesos
+Blue Amoria Top (F)	Blue Amoria Top (F)	120,000 mesos
+Red Amoria Top (F)	Red Amoria Top (F)	120,000 mesos
+White Chaos Robe (M)	White Chaos Robe (M)	300,000 mesos
+Blood Chaos Robe (M)	Blood Chaos Robe (M)	300,000 mesos
+Brown Starlight (M)	Brown Starlight (M)	450,000 mesos
+Blue Starlight (M)	Blue Starlight (M)	450,000 mesos
+Red Starlight (M)	Red Starlight (M)	450,000 mesos
+Green Starlight (M)	Green Starlight (M)	450,000 mesos
+Purple Moonlight (F)	Purple Moonlight (F)	450,000 mesos
+Blue Moonlight (F)	Blue Moonlight (F)	450,000 mesos
+Red Moonlight (F)	Red Moonlight (F)	450,000 mesos
+Brown Moonlight (F)	Brown Moonlight (F)	450,000 mesos
+Blue Amoria Skirt (F)	Blue Amoria Skirt (F)	120,000 mesos
+Red Amoria Skirt (F)	Red Amoria Skirt (F)	120,000 mesos
+Blue Pole-Feather Hat	Blue Pole-Feather Hat	100,000 mesos
+Red Pole-Feather Hat	Red Pole-Feather Hat	100,000 mesos
+Green Pole-Feather Hat	Green Pole-Feather Hat	100,000 mesos
+Red Legolier (M)	Red Legolier (M)	114,000 mesos
+Blue Legolier (M)	Blue Legolier (M)	114,000 mesos
+Green Legolier (M)	Green Legolier (M)	114,000 mesos
+Brown Legolier (M)  	Brown Legolier (M)	114,000 mesos
+White Piette (M)	White Piette (M)	180,000 mesos
+Brown Piette (M)	Brown Piette (M)	180,000 mesos
+Blue Legolia (F)	Blue Legolia (F)	114,000 mesos
+Brown Legolia (F)	Brown Legolia (F)	114,000 mesos
+Red Legolia (F)	Red Legolia (F)	114,000 mesos
+Green Legolia (F)	Green Legolia (F)	114,000 mesos
+Brown Piettra (F)	Brown Piettra (F)	180,000 mesos
+White Piettra (F)	White Piettra (F)	180,000 mesos
+Blue Legolier Pants (M)	Blue Legolier Pants (M)	108,000 mesos
+Brown Legolier Pants (M)	Brown Legolier Pants (M)	108,000 mesos
+Red Legolier Pants (M)	Red Legolier Pants (M)	108,000 mesos
+Green Legolier Pants (M)	Green Legolier Pants (M)	108,000 mesos
+Blue Piette Pants (M)	Blue Piette Pants (M)	160,000 mesos
+Brown Piette Pants (M)	Brown Piette Pants (M)	160,000 mesos
+Blue Legolia Pants (F)	Blue Legolia Pants (F)	108,000 mesos
+Brown Legolia Pants (F)	Brown Legolia Pants (F)	108,000 mesos
+Red Legolia Pants (F)	Red Legolia Pants (F)	108,000 mesos
+Green Legolia Pants (F)	Green Legolia Pants (F)	108,000 mesos
+Brown Piettra Skirt (F)	Brown Piettra Skirt (F)	160,000 mesos
+White Piettra Skirt (F)	White Piettra Skirt (F)	160,000 mesos
+Red Burgler	Red Burgler	100,000 mesos
+Blue Burgler	Blue Burgler	100,000 mesos
+Green Burgler	Green Burgler	100,000 mesos
+Brown Burgler	Brown Burgler	100,000 mesos
+Dark Burgler	Dark Burgler	100,000 mesos
+Black Knucklevest (M)	Black Knucklevest (M)	114,000 mesos
+Red Knucklevest (M) 	Red Knucklevest (M)	114,000 mesos
+Green Knucklevest (M)	Green Knucklevest (M)	114,000 mesos
+Khaki Shadow (M)	Khaki Shadow (M)	180,000 mesos
+Marine Shadow (M)	Marine Shadow (M)	180,000 mesos
+Red Shadow (F)	Red Shadow (F)	180,000 mesos
+Purple Shadow (F)	Purple Shadow (F)	180,000 mesos
+Red Avenger (F)	Red Avenger (F)	111,000 mesos
+Blue Avenger (F)	Blue Avenger (F)	111,000 mesos
+Purple Avenger (F)	Purple Avenger (F)	111,000 mesos
+Red Knucklevest Pants (M)	Red Knucklevest Pants (M)	108,000 mesos
+Blue Knucklevest Pants (M)	Blue Knucklevest Pants (M)	108,000 mesos
+Black Knucklevest Pants (M)	Black Knucklevest Pants (M)	108,000 mesos
+Khaki Shadow Pants (M)	Khaki Shadow Pants (M)	160,000 mesos
+Marine Shadow Pants (M)	Marine Shadow Pants (M)	160,000 mesos
+Red Shadow Pants (F)	Red Shadow Pants (F)	160,000 mesos
+Purple Shadow Pants (F)	Purple Shadow Pants (F)	160,000 mesos

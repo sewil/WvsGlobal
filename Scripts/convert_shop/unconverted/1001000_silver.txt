@@ -1,0 +1,6 @@
+Sword	50 mesos
+Hand Axe 	Hand Axe	50 mesos
+Wooden Club	Wooden Club	50 mesos
+Long Sword	Long Sword	3,000 mesos
+Double Axe 	Double Axe	3,000 mesos
+Fruit Knife	Fruit Knife	1,000 mesos

@@ -1,0 +1,62 @@
+Jousting Helmet	120,000 mesos
+Bronze Pride	Bronze Pride	40,000 mesos
+Red Hawkeye	Red Hawkeye	30,000 mesos
+Blue Hawkeye	Blue Hawkeye	30,000 mesos
+Green Hawkeye	Green Hawkeye	30,000 mesos
+Brown Hawkeye	Brown Hawkeye	30,000 mesos
+Dark Hawkeye	Dark Hawkeye	30,000 mesos
+Red Guise	Red Guise	30,000 mesos
+Blue Guise	Blue Guise	30,000 mesos
+Green Guise	Green Guise	30,000 mesos
+Brown Guise	Brown Guise	30,000 mesos
+Dark Guise	Dark Guise	30,000 mesos
+Red Hwarang Shirt (M)	Red Hwarang Shirt (M)	40,000 mesos
+Green Hwarang Shirt (M)	Green Hwarang Shirt (M)	40,000 mesos
+Purple Fairy Top (F)	Purple Fairy Top (F)	42,000 mesos
+Green Fairy Top (F)	Green Fairy Top (F)	42,000 mesos
+Blue Fairy Top (F)	Blue Fairy Top (F)	42,000 mesos
+Red Hunter's Armor (M)	Red Hunter's Armor (M)	50,000 mesos
+Blue Hunter's Armor (M) 	Blue Hunter's Armor (M)	50,000 mesos
+Green Hunter's Armor (M) 	Green Hunter's Armor (M)	50,000 mesos
+Dark Hunter's Armor (M) 	Dark Hunter's Armor (M)	50,000 mesos
+Red Huntress Armor (F)	Red Huntress Armor (F)	50,000 mesos
+Green Huntress Armor (F)	Green Huntress Armor (F)	50,000 mesos
+Black Huntress Armor (F)	Black Huntress Armor (F)	50,000 mesos
+Dark Brown Stealer (M)	Dark Brown Stealer (M)	45,000 mesos
+Dark Silver Stealer (M)	Dark Silver Stealer (M)	45,000 mesos
+Red Gold Stealer (M)	Red Gold Stealer (M)	45,000 mesos
+Silver Black Stealer (M)	Silver Black Stealer (M)	45,000 mesos
+Red Steal (F)	Red Steal (F)	45,000 mesos
+Black Steal (F)	Black Steal (F)	45,000 mesos
+Blue Steal (F)	Blue Steal (F)	45,000 mesos
+Dark Engrit (F)	Dark Engrit (F)	60,000 mesos
+Red Engrit (F)	Red Engrit (F)	60,000 mesos
+Blue Engrit (F)	Blue Engrit (F)	60,000 mesos
+Yellow Engrit (F)	Yellow Engrit (F)	60,000 mesos
+Blue Wizard Robe (M)	Blue Wizard Robe (M)	40,000 mesos
+White Wizard Robe (M)	White Wizard Robe (M)	40,000 mesos
+Black Wizard Robe (M)	Black Wizard Robe (M)	40,000 mesos
+Green Wizard Robe (M)	Green Wizard Robe (M)	40,000 mesos
+Black Martial Arts Pants (M)	Black Martial Arts Pants (M)	38,000 mesos
+White Martial Arts Pants (M)	White Martial Arts Pants (M)	38,000 mesos
+Red Martial Arts Pants (M)	Red Martial Arts Pants (M)	38,000 mesos
+Brown Martial Arts Pants (M)	Brown Martial Arts Pants (M)	38,000 mesos
+Purple Fairy Skirt (F)	Purple Fairy Skirt (F)	40,000 mesos
+Green Fairy Skirt (F)	Green Fairy Skirt (F)	40,000 mesos
+Blue Fairy Skirt (F)  	Blue Fairy Skirt (F)	40,000 mesos
+Blue Hunter's Pants (M)	Blue Hunter's Pants (M)	44,000 mesos
+Red Hunter's Pants (M)	Red Hunter's Pants (M)	44,000 mesos
+Green Hunter's Pants (M)	Green Hunter's Pants (M)	44,000 mesos
+Dark Hunter's Pants (M)	Dark Hunter's Pants (M)	44,000 mesos
+Red Huntress Pants (F)	Red Huntress Pants (F)	44,000 mesos
+Green Huntress Pants (F)	Green Huntress Pants (F)	44,000 mesos
+Black Huntress Pants (F)	Black Huntress Pants (F)	44,000 mesos
+Dark Brown Stealer Pants (M)	Dark Brown Stealer Pants (M)	40,000 mesos
+Dark Silver Stealer Pants (M)	Dark Silver Stealer Pants (M)	40,000 mesos
+Red / Gold Stealer Pants (M)	Red / Gold Stealer Pants (M)	40,000 mesos
+Silver / Black Stealer Pants (M)	Silver / Black Stealer Pants (M)	40,000 mesos
+Red Steal Pants (F)	Red Steal Pants (F)	40,000 mesos
+Black Steal Pants (F)	Black Steal Pants (F)	40,000 mesos
+Blue Steal Pants (F)	Blue Steal Pants (F)	40,000 mesos
+Purple Steal Pants (F)	Purple Steal Pants (F)	40,000 mesos
+Mithril Buckler	Mithril Buckler	60,000 mesos

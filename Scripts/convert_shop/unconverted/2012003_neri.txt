@@ -1,0 +1,15 @@
+Gladius	40,000 mesos
+Fireman's Axe	Fireman's Axe	40,000 mesos
+War Hammer	War Hammer	40,000 mesos
+Cass	Cass	42,000 mesos
+Reef Claw	Reef Claw	40,000 mesos
+Mithril Wand	Mithril Wand	38,000 mesos
+Wizard Staff	Wizard Staff	20,000 mesos
+Scimitar	Scimitar	150,000 mesos
+Blue Axe	Blue Axe	45,000 mesos
+Mithril Maul	Mithril Maul	45,000 mesos
+Forked Spear	Forked Spear	60,000 mesos
+Mithril Pole Arm	Mithril Pole Arm	60,000 mesos
+Ryden	Ryden	150,000 mesos
+Mountain Crossbow	Mountain Crossbow	30,000 mesos
+Steel Titans	Steel Titans	20,000 mesos

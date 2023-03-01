@@ -1,0 +1,11 @@
+Wooden Wand	2,000 mesos
+Hardwood Wand	Hardwood Wand	5,000 mesos
+Metal Wand	Metal Wand	9,000 mesos
+Ice Wand	Ice Wand	18,000 mesos
+Mithril Wand	Mithril Wand	38,000 mesos
+Wooden Staff	Wooden Staff	3,000 mesos
+Sapphire Staff	Sapphire Staff	6,000 mesos
+Emerald Staff	Emerald Staff	6,000 mesos
+Old Wooden Staff	Old Wooden Staff	10,000 mesos
+Wizard Staff	Wizard Staff	20,000 mesos
+Iron Mace	Iron Mace	10,000 mesos

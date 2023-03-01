@@ -1,0 +1,27 @@
+Cutlus	100,000 mesos
+Traus	Traus	225,000 mesos
+Dankke	Dankke	100,000 mesos
+Blue Counter	Blue Counter	175,000 mesos
+Heavy Hammer	Heavy Hammer	100,000 mesos
+Jacker	Jacker	175,000 mesos
+Halfmoon Zamadar	Halfmoon Zamadar	200,000 mesos
+Gephart	Gephart	375,000 mesos
+Bazlud	Bazlud	425,000 mesos
+Wizard Wand	Wizard Wand	175,000 mesos
+Fairy Wand	Fairy Wand	400,000 mesos
+Lionheart	Lionheart	350,000 mesos
+Zard	Zard	450,000 mesos
+Niam	Niam	200,000 mesos
+Sabretooth	Sabretooth	250,000 mesos
+Sledgehammer	Sledgehammer	200,000 mesos
+Titan	Titan	250,000 mesos
+Nakamaki	Nakamaki	175,000 mesos
+Zeco	Zeco	225,000 mesos
+Axe Pole Arm	Axe Pole Arm	175,000 mesos
+Crescent Polearm	Crescent Polearm	300,000 mesos
+Red Viper	Red Viper	250,000 mesos
+Vaulter 2000	Vaulter 2000	375,000 mesos
+Eagle Crow	Eagle Crow	200,000 mesos
+Heckler	Heckler	250,000 mesos
+Bronze Igor	Bronze Igor	30,000 mesos
+Meba	Meba	60,000 mesos

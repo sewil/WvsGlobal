@@ -1,0 +1,36 @@
+Red Pill	50 mesos
+Red Potion	Red Potion	47 mesos
+Orange Pill	Orange Pill	160 mesos
+Orange Potion	Orange Potion	152 mesos
+White Pill 	White Pill	320 mesos
+White Potion	White Potion	304 mesos
+Blue Pill	Blue Pill	200 mesos
+Blue Potion	Blue Potion	190 mesos
+Mana Elixir Pill	Mana Elixir Pill	620 mesos
+Mana Elixir	Mana Elixir	589 mesos
+Ice Cream Pop	Ice Cream Pop	2,185 mesos
+Red Bean Sundae	Red Bean Sundae	3,800 mesos
+Warrior Pill	Warrior Pill	570 mesos
+Magic Pill 	Magic Pill	570 mesos
+Sniper Pill	Sniper Pill	570 mesos
+Dexterity Pill 	Dexterity Pill	570 mesos
+Speed Pill 	Speed Pill	475 mesos
+Meat	Meat	106 mesos
+Egg	Egg	47 mesos
+Fried Chicken	Fried Chicken	209 mesos
+Cake	Cake	304 mesos
+Pizza	Pizza	427 mesos
+Hamburger	Hamburger	427 mesos
+Hot Dog	Hot Dog	304 mesos
+Hot Dog Supreme	Hot Dog Supreme	503 mesos
+Unagi	Unagi	1,144 mesos
+Pure Water	Pure Water	1,716 mesos
+Melting Cheese	Melting Cheese	4,680 mesos
+Reindeer Milk	Reindeer Milk	5,824 mesos
+Sunrise Dew	Sunrise Dew	8,424 mesos
+Sunset Dew	Sunset Dew	10,608 mesos
+Pet Food 	Pet Food	25 mesos
+Arrow for Bow	Arrow for Bow	1 mesos
+Arrow for Crossbow	Arrow for Crossbow	1 mesos
+Bronze Arrow for Bow	Bronze Arrow for Bow	10 mesos
+Bronze Arrow for Crossbow	Bronze Arrow for Crossbow	10 mesos

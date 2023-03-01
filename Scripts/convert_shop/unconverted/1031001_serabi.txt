@@ -1,0 +1,58 @@
+Brown Apprentice Hat	1,200 mesos
+Blue Moon Conehat	Blue Moon Conehat	3,800 mesos
+Pink Moon Conehat	Pink Moon Conehat	3,800 mesos
+Green Moon Conehat	Green Moon Conehat	3,800 mesos
+Dark Moon Conehat	Dark Moon Conehat	3,800 mesos
+Brown Moon Conehat	Brown Moon Conehat	3,800 mesos
+Green Wizardry Hat	Green Wizardry Hat	8,000 mesos
+Blue Training Shirt (M)	Blue Training Shirt (M)	2,000 mesos
+Grey / Brown Training Shirt (M)	Grey / Brown Training Shirt (M)	2,000 mesos
+Black Split Piece (M)	Black Split Piece (M)	8,500 mesos
+Orange Split Piece (M)	Orange Split Piece (M)	8,500 mesos
+Blue Split Piece (M)	Blue Split Piece (M)	8,500 mesos
+Black Armine (F)	Black Armine (F)	2,000 mesos
+Green Armine (F)	Green Armine (F)	2,000 mesos
+Purple Arianne (F)	Purple Arianne (F)	4,000 mesos
+Green Arianne (F)	Green Arianne (F)	4,000 mesos
+Pink Arianne (F)	Pink Arianne (F)	4,000 mesos
+Yellow Arianne (F)	Yellow Arianne (F)	4,000 mesos
+Black Split (F)	Black Split (F)	8,500 mesos
+Red Split (F)	Red Split (F)	8,500 mesos
+Purple Split (F)	Purple Split (F)	8,500 mesos
+Purple Fairy Top (F)	Purple Fairy Top (F)	42,000 mesos
+Green Fairy Top (F)	Green Fairy Top (F)	42,000 mesos
+Blue Fairy Top (F)	Blue Fairy Top (F)	42,000 mesos
+Beige Plain Robe (M)	Beige Plain Robe (M)	7,000 mesos
+Blue Plain Robe (M)	Blue Plain Robe (M)	7,000 mesos
+Green Plain Robe (M)	Green Plain Robe (M)	7,000 mesos
+Brown Doros Robe (M)	Brown Doros Robe (M)	16,000 mesos
+Blue Doros Robe (M)	Blue Doros Robe (M)	16,000 mesos
+Yellow Doros Robe (M)	Yellow Doros Robe (M)	16,000 mesos
+White Doros Robe (M)	White Doros Robe (M)	16,000 mesos
+Blue Wizard Robe (M)	Blue Wizard Robe (M)	40,000 mesos
+White Wizard Robe (M)	White Wizard Robe (M)	40,000 mesos
+Black Wizard Robe (M)	Black Wizard Robe (M)	40,000 mesos
+Green Wizard Robe (M)	Green Wizard Robe (M)	40,000 mesos
+Brown Doroness Robe (F)	Brown Doroness Robe (F)	16,000 mesos
+Red Doroness Robe (F)	Red Doroness Robe (F)	16,000 mesos
+Purple Doroness Robe (F)	Purple Doroness Robe (F)	1,600 mesos
+Blue Training Pants (M)	Blue Training Pants (M)	2,000 mesos
+Grey / Brown Training Pants (M)	Grey / Brown Training Pants (M)	2,000 mesos
+Black Split Pants (M)	Black Split Pants (M)	8,000 mesos
+White Split Pants (M)	White Split Pants (M)	8,000 mesos
+Black Armine Skirt (F)	Black Armine Skirt (F)	2,000 mesos
+Green Armine Skirt (F)	Green Armine Skirt (F)	2,000 mesos
+Purple Arianne Skirt (F)	Purple Arianne Skirt (F)	4,000 mesos
+Green Arianne Skirt (F)	Green Arianne Skirt (F)	4,000 mesos
+Pink Arianne Skirt (F)	Pink Arianne Skirt (F)	4,000 mesos
+Yellow Arianne Skirt (F)	Yellow Arianne Skirt (F)	4,000 mesos
+Black Split Skirt (F)	Black Split Skirt (F)	8,000 mesos
+White Split Skirt (F)	White Split Skirt (F)	8,000 mesos
+Purple Fairy Skirt (F)	Purple Fairy Skirt (F)	40,000 mesos
+Green Fairy Skirt (F)	Green Fairy Skirt (F)	40,000 mesos
+Blue Fairy Skirt (F)  	Blue Fairy Skirt (F)	40,000 mesos
+Brown Basic Boots	Brown Basic Boots	1,500 mesos
+Yellow Basic Boots	Yellow Basic Boots	1,500 mesos
+Blue Basic Boots	Blue Basic Boots	1,500 mesos
+Beige Nitty	Beige Nitty	4,000 mesos
+Black Nitty	Black Nitty	4,000 mesos
