@@ -602,6 +602,10 @@ namespace WvsBeta.Game
         public short SP => CharacterStat.SP;
         public short POP => CharacterStat.Fame;
         public short MHP => CharacterStat.MaxHP;
+        public short STR => CharacterStat.Str;
+        public short DEX => CharacterStat.Dex;
+        public short INT => CharacterStat.Int;
+        public short LUK => CharacterStat.Luk;
         public bool IsClosedBetaTester => false;
         public string SCharacterName => Name;
         public void PlayPortalSE()
@@ -635,6 +639,14 @@ namespace WvsBeta.Game
         public void IncSP(short sp, int isSelf)
         {
             AddSP(sp);
+        }
+        public void IncMMP(short value, int isSelf)
+        {
+            ModifyMaxMP(value);
+        }
+        public void IncMHP(short value, int isSelf)
+        {
+            ModifyMaxHP(value);
         }
         public void IncPetTame(short inc)
         {

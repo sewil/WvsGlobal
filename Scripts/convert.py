@@ -34,6 +34,7 @@ with open(args.input) as f:
     func_idx = 0
     func_vars = set()
     ignore_next = False
+    cmt_line = None
     for line in lines:
         if ignore_next:
             ignore_next = False
