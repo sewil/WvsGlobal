@@ -116,7 +116,7 @@ namespace WvsBeta.Login
             {
                 ClientMessages header = (ClientMessages)packet.ReadByte();
                 if (!traceIgnore.Contains(header))
-                    Trace.WriteLine($"[Client->LoginServer] {header} - {packet}");
+                    Program.MainForm.LogAppend($"[Client->LoginServer] {header} - {packet}");
                 if (!logIgnore.Contains(header))
                     Common.Tracking.PacketLog.ReceivedPacket(packet, (byte)header, Server.Instance.Name, this.IP);
 
@@ -502,7 +502,7 @@ namespace WvsBeta.Login
         public override void SendPacket(Packet pPacket)
         {
             if ((ServerMessages)pPacket.Opcode != ServerMessages.PING)
-                Trace.WriteLine($"[LoginServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+                Program.MainForm.LogAppend($"[LoginServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
             base.SendPacket(pPacket);
         }
     }

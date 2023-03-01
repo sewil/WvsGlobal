@@ -14,7 +14,7 @@ namespace WvsBeta.Game
     public enum SummonType : sbyte
     {
         Fake = -4,
-        Option = -3,
+        Revive = -3,
         Regen = -2,
         Instant = -1,
     }
@@ -314,12 +314,25 @@ namespace WvsBeta.Game
 
         private void FinishDeath(bool wasForced, Pos killPos, byte how = 1)
         {
-            GameCharacter lastController = Controller;
-            bool wasControlled = IsControlled;
             RemoveController(false);
 
-            MobPacket.SendMobDeath(this, how); // He ded.
+            if (Data.Revive != null)
+            {
+                foreach (var mobid in Data.Revive)
+                {
+                    Field.SpawnMobWithoutRespawning(
+                        mobid,
+                        killPos,
+                        Foothold,
+                        null,
+                        SummonType.Revive,
+                        SpawnID,
+                        !IsFacingRight()
+                    );
+                }
+            }
 
+            MobPacket.SendMobDeath(this, how); // He ded.
 
             DamageLog.Clear();
 
@@ -351,24 +364,7 @@ namespace WvsBeta.Game
                 Owner.Owns.Remove(MobID);
             }
 
-            if (Data.Revive != null)
-            {
-                MasterThread.RepeatingAction.Start(() =>
-                {
-                    bool aggro = wasControlled;
-
-                    foreach (var revive in Data.Revive)
-                    {
-                        Field.SpawnMobWithoutRespawning(revive, Position, Foothold, Owner, SummonType.Instant, 0, !IsFacingRight(), out Mob mob);
-
-                        if (lastController != null)
-                        {
-                            mob.SetController(lastController, wasControlled);
-                        }
-                    }
-                }, Data.AnimationTimes["die1"], 0);
-            }
-            else if (Owner != null && Owner.Owns.Count == 0 && Owner.IsFake) // Make mob real, all owns are dead
+            if (Data.Revive == null && Owner != null && Owner.Owns.Count == 0 && Owner.IsFake) // Make mob real, all owns are dead
             {
                 Owner.MakeReal();
             }

@@ -65,7 +65,6 @@
     <Compile Include="Scripts\victoria1.cs" />
     <Compile Include="Scripts\victoria2.cs" />
     <Compile Include="Scripts\victoria3.cs" />
-    <Compile Include="Scripts\zakum1.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

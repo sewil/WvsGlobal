@@ -241,7 +241,7 @@ namespace WvsBeta.Game
             pw.WriteShort(mob.OriginalFoothold); // Original foothold, doesn't really matter
             
             pw.WriteSByte((sbyte)mob.SummonType);
-            if (mob.SummonType == SummonType.Option || mob.SummonType >= 0)
+            if (mob.SummonType == SummonType.Revive || mob.SummonType >= 0)
                 pw.WriteInt(mob.SummonOption);
 
             if (mob.HasAnyStatus)

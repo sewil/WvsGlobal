@@ -236,7 +236,6 @@ namespace WvsBeta.Common.Sessions
             base.SendPacket(pPacket);
         }
 
-
         private static Packet _pingPacket = new Packet(ServerMessages.PING);
         private static Packet _pongPacket = new Packet((byte)ClientMessages.PONG);
 
