@@ -771,7 +771,7 @@ namespace WvsBeta.Scripts.Scripts
             };
             target.Field.SendPacket(FieldEffectPacket.EffectMusic("Bgm06/FinalFight"));
             var mobOwner = target.Spawn(-11, (8800000, 1, SummonType.Fake, null))[0];
-            for (var i = 8800003; i <= /*8800010*/8800003; i++)
+            for (var i = 8800003; i <= 8800010; i++)
             {
                 target.Spawn(-11, (i, 1, SummonType.Regen, mobOwner));
             }
