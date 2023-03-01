@@ -11,6 +11,13 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
+    public enum SummonType : sbyte
+    {
+        Fake = -4,
+        Option = -3,
+        Regen = -2,
+        Instant = -1,
+    }
     public class Mob : MovableLife, IFieldObj
     {
         public int MobID { get; set; }
@@ -19,7 +26,7 @@ namespace WvsBeta.Game
         public readonly short OriginalFoothold;
         public MobGenItem MobGenItem { get; set; } = null;
 
-        public sbyte SummonType { get; set; }
+        public SummonType SummonType { get; set; }
         public int SummonOption { get; set; }
 
         public int EXP => Data.EXP;
@@ -35,6 +42,7 @@ namespace WvsBeta.Game
         public bool HasAnyStatus => _status != null;
         public MobStatus Status => _status ?? (_status = new MobStatus(this));
         public Mob Owner { get; set; } = null;
+        public readonly IDictionary<int, Mob> Owns = new Dictionary<int, Mob>();
         public GameCharacter Controller { get; set; } = null;
         public bool IsControlled => Controller != null;
 
@@ -58,6 +66,8 @@ namespace WvsBeta.Game
 
         public MobData Data;
         public Pos OriginalPosition;
+
+        public bool IsFake => SummonType == SummonType.Fake;
 
         internal Mob(int spawnId, Map field, int mobid, Pos position, short foothold, bool facesLeft = false) : base(foothold, position, (byte)(facesLeft ? 0 : 2))
         {
@@ -290,7 +300,7 @@ namespace WvsBeta.Game
             return true;
         }
 
-        public void ForceDead()
+        public void ForceDead(byte how = 1)
         {
             if (DeadAlreadyHandled)
             {
@@ -299,32 +309,16 @@ namespace WvsBeta.Game
 
             DeadAlreadyHandled = true;
 
-            FinishDeath(true, Position);
+            FinishDeath(true, Position, how);
         }
 
-        private void FinishDeath(bool wasForced, Pos killPos)
+        private void FinishDeath(bool wasForced, Pos killPos, byte how = 1)
         {
+            GameCharacter lastController = Controller;
+            bool wasControlled = IsControlled;
             RemoveController(false);
 
-            if (!wasForced && Data.Revive != null)
-            {
-                // Oh damn, this mob spawns other mobs!
-
-                foreach (var mobid in Data.Revive)
-                {
-                    Field.SpawnMobWithoutRespawning(
-                        mobid,
-                        killPos,
-                        Foothold,
-                        null,
-                        -3,
-                        SpawnID,
-                        !IsFacingRight()
-                    );
-                }
-            }
-
-            MobPacket.SendMobDeath(this, 1); // He ded.
+            MobPacket.SendMobDeath(this, how); // He ded.
 
 
             DamageLog.Clear();
@@ -352,9 +346,42 @@ namespace WvsBeta.Game
                 }
             }
 
+            if (Owner != null)
+            {
+                Owner.Owns.Remove(MobID);
+            }
+
+            if (Data.Revive != null)
+            {
+                MasterThread.RepeatingAction.Start(() =>
+                {
+                    bool aggro = wasControlled;
+
+                    foreach (var revive in Data.Revive)
+                    {
+                        Field.SpawnMobWithoutRespawning(revive, Position, Foothold, Owner, SummonType.Instant, 0, !IsFacingRight(), out Mob mob);
+
+                        if (lastController != null)
+                        {
+                            mob.SetController(lastController, wasControlled);
+                        }
+                    }
+                }, Data.AnimationTimes["die1"], 0);
+            }
+            else if (Owner != null && Owner.Owns.Count == 0 && Owner.IsFake) // Make mob real, all owns are dead
+            {
+                Owner.MakeReal();
+            }
+
             Field.RemoveMob(this);
         }
-
+        public void MakeReal()
+        {
+            SummonType = SummonType.Instant;
+            SummonOption = 0;
+            //MobPacket.SendMobSpawn(this);
+            MobPacket.SendMobSuspendReset(this);
+        }
         public int OnMobMPSteal(int Prop, int Percent)
         {
             if (Data.Boss)
@@ -1065,7 +1092,7 @@ namespace WvsBeta.Game
                                 tehfloor,
                                 (short)(fh?.ID ?? 0),
                                 this,
-                                (sbyte)actualSkill.SummonEffect,
+                                (SummonType)actualSkill.SummonEffect,
                                 delay,
                                 !IsFacingRight()
                             );

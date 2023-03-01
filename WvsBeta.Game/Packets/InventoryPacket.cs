@@ -410,7 +410,7 @@ namespace WvsBeta.Game
                 {
                     if (Rand32.Next() % 100 < isi.Chance)
                     {
-                        chr.Field.SpawnMobWithoutRespawning(isi.MobID, chr.Position, chr.Foothold, summonType: data.Type);
+                        chr.Field.SpawnMobWithoutRespawning(isi.MobID, chr.Position, chr.Foothold, summonType: (SummonType)data.Type);
                     }
                 }
                 else

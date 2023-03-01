@@ -742,7 +742,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Spawn(-4, (9300004, 3, 1, null));
+            target.Spawn(-4, (9300004, 3, (SummonType)1, null));
         }
     }
     [Script("go280010000")]
@@ -753,6 +753,33 @@ namespace WvsBeta.Scripts.Scripts
             if (target.Owner == null) return;
             target.Owner.ChangeMap(280010000);
             target.Owner.SendPacket(MessagePacket.RedText("You will go back to the first place by an unknown force."));
+        }
+    }
+    [Script("boss")]
+    class boss : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            if (target.Owner == null) return;
+            var instance = FieldSet.Instances["ZakumBoss"];
+            instance.Start();
+            TriggerGate(instance, target.Owner);
+            instance.OnEnd += (obj, _) =>
+            {
+                ((FieldSet)obj).SetVar("boss", "no");
+                TriggerGate(instance, target.Owner);
+            };
+            target.Field.SendPacket(FieldEffectPacket.EffectMusic("Bgm06/FinalFight"));
+            var mobOwner = target.Spawn(-11, (8800000, 1, SummonType.Fake, null))[0];
+            for (var i = 8800003; i <= 8800010; i++)
+            {
+                target.Spawn(-11, (i, 1, SummonType.Regen, mobOwner));
+            }
+            ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Zakum is summoned by the force of Eye of Fire.", target.Owner, ChatPacket.MessageMode.ToMap);
+        }
+        void TriggerGate(FieldSet instance, GameCharacter owner)
+        {
+            DataProvider.Maps[211042300].ReactorPool.ShownReactors[0].Trigger(owner);
         }
     }
     #endregion

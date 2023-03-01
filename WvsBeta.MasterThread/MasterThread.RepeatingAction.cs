@@ -12,7 +12,7 @@ namespace WvsBeta
         public class RepeatingAction
         {
             private static ILog _log = LogManager.GetLogger("RepeatingAction");
-            
+
             public string Name { get; private set; }
             public long Repeat { get; private set; }
             public Action<long> Action { get; private set; }
@@ -83,6 +83,11 @@ namespace WvsBeta
                 Func<bool> pEndCondition = null)
             {
                 return Start(pName, x => pAction(), start, repeat, pEndCondition);
+            }
+
+            public static RepeatingAction Start(Action pAction, long start, long repeat, Func<bool> pEndCondition = null)
+            {
+                return Start(null, pAction, start, repeat, pEndCondition);
             }
 
 

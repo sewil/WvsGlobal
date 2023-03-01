@@ -240,8 +240,8 @@ namespace WvsBeta.Game
             pw.WriteShort(mob.Foothold);
             pw.WriteShort(mob.OriginalFoothold); // Original foothold, doesn't really matter
             
-            pw.WriteSByte(mob.SummonType);
-            if (mob.SummonType == -3 || mob.SummonType >= 0)
+            pw.WriteSByte((sbyte)mob.SummonType);
+            if (mob.SummonType == SummonType.Option || mob.SummonType >= 0)
                 pw.WriteInt(mob.SummonOption);
 
             if (mob.HasAnyStatus)
@@ -362,6 +362,14 @@ namespace WvsBeta.Game
 
             pw.WriteUInt((uint)pFlags);
 
+            pMob.Field.SendPacket(pMob, pw);
+        }
+
+        public static void SendMobSuspendReset(Mob pMob)
+        {
+            Packet pw = new Packet(ServerMessages.MOB_SUSPEND_RESET);
+            pw.WriteInt(pMob.SpawnID);
+            pw.WriteByte(1);
             pMob.Field.SendPacket(pMob, pw);
         }
     }

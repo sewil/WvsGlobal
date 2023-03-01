@@ -106,7 +106,7 @@ namespace WvsBeta.Scripts.Scripts
                 { "Zakum04", "zakum" },
                 { "Zakum05", "zakum" },
                 { "Zakum06", "zakum" },
-                { "boss", "zakum1" },
+                { "boss", "zakum" },
                 { "1001000", "shop" },
                 { "1001001", "shop" },
                 { "1011000", "shop" },

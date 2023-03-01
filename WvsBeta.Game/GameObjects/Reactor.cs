@@ -201,7 +201,7 @@ namespace WvsBeta.Game
             }
             return trigger;
         }
-        public IList<Mob> Spawn(short yOffset, params (int mobid, short amount, sbyte summonType, Mob ownerMob)[] mobs)
+        public IList<Mob> Spawn(short yOffset, params (int mobid, short amount, SummonType summonType, Mob ownerMob)[] mobs)
         {
             var pos = new Pos(Position);
             pos.Offset(0, yOffset);

@@ -501,7 +501,7 @@ namespace WvsBeta.Game
 
                 mobGenPossible.Remove(mgi);
 
-                if (SpawnMob(mgi.ID, mgi, new Pos(mgi.X, mgi.Y), mgi.Foothold, summonType: -2) != -1)
+                if (SpawnMob(mgi.ID, mgi, new Pos(mgi.X, mgi.Y), mgi.Foothold, summonType: SummonType.Regen) != -1)
                 {
                     remainCapacity--;
                 }
@@ -1070,7 +1070,31 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // Update reactors
         }
 
-        public int KillAllMobs(int damage)
+        public int DamageAllMobs(GameCharacter chr, int damage)
+        {
+            int amount = 0;
+
+            try
+            {
+                var mobs = Mobs.Values.ToArray();
+
+                foreach (var mob in mobs)
+                {
+                    MobPacket.SendMobDamageOrHeal(this, mob, damage, false, false);
+                    if (!mob.GiveDamage(chr, damage))
+                    {
+                        mob.ForceDead();
+                    }
+                    amount++;
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.MainForm.LogAppend(ex.ToString());
+            }
+            return amount;
+        }
+        public int KillAllMobs(int damage, byte how = 1)
         {
             int amount = 0;
 
@@ -1083,7 +1107,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                     if (damage > 0)
                         MobPacket.SendMobDamageOrHeal(this, mob, damage == 0 ? mob.HP : damage, false, false);
 
-                    mob.ForceDead();
+                    mob.ForceDead(how);
                     amount++;
                 }
             }
@@ -1108,7 +1132,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Pos position,
             short foothold,
             Mob ownerMob = null,
-            sbyte summonType = -1,
+            SummonType summonType = SummonType.Instant,
             int summonOption = 0,
             bool facesLeft = false
             )
@@ -1120,7 +1144,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Pos position,
             short foothold,
             Mob ownerMob,
-            sbyte summonType,
+            SummonType summonType,
             int summonOption,
             bool facesLeft,
             out Mob mob
@@ -1131,9 +1155,10 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             int id = _objectIDs.NextValue();
 
-            mob = new Mob(id, this, mobid, position, foothold);
+            mob = new Mob(id, this, mobid, position, foothold, facesLeft);
             mob.Owner = ownerMob;
-            mob.Stance |= (byte)(facesLeft ? 1 : 0);
+            if (ownerMob != null)
+                ownerMob.Owns[mobid] = mob;
             mob.SummonType = summonType;
             mob.SummonOption = summonOption;
             ownerMob?.SpawnedMobs.Add(id, mob);
@@ -1142,12 +1167,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             MobPacket.SendMobSpawn(mob);
             FindNewController(mob, null);
 
-            if (mob.SummonType != -4)
-            {
-                mob.SummonType = -1;
-                mob.SummonOption = 0;
-            }
-
+            //if (mob.SummonType != SummonType.Fake)
+            //{
+            //    mob.SummonType = SummonType.Fade;
+            //    mob.SummonOption = 0;
+            //}
 
             return id;
         }
@@ -1158,7 +1182,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Pos position,
             short foothold,
             Mob ownerMob = null,
-            sbyte summonType = -1,
+            SummonType summonType = SummonType.Instant,
             int summonOption = 0)
         {
 
@@ -1188,11 +1212,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             FindNewController(mob, null);
 
-            if (mob.SummonType != -4)
-            {
-                mob.SummonType = -1;
-                mob.SummonOption = 0;
-            }
+            //if (mob.SummonType != -4)
+            //{
+            //    mob.SummonType = -1;
+            //    mob.SummonOption = 0;
+            //}
 
 
             return id;

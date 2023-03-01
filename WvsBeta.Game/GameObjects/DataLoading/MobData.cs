@@ -82,4 +82,5 @@ public class MobData
     public bool Invincible { get; set; }
     public bool FirstAttack { get; set; }
     public bool SelfDestruction { get; set; }
+    public Dictionary<string, int> AnimationTimes = new Dictionary<string, int>();
 }

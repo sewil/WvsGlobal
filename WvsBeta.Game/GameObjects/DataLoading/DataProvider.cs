@@ -1,12 +1,9 @@
 using System;
-using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
@@ -188,18 +185,25 @@ namespace WvsBeta.Game
 
                 data.Jumps = nonInfoNodes.ContainsChild("jump");
 
-                foreach (var node in nonInfoNodes)
+                foreach (NXNode node in nonInfoNodes)
                 {
-                    if (!node.ContainsChild("info")) continue;
-                    var id = GetGroupIdx(node.Name);
-                    var subInfoNode = node["info"];
+                    if (node.Name == "info") continue;
+                    byte id = GetGroupIdx(node.Name);
+
+                    int delay = 0;
+                    foreach (var pic in node)
+                    {
+                        if (pic.Name == "info" || !pic.ContainsChild("delay")) continue;
+                        delay += pic["delay"].ValueInt32();
+                    }
+                    data.AnimationTimes.Add(node.Name, delay);
 
                     if (node.Name.StartsWith("attack"))
                     {
                         var mad = new MobAttackData();
                         mad.ID = id;
 
-                        foreach (var subNode in subInfoNode)
+                        foreach (var subNode in node["info"])
                         {
                             switch (subNode.Name)
                             {

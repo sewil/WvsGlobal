@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
@@ -9,7 +8,6 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
@@ -1186,7 +1184,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                 {
                                     var Amount = 1;
                                     var MobID = -1;
-                                    sbyte summonType = -1;
+                                    SummonType summonType = SummonType.Instant;
+                                    int summonOption = 0;
 
                                     if (Args[0].IsNumber())
                                         MobID = Args[0].GetInt32();
@@ -1194,7 +1193,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                     if (Args.Count > 1 && Args[1].IsNumber())
                                         Amount = Args[1].GetInt32();
 
-                                    if (Args.Count > 2 && sbyte.TryParse(Args[2], out summonType)){ }
+                                    if (Args.Count > 2 && sbyte.TryParse(Args[2], out sbyte soption))
+                                        summonType = (SummonType)soption;
+                                    if (Args.Count > 3 && int.TryParse(Args[3], out summonOption)){ }
 
                                     Amount = character.IsAdmin ? Amount : Math.Min(Amount, 100);
 
@@ -1203,7 +1204,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         for (int i = 0; i < Amount; i++)
                                         {
                                             character.Field.SpawnMobWithoutRespawning(MobID, character.Position,
-                                                character.Foothold, null, summonType);
+                                                character.Foothold, null, summonType, summonOption);
                                         }
                                     }
                                     else
@@ -1319,7 +1320,13 @@ namespace WvsBeta.Game.Handlers.Commands
                         case "killmobs":
                         case "killall":
                             {
-                                int amount = character.Field.KillAllMobs(0);
+                                byte how = 1;
+                                if (Args.Count > 0 && !byte.TryParse(Args[0], out how))
+                                {
+                                    character.Message("Invalid how " + how);
+                                    return true;
+                                }
+                                int amount = character.Field.KillAllMobs(0, how);
                                 ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }
@@ -1336,12 +1343,45 @@ namespace WvsBeta.Game.Handlers.Commands
                                 ChatPacket.SendNotice("Amount of mobs killed: " + amount.ToString(), character);
                                 return true;
                             }
+                        case "dmgmobs":
+                        case "dmgall":
+                        {
+                                int dmg = Args.Count == 0 ? 0 : Args[0].GetInt32();
+                                int amount = character.Field.DamageAllMobs(character, dmg);
+                                ChatPacket.SendNotice("Amount of mobs damaged: " + amount.ToString(), character);
+                                return true;
+                        }
+                    case "dmgmob":
+                    case "dmg":
+                    case "damage":
+                        {
+                            if (Args.Count < 2)
+                            {
+                                ChatPacket.SendNotice("Usage: /dmgmob <mobid> <dmg>", character);
+                                return true;
+                            }
+                            if (!int.TryParse(Args[0], out int mobid) || !character.Field.Mobs.Select(m => m.Value).TryFind(m => m.MobID == mobid, out Mob mob))
+                            {
+                                ChatPacket.SendNotice("Mob " + Args[0] + " not found in current field", character);
+                                return true;
+                            }
+                            if (!int.TryParse(Args[1], out int dmg))
+                            {
+                                ChatPacket.SendNotice("Invalid dmg " + Args[1], character);
+                                return true;
+                            }
+                            MobPacket.SendMobDamageOrHeal(character.Field, mob, dmg, false, false);
+                            if (!mob.GiveDamage(character, dmg))
+                            {
+                                mob.ForceDead();
+                            }
+                            return true;
+                        }
+                    #endregion
 
-#endregion
+                    #region MapNotice
 
-#region MapNotice
-
-                        case "mapnotice":
+                    case "mapnotice":
                             {
                                 if (Args.Count > 0)
                                     ChatPacket.SendText(ChatPacket.MessageTypes.PopupBox,
