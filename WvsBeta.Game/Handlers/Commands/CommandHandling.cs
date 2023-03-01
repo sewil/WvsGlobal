@@ -1379,6 +1379,46 @@ namespace WvsBeta.Game.Handlers.Commands
                         }
                     #endregion
 
+                    #region Boss HP Bar
+                    case "bosshpbar":
+                    case "hpbar":
+                    {
+                            ///packet 3F 05 00 47 86 00 E1 8D ED 03 80 14 EF 03 01 03 }
+                            if (Args.Count < 5)
+                            {
+                                ChatPacket.SendNotice("Usage: /hpbar <mobid> <hp> <maxhp> <colorBottom> <colorTop>", character);
+                                return true;
+                            }
+                            if (!int.TryParse(Args[0], out int mobid))
+                            {
+                                ChatPacket.SendNotice("Invalid mobid " + mobid, character);
+                                return true;
+                            }
+                            if (!int.TryParse(Args[1], out int hp))
+                            {
+                                ChatPacket.SendNotice("Invalid hp " + hp, character);
+                                return true;
+                            }
+                            if (!int.TryParse(Args[2], out int mhp))
+                            {
+                                ChatPacket.SendNotice("Invalid mhp " + mhp, character);
+                                return true;
+                            }
+                            if (!byte.TryParse(Args[3], out byte colorBottom))
+                            {
+                                ChatPacket.SendNotice("Invalid colorBottom " + colorBottom, character);
+                                return true;
+                            }
+                            if (!byte.TryParse(Args[4], out byte colorTop))
+                            {
+                                ChatPacket.SendNotice("Invalid colorTop " + colorTop, character);
+                                return true;
+                            }
+                            character.Field.SendPacket(FieldEffectPacket.BossHPBar(mobid, hp, mhp, colorBottom, colorTop));
+                            return true;
+                    }
+                    #endregion
+
                     #region MapNotice
 
                     case "mapnotice":
