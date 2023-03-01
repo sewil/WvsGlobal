@@ -277,6 +277,7 @@ namespace WvsBeta.Game
                         case "firstAttack": data.FirstAttack = node.ValueBool(); break;
                         case "acc": data.Acc = node.ValueInt32(); break;
                         case "publicReward": data.PublicReward = node.ValueBool(); break;
+                        case "explosiveReward": data.ExplosiveReward = node.ValueBool(); break;
                         case "fs": data.FS = node.ValueFloat(); break;
                         case "flySpeed":
                         case "speed":
