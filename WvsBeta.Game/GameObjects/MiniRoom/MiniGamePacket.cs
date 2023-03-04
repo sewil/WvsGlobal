@@ -1,4 +1,4 @@
-﻿using System.Security.Cryptography;
+﻿using System;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
 
@@ -6,6 +6,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class MiniGamePacket
     {
+        private static void EncodeGameStats(MiniRoomBase mrb, byte slot, Packet pw)
+        {
+            pw.WriteByte(slot);
+            //GW_Minigamerecord_Decode (20 bytes)
+            mrb.Users[slot].GameStats.AllStats[(MiniGameType)mrb.Type].Encode(pw);
+        }
         public static void ShowWindow(GameCharacter pOwner, MiniRoomBase mrb, byte OmokType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -27,31 +33,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //End of Regular Enter base
             //Start of Omok Enter Base
 
-            pw.WriteByte(0); //slot id
-
-            //GW_Minigamerecord_Decode (20 bytes)
-            pw.WriteInt(1);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokWins);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokTies);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokLosses);
-            pw.WriteInt(2000);
-
-            if (mrb.EnteredUsers > 1)
+            for (byte slot = 0; slot < Math.Min((byte)2, mrb.EnteredUsers); slot++)
             {
-                pw.WriteByte(1); //slot id 
-
-                pw.WriteInt(1);
-                //pw.WriteInt(0);
-                //pw.WriteInt(0);
-                //pw.WriteInt(0);
-                pw.WriteInt(pOwner.GameStats.OmokWins);
-                pw.WriteInt(pOwner.GameStats.OmokTies);
-                pw.WriteInt(pOwner.GameStats.OmokLosses);
-                pw.WriteInt(2000);
+                EncodeGameStats(mrb, slot, pw);
             }
+
             pw.WriteByte(0xFF);
             //Rest of packet
             pw.WriteString(mrb.Title);
@@ -71,16 +57,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteByte(chr.RoomSlotId);
             new AvatarLook(chr).Encode(pw);
             pw.WriteString(chr.Name);
-
-            //GW_Minigamerecord_Decode
-            pw.WriteInt(1);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            pw.WriteInt(chr.GameStats.OmokWins);
-            pw.WriteInt(chr.GameStats.OmokTies);
-            pw.WriteInt(chr.GameStats.OmokLosses);
-            pw.WriteInt(2000);
+            EncodeGameStats(mrb, 1, pw);
             mrb.BroadcastPacket(pw, chr);
         }
 
@@ -197,32 +174,16 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void UpdateGame(GameCharacter pWinner, MiniRoomBase mrb, GameResult result)
+        public static void UpdateGame(MiniRoomBase mrb, GameResult result)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte(0x24);
-
             pw.WriteByte((byte)result);
-            pw.WriteByte(pWinner.RoomSlotId);
 
-            //gamestats
-            pw.WriteInt(1);
-            //pw.WriteInt(1337);
-            //pw.WriteInt(1337);
-            //pw.WriteInt(1337);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokWins);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokTies);
-            pw.WriteInt(mrb.Users[0].GameStats.OmokLosses);
-            pw.WriteInt(1);
-
-            pw.WriteInt(1);
-            //pw.WriteInt(1337);
-            //pw.WriteInt(1337);
-            //pw.WriteInt(1337);
-            pw.WriteInt(mrb.Users[1].GameStats.OmokWins);
-            pw.WriteInt(mrb.Users[1].GameStats.OmokTies);
-            pw.WriteInt(mrb.Users[1].GameStats.OmokLosses);
-            pw.WriteInt(1);
+            for (byte slot = 0; slot < Math.Min((byte)2, mrb.EnteredUsers); slot++)
+            {
+                EncodeGameStats(mrb, slot, pw);
+            }
 
             pw.WriteLong(0);
             mrb.BroadcastPacket(pw);

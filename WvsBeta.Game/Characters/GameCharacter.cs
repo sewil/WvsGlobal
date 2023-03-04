@@ -62,7 +62,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public byte PortalCount { get; set; } = 0;
+        public byte PortalCount { get; set; } = 1;
 
         public bool GMHideEnabled { get; private set; }
         public bool Donator { get; private set; }

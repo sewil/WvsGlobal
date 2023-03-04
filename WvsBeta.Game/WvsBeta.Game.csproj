@@ -119,6 +119,7 @@
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />
+    <Compile Include="GameObjects\CharacterData.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
     <Compile Include="GameObjects\MiniRoom\MiniRoomBalloonPacket.cs" />
     <Compile Include="GameObjects\ReactorPool.cs" />

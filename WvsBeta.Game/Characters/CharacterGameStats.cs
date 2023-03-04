@@ -1,69 +1,99 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using MySql.Data.MySqlClient;
+using System;
+using System.Collections.Generic;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects.MiniRoom;
 
 namespace WvsBeta.Game
 {
-    public class CharacterGameStats
+    public class GameStats
     {
-        public GameCharacter mCharacter { get; set; }
-
-        public int OmokWins { get; set; }
-        public int OmokTies { get; set; }
-        public int OmokLosses { get; set; }
-        public int OmokPoints { get; set; }
-
-        public int MatchCardWins { get; set; }
-        public int MatchCardTies { get; set; }
-        public int MatchCardLosses { get; set; }
-
-        public CharacterGameStats(GameCharacter pCharacter)
+        public readonly MiniGameType type;
+        public int wins;
+        public int ties;
+        public int losses;
+        public int points;
+        public GameStats(MiniGameType type, int wins, int ties, int losses, int points)
         {
-            mCharacter = pCharacter;
-        }
-
-        public void Load()
-        {
-            /*Server.Instance.CharacterDatabase.RunQuery("SELECT * FROM gamestats WHERE id = " + mCharacter.ID.ToString());
-
-            MySqlDataReader data = Server.Instance.CharacterDatabase.Reader;
-            if (!data.HasRows)
-            {
-                mCharacter.GameStats.OmokWins = 0;
-                mCharacter.GameStats.OmokLosses = 0;
-                mCharacter.GameStats.OmokTies = 0;
-                mCharacter.GameStats.MatchCardWins = 0;
-                mCharacter.GameStats.MatchCardLosses = 0;
-                mCharacter.GameStats.MatchCardTies = 0;
-                Server.Instance.CharacterDatabase.RunQuery("INSERT INTO gamestats (id, omokwins, omoklosses, omokties, matchcardwins, matchcardties, matchcardlosses) VALUES (" + mCharacter.ID.ToString() + ", 0, 0, 0, 0, 0, 0)");
-            }
-            else
-            {
-                data.Read();
-                mCharacter.GameStats.OmokWins = data.GetInt32("omokwins");
-                mCharacter.GameStats.OmokTies = data.GetInt32("omokties");
-                mCharacter.GameStats.OmokLosses = data.GetInt32("omoklosses");
-                mCharacter.GameStats.MatchCardWins = data.GetInt32("matchcardwins");
-                mCharacter.GameStats.MatchCardTies = data.GetInt32("matchcardties");
-                mCharacter.GameStats.MatchCardLosses = data.GetInt32("matchcardlosses");
-            }*/
-        }
-
-        public void Save()
-        {
-            return; // We don't use it anyway?
-            Server.Instance.CharacterDatabase.RunQuery("UPDATE gamestats SET omokwins = " + mCharacter.GameStats.OmokWins + ", omokties = " + mCharacter.GameStats.OmokTies + ", omoklosses = " + mCharacter.GameStats.OmokLosses + ", matchcardwins = "
-                + mCharacter.GameStats.MatchCardWins + ", matchcardties = " + mCharacter.GameStats.MatchCardTies + ", matchcardlosses = " + mCharacter.GameStats.MatchCardLosses + " WHERE id = " + mCharacter.ID.ToString());
+            this.type = type;
+            this.wins = wins;
+            this.ties = ties;
+            this.losses = losses;
+            this.points = points;
         }
         public void Encode(Packet pw)
         {
             //GW_Minigamerecord_Decode
-            pw.WriteInt(1);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            //pw.WriteInt(0);
-            pw.WriteInt(OmokWins);
-            pw.WriteInt(OmokTies);
-            pw.WriteInt(OmokLosses);
-            pw.WriteInt(OmokPoints);
+            pw.WriteInt((int)type);
+            pw.WriteInt(wins);
+            pw.WriteInt(ties);
+            pw.WriteInt(losses);
+            pw.WriteInt(points);
+        }
+    }
+    public class CharacterGameStats
+    {
+        public GameCharacter mCharacter { get; set; }
+        public readonly IDictionary<MiniGameType, GameStats> AllStats;
+
+        public CharacterGameStats(GameCharacter pCharacter)
+        {
+            mCharacter = pCharacter;
+            AllStats = new Dictionary<MiniGameType, GameStats>()
+            {
+                { MiniGameType.Omok, new GameStats(MiniGameType.Omok, 0, 0, 0, 0) },
+                { MiniGameType.MatchCards, new GameStats(MiniGameType.MatchCards, 0, 0, 0, 0) },
+            };
+        }
+
+        public void Load()
+        {
+            using (var reader = Server.Instance.CharacterDatabase.RunQuery("SELECT * FROM gamestats WHERE charid = @charid", "@charid", mCharacter.ID) as MySqlDataReader)
+            {
+                while (reader.Read())
+                {
+                    var type = (MiniGameType)reader.GetInt32("type");
+                    AllStats[type] = new GameStats(
+                        type,
+                        reader.GetInt32("wins"),
+                        reader.GetInt32("ties"),
+                        reader.GetInt32("losses"),
+                        reader.GetInt32("points")
+                    );
+                }
+            }
+        }
+
+        public void Save()
+        {
+            Server.Instance.CharacterDatabase.RunTransaction(comm =>
+            {
+                comm.CommandText = "DELETE FROM gamestats WHERE charid = @charid";
+                comm.Parameters.AddWithValue("@charid", mCharacter.ID);
+                comm.ExecuteNonQuery();
+
+                foreach (var stats in AllStats)
+                {
+                    comm.Parameters.Clear();
+                    comm.CommandText = "INSERT INTO gamestats (charid, type, wins, losses, ties, points) VALUES (@charid, @type, @wins, @losses, @ties, @points)";
+                    comm.Parameters.AddWithValue("@charid", mCharacter.ID);
+                    comm.Parameters.AddWithValue("@type", stats.Key);
+                    comm.Parameters.AddWithValue("@wins", stats.Value.wins);
+                    comm.Parameters.AddWithValue("@losses", stats.Value.losses);
+                    comm.Parameters.AddWithValue("@ties", stats.Value.ties);
+                    comm.Parameters.AddWithValue("@points", stats.Value.points);
+                    comm.ExecuteNonQuery();
+                }
+            }, Program.MainForm.LogAppend);
+        }
+        public void Encode(Packet pw)
+        {
+            pw.WriteShort((short)AllStats.Count);
+            foreach (var stats in AllStats)
+            {
+                stats.Value.Encode(pw);
+            }
         }
     }
 }

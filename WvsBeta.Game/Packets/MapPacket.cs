@@ -646,7 +646,7 @@ namespace WvsBeta.Game
 
         public static void SendChangeMap(GameCharacter chr)
         {
-            var pack = new SetFieldPacket(chr, Server.Instance.ID, chr.PortalCount, false);
+            var pack = new SetFieldPacket(chr, Server.Instance.ID, false);
             chr.SendPacket(pack);
         }
 
@@ -673,10 +673,10 @@ namespace WvsBeta.Game
         }
         class SetFieldPacket : Packet
         {
-            public SetFieldPacket(GameCharacter chr, int channelId, byte portalCount, bool isConnecting) : base(ServerMessages.SET_FIELD)
+            public SetFieldPacket(GameCharacter chr, int channelId, bool isConnecting) : base(ServerMessages.SET_FIELD)
             {
                 WriteInt(channelId);
-                WriteByte(portalCount);
+                WriteByte(chr.PortalCount);
                 WriteBool(isConnecting);
                 if (isConnecting)
                 {
@@ -695,7 +695,7 @@ namespace WvsBeta.Game
                     WriteUInt(seed3);
                     WriteUInt(seed4);
 
-                    new CharacterData(chr).Encode(this);
+                    new GameObjects.CharacterData(chr).Encode(this);
                 }
                 else
                 {
@@ -712,9 +712,9 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public static void SendSetField(GameCharacter chr)
+        public static void SendSetField(GameCharacter chr, bool isConnecting = true)
         {
-            Packet pack = new SetFieldPacket(chr, Server.Instance.ID, 0, true);
+            Packet pack = new SetFieldPacket(chr, Server.Instance.ID, isConnecting);
             chr.SendPacket(pack);
         }
 

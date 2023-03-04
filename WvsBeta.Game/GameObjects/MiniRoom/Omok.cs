@@ -72,8 +72,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             if (result == GameResult.Tie)
             {
-                Users[0].GameStats.OmokTies++;
-                Users[1].GameStats.OmokTies++;
+                Users[0].GameStats.AllStats[MiniGameType.Omok].ties++;
+                Users[1].GameStats.AllStats[MiniGameType.Omok].ties++;
             }
             else
             {
@@ -81,17 +81,17 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 {
                     if (Users[i] == pWinnner)
                     {
-                        pWinnner.GameStats.OmokWins++;
+                        pWinnner.GameStats.AllStats[MiniGameType.Omok].wins++;
                         if (pWinnner.RoomSlotId == 0) mWinnerIndex = 1;
                         if (pWinnner.RoomSlotId == 1) mWinnerIndex = 0;
                     }
                     else
                     {
-                        Users[i].GameStats.OmokLosses++;
+                        Users[i].GameStats.AllStats[MiniGameType.Omok].losses++;
                     }
                 }
             }
-            MiniGamePacket.UpdateGame(pWinnner, pWinnner.Room, result);
+            MiniGamePacket.UpdateGame(pWinnner.Room, result);
 
             // Reset all values
             GameStarted = false;

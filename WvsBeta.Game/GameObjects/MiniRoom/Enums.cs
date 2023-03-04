@@ -33,6 +33,11 @@
         PersonalShop = 4,
         EntrustedShop = 5,
     }
+    public enum MiniGameType : int
+    {
+        Omok = 1,
+        MatchCards = 2
+    }
 
     public enum MiniGameError : byte
     {
