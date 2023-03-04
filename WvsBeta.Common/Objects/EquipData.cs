@@ -34,5 +34,7 @@
         public byte KnockbackRate { get; set; }
         public bool TimeLimited { get; set; }
         public float RecoveryRate { get; set; } = 1.0f;
+        public bool IsOnly { get; set; }
+        public bool IsQuest { get; set; }
     }
 }

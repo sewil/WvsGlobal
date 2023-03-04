@@ -43,9 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\contimove.cs" />
     <Compile Include="Scripts\face.cs" />
     <Compile Include="Scripts\hair.cs" />
     <Compile Include="Scripts\job.cs" />
+    <Compile Include="Scripts\job2.cs" />
+    <Compile Include="Scripts\job3.cs" />
     <Compile Include="Scripts\make1.cs" />
     <Compile Include="Scripts\mapleIsland.cs" />
     <Compile Include="Scripts\minigame.cs" />

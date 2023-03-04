@@ -1,5 +1,6 @@
 ﻿using System;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
@@ -417,6 +418,32 @@ namespace WvsBeta.Scripts.Scripts
                     else target.ChangeMap(105040402, "");
                 }
             }
+        }
+    }
+    // Maple History Book I
+    [Script("sBoxItem0")]
+    class sBoxItem0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            if (
+                !target.Owner.Quests.HasQuestState(QuestIds.FindTheMapleHistoryBook, QuestState.InProgress)
+                || target.Owner.Inventory.ItemCount(ItemEtcIds.MapleHistoryBookI) > 0
+            ) return;
+            target.Drop(0, (ItemEtcIds.MapleHistoryBookI, 1));
+        }
+    }
+    // Maple History Book II
+    [Script("sBoxItem1")]
+    class sBoxItem1 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            if (
+                !target.Owner.Quests.HasQuestState(QuestIds.FindTheMapleHistoryBook, QuestState.InProgress)
+                || target.Owner.Inventory.ItemCount(ItemEtcIds.MapleHistoryBookII) > 0
+            ) return;
+            target.Drop(0, (ItemEtcIds.MapleHistoryBookII, 1));
         }
     }
 }

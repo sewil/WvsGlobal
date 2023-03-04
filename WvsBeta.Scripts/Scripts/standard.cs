@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -88,6 +89,28 @@ namespace WvsBeta.Scripts.Scripts
                 { "hair_orbis2", "hair" },
                 { "hair_ludi1", "hair" },
                 { "hair_ludi2", "hair" },
+                { "magician", "job" },
+                { "fighter", "job" },
+                { "change_swordman", "job2" },
+                { "change_magician", "job2" },
+                { "change_archer", "job2" },
+                { "change_rogue", "job2" },
+                { "inside_swordman", "job2" },
+                { "inside_magician", "job2" },
+                { "inside_archer", "job2" },
+                { "inside_rogue", "job2" },
+                { "warrior3", "job3" },
+                { "wizard3", "job3" },
+                { "bowman3", "job3" },
+                { "thief3", "job3" },
+                { "crack", "job3" },
+                { "3jobExit", "job3" },
+                { "holyStone", "job3" },
+                { "sBoxItem0", "victoria3" },
+                { "sBoxItem1", "victoria3" },
+                { "sell_ticket", "contimove" },
+                { "get_ticket", "contimove" },
+                { "goOutWaitingRoom", "contimove" },
                 { "boxPaper0", "zakum" },
                 { "boxKey0", "zakum" },
                 { "money100", "zakum" },

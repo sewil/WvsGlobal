@@ -410,6 +410,28 @@ namespace WvsBeta.Common
 
         public static short getJobTrack(short job, bool flatten = false) { return (short)(flatten ? ((job / 100) % 10) : (job / 100)); }
 
+        public static JobTracks.Tracks GetBaseJobTrack(short jobId) { return (JobTracks.Tracks)getJobTrack(jobId, true); }
+
+        public static bool IsThirdJob(short jobid)
+        {
+            return !IsSecondJob(jobid) && jobid % 10 == 1;
+        }
+
+        public static bool IsSecondJob(short jobId)
+        {
+            return !IsFirstJob(jobId) && jobId % 10 == 0;
+        }
+
+        public static bool IsFirstJob(short jobId)
+        {
+            return jobId % 100 == 0;
+        }
+
+        public static bool IsJobTrack(short jobId, JobTracks.Tracks track)
+        {
+            return GetBaseJobTrack(jobId) == track;
+        }
+
         public static EquipSlots.Slots GetBodyPartFromItem(int ItemID)
         {
             var ItemBodyPart = ItemID / 10000;

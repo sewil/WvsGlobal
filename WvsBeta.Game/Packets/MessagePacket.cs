@@ -29,21 +29,22 @@ namespace WvsBeta.Game.Packets
             pw.WriteBool(success);
             return pw;
         }
-        public static MessagePacket GainMesos(int amount, MessageAppearType appearType)
+        public static MessagePacket GainMesos(int amount)
         {
-            var type = appearType == MessageAppearType.ChatGrey ? MessageType.GainMesosGrey : MessageType.GainItemOrMesos;
-            var pw = new MessagePacket(type);
-            if (type == MessageType.GainItemOrMesos) pw.WriteBool(true);
+            var pw = new MessagePacket(MessageType.GainMesos);
             pw.WriteInt(amount);
             return pw;
         }
-        public static MessagePacket GainItem(int itemid, short amount)
+        public static MessagePacket DropPickup(bool isMesos, int itemIdOrMesos, int itemAmount)
         {
-            var pw = new MessagePacket(MessageType.GainItemOrMesos);
-            pw.WriteBool(false);
-            pw.WriteInt(itemid);
-            Inventory inv = Constants.getInventory(itemid);
-            pw.WriteInt(inv == Inventory.Equip ? (int)Inventory.Equip : amount);
+            var pw = new MessagePacket(MessageType.DropPickup);
+            pw.WriteBool(isMesos);
+            pw.WriteInt(itemIdOrMesos);
+            if (!isMesos)
+            {
+                Inventory inv = Constants.getInventory(itemIdOrMesos);
+                pw.WriteInt(inv == Inventory.Equip ? (int)Inventory.Equip : itemAmount);
+            }
             return pw;
         }
 

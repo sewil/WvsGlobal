@@ -168,33 +168,26 @@ namespace WvsBeta.Common.Sessions
                     else if (Settings.Default.MemoryCRCEnabled)
                     {
                         // Check for expected CRC packet
-                        if ((BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0)
+                        if ((BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0 && header == (byte)ClientMessages.CLIENT_HASH)
                         {
                             bool disconnect = true;
-                            if (header == (byte)ClientMessages.CLIENT_HASH)
+                            byte mode = pPacket.ReadByte();
+                            if (mode == 1)
                             {
-                                byte mode = pPacket.ReadByte();
-                                if (mode == 1)
+                                uint clientCRC = pPacket.ReadUInt();
+                                Trace.WriteLine($"[{GetType().ToString()}] Received hash {clientCRC}");
+                                if (ValidateCRC(clientCRC))
                                 {
-                                    uint clientCRC = pPacket.ReadUInt();
-                                    if (ValidateCRC(clientCRC))
-                                    {
-                                        disconnect = false;
-                                    }
-                                    else
-                                    {
-                                        log.Error($"Disconnecting client because CRC didnt match {clientCRC}");
-                                    }
+                                    disconnect = false;
                                 }
                                 else
                                 {
-                                    log.Error($"Disconnecting client because unexpected mode: {mode}");
+                                    Trace.WriteLine($"Disconnecting client because CRC didnt match {clientCRC}");
                                 }
                             }
                             else
                             {
-                                log.Error(
-                                    $"Disconnecting client because expected CLIENT_HASH packet, but got {header} instead");
+                                Trace.WriteLine($"Disconnecting client because unexpected mode: {mode}");
                             }
 
                             if (disconnect)
@@ -229,7 +222,11 @@ namespace WvsBeta.Common.Sessions
             {
                 var p = new Packet((byte)ClientMessages.CLIENT_HASH);
                 p.WriteByte(1);
-                p.WriteUInt(CRC32.CalcCrc32(_encryptIV, 2)); // TODO: Get CRC for memory
+                uint crc = CRC32.CalcCrc32(_encryptIV, 2);
+                p.WriteUInt(crc); // TODO: Get CRC for memory
+
+                Trace.WriteLine($"[{GetType().ToString()}] Sent hash {crc}");
+
                 base.SendPacket(p);
             }
 

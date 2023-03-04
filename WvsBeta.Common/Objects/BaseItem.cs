@@ -23,6 +23,8 @@ namespace WvsBeta.Common.Objects
         public ItemType ItemType { get { return GetItemType(ItemID);  } }
 
         public const long NoItemExpiration = 150842304000000000L;
+        public bool IsOnly { get; set; } = false;
+        public bool IsQuest { get; set; } = false;
 
         protected BaseItem()
         {
@@ -232,6 +234,15 @@ namespace WvsBeta.Common.Objects
 
         public BundleItem(BundleItem itemBase) : base(itemBase) { }
 
+        public override void GiveStats(ItemVariation enOption)
+        {
+            if (!BaseDataProvider.Items.TryGetValue(ItemID, out ItemData data))
+            {
+                return;
+            }
+            IsQuest = data.IsQuest;
+            IsOnly = data.IsOnly;
+        }
         public override void Load(MySqlDataReader data)
         {
             base.Load(data);
@@ -328,6 +339,8 @@ namespace WvsBeta.Common.Objects
 
             Slots = data.Slots;
             Amount = 1; // Force it to be 1.
+            IsOnly = data.IsOnly;
+            IsQuest = data.IsQuest;
 
             if (enOption != ItemVariation.None)
             {
@@ -365,7 +378,6 @@ namespace WvsBeta.Common.Objects
                 Speed = data.Speed;
                 Jump = data.Jump;
             }
-
         }
 
 
@@ -610,121 +622,6 @@ namespace WvsBeta.Common.Objects
                 "fullness = " + Fullness + "," +
                 "expiration = " + Expiration + "," +
                 "deaddate = " + DeadDate + "";
-        }
-    }
-
-    /// <summary>
-    /// Backwards compat
-    /// </summary>
-    [Obsolete(
-        "Replaced by EquipItem, PetItem, BundleItem. To create one without the specific type, use BaseItem.CreateFromItemID")]
-    public class Item
-    {
-        public int ItemID { get; set; } = 0;
-        public short Amount { get; set; }
-        public short InventorySlot { get; set; } = 0;
-        public long CashId { get; set; }
-        public long Expiration { get; set; } = BaseItem.NoItemExpiration;
-        public byte Slots { get; set; } = 7;
-        public byte Scrolls { get; set; } = 0;
-        public short Str { get; set; } = 0;
-        public short Dex { get; set; } = 0;
-        public short Int { get; set; } = 0;
-        public short Luk { get; set; } = 0;
-        public short HP { get; set; } = 0;
-        public short MP { get; set; } = 0;
-        public short Watk { get; set; } = 0;
-        public short Matk { get; set; } = 0;
-        public short Wdef { get; set; } = 0;
-        public short Mdef { get; set; } = 0;
-        public short Acc { get; set; } = 0;
-        public short Avo { get; set; } = 0;
-        public short Hands { get; set; } = 0;
-        public short Jump { get; set; } = 0;
-        public short Speed { get; set; } = 0;
-
-        public Item()
-        {
-        }
-
-        public Item(Item itemBase)
-        {
-            ItemID = itemBase.ItemID;
-            Amount = itemBase.Amount;
-            CashId = itemBase.CashId;
-            Expiration = itemBase.Expiration;
-
-            Slots = itemBase.Slots;
-            Scrolls = itemBase.Scrolls;
-            Str = itemBase.Str;
-            Dex = itemBase.Dex;
-            Int = itemBase.Int;
-            Luk = itemBase.Luk;
-            HP = itemBase.HP;
-            MP = itemBase.MP;
-            Watk = itemBase.Watk;
-            Matk = itemBase.Matk;
-            Wdef = itemBase.Wdef;
-            Mdef = itemBase.Mdef;
-            Acc = itemBase.Acc;
-            Avo = itemBase.Avo;
-            Hands = itemBase.Hands;
-            Jump = itemBase.Jump;
-            Speed = itemBase.Speed;
-        }
-
-
-        private EquipItem ToEquipItem()
-        {
-            return new EquipItem
-            {
-                Acc = Acc,
-                Amount = Amount,
-                Avo = Avo,
-                CashId = CashId,
-                Dex = Dex,
-                Expiration = Expiration,
-                Hands = Hands,
-                HP = HP,
-                Int = Int,
-                InventorySlot = InventorySlot,
-                ItemID = ItemID,
-                Slots = Slots,
-                MP = MP,
-                Speed = Speed,
-                Jump = Jump,
-                Luk = Luk,
-                Matk = Matk,
-                Mdef = Mdef,
-                Scrolls = Scrolls,
-                Str = Str,
-                Watk = Watk,
-                Wdef = Wdef
-            };
-        }
-
-        private BundleItem ToBundleItem()
-        {
-            return new BundleItem
-            {
-                Amount = Amount,
-                CashId = CashId,
-                Expiration = Expiration,
-                InventorySlot = InventorySlot,
-                ItemID = ItemID,
-            };
-        }
-
-        public static implicit operator EquipItem(Item i) => i.ToEquipItem();
-
-        public static implicit operator BundleItem(Item i) => i.ToBundleItem();
-
-        public static implicit operator BaseItem(Item i)
-        {
-            var inventory = Constants.getInventory(i.ItemID);
-            if (inventory == Enums.Inventory.Equip) return i.ToEquipItem();
-            if (inventory == Enums.Inventory.Cash) return null; // TODO: ???
-            return i.ToBundleItem();
         }
     }
 }

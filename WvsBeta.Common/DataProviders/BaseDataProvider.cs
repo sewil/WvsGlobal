@@ -209,6 +209,7 @@ namespace WvsBeta.Common.DataProviders
                         case "quest":
                             if (nxNode.ValueBool())
                             {
+                                eq.IsQuest = true;
                                 lock (UntradeableDrops)
                                 {
                                     lock (QuestItems)
@@ -224,6 +225,7 @@ namespace WvsBeta.Common.DataProviders
                         case "only":
                             if (nxNode.ValueBool())
                             {
+                                eq.IsOnly = true;
                                 lock (UntradeableDrops)
                                 {
                                     if (!UntradeableDrops.Contains(eq.ID))
@@ -364,6 +366,7 @@ namespace WvsBeta.Common.DataProviders
                             case "only":
                                 if (node.ValueBool())
                                 {
+                                    item.IsOnly = true;
                                     lock (UntradeableDrops)
                                     {
                                         UntradeableDrops.Add(item.ID);

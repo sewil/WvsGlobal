@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -49,11 +50,15 @@ namespace WvsBeta.Game
             if (Server.Instance.InMigration) return false;
 
             var isPartyAble = chr.PartyID != 0 && OwnPartyID == chr.PartyID;
-            var isOwnerDrop = OwnerID == chr.ID;
+            var isOwnerDrop = OwnerID == 0 || OwnerID == chr.ID;
             
+            if (Reward.GetData()?.IsOnly == true && chr.Inventory.ItemCount(Reward.ItemID) > 0)
+            {
+                DropPacket.CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
+                return false;
+            }
             if (isOwnerDrop) return true;
             if (isPartyAble) return true;
-
 
             if (!Field.EverlastingDrops)
             {

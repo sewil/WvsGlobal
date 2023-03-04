@@ -1146,13 +1146,13 @@ namespace WvsBeta.Game.Handlers.Commands
 
                                         if (Amount == 0)
                                         {
-                                            DropPacket.CannotLoot(character, -1);
+                                            DropPacket.CannotLoot(character, CannotLootDropReason.YouCantGetAnymoreItems);
                                             InventoryOperationPacket.NoChange(character);
                                         }
                                         else
                                         {
                                             character.Inventory.AddNewItem(ItemID, Amount);
-                                            character.SendPacket(MessagePacket.GainItem(ItemID, Amount));
+                                            character.SendPacket(MessagePacket.DropPickup(false, ItemID, Amount));
                                         }
                                     }
                                     else
@@ -2457,7 +2457,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                     short pickupAmount = drop.Reward.Amount;
                                     if (drop.Reward.Mesos)
                                     {
-                                        character.Inventory.ExchangeMesos(drop.Reward.Drop);
+                                        character.Inventory.AddMesos(drop.Reward.Drop);
                                     }
                                     else
                                     {
@@ -2466,8 +2466,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                             continue;
                                         }
                                     }
-                                    if (drop.Reward.Mesos) character.SendPacket(MessagePacket.GainMesos(drop.Reward.Drop, MessageAppearType.SideWhite));
-                                    else character.SendPacket(MessagePacket.GainItem(drop.Reward.Drop, pickupAmount));
+                                    if (drop.Reward.Mesos) character.SendPacket(MessagePacket.DropPickup(true, drop.Reward.Drop, 0));
+                                    else character.SendPacket(MessagePacket.DropPickup(false, drop.Reward.Drop, pickupAmount));
                                     if (mobLoot)
                                     {
                                         var mob = mobs[(int)(Rand32.Next() % mobs.Count)];

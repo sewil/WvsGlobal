@@ -12,6 +12,7 @@ namespace WvsBeta.Common.Objects
         public bool Cash { get; set; }
         public ushort MaxSlot { get; set; }
         public bool IsQuest { get; set; }
+        public bool IsOnly { get; set; }
         public short HP { get; set; }
         public short MP { get; set; }
         public short HPRate { get; set; }

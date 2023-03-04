@@ -20,7 +20,7 @@ namespace WvsBeta.Scripts.Scripts
             int nRet = self.AskYesNo("I don't think you need to be here. Do you really want to go to #b#m" + mapNum + "##k? Well, it will cost #b" + fee.Culture() + " mesos#k. What do you think?");
             if (nRet == 1)
             {
-                if (!target.Inventory.TryExchange(-fee)) self.Say("You do not have enough money. With your skills, you should have more than that!");
+                if (target.Inventory.Exchange(-fee) == 0) self.Say("You do not have enough mesos. With your skills, you should have more than that!");
                 else target.ChangeMap(mapNum);
             }
             self.Say("There's a lot to see in this town too. Let me know if you want to go somewhere else.");
@@ -163,9 +163,9 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    if (!target.Inventory.TryExchange(-totalPrice, itemId, (short)nRetNum))
+                    if (target.Inventory.Exchange(-totalPrice, itemId, (short)nRetNum) == 0)
                     {
-                        self.Say("Are you running out of money? Please check if you have an empty slot in your inventory and that you have at least #r" + totalPrice.Culture() + "#k mesos.");
+                        self.Say("Are you running out of mesos? Please check if you have an empty slot in your inventory and that you have at least #r" + totalPrice.Culture() + "#k mesos.");
                     }
                     else
                     {

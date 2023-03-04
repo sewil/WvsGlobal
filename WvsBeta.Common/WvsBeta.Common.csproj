@@ -122,6 +122,11 @@
     <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
     <Compile Include="Enums\EquippedVisibility.cs" />
+    <Compile Include="Enums\ItemEtcIds.cs" />
+    <Compile Include="Enums\JobIds.cs" />
+    <Compile Include="Enums\MapIds.cs" />
+    <Compile Include="Enums\NpcIds.cs" />
+    <Compile Include="Enums\QuestIds.cs" />
     <Compile Include="Enums\QuestState.cs" />
     <Compile Include="Enums\TransactionType.cs" />
     <Compile Include="Extensions\CrossThreadExtensions.cs" />
@@ -230,6 +235,7 @@
     <Compile Include="Crypto\Shuffler.cs" />
     <Compile Include="Sessions\SessionDisconnectException.cs" />
     <Compile Include="Sessions\Shanda.cs" />
+    <Compile Include="Strings.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Tracking\ClientChecksum.cs" />
     <Compile Include="Tracking\ItemTransfer.cs" />

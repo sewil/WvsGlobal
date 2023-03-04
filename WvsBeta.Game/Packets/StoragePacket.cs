@@ -124,7 +124,7 @@ namespace WvsBeta.Game
 
                         EncodeStorage(chr, StorageEncode.EncodeDeposit, GetEncodeFlagForInventory(Constants.getInventory(item.ItemID)));
                         
-                        chr.Inventory.ExchangeMesos(-storageCost); //why did you forget this diamondo :P
+                        chr.Inventory.AddMesos(-storageCost); //why did you forget this diamondo :P
                         
                         MesosTransfer.PlayerGaveToNPC(chr.ID, chr.TrunkNPCID, storageCost, "" + item.GetHashCode());
                         break;
@@ -138,7 +138,7 @@ namespace WvsBeta.Game
                             if (chr.AssertForHack(Math.Abs(mesos) > chr.Inventory.Mesos, "Trying to store more mesos than he has") == false)
                             {
                                 Common.Tracking.MesosTransfer.PlayerStoreMesos(chr.ID, Math.Abs(mesos));
-                                chr.Inventory.ExchangeMesos(mesos);
+                                chr.Inventory.AddMesos(mesos);
                                 chr.Storage.ChangeMesos(mesos);
                             }
                         }
@@ -148,7 +148,7 @@ namespace WvsBeta.Game
                             if (chr.AssertForHack(Math.Abs(mesos) > chr.Storage.Mesos, "Trying to withdraw more mesos than he has") == false)
                             {
                                 Common.Tracking.MesosTransfer.PlayerRetrieveMesos(chr.ID, Math.Abs(mesos));
-                                chr.Inventory.ExchangeMesos(mesos);
+                                chr.Inventory.AddMesos(mesos);
                                 chr.Storage.ChangeMesos(mesos);
                             }
                         }

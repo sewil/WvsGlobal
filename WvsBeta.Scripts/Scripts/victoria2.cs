@@ -31,8 +31,8 @@ namespace WvsBeta.Scripts.Scripts
                     if (nRet == 0) self.Say("It's not easy to make #t4011007#. Please get the materials soon.");
                     else if (nRet == 1)
                     {
-                        var ret = target.Inventory.TryExchange(-10000, 4011000, -1, 4011001, -1, 4011002, -1, 4011003, -1, 4011004, -1, 4011005, -1, 4011006, -1, 4011007, 1);
-                        if (!ret) self.Say("Are you sure you have enough money? Please make sure that you have #b#t4011000#, #t4011001#, #t4011002#, #t4011003#, #t4011004#, #t4011005# and #t4011006##k refined, one of each.");
+                        var ret = target.Inventory.Exchange(-10000, 4011000, -1, 4011001, -1, 4011002, -1, 4011003, -1, 4011004, -1, 4011005, -1, 4011006, -1, 4011007, 1);
+                        if (ret == 0) self.Say("Are you sure you have enough money? Please make sure that you have #b#t4011000#, #t4011001#, #t4011002#, #t4011003#, #t4011004#, #t4011005# and #t4011006##k refined, one of each.");
                         else nNewItemID1 = "#t4011007#";
                     }
                 }
@@ -42,8 +42,8 @@ namespace WvsBeta.Scripts.Scripts
                     if (nRet == 0) self.Say("It's not easy to make #t4021009#. Please get the materials soon.");
                     else if (nRet == 1)
                     {
-                        var ret = inventory.TryExchange(-15000, 4021000, -1, 4021001, -1, 4021002, -1, 4021003, -1, 4021004, -1, 4021005, -1, 4021006, -1, 4021007, -1, 4021008, -1, 4021009, 1);
-                        if (!ret) self.Say("Are you sure you have enough money? Please make sure that you have #b#t4021000#, #t4021001#, #t4021002#, #t4021003#, #t4021004#, #t4021005#, #t4011006##k #, #t4021007# and #t4021008##k refined, one of each.");
+                        var ret = inventory.Exchange(-15000, 4021000, -1, 4021001, -1, 4021002, -1, 4021003, -1, 4021004, -1, 4021005, -1, 4021006, -1, 4021007, -1, 4021008, -1, 4021009, 1);
+                        if (ret == 0) self.Say("Are you sure you have enough money? Please make sure that you have #b#t4021000#, #t4021001#, #t4021002#, #t4021003#, #t4021004#, #t4021005#, #t4011006##k #, #t4021007# and #t4021008##k refined, one of each.");
                         else nNewItemID1 = "#t4021009#";
                     }
                 }
@@ -54,8 +54,8 @@ namespace WvsBeta.Scripts.Scripts
                     if (nRet == 0) self.Say("It's not easy to make #t4031042#. Please get the materials soon.");
                     else if (nRet == 1)
                     {
-                        var ret = inventory.TryExchange(-30000, 4001006, -1, 4021008, -1, 4011007, -1, 4031042, 1);
-                        if (!ret) self.Say("Are you sure you have enough money? Veja se você tem #b1 #t4001006#, 1 #t4011007# e 1 #t4021008##k prontos para mim.");
+                        var ret = inventory.Exchange(-30000, 4001006, -1, 4021008, -1, 4011007, -1, 4031042, 1);
+                        if (ret == 0) self.Say("Are you sure you have enough money? Veja se você tem #b1 #t4001006#, 1 #t4011007# e 1 #t4021008##k prontos para mim.");
                         else nNewItemID1 = "#t4031042#";
                     }
                 }
@@ -145,8 +145,8 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     var rnum = Rand32.NextBetween(0, rewards.Length-1);
                     int nNewItemID = rewards[rnum];
-                    var ret = inventory.TryExchange(0, nNewItemID, 2);
-                    if (!ret) self.Say("Your etc inventory is full, so you cannot hold any more items there. Please leave at least one slot empty.");
+                    var ret = inventory.Exchange(0, nNewItemID, 2);
+                    if (ret == 0) self.Say("Your etc inventory is full, so you cannot hold any more items there. Please leave at least one slot empty.");
                     else target.ChangeMap(105040300);
                 }
             }
@@ -156,8 +156,8 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
                     {
-                        var ret = inventory.TryExchange(0, flowerID, flowerAmount);
-                        if (!ret) self.Say("Sorry, but your etc inventory is full, so you cannot hold the flowers. Leave at least one slot empty for the flowers.");
+                        var ret = inventory.Exchange(0, flowerID, flowerAmount);
+                        if (ret == 0) self.Say("Sorry, but your etc inventory is full, so you cannot hold the flowers. Leave at least one slot empty for the flowers.");
                         else target.ChangeMap(105040300);
                     }
                     else self.Say("Your etc inventory is full, so you cannot hold any more items there. Please leave at least one slot empty.");
@@ -411,8 +411,8 @@ namespace WvsBeta.Scripts.Scripts
                     if (nRet == 0) self.Say("Hmm... too busy to do this now? Anyway, if you want, come back and find me.");
                     else
                     {
-                        var ret = inventory.TryExchange(0, 4031035, 1);
-                        if (!ret) self.Say("Your etc inventory is full! I cannot give you the letter unless there is space in your inventory. Leave a slot free and then talk to me.");
+                        var ret = inventory.Exchange(0, 4031035, 1);
+                        if (ret == 0) self.Say("Your etc inventory is full! I cannot give you the letter unless there is space in your inventory. Leave a slot free and then talk to me.");
                         else self.Say("Okay, here's the letter. He wouldn't know I sent you if you went there straight away. Go through the obstacles with your pet, go all the way to the top and then talk to #p1012007# and give him the letter. It won't be difficult if you pay attention to your pet while going through the obstacles. Good luck!");
                     }
                 }
@@ -454,8 +454,8 @@ namespace WvsBeta.Scripts.Scripts
                                             {
                                                 self.Say("Right! Hmmm... you know a lot about pets. Cool, since you know a lot, I'll gladly give you the parchment. I know it's not mine and all, but... who would wear someone else's clothes and leave something so important in them? There you go!");
                                                 inventory = target.Inventory;
-                                                var ret = inventory.TryExchange(0, 4031034, 1);
-                                                if (!ret) self.Say("Ouch... do you have a slot available in your etc. inventory? I can't give it to you if it's full.");
+                                                var ret = inventory.Exchange(0, 4031034, 1);
+                                                if (ret == 0) self.Say("Ouch... do you have a slot available in your etc. inventory? I can't give it to you if it's full.");
                                                 else self.Say("Ok... So, all you need to do now is take it and go talk to #p1032102# and also get a #b#t5180000##k... Hahaha good luck to you!");
                                             }
                                         }
@@ -483,8 +483,8 @@ namespace WvsBeta.Scripts.Scripts
                 if (pet == null) self.Say("Hmmm... did you really come here with your pet? These obstacles are for animals. What are you doing here without him? Are you kidding me!!!");
                 else
                 {
-                    var ret = inventory.TryExchange(0, 4031035, -1);
-                    if (!ret) self.Say("Hey, do you really have my brother's letter? Go to your etc inventory and see if the letter is really there or not!");
+                    var ret = inventory.Exchange(0, 4031035, -1);
+                    if (ret == 0) self.Say("Hey, do you really have my brother's letter? Go to your etc inventory and see if the letter is really there or not!");
                     else
                     {
                         Pet.IncreaseCloseness(target, pet, 2);

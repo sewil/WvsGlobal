@@ -25,7 +25,7 @@ namespace WvsBeta.Scripts.Scripts
                     int nRet = self.AskYesNo("Are you sure you want to take #b#t4031020##k with you?");
                     if (nRet != 0)
                     {
-                        if (!target.Inventory.TryExchange(0, 4031020, 1)) self.Say("Your etc inventory seems to be full. Please make some room to get the item.");
+                        if (target.Inventory.Exchange(0, 4031020, 1) == 0) self.Say("Your etc. inventory seems to be full. Please make some room to get the item.");
                         else target.ChangeMap(101000000);
                     }
                 }
@@ -49,8 +49,8 @@ namespace WvsBeta.Scripts.Scripts
                         else if (rnum == 11) nNewItemID = 4020005;
                         else if (rnum == 12) nNewItemID = 4020006;
 
-                        var ret = target.Inventory.TryExchange(0, nNewItemID, 2);
-                        if (!ret) self.Say("Your etc inventory seems to be full. Please make some room to take the item.");
+                        var ret = target.Inventory.Exchange(0, nNewItemID, 2);
+                        if (ret == 0) self.Say("Your etc inventory seems to be full. Please make some room to take the item.");
                         else target.ChangeMap(101000000);
                     }
                     else self.Say("You must have at least one empty slot in your etc inventory to store the item you found among the flowers. Free up some space and then try again.");
@@ -79,8 +79,8 @@ namespace WvsBeta.Scripts.Scripts
                     int nRet = self.AskYesNo("Are you sure you want to take #b#t4031032##k with you?");
                     if (nRet != 0)
                     {
-                        var ret = target.Inventory.TryExchange(0, 4031032, 1);
-                        if (!ret) self.Say("Your etc inventory seems to be full. Please make some room to take the item.");
+                        var ret = target.Inventory.Exchange(0, 4031032, 1);
+                        if (ret == 0) self.Say("Your etc inventory seems to be full. Please make some room to take the item.");
                         else target.ChangeMap(101000000);
                     }
                 }
@@ -109,8 +109,8 @@ namespace WvsBeta.Scripts.Scripts
                             itemNumber = 1;
                         }
 
-                        var ret = target.Inventory.TryExchange(0, nNewItemID, itemNumber);
-                        if (!ret) self.Say("Your equipment and etc inventory are full, which does not allow you to accept more items. You need to free up space in your inventory of etc.");
+                        var ret = target.Inventory.Exchange(0, nNewItemID, itemNumber);
+                        if (ret == 0) self.Say("Your equipment and etc inventory are full, which does not allow you to accept more items. You need to free up space in your inventory of etc.");
                         else target.ChangeMap(101000000);
                     }
                     else self.Say("You need to free up some space in your equipment and etc inventories, so that you can place the items you found in the herb bushes. Please check again after adjusting.");
@@ -152,8 +152,8 @@ namespace WvsBeta.Scripts.Scripts
                     if (nRet == 0) self.Say("I understand... but understand my side too, you can't stay here for free.");
                     else
                     {
-                        var ret = target.Inventory.TryExchange(-nPrice);
-                        if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos on hand. Don't expect me to give any discount.");
+                        var ret = target.Inventory.Exchange(-nPrice);
+                        if (ret == 0) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos on hand. Don't expect me to give any discount.");
                         else target.ChangeMap(101000100);
                     }
                 }
@@ -171,8 +171,8 @@ namespace WvsBeta.Scripts.Scripts
                 if (nRet == 0) self.Say("I understand... but understand my side too, you can't stay here for free.");
                 else
                 {
-                    var ret = target.Inventory.TryExchange(-nPrice);
-                    if (!ret) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos in hand. Don't expect me to give any discount.");
+                    var ret = target.Inventory.Exchange(-nPrice);
+                    if (ret == 0) self.Say("Are you running out of money? See if you have more than #r" + nPrice.Culture() + "#k mesos in hand. Don't expect me to give any discount.");
                     else target.ChangeMap(101000102);
                 }
             }

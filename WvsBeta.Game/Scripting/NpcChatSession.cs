@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using WvsBeta.Common;
 using WvsBeta.Game.Scripting;
+using ThreadState = System.Threading.ThreadState;
 
 namespace WvsBeta.Game
 {
@@ -18,6 +20,7 @@ namespace WvsBeta.Game
         void Say(string message);
         int AskYesNo(string Message);
         int AskMenu(string Message);
+        int AskMenu(string message, params string[] options);
         int AskNumber(string Message, int Default, int MinValue, int MaxValue);
         string AskPet(string message);
         string AskText(string Message, string Default, short MinLength, short MaxLength);
@@ -52,6 +55,7 @@ namespace WvsBeta.Game
         public int mNpcID { get; set; }
         public GameCharacter mCharacter { get; set; }
         private INpcScript compiledScript = null;
+        public bool Started { get; private set; }
 
         private List<string> sayLines { get; set; } = new List<string>();
         private readonly Dictionary<string, object> scriptVars;
@@ -66,15 +70,16 @@ namespace WvsBeta.Game
         public bool WaitingForResponse => thread.ThreadState == ThreadState.WaitSleepJoin;
         private EventWaitHandle ewh;
         private Thread thread;
-        public NpcChatSession(int npcId, GameCharacter chr, INpcScript npcScript, string scriptName)
+        public NpcChatSession(int npcID, GameCharacter chr, INpcScript npcScript, string scriptName)
         {
-            mNpcID = npcId;
+            mNpcID = npcID;
             mCharacter = chr;
             mCharacter.NpcSession = this;
             scriptVars = Server.Instance.ScriptVars[scriptName];
             compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
             if (chr.IsGM && chr.Job == 500) SetStrReg("name", chr.Name);
             ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
+            Started = true;
             thread = new Thread(new ParameterizedThreadStart(RunScript));
             thread.Start(this);
         }
@@ -124,12 +129,17 @@ namespace WvsBeta.Game
             this.nRetStr = nRetStr;
             this.nRetNum = nRetNum;
             ewh.Set();
-            #if DEBUG
-                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, "nRet:" + nRet + ",nRetStr:" + nRetStr + ",nRetNum:" + nRetNum, mCharacter, ChatPacket.MessageMode.ToPlayer);
-            #endif
+#if DEBUG
+            Trace.WriteLine("nRet:" + nRet + ",nRetStr:" + nRetStr + ",nRetNum:" + nRetNum);
+#endif
+        }
+        public void SoftStop()
+        {
+            Started = false;
         }
         public void Stop()
         {
+            SoftStop();
             mCharacter.NpcSession = null;
             compiledScript = null;
             ewh = null;
@@ -139,7 +149,10 @@ namespace WvsBeta.Game
             nRetStr = "";
             nRetNum = 0;
         }
-
+        private void Wait()
+        {
+            if (Started) ewh.WaitOne();
+        }
         public void RespondPrevious()
         {
             if (sayIndex == 0 || sayLines.Count == 0) return;
@@ -170,8 +183,10 @@ namespace WvsBeta.Game
         {
             sayLines.Add(message);
             sayIndex = sayLines.Count - 1;
-            NpcPacket.SendNPCChatTextSimple(mCharacter, mNpcID, message, sayIndex > 0, true);
-            ewh.WaitOne();
+            bool showBack = sayIndex > 0;
+            bool showNext = Started;
+            NpcPacket.SendNPCChatTextSimple(mCharacter, mNpcID, message, showBack, showNext);
+            Wait();
         }
 
         public int AskMenu(string Message)
@@ -179,16 +194,24 @@ namespace WvsBeta.Game
             sayLines.Clear();
             sayIndex = 0;
             NpcPacket.SendNPCChatTextMenu(mCharacter, mNpcID, Message);
-            ewh.WaitOne();
+            Wait();
             return nRet;
         }
-
+        public int AskMenu(string message, params string[] options)
+        {
+            string menu = "";
+            for (int i = 0; i < options.Length; i++)
+            {
+                menu += $"\r\n#b#L{i}#{options[i]}#l#k";
+            }
+            return AskMenu(message + menu);
+        }
         public int AskYesNo(string Message)
         {
             sayLines.Clear();
             sayIndex = 0;
             NpcPacket.SendNPCChatTextYesNo(mCharacter, mNpcID, Message);
-            ewh.WaitOne();
+            Wait();
             return nRet;
         }
 
@@ -197,7 +220,7 @@ namespace WvsBeta.Game
             sayLines.Clear();
             sayIndex = 0;
             NpcPacket.SendNPCChatTextRequestText(mCharacter, mNpcID, Message, Default, MinLength, MaxLength);
-            ewh.WaitOne();
+            Wait();
             return nRetStr;
         }
 
@@ -206,7 +229,7 @@ namespace WvsBeta.Game
             sayLines.Clear();
             sayIndex = 0;
             NpcPacket.SendNPCChatTextRequestInteger(mCharacter, mNpcID, Message, Default, MinValue, MaxValue);
-            ewh.WaitOne();
+            Wait();
             return nRetNum;
         }
 
@@ -225,7 +248,7 @@ namespace WvsBeta.Game
             sayLines.Clear();
             sayIndex = 0;
             NpcPacket.SendNPCChatTextRequestStyle(mCharacter, mNpcID, message, values.ToList());
-            ewh.WaitOne();
+            Wait();
             return (int)nAvatarSelectState;
         }
         public void RespondAvatar(byte nRet)
@@ -244,7 +267,7 @@ namespace WvsBeta.Game
             else
             {
                 NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message);
-                ewh.WaitOne();
+                Wait();
                 return nRetStr;
             }
         }
@@ -261,7 +284,7 @@ namespace WvsBeta.Game
             }
             catch { }
             NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message, petskip);
-            ewh.WaitOne();
+            Wait();
             return nRetStr;
         }
         public void AskShop(params ShopItemData[] items)

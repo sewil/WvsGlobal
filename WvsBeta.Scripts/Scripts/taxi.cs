@@ -30,7 +30,7 @@ namespace WvsBeta.Scripts.Scripts
             nRet = self.AskYesNo("You have nothing else to do here, huh? Would you like to go to #b#m" + mapID + "##k? It will cost #b" + fee.Culture() + " mesos#k.");
             if (nRet == 1)
             {
-                if (!target.Inventory.TryExchange(-fee)) self.Say("You do not have enough mesos. I'm sorry, but without enough mesos you won't be able to ride the taxi.");
+                if (target.Inventory.Exchange(-fee) == 0) self.Say("You do not have enough mesos. I'm sorry, but without enough mesos you won't be able to ride the taxi.");
                 else target.ChangeMap(mapID);
             }
             else
@@ -121,7 +121,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else
             {
-                if (!target.Inventory.TryExchange(-fee))
+                if (target.Inventory.Exchange(-fee) == 0)
                 {
                     self.Say("It looks like you don't have enough mesos. Sorry, but you won't be able to use this without it.");
                 }

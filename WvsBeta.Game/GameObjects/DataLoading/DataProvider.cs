@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Web;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
@@ -317,7 +319,7 @@ namespace WvsBeta.Game
                 from region in pFile.BaseNode["Map"]["Map"]
                 where region.Name.StartsWith("Map")
                 from map in region
-                where map.Name != "AreaCode.img"
+                where map.Name != "AreaCode.img" && map.Name.EndsWith(".img")
                 select map;
 
             Maps = IterateAllToDict(maps, p =>

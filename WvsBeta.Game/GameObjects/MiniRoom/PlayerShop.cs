@@ -202,8 +202,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
 
             pCharacter.Inventory.AddNewItem(pst.sItem.ItemID, realAmount);
-            pCharacter.Inventory.ExchangeMesos(-cost);
-            Owner.Inventory.ExchangeMesos(cost);
+            pCharacter.Inventory.AddMesos(-cost);
+            Owner.Inventory.AddMesos(cost);
 
             MesosTransfer.PlayerBuysFromPersonalShop(pCharacter.ID, Owner.ID, cost, _transaction);
             ItemTransfer.PersonalShopBoughtItem(Owner.ID, pCharacter.ID, pst.sItem.ItemID, realAmount, TransactionID, pst.sItem);

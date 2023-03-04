@@ -18,6 +18,10 @@ namespace WvsBeta.Common.Character
         {
             return Quests.ContainsKey(questID);
         }
+        public bool HasQuestState(short questID, QuestState state)
+        {
+            return Quests.TryGetValue(questID, out QuestData quest) && quest.State == state;
+        }
         public Dictionary<short, QuestData> GetQuests(bool wzFilter = true)
         {
             if (wzFilter) return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);

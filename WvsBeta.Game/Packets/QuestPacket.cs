@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -100,8 +101,8 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestCheck(GameCharacter chr, WZQuestCheck check)
         {
-            foreach (var item in check.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.FailedRetrieveEquippedItem); }
-            if (check.Mesos > 0 && !chr.Inventory.CanExchangeMesos(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
+            foreach (var item in check.Items) { if (!chr.Inventory.CanExchange(0, item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.UnknownError); }
+            if (check.Mesos > 0 && !chr.Inventory.CanExchange(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (check.LvMin > 0 && chr.Level < check.LvMin) throw new QuestException(QuestActionResult.UnknownError);
             if (check.LvMax > 0 && chr.Level > check.LvMax) throw new QuestException(QuestActionResult.UnknownError);
 
@@ -115,16 +116,15 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestAct(GameCharacter chr, int npcid, WZQuestAct act)
         {
-            foreach (var item in act.Items) { if (!chr.Inventory.CanExchangeItem(item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull); }
-            if (act.Mesos > 0 && !chr.Inventory.CanExchangeMesos(act.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
+            foreach (var item in act.Items) { if (!chr.Inventory.CanExchange(0, item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull); }
+            if (act.Mesos > 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.UnknownError);
             if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
 
             if (act.Items.Count > 0)
             {
                 foreach (var item in act.Items)
                 {
-                    chr.Inventory.ExchangeItem(item.ItemID, item.Amount);
-                    if (item.Amount > 0) chr.SendPacket(MessagePacket.GainItem(item.ItemID, item.Amount));
+                    chr.Inventory.Exchange(0, item.ItemID, item.Amount);
                 }
             }
             if (act.Mesos != 0)
@@ -174,11 +174,10 @@ namespace WvsBeta.Game
                         // lost item [42] [00] [E9 03] [01 00 00 00] [1B 82 3D 00]
                         int amount = packet.ReadInt();
                         int itemid = packet.ReadInt();
-                        if (!chr.Inventory.TryExchangeItem(itemid, (short)amount))
+                        if (chr.Inventory.Exchange(0, itemid, (short)amount) == 0)
                         {
                             SendQuestActionResultError(chr, QuestActionResult.InventoryFull);
                         }
-                        chr.SendPacket(MessagePacket.GainItem(itemid, (short)amount));
                         break;
                     }
                 case 1:

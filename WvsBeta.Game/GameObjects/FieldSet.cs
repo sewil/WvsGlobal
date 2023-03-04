@@ -121,9 +121,13 @@ namespace WvsBeta.Game
             Started = false;
             Party = null;
             OnEnd?.Invoke(this, null);
-            foreach (Delegate d in OnEnd?.GetInvocationList())
+            var invocationList = OnEnd?.GetInvocationList();
+            if (invocationList != null)
             {
-                OnEnd -= (EventHandler)d;
+                foreach (Delegate d in invocationList)
+                {
+                    OnEnd -= (EventHandler)d;
+                }
             }
             _savedVars.Clear();
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);

@@ -444,7 +444,7 @@ namespace WvsBeta.Game
                                 chr.PrimaryStats.BuffMesoGuard.MesosLeft -= mesoLoss;
                                 MesosTransfer.PlayerUsedSkill(chr.ID, mesoLoss, skillId);
 
-                                chr.Inventory.ExchangeMesos(-(mesoLoss), false);
+                                chr.Inventory.AddMesos(-(mesoLoss), false);
 
                                 Trace.WriteLine($"Reducing damage by mesos. Mesos: {mesoLoss}, maxMesos {maxMesosUsable}, reduction {damageReduction}");
                                 actualHPEffect += damageReduction;

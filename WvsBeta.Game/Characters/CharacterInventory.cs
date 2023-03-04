@@ -404,91 +404,16 @@ namespace WvsBeta.Game
             return actualAmount >= amount;
         }
 
-        /// <summary>
-        /// Mass exchange
-        /// </summary>
-        /// <param name="items">mesos, [itemid,amount,itemid,amount]...</param>
-        /// <returns></returns>
-        public bool TryExchange(int mesos, params int[] items)
+        public void AddMesos(int value, bool isSelf = false)
         {
-            if (!CanExchangeMesos(mesos)) return false;
-            if (items.Length % 2 != 0) throw new ArgumentException("Invalid items arg");
-            // Check first
-            for (int i = 0; i < items.Length; i++)
-            {
-                int item = items[i];
-                if (i % 2 == 0) // itemid
-                {
-                    if (!CanExchangeItem(item, (short)items[i+1])) return false;
-                }
-            }
-            ExchangeMesos(mesos);
-            for (int i = 0; i < items.Length; i++)
-            {
-                int item = items[i];
-                if (i % 2 == 0) // itemid
-                {
-                    short amount = items.Length > i + 1 ? (short)items[i + 1] : (short)1;
-                    ExchangeItem(item, amount);
-                }
-            }
-            return true;
+            AddMesos(value, isSelf, out int _);
         }
-
-        public void ExchangeMesos(int value, bool isSelf = false)
-        {
-            ExchangeMesos(value, isSelf, out int _);
-        }
-        public void ExchangeMesos(int value, bool isSelf, out int mesosDiff)
+        public void AddMesos(int value, bool isSelf, out int mesosDiff)
         {
             int newMesos = Math.Max(0, Math.Min(int.MaxValue, Mesos + value));
             mesosDiff = newMesos - Mesos;
             Mesos = newMesos;
             CharacterStatsPacket.SendStatChange(Character, (uint)CharacterStatsPacket.StatFlags.Mesos, Mesos, isSelf);
-        }
-        public bool CanExchangeMesos(int value)
-        {
-            long newM = (long)Mesos + (long)value;
-            return 0 <= newM && newM <= int.MaxValue;
-        }
-        public bool CanExchangeItem(int itemId, short amount)
-        {
-            if (amount == 0) return false;
-            if (amount < 0) // Take item
-            {
-                if (!HasItemAmount(itemId, Math.Abs(amount), out Inventory _)) return false;
-            }
-            else // Give item
-            {
-                if (!HasSlotsFreeForItem(itemId, amount)) return false;
-            }
-            return true;
-        }
-        public override bool TryExchangeItem(int itemId, short amount)
-        {
-            if (amount == 0) return false;
-            if (amount < 0) // Take item
-            {
-                if (!HasItemAmount(itemId, Math.Abs(amount), out Inventory _)) return false;
-                TakeItem(itemId, (short)-amount);
-            }
-            else // Give item
-            {
-                if (!HasSlotsFreeForItem(itemId, amount)) return false;
-                AddItem(itemId, amount);
-            }
-            return true;
-        }
-        public void ExchangeItem(int itemId, short amount)
-        {
-            if (amount < 0) // Take item
-            {
-                TakeItem(itemId, (short)-amount);
-            }
-            else // Give item
-            {
-                AddItem(itemId, amount);
-            }
         }
         /// <summary>
         /// Try to remove <paramref name="amount"/> amount of itemid <paramref name="itemid"/>.
@@ -689,7 +614,6 @@ namespace WvsBeta.Game
             callback(allItems);
         }
 
-
         public override void CheckExpired()
         {
             var currentTime = MasterThread.CurrentDate.ToFileTimeUtc();
@@ -785,12 +709,81 @@ namespace WvsBeta.Game
             */
             return -1; // TODO: Implement move pet closeness, useItem is pet ap reset scroll
         }
+        public bool CanExchange(int mesos, params int[] items)
+        {
+            if (items.Length % 2 != 0)
+            {
+                Program.MainForm.LogDebug("Invalid exchange args {0} {1}", mesos, items);
+                return false;
+            }
+            if (mesos != 0)
+            {
+                long newM = (long)Mesos + (long)mesos;
+                bool canExchangeMesos = 0 <= newM && newM <= int.MaxValue;
+                if (!canExchangeMesos) return false;
+            }
+            if (items.Length > 0)
+            {
+                for (int i = 0; i < items.Length; i++)
+                {
+                    int itemId = items[i];
+                    if (i % 2 == 0) // itemid
+                    {
+                        short amount = (short)items[i + 1];
+                        if (amount == 0) continue;
+                        if (amount < 0) // Take item
+                        {
+                            if (!HasItemAmount(itemId, Math.Abs(amount), out Inventory _)) return false;
+                        }
+                        else // Give item
+                        {
+                            if (!HasSlotsFreeForItem(itemId, amount)) return false;
+                        }
+                    }
+                }
+            }
+            return true;
+        }
+        /// <summary>
+        /// Mass exchange, used by scripts when exchanging with NPCs
+        /// </summary>
+        /// <param name="mesos">mesos to exchange, can be positive or negative</param>
+        /// <param name="items">items to exchange, alternating between itemid and amount: itemid,amount,itemid,amount...</param>
+        /// <returns>Status code: 1 = success, 0 = error</returns>
         public int Exchange(int mesos, params int[] items)
         {
-            return TryExchange(mesos, items) ? 1 : 0;
+            if (!CanExchange(mesos, items)) return 0;
+
+            AddMesos(mesos);
+            if (mesos != 0)
+            {
+                Character.SendPacket(MessagePacket.GainMesos(mesos));
+            }
+            for (int i = 0; i < items.Length; i++)
+            {
+                int itemid = items[i];
+                if (i % 2 == 0) // itemid
+                {
+                    short amount = items.Length > i + 1 ? (short)items[i + 1] : (short)1;
+                    if (amount < 0) // Take item
+                    {
+                        TakeItem(itemid, (short)-amount);
+                    }
+                    else // Give item
+                    {
+                        AddItem(itemid, amount);
+                        Character.SendPacket(MessagePacket.DropPickup(false, itemid, amount)); // Is grey text vanilla?
+                    }
+                }
+            }
+            return 1;
         }
-        // Exchange stars
-        // ExchangeEx(0, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800)
+        /// <summary>
+        /// Mass exchange for rechargables:
+        /// ExchangeEx(0, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800)
+        /// </summary>
+        /// <returns>Status code: 1 = success, 0 = error</returns>
+        /// <exception cref="ArgumentException"></exception>
         public int ExchangeEx(int mesos, params object[] items)
         {
             int[] parsedItems = new int[items.Length];
@@ -814,6 +807,11 @@ namespace WvsBeta.Game
                 throw new ArgumentException();
             }
             return Exchange(mesos, parsedItems);
+        }
+
+        public void IncSlotCount(byte inventory, byte slots)
+        {
+            SetInventorySlots((Inventory)inventory, slots);
         }
         #endregion
     }

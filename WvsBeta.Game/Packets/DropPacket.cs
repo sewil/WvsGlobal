@@ -7,6 +7,11 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
+    public enum CannotLootDropReason : sbyte
+    {
+        CannotBeTakenAnymore = -2,
+        YouCantGetAnymoreItems = -1,
+    }
     public static class DropPacket
     {
         public static void HandleDropMesos(GameCharacter chr, int amount)
@@ -29,7 +34,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            chr.Inventory.ExchangeMesos(-amount, true);
+            chr.Inventory.AddMesos(-amount, true);
             Common.Tracking.MesosTransfer.PlayerDropMesos(chr.ID, amount, chr.MapID.ToString());
 
             chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
@@ -89,18 +94,18 @@ namespace WvsBeta.Game
                                 mesosGiven += Bonus;
                             }
                             // Now figure out what we really gave the user
-                            BonusUser.Inventory.ExchangeMesos(mesosGiven, true, out mesosGiven);
+                            BonusUser.Inventory.AddMesos(mesosGiven, true, out mesosGiven);
 
                             Common.Tracking.MesosTransfer.PlayerLootMesos(drop.SourceID, chr.ID, mesosGiven, "Party " + chr.PartyID + ", " + chr.MapID + ", " + drop.GetHashCode());
 
-                            BonusUser.SendPacket(MessagePacket.GainMesos(mesosGiven, MessageAppearType.SideWhite));
+                            BonusUser.SendPacket(MessagePacket.DropPickup(true, mesosGiven, 0));
                         }
                     }
                 }
 
                 if (!SentDropNotice)
                 {
-                    chr.Inventory.ExchangeMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
+                    chr.Inventory.AddMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
                     Common.Tracking.MesosTransfer.PlayerLootMesos(
                         drop.SourceID,
                         chr.ID,
@@ -113,7 +118,7 @@ namespace WvsBeta.Game
             {
                 if (!chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount))
                 {
-                    CannotLoot(chr, -1);
+                    CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
                     InventoryOperationPacket.NoChange(chr);
                     return;
                 }
@@ -123,7 +128,7 @@ namespace WvsBeta.Game
             }
             else if (chr.Inventory.AddItem(drop.Reward.GetData()) == drop.Reward.Amount)
             {
-                CannotLoot(chr, -1);
+                CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
                 InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
                 return;
             }
@@ -136,8 +141,8 @@ namespace WvsBeta.Game
             }
             if (!SentDropNotice)
             {
-                if (reward.Mesos) chr.SendPacket(MessagePacket.GainMesos(dropNoticeItemIdOrMesos, MessageAppearType.SideWhite));
-                else chr.SendPacket(MessagePacket.GainItem(dropNoticeItemIdOrMesos, pickupAmount));
+                if (reward.Mesos) chr.SendPacket(MessagePacket.DropPickup(true, dropNoticeItemIdOrMesos, 0));
+                else chr.SendPacket(MessagePacket.DropPickup(false, dropNoticeItemIdOrMesos, pickupAmount));
             }
             chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.FreeForAll, chr.ID);
         }
@@ -153,7 +158,7 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)drop.DropType);
             pw.WriteShort(drop.Pt2.X);
             pw.WriteShort(drop.Pt2.Y);
-            pw.WriteInt(drop.DropType == DropType.Normal ? drop.SourceID : 0);
+            pw.WriteInt(drop.DropType != DropType.FreeForAll ? drop.SourceID : 0);
 
             if (EnterType == RewardEnterType.ShowDrop ||
                 EnterType == RewardEnterType.DropAnimation ||
@@ -190,12 +195,12 @@ namespace WvsBeta.Game
 
             Drop.Field.SendPacket(Drop, pw);
         }
-
-        public static void CannotLoot(GameCharacter chr, sbyte reason)
+        
+        public static void CannotLoot(GameCharacter chr, CannotLootDropReason reason)
         {
             Packet pw = new Packet(ServerMessages.MESSAGE);
             pw.WriteByte(0);
-            pw.WriteSByte(reason);
+            pw.WriteSByte((sbyte)reason);
             chr.SendPacket(pw);
         }
     }

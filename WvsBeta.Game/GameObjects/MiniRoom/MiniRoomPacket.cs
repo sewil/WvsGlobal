@@ -466,7 +466,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             MiniGamePacket.AddVisitor(chr, mrb);
                             MiniGamePacket.ShowWindow(chr, mrb, omok.OmokType);
                             MiniRoomBalloonPacket.Send(omok.Owner, omok);
-                            chr.Inventory.ExchangeMesos(-100);
+                            chr.Inventory.AddMesos(-100);
                             miniroomLog.Info($"{chr.Name} entered omok");
                         }
                         else

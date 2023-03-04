@@ -52,7 +52,7 @@ namespace WvsBeta.Scripts.Scripts
 
             if (target.Name == cName && target.Level < 200 ) {
                 target.AddEXP(999999999, Game.Packets.MessageAppearType.SideWhite);
-                target.Inventory.ExchangeMesos(10000);
+                target.Inventory.AddMesos(10000);
                 var strLog = "[" + target.Name + "] Level UP " + target.Level;
                 self.Log(strLog);
             }
@@ -98,7 +98,7 @@ namespace WvsBeta.Scripts.Scripts
                         var noptions = options.Split(',').Select(i => int.Parse(i.Trim())).ToArray();
                         for (int i = 0; i < amount; i++)
                         {
-                            target.Field.SpawnMob(mobid, null, target.Position, (short)noptions[0], null, (sbyte)noptions[1], noptions[2]);
+                            target.Field.SpawnMob(mobid, null, target.Position, (short)noptions[0], null, (SummonType)noptions[1], noptions[2]);
                         }
                     }
                 }
@@ -200,7 +200,7 @@ namespace WvsBeta.Scripts.Scripts
                         else if (v2 == 8) Etc.SetAP(target, 55, 110, 4, 206);
                         else if (v2 == 9) Etc.SetAP(target, 4, 110, 4, 257);
                     }
-                    else if (v1 == 5) target.Inventory.ExchangeMesos(1000000);
+                    else if (v1 == 5) target.Inventory.AddMesos(1000000);
                     else if (v1 == 6)
                     {
                         var v2 = self.AskMenu("Para escolher suas armas, precisa primeiro selecionar sua carreira. Qual destes?#b\r\n#L0# Guerreiro#l\r\n#L1# Bruxo#l\r\n#L2# Arqueiro#l\r\n#L3# Gatuno#l#k");

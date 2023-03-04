@@ -259,7 +259,7 @@ namespace WvsBeta.Game
                         chr.Inventory.AddNewItem(itemid, amount);
                         SendShopResult(chr, ShopRes.BuySuccess);
                         sid.Stock -= amount;
-                        chr.Inventory.ExchangeMesos(-costs);
+                        chr.Inventory.AddMesos(-costs);
 
                         break;
                     }
@@ -326,7 +326,7 @@ namespace WvsBeta.Game
                             item.Amount -= amount;
                             InventoryOperationPacket.ChangeAmount(chr, item, inv);
                         }
-                        chr.Inventory.ExchangeMesos(sellPrice);
+                        chr.Inventory.AddMesos(sellPrice);
 
                         SendShopResult(chr, ShopRes.SellSuccess);
                         break;
@@ -374,7 +374,7 @@ namespace WvsBeta.Game
 
                             item.Amount = maxslot;
 
-                            chr.Inventory.ExchangeMesos(sellPrice);
+                            chr.Inventory.AddMesos(sellPrice);
                             InventoryOperationPacket.ChangeAmount(chr, item, inv);
                             SendShopResult(chr, ShopRes.RechargeSuccess);
                         }

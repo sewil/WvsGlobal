@@ -68,3 +68,43 @@ Party2 = {
     resetReactors = 1
     reqQuest = 7000
 }
+
+# Warrior dimension
+ThirdJob1 = {
+    0 = 108010300
+    1 = 108010301
+    timeOut = 1200
+    cleanupMobs = 1
+    cleanupDrops = 1
+    returnMap = 102000000
+}
+
+# Magician dimension
+ThirdJob2 = {
+    0 = 108010200
+    1 = 108010201
+    timeOut = 1200
+    cleanupMobs = 1
+    cleanupDrops = 1
+    returnMap = 101000000
+}
+
+# Bowman dimension
+ThirdJob3 = {
+    0 = 108010100
+    1 = 108010101
+    timeOut = 1200
+    cleanupMobs = 1
+    cleanupDrops = 1
+    returnMap = 100000000
+}
+
+# Thief dimension
+ThirdJob4 = {
+    0 = 108010400
+    1 = 108010401
+    timeOut = 1200
+    cleanupMobs = 1
+    cleanupDrops = 1
+    returnMap = 103000000
+}

@@ -310,6 +310,7 @@ namespace WvsBeta.Game
 
             ShopNPCID = 0;
             TrunkNPCID = 0;
+            NpcSession?.SoftStop();
         }
 
         public void TryActivateHide()
@@ -660,9 +661,8 @@ namespace WvsBeta.Game
         }
         public bool IncMoney(int inc, MessageAppearType appearType = MessageAppearType.None)
         {
-            if (!Inventory.CanExchangeMesos(inc)) return false;
-            Inventory.ExchangeMesos(inc);
-            if (appearType != MessageAppearType.None) SendPacket(MessagePacket.GainMesos(inc, appearType));
+            if (!Inventory.CanExchange(inc)) return false;
+            Inventory.Exchange(inc);
             return true;
         }
         public void IncPOP(short inc, int isSelf)
@@ -678,19 +678,19 @@ namespace WvsBeta.Game
         {
             if (0 <= avatarID && avatarID <= 4) // Skin
             {
-                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
                 SetSkin((byte)avatarID);
                 return AvatarSelectState.Success;
             }
             else if (avatarID % (20000 + (Gender*1000)) < 1000) // Face
             {
-                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
                 SetFace(avatarID);
                 return AvatarSelectState.Success;
             }
             else if (avatarID % (30000 + (Gender*1000)) < 1000) // Hair & hair color
             {
-                if (!Inventory.TryExchangeItem(coupon, -1)) return AvatarSelectState.MissingCoupon;
+                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
                 SetHair(avatarID);
                 return AvatarSelectState.Success;
             }
@@ -727,7 +727,7 @@ namespace WvsBeta.Game
             else if (Party.Characters.Where(c => c.Field.ID == Field.ID).Count() < 6) return GuildCreateStatus.NotEnoughMembers;
 #endif
             else if (Party.Characters.Any(c => c.IsGuildMember)) return GuildCreateStatus.PartyTraitor;
-            else if (!Inventory.CanExchangeMesos(-mesos)) return GuildCreateStatus.NotEnoughMesos;
+            else if (!Inventory.CanExchange(-mesos)) return GuildCreateStatus.NotEnoughMesos;
             return GuildCreateStatus.Success;
         }
         public void SetGuildMark(int mesos)
