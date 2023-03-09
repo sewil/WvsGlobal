@@ -316,5 +316,26 @@ namespace WvsBeta.Game
             GameAcceptor?.Stop();
             GameAcceptor = null;
         }
+
+        /// <summary>
+        /// Broadcast packet to all other channels
+        /// </summary>
+        /// <param name="packet"></param>
+        /// <param name="packetHandler">Packet handler for this channel (to prevent unnecessary sending)</param>
+        public void BroadcastPacket(Packet packet, Action<Packet> packetHandler = null)
+        {
+            if (CenterConnection == null) return;
+            var pw = new Packet(ISClientMessages.BroadcastPacketToGameServersExcept);
+            pw.WriteInt(ID);
+
+            var pr = new Packet(packet.ToArray());
+            pw.WriteBytes(pr.ReadLeftoverBytes());
+            CenterConnection.SendPacket(pw);
+            if (packetHandler != null)
+            {
+                pr.Position = 1;
+                packetHandler(pr);
+            }
+        }
     }
 }

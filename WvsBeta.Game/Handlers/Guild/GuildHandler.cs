@@ -53,20 +53,6 @@ namespace WvsBeta.Game.Handlers.Guild
     {
         private static Server S => Server.Instance;
 
-        private static void BroadcastPacket(Packet packet, Action<Packet> packetHandler = null)
-        {
-            var pw = new Packet(ISClientMessages.BroadcastPacketToGameServersExcept);
-            pw.WriteInt(S.ID);
-
-            var pr = new Packet(packet.ToArray());
-            pw.WriteBytes(pr.ReadLeftoverBytes());
-            S.CenterConnection.SendPacket(pw);
-            if (packetHandler != null)
-            {
-                pr.Position = 1;
-                packetHandler(pr);
-            }
-        }
         #region Ranks
         public static void SendUpdateRanks(GuildData guild)
         {
@@ -76,7 +62,7 @@ namespace WvsBeta.Game.Handlers.Guild
             {
                 pw.WriteString(guild.RankNames[i]);
             }
-            BroadcastPacket(pw, HandleUpdateRanks);
+            S.BroadcastPacket(pw, HandleUpdateRanks);
             GuildDbHandler.SaveRanks(guild.ID, guild.RankNames);
         }
         public static void HandleUpdateRanks(Packet pr)
@@ -98,7 +84,7 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(guildId);
             pw.WriteInt(cid);
             pw.WriteByte((byte)rank);
-            BroadcastPacket(pw, HandleMemberChangeRank);
+            S.BroadcastPacket(pw, HandleMemberChangeRank);
         }
         public static void HandleMemberChangeRank(Packet pr)
         {
@@ -223,7 +209,7 @@ namespace WvsBeta.Game.Handlers.Guild
         {
             var pw = new Packet(ISServerMessages.GuildUnload);
             pw.WriteInt(guildId);
-            BroadcastPacket(pw, HandleUnloadGuild);
+            S.BroadcastPacket(pw, HandleUnloadGuild);
         }
         public static void HandleUnloadGuild(Packet pr)
         {
@@ -252,7 +238,7 @@ namespace WvsBeta.Game.Handlers.Guild
             var pw = new Packet(ISServerMessages.GuildEmblemUpdated);
             pw.WriteInt(chr.GuildID);
             emblem.Encode(pw);
-            BroadcastPacket(pw, HandleGuildEmblemUpdated);
+            S.BroadcastPacket(pw, HandleGuildEmblemUpdated);
         }
         public static void HandleGuildEmblemUpdated(Packet pr)
         {
@@ -353,7 +339,7 @@ namespace WvsBeta.Game.Handlers.Guild
                 return;
             }
             chr.GuildID = guild.ID;
-            BroadcastPacket(pw, HandleMemberJoined);
+            S.BroadcastPacket(pw, HandleMemberJoined);
             RemotePacket.SendCharacterGuildInfo(chr);
             chr.SendPacket(GuildPacket.GuildInfo(guild));
         }
@@ -405,7 +391,7 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(guildId);
             pw.WriteInt(cid);
             pw.WriteString(name);
-            BroadcastPacket(pw, HandleMemberLeft);
+            S.BroadcastPacket(pw, HandleMemberLeft);
         }
         public static void HandleMemberLeft(Packet pr)
         {
@@ -438,7 +424,7 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(chr.ID);
             pw.WriteInt(chr.Level);
             pw.WriteInt(chr.Job);
-            BroadcastPacket(pw, HandleUpdatePlayerJob);
+            S.BroadcastPacket(pw, HandleUpdatePlayerJob);
         }
         public static void HandleUpdatePlayerJob(Packet pr)
         {
@@ -465,7 +451,7 @@ namespace WvsBeta.Game.Handlers.Guild
                 var pw = new Packet(ISServerMessages.GuildExpand);
                 pw.WriteInt(chr.GuildID);
                 pw.WriteInt(newCapacity);
-                BroadcastPacket(pw, HandleGuildExpand);
+                S.BroadcastPacket(pw, HandleGuildExpand);
                 chr.SendPacket(GuildPacket.NpcExpandSuccessMsg(chr.GuildID, (byte)newCapacity));
                 return 1;
             }
@@ -583,7 +569,7 @@ namespace WvsBeta.Game.Handlers.Guild
             pw.WriteInt(guild.ID);
             pw.WriteInt(chr.ID);
             pw.WriteBool(isOnline);
-            BroadcastPacket(pw, HandleMemberIsOnline);
+            S.BroadcastPacket(pw, HandleMemberIsOnline);
         }
         public static void HandleMemberIsOnline(Packet pr)
         {
@@ -608,7 +594,7 @@ namespace WvsBeta.Game.Handlers.Guild
         {
             var pw = new Packet(ISServerMessages.GuildLoad);
             guild.Encode(pw);
-            BroadcastPacket(pw, HandleLoadGuild);
+            S.BroadcastPacket(pw, HandleLoadGuild);
         }
         public static void HandleLoadGuild(Packet pr)
         {
