@@ -79,8 +79,6 @@ namespace WvsBeta.Common.Sessions
         public string IP { get; private set; }
         public ushort Port { get; private set; }
 
-        protected byte[] previousDecryptIV = new byte[4];
-
         #endregion
 
         private BlockCipher blockCipher;
@@ -299,7 +297,7 @@ namespace WvsBeta.Common.Sessions
                                 if (Disconnected) return;
                                 try
                                 {
-                                    Array.Copy(tmpIV, 0, previousDecryptIV, 0, 4);
+                                    packet.IV = tmpIV;
                                     OnPacketInbound(packet);
                                 }
                                 catch (Exception ex)

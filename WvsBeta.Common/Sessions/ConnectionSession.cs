@@ -53,38 +53,38 @@ namespace WvsBeta.Common.Sessions
 
         public static ConcurrentDictionary<Tuple<uint, uint, uint>, uint> IvCrcMapping = new ConcurrentDictionary<Tuple<uint, uint, uint>, uint>();
 
-        private bool ValidateCRC(uint input)
+        private bool ValidateCRC(byte[] iv, uint clientCRC, out uint expectedCRC)
         {
-            var calculatedCRC = CRC32.CalcCrc32(previousDecryptIV, 2);
+            expectedCRC = CRC32.CalcCrc32(iv, 2);
 
             if (UseMemoryCRC)
             {
                 foreach (var region in MemoryRegions.Instance.Regions)
                 {
-                    calculatedCRC = CRC32.CalcCrc32(
+                    expectedCRC = CRC32.CalcCrc32(
                         region.Data,
                         region.Length,
-                        calculatedCRC ^ (region.Address + (uint)_memoryOffset),
+                        expectedCRC ^ (region.Address + (uint)_memoryOffset),
                         _memoryOffset
                     );
                 }
             }
 
-            var isValid = calculatedCRC == input;
+            var isValid = expectedCRC == clientCRC;
 
-            if (!isValid)
-            {
-                if (_ignoredWrongCRC)
-                {
-                    log.Error($"Disconnecting client because CRC didnt match _again_");
-                }
-                else
-                {
-                    log.Warn($"Accepting wrong CRC for _once_...");
-                    _ignoredWrongCRC = true;
-                    isValid = true;
-                }
-            }
+            //if (!isValid)
+            //{
+            //    if (_ignoredWrongCRC)
+            //    {
+            //        log.Error($"Disconnecting client because CRC didnt match _again_");
+            //    }
+            //    else
+            //    {
+            //        log.Warn($"Accepting wrong CRC for _once_...");
+            //        _ignoredWrongCRC = true;
+            //        isValid = true;
+            //    }
+            //}
 
             return isValid;
         }
@@ -168,21 +168,21 @@ namespace WvsBeta.Common.Sessions
                     else if (Settings.Default.MemoryCRCEnabled)
                     {
                         // Check for expected CRC packet
-                        if ((BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0 && header == (byte)ClientMessages.CLIENT_HASH)
+                        if ((BitConverter.ToUInt16(pPacket.IV, 0) % 31) == 0 && header == (byte)ClientMessages.CLIENT_HASH)
                         {
                             bool disconnect = true;
                             byte mode = pPacket.ReadByte();
                             if (mode == 1)
                             {
                                 uint clientCRC = pPacket.ReadUInt();
-                                Trace.WriteLine($"[{GetType().ToString()}] Received hash {clientCRC}");
-                                if (ValidateCRC(clientCRC))
+                                Trace.WriteLine($"[{GetType()}] Received CRC {clientCRC}");
+                                if (ValidateCRC(pPacket.IV, clientCRC, out uint expectedCRC))
                                 {
                                     disconnect = false;
                                 }
                                 else
                                 {
-                                    Trace.WriteLine($"Disconnecting client because CRC didnt match {clientCRC}");
+                                    Trace.WriteLine($"[{GetType()}] Disconnecting client, CRC {clientCRC} didnt match expected CRC {expectedCRC}");
                                 }
                             }
                             else
@@ -225,7 +225,7 @@ namespace WvsBeta.Common.Sessions
                 uint crc = CRC32.CalcCrc32(_encryptIV, 2);
                 p.WriteUInt(crc); // TODO: Get CRC for memory
 
-                Trace.WriteLine($"[{GetType().ToString()}] Sent hash {crc}");
+                Trace.WriteLine($"[{GetType()}] Sent CRC {crc}");
 
                 base.SendPacket(p);
             }

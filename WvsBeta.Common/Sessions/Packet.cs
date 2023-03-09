@@ -20,6 +20,7 @@ namespace WvsBeta.Common.Sessions
         public long PacketCreationTime { get; } = (long)((Stopwatch.GetTimestamp() * (1.0 / Stopwatch.Frequency)) * 1000.0);
 
         public byte Opcode { get; private set; }
+        public byte[] IV { get; set; }
 
         public Packet(byte[] pData) : this(pData, pData.Length) { }
 
