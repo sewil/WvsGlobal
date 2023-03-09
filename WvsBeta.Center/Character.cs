@@ -60,15 +60,13 @@ namespace WvsBeta.Center
 
         public void SetFromAvatarLook(AvatarLook avatar)
         {
-            var hairi = avatar.CashInUnseen ? EquippedVisibility.Visible : EquippedVisibility.Hidden;
-            var unseeni = avatar.CashInUnseen ? EquippedVisibility.Hidden : EquippedVisibility.Visible;
-            Inventory.Equipped[hairi] = avatar.HairEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
-            Inventory.Equipped[unseeni] = avatar.UnseenEquip.Select(i => new EquipItem() { ItemID = i }).ToArray();
+            Inventory.Equipped[EquippedType.Cash] = avatar.CashEquips.Select(i => new EquipItem(i)).ToArray();
+            Inventory.Equipped[EquippedType.Normal] = avatar.NormalEquips.Select(i => new EquipItem(i)).ToArray();
 
             Gender = avatar.Gender;
             Skin = avatar.Skin;
             Face = avatar.Face;
-            Hair = avatar.HairEquip[0];
+            Hair = avatar.CashEquips[0];
         }
 
         public new void EncodeForTransfer(Packet pw)
