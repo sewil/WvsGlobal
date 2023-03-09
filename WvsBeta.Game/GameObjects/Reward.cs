@@ -54,6 +54,8 @@ namespace WvsBeta.Game
             {
                 if ((Drop.Premium && !PremiumMap))
                     continue;
+                if (Drop.Quest > 0 && !Owner.Quests.HasQuestState(Drop.Quest, QuestState.InProgress))
+                    continue;
 
                 var itemDropRate = 1.0;
                 if (Drop.Mesos == 0)
@@ -84,6 +86,7 @@ namespace WvsBeta.Game
                 if (!Reward.Mesos)
                 {
                     Reward.Data.GiveStats(ItemVariation.Normal);
+                    //if (drop.Quest > 0 && reward.Data.IsOnly && owner.Inventory.ItemCount(drop.ItemID) > 0) continue;
                     if (Drop.Period > 0)
                     {
                         Reward.Data.Expiration = Tools.GetFileTimeWithAddition(new TimeSpan(Drop.Period, 0, 0, 0));

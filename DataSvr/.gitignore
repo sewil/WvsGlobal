@@ -2,4 +2,5 @@
 !.gitignore
 !FieldSet.img
 !Data.nx
+!DropData.nx
 !*.bat

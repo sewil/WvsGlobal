@@ -668,7 +668,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (Constants.Items.Zakum.PAPER_DOCUMENT, 1));
+            target.Drop();
         }
     }
     [Script("money100")]
@@ -676,8 +676,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            int meso = Rand32.NextBetween(100, 999);
-            target.Drop(meso);
+            target.Drop();
         }
     }
     [Script("money10000")]
@@ -685,8 +684,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            int meso = Rand32.NextBetween(10000,99999);
-            target.Drop(meso);
+            target.Drop();
         }
     }
     [Script("boxKey0")]
@@ -694,7 +692,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (Constants.Items.Zakum.THE_KEY, 1));
+            target.Drop();
         }
     }
     [Script("boxItem0")]
@@ -702,7 +700,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (2022001, 1));
+            target.Drop();
         }
     }
     [Script("boxItem1")]
@@ -710,7 +708,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (2000006, 1));
+            target.Drop();
         }
     }
     [Script("boxItem2")]
@@ -718,7 +716,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (2000004, 1));
+            target.Drop();
         }
     }
     [Script("boxItem3")]
@@ -726,7 +724,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (2000005, 1));
+            target.Drop();
         }
     }
     [Script("boxBItem0")]
@@ -734,7 +732,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            target.Drop(0, (4001018, 1));
+            target.Drop();
         }
     }
     [Script("boxMob0")]

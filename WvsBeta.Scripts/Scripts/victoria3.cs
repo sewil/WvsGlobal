@@ -426,11 +426,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            if (
-                !target.Owner.Quests.HasQuestState(QuestIds.FindTheMapleHistoryBook, QuestState.InProgress)
-                || target.Owner.Inventory.ItemCount(ItemEtcIds.MapleHistoryBookI) > 0
-            ) return;
-            target.Drop(0, (ItemEtcIds.MapleHistoryBookI, 1));
+            target.Drop();
         }
     }
     // Maple History Book II
@@ -439,11 +435,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            if (
-                !target.Owner.Quests.HasQuestState(QuestIds.FindTheMapleHistoryBook, QuestState.InProgress)
-                || target.Owner.Inventory.ItemCount(ItemEtcIds.MapleHistoryBookII) > 0
-            ) return;
-            target.Drop(0, (ItemEtcIds.MapleHistoryBookII, 1));
+            target.Drop();
         }
     }
 }

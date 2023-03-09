@@ -217,23 +217,18 @@ namespace WvsBeta.Game
             }
             return spawned;
         }
-        public void Drop(int mesos, params (int itemId, short amount)[] items)
+        public void Drop()
         {
-            int x2 = Position.X - 10 * (items.Length + mesos > 0 ? 1 : 0) + 10;
-            short delay = 0;
-            foreach (var dropInfo in items)
-            {
-                BaseItem it = BaseItem.CreateFromItemID(dropInfo.itemId, dropInfo.amount);
-                it.GiveStats(ItemVariation.None);
+            var rewards = Reward.GetRewards(Owner, Field, Reactor.ID, 'r', false, 1);
+            rewards.Shuffle();
 
-                Field.DropPool.Create(Reward.Create(it), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
+            int x2 = Position.X - 10 * rewards.Count + 10;
+            short delay = 0;
+            foreach (var reward in rewards)
+            {
+                Field.DropPool.Create(reward, Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, false);
                 x2 += 20;
                 delay += 120;
-            }
-
-            if (mesos > 0)
-            {
-                Field.DropPool.Create(Reward.Create(mesos), Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, 0, false, false);
             }
         }
     }
