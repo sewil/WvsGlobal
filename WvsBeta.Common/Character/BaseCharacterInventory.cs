@@ -17,10 +17,10 @@ namespace WvsBeta.Common.Character
     public abstract class BaseCharacterInventory
     {
         // Shown and hidden
-        public readonly Dictionary<EquippedVisibility, EquipItem[]> Equipped = new Dictionary<EquippedVisibility, EquipItem[]>()
+        public readonly Dictionary<EquippedType, EquipItem[]> Equipped = new Dictionary<EquippedType, EquipItem[]>()
         {
-            { EquippedVisibility.Visible, new EquipItem[19] },
-            { EquippedVisibility.Hidden, new EquipItem[120] }
+            { EquippedType.Normal, new EquipItem[19] },
+            { EquippedType.Cash, new EquipItem[120] }
         };
         public int ChocoCount { get; protected set; }
         public int ActiveItemID { get; protected set; }
@@ -172,7 +172,7 @@ namespace WvsBeta.Common.Character
             // Move cashitems back to the _cashItems object
 
             // 'Hidden' equips
-            _cashItems.Equips.AddRange(Equipped[EquippedVisibility.Hidden].Where(y => y != null && y.CashId != 0));
+            _cashItems.Equips.AddRange(Equipped[EquippedType.Cash].Where(y => y != null && y.CashId != 0));
             // Unequipped equips
             _cashItems.Equips.AddRange(Items[Inventory.Equip].Where(y => y is EquipItem && y.CashId != 0).Select(y => y as EquipItem));
             // Bundles
@@ -271,8 +271,8 @@ namespace WvsBeta.Common.Character
         public BaseItem GetItemByCashID(long cashId, Inventory inventory)
         {
             BaseItem item = Items[inventory].FirstOrDefault(x => x != null && x.CashId == cashId);
-            if (item == null) item = Equipped[EquippedVisibility.Visible].FirstOrDefault(x => x != null && x.CashId == cashId);
-            if (item == null) item = Equipped[EquippedVisibility.Hidden].FirstOrDefault(x => x != null && x.CashId == cashId);
+            if (item == null) item = Equipped[EquippedType.Normal].FirstOrDefault(x => x != null && x.CashId == cashId);
+            if (item == null) item = Equipped[EquippedType.Cash].FirstOrDefault(x => x != null && x.CashId == cashId);
             return item;
         }
 
@@ -310,11 +310,11 @@ namespace WvsBeta.Common.Character
                     slot = Math.Abs(slot);
                     if (slot > 100)
                     {
-                        Equipped[EquippedVisibility.Hidden][(byte)(slot - 100)] = equipItem;
+                        Equipped[EquippedType.Cash][(byte)(slot - 100)] = equipItem;
                     }
                     else
                     {
-                        Equipped[EquippedVisibility.Visible][(byte)slot] = equipItem;
+                        Equipped[EquippedType.Normal][(byte)slot] = equipItem;
                     }
                 }
                 else throw new Exception("Tried to AddItem on an equip slot but its not an equip! " + item);
@@ -374,11 +374,11 @@ namespace WvsBeta.Common.Character
                     slot = Math.Abs(slot);
                     if (slot > 100)
                     {
-                        Equipped[EquippedVisibility.Hidden][(byte)(slot - 100)] = null;
+                        Equipped[EquippedType.Cash][(byte)(slot - 100)] = null;
                     }
                     else
                     {
-                        Equipped[EquippedVisibility.Visible][(byte)slot] = null;
+                        Equipped[EquippedType.Normal][(byte)slot] = null;
                     }
                 }
                 else throw new Exception("Tried to RemoveItem on an equip slot but its not an equip! " + item);
@@ -398,11 +398,11 @@ namespace WvsBeta.Common.Character
                 // Equip.
                 if (slot > 100)
                 {
-                    itm = Equipped[EquippedVisibility.Hidden][(short)(slot - 100)];
+                    itm = Equipped[EquippedType.Cash][(short)(slot - 100)];
                 }
                 else
                 {
-                    itm = Equipped[EquippedVisibility.Visible][slot];
+                    itm = Equipped[EquippedType.Normal][slot];
                 }
             }
             else
@@ -468,7 +468,7 @@ namespace WvsBeta.Common.Character
 
             if (flags.HasFlag(CharacterDataFlag.Equips))
             {
-                foreach (var item in Equipped[EquippedVisibility.Visible])
+                foreach (var item in Equipped[EquippedType.Normal])
                 {
                     if (item == null) continue;
                     new GW_ItemSlotBase(item).Encode(packet, true, false);
@@ -476,7 +476,7 @@ namespace WvsBeta.Common.Character
 
                 packet.WriteByte(0);
 
-                foreach (var item in Equipped[EquippedVisibility.Hidden])
+                foreach (var item in Equipped[EquippedType.Cash])
                 {
                     if (item == null) continue;
                     new GW_ItemSlotBase(item).Encode(packet, true, false);

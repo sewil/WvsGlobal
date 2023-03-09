@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Character
@@ -12,53 +13,27 @@ namespace WvsBeta.Common.Character
         public int PetItemId { get; set; }
         public int WeaponStickerID { get; set; }
         
-        public int[] UnseenEquip { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
-        public int[] HairEquip { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
-        public bool CashInUnseen { get; private set; }
+        public int[] NormalEquips { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
+        public int[] CashEquips { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
 
-        public AvatarLook(CharacterBase character, bool putCashInUnseen = false) : this(
+        public AvatarLook(CharacterBase character) : this(
             character.CharacterStat,
-            character.Inventory?.Equipped[Enums.EquippedVisibility.Visible].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
-            character.Inventory?.Equipped[Enums.EquippedVisibility.Hidden].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
-            putCashInUnseen
+            character.Inventory?.Equipped[EquippedType.Normal].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
+            character.Inventory?.Equipped[EquippedType.Cash].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex]
         ) { }
-        public AvatarLook(GW_CharacterStat cs, int[] equips, int[] equipsCash, bool putCashInUnseen)
+        public AvatarLook(GW_CharacterStat cs, int[] equips, int[] cashEquips)
         {
             CharacterStat = cs;
-            HairEquip[0] = cs.Hair;
-            CashInUnseen = putCashInUnseen;
+            CashEquips[0] = cs.Hair;
 
-            if (putCashInUnseen)
+            for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
             {
-                for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
-                {
-                    HairEquip[i] = equips[i];
-                    UnseenEquip[i] = equipsCash[i];
-                }
-            }
-            else
-            {
-                for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
-                {
-                    bool isCash = equipsCash[i] != 0;
-                    int hairId = 0;
-                    int unseenId = 0;
-                    if (putCashInUnseen || !isCash)
-                    {
-                        hairId = equips[i];
-                        unseenId = equipsCash[i];
-                    }
-                    else
-                    {
-                        hairId = equipsCash[i];
-                        unseenId = equips[i];
-                    }
-                    HairEquip[i] = hairId;
-                    UnseenEquip[i] = unseenId;
-                }
+                bool isCash = cashEquips[i] != 0;
+                CashEquips[i] = isCash ? cashEquips[i] : equips[i];
+                NormalEquips[i] = isCash ? equips[i] : cashEquips[i];
             }
 
-            WeaponStickerID = equipsCash[(byte)Constants.EquipSlots.Slots.Weapon];
+            WeaponStickerID = cashEquips[(byte)Constants.EquipSlots.Slots.Weapon];
             //PetItemId = equipsCash[(byte)Constants.EquipSlots.Slots.pet]
         }
 
@@ -70,12 +45,12 @@ namespace WvsBeta.Common.Character
             packet.WriteInt(Face);
 
             packet.WriteByte(0); // First slot
-            packet.WriteInt(HairEquip[0]); // First equip
+            packet.WriteInt(CashEquips[0]); // First equip
             // Note: this could use i = 0, but for the sake of clarity, we do not do that
             // Because also the client doesn't go from zero.
             for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
             {
-                int itemid = HairEquip[i];
+                int itemid = CashEquips[i];
                 if (itemid == 0) continue;
 
                 packet.WriteByte(i);
@@ -85,7 +60,7 @@ namespace WvsBeta.Common.Character
 
             for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
             {
-                int itemid = UnseenEquip[i];
+                int itemid = NormalEquips[i];
                 if (itemid == 0) continue;
 
                 packet.WriteByte(i);
@@ -99,11 +74,10 @@ namespace WvsBeta.Common.Character
 
         public AvatarLook(Packet packet)
         {
-            CashInUnseen = false;
-            for (var i = HairEquip.Length - 1; i >= 0; i--)
-                HairEquip[i] = 0;
-            for (var i = UnseenEquip.Length - 1; i >= 0; i--)
-                UnseenEquip[i] = 0;
+            for (var i = CashEquips.Length - 1; i >= 0; i--)
+                CashEquips[i] = 0;
+            for (var i = NormalEquips.Length - 1; i >= 0; i--)
+                NormalEquips[i] = 0;
 
             Gender = packet.ReadByte();
             Skin = packet.ReadByte();
@@ -112,12 +86,12 @@ namespace WvsBeta.Common.Character
             byte slot = 0;
             while ((slot = packet.ReadByte()) != 0xFF)
             {
-                HairEquip[slot] = packet.ReadInt();
+                CashEquips[slot] = packet.ReadInt();
             }
 
             while ((slot = packet.ReadByte()) != 0xFF)
             {
-                UnseenEquip[slot] = packet.ReadInt();
+                NormalEquips[slot] = packet.ReadInt();
             }
 
             WeaponStickerID = packet.ReadInt();

@@ -62,11 +62,11 @@ namespace WvsBeta.Game
                 slot = Math.Abs(slot);
                 if (slot > 100)
                 {
-                    Equipped[EquippedVisibility.Hidden][(byte)(slot - 100)] = equipItem;
+                    Equipped[EquippedType.Cash][(byte)(slot - 100)] = equipItem;
                 }
                 else
                 {
-                    Equipped[EquippedVisibility.Visible][(byte)slot] = equipItem;
+                    Equipped[EquippedType.Normal][(byte)slot] = equipItem;
                     Character.PrimaryStats.AddEquipStats((sbyte)slot, equipItem, false);
                 }
             }
@@ -85,11 +85,11 @@ namespace WvsBeta.Game
             if (!cash)
             {
                 slot = Math.Abs(slot);
-                if (Equipped[EquippedVisibility.Visible].Length > slot)
+                if (Equipped[EquippedType.Normal].Length > slot)
                 {
-                    if (Equipped[EquippedVisibility.Visible][slot] != null)
+                    if (Equipped[EquippedType.Normal][slot] != null)
                     {
-                        return Equipped[EquippedVisibility.Visible][slot].ItemID;
+                        return Equipped[EquippedType.Normal][slot].ItemID;
                     }
                 }
             }
@@ -100,11 +100,11 @@ namespace WvsBeta.Game
                     slot += 100;
                 }
                 slot = Math.Abs(slot);
-                if (Equipped[EquippedVisibility.Hidden].Length > slot)
+                if (Equipped[EquippedType.Cash].Length > slot)
                 {
-                    if (Equipped[EquippedVisibility.Hidden][slot] != null)
+                    if (Equipped[EquippedType.Cash][slot] != null)
                     {
-                        return Equipped[EquippedVisibility.Hidden][slot].ItemID;
+                        return Equipped[EquippedType.Cash][slot].ItemID;
                     }
                 }
             }
@@ -498,7 +498,7 @@ namespace WvsBeta.Game
             Dictionary<byte, int> shown = new Dictionary<byte, int>();
 
 
-            foreach (var item in Equipped[EquippedVisibility.Hidden])
+            foreach (var item in Equipped[EquippedType.Cash])
             {
                 if (item != null)
                 {
@@ -522,7 +522,7 @@ namespace WvsBeta.Game
         {
             int totalWat = 0;
 
-            foreach (var item in Equipped[EquippedVisibility.Visible])
+            foreach (var item in Equipped[EquippedType.Normal])
             {
                 if (item?.Watk > 0)
                 {
