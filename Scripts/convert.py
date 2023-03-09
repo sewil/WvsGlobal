@@ -29,10 +29,8 @@ with open(args.input) as f:
     nLine=0
     script_name = None
     vars = set()
-    var_idx = 0
     func_name = None
     func_idx = 0
-    func_vars = set()
     ignore_next = False
     cmt_line = None
     for line in lines:
@@ -76,25 +74,24 @@ with open(args.input) as f:
         #     line = line.replace(fname, file_name + "." + fname + "(self, target)")
         if re.match(r'\}\s*', line):
             if script_name is not None: # Close script
-                if len(vars) > 0:
-                    output.insert(var_idx, "            dynamic " + ", ".join(vars) + ";") # Insert vars
                 print("Close " + script_name)
                 vars.clear()
                 script_name = None
                 output.append("            }")
                 output.append("        }")
             elif func_name is not None: # Close func
+                vars.clear()
                 print("Close func ", func_name)
                 output.insert(class_offset + func_idx, "        }")
                 func_idx = 0
                 func_name = None
         if script_name is not None or func_name is not None:
-            var_m = re.search(r'\s+([a-zA-Z\d]+) = ', line)
+            var_m = re.search(r'([A-Za-z_][A-Za-z_\d]*) = ([^;]+);', line)
             if var_m is not None: # Var init
                 var_name = var_m.group(1)
                 if (var_name in vars) == False:
                     vars.add(var_name)
-                    if func_name is not None: func_vars.add(var_name)
+                    line = line.replace(var_m.group(0), 'var ' + var_m.group(1) + ' = ' + var_m.group(2) + ';')
                     print(var_name)
             if script_name is not None:
                 output.append("            " + line)
@@ -108,8 +105,11 @@ with open(args.input) as f:
             func_args = func_m.group(3)
             if (func_args is None): func_args = '()'
             func_args = func_args.replace("integer", "int")
+            output.insert(class_offset, "        public static void " + func_name + func_args + '\n        {')
+            if func_m.group(0).endswith('{') == False:
+                ignore_next = True
             print("Open func ", func_name, func_args)
-            output.insert(class_offset, "        public static void " + func_name + func_args + "\n        {")
+
         cmt_m = re.match(r'^\/\/.+', line) # Script comment
         if cmt_m is not None:
             scr_cmt = cmt_m.group(0)
@@ -124,14 +124,11 @@ with open(args.input) as f:
             output.append("        [Script(\"" + script_name + "\")]")
             output.append("        class " + script_name + " : INpcScript")
             output.append("        {")
-            var_idx = len(output)
             output.append("            public void Run(INpcHost self, GameCharacter target)")
             output.append("            {")
             output.append("                " + file_name + ".self = self;")
             output.append("                " + file_name + ".target = target;")
         nLine+=1
-    if len(func_vars) > 0:
-        output.insert(class_offset, "        static dynamic " + ", ".join(func_vars) + ";") # Insert func vars
 
 output.append("    }")
 output.append("}")
