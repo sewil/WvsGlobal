@@ -85,7 +85,8 @@ namespace WvsBeta.Game
 
                 if (!Reward.Mesos)
                 {
-                    Reward.Data.GiveStats(ItemVariation.Normal);
+                    if (Reward.Data is EquipItem)
+                        (Reward.Data as EquipItem).GiveStats(ItemVariation.Normal);
                     //if (drop.Quest > 0 && reward.Data.IsOnly && owner.Inventory.ItemCount(drop.ItemID) > 0) continue;
                     if (Drop.Period > 0)
                     {

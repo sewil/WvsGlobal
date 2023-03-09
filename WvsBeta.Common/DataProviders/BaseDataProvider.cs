@@ -298,7 +298,8 @@ namespace WvsBeta.Common.DataProviders
                                 item.Mesos = node.ValueInt32();
                                 break;
                             case "quest":
-                                if (node.ValueBool())
+                                item.IsQuest = node.ValueBool();
+                                if (item.IsQuest)
                                 {
                                     lock (UntradeableDrops)
                                     {

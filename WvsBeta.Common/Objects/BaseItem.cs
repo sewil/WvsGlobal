@@ -1,6 +1,5 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Sessions;
 
@@ -14,7 +13,7 @@ namespace WvsBeta.Common.Objects
     }
     public abstract class BaseItem
     {
-        public int ItemID { get; set; } = 0;
+        public readonly int ItemID;
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
@@ -23,11 +22,12 @@ namespace WvsBeta.Common.Objects
         public ItemType ItemType { get { return GetItemType(ItemID);  } }
 
         public const long NoItemExpiration = 150842304000000000L;
-        public bool IsOnly { get; set; } = false;
-        public bool IsQuest { get; set; } = false;
+        public bool IsOnly { get; set; }
+        public bool IsQuest { get; set; }
 
-        protected BaseItem()
+        protected BaseItem(int itemId)
         {
+            this.ItemID = itemId;
         }
 
         protected BaseItem(BaseItem itemBase)
@@ -36,6 +36,8 @@ namespace WvsBeta.Common.Objects
             Amount = itemBase.Amount;
             CashId = itemBase.CashId;
             Expiration = itemBase.Expiration;
+            IsOnly = itemBase.IsOnly;
+            IsQuest = itemBase.IsQuest;
         }
 
         public BaseItem Duplicate()
@@ -69,17 +71,12 @@ namespace WvsBeta.Common.Objects
             var itemType = GetItemType(itemId);
 
             BaseItem ret;
-            if (itemType == ItemType.Equip) ret = new EquipItem();
-            else if (itemType == ItemType.Pet) ret = new PetItem(); // TODO: Pet
-            else ret = new BundleItem();
+            if (itemType == ItemType.Equip) ret = new EquipItem(itemId);
+            else if (itemType == ItemType.Pet) ret = new PetItem(itemId); // TODO: Pet
+            else ret = new BundleItem(itemId);
 
-            ret.ItemID = itemId;
             ret.Amount = amount;
             return ret;
-        }
-
-        public virtual void GiveStats(ItemVariation enOption)
-        {
         }
 
         public virtual void Load(MySqlDataReader data)
@@ -142,6 +139,8 @@ namespace WvsBeta.Common.Objects
 
             pw.WriteLong(CashId);
             pw.WriteLong(Expiration);
+            pw.WriteBool(IsOnly);
+            pw.WriteBool(IsQuest);
 
             pw.WriteString("");
         }
@@ -150,10 +149,7 @@ namespace WvsBeta.Common.Objects
         {
             var itemId = pr.ReadInt();
 
-            var item = CreateFromItemID(itemId);
-            item.ItemID = itemId;
-
-            item.Amount = pr.ReadShort();
+            var item = CreateFromItemID(itemId, pr.ReadShort());
 
             if (item is EquipItem equipItem)
             {
@@ -198,6 +194,8 @@ namespace WvsBeta.Common.Objects
 
             item.CashId = pr.ReadLong();
             item.Expiration = pr.ReadLong();
+            item.IsOnly = pr.ReadBool();
+            item.IsQuest = pr.ReadBool();
 
             pr.ReadString();
 
@@ -230,19 +228,15 @@ namespace WvsBeta.Common.Objects
 
     public class BundleItem : BaseItem
     {
-        public BundleItem() { }
+        public BundleItem(int itemId) : base(itemId)
+        {
+            if (!BaseDataProvider.Items.TryGetValue(base.ItemID, out ItemData itemData)) return;
+            IsQuest = itemData.IsQuest;
+            IsOnly = itemData.IsOnly;
+        }
 
         public BundleItem(BundleItem itemBase) : base(itemBase) { }
 
-        public override void GiveStats(ItemVariation enOption)
-        {
-            if (!BaseDataProvider.Items.TryGetValue(ItemID, out ItemData data))
-            {
-                return;
-            }
-            IsQuest = data.IsQuest;
-            IsOnly = data.IsOnly;
-        }
         public override void Load(MySqlDataReader data)
         {
             base.Load(data);
@@ -304,9 +298,15 @@ namespace WvsBeta.Common.Objects
         public short Jump { get; set; } = 0;
         public short Speed { get; set; } = 0;
 
-        public static EquipItem DummyEquipItem { get; } = new EquipItem();
+        public static EquipItem DummyEquipItem { get; } = new EquipItem(0);
 
-        public EquipItem() { }
+        public EquipItem(int itemId) : base(itemId) 
+        {
+            if (BaseDataProvider.Equips == null || !BaseDataProvider.Equips.TryGetValue(base.ItemID, out EquipData data)) return;
+            IsQuest = data.IsQuest;
+            IsOnly = data.IsOnly;
+            Slots = data.Slots;
+        }
 
         public EquipItem(EquipItem itemBase) : base(itemBase)
         {
@@ -330,17 +330,14 @@ namespace WvsBeta.Common.Objects
             Speed = itemBase.Speed;
         }
 
-        public override void GiveStats(ItemVariation enOption)
+        public void GiveStats(ItemVariation enOption)
         {
             if (!BaseDataProvider.Equips.TryGetValue(ItemID, out EquipData data))
             {
                 return;
             }
 
-            Slots = data.Slots;
             Amount = 1; // Force it to be 1.
-            IsOnly = data.IsOnly;
-            IsQuest = data.IsQuest;
 
             if (enOption != ItemVariation.None)
             {
@@ -562,7 +559,7 @@ namespace WvsBeta.Common.Objects
 
         public MovableLife MovableLife { get; } = new MovableLife();
 
-        public static PetItem DummyPetItem { get; } = new PetItem();
+        public static PetItem DummyPetItem { get; } = new PetItem(0);
 
         public PetItem(PetItem itemBase) : base(itemBase)
         {
@@ -573,7 +570,7 @@ namespace WvsBeta.Common.Objects
             DeadDate = itemBase.DeadDate;
         }
 
-        public PetItem() { }
+        public PetItem(int itemId) : base (itemId) { }
 
 
         public override void Load(MySqlDataReader data)

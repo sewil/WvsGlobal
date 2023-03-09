@@ -239,11 +239,8 @@ namespace WvsBeta.Game
             {
                 var item = BaseItem.CreateFromItemID(id);
                 item.Amount = thisAmount;
-
-                if (Constants.isEquip(id))
-                {
-                    item.GiveStats(ItemVariation.None);
-                }
+                if (item is EquipItem)
+                    (item as EquipItem).GiveStats(ItemVariation.None);
                 givenAmount += thisAmount;
                 if (AddItem(item) == 0 && amount > 0)
                 {

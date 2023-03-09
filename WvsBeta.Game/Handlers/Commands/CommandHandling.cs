@@ -2175,7 +2175,7 @@ namespace WvsBeta.Game.Handlers.Commands
 
                                         var dropItem = BaseItem.CreateFromItemID(ItemID);
                                         dropItem.Amount = Amount;
-                                        dropItem.GiveStats(ItemVariation.None);
+                                        if (dropItem is EquipItem) (dropItem as EquipItem).GiveStats(ItemVariation.None);
 
                                         character.Field.DropPool.Create(Reward.Create(dropItem), character.ID, 0,
                                             DropType.Normal, 0, new Pos(character.Position), character.Position.X, 0,
