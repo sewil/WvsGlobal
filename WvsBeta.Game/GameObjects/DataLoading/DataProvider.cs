@@ -1120,6 +1120,9 @@ namespace WvsBeta.Game
                                 case "prob":
                                     dropdata.Chance = CalculateDropChance(node.ValueDouble());
                                     break;
+                                case "quest":
+                                    dropdata.Quest = node.ValueInt16();
+                                    break;
                                 default:
                                     Console.WriteLine($"Unhandled node {node.Name} in drop {dropper}");
                                     break;

@@ -8,6 +8,7 @@ public struct DropData
     public short Max { get; set; }
     public bool Premium { get; set; }
     public int Chance { get; set; }
+    public short Quest { get; set; }
     // Expires after X days
     public ushort Period { get; set; }
 
