@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Game.GameObjects;
 
 namespace WvsBeta.Game
@@ -121,14 +122,8 @@ namespace WvsBeta.Game
             Started = false;
             Party = null;
             OnEnd?.Invoke(this, null);
-            var invocationList = OnEnd?.GetInvocationList();
-            if (invocationList != null)
-            {
-                foreach (Delegate d in invocationList)
-                {
-                    OnEnd -= (EventHandler)d;
-                }
-            }
+            OnEnd?.ClearInvocations();
+            OnEnd = null;
             _savedVars.Clear();
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);
         }
