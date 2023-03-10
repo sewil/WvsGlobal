@@ -208,11 +208,11 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void AdminMessage(string message, byte type)
+        public void AdminMessage(string message, BroadcastMessageType type)
         {
             Packet packet = new Packet(ISClientMessages.AdminMessage);
             packet.WriteString(message);
-            packet.WriteByte(type);
+            packet.WriteByte((byte)type);
             SendPacket(packet);
         }
         public void PlayerFind(int charid, string name)
