@@ -252,7 +252,7 @@ namespace WvsBeta.Game.Handlers.Commands
                     case "roll":
                         {
                             int roll = Rand32.NextBetween(1, 100);
-                            ChatPacket.SendText(ChatPacket.MessageTypes.Blue, $"{character.Name} rolls {roll} (1-100)", character, ChatPacket.MessageMode.ToMap);
+                            ChatPacket.SendText(BroadcastMessageType.Blue, $"{character.Name} rolls {roll} (1-100)", character, MessageMode.ToMap);
                             return true;
                         }
                 }
@@ -271,8 +271,8 @@ namespace WvsBeta.Game.Handlers.Commands
                         case "whereami":
                         case "currentmap":
                             {
-                                ChatPacket.SendText(ChatPacket.MessageTypes.Notice, string.Format("You are currently at map {0}.", character.Field.ID),
-                                            character, ChatPacket.MessageMode.ToPlayer);
+                                ChatPacket.SendText(BroadcastMessageType.Notice, string.Format("You are currently at map {0}.", character.Field.ID),
+                                            character, MessageMode.ToPlayer);
                                 return true;
                             }
 #endregion
@@ -312,8 +312,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                     if (DataProvider.Maps.ContainsKey(FieldID))
                                         character.ChangeMap(FieldID);
                                     else
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Map not found.",
-                                            character, ChatPacket.MessageMode.ToPlayer);
+                                        ChatPacket.SendText(BroadcastMessageType.RedText, "Map not found.",
+                                            character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -343,8 +343,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                         return true;
                                     }
 
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
-                                        character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, "Victim not found.",
+                                        character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -373,8 +373,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                         return true;
                                     }
 
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
-                                        character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, "Victim not found.",
+                                        character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -411,9 +411,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                     if (who != null)
                                         who.Player.Socket.Disconnect();
                                     else
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(BroadcastMessageType.RedText,
                                             "You have entered an incorrect name.", character,
-                                            ChatPacket.MessageMode.ToPlayer);
+                                            MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -460,7 +460,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             var msg =
                                                 $"[{character.Name}] Permabanned {Args[0]} {Args[1]} (userid {userId}), reason {banReason}";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, BroadcastMessageType.RedText);
                                             return true;
                                     }
                                 }
@@ -501,7 +501,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             var msg =
                                                 $"[{character.Name}] Tempbanned {Args[0]} {Args[1]} (userid {userId}), reason {banReason}, hours {hours}";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, BroadcastMessageType.RedText);
                                             return true;
                                     }
                                 }
@@ -543,7 +543,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             var msg =
                                                 $"[{character.Name}] Unbanned {Args[0]} {Args[1]} (userid {userId})";
                                             Server.Instance.BanDiscordReporter.Enqueue(msg);
-                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, BroadcastMessageType.RedText);
                                             return true;
                                     }
                                 }
@@ -561,9 +561,9 @@ namespace WvsBeta.Game.Handlers.Commands
                             {
                                 if (Args.Count >= 3 && Args[2].IsNumber())
                                 {
-                                    ChatPacket.MuteReasons banReason = Args.Count > 3
+                                    MuteReasons banReason = Args.Count > 3
                                         ? ChatPacket.ParseMuteReason(Args[3])
-                                        : ChatPacket.MuteReasons.FoulLanguage;
+                                        : MuteReasons.FoulLanguage;
 
                                     if (banReason == 0)
                                     {
@@ -609,7 +609,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             var msg =
                                                 $"[{character.Name}] Muted {Args[0]} {Args[1]} (userid {userId}), reason {banReason}, hours {hours}";
                                             Server.Instance.MutebanDiscordReporter.Enqueue(msg);
-                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, BroadcastMessageType.RedText);
                                             return true;
                                     }
                                 }
@@ -658,7 +658,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                             var msg =
                                                 $"[{character.Name}] Unmuted {Args[0]} {Args[1]} (userid {userId})";
                                             Server.Instance.MutebanDiscordReporter.Enqueue(msg);
-                                            ChatPacket.SendNoticeGMs(msg, ChatPacket.MessageTypes.RedText);
+                                            ChatPacket.SendNoticeGMs(msg, BroadcastMessageType.RedText);
                                             return true;
                                     }
                                 }
@@ -688,7 +688,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         RedisBackend.Instance.MuteCharacter(character.ID, chr.ID, hours);
                                         ChatPacket.SendNoticeGMs(
                                             $"[{character.Name}] Muted character {Args[0]} for {hours} hours.",
-                                            ChatPacket.MessageTypes.RedText);
+                                            BroadcastMessageType.RedText);
                                     }
                                     return true;
                                 }
@@ -710,7 +710,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                         chr.HacklogMuted = DateTime.MinValue;
                                         RedisBackend.Instance.UnmuteCharacter(chr.ID);
                                         ChatPacket.SendNoticeGMs($"[{character.Name}] Unmuted character {Args[0]}",
-                                            ChatPacket.MessageTypes.RedText);
+                                            BroadcastMessageType.RedText);
                                     }
                                     return true;
                                 }
@@ -1091,7 +1091,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                 }
                                 catch(Exception e)
                                 {
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, e.Message, character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, e.Message, character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1208,8 +1208,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                         }
                                     }
                                     else
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Mob not found.",
-                                            character, ChatPacket.MessageMode.ToPlayer);
+                                        ChatPacket.SendText(BroadcastMessageType.RedText, "Mob not found.",
+                                            character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1272,8 +1272,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                     MySqlDataReader data = Server.Instance.CharacterDatabase.Reader;
                                     data.Read();
                                     int id = data.GetInt32("ID");
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "ID is " + id + ".",
-                                        character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, "ID is " + id + ".",
+                                        character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -1424,9 +1424,9 @@ namespace WvsBeta.Game.Handlers.Commands
                     case "mapnotice":
                             {
                                 if (Args.Count > 0)
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.PopupBox,
+                                    ChatPacket.SendText(BroadcastMessageType.PopupBox,
                                         $"[{character.Name}] : {Args.CommandText}", character,
-                                        ChatPacket.MessageMode.ToMap);
+                                        MessageMode.ToMap);
                                 return true;
                             }
 
@@ -1451,7 +1451,7 @@ namespace WvsBeta.Game.Handlers.Commands
 
                                     RedisBackend.Instance.SetImitateID(character.ID, charid);
                                     ChatPacket.SendNoticeGMs($"[{character.Name}] Imitating character {Args[0]}.",
-                                        ChatPacket.MessageTypes.RedText);
+                                        BroadcastMessageType.RedText);
                                     // CC
                                     character.Player.Socket.DoChangeChannelReq(Server.Instance.ID);
                                     return true;
@@ -1464,7 +1464,7 @@ namespace WvsBeta.Game.Handlers.Commands
                                 RedisBackend.Instance.SetImitateID(character.ID, 0);
                                 ChatPacket.SendNoticeGMs(
                                     $"[{character.ImitatorName}] Stopped imitating {character.Name}. Glad to have you back",
-                                    ChatPacket.MessageTypes.RedText);
+                                    BroadcastMessageType.RedText);
                                 return true;
                             }
 
@@ -1476,8 +1476,8 @@ namespace WvsBeta.Game.Handlers.Commands
                             {
                                 if (Args.Count > 0)
                                 {
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice, Args.CommandText, null,
-                                        ChatPacket.MessageMode.ToChannel);
+                                    ChatPacket.SendText(BroadcastMessageType.Notice, Args.CommandText, null,
+                                        MessageMode.ToChannel);
                                 }
                                 return true;
                             }
@@ -2007,9 +2007,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                             len = 10;
                                     }
 
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                    ChatPacket.SendText(BroadcastMessageType.RedText,
                                         string.Format("Shutting down in {0} seconds", len), character,
-                                        ChatPacket.MessageMode.ToPlayer);
+                                        MessageMode.ToPlayer);
 
                                     MasterThread.RepeatingAction.Start("Shutdown Thread",
                                         (a) => { Environment.Exit(9001); }, (long)len * 1000, 0);
@@ -2018,8 +2018,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                 }
                                 else
                                 {
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
-                                        "Unable to shutdown now!", character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText,
+                                        "Unable to shutdown now!", character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2052,10 +2052,10 @@ namespace WvsBeta.Game.Handlers.Commands
                                     var txt = Args.CommandText;
                                     Server.Instance.SetScrollingHeader(txt);
                                     ChatPacket.SendText(
-                                        ChatPacket.MessageTypes.Notice,
+                                        BroadcastMessageType.Notice,
                                         txt,
                                         null,
-                                        ChatPacket.MessageMode.ToChannel
+                                        MessageMode.ToChannel
                                     );
                                 }
                                 return true;
@@ -2271,16 +2271,16 @@ namespace WvsBeta.Game.Handlers.Commands
                             {
                                 if (character.Field.PortalsOpen == false)
                                 {
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice,
+                                    ChatPacket.SendText(BroadcastMessageType.Notice,
                                         "You have toggled the portal on.", character,
-                                        ChatPacket.MessageMode.ToPlayer);
+                                        MessageMode.ToPlayer);
                                     character.Field.PortalsOpen = true;
                                 }
                                 else
                                 {
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.Notice,
+                                    ChatPacket.SendText(BroadcastMessageType.Notice,
                                         "You have toggled the portal off.", character,
-                                        ChatPacket.MessageMode.ToPlayer);
+                                        MessageMode.ToPlayer);
                                     character.Field.PortalsOpen = false;
                                 }
                                 return true;
@@ -2300,8 +2300,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                         if (kvp.Value.Name.ToLower() == other)
                                         {
                                             //PartyPacket.partyInvite(kvp.Value);
-                                            ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Hey", kvp.Value,
-                                                ChatPacket.MessageMode.ToPlayer);
+                                            ChatPacket.SendText(BroadcastMessageType.RedText, "Hey", kvp.Value,
+                                                MessageMode.ToPlayer);
                                         }
                                     }
                                 }
@@ -2322,14 +2322,14 @@ namespace WvsBeta.Game.Handlers.Commands
                                     {
                                         Server.Instance.CharacterDatabase.RunQuery(
                                             $"UPDATE users SET donator = 1 WHERE ID = {derp}");
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(BroadcastMessageType.RedText,
                                             $"'{name} ' is now set as a donator on the AccountID : {derp}", character,
-                                            ChatPacket.MessageMode.ToPlayer);
+                                            MessageMode.ToPlayer);
                                     }
                                     else if (derp <= 1)
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(BroadcastMessageType.RedText,
                                             "You have entered an incorrect name.", character,
-                                            ChatPacket.MessageMode.ToPlayer);
+                                            MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2368,8 +2368,8 @@ namespace WvsBeta.Game.Handlers.Commands
                                     string name = Args[0].Value.ToLower();
                                     int id = Server.Instance.CharacterDatabase.CharacterIdByName(name);
                                     string name2 = character.Name;
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, $"ID is '{id}'.",
-                                        character, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, $"ID is '{id}'.",
+                                        character, MessageMode.ToPlayer);
                                 }
                                 return true;
                             }
@@ -2520,9 +2520,9 @@ namespace WvsBeta.Game.Handlers.Commands
                                         who.Field.Mobs.ForEach(x => x.Value.SetController(who, true));
                                     }
                                     else
-                                        ChatPacket.SendText(ChatPacket.MessageTypes.RedText,
+                                        ChatPacket.SendText(BroadcastMessageType.RedText,
                                             "You have entered an incorrect name.", character,
-                                            ChatPacket.MessageMode.ToPlayer);
+                                            MessageMode.ToPlayer);
                                 }
                                 return true;
                             }

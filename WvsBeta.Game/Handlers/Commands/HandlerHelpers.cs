@@ -16,10 +16,10 @@ namespace WvsBeta.Game.Handlers.Commands
             return -1;
         }
 
-        public static void ShowError(string message) => SendResponse(ChatPacket.MessageTypes.RedText, message);
-        public static void ShowInfo(string message) => SendResponse(ChatPacket.MessageTypes.Notice, message);
+        public static void ShowError(string message) => SendResponse(BroadcastMessageType.RedText, message);
+        public static void ShowInfo(string message) => SendResponse(BroadcastMessageType.Notice, message);
 
-        public static void SendResponse(ChatPacket.MessageTypes type, string message)
+        public static void SendResponse(BroadcastMessageType type, string message)
         {
             if (MainCommandHandler.CommandCharacter == null) return;
 
@@ -27,7 +27,7 @@ namespace WvsBeta.Game.Handlers.Commands
                 type,
                 message,
                 MainCommandHandler.CommandCharacter,
-                ChatPacket.MessageMode.ToPlayer
+                MessageMode.ToPlayer
             );
         }
     }

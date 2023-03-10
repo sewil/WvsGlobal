@@ -87,8 +87,8 @@ namespace WvsBeta.Game.Handlers.Commands
                     return true;
                 }
 
-                ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
-                    character, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(BroadcastMessageType.RedText, "Victim not found.",
+                    character, MessageMode.ToPlayer);
             }
             return true;
         }
@@ -119,8 +119,8 @@ namespace WvsBeta.Game.Handlers.Commands
                     return true;
                 }
 
-                ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Victim not found.",
-                    character, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(BroadcastMessageType.RedText, "Victim not found.",
+                    character, MessageMode.ToPlayer);
             }
             return true;
         }
@@ -141,7 +141,7 @@ namespace WvsBeta.Game.Handlers.Commands
             }
             catch (Exception e)
             {
-                ChatPacket.SendText(ChatPacket.MessageTypes.RedText, e.Message, character, ChatPacket.MessageMode.ToPlayer);
+                ChatPacket.SendText(BroadcastMessageType.RedText, e.Message, character, MessageMode.ToPlayer);
                 return false;
             }
         }

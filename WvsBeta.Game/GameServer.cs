@@ -74,7 +74,7 @@ namespace WvsBeta.Game
             ScrollingHeader = newText;
             Program.MainForm.LogAppend("Updating scrolling header to: {0}", ScrollingHeader);
 
-            ChatPacket.SendText(ChatPacket.MessageTypes.Header, ScrollingHeader, null, ChatPacket.MessageMode.ToChannel);
+            ChatPacket.SendText(BroadcastMessageType.Header, ScrollingHeader, null, MessageMode.ToChannel);
         }
 
         public void LogToLogfile(string what)
@@ -101,7 +101,7 @@ namespace WvsBeta.Game
 
             ChatPacket.SendNoticeGMs(
                 str,
-                ChatPacket.MessageTypes.Notice
+                BroadcastMessageType.Notice
             );
         }
 
@@ -218,7 +218,7 @@ namespace WvsBeta.Game
 
                             ChatPacket.SendNoticeGMs(
                                 str,
-                                ChatPacket.MessageTypes.Notice
+                                BroadcastMessageType.Notice
                             );
 
                             DelayedBanRecords.Remove(userid);

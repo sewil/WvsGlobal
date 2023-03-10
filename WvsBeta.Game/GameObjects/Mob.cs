@@ -406,7 +406,7 @@ namespace WvsBeta.Game
             {
                 _hackLog.Warn(hackType);
                 Trace.WriteLine(hackType);
-                ChatPacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", ChatPacket.MessageTypes.Megaphone);
+                ChatPacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", BroadcastMessageType.Megaphone);
             }
             return isHack;
         }

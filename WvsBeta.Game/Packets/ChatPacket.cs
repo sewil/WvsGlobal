@@ -11,6 +11,34 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
+    public enum BroadcastMessageType : byte
+    {
+        Notice = 0x00, // Blue text no highlight
+        PopupBox = 0x01, // Pop-up text window
+        Megaphone = 0x02, // Blue text with highlight
+        SuperMegaphone = 0x03, // Red text with bright pink highlight
+        Header = 0x04, // Scrolling header
+        RedText = 0x05, // Red text with no highlight
+        Blue = 0x06 // Blue text without [Notice]
+    }
+
+    public enum MessageMode : byte
+    {
+        ToPlayer,
+        ToMap,
+        ToChannel,
+    }
+
+    public enum MuteReasons : byte
+    {
+        FoulLanguage = 1,
+        Advertising = 2,
+        ImpersonationOfAGM = 3,
+        AccountTrading = 4,
+        ReportingOfFameTradeScams = 5,
+        PenaltyAlert = 6
+    }
+
     public static class ChatPacket
     {
         private static ILog log = LogManager.GetLogger("ChatLog");
@@ -19,34 +47,6 @@ namespace WvsBeta.Game
         private static ILog partyLog = LogManager.GetLogger("PartyChatLog");
         private static ILog guildLog = LogManager.GetLogger("GuildChatLog");
         private static ILog whisperLog = LogManager.GetLogger("WhisperChatLog");
-
-        public enum MessageTypes : byte
-        {
-            Notice = 0x00, // Blue text no highlight
-            PopupBox = 0x01, // Pop-up text window
-            Megaphone = 0x02, // Blue text with highlight
-            SuperMegaphone = 0x03, // Red text with bright pink highlight
-            Header = 0x04, // Scrolling header
-            RedText = 0x05, // Red text with no highlight
-            Blue = 0x06 // Blue text without [Notice]
-        }
-
-        public enum MessageMode : byte
-        {
-            ToPlayer,
-            ToMap,
-            ToChannel
-        }
-
-        public enum MuteReasons : byte
-        {
-            FoulLanguage = 1,
-            Advertising = 2,
-            ImpersonationOfAGM = 3,
-            AccountTrading = 4,
-            ReportingOfFameTradeScams = 5,
-            PenaltyAlert = 6
-        }
 
         public static string GetMuteReasonText(MuteReasons reason)
         {
@@ -90,7 +90,7 @@ namespace WvsBeta.Game
 
             if (chr.MutedUntil > MasterThread.CurrentDate)
             {
-                SendText(MessageTypes.RedText, $"You are muted until {chr.MutedUntil:MM/dd/yyyy HH:mm:ss}, reason {GetMuteReasonText((MuteReasons)chr.MuteReason)}", chr, MessageMode.ToPlayer);
+                SendText(BroadcastMessageType.RedText, $"You are muted until {chr.MutedUntil:MM/dd/yyyy HH:mm:ss}, reason {GetMuteReasonText((MuteReasons)chr.MuteReason)}", chr, MessageMode.ToPlayer);
                 return true;
             }
             return false;
@@ -229,7 +229,7 @@ namespace WvsBeta.Game
         {
             log.Info("[MEGAPHONE] " + what);
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)MessageTypes.Megaphone);
+            pw.WriteByte((byte)BroadcastMessageType.Megaphone);
             pw.WriteString(what);
 
             foreach (KeyValuePair<int, Map> kvp in DataProvider.Maps)
@@ -243,7 +243,7 @@ namespace WvsBeta.Game
             log.Info("[MEGAPHONE] " + what);
 
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)MessageTypes.Megaphone);
+            pw.WriteByte((byte)BroadcastMessageType.Megaphone);
             pw.WriteString(what);
             DataProvider.Maps[mapid].SendPacket(pw);
         }
@@ -253,7 +253,7 @@ namespace WvsBeta.Game
             log.Info("[SUPERMEGAPHONE] " + what);
 
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)MessageTypes.SuperMegaphone);
+            pw.WriteByte((byte)BroadcastMessageType.SuperMegaphone);
             pw.WriteString(what);
             if (channel == 1) channel = 0; // Bugged O.o
             pw.WriteByte(channel);
@@ -263,15 +263,15 @@ namespace WvsBeta.Game
                 kvp.Value.SendPacket(pw);
         }
 
-        public static void SendText(MessageTypes type, string what, GameCharacter victim, MessageMode mode)
+        public static void SendText(BroadcastMessageType type, string what, GameCharacter victim, MessageMode mode)
         {
-            if (type == MessageTypes.SuperMegaphone)
+            if (type == BroadcastMessageType.SuperMegaphone)
                 return;
 
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte((byte)type);
 
-            if (type == MessageTypes.Header)
+            if (type == BroadcastMessageType.Header)
             {
                 pw.WriteBool(what != "");
             }
@@ -280,7 +280,7 @@ namespace WvsBeta.Game
             switch (mode)
             {
                 case MessageMode.ToPlayer:
-                    if (type != MessageTypes.Header || what != "")
+                    if (type != BroadcastMessageType.Header || what != "")
                     {
                         log.Info($"[MSG][ {mode} ][{type}][{victim.ID}] {what}");
                     }
@@ -288,7 +288,7 @@ namespace WvsBeta.Game
                     victim.SendPacket(pw);
                     break;
                 case MessageMode.ToMap:
-                    if (type != MessageTypes.Header || what != "")
+                    if (type != BroadcastMessageType.Header || what != "")
                     {
                         log.Info($"[MSG][ {mode} ][{type}][{victim.MapID}] {what}");
                     }
@@ -296,7 +296,7 @@ namespace WvsBeta.Game
                     victim.Field.SendPacket(pw);
                     break;
                 case MessageMode.ToChannel:
-                    if (type != MessageTypes.Header || what != "")
+                    if (type != BroadcastMessageType.Header || what != "")
                     {
                         log.Info($"[MSG][ {mode} ][{type}] {what}");
                     }
@@ -330,7 +330,7 @@ namespace WvsBeta.Game
         public static void SendNotice(string what, GameCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)MessageTypes.Notice);
+            pw.WriteByte((byte)BroadcastMessageType.Notice);
             pw.WriteString(what);
             if (victim == null)
             {
@@ -344,7 +344,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendNoticeGMs(string what, MessageTypes severity = MessageTypes.Notice)
+        public static void SendNoticeGMs(string what, BroadcastMessageType severity = BroadcastMessageType.Notice)
         {
             log.Info("[GM NOTICE] " + what);
             Trace.WriteLine("[GM NOTICE] " + what);
@@ -362,32 +362,37 @@ namespace WvsBeta.Game
         {
             log.Info("[MAPNOTICE][" + mapid + "] " + what);
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)MessageTypes.Notice);
+            pw.WriteByte((byte)BroadcastMessageType.Notice);
             pw.WriteString(what);
             DataProvider.Maps[mapid].SendPacket(pw);
         }
 
-        public static void SendAdminMessage(GameCharacter chr, string what, byte Type, byte to)
+        public static Packet BroadcastMessage(string text, BroadcastMessageType type)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte(Type);
-            if (Type == 4)
+            pw.WriteByte((byte)type);
+            if (type == BroadcastMessageType.Header)
             {
-                pw.WriteBool(what.Length != 0);
+                pw.WriteBool(text.Length != 0);
             }
-            pw.WriteString(what);
+            pw.WriteString(text);
+            return pw;
+        }
+        public static void SendBroadcastMessage(GameCharacter chr, string text, BroadcastMessageType type, MessageMode to)
+        {
+            Packet pw = BroadcastMessage(text, type);
             switch (to)
             {
-                case 0x00:
-                    Server.Instance.CenterConnection.AdminMessage(what, Type);
+                case MessageMode.ToPlayer:
+                    Server.Instance.CenterConnection.AdminMessage(text, type);
                     break;
-                case 0x01:
+                case MessageMode.ToChannel:
                     foreach (var kvp in DataProvider.Maps)
                     {
                         kvp.Value.SendPacket(pw);
                     }
                     break;
-                case 0x02:
+                case MessageMode.ToMap:
                     chr.Field.SendPacket(pw);
                     break;
             }

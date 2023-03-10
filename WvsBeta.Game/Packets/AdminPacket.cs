@@ -7,18 +7,18 @@ namespace WvsBeta.Game
         public static void HandleAdminCommandMessage(GameCharacter chr, Packet packet)
         {
             byte to = packet.ReadByte();
-            byte TypeMessage = packet.ReadByte(); //   /alert, /notice, /slide
+            var type = (BroadcastMessageType)packet.ReadByte(); //   /alert, /notice, /slide
             string Message = packet.ReadString();
             switch (to)
             {
                 case 0x00: //To every game server
-                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 0);
+                ChatPacket.SendBroadcastMessage(chr, Message, type, MessageMode.ToPlayer);
                 break;
                 case 0x01: //To channel
-                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 1);
+                ChatPacket.SendBroadcastMessage(chr, Message, type, MessageMode.ToChannel);
                 break;
                 case 0x02: //To map
-                ChatPacket.SendAdminMessage(chr, Message, TypeMessage, 2);
+                ChatPacket.SendBroadcastMessage(chr, Message, type, MessageMode.ToMap);
                 break;
             }
         }

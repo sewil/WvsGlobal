@@ -443,7 +443,7 @@ namespace WvsBeta.Game
             {
                 ChatPacket.SendNoticeGMs(
                     $"Detected speed hacks on character '{character.Name}', map {character.MapID}...",
-                    ChatPacket.MessageTypes.RedText);
+                    BroadcastMessageType.RedText);
 
                 if (character.IsGM == false)
                 {
@@ -458,7 +458,7 @@ namespace WvsBeta.Game
             {
                 ChatPacket.SendNoticeGMs(
                     $"Detected memory edits on character '{character.Name}', map {character.MapID}.",
-                    ChatPacket.MessageTypes.RedText
+                    BroadcastMessageType.RedText
                 );
 
                 if (character.IsGM == false)
@@ -633,7 +633,7 @@ namespace WvsBeta.Game
                 character.Summons.DecodeForCC(ccPacket);
             }
 
-            ChatPacket.SendText(ChatPacket.MessageTypes.Header, Server.Instance.ScrollingHeader, character, ChatPacket.MessageMode.ToPlayer);
+            ChatPacket.SendText(BroadcastMessageType.Header, Server.Instance.ScrollingHeader, character, MessageMode.ToPlayer);
 
             Server.Instance.CenterConnection.RegisterCharacter(character.ID, character.Name, character.CharacterStat.Job, character.CharacterStat.Level, character.GMLevel);
 

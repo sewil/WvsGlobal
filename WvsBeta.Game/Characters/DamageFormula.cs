@@ -5,13 +5,13 @@ namespace WvsBeta.Game
 {
     public static class DamageFormula
     {
-        public static ChatPacket.MessageTypes GetGMNoticeType(int damageGiven, int maxDamageCalculated)
+        public static BroadcastMessageType GetGMNoticeType(int damageGiven, int maxDamageCalculated)
         {
             int percent = damageGiven * 100 / maxDamageCalculated;
-            if (percent < 115) return ChatPacket.MessageTypes.Notice;
-            if (percent < 150) return ChatPacket.MessageTypes.Notice;
-            if (percent < 200) return ChatPacket.MessageTypes.RedText;
-            return ChatPacket.MessageTypes.Megaphone;
+            if (percent < 115) return BroadcastMessageType.Notice;
+            if (percent < 150) return BroadcastMessageType.Notice;
+            if (percent < 200) return BroadcastMessageType.RedText;
+            return BroadcastMessageType.Megaphone;
         }
 
         // Author: wackyracer / Joren McGrew

@@ -22,7 +22,7 @@ namespace WvsBeta.Game
             {
                 ChatPacket.SendNoticeGMs(
                     $"Check '{hackType}' triggered! Character: '{Name}', Map: '{MapID}'.",
-                    ChatPacket.MessageTypes.Megaphone
+                    BroadcastMessageType.Megaphone
                 );
             }
 
@@ -57,7 +57,7 @@ namespace WvsBeta.Game
             {
                 ChatPacket.SendNoticeGMs(
                     $"Would've perma'd {Name} (uid {UserID}, cid {ID}), reason: {reason}",
-                    ChatPacket.MessageTypes.Notice
+                    BroadcastMessageType.Notice
                 );
                 return false;
             }

@@ -75,7 +75,7 @@ namespace WvsBeta.Game
                 MasterThread.CurrentDate);
 
             Server.Instance.ServerTraceDiscordReporter.Enqueue(report.ToString());
-            ChatPacket.SendNoticeGMs(report.ToString(), ChatPacket.MessageTypes.Notice);
+            ChatPacket.SendNoticeGMs(report.ToString(), BroadcastMessageType.Notice);
             ReportManager.AddAbuseReport(report);
         }
 

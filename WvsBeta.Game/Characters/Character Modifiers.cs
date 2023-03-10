@@ -908,7 +908,7 @@ namespace WvsBeta.Game
                                 if (DataProvider.Maps.ContainsKey(FieldID))
                                     ChangeMap(FieldID);
                                 else
-                                    ChatPacket.SendText(ChatPacket.MessageTypes.RedText, "Map not found.", this, ChatPacket.MessageMode.ToPlayer);
+                                    ChatPacket.SendText(BroadcastMessageType.RedText, "Map not found.", this, MessageMode.ToPlayer);
                                 break;
                             }
                         default:

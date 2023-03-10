@@ -253,7 +253,7 @@ namespace WvsBeta.Game
                     int y = (grouping.Key >> 0) & 0xFFFF;
                     ChatPacket.SendNoticeGMs(
                         $"Possible mobvac on map {ID}. More than {MaxMobsForTrigger} mobs on the exact same position. Location: {x} {y}." + GetMobvacPlayerNameInfo(),
-                        ChatPacket.MessageTypes.Megaphone
+                        BroadcastMessageType.Megaphone
                     );
                     return;
                 }
@@ -337,13 +337,13 @@ namespace WvsBeta.Game
             {
                 ChatPacket.SendNoticeGMs(
                     $"Possible mobvac on map {ID}. pvac left {mobsWithPossiblePvac_Left}, pvac right {mobsWithPossiblePvac_Right}" + GetMobvacPlayerNameInfo(),
-                    ChatPacket.MessageTypes.Megaphone
+                    BroadcastMessageType.Megaphone
                 );
             }
 
             if (mobsOutOfBounds > 3)
             {
-                ChatPacket.SendNoticeGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), ChatPacket.MessageTypes.Megaphone);
+                ChatPacket.SendNoticeGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), BroadcastMessageType.Megaphone);
             }
             /*
             if (mobsWithInvalidFoothold > 3)
