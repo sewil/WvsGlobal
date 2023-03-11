@@ -45,15 +45,10 @@ namespace WvsBeta.Game
 
         public static void HandleReactorHit(GameCharacter chr, Packet packet)
         {
-            int reactorID = packet.ReadInt();
+            int reactorId = packet.ReadInt();
             int stance = packet.ReadInt();
             short xOffset = packet.ReadShort();
-            if (!DataProvider.Maps[chr.Field.ID].ReactorPool.ShownReactors.TryGetValue(reactorID, out FieldReactor reactor))
-            {
-                Program.MainForm.LogAppend("Reactor " + reactorID + " not found!");
-                return;
-            }
-            chr.Field.ReactorPool.PlayerHitReactor(chr, reactor);
+            chr.Field.ReactorPool.TriggerReactor(reactorId, chr);
         }
     }
 }

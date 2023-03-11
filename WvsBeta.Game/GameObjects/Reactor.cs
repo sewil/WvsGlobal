@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using WvsBeta.Common;
-using WvsBeta.Common.Objects;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -16,11 +15,10 @@ namespace WvsBeta.Game
     public class ReactorEvent
     {
         public ReactorEventType Type { get; private set; }
-        public byte State { get; private set; }
         public Rectangle? Rectangle { get; private set; }
         public int DropID { get; private set; }
         public short DropAmount { get; private set; }
-        public ReactorEvent(Reactor reactor, NXNode eNode)
+        public ReactorEvent(NXNode eNode)
         {
             if (eNode.ContainsChild("lt"))
             {
@@ -46,9 +44,6 @@ namespace WvsBeta.Game
                 {
                     case "type":
                         Type = (ReactorEventType)subNode.ValueByte();
-                        break;
-                    case "state":
-                        State = subNode.ValueByte();
                         break;
                     default:
                         break;
@@ -81,7 +76,7 @@ namespace WvsBeta.Game
             FacesLeft = facesLeft;
             _state = state;
             ReactorTime = -1;
-            SetState(_state);
+            SetState(null, _state, false);
         }
         public FieldReactor(Map map, NXNode node)
         {
@@ -92,7 +87,7 @@ namespace WvsBeta.Game
             Position = new Pos(node["x"].ValueInt16(), node["y"].ValueInt16());
             FacesLeft = node["f"].ValueBool();
             ReactorTime = node["reactorTime"].ValueInt32();
-            SetState(_state);
+            SetState(null, _state, false);
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -105,15 +100,28 @@ namespace WvsBeta.Game
                 }
             }
         }
-        private void SetState(byte state)
+        public void SetState(GameCharacter chr, byte state, bool sendPacket = true)
         {
-            if (!Reactor.States.ContainsKey(state)) return;
-            _state = state;
+            Owner = chr;
+            _state = (byte)(state % Reactor.States.Count);
+            bool isLast = _state == Reactor.States.Count - 1;
             if (State.Event?.Rectangle != null)
             {
                 var rect = State.Event.Rectangle.Value;
                 rect.Offset(Position);
                 EventRectangle = rect;
+            }
+            if (isLast)
+            {
+                RunScript();
+                if (ReactorTime > -1)
+                {
+                    resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(true), ReactorTime * 1000, 0);
+                }
+            }
+            if (sendPacket)
+            {
+                ReactorPacket.ReactorChangedState(this);
             }
         }
         public void Show(GameCharacter toChar = null)
@@ -123,69 +131,35 @@ namespace WvsBeta.Game
 
         public void Reset(bool sendPacket = true)
         {
-            destroyAction?.Stop();
             dropAction?.Stop();
-            respawnAction?.Stop();
+            resetAction?.Stop();
             _state = 0;
-            pendingDestroy = false;
             if (sendPacket)
                 ReactorPacket.ReactorChangedState(this);
         }
-        private bool pendingDestroy;
-        private MasterThread.RepeatingAction destroyAction;
         private MasterThread.RepeatingAction dropAction;
-        private MasterThread.RepeatingAction respawnAction;
-        public void Destroy()
+        private MasterThread.RepeatingAction resetAction;
+        private void RunScript()
         {
-            pendingDestroy = true;
-            if (State.Delay > 0)
-            {
-                ReactorPacket.ReactorChangedState(this);
-            }
-            destroyAction = MasterThread.RepeatingAction.Start("rdstrp-" + Field.ID + "-" + ID, () => {
-                ReactorPacket.DestroyReactor(this);
-                if (ReactorTime > -1)
+            ReactorScriptSession.Run(this, script => {
+#if !DEBUG
+                if (Owner != null && Owner.IsGM)
                 {
-                    respawnAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Field.ReactorPool.Show(ID), ReactorTime * 1000, 0);
+#endif
+                    ChatPacket.SendBroadcastMessageToMap(Field.ID, "Error compiling script: " + script, BroadcastMessageType.Notice);
+#if !DEBUG
                 }
-                Field.ReactorPool.ShownReactors.Remove(ID);
-            }, State.Delay * 1000, 0);
-            if (Reactor.Action != null)
-            {
-                ReactorScriptSession.Run(this, script => {
-#if !DEBUG
-                    if (Owner != null && Owner.IsGM)
-                    {
 #endif
-                        ChatPacket.SendNoticeMap("Error compiling script: " + script, Field.ID);
-#if !DEBUG
-                    }
-#endif
-                });
-            }
+            });
         }
         public void Trigger(GameCharacter chr)
         {
-            if (pendingDestroy) return;
-            Owner = chr;
-            bool hasAction = Reactor.Action != null;
-            byte newState = (byte)((State.Event != null ? State.Event.State : _state + 1) % Reactor.States.Count);
-            SetState(newState);
-
-            bool isLast = newState >= Reactor.States.Count - 1;
-            if (isLast && hasAction)
-            {
-                Destroy();
-            }
-            else
-            {
-                ReactorPacket.ReactorChangedState(this);
-            }
+            SetState(chr, (byte)(_state + 1));
         }
         public bool TriggerDrop(Drop drop, int ownerId)
         {
             var e = State.Event;
-            bool trigger = e?.Type == ReactorEventType.Drop && e?.DropID == drop.Reward.ItemID && e.DropAmount == drop.Reward.Amount && EventRectangle?.Contains(drop.Pt2) == true;
+            bool trigger = e?.Type == ReactorEventType.Drop && e?.DropID == drop.Reward.ItemID && e.DropAmount == drop.Reward.Amount && EventRectangle?.Contains(drop.AreaPos) == true;
             if (trigger)
             {
                 if (!Server.Instance.CharacterList.TryGetValue(ownerId, out GameCharacter owner)) return false;
@@ -193,7 +167,6 @@ namespace WvsBeta.Game
                 {
                     if (Field.DropPool.Drops.ContainsKey(drop.DropID)) // Check drop still exists
                     {
-                        ReactorPacket.ReactorChangedState(this);
                         Field.DropPool.RemoveDrop(drop);
                         Trigger(owner);
                     }
@@ -201,10 +174,26 @@ namespace WvsBeta.Game
             }
             return trigger;
         }
-        public IList<Mob> Spawn(short yOffset, params (int mobid, short amount, SummonType summonType, Mob ownerMob)[] mobs)
+        public IList<NpcLife> SpawnNpc(Pos offset, params int[] npcs)
         {
             var pos = new Pos(Position);
-            pos.Offset(0, yOffset);
+            pos.Offset(offset);
+            var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int _);
+            var npcLives = new List<NpcLife>();
+            foreach (int npc in npcs)
+            {
+                NpcLife npcLife = Field.SpawnNpc(npc, pos, fh);
+                if (npcLife != null)
+                {
+                    npcLives.Add(npcLife);
+                }
+            }
+            return npcLives;
+        }
+        public IList<Mob> SpawnMob(Pos offset, params (int mobid, short amount, SummonType summonType, Mob ownerMob)[] mobs)
+        {
+            var pos = new Pos(Position);
+            pos.Offset(offset);
             var spawned = new List<Mob>();
             var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY);
             foreach (var mob in mobs)
@@ -235,40 +224,16 @@ namespace WvsBeta.Game
     public class ReactorState
     {
         public byte State { get; private set; }
-        public Point? Origin { get; private set; }
-        public short Z { get; private set; }
         public ReactorEvent Event { get; private set; }
-        public int Delay { get; private set; }
-        public ReactorState(Reactor reactor, NXNode node)
+        public ReactorState(NXNode node)
         {
             State = byte.Parse(node.Name);
             foreach (var subNode in node)
             {
-                if (int.TryParse(subNode.Name, out int n))
-                {
-                    foreach (var ssNode in subNode)
-                    {
-                        switch (ssNode.Name)
-                        {
-                            case "origin":
-                                Origin = ssNode.ValueOrDie<Point>();
-                                break;
-                            case "z":
-                                Z = ssNode.ValueInt16();
-                                break;
-                            case "delay":
-                                Delay = ssNode.ValueInt32();
-                                break;
-                            default:
-                                break;
-                        }
-                    }
-                    continue;
-                }
                 switch (subNode.Name)
                 {
                     case "event":
-                        Event = new ReactorEvent(reactor, subNode["0"]);
+                        Event = new ReactorEvent(subNode["0"]);
                         break;
                     default:
                         break;
@@ -292,7 +257,7 @@ namespace WvsBeta.Game
             {
                 if (byte.TryParse(subNode.Name, out byte n))
                 {
-                    States.Add(n, new ReactorState(this, subNode));
+                    States.Add(n, new ReactorState(subNode));
                     continue;
                 }
                 switch (subNode.Name)

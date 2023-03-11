@@ -25,12 +25,8 @@ namespace WvsBeta.Game.Scripting
         }
         public static IReactorScript GetScript(FieldReactor reactor, Action<string> errorHandlerFnc)
         {
-            IReactorScript script = null;
-            if (reactor.Reactor.Action != null)
-            {
-                script = (IReactorScript)ScriptAccessor.GetScript(Server.Instance, reactor.Reactor.Action, errorHandlerFnc);
-            }
-            return script;
+            string scriptName = reactor.Reactor.Action ?? reactor.Reactor.ID.ToString();
+            return (IReactorScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
         }
 
         public void RunScript()

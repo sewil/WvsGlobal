@@ -225,5 +225,11 @@ namespace WvsBeta.Game
             else
                 _savedVars[pName] = pValue;
         }
+        #region Script helpers
+        public void TriggerReactor(int mapIdx, string reactorName)
+        {
+            Maps[mapIdx].ReactorPool.TriggerReactor(reactorName, null);
+        }
+        #endregion
     }
 }

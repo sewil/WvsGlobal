@@ -33,7 +33,8 @@ namespace WvsBeta.Game.Scripting
                 ScriptAttribute attr = t.GetCustomAttribute(typeof(ScriptAttribute), true) as ScriptAttribute;
                 if (attr != null && attr.DisplayName == scriptName)
                 {
-                    return (IGameScript)dll.CreateInstance(t.FullName);
+                    var scriptInstance = (IGameScript)dll.CreateInstance(t.FullName);
+                    return (IGameScript)scriptInstance.GetType().GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(scriptInstance, null);
                 }
             }
             errorHandlerFnc?.Invoke(string.Format("Script implementation for '{0}' not found.", scriptName));

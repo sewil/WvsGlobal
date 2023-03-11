@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 
 namespace WvsBeta.Game.GameObjects
@@ -8,56 +8,56 @@ namespace WvsBeta.Game.GameObjects
     {
         public Map Field { get; set; }
         public Dictionary<int, FieldReactor> Reactors { get; private set; } = new Dictionary<int, FieldReactor>();
-        public Dictionary<int, FieldReactor> ShownReactors { get; private set; } = new Dictionary<int, FieldReactor>();
 
         public ReactorPool(Map field)
         {
             Field = field;
         }
-        public void Add(FieldReactor reactor, bool show)
+        public void AddReactor(FieldReactor reactor, bool sendPacket = true)
         {
             Reactors.Add(reactor.ID, reactor);
-            if (show)
+            if (sendPacket)
             {
-                Show(reactor.ID);
+                reactor.Show();
             }
         }
         public void Reset(bool sendPacket = true)
         {
-            foreach (var reactor in ShownReactors.Values)
+            foreach (var reactor in Reactors.Values)
             {
                 reactor.Reset(sendPacket);
             }
-            foreach (var reactor in Reactors.Values)
-            {
-                Show(reactor.ID, sendPacket);
-            }
-        }
-        public FieldReactor Show(int rid, bool sendPacket = true)
-        {
-            if (!Reactors.TryGetValue(rid, out FieldReactor reactor) || ShownReactors.ContainsKey(rid)) return null;
-            FieldReactor rclone = reactor.ShallowCopy;
-            ShownReactors[reactor.ID] = rclone;
-            if (sendPacket)
-                rclone.Show();
-            return rclone;
         }
 
         public void ShowReactorsTo(GameCharacter chr)
         {
-            ShownReactors.Values.ForEach(r => r.Show(chr));
+            Reactors.Values.ForEach(r => r.Show(chr));
         }
-
-        public void PlayerHitReactor(GameCharacter chr, FieldReactor r)
+        public void TriggerReactor(string reactorName, GameCharacter owner)
         {
-            r.Trigger(chr);
-        }
-        public void PlayerHitReactor(GameCharacter chr, byte rid)
-        {
-            if (ShownReactors.TryGetValue(rid, out FieldReactor r))
+            if (Reactors.Select(i => i.Value).TryFind(i => i.Name == reactorName, out FieldReactor reactor))
             {
-                PlayerHitReactor(chr, r);
+                TriggerReactor(reactor, owner);
             }
+            else
+            {
+                Program.MainForm.LogAppend("Reactor \"" + reactorName + "\" not found!");
+            }
+        }
+        public void TriggerReactor(int reactorId, GameCharacter owner)
+        {
+            if (Reactors.TryGetValue(reactorId, out FieldReactor reactor))
+            {
+                TriggerReactor(reactor, owner);
+            }
+            else
+            {
+                Program.MainForm.LogAppend("Reactor " + reactorId + " not found!");
+            }
+        }
+        public void TriggerReactor(FieldReactor reactor, GameCharacter owner)
+        {
+            reactor.Trigger(owner);
         }
     }
 }

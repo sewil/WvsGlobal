@@ -76,7 +76,7 @@ namespace WvsBeta.Game
             mCharacter = chr;
             mCharacter.NpcSession = this;
             scriptVars = Server.Instance.ScriptVars[scriptName];
-            compiledScript = (INpcScript)npcScript.GetType().GetMethod("MemberwiseClone", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(npcScript, null);
+            compiledScript = npcScript;
             if (chr.IsGM && chr.Job == 500) SetStrReg("name", chr.Name);
             ewh = new EventWaitHandle(false, EventResetMode.AutoReset);
             Started = true;
