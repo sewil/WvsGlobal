@@ -114,7 +114,7 @@ namespace WvsBeta.Game
             if (isLast)
             {
                 RunScript();
-                if (ReactorTime > -1)
+                if (ReactorTime > 0)
                 {
                     resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(true), ReactorTime * 1000, 0);
                 }
@@ -215,7 +215,7 @@ namespace WvsBeta.Game
             short delay = 0;
             foreach (var reward in rewards)
             {
-                Field.DropPool.Create(reward, Owner.ID, Owner.PartyID, DropType.Normal, ID, Position, x2, delay, false, false);
+                Field.DropPool.Create(reward, Owner.ID, Owner.PartyID, DropType.Normal, 0, Position, x2, delay, false, false);
                 x2 += 20;
                 delay += 120;
             }

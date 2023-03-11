@@ -241,4 +241,14 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
+    #region Reactors
+    [Script("mBoxItem0")]
+    class mBoxItem0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    #endregion
 }
