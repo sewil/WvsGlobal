@@ -273,11 +273,10 @@ namespace WvsBeta.Game
         public string Info { get; }
         public string Action { get; }
         public int Link { get; }
-        public IDictionary<byte, ReactorState> States { get; }
+        public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();
 
         public Reactor(NXNode rNode)
         {
-            States = new Dictionary<byte, ReactorState>();
             ID = (int)Utils.ConvertNameToID(rNode.Name);
 
             foreach (var subNode in rNode)

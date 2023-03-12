@@ -1581,10 +1581,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             EffectScreen("quest/party/clear");
             EffectSound("Party1/Clear");
         }
-        public void EffectScreenShake()
-        {
-            //PlayerEffectPacket.SendSkill()
-        }
         public void Message(string text, BroadcastMessageType type = BroadcastMessageType.RedText)
         {
             ChatPacket.SendBroadcastMessageToMap(this, text, type);

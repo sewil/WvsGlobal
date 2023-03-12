@@ -1,13 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using WvsBeta.Common;
-using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
-using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Scripting;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -1434,10 +1430,9 @@ namespace WvsBeta.Scripts.Scripts
         {
             var set = FieldSet.Instances["Guild1"];
             set.SetVar("speargateopen", "yes");
-            set.Maps[5].EffectPartyClear();
             foreach (var map in set.Maps.Where(i => i.ID % 9900004 < 100))
             {
-                map.EffectScreenShake();
+                map.EffectPartyClear();
             }
         }
     }
