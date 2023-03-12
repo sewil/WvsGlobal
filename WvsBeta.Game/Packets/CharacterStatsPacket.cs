@@ -17,33 +17,32 @@ namespace WvsBeta.Game
         public bool IsPhysical = false;
         public Pos Position = new Pos(0, 0);
     }
+    [Flags]
+    public enum StatFlags : uint
+    {
+        Skin = 0x01,
+        Eyes = 0x02,
+        Hair = 0x04,
+        Pet = 0x08,
+        Level = 0x10,
+        Job = 0x20,
+        Str = 0x40,
+        Dex = 0x80,
+        Int = 0x100,
+        Luk = 0x200,
+        Hp = 0x400,
+        MaxHp = 0x800,
+        Mp = 0x1000,
+        MaxMp = 0x2000,
+        Ap = 0x4000,
+        Sp = 0x8000,
+        Exp = 0x10000,
+        Fame = 0x20000,
+        Mesos = 0x40000
+    };
 
     public static class CharacterStatsPacket
     {
-        [Flags]
-        public enum StatFlags : uint
-        {
-            Skin = 0x01,
-            Eyes = 0x02,
-            Hair = 0x04,
-            Pet = 0x08,
-            Level = 0x10,
-            Job = 0x20,
-            Str = 0x40,
-            Dex = 0x80,
-            Int = 0x100,
-            Luk = 0x200,
-            Hp = 0x400,
-            MaxHp = 0x800,
-            Mp = 0x1000,
-            MaxMp = 0x2000,
-            Ap = 0x4000,
-            Sp = 0x8000,
-            Exp = 0x10000,
-            Fame = 0x20000,
-            Mesos = 0x40000
-        };
-
         public static void HandleStats(GameCharacter chr, Packet packet)
         {
             uint flag = packet.ReadUInt();
@@ -204,97 +203,61 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendStatChange(GameCharacter chr, uint flag, byte value, bool isBySelf = false)
+        public static void SendStatChanged(GameCharacter chr, StatFlags flags, bool isExcel = false)
         {
-            Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-            pw.WriteBool(isBySelf);
-            pw.WriteUInt(flag);
-            pw.WriteByte(value);
-            chr.SendPacket(pw);
-        }
-
-        public static void SendStatChange(GameCharacter chr, uint flag, short value, bool isBySelf = false)
-        {
-            Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-            pw.WriteBool(isBySelf);
-            pw.WriteUInt(flag);
-            pw.WriteShort(value);
-            chr.SendPacket(pw);
-        }
-
-        public static void SendStatChange(GameCharacter chr, uint flag, int value, bool isBySelf = false)
-        {
-            Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-            pw.WriteBool(isBySelf);
-            pw.WriteUInt(flag);
-            pw.WriteInt(value);
-            chr.SendPacket(pw);
-        }
-
-        public static void SendStatChange(GameCharacter chr, uint flag, long value, bool isBySelf = false)
-        {
-            Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-            pw.WriteBool(isBySelf);
-            pw.WriteUInt(flag);
-            pw.WriteLong(value);
-            chr.SendPacket(pw);
-        }
-
-        public static void SendUpdateStat(GameCharacter chr, bool ExcelRequest, StatFlags StatFlag)
-        {
-            if (ExcelRequest || StatFlag > 0)
+            if (isExcel || flags > 0)
             {
                 Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-                pw.WriteBool(ExcelRequest);
-                pw.WriteUInt((uint)StatFlag);
+                pw.WriteBool(isExcel);
+                pw.WriteUInt((uint)flags);
 
-                if ((StatFlag & StatFlags.Skin) == StatFlags.Skin)
+                if ((flags & StatFlags.Skin) == StatFlags.Skin)
                     pw.WriteByte(chr.Skin);
-                if ((StatFlag & StatFlags.Eyes) == StatFlags.Eyes)
+                if ((flags & StatFlags.Eyes) == StatFlags.Eyes)
                     pw.WriteInt(chr.Face);
-                if ((StatFlag & StatFlags.Hair) == StatFlags.Hair)
+                if ((flags & StatFlags.Hair) == StatFlags.Hair)
                     pw.WriteInt(chr.Hair);
 
-                if ((StatFlag & StatFlags.Pet) == StatFlags.Pet)
+                if ((flags & StatFlags.Pet) == StatFlags.Pet)
                     pw.WriteLong(chr.CharacterStat.PetCashId);
 
-                if ((StatFlag & StatFlags.Level) == StatFlags.Level)
+                if ((flags & StatFlags.Level) == StatFlags.Level)
                     pw.WriteByte(chr.Level);
-                if ((StatFlag & StatFlags.Job) == StatFlags.Job)
+                if ((flags & StatFlags.Job) == StatFlags.Job)
                     pw.WriteShort(chr.CharacterStat.Job);
-                if ((StatFlag & StatFlags.Str) == StatFlags.Str)
+                if ((flags & StatFlags.Str) == StatFlags.Str)
                     pw.WriteShort(chr.CharacterStat.Str);
-                if ((StatFlag & StatFlags.Dex) == StatFlags.Dex)
+                if ((flags & StatFlags.Dex) == StatFlags.Dex)
                     pw.WriteShort(chr.CharacterStat.Dex);
-                if ((StatFlag & StatFlags.Int) == StatFlags.Int)
+                if ((flags & StatFlags.Int) == StatFlags.Int)
                     pw.WriteShort(chr.CharacterStat.Int);
-                if ((StatFlag & StatFlags.Luk) == StatFlags.Luk)
+                if ((flags & StatFlags.Luk) == StatFlags.Luk)
                     pw.WriteShort(chr.CharacterStat.Luk);
 
-                if ((StatFlag & StatFlags.Hp) == StatFlags.Hp)
+                if ((flags & StatFlags.Hp) == StatFlags.Hp)
                     pw.WriteShort(chr.HP);
-                if ((StatFlag & StatFlags.MaxHp) == StatFlags.MaxHp)
+                if ((flags & StatFlags.MaxHp) == StatFlags.MaxHp)
                     pw.WriteShort(chr.CharacterStat.MaxHP);
-                if ((StatFlag & StatFlags.Mp) == StatFlags.Mp)
+                if ((flags & StatFlags.Mp) == StatFlags.Mp)
                     pw.WriteShort(chr.CharacterStat.MP);
-                if ((StatFlag & StatFlags.MaxMp) == StatFlags.MaxMp)
+                if ((flags & StatFlags.MaxMp) == StatFlags.MaxMp)
                     pw.WriteShort(chr.CharacterStat.MaxMP);
 
-                if ((StatFlag & StatFlags.Ap) == StatFlags.Ap)
+                if ((flags & StatFlags.Ap) == StatFlags.Ap)
                     pw.WriteShort(chr.CharacterStat.AP);
-                if ((StatFlag & StatFlags.Sp) == StatFlags.Sp)
+                if ((flags & StatFlags.Sp) == StatFlags.Sp)
                     pw.WriteShort(chr.CharacterStat.SP);
 
-                if ((StatFlag & StatFlags.Exp) == StatFlags.Exp)
+                if ((flags & StatFlags.Exp) == StatFlags.Exp)
                     pw.WriteInt(chr.CharacterStat.EXP);
 
-                if ((StatFlag & StatFlags.Fame) == StatFlags.Fame)
+                if ((flags & StatFlags.Fame) == StatFlags.Fame)
                     pw.WriteShort(chr.CharacterStat.Fame);
 
-                if ((StatFlag & StatFlags.Mesos) == StatFlags.Mesos)
+                if ((flags & StatFlags.Mesos) == StatFlags.Mesos)
                     pw.WriteInt(chr.Inventory.Mesos);
 
-                if ((StatFlag & StatFlags.Pet) == StatFlags.Pet)
+                if ((flags & StatFlags.Pet) == StatFlags.Pet)
                     pw.WriteBool(false);
 
                 chr.SendPacket(pw);

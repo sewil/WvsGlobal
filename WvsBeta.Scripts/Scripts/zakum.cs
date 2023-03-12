@@ -761,10 +761,10 @@ namespace WvsBeta.Scripts.Scripts
             if (target.Owner == null) return;
             var instance = FieldSet.Instances["ZakumBoss"];
             instance.Start();
-            TriggerGate(target.Owner);
+            TriggerGate();
             instance.OnEnd += (obj, _) =>
             {
-                TriggerGate(target.Owner);
+                TriggerGate();
             };
             target.Field.SendPacket(FieldEffectPacket.EffectMusic("Bgm06/FinalFight"));
             var mobOwner = target.SpawnMob(new Pos(0, -11), (8800000, 1, SummonType.Fake, null))[0];
@@ -774,9 +774,9 @@ namespace WvsBeta.Scripts.Scripts
             }
             target.Field.Message("Zakum is summoned by the force of Eye of Fire.", BroadcastMessageType.RedText);
         }
-        void TriggerGate(GameCharacter owner)
+        void TriggerGate()
         {
-            DataProvider.Maps[211042300].ReactorPool.TriggerReactor(0, owner);
+            DataProvider.Maps[211042300].ReactorPool.TriggerReactor(0);
         }
     }
     #endregion

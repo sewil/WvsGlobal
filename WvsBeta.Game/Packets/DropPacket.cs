@@ -29,7 +29,7 @@ namespace WvsBeta.Game
 
             if (chr.IsGM && !chr.IsAdmin)
             {
-                ChatPacket.SendNotice("You cannot drop mesos.", chr);
+                chr.Notice("You cannot drop mesos.");
                 InventoryOperationPacket.NoChange(chr);
                 return;
             }
@@ -37,7 +37,7 @@ namespace WvsBeta.Game
             chr.Inventory.AddMesos(-amount, true);
             Common.Tracking.MesosTransfer.PlayerDropMesos(chr.ID, amount, chr.MapID.ToString());
 
-            chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, 0, false, true);
+            chr.Field.DropPool.Create(Reward.Create(amount), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, true);
             // This shouldn't be required
             InventoryOperationPacket.NoChange(chr);
         }
@@ -122,11 +122,11 @@ namespace WvsBeta.Game
                     InventoryOperationPacket.NoChange(chr);
                     return;
                 }
-                var rewardItem = drop.Reward.GetData();
+                var rewardItem = drop.Reward.Data;
                 chr.Inventory.AddItem(rewardItem);
                 ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), rewardItem);
             }
-            else if (chr.Inventory.AddItem(drop.Reward.GetData()) == drop.Reward.Amount)
+            else if (chr.Inventory.AddItem(drop.Reward.Data) == drop.Reward.Amount)
             {
                 CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
                 InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
@@ -136,7 +136,7 @@ namespace WvsBeta.Game
             {
                 if (Constants.isEquip(drop.Reward.ItemID))
                 {
-                    ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), drop.Reward.GetData());
+                    ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), drop.Reward.Data);
                 }
             }
             if (!SentDropNotice)

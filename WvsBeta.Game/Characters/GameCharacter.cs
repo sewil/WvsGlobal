@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
@@ -13,6 +14,7 @@ using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
+using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -62,7 +64,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public byte PortalCount { get; set; } = 1;
+        public byte PortalCount { get; set; }
 
         public bool GMHideEnabled { get; private set; }
         public bool Donator { get; private set; }
@@ -74,7 +76,7 @@ namespace WvsBeta.Game
         public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
         public new CharacterSkills Skills => (CharacterSkills)base.Skills;
         public CharacterBuffs Buffs { get; private set; }
-        public override BaseCharacterPrimaryStats PrimaryStats { get => base.PrimaryStats; protected set => base.PrimaryStats = value; }
+        public new CharacterPrimaryStats PrimaryStats { get => (CharacterPrimaryStats)base.PrimaryStats; set => base.PrimaryStats = value; }
         public Rand32 CalcDamageRandomizer { get; private set; }
         public Rand32 RndActionRandomizer { get; private set; }
         public CharacterSummons Summons { get; private set; }
@@ -82,9 +84,9 @@ namespace WvsBeta.Game
         public CharacterQuests Quests { get => (CharacterQuests)BaseQuests; }
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
+        public CharacterRings Rings { get; set; }
         public long PetLastInteraction { get; set; }
 
-        public Ring pRing { get; set; }
         public PartyData Party
         {
             get
@@ -210,6 +212,19 @@ namespace WvsBeta.Game
             */
         }
 
+        public void EncodeForCC(Packet pw)
+        {
+            pw.WriteBool(GPQRegistration != null);
+            GPQRegistration?.Encode(pw);
+        }
+        public void DecodeForCC(Packet pr)
+        {
+            if (pr.ReadBool())
+            {
+                GPQRegistration = GuildQuestRegistration.Decode(pr);
+            }
+        }
+
         public void HandleDeath()
         {
             HackLog.Info("Player will be moved back to town/return map");
@@ -259,7 +274,7 @@ namespace WvsBeta.Game
             {
                 expRate *= 1.2;
             }
-            
+
             // Check inventories for droprate tickets
 
             if (isPremium)
@@ -511,7 +526,6 @@ namespace WvsBeta.Game
                 CalcDamageRandomizer = new Rand32();
                 RndActionRandomizer = new Rand32();
 
-
                 PrimaryStats = new CharacterPrimaryStats(this);
 
                 CharacterStat.LoadFromReader(data);
@@ -526,7 +540,7 @@ namespace WvsBeta.Game
 
             UserID = tmpUserId;
 
-            Ring.LoadRings(this);
+            Rings = CharacterRings.Load(this);
 
             base.Skills = new CharacterSkills(this);
             Skills.LoadSkills();
@@ -621,6 +635,10 @@ namespace WvsBeta.Game
         {
             SendPacket(MessagePacket.RedText(text));
         }
+        public void Notice(string text, BroadcastMessageType type = BroadcastMessageType.Notice)
+        {
+            ChatPacket.SendBroadcastMessageToPlayer(this, text, type);
+        }
         public void IncEXP(int amount, int isQuest)
         {
             IncEXP(amount, isQuest == 1 ? MessageAppearType.ChatGrey : MessageAppearType.SideWhite);
@@ -682,13 +700,13 @@ namespace WvsBeta.Game
                 SetSkin((byte)avatarID);
                 return AvatarSelectState.Success;
             }
-            else if (avatarID % (20000 + (Gender*1000)) < 1000) // Face
+            else if (avatarID % (20000 + (Gender * 1000)) < 1000) // Face
             {
                 if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
                 SetFace(avatarID);
                 return AvatarSelectState.Success;
             }
-            else if (avatarID % (30000 + (Gender*1000)) < 1000) // Hair & hair color
+            else if (avatarID % (30000 + (Gender * 1000)) < 1000) // Hair & hair color
             {
                 if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
                 SetHair(avatarID);
@@ -712,6 +730,7 @@ namespace WvsBeta.Game
         public GuildData Guild => Server.Instance.Guilds.ContainsKey(GuildID) ? Server.Instance.Guilds[GuildID] : null;
         public GuildMember GuildMember => Guild?.Members.ContainsKey(ID) == true ? Guild.Members[ID] : null;
         public bool IsGuildMaster => GuildMember?.Rank == GuildRank.Master;
+        public bool IsGuildSubMaster => GuildMember?.Rank == GuildRank.JrMaster;
         public bool CanChangeRank => GuildMember?.Rank <= GuildRank.JrMaster;
         public bool IsGuildMember => GuildMember != null;
         public int GetGuildCountMax => Guild?.Capacity ?? 0;
@@ -756,6 +775,72 @@ namespace WvsBeta.Game
         public bool RemoveGuild(int mesos)
         {
             return GuildHandler.HandleDisbandGuild(this, mesos, GuildID);
+        }
+        public bool IsGuildQuestRegistered => GPQRegistration != null && GPQRegistration.master == ID;
+        public GuildQuestRegistration GPQRegistration { get; set; }
+        public int CanEnterGuildQuest
+        {
+            get
+            {
+                if (GPQRegistration != null && Server.Instance.ID == GPQRegistration.channelId && Server.Instance.GuildQuestRegistrations[GPQRegistration.channelId].FindIndex(i => i.guildId == GPQRegistration.guildId) == 0)
+                {
+                    return IsGuildQuestRegistered ? 1 : 2;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="action">0 = guild count (-n means your guild is registered on other channel n), 1 = register, 2 = cancel registration, 3 = waitlist</param>
+        public int DealWithGuildQuest(int action)
+        {
+            var registrations = Server.Instance.GuildQuestRegistrations;
+            byte channelId = Server.Instance.ID;
+
+            if (action == 0)
+            {
+                if (GPQRegistration != null)
+                {
+                    return -(GPQRegistration.channelId + 1);
+                }
+                else
+                {
+                    return registrations[channelId].Count;
+                }
+            }
+            else if (action == 1)
+            {
+                GuildQuestHandler.Register(this);
+                return 1;
+            }
+            else if (action == 2)
+            {
+                return GuildQuestHandler.Unregister(GuildID, false);
+            }
+            else if (action == 3)
+            {
+                if (GPQRegistration == null)
+                {
+                    return 0;
+                }
+                else if (GPQRegistration.master != ID && !GPQRegistration.members.Contains(ID))
+                {
+                    return -1;
+                }
+                else
+                {
+                    return registrations[GPQRegistration.channelId].FindIndex(i => i.guildId == GuildID) + 1;
+                }
+            }
+            return 0;
+        }
+        public void IncGuildPoint(int gp)
+        {
+            // TODO
         }
         #endregion
     }

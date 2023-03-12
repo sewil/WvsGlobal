@@ -18,7 +18,7 @@ namespace WvsBeta.Game
         public bool Started { get; private set; }
         public long EndTime { get; private set; }
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
-
+        
         public int ReturnMap { get; private set; } = -1;
         public string PartyParams { get; private set; }
         public short ReqQuest { get; private set; }
@@ -26,9 +26,11 @@ namespace WvsBeta.Game
         public PartyData Party { get; private set; }
         public bool CleanupMobs { get; private set; }
         public bool CleanupDrops { get; private set; }
+        public int[] CleanupNpcs { get; private set; }
         public bool ResetReactors { get; private set; }
         public int UserCount => Maps.Sum(m => m.Characters.Count);
         public event EventHandler OnEnd;
+        public event EventHandler<long> OnTimerUpdate;
         public FieldSet(ConfigReader.Node fsNode)
         {
             Name = fsNode.Name;
@@ -66,6 +68,9 @@ namespace WvsBeta.Game
                         case "cleanupDrops":
                             CleanupDrops = subNode.GetBool();
                             break;
+                        case "cleanupNpcs":
+                            CleanupNpcs = subNode.GetString().Split(',').Select(i => int.Parse(i)).ToArray();
+                            break;
                         case "resetReactors":
                             ResetReactors = subNode.GetBool();
                             break;
@@ -77,6 +82,11 @@ namespace WvsBeta.Game
 
             Maps = maps;
             Program.MainForm.LogAppend("Loaded fieldset '{0}' with maps {1}", Name, string.Join(", ", Maps.Select(x => x.ID)));
+        }
+        public void ResetOnTimerUpdate()
+        {
+            OnTimerUpdate?.ClearInvocations();
+            OnTimerUpdate = null;
         }
 
         public void Start()
@@ -118,12 +128,20 @@ namespace WvsBeta.Game
                 {
                     map.ReactorPool.Reset(false);
                 }
+                if (CleanupNpcs != null)
+                {
+                    foreach (var npcLife in CleanupNpcs)
+                    {
+                        map.RemoveNpcLife(npcLife);
+                    }
+                }
             }
             Started = false;
             Party = null;
             OnEnd?.Invoke(this, null);
             OnEnd?.ClearInvocations();
             OnEnd = null;
+            ResetOnTimerUpdate();
             _savedVars.Clear();
             Program.MainForm.LogAppend("Ended fieldset '{0}'", Name);
         }
@@ -190,6 +208,7 @@ namespace WvsBeta.Game
 
             var timesUp = Timeout > 0 && EndTime < currentTime;
             var noMorePlayers = Maps.Sum(x => x.Characters.Count) == 0;
+            OnTimerUpdate?.Invoke(this, TimeRemaining);
 
             if (timesUp || noMorePlayers)
             {
@@ -208,9 +227,10 @@ namespace WvsBeta.Game
         private void RunTimer(GameCharacter chr, Map map)
         {
             if (Started)
+            {
                 MapPacket.ShowMapTimerForCharacter(chr, (int)(TimeRemaining / 1000));
+            }
         }
-
 
         public string GetVar(string pName)
         {
@@ -226,9 +246,35 @@ namespace WvsBeta.Game
                 _savedVars[pName] = pValue;
         }
         #region Script helpers
+        /// <summary>
+        /// Time remaining in seconds
+        /// </summary>
+        public int GetQuestTime => (int)(TimeRemaining / 1000);
+        public void BroadcastMsg(byte type, string text)
+        {
+            BroadcastMsg((BroadcastMessageType)type, text);
+        }
+        public void BroadcastMsg(BroadcastMessageType type, string text)
+        {
+            var packet = ChatPacket.BroadcastMessage(text, type);
+            foreach (var map in Maps)
+            {
+                map.SendPacket(packet);
+            }
+        }
+        public void TransferFieldAll(int mapid, string portalname)
+        {
+            foreach (var map in Maps)
+            {
+                foreach (var c in map.Characters)
+                {
+                    c.ChangeMap(mapid, portalname);
+                }
+            }
+        }
         public void TriggerReactor(int mapIdx, string reactorName)
         {
-            Maps[mapIdx].ReactorPool.TriggerReactor(reactorName, null);
+            Maps[mapIdx].ReactorPool.TriggerReactor(reactorName);
         }
         #endregion
     }

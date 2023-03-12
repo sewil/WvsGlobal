@@ -399,16 +399,16 @@ namespace WvsBeta.Game
                     ad.SkillID == Constants.Crusader.Skills.SwordPanic)
                 {
                     chr.PrimaryStats.BuffComboAttack.N = 1;
-                    BuffPacket.SetTempStats(chr, BuffValueTypes.ComboAttack);
-                    MapPacket.SendPlayerBuffed(chr, BuffValueTypes.ComboAttack);
+                    BuffPacket.AddBuffs(chr, Common.Enums.BuffValueTypes.ComboAttack);
+                    MapPacket.SendPlayerBuffed(chr, Common.Enums.BuffValueTypes.ComboAttack);
                 }
                 else if (ad.SkillID != Constants.Crusader.Skills.Shout)
                 {
                     if (chr.PrimaryStats.BuffComboAttack.N <= chr.PrimaryStats.BuffComboAttack.MaxOrbs)
                     {
                         chr.PrimaryStats.BuffComboAttack.N++;
-                        BuffPacket.SetTempStats(chr, BuffValueTypes.ComboAttack);
-                        MapPacket.SendPlayerBuffed(chr, BuffValueTypes.ComboAttack);
+                        BuffPacket.AddBuffs(chr, Common.Enums.BuffValueTypes.ComboAttack);
+                        MapPacket.SendPlayerBuffed(chr, Common.Enums.BuffValueTypes.ComboAttack);
                     }
                 }
             }
@@ -452,7 +452,7 @@ namespace WvsBeta.Game
                     {
                         // RIP. It cancels your charge
                         var removedBuffs = chr.PrimaryStats.RemoveByReference(chr.PrimaryStats.BuffCharges.R);
-                        BuffPacket.SetTempStats(chr, removedBuffs);
+                        BuffPacket.AddBuffs(chr, removedBuffs);
                         MapPacket.SendPlayerBuffed(chr, removedBuffs);
                     }
                     break;
@@ -467,9 +467,9 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffCharges.Set(
                             ad.SkillID,
                             sld.XValue,
-                            BuffStat.GetTimeForBuff(1000 * sld.BuffTime)
+                            Common.Objects.Stats.BuffStat.GetTimeForBuff(1000 * sld.BuffTime)
                         );
-                        BuffPacket.SetTempStats(chr, buff);
+                        BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
                         break;
                     }
@@ -480,9 +480,9 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffStun.Set(
                             ad.SkillID,
                             1,
-                            BuffStat.GetTimeForBuff(1000 * sld.YValue)
+                            Common.Objects.Stats.BuffStat.GetTimeForBuff(1000 * sld.YValue)
                         );
-                        BuffPacket.SetTempStats(chr, buff);
+                        BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
                         break;
                     }

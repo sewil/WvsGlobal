@@ -1,8 +1,11 @@
 ﻿using reNX.NXProperties;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Windows.Forms;
 using WvsBeta.Common;
+using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -102,7 +105,10 @@ namespace WvsBeta.Game
         }
         public void SetState(GameCharacter chr, byte state, bool sendPacket = true)
         {
+            if (changingState) return;
+            changingState = true;
             Owner = chr;
+            var animationTime = State.Hit?.AnimationTime ?? 0;
             _state = (byte)(state % Reactor.States.Count);
             bool isLast = _state == Reactor.States.Count - 1;
             if (State.Event?.Rectangle != null)
@@ -111,18 +117,22 @@ namespace WvsBeta.Game
                 rect.Offset(Position);
                 EventRectangle = rect;
             }
-            if (isLast)
-            {
-                RunScript();
-                if (ReactorTime > 0)
-                {
-                    resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(true), ReactorTime * 1000, 0);
-                }
-            }
             if (sendPacket)
             {
                 ReactorPacket.ReactorChangedState(this);
             }
+            stateChangeAction = MasterThread.RepeatingAction.Start(() =>
+            {
+                changingState = false;
+                if (isLast)
+                {
+                    RunScript();
+                    if (ReactorTime > 0)
+                    {
+                        resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(), ReactorTime * 1000, 0);
+                    }
+                }
+            }, animationTime, 0);
         }
         public void Show(GameCharacter toChar = null)
         {
@@ -133,12 +143,20 @@ namespace WvsBeta.Game
         {
             dropAction?.Stop();
             resetAction?.Stop();
+            stateChangeAction?.Stop();
+            changingState = false;
             _state = 0;
+            Owner = null;
             if (sendPacket)
-                ReactorPacket.ReactorChangedState(this);
+            {
+                ReactorPacket.DestroyReactor(this);
+                Show();
+            }
         }
         private MasterThread.RepeatingAction dropAction;
         private MasterThread.RepeatingAction resetAction;
+        private MasterThread.RepeatingAction stateChangeAction;
+        private bool changingState;
         private void RunScript()
         {
             ReactorScriptSession.Run(this, script => {
@@ -152,9 +170,13 @@ namespace WvsBeta.Game
 #endif
             });
         }
-        public void Trigger(GameCharacter chr)
+        public void Trigger(GameCharacter owner = null, bool isHit = false, bool sendPacket = true)
         {
-            SetState(chr, (byte)(_state + 1));
+            if (isHit && sendPacket)
+            {
+                ReactorPacket.ReactorChangedState(this);
+            }
+            SetState(owner, (byte)(_state + 1), sendPacket);
         }
         public bool TriggerDrop(Drop drop, int ownerId)
         {
@@ -225,6 +247,7 @@ namespace WvsBeta.Game
     {
         public byte State { get; private set; }
         public ReactorEvent Event { get; private set; }
+        public readonly WzAnimation Hit;
         public ReactorState(NXNode node)
         {
             State = byte.Parse(node.Name);
@@ -234,6 +257,9 @@ namespace WvsBeta.Game
                 {
                     case "event":
                         Event = new ReactorEvent(subNode["0"]);
+                        break;
+                    case "hit":
+                        Hit = new WzAnimation(subNode);
                         break;
                     default:
                         break;

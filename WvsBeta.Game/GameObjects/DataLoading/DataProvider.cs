@@ -12,6 +12,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
 
@@ -192,13 +193,7 @@ namespace WvsBeta.Game
                     if (node.Name == "info") continue;
                     byte id = GetGroupIdx(node.Name);
 
-                    int delay = 0;
-                    foreach (var pic in node)
-                    {
-                        if (pic.Name == "info" || !pic.ContainsChild("delay")) continue;
-                        delay += pic["delay"].ValueInt32();
-                    }
-                    data.AnimationTimes.Add(node.Name, delay);
+                    data.Animations.Add(node.Name, new WzAnimation(node));
 
                     if (node.Name.StartsWith("attack"))
                     {
@@ -290,12 +285,20 @@ namespace WvsBeta.Game
                             data.Revive = node.Select(x => x.ValueInt32()).ToList();
                             break;
                         case "skill":
-                            data.Skills = node.Select(skillNode => new MobSkillData
+                            data.Skills = new List<MobSkillData>();
+                            foreach (var skillNode in node)
                             {
-                                SkillID = skillNode["skill"].ValueByte(),
-                                Level = skillNode["level"].ValueByte(),
-                                EffectAfter = skillNode["effectAfter"].ValueInt16()
-                            }).ToList();
+                                var mobSkillData = new MobSkillData
+                                {
+                                    SkillID = skillNode["skill"].ValueByte(),
+                                    Level = skillNode["level"].ValueByte()
+                                };
+                                if (skillNode.ContainsChild("effectAfter"))
+                                {
+                                    mobSkillData.EffectAfter = skillNode["effectAfter"].ValueInt16();
+                                }
+                                data.Skills.Add(mobSkillData);
+                            }
 
                             break;
                         case "hpRecovery": data.HPRecoverAmount = node.ValueInt32(); break;
@@ -333,6 +336,7 @@ namespace WvsBeta.Game
                 Map map;
                 switch (fieldType)
                 {
+                    case 8: // Ergoth boss map 990000900
                     case 7: // Snowball entry map 109060001
                     case 4: // Coconut harvest 109080000
                     case 2: // Contimove 101000300
@@ -396,6 +400,9 @@ namespace WvsBeta.Game
 
                         case "decHP":
                             map.DecreaseHP = node.ValueInt16();
+                            break;
+                        case "protectItem":
+                            map.ProtectItem = node.ValueInt32();
                             break;
                         case "recovery":
                             var amount = node.ValueInt16();
@@ -547,7 +554,7 @@ namespace WvsBeta.Game
             foreach (var rNode in mapNode["reactor"])
             {
                 var mReactor = new FieldReactor(map, rNode);
-                map.ReactorPool.Add(mReactor, true);
+                map.ReactorPool.AddReactor(mReactor, true);
             }
         }
         static void ReadReactors()

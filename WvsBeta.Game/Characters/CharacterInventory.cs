@@ -3,6 +3,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
@@ -79,6 +80,25 @@ namespace WvsBeta.Game
         }
 
         public override int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => GetEquippedItemId((short)slot, cash);
+
+        public BaseItem GetEquippedItem(int itemid, out short slotfrom, out EquippedType type)
+        {
+            slotfrom = 0;
+            type = (EquippedType)(-1);
+            foreach (var equips in Equipped)
+            {
+                foreach (var item in equips.Value)
+                {
+                    if (item?.ItemID == itemid)
+                    {
+                        slotfrom = item.InventorySlot;
+                        type = equips.Key;
+                        return item;
+                    }
+                }
+            }
+            return null;
+        }
 
         public override int GetEquippedItemId(short slot, bool cash)
         {
@@ -410,7 +430,7 @@ namespace WvsBeta.Game
             int newMesos = Math.Max(0, Math.Min(int.MaxValue, Mesos + value));
             mesosDiff = newMesos - Mesos;
             Mesos = newMesos;
-            CharacterStatsPacket.SendStatChange(Character, (uint)CharacterStatsPacket.StatFlags.Mesos, Mesos, isSelf);
+            CharacterStatsPacket.SendStatChanged(Character, StatFlags.Mesos, isSelf);
         }
         /// <summary>
         /// Try to remove <paramref name="amount"/> amount of itemid <paramref name="itemid"/>.
@@ -809,6 +829,34 @@ namespace WvsBeta.Game
         public void IncSlotCount(byte inventory, byte slots)
         {
             SetInventorySlots((Inventory)inventory, slots);
+        }
+        /// <summary>
+        /// Remove equipped item
+        /// </summary>
+        /// <param name="itemid"></param>
+        /// <returns>-1 = item not found, 0 = success, 1 = failed to unequip</returns>
+        public int RemoveEquippedItem(int itemid)
+        {
+            var item = GetEquippedItem(itemid, out short slotfrom, out EquippedType type);
+            if (item == null) return -1;
+            Equipped[type][-slotfrom] = null;
+            InventoryOperationPacket.SwitchSlots(Character, Inventory.Equip, slotfrom, 0);
+            MapPacket.SendAvatarModified(Character, MapPacket.AvatarModFlag.AvatarLook);
+            return 0;
+        }
+
+        public int HasThisItemInHisParty(int itemid)
+        {
+            var party = Character.Party;
+            if (party == null) return 0;
+            foreach (var m in party.Characters)
+            {
+                if (m.Inventory.HasItemAmount(itemid, 1, out Inventory _))
+                {
+                    return 1;
+                }
+            }
+            return 0;
         }
         #endregion
     }

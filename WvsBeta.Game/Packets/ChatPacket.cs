@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.Commands;
+using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -20,13 +18,6 @@ namespace WvsBeta.Game
         Header = 0x04, // Scrolling header
         RedText = 0x05, // Red text with no highlight
         Blue = 0x06 // Blue text without [Notice]
-    }
-
-    public enum MessageMode : byte
-    {
-        ToPlayer,
-        ToMap,
-        ToChannel,
     }
 
     public enum MuteReasons : byte
@@ -90,7 +81,7 @@ namespace WvsBeta.Game
 
             if (chr.MutedUntil > MasterThread.CurrentDate)
             {
-                SendText(BroadcastMessageType.RedText, $"You are muted until {chr.MutedUntil:MM/dd/yyyy HH:mm:ss}, reason {GetMuteReasonText((MuteReasons)chr.MuteReason)}", chr, MessageMode.ToPlayer);
+                SendBroadcastMessageToPlayer(chr, $"You are muted until {chr.MutedUntil:MM/dd/yyyy HH:mm:ss} for {GetMuteReasonText((MuteReasons)chr.MuteReason)}.", BroadcastMessageType.RedText);
                 return true;
             }
             return false;
@@ -107,8 +98,7 @@ namespace WvsBeta.Game
                 return;
             }
             
-            if (//!MainCommandHandler.HandleCommand(chr, new CommandHandling.CommandArgs(what)) &&
-                !CommandHandling.HandleChat(chr, what))
+            if (!CommandHandling.HandleChat(chr, what))
             {
                 if (ShowMuteMessage(chr))
                 {
@@ -263,53 +253,6 @@ namespace WvsBeta.Game
                 kvp.Value.SendPacket(pw);
         }
 
-        public static void SendText(BroadcastMessageType type, string what, GameCharacter victim, MessageMode mode)
-        {
-            if (type == BroadcastMessageType.SuperMegaphone)
-                return;
-
-            Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)type);
-
-            if (type == BroadcastMessageType.Header)
-            {
-                pw.WriteBool(what != "");
-            }
-            pw.WriteString(what);
-
-            switch (mode)
-            {
-                case MessageMode.ToPlayer:
-                    if (type != BroadcastMessageType.Header || what != "")
-                    {
-                        log.Info($"[MSG][ {mode} ][{type}][{victim.ID}] {what}");
-                    }
-
-                    victim.SendPacket(pw);
-                    break;
-                case MessageMode.ToMap:
-                    if (type != BroadcastMessageType.Header || what != "")
-                    {
-                        log.Info($"[MSG][ {mode} ][{type}][{victim.MapID}] {what}");
-                    }
-
-                    victim.Field.SendPacket(pw);
-                    break;
-                case MessageMode.ToChannel:
-                    if (type != BroadcastMessageType.Header || what != "")
-                    {
-                        log.Info($"[MSG][ {mode} ][{type}] {what}");
-                    }
-
-                    foreach (var kvp in Server.Instance.CharacterList)
-                    {
-                        kvp.Value.SendPacket(pw);
-                    }
-                    break;
-            }
-        }
-
-
         public static void SendAdminWarning(Map map, string what)
         {
             log.Info("[ADMIN WARNING MAP][" + map.ID + "] " + what);
@@ -325,46 +268,11 @@ namespace WvsBeta.Game
             pw.WriteString(what);
             victim.SendPacket(pw);
         }
-        
 
-        public static void SendNotice(string what, GameCharacter victim)
+        public static void SendBroadcastMessageToGMs(string text, BroadcastMessageType type = BroadcastMessageType.Notice)
         {
-            Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)BroadcastMessageType.Notice);
-            pw.WriteString(what);
-            if (victim == null)
-            {
-                log.Info("[SERVERNOTICE] " + what);
-                Server.Instance.PlayerList.ForEach(x => x.Value.Socket.SendPacket(pw));
-            }
-            else
-            {
-                log.Info("[NOTICE][" + victim.ID + "] " + what);
-                victim.SendPacket(pw);
-            }
-        }
-
-        public static void SendNoticeGMs(string what, BroadcastMessageType severity = BroadcastMessageType.Notice)
-        {
-            log.Info("[GM NOTICE] " + what);
-            Trace.WriteLine("[GM NOTICE] " + what);
-
-            Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)severity);
-            pw.WriteString(what);
-
-            Server.Instance.StaffCharacters
-                .Where(c => c.IsGM)
-                .ForEach(a => a.SendPacket(pw));
-        }
-
-        public static void SendNoticeMap(string what, int mapid)
-        {
-            log.Info("[MAPNOTICE][" + mapid + "] " + what);
-            Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-            pw.WriteByte((byte)BroadcastMessageType.Notice);
-            pw.WriteString(what);
-            DataProvider.Maps[mapid].SendPacket(pw);
+            var pw = BroadcastMessage(text, type);
+            Server.Instance.StaffCharacters.Where(c => c.IsGM).ForEach(a => a.SendPacket(pw));
         }
 
         public static Packet BroadcastMessage(string text, BroadcastMessageType type)
@@ -378,24 +286,32 @@ namespace WvsBeta.Game
             pw.WriteString(text);
             return pw;
         }
-        public static void SendBroadcastMessage(GameCharacter chr, string text, BroadcastMessageType type, MessageMode to)
+        public static void SendBroadcastMessageToChannel(string text, BroadcastMessageType type)
         {
-            Packet pw = BroadcastMessage(text, type);
-            switch (to)
+            var pw = BroadcastMessage(text, type);
+            foreach (var kvp in DataProvider.Maps)
             {
-                case MessageMode.ToPlayer:
-                    Server.Instance.CenterConnection.AdminMessage(text, type);
-                    break;
-                case MessageMode.ToChannel:
-                    foreach (var kvp in DataProvider.Maps)
-                    {
-                        kvp.Value.SendPacket(pw);
-                    }
-                    break;
-                case MessageMode.ToMap:
-                    chr.Field.SendPacket(pw);
-                    break;
+                kvp.Value.SendPacket(pw);
             }
+        }
+        public static void SendBroadcastMessageToPlayer(GameCharacter chr, string text, BroadcastMessageType type = BroadcastMessageType.Notice)
+        {
+            if (chr == null) return;
+            var pw = BroadcastMessage(text, type);
+            chr.SendPacket(pw);
+        }
+        public static void SendBroadcastMessageToMap(int mapId, string text, BroadcastMessageType type)
+        {
+            SendBroadcastMessageToMap(DataProvider.Maps[mapId], text, type);
+        }
+        public static void SendBroadcastMessageToMap(Map map, string text, BroadcastMessageType type)
+        {
+            var pw = BroadcastMessage(text, type);
+            map.SendPacket(pw);
+        }
+        public static void SendBroadcastMessageToAllPlayers(string text, BroadcastMessageType type)
+        {
+            Server.Instance.CenterConnection.BroadcastMessage(text, type);
         }
     }
 }

@@ -104,7 +104,7 @@ namespace WvsBeta.Game
 
             ItemTransfer.ItemDropped(chr.ID, chr.MapID, drop.ItemID, drop.Amount, "", drop);
 
-            chr.Field.DropPool.Create(Reward.Create(drop), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, (short)(chr.Field.DropPool.DropEverlasting ? drop.InventorySlot : 0), false, true);
+            chr.Field.DropPool.Create(Reward.Create(drop), chr.ID, 0, DropType.FreeForAll, chr.ID, new Pos(chr.Position), chr.Position.X, 0, false, true);
 
             if (droppedFromEquips)
             {
@@ -286,7 +286,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void Unequip(GameCharacter chr, BaseItem equip, short slotTo)
+        public static bool Unequip(GameCharacter chr, BaseItem equip, short slotTo)
         {
             Inventory inventory = Constants.getInventory(equip.ItemID);
             short slotFrom = equip.InventorySlot;
@@ -296,13 +296,13 @@ namespace WvsBeta.Game
             if (swap == null && !chr.Inventory.HasSlotsFreeForItem(equip.ItemID, 1)) // Client checks this for us, but in case of PE
             {
                 InventoryOperationPacket.NoChange(chr);
-                return;
+                return false;
             }
 
             if (swap != null && slotFrom < 0)
             {
                 HandleEquip(chr, swap, equip, slotTo, slotFrom);
-                return;
+                return true;
             }
 
             chr.Inventory.SetItem(inventory, slotFrom, swap);
@@ -310,7 +310,7 @@ namespace WvsBeta.Game
 
             InventoryOperationPacket.SwitchSlots(chr, inventory, slotFrom, slotTo);
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
-
+            return true;
         }
 
         public static void HandleInventoryPacket(GameCharacter chr, Packet packet)
@@ -345,16 +345,8 @@ namespace WvsBeta.Game
                 }
                 else if (slotTo == 0)
                 {
-                    if (chr.IsGM && !chr.IsAdmin)
-                    {
-                        ChatPacket.SendAdminWarning(chr, "You cannot drop items.");
-                        InventoryOperationPacket.NoChange(chr);
-                    }
-                    else
-                    {
-                        var quantity = packet.ReadShort();
-                        DropItem(chr, inventory, slotFrom, quantity);
-                    }
+                    var quantity = packet.ReadShort();
+                    DropItem(chr, inventory, slotFrom, quantity);
                 }
                 else
                 {

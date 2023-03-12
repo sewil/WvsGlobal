@@ -33,26 +33,26 @@ namespace WvsBeta.Game
             pw.SetULong(tmp, (ulong)added);
         }
 
-        public static void SetTempStats(GameCharacter chr, BuffValueTypes pFlagsAdded, short pDelay = 0)
+        public static void AddBuffs(GameCharacter chr, BuffValueTypes flags, short pDelay = 0)
         {
-            if (pFlagsAdded == BuffValueTypes.None) return;
-            Packet pw = new Packet(ServerMessages.FORCED_STAT_SET);
-            chr.PrimaryStats.EncodeForLocal(pw, pFlagsAdded);
+            if (flags == BuffValueTypes.None) return;
+            Packet pw = new Packet(ServerMessages.BUFFS_ADD);
+            chr.PrimaryStats.EncodeForLocal(pw, flags);
             pw.WriteShort(pDelay);
-            if ((pFlagsAdded & BuffValueTypes.MOVEMENT_INFO_INDEX) != 0)
+            if ((flags & BuffValueTypes.MOVEMENT_INFO_INDEX) != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'
             }
             chr.SendPacket(pw);
         }
 
-        public static void ResetTempStats(GameCharacter chr, BuffValueTypes removedFlags)
+        public static void RemoveBuffs(GameCharacter chr, BuffValueTypes flags)
         {
-            if (removedFlags == 0) return;
+            if (flags == 0) return;
 
-            Packet pw = new Packet(ServerMessages.FORCED_STAT_RESET);
-            pw.WriteULong((ulong)removedFlags);
-            var diff = (ulong)(removedFlags & BuffValueTypes.MOVEMENT_INFO_INDEX);
+            Packet pw = new Packet(ServerMessages.BUFFS_REMOVE);
+            pw.WriteULong((ulong)flags);
+            var diff = (ulong)(flags & BuffValueTypes.MOVEMENT_INFO_INDEX);
             if (diff != 0)
             {
                 pw.WriteByte(0); // FIX: This should be the 'movement info index'

@@ -20,7 +20,7 @@ namespace WvsBeta.Game
             HackLog.Warn(hackType);
             if (seriousHack && HacklogMuted < MasterThread.CurrentDate)
             {
-                ChatPacket.SendNoticeGMs(
+                ChatPacket.SendBroadcastMessageToGMs(
                     $"Check '{hackType}' triggered! Character: '{Name}', Map: '{MapID}'.",
                     BroadcastMessageType.Megaphone
                 );
@@ -55,7 +55,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                ChatPacket.SendNoticeGMs(
+                ChatPacket.SendBroadcastMessageToGMs(
                     $"Would've perma'd {Name} (uid {UserID}, cid {ID}), reason: {reason}",
                     BroadcastMessageType.Notice
                 );

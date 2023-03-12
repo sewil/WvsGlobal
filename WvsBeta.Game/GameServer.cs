@@ -3,6 +3,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using System.Net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
@@ -10,6 +11,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Game.Handlers.Guild;
+using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
@@ -28,7 +30,7 @@ namespace WvsBeta.Game
         public double RateMesoAmount = 1.0d;
         public double RateDropChance = 1.0d;
 
-        public byte ID { get; set; }
+        public byte ID { get; private set; }
         public bool InMigration { get; set; }
         public bool IsNewServerInMigration { get; set; }
         public bool CenterMigration { get; set; }
@@ -56,6 +58,7 @@ namespace WvsBeta.Game
         public ConcurrentDictionary<string, Player> PlayerList { get; } = new ConcurrentDictionary<string, Player>();
         public Dictionary<int, GameCharacter> CharacterList { get; } = new Dictionary<int, GameCharacter>();
         public Dictionary<int, GuildData> Guilds { get; } = new Dictionary<int, GuildData>();
+        public IDictionary<byte, List<GuildQuestRegistration>> GuildQuestRegistrations = new Dictionary<byte,List<GuildQuestRegistration>>();
         public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
 
         public Dictionary<int, (string reason, string name, byte level, GameCharacter.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, GameCharacter.BanReasons, long)>();
@@ -73,8 +76,7 @@ namespace WvsBeta.Game
         {
             ScrollingHeader = newText;
             Program.MainForm.LogAppend("Updating scrolling header to: {0}", ScrollingHeader);
-
-            ChatPacket.SendText(BroadcastMessageType.Header, ScrollingHeader, null, MessageMode.ToChannel);
+            ChatPacket.SendBroadcastMessageToChannel(ScrollingHeader, BroadcastMessageType.Header);
         }
 
         public void LogToLogfile(string what)
@@ -99,7 +101,7 @@ namespace WvsBeta.Game
             var str = $"Enqueued delayed permban for userid {chr.UserID}, charname {chr.Name}, level {chr.Level}, reason ({banReason}) {reason}, map {chr.MapID} in {seconds} seconds...";
             BanDiscordReporter.Enqueue(str);
 
-            ChatPacket.SendNoticeGMs(
+            ChatPacket.SendBroadcastMessageToGMs(
                 str,
                 BroadcastMessageType.Notice
             );
@@ -152,14 +154,20 @@ namespace WvsBeta.Game
             return PlayerList.TryGetValue(hash, out Player ret) ? ret : null;
         }
 
+        private Server(string name)
+        {
+            Name = name;
+            ID = 0xFF;
+        }
         public static void Init(string configFile)
         {
-            Instance = new Server()
-            {
-                Name = configFile,
-                ID = 0xFF
-            };
+            Instance = new Server(configFile);
             Instance.Load();
+        }
+        public void AssignServer(byte channelId)
+        {
+            ID = channelId;
+            GuildQuestRegistrations.Add(ID, new List<GuildQuestRegistration>());
         }
 
         private string GetConfigPath(string filename) =>
@@ -216,7 +224,7 @@ namespace WvsBeta.Game
 
                             BanDiscordReporter.Enqueue(str);
 
-                            ChatPacket.SendNoticeGMs(
+                            ChatPacket.SendBroadcastMessageToGMs(
                                 str,
                                 BroadcastMessageType.Notice
                             );
@@ -241,8 +249,6 @@ namespace WvsBeta.Game
             MutebanDiscordReporter = new DiscordReporter(
                 "discord muteban discord report url"
             );
-
-            Handlers.Commands.MainCommandHandler.ReloadCommands();
         }
 
         public void ConnectToCenter()

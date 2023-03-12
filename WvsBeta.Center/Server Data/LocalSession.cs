@@ -1022,9 +1022,9 @@ namespace WvsBeta.Center
                     }
 
 
-                case ISClientMessages.AdminMessage:
+                case ISClientMessages.BroadcastMessage:
                     {
-                        Packet pw = new Packet(ISServerMessages.AdminMessage);
+                        Packet pw = new Packet(ISServerMessages.BroadcastMessage);
                         pw.WriteString(packet.ReadString());
                         pw.WriteByte(packet.ReadByte());
                         World.SendPacketToEveryGameserver(pw);

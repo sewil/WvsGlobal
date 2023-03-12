@@ -22,25 +22,28 @@ namespace WvsBeta.Game
         public Reward Reward { get; set; }
         public Pos Pt1 { get; set; }
         public Pos Pt2 { get; set; }
-        public Rectangle MergeArea { get; set; }
+        public Pos AreaPos { get; set; }
         public int SourceID { get; set; }
         public long DateExpire { get; set; }
         public int Period { get; set; }
         public short QuestID { get; set; }
         public short ShowMax { get; set; }
-        public short Pos { get; set; }
 
-        public Drop(int DropID, Reward reward, int OwnerID, int OwnPartyID, DropType OwnType, int SourceID, short x1, short y1, short x2, short y2, bool ByPet, bool ByUser)
+        public Drop(int DropID, Reward reward, int OwnerID, int OwnPartyID, DropType dropType, int SourceID, short x1, short y1, short x2, short y2, bool ByPet, bool ByUser)
         {
             this.DropID = DropID;
             this.Reward = reward;
             this.OwnerID = OwnerID;
             this.OwnPartyID = OwnPartyID;
-            this.DropType = OwnType;
+            this.DropType = dropType;
             this.SourceID = SourceID;
             this.Pt1 = new Pos(x1, y1);
             this.Pt2 = new Pos(x2, y2);
-            this.MergeArea = Rectangle.FromLTRB(x2 - 50, y2 - 20, x2 + 50, y2 + 20);
+            AreaPos = new Pos(Pt2);
+            if (reward.Data?.BigSize == true)
+            {
+                AreaPos.Offset(0, 50);
+            }
             this.ByPet = ByPet;
             this.ByUser = ByUser;
         }
@@ -52,7 +55,7 @@ namespace WvsBeta.Game
             var isPartyAble = chr.PartyID != 0 && OwnPartyID == chr.PartyID;
             var isOwnerDrop = OwnerID == 0 || OwnerID == chr.ID;
             
-            if (Reward.GetData()?.IsOnly == true && chr.Inventory.ItemCount(Reward.ItemID) > 0)
+            if (Reward.Data?.IsOnly == true && chr.Inventory.ItemCount(Reward.ItemID) > 0)
             {
                 DropPacket.CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
                 return false;
@@ -125,7 +128,6 @@ namespace WvsBeta.Game
             pw.WriteShort(Pt2.Y);
             pw.WriteBool(ByPet);
             pw.WriteBool(ByUser);
-            pw.WriteShort(Pos);
             pw.WriteBool(Everlasting);
             pw.WriteBool(ConsumeOnPickup);
         }
@@ -144,7 +146,6 @@ namespace WvsBeta.Game
             var Pt2Y = pr.ReadShort();
             var ByPet = pr.ReadBool();
             var ByUser = pr.ReadBool();
-            var Pos = pr.ReadShort();
             var DropEverlasting = pr.ReadBool();
             var ConsumeOnPickup = pr.ReadBool();
 
@@ -153,7 +154,6 @@ namespace WvsBeta.Game
             // Drop time is reset; cannot get the datetime transfer to work
             drop.CreateTime = MasterThread.CurrentTime;
 
-            drop.Pos = Pos;
             drop.Everlasting = DropEverlasting;
             drop.ConsumeOnPickup = ConsumeOnPickup;
             return drop;

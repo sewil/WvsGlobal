@@ -47,7 +47,7 @@
         BuddyDisconnect,
         BuddyDecline,
 
-        AdminMessage,
+        BroadcastMessage,
         FindPlayer,
         
         ChangeRates,
@@ -87,7 +87,7 @@
 
         ChangeRates,
 
-        AdminMessage,
+        BroadcastMessage,
         FindPlayer,
 
         RequestBuddylist,
@@ -116,6 +116,9 @@
         GuildMemberLeave,
         GuildMemberChangeRank,
         GuildMemberJobLevelUpdate,
+
+        GuildQuestRegister,
+        GuildQuestUnregister,
 
         Test,
         MessengerOperation,

@@ -90,7 +90,7 @@ namespace WvsBeta.Game
         public CharacterPrimaryStats(GameCharacter chr) : base(chr.CharacterStat)
         {
             Char = chr;
-            BuffDragonBlood = new BuffStat_DragonBlood(BuffValueTypes.DragonBlood, Char);
+            BuffDragonBlood = new BuffStat_DragonBlood(Common.Enums.BuffValueTypes.DragonBlood, Char);
         }
 
         public override void AddEquipStats(sbyte slot, EquipItem equip, bool isLoading)
@@ -213,8 +213,8 @@ namespace WvsBeta.Game
 
             if (equippedId != 0) return;
 
-            BuffValueTypes removed = 0;
-            var currentTime = BuffStat.GetTimeForBuff();
+            Common.Enums.BuffValueTypes removed = 0;
+            var currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
             if (BuffBooster.IsSet(currentTime)) removed |= RemoveByReference(BuffBooster.R, true);
             if (BuffCharges.IsSet(currentTime)) removed |= RemoveByReference(BuffCharges.R, true);
             if (BuffComboAttack.IsSet(currentTime)) removed |= RemoveByReference(BuffComboAttack.R, true);
@@ -258,7 +258,7 @@ namespace WvsBeta.Game
 
         public override void Reset(bool sendPacket)
         {
-            BuffValueTypes flags = 0;
+            Common.Enums.BuffValueTypes flags = 0;
             flags |= BuffWeaponAttack.Reset();
             flags |= BuffWeaponDefense.Reset();
             flags |= BuffMagicAttack.Reset();
@@ -274,7 +274,7 @@ namespace WvsBeta.Game
             flags |= BuffPowerGuard.Reset();
             flags |= BuffMaxHP.Reset();
             flags |= BuffMaxMP.Reset();
-            if (flags.HasFlag(BuffValueTypes.MaxHP))
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MaxHP))
                 Char.Buffs.CancelHyperBody();
             flags |= BuffInvincible.Reset();
             flags |= BuffSoulArrow.Reset();
@@ -293,13 +293,14 @@ namespace WvsBeta.Game
             flags |= BuffThaw.Reset();
             flags |= BuffWeakness.Reset();
             flags |= BuffCurse.Reset();
+            flags |= BuffUnk100m.Reset();
 
             Char.Buffs.FinalizeDebuff(flags, sendPacket);
         }
 
         public override void DecodeForCC(Packet packet)
         {
-            var flags = (BuffValueTypes)packet.ReadUInt();
+            var flags = (Common.Enums.BuffValueTypes)packet.ReadUInt();
 
             BuffWeaponAttack.DecodeForCC(packet, flags);
             BuffWeaponDefense.DecodeForCC(packet, flags);
@@ -340,6 +341,7 @@ namespace WvsBeta.Game
             BuffThaw.DecodeForCC(packet, flags);
             BuffWeakness.DecodeForCC(packet, flags);
             BuffCurse.DecodeForCC(packet, flags);
+            BuffUnk100m.DecodeForCC(packet, flags);
 
             if (BuffComboAttack.IsSet())
             {
@@ -362,10 +364,10 @@ namespace WvsBeta.Game
 
         public override void EncodeForCC(Packet packet)
         {
-            long currentTime = BuffStat.GetTimeForBuff();
+            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
             int offset = packet.Position;
             packet.WriteUInt(0);
-            BuffValueTypes flags = 0;
+            Common.Enums.BuffValueTypes flags = 0;
 
             BuffWeaponAttack.EncodeForCC(packet, ref flags, currentTime);
             BuffWeaponDefense.EncodeForCC(packet, ref flags, currentTime);
@@ -399,13 +401,14 @@ namespace WvsBeta.Game
             BuffThaw.EncodeForCC(packet, ref flags, currentTime);
             BuffWeakness.EncodeForCC(packet, ref flags, currentTime);
             BuffCurse.EncodeForCC(packet, ref flags, currentTime);
+            BuffUnk100m.EncodeForCC(packet, ref flags, currentTime);
 
             packet.SetUInt(offset, (uint)flags);
         }
 
         public override void CheckExpired(long currentTime)
         {
-            BuffValueTypes endFlag = 0;
+            Common.Enums.BuffValueTypes endFlag = 0;
 
             BuffWeaponAttack.TryReset(currentTime, ref endFlag);
             BuffWeaponDefense.TryReset(currentTime, ref endFlag);
@@ -440,14 +443,15 @@ namespace WvsBeta.Game
             BuffThaw.TryReset(currentTime, ref endFlag);
             BuffWeakness.TryReset(currentTime, ref endFlag);
             BuffCurse.TryReset(currentTime, ref endFlag);
+            BuffUnk100m.TryReset(currentTime, ref endFlag);
 
             Char.Buffs.FinalizeDebuff(endFlag);
         }
 
-        public override BuffValueTypes AllActiveBuffs()
+        public override Common.Enums.BuffValueTypes AllActiveBuffs()
         {
-            long currentTime = BuffStat.GetTimeForBuff();
-            BuffValueTypes flags = 0;
+            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            Common.Enums.BuffValueTypes flags = 0;
             flags |= BuffWeaponAttack.GetState(currentTime);
             flags |= BuffWeaponDefense.GetState(currentTime);
             flags |= BuffMagicAttack.GetState(currentTime);
@@ -480,16 +484,17 @@ namespace WvsBeta.Game
             flags |= BuffThaw.GetState(currentTime);
             flags |= BuffWeakness.GetState(currentTime);
             flags |= BuffCurse.GetState(currentTime);
+            flags |= BuffUnk100m.GetState(currentTime);
 
             return flags;
 
         }
 
-        public override BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
+        public override Common.Enums.BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
         {
             if (pBuffValue == 0) return 0;
 
-            BuffValueTypes endFlag = 0;
+            Common.Enums.BuffValueTypes endFlag = 0;
 
             BuffWeaponAttack.TryResetByReference(pBuffValue, ref endFlag);
             BuffWeaponDefense.TryResetByReference(pBuffValue, ref endFlag);
@@ -523,6 +528,7 @@ namespace WvsBeta.Game
             BuffThaw.TryResetByReference(pBuffValue, ref endFlag);
             BuffWeakness.TryResetByReference(pBuffValue, ref endFlag);
             BuffCurse.TryResetByReference(pBuffValue, ref endFlag);
+            BuffUnk100m.TryResetByReference(pBuffValue, ref endFlag);
 
             if (!onlyReturn)
             {
@@ -531,11 +537,11 @@ namespace WvsBeta.Game
             return endFlag;
         }
 
-        public override void EncodeForLocal(Packet pPacket, BuffValueTypes pSpecificFlag = BuffValueTypes.ALL)
+        public override void EncodeForLocal(Packet pPacket, Common.Enums.BuffValueTypes pSpecificFlag = Common.Enums.BuffValueTypes.ALL)
         {
-            long currentTime = BuffStat.GetTimeForBuff();
+            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
             int tmpBuffPos = pPacket.Position;
-            BuffValueTypes endFlag = BuffValueTypes.None;
+            Common.Enums.BuffValueTypes endFlag = Common.Enums.BuffValueTypes.None;
             pPacket.WriteULong((ulong)endFlag);
 
             BuffWeaponAttack.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
@@ -574,13 +580,14 @@ namespace WvsBeta.Game
             BuffThaw.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffWeakness.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffCurse.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
+            BuffUnk100m.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
 
             pPacket.SetULong(tmpBuffPos, (ulong)endFlag); // Make sure correct flag is set
         }
 
         public override bool HasBuff(int referenceId)
         {
-            long currentTime = BuffStat.GetTimeForBuff();
+            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
             return
                 BuffWeaponAttack.HasReferenceId(referenceId, currentTime) ||
                 BuffWeaponDefense.HasReferenceId(referenceId, currentTime) ||
@@ -613,7 +620,8 @@ namespace WvsBeta.Game
                 BuffMesoGuard.HasReferenceId(referenceId, currentTime) ||
                 BuffThaw.HasReferenceId(referenceId, currentTime) ||
                 BuffWeakness.HasReferenceId(referenceId, currentTime) ||
-                BuffCurse.HasReferenceId(referenceId, currentTime);
+                BuffCurse.HasReferenceId(referenceId, currentTime) ||
+                BuffUnk100m.HasReferenceId(referenceId, currentTime);
         }
     }
 }

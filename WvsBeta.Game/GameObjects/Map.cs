@@ -5,12 +5,14 @@ using System.Drawing;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
-using WvsBeta.Game.Handlers.Commands;
+using WvsBeta.Game.Handlers;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -42,6 +44,7 @@ namespace WvsBeta.Game
         public FieldSet ParentFieldSet { get; set; } = null;
 
         public short DecreaseHP { get; set; }
+        public int ProtectItem { get; set; }
         public short TimeLimit { get; set; } = 0;
 
         public int WeatherID { get; set; }
@@ -196,7 +199,7 @@ namespace WvsBeta.Game
                     .ForEach(x => FindNewController(x, x.Controller));
 
 
-                if (lastDamageGiven == 0 || (pNow - lastDamageGiven) > 10 * 1000)
+                if (lastDamageGiven == 0 || (pNow - lastDamageGiven) > 10000)
                 {
                     lastDamageGiven = pNow;
                     if (DecreaseHP > 0)
@@ -207,6 +210,8 @@ namespace WvsBeta.Game
                             var actualDamage = DecreaseHP;
                             if (character.PrimaryStats.BuffThaw.IsSet(pNow))
                                 actualDamage -= character.PrimaryStats.BuffThaw.N;
+                            if (ProtectItem > 0 && character.Inventory.GetEquippedItem(ProtectItem, out short _, out EquippedType __) != null)
+                                actualDamage = 0;
                             // TODO: If swim, negative multiple N value (Freeze damage?)
 
                             // TODO: If we've got snowboots, do no damage
@@ -251,7 +256,7 @@ namespace WvsBeta.Game
                 {
                     int x = (grouping.Key >> 16) & 0xFFFF;
                     int y = (grouping.Key >> 0) & 0xFFFF;
-                    ChatPacket.SendNoticeGMs(
+                    ChatPacket.SendBroadcastMessageToGMs(
                         $"Possible mobvac on map {ID}. More than {MaxMobsForTrigger} mobs on the exact same position. Location: {x} {y}." + GetMobvacPlayerNameInfo(),
                         BroadcastMessageType.Megaphone
                     );
@@ -335,7 +340,7 @@ namespace WvsBeta.Game
             if ((mobsWithPossiblePvac_Left > pvacTriggerAmount && mobsWithPossiblePvac_Right == 0) ||
                 (mobsWithPossiblePvac_Right > pvacTriggerAmount && mobsWithPossiblePvac_Left == 0))
             {
-                ChatPacket.SendNoticeGMs(
+                ChatPacket.SendBroadcastMessageToGMs(
                     $"Possible mobvac on map {ID}. pvac left {mobsWithPossiblePvac_Left}, pvac right {mobsWithPossiblePvac_Right}" + GetMobvacPlayerNameInfo(),
                     BroadcastMessageType.Megaphone
                 );
@@ -343,7 +348,7 @@ namespace WvsBeta.Game
 
             if (mobsOutOfBounds > 3)
             {
-                ChatPacket.SendNoticeGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), BroadcastMessageType.Megaphone);
+                ChatPacket.SendBroadcastMessageToGMs($"Possible mobvac on map {ID}. Mobs out of bounds {mobsOutOfBounds}" + GetMobvacPlayerNameInfo(), BroadcastMessageType.Megaphone);
             }
             /*
             if (mobsWithInvalidFoothold > 3)
@@ -632,7 +637,33 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 });
             }
         }
-
+        public void RemoveNpcLife(int id)
+        {
+            var idx = NPC.FindIndex(i => i.ID == id);
+            if (idx > -1)
+            {
+                var life = NPC[idx];
+                SendPacket(MapPacket.NpcLeaveField(life.SpawnID));
+                NPC.RemoveAt(idx);
+            }
+        }
+        public NpcLife SpawnNpc(int npcid, Pos position, Foothold? fh)
+        {
+            if (DataProvider.NPCs.TryGetValue(npcid, out NPCData npc))
+            {
+                var life = new Life();
+                life.Foothold = fh?.ID ?? 0;
+                life.ID = npcid;
+                life.X = position.X;
+                life.Y = position.Y;
+                life.Type = 'n';
+                AddLife(life); // Can only do gpq 4 billion times :(
+                NpcLife npcLife = NPC.Last();
+                SendPacket(MapPacket.NpcEnterField(npcLife));
+                return npcLife;
+            }
+            return null;
+        }
         public void GenerateMBR(Rectangle VRLimit)
         {
             int Left = int.MaxValue;
@@ -862,12 +893,12 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                     ", ",
                     shownPlayers.Select(x => x.Name + (x.IsAFK ? " (AFK)" : ""))
                 );
-                ChatPacket.SendNotice(playersonline, chr);
+                chr.Notice(playersonline);
             }
 
             // Nuke the stats
-            var nonActiveBuffs = ~chr.PrimaryStats.AllActiveBuffs();
-            BuffPacket.ResetTempStats(chr, nonActiveBuffs);
+            //var nonActiveBuffs = ~chr.PrimaryStats.AllActiveBuffs();
+            //BuffPacket.RemoveBuffs(chr, nonActiveBuffs);
         }
 
         public GameCharacter FindUser(string Name)
@@ -953,7 +984,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 PetsPacket.SendSpawnPet(chr, petItem, chr);
             }
 
-            NPC.ForEach(n => MapPacket.ShowNPC(n, chr));
+            NPC.ForEach(n => chr.SendPacket(MapPacket.NpcEnterField(n)));
 
             Mobs.Values.Where(x => x.HP > 0).ForEach(m =>
             {
@@ -1165,7 +1196,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Mobs.Add(mob.SpawnID, mob);
 
             MobPacket.SendMobSpawn(mob);
-            FindNewController(mob, null);
+            //FindNewController(mob, null);
 
             //if (mob.SummonType != SummonType.Fake)
             //{
@@ -1500,6 +1531,63 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         {
             if (!Areas.TryGetValue(areaId, out MapArea area)) return 0;
             return Characters.Where(chr => area.Contains(chr)).Count();
+        }
+        public int IsItemInArea(string areaId, int itemid)
+        {
+            if (!Areas.TryGetValue(areaId, out MapArea area)) return 0;
+            var items = DropPool.Drops.Select(i => i.Value).Where(i => area.Contains(i.Pt1)).ToList();
+            if (items.Count > 1) return -1;
+            else if (items.Any(i => i.Reward.ItemID == itemid)) return 1;
+            else return 0;
+        }
+        public void SummonMob(short x, short y, int summoningsack)
+        {
+            if (!DataProvider.Items.TryGetValue(summoningsack, out ItemData sack))
+            {
+                Program.MainForm.LogAppend("Summoning sack {0} not found", summoningsack);
+                return;
+            }
+            var pos = new Pos(x, y);
+            var fh = GetFootholdUnderneath(pos.X, pos.Y, out int maxY);
+            foreach (var isi in sack.Summons)
+            {
+                if (DataProvider.Mobs.ContainsKey(isi.MobID))
+                {
+                    if (Rand32.Next() % 100 < isi.Chance)
+                    {
+                        SpawnMobWithoutRespawning(isi.MobID, pos, (short)(fh?.ID ?? 0), summonType: (SummonType)sack.Type);
+                    }
+                }
+                else
+                {
+                    Program.MainForm.LogAppend("Summon sack {0} has mobid that doesn't exist: {1}", summoningsack, isi.MobID);
+                }
+            }
+        }
+        public void EffectScreen(string screen)
+        {
+            SendPacket(FieldEffectPacket.EffectScreen(screen));
+        }
+        public void EffectSound(string sound)
+        {
+            SendPacket(FieldEffectPacket.EffectSound(sound));
+        }
+        public void EffectMusic(string music)
+        {
+            SendPacket(FieldEffectPacket.EffectMusic(music));
+        }
+        public void EffectPartyClear()
+        {
+            EffectScreen("quest/party/clear");
+            EffectSound("Party1/Clear");
+        }
+        public void EffectScreenShake()
+        {
+            //PlayerEffectPacket.SendSkill()
+        }
+        public void Message(string text, BroadcastMessageType type = BroadcastMessageType.RedText)
+        {
+            ChatPacket.SendBroadcastMessageToMap(this, text, type);
         }
         #endregion
     }

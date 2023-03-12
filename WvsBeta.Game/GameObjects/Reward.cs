@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Org.BouncyCastle.Asn1.X509;
+using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -10,7 +12,7 @@ namespace WvsBeta.Game
     {
         public bool Mesos;
         public int Drop;
-        private BaseItem Data;
+        public BaseItem Data { get; private set; }
 
         public long DateExpire
         {
@@ -24,7 +26,6 @@ namespace WvsBeta.Game
 
         public short Amount => Data?.Amount ?? -1;
         public int ItemID => (!Mesos) ? Drop : 0;
-        public BaseItem GetData() => Data;
 
         // Server drop rate
         public static double ms_fIncDropRate => Server.Instance.RateDropChance;

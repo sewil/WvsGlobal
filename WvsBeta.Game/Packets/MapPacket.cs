@@ -116,7 +116,7 @@ namespace WvsBeta.Game
 #endif
                     errorHandlerFnc = (error) =>
                     {
-                        ChatPacket.SendNotice("Error compiling script '" + error + "'!", chr);
+                        chr.Notice("Error compiling script '" + error + "'!");
                     };
 #if !DEBUG
                 }
@@ -184,13 +184,6 @@ namespace WvsBeta.Game
 
         public static void OnEnterPortal(Packet packet, GameCharacter chr)
         {
-            // 16
-            // 14
-            // int targetid = FF FF FF FF
-            // String startwp = 05 00 6F 75 74 30 30
-            // 29 00
-            // C6 01
-            // 00 00 00
             if (packet.ReadByte() != chr.PortalCount)
             {
                 InventoryOperationPacket.NoChange(chr);
@@ -252,7 +245,7 @@ namespace WvsBeta.Game
             if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
             {
                 PortalScriptSession.Run(portal.Script, chr, script => {
-                    ChatPacket.SendNotice("Error compiling script: " + script, chr);
+                    chr.Notice("Error compiling script: " + script);
                 });
             }
             else
@@ -293,22 +286,9 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void ShowNPC(NpcLife npcLife, GameCharacter victim)
+        public static Packet NpcChangeController(NpcLife npcLife)
         {
-            Packet pw;/* = new Packet(ServerMessages.NPC_ENTER_FIELD);
-            pw.WriteUInt(npcLife.SpawnID);
-            pw.WriteInt(npcLife.ID);
-            pw.WriteShort(npcLife.X);
-            pw.WriteShort(npcLife.Y);
-            pw.WriteBool(!npcLife.FacesLeft);
-            pw.WriteUShort(npcLife.Foothold);
-            pw.WriteShort(npcLife.Rx0);
-            pw.WriteShort(npcLife.Rx1);
-
-            victim.sendPacket(pw);
-            */
-
-            pw = new Packet(ServerMessages.NPC_CHANGE_CONTROLLER);
+            var pw = new Packet(ServerMessages.NPC_CHANGE_CONTROLLER);
             pw.WriteBool(true);
             pw.WriteUInt(npcLife.SpawnID);
             pw.WriteInt(npcLife.ID);
@@ -318,12 +298,27 @@ namespace WvsBeta.Game
             pw.WriteUShort(npcLife.Foothold);
             pw.WriteShort(npcLife.Rx0);
             pw.WriteShort(npcLife.Rx1);
-
-            victim.SendPacket(pw);
+            return pw;
         }
-
-
-
+        public static Packet NpcEnterField(NpcLife npcLife)
+        {
+            Packet pw = new Packet(ServerMessages.NPC_ENTER_FIELD);
+            pw.WriteUInt(npcLife.SpawnID);
+            pw.WriteInt(npcLife.ID);
+            pw.WriteShort(npcLife.X);
+            pw.WriteShort(npcLife.Y);
+            pw.WriteBool(!npcLife.FacesLeft);
+            pw.WriteUShort(npcLife.Foothold);
+            pw.WriteShort(npcLife.Rx0);
+            pw.WriteShort(npcLife.Rx1);
+            return pw;
+        }
+        public static Packet NpcLeaveField(uint spawnId)
+        {
+            Packet pw = new Packet(ServerMessages.NPC_LEAVE_FIELD);
+            pw.WriteUInt(spawnId);
+            return pw;
+        }
         public static void HandleNPCAnimation(GameCharacter controller, Packet packet)
         {
             Packet pw = new Packet(ServerMessages.NPC_ANIMATE);
@@ -644,12 +639,6 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw, chr);
         }
 
-        public static void SendChangeMap(GameCharacter chr)
-        {
-            var pack = new SetFieldPacket(chr, Server.Instance.ID, false);
-            chr.SendPacket(pack);
-        }
-
         public static void EmployeeEnterField(GameCharacter chr) //hired merchant :D
         {
             Packet pw = new Packet(0x83); //not the right opcode
@@ -671,51 +660,45 @@ namespace WvsBeta.Game
 
 
         }
-        class SetFieldPacket : Packet
+        public static void SendSetField(GameCharacter chr, bool isConnecting)
         {
-            public SetFieldPacket(GameCharacter chr, int channelId, bool isConnecting) : base(ServerMessages.SET_FIELD)
+            Packet pw = new Packet(ServerMessages.SET_FIELD);
+            bool writePos = true;
+            pw.WriteInt(Server.Instance.ID);
+            pw.WriteByte(chr.PortalCount);
+            pw.WriteBool(isConnecting);
+            if (isConnecting)
             {
-                WriteInt(channelId);
-                WriteByte(chr.PortalCount);
-                WriteBool(isConnecting);
-                if (isConnecting)
+                var rnd = Server.Instance.Randomizer;
+                // Seeds are initialized by global randomizer
+                var seed1 = rnd.Random();
+                var seed2 = rnd.Random();
+                var seed3 = rnd.Random();
+                var seed4 = rnd.Random();
+
+                chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
+                chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
+
+                pw.WriteUInt(seed1);
+                pw.WriteUInt(seed2);
+                pw.WriteUInt(seed3);
+                pw.WriteUInt(seed4);
+
+                new GameObjects.CharacterData(chr).Encode(pw);
+            }
+            else
+            {
+                pw.WriteInt(chr.MapID);
+                pw.WriteByte(chr.PortalID);
+                pw.WriteShort(chr.HP);
+                pw.WriteBool(writePos);
+                if (writePos)
                 {
-                    var rnd = Server.Instance.Randomizer;
-                    // Seeds are initialized by global randomizer
-                    var seed1 = rnd.Random();
-                    var seed2 = rnd.Random();
-                    var seed3 = rnd.Random();
-                    var seed4 = rnd.Random();
-
-                    chr.CalcDamageRandomizer.SetSeed(seed1, seed2, seed3);
-                    chr.RndActionRandomizer.SetSeed(seed2, seed3, seed4);
-
-                    WriteUInt(seed1);
-                    WriteUInt(seed2);
-                    WriteUInt(seed3);
-                    WriteUInt(seed4);
-
-                    new GameObjects.CharacterData(chr).Encode(this);
-                }
-                else
-                {
-                    WriteInt(chr.MapID);
-                    WriteByte(chr.PortalID);
-                    WriteShort(chr.HP);
-                    bool writePos = false;
-                    WriteBool(writePos);
-                    if (writePos)
-                    {
-                        WriteInt(chr.Position.X);
-                        WriteInt(chr.Position.Y);
-                    }
+                    pw.WriteInt(chr.Position.X);
+                    pw.WriteInt(chr.Position.Y);
                 }
             }
-        }
-        public static void SendSetField(GameCharacter chr, bool isConnecting = true)
-        {
-            Packet pack = new SetFieldPacket(chr, Server.Instance.ID, isConnecting);
-            chr.SendPacket(pack);
+            chr.SendPacket(pw);
         }
 
         public static void CancelSkillEffect(GameCharacter chr, int skillid)

@@ -24,6 +24,8 @@ namespace WvsBeta.Common.Objects
         public const long NoItemExpiration = 150842304000000000L;
         public bool IsOnly { get; set; }
         public bool IsQuest { get; set; }
+        public bool IsTradeBlock { get; set; }
+        public bool BigSize { get; set; }
 
         protected BaseItem(int itemId)
         {
@@ -38,6 +40,8 @@ namespace WvsBeta.Common.Objects
             Expiration = itemBase.Expiration;
             IsOnly = itemBase.IsOnly;
             IsQuest = itemBase.IsQuest;
+            IsTradeBlock = itemBase.IsTradeBlock;
+            BigSize = itemBase.BigSize;
         }
 
         public BaseItem Duplicate()
@@ -141,6 +145,8 @@ namespace WvsBeta.Common.Objects
             pw.WriteLong(Expiration);
             pw.WriteBool(IsOnly);
             pw.WriteBool(IsQuest);
+            pw.WriteBool(IsTradeBlock);
+            pw.WriteBool(BigSize);
 
             pw.WriteString("");
         }
@@ -196,6 +202,8 @@ namespace WvsBeta.Common.Objects
             item.Expiration = pr.ReadLong();
             item.IsOnly = pr.ReadBool();
             item.IsQuest = pr.ReadBool();
+            item.IsTradeBlock = pr.ReadBool();
+            item.BigSize = pr.ReadBool();
 
             pr.ReadString();
 
@@ -233,6 +241,8 @@ namespace WvsBeta.Common.Objects
             if (!BaseDataProvider.Items.TryGetValue(base.ItemID, out ItemData itemData)) return;
             IsQuest = itemData.IsQuest;
             IsOnly = itemData.IsOnly;
+            IsTradeBlock = itemData.IsTradeBlock;
+            BigSize = itemData.BigSize;
         }
 
         public BundleItem(BundleItem itemBase) : base(itemBase) { }
@@ -305,6 +315,7 @@ namespace WvsBeta.Common.Objects
             if (BaseDataProvider.Equips == null || !BaseDataProvider.Equips.TryGetValue(base.ItemID, out EquipData data)) return;
             IsQuest = data.IsQuest;
             IsOnly = data.IsOnly;
+            IsTradeBlock = data.IsTradeBlock;
             Slots = data.Slots;
         }
 

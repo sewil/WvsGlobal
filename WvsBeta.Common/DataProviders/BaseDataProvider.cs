@@ -21,7 +21,6 @@ namespace WvsBeta.Common.DataProviders
         protected set; }
         public static IDictionary<int, SkillData> Skills { get; protected set; }
         public static IDictionary<short, WZQuestData> Quests { get; protected set; }
-        public static List<int> UntradeableDrops { get; } = new List<int>();
         public static List<int> QuestItems { get; } = new List<int>();
 
         protected static List<NXFile> pOverride;
@@ -207,32 +206,26 @@ namespace WvsBeta.Common.DataProviders
                         case "incMHP": eq.HP = nxNode.ValueInt16(); break;
                         case "incMMP": eq.MP = nxNode.ValueInt16(); break;
                         case "quest":
-                            if (nxNode.ValueBool())
+                            eq.IsQuest = nxNode.ValueBool();
+                            if (eq.IsQuest)
                             {
-                                eq.IsQuest = true;
-                                lock (UntradeableDrops)
+                                lock (QuestItems)
                                 {
-                                    lock (QuestItems)
-                                    {
-                                        QuestItems.Add(eq.ID);
-                                        if (!UntradeableDrops.Contains(eq.ID))
-                                            UntradeableDrops.Add(eq.ID);
-                                    }
+                                    QuestItems.Add(eq.ID);
                                 }
-
                             }
                             break;
                         case "only":
                             if (nxNode.ValueBool())
                             {
                                 eq.IsOnly = true;
-                                lock (UntradeableDrops)
-                                {
-                                    if (!UntradeableDrops.Contains(eq.ID))
-                                        UntradeableDrops.Add(eq.ID);
-                                }
                             }
                             break;
+                        case "tradeBlock":
+                            {
+                                eq.IsTradeBlock = nxNode.ValueBool();
+                                break;
+                            }
                         case "cash": eq.Cash = nxNode.ValueBool(); break;
                         case "attackSpeed": eq.AttackSpeed = nxNode.ValueByte(); break;
                         case "knockback": eq.KnockbackRate = nxNode.ValueByte(); break;
@@ -301,14 +294,9 @@ namespace WvsBeta.Common.DataProviders
                                 item.IsQuest = node.ValueBool();
                                 if (item.IsQuest)
                                 {
-                                    lock (UntradeableDrops)
+                                    lock (QuestItems)
                                     {
-                                        lock (QuestItems)
-                                        {
-                                            item.IsQuest = true;
-                                            UntradeableDrops.Add(item.ID);
-                                            QuestItems.Add(item.ID);
-                                        }
+                                        QuestItems.Add(item.ID);
                                     }
                                 }
                                 break;
@@ -364,15 +352,14 @@ namespace WvsBeta.Common.DataProviders
                             case "rate":
                                 item.Rate = node.ValueByte();
                                 break;
+                            case "bigSize":
+                                item.BigSize = node.ValueBool();
+                                break;
                             case "only":
-                                if (node.ValueBool())
-                                {
-                                    item.IsOnly = true;
-                                    lock (UntradeableDrops)
-                                    {
-                                        UntradeableDrops.Add(item.ID);
-                                    }
-                                }
+                                item.IsOnly = node.ValueBool();
+                                break;
+                            case "tradeBlock":
+                                item.IsTradeBlock = node.ValueBool();
                                 break;
                             case "time":
                                 item.RateTimes = new Dictionary<byte, List<KeyValuePair<byte, byte>>>();

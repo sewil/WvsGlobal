@@ -7,6 +7,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Handlers.Guild;
+using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
@@ -127,7 +128,7 @@ namespace WvsBeta.Game
                     case ISServerMessages.ServerAssignmentResult:
                         {
                             var inMigration = Server.Instance.InMigration = packet.ReadBool();
-                            Server.Instance.ID = packet.ReadByte();
+                            Server.Instance.AssignServer(packet.ReadByte());
 
                             GlobalContext.Properties["ChannelID"] = Server.Instance.ID;
 
@@ -324,6 +325,12 @@ namespace WvsBeta.Game
                         GuildHandler.HandleGuildExpand(packet);
                         break;
                     #endregion
+                    case ISServerMessages.GuildQuestRegister:
+                        GuildQuestHandler.HandlerRegister(packet);
+                        break;
+                    case ISServerMessages.GuildQuestUnregister:
+                        GuildQuestHandler.HandleUnregister(packet);
+                        break;
                     default:
                         if (!TryHandlePartyPacket(packet, msg) &&
                             !TryHandlePlayerPacket(packet, msg))
@@ -428,23 +435,11 @@ namespace WvsBeta.Game
                         break;
                     }
 
-                case ISServerMessages.AdminMessage:
+                case ISServerMessages.BroadcastMessage:
                     {
-                        string message = packet.ReadString();
-                        byte type = packet.ReadByte();
-
-                        Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
-                        pw.WriteByte(type);
-                        pw.WriteString(message);
-                        if (type == 4)
-                        {
-                            pw.WriteBool(message.Length != 0);
-                        }
-
-                        foreach (var kvp in DataProvider.Maps)
-                        {
-                            kvp.Value.SendPacket(pw);
-                        }
+                        string text = packet.ReadString();
+                        BroadcastMessageType type = (BroadcastMessageType)packet.ReadByte();
+                        ChatPacket.SendBroadcastMessageToChannel(text, type);
                         break;
                     }
 

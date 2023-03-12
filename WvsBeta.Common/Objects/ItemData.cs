@@ -13,6 +13,8 @@ namespace WvsBeta.Common.Objects
         public ushort MaxSlot { get; set; }
         public bool IsQuest { get; set; }
         public bool IsOnly { get; set; }
+        public bool IsTradeBlock { get; set; }
+        public bool BigSize { get; set; }
         public short HP { get; set; }
         public short MP { get; set; }
         public short HPRate { get; set; }

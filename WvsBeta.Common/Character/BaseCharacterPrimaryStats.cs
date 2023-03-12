@@ -12,38 +12,39 @@ namespace WvsBeta.Common.Character
         public byte Level { get => CharacterStat.Level; }
         public BonusSet EquipBonuses = new BonusSet();
         public BonusSet BuffBonuses = new BonusSet();
-        public BuffStat BuffWeaponAttack { get; } = new BuffStat(BuffValueTypes.WeaponAttack);
-        public BuffStat BuffWeaponDefense { get; } = new BuffStat(BuffValueTypes.WeaponDefense);
-        public BuffStat BuffMagicAttack { get; } = new BuffStat(BuffValueTypes.MagicAttack);
-        public BuffStat BuffMagicDefense { get; } = new BuffStat(BuffValueTypes.MagicDefense);
-        public BuffStat BuffAccurancy { get; } = new BuffStat(BuffValueTypes.Accurancy);
-        public BuffStat BuffAvoidability { get; } = new BuffStat(BuffValueTypes.Avoidability);
-        public BuffStat BuffHands { get; } = new BuffStat(BuffValueTypes.Hands);
-        public BuffStat BuffSpeed { get; } = new BuffStat(BuffValueTypes.Speed);
-        public BuffStat BuffJump { get; } = new BuffStat(BuffValueTypes.Jump);
-        public BuffStat BuffMagicGuard { get; } = new BuffStat(BuffValueTypes.MagicGuard);
-        public BuffStat BuffDarkSight { get; } = new BuffStat(BuffValueTypes.DarkSight);
-        public BuffStat BuffBooster { get; } = new BuffStat(BuffValueTypes.Booster);
-        public BuffStat BuffPowerGuard { get; } = new BuffStat(BuffValueTypes.PowerGuard);
-        public BuffStat BuffMaxHP { get; } = new BuffStat(BuffValueTypes.MaxHP);
-        public BuffStat BuffMaxMP { get; } = new BuffStat(BuffValueTypes.MaxMP);
-        public BuffStat BuffInvincible { get; } = new BuffStat(BuffValueTypes.Invincible);
-        public BuffStat BuffSoulArrow { get; } = new BuffStat(BuffValueTypes.SoulArrow);
-        public BuffStat BuffStun { get; } = new BuffStat(BuffValueTypes.Stun);
-        public BuffStat BuffPoison { get; } = new BuffStat(BuffValueTypes.Poison);
-        public BuffStat BuffSeal { get; } = new BuffStat(BuffValueTypes.Seal);
-        public BuffStat BuffDarkness { get; } = new BuffStat(BuffValueTypes.Darkness);
-        public BuffStat_ComboAttack BuffComboAttack { get; } = new BuffStat_ComboAttack(BuffValueTypes.ComboAttack);
-        public BuffStat BuffCharges { get; } = new BuffStat(BuffValueTypes.Charges);
+        public Objects.Stats.BuffStat BuffWeaponAttack { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.WeaponAttack);
+        public Objects.Stats.BuffStat BuffWeaponDefense { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.WeaponDefense);
+        public Objects.Stats.BuffStat BuffMagicAttack { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MagicAttack);
+        public Objects.Stats.BuffStat BuffMagicDefense { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MagicDefense);
+        public Objects.Stats.BuffStat BuffAccurancy { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Accurancy);
+        public Objects.Stats.BuffStat BuffAvoidability { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Avoidability);
+        public Objects.Stats.BuffStat BuffHands { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Hands);
+        public Objects.Stats.BuffStat BuffSpeed { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Speed);
+        public Objects.Stats.BuffStat BuffJump { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Jump);
+        public Objects.Stats.BuffStat BuffMagicGuard { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MagicGuard);
+        public Objects.Stats.BuffStat BuffDarkSight { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.DarkSight);
+        public Objects.Stats.BuffStat BuffBooster { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Booster);
+        public Objects.Stats.BuffStat BuffPowerGuard { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.PowerGuard);
+        public Objects.Stats.BuffStat BuffMaxHP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MaxHP);
+        public Objects.Stats.BuffStat BuffMaxMP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MaxMP);
+        public Objects.Stats.BuffStat BuffInvincible { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Invincible);
+        public Objects.Stats.BuffStat BuffSoulArrow { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.SoulArrow);
+        public Objects.Stats.BuffStat BuffStun { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Stun);
+        public Objects.Stats.BuffStat BuffPoison { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Poison);
+        public Objects.Stats.BuffStat BuffSeal { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Seal);
+        public Objects.Stats.BuffStat BuffDarkness { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Darkness);
+        public BuffStat_ComboAttack BuffComboAttack { get; } = new BuffStat_ComboAttack(Enums.BuffValueTypes.ComboAttack);
+        public Objects.Stats.BuffStat BuffCharges { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Charges);
         public BuffStat_DragonBlood BuffDragonBlood { get; protected set; }
-        public BuffStat BuffHolySymbol { get; } = new BuffStat(BuffValueTypes.HolySymbol);
-        public BuffStat BuffMesoUP { get; } = new BuffStat(BuffValueTypes.MesoUP);
-        public BuffStat BuffShadowPartner { get; } = new BuffStat(BuffValueTypes.ShadowPartner);
-        public BuffStat BuffPickPocketMesoUP { get; } = new BuffStat(BuffValueTypes.PickPocketMesoUP);
-        public BuffStat_MesoGuard BuffMesoGuard { get; } = new BuffStat_MesoGuard(BuffValueTypes.MesoGuard);
-        public BuffStat BuffThaw { get; } = new BuffStat(BuffValueTypes.Thaw);
-        public BuffStat BuffWeakness { get; } = new BuffStat(BuffValueTypes.Weakness);
-        public BuffStat BuffCurse { get; } = new BuffStat(BuffValueTypes.Curse);
+        public Objects.Stats.BuffStat BuffHolySymbol { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.HolySymbol);
+        public Objects.Stats.BuffStat BuffMesoUP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MesoUP);
+        public Objects.Stats.BuffStat BuffShadowPartner { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.ShadowPartner);
+        public Objects.Stats.BuffStat BuffPickPocketMesoUP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.PickPocketMesoUP);
+        public BuffStat_MesoGuard BuffMesoGuard { get; } = new BuffStat_MesoGuard(Enums.BuffValueTypes.MesoGuard);
+        public Objects.Stats.BuffStat BuffThaw { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Thaw);
+        public Objects.Stats.BuffStat BuffWeakness { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Weakness);
+        public Objects.Stats.BuffStat BuffCurse { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Curse);
+        public Objects.Stats.BuffStat BuffUnk100m { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Unk100m);
 
         public int Craft => CharacterStat.Dex + CharacterStat.Luk + CharacterStat.Int;
 
@@ -150,17 +151,17 @@ namespace WvsBeta.Common.Character
             throw new NotImplementedException();
         }
 
-        public virtual BuffValueTypes AllActiveBuffs()
+        public virtual Enums.BuffValueTypes AllActiveBuffs()
         {
             throw new NotImplementedException();
         }
 
-        public virtual BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
+        public virtual Enums.BuffValueTypes RemoveByReference(int pBuffValue, bool onlyReturn = false)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void EncodeForLocal(Packet pPacket, BuffValueTypes pSpecificFlag = BuffValueTypes.ALL)
+        public virtual void EncodeForLocal(Packet pPacket, Enums.BuffValueTypes pSpecificFlag = Enums.BuffValueTypes.ALL)
         {
             throw new NotImplementedException();
         }

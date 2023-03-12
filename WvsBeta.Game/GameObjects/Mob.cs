@@ -17,6 +17,8 @@ namespace WvsBeta.Game
         Revive = -3,
         Regen = -2,
         Instant = -1,
+        JrBalrog = 0,
+        Poof = 1
     }
     public class Mob : MovableLife, IFieldObj
     {
@@ -406,7 +408,7 @@ namespace WvsBeta.Game
             {
                 _hackLog.Warn(hackType);
                 Trace.WriteLine(hackType);
-                ChatPacket.SendNoticeGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", BroadcastMessageType.Megaphone);
+                ChatPacket.SendBroadcastMessageToGMs($"Mob Check '{hackType}' triggered! Map: '{Field.ID}', controller '{Controller?.Name}'.", BroadcastMessageType.Megaphone);
             }
             return isHack;
         }
@@ -1141,7 +1143,7 @@ namespace WvsBeta.Game
                     int Delay = 0;
                     foreach (Reward Reward in Rewards)
                     {
-                        if (!Field.DropPool.Create(Reward, User.ID, 0, DropType.Normal, SpawnID, Position, x2, (short)(Attack.HitDelay + Delay), false, 0, false, false))
+                        if (!Field.DropPool.Create(Reward, User.ID, 0, DropType.Normal, SpawnID, Position, x2, (short)(Attack.HitDelay + Delay), false, false))
                         {
                             Delay += 120;
                             x2 += 20;
@@ -1193,7 +1195,7 @@ namespace WvsBeta.Game
                     if (StolenDrop != null)
                     {
                         // NOTE: if its money it should drop half.
-                        Field.DropPool.Create(StolenDrop, OwnerID, OwnPartyID, OwnType, SpawnID, Pos, Pos.X, Delay, false, 0, false, false);
+                        Field.DropPool.Create(StolenDrop, OwnerID, OwnPartyID, OwnType, SpawnID, Pos, Pos.X, Delay, false, false);
                         ItemID_Stolen = StolenDrop.ItemID;
                         AlreadyStealed = true;
                     }
@@ -1213,7 +1215,7 @@ namespace WvsBeta.Game
                                 Drop.Drop = (Drop.Drop * MesoUp / 100);
                             Drop.Drop = Convert.ToInt32(Drop.Drop * Server.Instance.RateMesoAmount);
                         }
-                        if (!Field.DropPool.Create(Drop, OwnerID, OwnPartyID, OwnType, SpawnID, Pos, x2, Delay, false, 0, false, false))
+                        if (!Field.DropPool.Create(Drop, OwnerID, OwnPartyID, OwnType, SpawnID, Pos, x2, Delay, false, false))
                         {
                             i++;
                             Delay += 200;

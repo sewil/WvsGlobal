@@ -124,6 +124,7 @@ namespace WvsBeta.Game
             character.PrimaryStats.EncodeForCC(packet);
             // Add the summons
             character.Summons.EncodeForCC(packet);
+            character.EncodeForCC(packet);
 
             SendPacket(packet);
         }
@@ -208,10 +209,10 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void AdminMessage(string message, BroadcastMessageType type)
+        public void BroadcastMessage(string text, BroadcastMessageType type)
         {
-            Packet packet = new Packet(ISClientMessages.AdminMessage);
-            packet.WriteString(message);
+            Packet packet = new Packet(ISClientMessages.BroadcastMessage);
+            packet.WriteString(text);
             packet.WriteByte((byte)type);
             SendPacket(packet);
         }

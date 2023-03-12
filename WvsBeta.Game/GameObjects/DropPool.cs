@@ -20,66 +20,41 @@ namespace WvsBeta.Game
             _DropIdCounter = new LoopingID();
         }
 
-        public bool Create(Reward Reward, int OwnerID, int OwnPartyID, DropType OwnType, int SourceID, Pos CurPos, int x2, short Delay, bool Admin, short Pos, bool ByPet, bool ByUser)
+        public bool Create(Reward reward, int ownerId, int ownPartyId, DropType dropType, int sourceId, Pos currentPos, int x2, short delay, bool byPet, bool byPlayer)
         {
-            var Foothold = Field.GetFootholdUnderneath(x2, CurPos.Y - 100, out int y2);
+            bool big = !reward.Mesos && reward.Data.BigSize;
+            if (big && sourceId > 0 && !byPlayer) x2 += 10;
+
+            var Foothold = Field.GetFootholdUnderneath(x2, currentPos.Y - 100, out int y2);
 
             if (Foothold == null || !Field.IsPointInMBR(x2, y2, true))
-                Foothold = Field.GetFootholdClosest(x2, CurPos.Y, ref x2, ref y2, CurPos.X);
+                Foothold = Field.GetFootholdClosest(x2, currentPos.Y, ref x2, ref y2, currentPos.X);
 
-            Drop Drop = null;
-            if (_MergeDrops && !ByUser && GetDrop(OwnerID, Reward, x2, y2, out Drop))
+            if (big)
             {
-                Drop.CreateTime = MasterThread.CurrentTime;
-                Drop.FFA = true;
-                bool Changed = false;
-
-                if (Drop.Reward.Mesos)
-                {
-                    int Value = Reward.Drop + Drop.Reward.Drop;
-                    if (Drop.Reward.Drop < 50 && Value >= 50)
-                        Changed = true;
-                    else if (Drop.Reward.Drop < 100 && Value >= 100)
-                        Changed = true;
-                    else if (Drop.Reward.Drop < 1000 && Value >= 1000)
-                        Changed = true;
-                    Drop.Reward.Drop = Value;
-                }
-                else
-                    Drop.Reward.GetData().Amount += Reward.Amount;
-
-                DropPacket.SendMakeEnterFieldPacket(Drop, RewardEnterType.DisappearDuringDrop, Delay);
-
-                if (Changed)
-                {
-                    DropPacket.SendMakeLeaveFieldPacket(Drop, RewardLeaveType.Remove);
-                    DropPacket.SendMakeEnterFieldPacket(Drop, RewardEnterType.ShowExisting, 0);
-                }
-                return true;
+                y2 -= 50;
             }
+
+            Drop drop = new Drop(_DropIdCounter.NextValue(), reward, ownerId, ownPartyId, dropType, sourceId, currentPos.X, currentPos.Y, (short)x2, (short)y2, byPet, byPlayer)
+            {
+                Field = Field,
+                CreateTime = MasterThread.CurrentTime,
+                Everlasting = DropEverlasting,
+                ConsumeOnPickup = (!reward.Mesos && false/*DataProvider.ConsumeOnPickup.Contains(Reward.ItemID)*/)
+            };
+
+            if (byPlayer && !drop.Reward.Mesos && (reward.Data.IsQuest || reward.Data.IsTradeBlock))
+                DropPacket.SendMakeEnterFieldPacket(drop, RewardEnterType.DisappearDuringDrop, delay);
             else
             {
-                Drop = new Drop(_DropIdCounter.NextValue(), Reward, OwnerID, OwnPartyID, OwnType, SourceID, CurPos.X, CurPos.Y, (short)x2, (short)y2, ByPet, ByUser)
+                Drops.Add(drop.DropID, drop);
+                DropPacket.SendMakeEnterFieldPacket(drop, RewardEnterType.DropAnimation, delay);
+                foreach (var reactor in Field.ReactorPool.Reactors.Select(i => i.Value))
                 {
-                    Field = Field,
-                    CreateTime = MasterThread.CurrentTime,
-                    Pos = Pos,
-                    Everlasting = DropEverlasting,
-                    ConsumeOnPickup = (!Reward.Mesos && false/*DataProvider.ConsumeOnPickup.Contains(Reward.ItemID)*/)
-                };
-
-                if (!Admin && ByUser && !Drop.Reward.Mesos && ((DataProvider.QuestItems.Contains(Reward.ItemID) || DataProvider.UntradeableDrops.Contains(Reward.ItemID))))
-                    DropPacket.SendMakeEnterFieldPacket(Drop, RewardEnterType.DisappearDuringDrop, Delay);
-                else
-                {
-                    Drops.Add(Drop.DropID, Drop);
-                    DropPacket.SendMakeEnterFieldPacket(Drop, RewardEnterType.DropAnimation, Delay);
-                    if (Field.ReactorPool.ShownReactors.Any(i => i.Value.TriggerDrop(Drop, OwnerID)))
-                    {
-                    }
+                    reactor.TriggerDrop(drop, ownerId);
                 }
-                return false;
             }
+            return false;
         }
 
         #region Update
@@ -100,30 +75,6 @@ namespace WvsBeta.Game
             Drops.TryGetValue(DropID, out Drop Result);
 
             return Result;
-        }
-
-        public bool GetDrop(int OwnerID, Reward Reward, int x, int y, out Drop Result)
-        {
-            Result = null;
-            /*var tCur = DateTime.Now;
-
-            if ((!Reward.Mesos && !Constants.isRechargeable(Reward.Drop)) || Reward.Mesos)
-            {
-                Point Pos = new Point(x, y);
-                foreach (Drop Drop in Drops.Values)
-                {
-                    if (Drop.SourceID != 0 && Drop.MergeArea.Contains(Pos))
-                    {
-                        if (((Drop.Reward.Mesos && Reward.Mesos == Drop.Reward.Mesos) || (Reward.Drop == Drop.Reward.Drop && Drop.Reward.Amount + Reward.Amount < Reward.MaxStack)) 
-                          && !Drop.ToExplode && ((tCur - Drop.CreateTime).TotalMinutes > 1 || Drop.OwnerID == OwnerID))
-                        {
-                            Result = Drop;
-                            return true;
-                        }
-                    }
-                }
-            }*/
-            return false;
         }
 
         public void Clear(RewardLeaveType rlt = RewardLeaveType.Normal)

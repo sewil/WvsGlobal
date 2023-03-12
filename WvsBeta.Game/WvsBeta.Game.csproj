@@ -123,7 +123,7 @@
     <Compile Include="GameObjects\MapArea.cs" />
     <Compile Include="GameObjects\MiniRoom\MiniRoomBalloonPacket.cs" />
     <Compile Include="GameObjects\ReactorPool.cs" />
-    <Compile Include="Handlers\Commands\CommandHandling.cs" />
+    <Compile Include="Handlers\CommandHandling.cs" />
     <Compile Include="Events\EventPackets\EventPackets.cs" />
     <Compile Include="Events\GMEvents\EventManager.cs" />
     <Compile Include="Events\GMEvents\Event.cs" />
@@ -154,6 +154,8 @@
     <Compile Include="GameObjects\FieldSet.cs" />
     <Compile Include="GameObjects\IFieldObj.cs" />
     <Compile Include="GameObjects\MiniRoom\Enums.cs" />
+    <Compile Include="Handlers\GuildQuest\GuildQuestHandler.cs" />
+    <Compile Include="Handlers\GuildQuest\GuildQuestRegistration.cs" />
     <Compile Include="Handlers\Guild\GuildData.cs" />
     <Compile Include="Handlers\Guild\GuildDbHandler.cs" />
     <Compile Include="Handlers\Guild\GuildHandler.cs" />
@@ -163,6 +165,7 @@
     <Compile Include="Packets\PlayerEffectPacket.cs" />
     <Compile Include="Packets\RemotePacket.cs" />
     <Compile Include="Packets\WhisperPacket.cs" />
+    <Compile Include="Scripting\IFieldScript.cs" />
     <Compile Include="Scripting\IGameScript.cs" />
     <Compile Include="GameObjects\Kite.cs" />
     <Compile Include="GameObjects\DataLoading\Life.cs" />
@@ -192,7 +195,7 @@
     <Compile Include="GameObjects\DataLoading\Portal.cs" />
     <Compile Include="GameObjects\Reactor.cs" />
     <Compile Include="GameObjects\Reward.cs" />
-    <Compile Include="GameObjects\Rings.cs" />
+    <Compile Include="GameObjects\CharacterRings.cs" />
     <Compile Include="Scripting\IPortalScript.cs" />
     <Compile Include="Scripting\PortalScriptSession.cs" />
     <Compile Include="Scripting\ReactorScriptSession.cs" />
@@ -206,11 +209,6 @@
     <Compile Include="GameObjects\MiniRoom\Trade.cs" />
     <Compile Include="GameServer.cs" />
     <Compile Include="Handlers\BuddyHandler.cs" />
-    <Compile Include="Handlers\Commands\AdminCommands.cs" />
-    <Compile Include="Handlers\Commands\CommandHandlerAttribute.cs" />
-    <Compile Include="Handlers\Commands\HandlerHelpers.cs" />
-    <Compile Include="Handlers\Commands\MainCommandHandler.cs" />
-    <Compile Include="Handlers\Commands\UserAdminLevels.cs" />
     <Compile Include="Handlers\MessengerHandler.cs" />
     <Compile Include="Handlers\PartyHandler.cs" />
     <Compile Include="Packets\AdminPacket.cs" />

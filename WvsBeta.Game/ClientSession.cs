@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Runtime.ConstrainedExecution;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
@@ -165,11 +166,11 @@ namespace WvsBeta.Game
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>
         {
             ServerMessages.PING,
-            ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
-            ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
-            ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
-            ServerMessages.DAMAGE_PLAYER,
-            ServerMessages.UPDATE_PARTYMEMBER_HP
+            //ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
+            //ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
+            //ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
+            //ServerMessages.DAMAGE_PLAYER,
+            //ServerMessages.UPDATE_PARTYMEMBER_HP
         };
 
         public override void AC_OnPacketInbound(Packet packet)
@@ -441,7 +442,7 @@ namespace WvsBeta.Game
             var hack = HackDetected.Value;
             if (hack.HasFlag(RedisBackend.HackKind.Speedhack))
             {
-                ChatPacket.SendNoticeGMs(
+                ChatPacket.SendBroadcastMessageToGMs(
                     $"Detected speed hacks on character '{character.Name}', map {character.MapID}...",
                     BroadcastMessageType.RedText);
 
@@ -456,7 +457,7 @@ namespace WvsBeta.Game
 
             if (hack.HasFlag(RedisBackend.HackKind.MemoryEdits))
             {
-                ChatPacket.SendNoticeGMs(
+                ChatPacket.SendBroadcastMessageToGMs(
                     $"Detected memory edits on character '{character.Name}', map {character.MapID}.",
                     BroadcastMessageType.RedText
                 );
@@ -609,7 +610,8 @@ namespace WvsBeta.Game
 
             character.PrimaryStats.CheckHPMP();
 
-            MapPacket.SendSetField(character);
+            MapPacket.SendSetField(character, true);
+
             if (character.Guild != null)
             {
                 GuildHandler.SendGuild(character, character.Guild);
@@ -618,7 +620,7 @@ namespace WvsBeta.Game
             if (character.IsGM)
             {
                 string glevel = character.GMLevel == 1 ? "(GM Intern)" : character.GMLevel == 2 ? "(GM)" : "(Admin)";
-                ChatPacket.SendNotice("Your GM Level: " + character.GMLevel + " " + glevel + ". Undercover? " + (character.Undercover ? "Yes" : "No"), character);
+                character.Notice("Your GM Level: " + character.GMLevel + " " + glevel + ". Undercover? " + (character.Undercover ? "Yes" : "No"));
             }
 
             if (character.IsGM && !character.Undercover)
@@ -631,9 +633,11 @@ namespace WvsBeta.Game
             if (ccPacket != null)
             {
                 character.Summons.DecodeForCC(ccPacket);
+                character.DecodeForCC(ccPacket);
             }
 
-            ChatPacket.SendText(BroadcastMessageType.Header, Server.Instance.ScrollingHeader, character, MessageMode.ToPlayer);
+            if (!string.IsNullOrWhiteSpace(Server.Instance.ScrollingHeader))
+                ChatPacket.SendBroadcastMessageToPlayer(character, Server.Instance.ScrollingHeader, BroadcastMessageType.Header);
 
             Server.Instance.CenterConnection.RegisterCharacter(character.ID, character.Name, character.CharacterStat.Job, character.CharacterStat.Level, character.GMLevel);
 

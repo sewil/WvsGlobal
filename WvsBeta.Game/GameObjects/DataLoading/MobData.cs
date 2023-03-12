@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.WzObjects;
 using WvsBeta.Game;
 
 public class MobData
@@ -82,5 +83,5 @@ public class MobData
     public bool Invincible { get; set; }
     public bool FirstAttack { get; set; }
     public bool SelfDestruction { get; set; }
-    public Dictionary<string, int> AnimationTimes = new Dictionary<string, int>();
+    public Dictionary<string, WzAnimation> Animations = new Dictionary<string, WzAnimation>();
 }

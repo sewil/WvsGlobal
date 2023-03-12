@@ -148,6 +148,17 @@ namespace WvsBeta
             }
             return (int)(dt1 - dt2).TotalMinutes;
         }
+        public static bool IsDebug
+        {
+            get
+            {
+#if DEBUG
+                return true;
+#else
+                return false;
+#endif
+            }
+        }
         #endregion
     }
 }

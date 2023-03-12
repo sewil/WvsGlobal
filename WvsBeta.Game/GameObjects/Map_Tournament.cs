@@ -5,7 +5,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.Commands;
+using WvsBeta.Game.Handlers;
 
 namespace WvsBeta.Game.GameObjects
 {
@@ -372,8 +372,6 @@ namespace WvsBeta.Game.GameObjects
                                 0,
                                 new Pos((short)(portal.X + 40), portal.Y),
                                 portal.X + 40,
-                                0,
-                                false,
                                 0,
                                 true, // Yes, by pet??!? 
                                 false

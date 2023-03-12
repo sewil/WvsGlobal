@@ -26,10 +26,10 @@ namespace WvsBeta.Game
             var data = DataProvider.Items[itemid];
             long buffTime = data.BuffTime;
 
-            var expireTime = BuffStat.GetTimeForBuff(buffTime);
+            var expireTime = Common.Objects.Stats.BuffStat.GetTimeForBuff(buffTime);
             var ps = Character.PrimaryStats;
             var value = -itemid;
-            BuffValueTypes added = 0;
+            Common.Enums.BuffValueTypes added = 0;
 
             if (data.Accuracy > 0)
                 added |= ps.BuffAccurancy.Set(value, data.Accuracy, expireTime);
@@ -57,7 +57,7 @@ namespace WvsBeta.Game
                 FinalizeBuff(added, 0);
             }
 
-            BuffValueTypes removed = 0;
+            Common.Enums.BuffValueTypes removed = 0;
 
             if (data.Cures.HasFlag(CureFlag.Weakness))
                 removed |= ps.BuffWeakness.Reset();
@@ -80,7 +80,7 @@ namespace WvsBeta.Game
         public void Dispell()
         {
             var ps = Character.PrimaryStats;
-            BuffValueTypes removed = 0;
+            Common.Enums.BuffValueTypes removed = 0;
 
             removed |= ps.BuffWeakness.Reset();
             removed |= ps.BuffPoison.Reset();
@@ -137,44 +137,45 @@ namespace WvsBeta.Game
                 time += 1000 * 1000;
             Trace.WriteLine($"Adding buff from skill {SkillID} lvl {level}: {time}. Flags {flags}");
 
-            var expireTime = BuffStat.GetTimeForBuff(time);
+            var expireTime = Common.Objects.Stats.BuffStat.GetTimeForBuff(time);
             var ps = Character.PrimaryStats;
-            BuffValueTypes added = 0;
+            Common.Enums.BuffValueTypes added = 0;
 
-            if (flags.HasFlag(BuffValueTypes.WeaponAttack)) added |= ps.BuffWeaponAttack.Set(SkillID, data.WeaponAttack, expireTime);
-            if (flags.HasFlag(BuffValueTypes.WeaponDefense)) added |= ps.BuffWeaponDefense.Set(SkillID, data.WeaponDefense, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MagicAttack)) added |= ps.BuffMagicAttack.Set(SkillID, data.MagicAttack, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MagicDefense)) added |= ps.BuffMagicDefense.Set(SkillID, data.MagicDefense, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Accurancy)) added |= ps.BuffAccurancy.Set(SkillID, data.Accurancy, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Avoidability)) added |= ps.BuffAvoidability.Set(SkillID, data.Avoidability, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.WeaponAttack)) added |= ps.BuffWeaponAttack.Set(SkillID, data.WeaponAttack, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.WeaponDefense)) added |= ps.BuffWeaponDefense.Set(SkillID, data.WeaponDefense, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MagicAttack)) added |= ps.BuffMagicAttack.Set(SkillID, data.MagicAttack, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MagicDefense)) added |= ps.BuffMagicDefense.Set(SkillID, data.MagicDefense, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Accurancy)) added |= ps.BuffAccurancy.Set(SkillID, data.Accurancy, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Avoidability)) added |= ps.BuffAvoidability.Set(SkillID, data.Avoidability, expireTime);
             //if (flags.Contains(BuffValueTypes.Hands)) added |= ps.BuffHands.Set(SkillID, data.Hands, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Speed)) added |= ps.BuffSpeed.Set(SkillID, data.Speed, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Jump)) added |= ps.BuffJump.Set(SkillID, data.Jump, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MagicGuard)) added |= ps.BuffMagicGuard.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.DarkSight)) added |= ps.BuffDarkSight.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Booster)) added |= ps.BuffBooster.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.PowerGuard)) added |= ps.BuffPowerGuard.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MaxHP)) added |= ps.BuffMaxHP.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MaxMP)) added |= ps.BuffMaxMP.Set(SkillID, data.YValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Invincible)) added |= ps.BuffInvincible.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.SoulArrow)) added |= ps.BuffSoulArrow.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.ComboAttack)) added |= ps.BuffComboAttack.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.Charges)) added |= ps.BuffCharges.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.DragonBlood)) added |= ps.BuffDragonBlood.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.HolySymbol)) added |= ps.BuffHolySymbol.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MesoUP)) added |= ps.BuffMesoUP.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.ShadowPartner)) added |= ps.BuffShadowPartner.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.PickPocketMesoUP)) added |= ps.BuffPickPocketMesoUP.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(BuffValueTypes.MesoGuard))
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Speed)) added |= ps.BuffSpeed.Set(SkillID, data.Speed, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Jump)) added |= ps.BuffJump.Set(SkillID, data.Jump, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MagicGuard)) added |= ps.BuffMagicGuard.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.DarkSight)) added |= ps.BuffDarkSight.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Booster)) added |= ps.BuffBooster.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.PowerGuard)) added |= ps.BuffPowerGuard.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MaxHP)) added |= ps.BuffMaxHP.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MaxMP)) added |= ps.BuffMaxMP.Set(SkillID, data.YValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Invincible)) added |= ps.BuffInvincible.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.SoulArrow)) added |= ps.BuffSoulArrow.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.ComboAttack)) added |= ps.BuffComboAttack.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.Charges)) added |= ps.BuffCharges.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.DragonBlood)) added |= ps.BuffDragonBlood.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.HolySymbol)) added |= ps.BuffHolySymbol.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MesoUP)) added |= ps.BuffMesoUP.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.ShadowPartner)) added |= ps.BuffShadowPartner.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.PickPocketMesoUP)) added |= ps.BuffPickPocketMesoUP.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.MesoGuard))
             {
                 added |= ps.BuffMesoGuard.Set(SkillID, data.XValue, expireTime);
                 ps.BuffMesoGuard.MesosLeft = data.MesosUsage;
             }
+            if (flags.HasFlag(BuffValueTypes.Unk100m)) added |= ps.BuffUnk100m.Set(SkillID, data.XValue, expireTime);
 
             FinalizeBuff(added, delay);
         }
 
-        public void FinalizeBuff(BuffValueTypes added, short delay, bool sendPacket = true)
+        public void FinalizeBuff(Common.Enums.BuffValueTypes added, short delay, bool sendPacket = true)
         {
             if (added == 0) return;
             Trace.WriteLine($"Added buffs {added}");
@@ -182,11 +183,11 @@ namespace WvsBeta.Game
             Character.FlushDamageLog();
 
             if (!sendPacket) return;
-            BuffPacket.SetTempStats(Character, added, delay);
+            BuffPacket.AddBuffs(Character, added, delay);
             MapPacket.SendPlayerBuffed(Character, added, delay);
         }
 
-        public void FinalizeDebuff(BuffValueTypes removed, bool sendPacket = true)
+        public void FinalizeDebuff(Common.Enums.BuffValueTypes removed, bool sendPacket = true)
         {
             if (removed == 0) return;
             Trace.WriteLine($"Removed buffs {removed}");
@@ -194,7 +195,7 @@ namespace WvsBeta.Game
             Character.FlushDamageLog();
 
             if (!sendPacket) return;
-            BuffPacket.ResetTempStats(Character, removed);
+            BuffPacket.RemoveBuffs(Character, removed);
             MapPacket.SendPlayerDebuffed(Character, removed);
         }
         

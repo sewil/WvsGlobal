@@ -18,7 +18,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "job", add = false });
             CharacterStat.Job = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Job, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Job);
 
             this.FlushDamageLog();
             Server.Instance.CenterConnection.UpdatePlayerJobLevel(this);
@@ -29,7 +29,7 @@ namespace WvsBeta.Game
         public void SetEXP(int value)
         {
             CharacterStat.EXP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Exp, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Exp);
         }
 
         public void SetHPAndMaxHP(short value, bool sendPacket = true)
@@ -44,10 +44,9 @@ namespace WvsBeta.Game
 
             if (sendPacket == true)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Hp, value);
+                CharacterStatsPacket.SendStatChanged(this, StatFlags.Hp);
             }
         }
-
         public void ModifyHP(short value, bool sendPacket = true)
         {
             var startValue = HP;
@@ -68,7 +67,7 @@ namespace WvsBeta.Game
 
             if (sendPacket)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Hp, HP);
+                CharacterStatsPacket.SendStatChanged(this, StatFlags.Hp);
             }
 
             if (startValue == HP)
@@ -103,7 +102,7 @@ namespace WvsBeta.Game
 
             if (sendPacket == true)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, value, isBySelf);
+                CharacterStatsPacket.SendStatChanged(this, StatFlags.Mp, isBySelf);
             }
         }
 
@@ -123,7 +122,7 @@ namespace WvsBeta.Game
             }
             if (sendPacket)
             {
-                CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, CharacterStat.MP);
+                CharacterStatsPacket.SendStatChanged(this, StatFlags.Mp);
 
                 /*if (this.PartyID != -1)
                 {
@@ -136,21 +135,21 @@ namespace WvsBeta.Game
         public void DamageMP(short amount)
         {
             CharacterStat.MP = (short)(amount > CharacterStat.MP ? 0 : CharacterStat.MP - amount);
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mp, CharacterStat.MP, false);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Mp);
         }
 
         public void ModifyMaxMP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxmp", add = true });
             CharacterStat.MaxMP = (short)(((CharacterStat.MaxMP + value) > Constants.MaxMaxMp) ? Constants.MaxMaxMp : (CharacterStat.MaxMP + value));
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, CharacterStat.MaxMP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxMp);
         }
 
         public void ModifyMaxHP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxhp", add = true });
             CharacterStat.MaxHP = (short)(((CharacterStat.MaxHP + value) > Constants.MaxMaxHp) ? Constants.MaxMaxHp : (CharacterStat.MaxHP + value));
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxHp, CharacterStat.MaxHP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxHp);
         }
 
         public void SetMaxHP(short value)
@@ -159,7 +158,7 @@ namespace WvsBeta.Game
             if (value > Constants.MaxMaxHp) value = Constants.MaxMaxHp;
             else if (value < Constants.MinMaxHp) value = Constants.MinMaxHp;
             CharacterStat.MaxHP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxHp, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxHp);
         }
 
         public void SetMaxMP(short value)
@@ -168,7 +167,7 @@ namespace WvsBeta.Game
             if (value > Constants.MaxMaxMp) value = Constants.MaxMaxMp;
             else if (value < Constants.MinMaxMp) value = Constants.MinMaxMp;
             CharacterStat.MaxMP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.MaxMp, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxMp);
         }
 
         public bool LevelUP()
@@ -181,7 +180,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "level", add = false });
             CharacterStat.Level = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Level, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Level);
             MapPacket.SendPlayerLevelupAnim(this);
 
             this.FlushDamageLog();
@@ -207,7 +206,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = false });
             CharacterStat.Fame = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Fame, value);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Fame);
         }
 
         private byte lastSaveStep = 0;
@@ -382,7 +381,7 @@ namespace WvsBeta.Game
                 Save();
             }
 
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Exp, CharacterStat.EXP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Exp);
         }
 
         public void IncreaseBuddySlots()
@@ -399,7 +398,7 @@ namespace WvsBeta.Game
         {
             if (value < 0) value = 0;
             Inventory.Mesos = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Mesos, Inventory.Mesos, isSelf);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Mesos, isSelf);
         }
 
         public void AddAP(short value, bool isSelf = false)
@@ -413,14 +412,14 @@ namespace WvsBeta.Game
             {
                 CharacterStat.AP += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, CharacterStat.AP, isSelf);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Ap, isSelf);
         }
 
         public void SetAP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "ap", add = false });
             CharacterStat.AP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Ap, CharacterStat.AP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Ap);
         }
 
         public void AddSP(short value)
@@ -434,14 +433,14 @@ namespace WvsBeta.Game
             {
                 CharacterStat.SP += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, CharacterStat.SP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Sp);
         }
 
         public void SetSP(short value)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "sp", add = false });
             CharacterStat.SP = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Sp, CharacterStat.SP);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Sp);
         }
 
         public void AddStr(short value)
@@ -455,7 +454,7 @@ namespace WvsBeta.Game
             {
                 CharacterStat.Str += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, CharacterStat.Str);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Str);
 
             this.FlushDamageLog();
         }
@@ -464,7 +463,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "str", add = false });
             CharacterStat.Str = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Str, CharacterStat.Str);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Str);
 
             this.FlushDamageLog();
         }
@@ -480,7 +479,7 @@ namespace WvsBeta.Game
             {
                 CharacterStat.Dex += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, CharacterStat.Dex);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Dex);
 
             this.FlushDamageLog();
         }
@@ -489,7 +488,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "dex", add = false });
             CharacterStat.Dex = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Dex, CharacterStat.Dex);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Dex);
 
             this.FlushDamageLog();
         }
@@ -505,7 +504,7 @@ namespace WvsBeta.Game
             {
                 CharacterStat.Int += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, CharacterStat.Int);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Int);
 
             this.FlushDamageLog();
         }
@@ -515,7 +514,7 @@ namespace WvsBeta.Game
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "int", add = false });
             CharacterStat.Int = value;
 
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Int, CharacterStat.Int);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Int);
 
             this.FlushDamageLog();
         }
@@ -531,7 +530,7 @@ namespace WvsBeta.Game
             {
                 CharacterStat.Luk += value;
             }
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, CharacterStat.Luk);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Luk);
 
             this.FlushDamageLog();
         }
@@ -540,7 +539,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "luk", add = false });
             CharacterStat.Luk = value;
-            CharacterStatsPacket.SendStatChange(this, (uint)CharacterStatsPacket.StatFlags.Luk, CharacterStat.Luk);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Luk);
 
             this.FlushDamageLog();
         }
@@ -588,7 +587,7 @@ namespace WvsBeta.Game
             {
                 if (GMLevel == 1)
                 {
-                    ChatPacket.SendNotice("GM interns cannot leave GM Hide.", this);
+                    Message("GM interns cannot leave GM Hide.");
                     AdminPacket.Hide(this, true); //because client unhides you graphically when server rejects it
                 }
                 else
@@ -603,14 +602,14 @@ namespace WvsBeta.Game
         private void StartChangeMap(Map prevMap, Map newMap)
         {
             prevMap.RemovePlayer(this);
-            PortalCount++;
+            //PortalCount++;
             Field = newMap;
         }
 
         private void FinishChangeMap(Map prevMap, Map newMap)
         {
             TryActivateHide();
-            MapPacket.SendChangeMap(this);
+            MapPacket.SendSetField(this, false);
 
             newMap.AddPlayer(this);
             Summons.MigrateSummons(prevMap, newMap);
@@ -701,7 +700,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "hair", add = false });
             Hair = id;
-            CharacterStatsPacket.SendStatChange(this, (int)CharacterStatsPacket.StatFlags.Hair, id);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Hair);
             MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);//Because hair is a equip I guess
         }
 
@@ -709,7 +708,7 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "face", add = false });
             Face = id;
-            CharacterStatsPacket.SendStatChange(this, (int)CharacterStatsPacket.StatFlags.Eyes, id);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Eyes);
             MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);
         }
 
@@ -717,221 +716,8 @@ namespace WvsBeta.Game
         {
             _characterLog.Info(new StatChangeLogRecord { value = id, type = "skin", add = false });
             Skin = id;
-            CharacterStatsPacket.SendStatChange(this, (byte)CharacterStatsPacket.StatFlags.Skin, id);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Skin);
             MapPacket.SendAvatarModified(this, MapPacket.AvatarModFlag.AvatarLook);
-        }
-
-        private byte ParseGenderString(string input)
-        {
-            switch (input.ToLower())
-            {
-                case "2":
-                case "unisex":
-                case "u": return 2;
-                case "1":
-                case "female":
-                case "f": return 1;
-                default: return 0;
-            }
-        }
-
-        public void OnVarset(GameCharacter Sent, string Var, object Value, object Value2 = null, object Value3 = null)
-        {
-            if (this != Sent && Sent.IsGM && !Sent.IsAdmin) //Todo Admin levels
-            {
-                ChatPacket.SendNotice("You don't have the premission to edit other players stats!", Sent);
-                //$"{Sent.Name} tried to edit another players stats without premission"
-            }
-            else
-            {
-                try
-                {
-                    MapPacket.AvatarModFlag AvatarMod = 0;
-                    CharacterStatsPacket.StatFlags dwFlag = 0;
-
-                    switch (Var.ToLower())
-                    {
-                        case "hp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Hp;
-                            HP = Convert.ToInt16(Value);
-                            break;
-                        case "mp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Mp;
-                            CharacterStat.MP = Convert.ToInt16(Value);
-                            break;
-                        case "exp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Exp;
-                            CharacterStat.EXP = Convert.ToInt32(Value);
-                            break;
-                        case "maxhp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.MaxHp;
-                            if (Value.ToString() == "0")
-                                Value = "1";
-                            CharacterStat.MaxHP = Convert.ToInt16(Value);
-                            break;
-                        case "maxmp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.MaxMp;
-                            if (Value.ToString() == "0")
-                                Value = "1";
-                            CharacterStat.MaxMP = Convert.ToInt16(Value);
-                            break;
-                        case "ap":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Ap;
-                            CharacterStat.AP = Convert.ToInt16(Value);
-                            break;
-                        case "sp":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Sp;
-                            CharacterStat.SP = Convert.ToInt16(Value);
-                            break;
-                        case "str":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Str;
-                            CharacterStat.Str = Convert.ToInt16(Value);
-                            break;
-                        case "dex":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Dex;
-                            CharacterStat.Dex = Convert.ToInt16(Value);
-                            break;
-                        case "int":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Int;
-                            CharacterStat.Int = Convert.ToInt16(Value);
-                            break;
-                        case "luk":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Luk;
-                            CharacterStat.Luk = Convert.ToInt16(Value);
-                            break;
-                        case "fame":
-                        case "pop":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Fame;
-                            CharacterStat.Fame = Convert.ToInt16(Value);
-                            break;
-                        case "mesos":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Mesos;
-                            Inventory.Mesos = Convert.ToInt32(Value);
-                            break;
-                        case "job":
-                            {
-                                var Job = Convert.ToInt16(Value);
-                                if (DataProvider.HasJob(Job) || Job == 0)
-                                {
-                                    dwFlag |= CharacterStatsPacket.StatFlags.Job;
-                                    CharacterStat.Job = Job;
-                                }
-                                else
-                                    ChatPacket.SendNotice($"Job {Job} does not exist.", Sent);
-                                break;
-                            }
-                        case "skill":
-                            {
-                                var SkillID = Convert.ToInt32(Value);
-                                if (DataProvider.Skills.TryGetValue(SkillID, out var Skill))
-                                {
-                                    if (Value2 == null)
-                                        Value2 = Skill.MaxLevel;
-                                    Skills.SetSkillPoint(SkillID, Convert.ToByte(Value2), true);
-                                }
-                                else
-                                    ChatPacket.SendNotice($"Skill {SkillID} does not exist.", Sent);
-                                break;
-                            }
-                        case "level":
-                            dwFlag |= CharacterStatsPacket.StatFlags.Level;
-                            Level = Convert.ToByte(Value);
-                            MapPacket.SendPlayerLevelupAnim(this);
-                            break;
-                        case "skin":
-                            {
-                                var SkinID = Convert.ToByte(Value);
-                                if (SkinID >= 0 && SkinID < 6)
-                                {
-                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
-                                    dwFlag |= CharacterStatsPacket.StatFlags.Skin;
-                                    Skin = SkinID;
-                                }
-                                else
-                                    ChatPacket.SendNotice($"Skin {SkinID} does not exist.", Sent);
-                                break;
-                            }
-                        case "face":
-                            {
-                                var FaceID = Convert.ToInt32(Value);
-                                if (DataProvider.Equips.ContainsKey(FaceID))
-                                {
-                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
-                                    dwFlag |= CharacterStatsPacket.StatFlags.Eyes;
-                                    Face = FaceID;
-                                }
-                                else
-                                    ChatPacket.SendNotice($"Face {FaceID} does not exist.", Sent);
-                                break;
-                            }
-                        case "hair":
-                            {
-                                var HairID = Convert.ToInt32(Value);
-                                if (DataProvider.Equips.ContainsKey(HairID))
-                                {
-                                    AvatarMod |= MapPacket.AvatarModFlag.AvatarLook;
-                                    dwFlag |= CharacterStatsPacket.StatFlags.Hair;
-                                    Hair = HairID;
-                                }
-                                else
-                                    ChatPacket.SendNotice($"Hair {HairID} does not exist.", Sent);
-                                break;
-                            }
-                        case "gender":
-                            {
-                                Gender = ParseGenderString(Value.ToString());
-                                Server.Instance.CharacterDatabase.RunQuery(
-                                    "UPDATE characters SET gender = @gender WHERE id = @id",
-                                    "@gender", Gender,
-                                    "@id", ID
-                                );
-
-                                ChatPacket.SendNotice($"Gender set to {(Gender == 0 ? "male" : (Gender == 2 ? "Unisex" : "female"))}. Please relog.", this);
-                                break;
-                            }
-                        case "accgender":
-                            {
-                                var gender = ParseGenderString(Value.ToString());
-                                Server.Instance.CharacterDatabase.RunQuery(
-                                    "UPDATE users SET gender = @gender WHERE ID = @id",
-                                    "@gender", gender,
-                                    "@id", UserID
-                                );
-
-                                ChatPacket.SendNotice($"Account gender set to {(gender == 0 ? "male" : (gender == 2 ? "Unisex" : "female"))}", this);
-                                break;
-                            }
-                        case "map":
-                        case "field":
-                            {
-                                var FieldID = Convert.ToInt32(Value);
-                                if (DataProvider.Maps.ContainsKey(FieldID))
-                                    ChangeMap(FieldID);
-                                else
-                                    ChatPacket.SendText(BroadcastMessageType.RedText, "Map not found.", this, MessageMode.ToPlayer);
-                                break;
-                            }
-                        default:
-                            ChatPacket.SendNotice($"{Var} is not a valid Variable!", Sent);
-                            return;
-                    }
-
-                    if (dwFlag != 0)
-                        CharacterStatsPacket.SendUpdateStat(this, true, dwFlag);
-
-                    if (AvatarMod != 0)
-                        MapPacket.SendAvatarModified(this, AvatarMod);
-                }
-                catch (Exception ex)
-                {
-                    ChatPacket.SendNotice(ex.Message, Sent);
-                }
-            }
-        }
-
-        public void OnPetVarset(string Var, string Value, bool Me)
-        {
-            ChatPacket.SendNotice("Did you hear a cat just now? That damn thing haunts me.", this);
         }
     }
 }
