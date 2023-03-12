@@ -17,10 +17,10 @@ namespace WvsBeta.Game
     }
     public class ReactorEvent
     {
-        public ReactorEventType Type { get; private set; }
-        public Rectangle? Rectangle { get; private set; }
-        public int DropID { get; private set; }
-        public short DropAmount { get; private set; }
+        public ReactorEventType Type { get; }
+        public Rectangle? Rectangle { get; }
+        public int DropID { get; }
+        public short DropAmount { get;}
         public ReactorEvent(NXNode eNode)
         {
             if (eNode.ContainsChild("lt"))
@@ -56,18 +56,18 @@ namespace WvsBeta.Game
     }
     public class FieldReactor
     {
-        public readonly int ID;
-        public readonly Map Field;
-        public readonly Reactor Reactor;
+        public int ID { get; }
+        public Map Field { get; }
+        public Reactor Reactor { get; }
         private byte _state;
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
-        public readonly Pos Position;
-        public readonly short FrameDelay;
-        public readonly bool FacesLeft;
-        public readonly int ReactorTime;
-        public readonly string Name;
+        public Pos Position { get; }
+        public short FrameDelay { get; }
+        public bool FacesLeft { get; }
+        public int ReactorTime { get; }
+        public string Name { get; }
         public GameCharacter Owner { get; private set; }
         public FieldReactor ShallowCopy => (FieldReactor)MemberwiseClone();
         public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
@@ -245,9 +245,9 @@ namespace WvsBeta.Game
     }
     public class ReactorState
     {
-        public byte State { get; private set; }
-        public ReactorEvent Event { get; private set; }
-        public readonly WzAnimation Hit;
+        public byte State { get; }
+        public ReactorEvent Event { get; }
+        public WzAnimation Hit { get; }
         public ReactorState(NXNode node)
         {
             State = byte.Parse(node.Name);
@@ -269,14 +269,15 @@ namespace WvsBeta.Game
     }
     public class Reactor
     {
-        public int ID { get; private set; }
-        public string Info { get; private set; }
-        public string Action { get; private set; }
-        public int Link { get; private set; }
-        public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();
+        public int ID { get; }
+        public string Info { get; }
+        public string Action { get; }
+        public int Link { get; }
+        public IDictionary<byte, ReactorState> States { get; }
 
         public Reactor(NXNode rNode)
         {
+            States = new Dictionary<byte, ReactorState>();
             ID = (int)Utils.ConvertNameToID(rNode.Name);
 
             foreach (var subNode in rNode)
