@@ -23,7 +23,7 @@ namespace WvsBeta.Common.Objects.BuffStats
 
         public override bool TryReset(long currentTime, ref BuffValueTypes flag)
         {
-            if (CurrentTime - tLastDamaged >= 4000)
+            if (IsSet(CurrentTime) && CurrentTime - tLastDamaged >= 4000)
             {
                 Owner.DamageHP(N);
                 tLastDamaged = CurrentTime;
