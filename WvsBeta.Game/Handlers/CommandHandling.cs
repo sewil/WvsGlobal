@@ -2513,13 +2513,12 @@ namespace WvsBeta.Game.Handlers
                         }
                     case "triggerreactor":
                         {
-                            if (!int.TryParse(Args[0], out int rid))
+                            if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
                             {
-                                character.Message("Invalid rid " + Args[0]);
+                                character.Message($"Reactor {rid} not found.");
                                 return true;
                             }
-                            var rpool = character.Field.ReactorPool;
-                            if (!rpool.Reactors.TryGetValue(rid, out FieldReactor reactor))
+                            else if (!reactor.Shown)
                             {
                                 character.Message("This reactor is not shown!");
                             }

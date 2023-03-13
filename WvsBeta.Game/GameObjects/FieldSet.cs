@@ -226,7 +226,7 @@ namespace WvsBeta.Game
 
         private void RunTimer(GameCharacter chr, Map map)
         {
-            if (Started)
+            if (Started && Timeout > 0)
             {
                 MapPacket.ShowMapTimerForCharacter(chr, (int)(TimeRemaining / 1000));
             }

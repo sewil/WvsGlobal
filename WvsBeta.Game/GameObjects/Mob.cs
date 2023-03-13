@@ -318,7 +318,7 @@ namespace WvsBeta.Game
         {
             RemoveController(false);
 
-            if (Data.Revive != null)
+            if (!wasForced && Data.Revive != null)
             {
                 foreach (var mobid in Data.Revive)
                 {
@@ -366,7 +366,7 @@ namespace WvsBeta.Game
                 Owner.Owns.Remove(MobID);
             }
 
-            if (Data.Revive == null && Owner != null && Owner.Owns.Count == 0 && Owner.IsFake) // Make mob real, all owns are dead
+            if (!wasForced && Data.Revive == null && Owner != null && Owner.Owns.Count == 0 && Owner.IsFake) // Make mob real, all owns are dead
             {
                 Owner.MakeReal();
             }

@@ -49,42 +49,31 @@ namespace WvsBeta.Game.GameObjects
         {
             Reactors.Values.ForEach(r => r.Show(chr));
         }
-        public void TriggerReactor(string reactorName)
+        public void TriggerReactor(string reactorName, GameCharacter owner = null)
         {
             if (Reactors.Select(i => i.Value).TryFind(i => i.Name == reactorName, out FieldReactor reactor))
             {
-                TriggerReactor(reactor);
+                TriggerReactor(reactor, owner);
             }
             else
             {
                 Program.MainForm.LogAppend("Reactor \"" + reactorName + "\" not found!");
             }
         }
-        public void TriggerReactor(int reactorId)
+        public void TriggerReactor(int reactorId, GameCharacter owner = null)
         {
             if (Reactors.TryGetValue(reactorId, out FieldReactor reactor))
             {
-                TriggerReactor(reactor);
+                TriggerReactor(reactor, owner);
             }
             else
             {
                 Program.MainForm.LogAppend("Reactor " + reactorId + " not found!");
             }
         }
-        public void TriggerReactor(FieldReactor reactor)
+        public void TriggerReactor(FieldReactor reactor, GameCharacter owner = null)
         {
-            reactor.Trigger();
-        }
-        public void HitReactor(int reactorId, GameCharacter hitter, bool sendPacket = true)
-        {
-            if (Reactors.TryGetValue(reactorId, out FieldReactor reactor))
-            {
-                reactor.Trigger(hitter, true, sendPacket);
-            }
-            else
-            {
-                Program.MainForm.LogAppend("Reactor " + reactorId + " not found!");
-            }
+            reactor.Trigger(owner);
         }
     }
 }

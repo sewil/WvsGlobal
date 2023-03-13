@@ -31,6 +31,7 @@ namespace WvsBeta.Common.Enums
             Orbis2LudiWaitingRoom = 200000122,
             
             ElNath = 211000000,
+            TheDoorToZakum = 211042300,
 
             LudiTicketingPlace = 220000100,
             LudiStation = 220000110,

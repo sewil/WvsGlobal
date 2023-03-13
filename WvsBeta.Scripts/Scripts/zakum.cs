@@ -1,5 +1,6 @@
 ﻿using System;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
@@ -758,7 +759,6 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IReactorHost host, FieldReactor target)
         {
-            if (target.Owner == null) return;
             var instance = FieldSet.Instances["ZakumBoss"];
             instance.Start();
             TriggerGate();
@@ -776,7 +776,7 @@ namespace WvsBeta.Scripts.Scripts
         }
         void TriggerGate()
         {
-            DataProvider.Maps[211042300].ReactorPool.TriggerReactor(0);
+            DataProvider.Maps[MapIds.TheDoorToZakum].ReactorPool.TriggerReactor("gate");
         }
     }
     #endregion

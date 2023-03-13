@@ -69,7 +69,7 @@ namespace WvsBeta.Game
         public int ReactorTime { get; }
         public string Name { get; }
         public GameCharacter Owner { get; private set; }
-        public FieldReactor ShallowCopy => (FieldReactor)MemberwiseClone();
+        public bool Shown { get; private set; } = true;
         public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
         {
             ID = id;
@@ -129,6 +129,8 @@ namespace WvsBeta.Game
                     RunScript();
                     if (ReactorTime > 0)
                     {
+                        Shown = false;
+                        if (sendPacket) ReactorPacket.DestroyReactor(this);
                         resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(), ReactorTime * 1000, 0);
                     }
                 }
@@ -136,6 +138,7 @@ namespace WvsBeta.Game
         }
         public void Show(GameCharacter toChar = null)
         {
+            if (!Shown) return;
             ReactorPacket.ShowReactor(this, toChar);
         }
 
@@ -147,10 +150,14 @@ namespace WvsBeta.Game
             changingState = false;
             _state = 0;
             Owner = null;
-            if (sendPacket)
+            if (Shown)
             {
-                ReactorPacket.DestroyReactor(this);
-                Show();
+                if (sendPacket) ReactorPacket.ReactorChangedState(this);
+            }
+            else
+            {
+                Shown = true;
+                if (sendPacket) Show();
             }
         }
         private MasterThread.RepeatingAction dropAction;
@@ -170,12 +177,8 @@ namespace WvsBeta.Game
 #endif
             });
         }
-        public void Trigger(GameCharacter owner = null, bool isHit = false, bool sendPacket = true)
+        public void Trigger(GameCharacter owner = null, bool sendPacket = true)
         {
-            if (isHit && sendPacket)
-            {
-                ReactorPacket.ReactorChangedState(this);
-            }
             SetState(owner, (byte)(_state + 1), sendPacket);
         }
         public bool TriggerDrop(Drop drop, int ownerId)
