@@ -220,6 +220,7 @@ namespace WvsBeta.Scripts.Scripts
                 { "9208011", "guildquest1" },
                 { "9208012", "guildquest1" },
                 { "9208013", "guildquest1" },
+                { "pianus", "pianus" },
             };
         }
     }

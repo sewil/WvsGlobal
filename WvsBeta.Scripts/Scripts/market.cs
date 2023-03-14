@@ -22,6 +22,7 @@ namespace WvsBeta.Scripts.Scripts
             if (val == "0") target.ChangeMap(100000100, "st00");
             else if (val == "1") target.ChangeMap(220000000, "st00");
             else if (val == "2") target.ChangeMap(211000100, "st00");
+            else if (val == "4") target.ChangeMap(230000000, "st00");
             else target.ChangeMap(102000000, "st00");
         }
     }
@@ -69,6 +70,18 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "3");
+            target.SendSound(Constants.Sounds.Portal);
+            target.ChangeMap(910000000, "st00");
+        }
+    }
+    // Aquarium
+    [Script("market05")]
+    class Market05 : Market, IPortalScript
+    {
+        public void Run(IPortalHost host, GameCharacter target)
+        {
+            var qr = target.Quests;
+            qr.Set(QUEST_ID, "4");
             target.SendSound(Constants.Sounds.Portal);
             target.ChangeMap(910000000, "st00");
         }

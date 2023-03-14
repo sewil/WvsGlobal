@@ -36,7 +36,6 @@ public class MobData
     public int MDD { get; set; }
     public string Name { get; set; }
 
-
     private string _elemAttr;
     public string elemAttr
     {

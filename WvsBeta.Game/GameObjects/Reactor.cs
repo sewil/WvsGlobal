@@ -1,9 +1,7 @@
 ﻿using reNX.NXProperties;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Windows.Forms;
 using WvsBeta.Common;
 using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Scripting;

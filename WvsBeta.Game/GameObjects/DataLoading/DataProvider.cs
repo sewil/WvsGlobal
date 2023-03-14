@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Net;
-using System.Web;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
@@ -42,11 +40,11 @@ namespace WvsBeta.Game
             {
                 var funcs = new Action[] {
                     LoadBase,
+                    ReadSkills,
                     ReadMobData,
                     ReadReactors,
-                    ReadMapData,
                     ReadNpcs,
-                    ReadSkills,
+                    ReadMapData,
                     ReadDrops,
                     ReadQuiz,
                     ReadQuestData
@@ -70,7 +68,7 @@ namespace WvsBeta.Game
                         var mobId = int.Parse(kvp.Key.Substring(1));
                         if (!Mobs.ContainsKey(mobId))
                         {
-                            // Trace.WriteLine($"Removing nonexistant {mobId} mob from drops");
+                            //Program.MainForm.LogAppend($"Removing nonexistant {mobId} mob from drops");
                             Drops.Remove(kvp.Key);
                             continue;
                         }
@@ -85,7 +83,7 @@ namespace WvsBeta.Game
                             ? Equips.ContainsKey(itemId)
                             : Items.ContainsKey(itemId)) return true;
 
-                        // Trace.WriteLine($"Removing item {itemId} because it doesnt exist, from {kvp.Key}");
+                        //Program.MainForm.LogAppend($"Removing item {itemId} because it doesnt exist, from {kvp.Key}");
                         return false;
                     }).ToArray();
                 }
@@ -131,14 +129,14 @@ namespace WvsBeta.Game
                 {
                     if (!Drops.ContainsKey("m" + mob.ID))
                     {
-                        Trace.WriteLine($"Mob {mob.ID} does not have drops!");
+                        Program.MainForm.LogAppend($"Mob {mob.ID} does not have drops!");
                     }
                     if (mob.Skills != null)
                     {
                         foreach (var mobSkillData in mob.Skills)
                         {
                             if (MobSkills.ContainsKey(mobSkillData.SkillID)) continue;
-                            Trace.WriteLine($"Mob {mob.ID} has skill {mobSkillData.SkillID}, but it does not exist!");
+                            Program.MainForm.LogAppend($"Mob {mob.ID} has skill {mobSkillData.SkillID}, but it does not exist!");
                         }
                     }
                 }
@@ -159,7 +157,6 @@ namespace WvsBeta.Game
                 return true;
             return false;
         }
-
         static void ReadMobData()
         {
             var mobs = pFile.BaseNode["Mob"].ToList();
@@ -173,6 +170,8 @@ namespace WvsBeta.Game
 
                 data.ID = (int)Utils.ConvertNameToID(pNode.Name);
 
+                if (!pFile.ContainsPath("String/Mob.img/" + data.ID))
+                    Program.MainForm.LogAppend("Missing string for mob " + data.ID);
 
                 var infoNode = pNode["info"];
                 var nonInfoNodes = pNode;
@@ -288,16 +287,8 @@ namespace WvsBeta.Game
                             data.Skills = new List<MobSkillData>();
                             foreach (var skillNode in node)
                             {
-                                var mobSkillData = new MobSkillData
-                                {
-                                    SkillID = skillNode["skill"].ValueByte(),
-                                    Level = skillNode["level"].ValueByte()
-                                };
-                                if (skillNode.ContainsChild("effectAfter"))
-                                {
-                                    mobSkillData.EffectAfter = skillNode["effectAfter"].ValueInt16();
-                                }
-                                data.Skills.Add(mobSkillData);
+                                var mobSkillData = new MobSkillData(data.ID, skillNode, out bool error);
+                                if (!error) data.Skills.Add(mobSkillData);
                             }
 
                             break;
@@ -332,6 +323,15 @@ namespace WvsBeta.Game
                 int ID = (int)Utils.ConvertNameToID(mapNode.Name);
 
                 var fieldType = infoNode.ContainsChild("fieldType") ? infoNode["fieldType"].ValueByte() : 0;
+
+                string stringConti = null;
+                if (ID < 100_000_000) stringConti = "maple";
+                else if (mapNode.Name.StartsWith("1")) stringConti = "victoria";
+                else if (mapNode.Name.StartsWith("2")) stringConti = "ossyria";
+                else if (mapNode.Name.StartsWith("6")) stringConti = "weddingGL";
+                else if (mapNode.Name.StartsWith("9")) stringConti = "etc";
+                if (stringConti == null || !pFile.BaseNode["String"]["Map.img"][stringConti].ContainsChild(ID.ToString()))
+                    Program.MainForm.LogAppend("Missing strings for map " + ID);
 
                 Map map;
                 switch (fieldType)
@@ -382,12 +382,21 @@ namespace WvsBeta.Game
                             VRBottom = node.ValueInt32();
                             break;
 
+                        case "bgm":
+                            string[] bgmPath = node.ValueString().Split('/');
+                            string imgPath = bgmPath[0] + ".img";
+                            string bgmName = bgmPath[1];
+                            var sound = pFile.BaseNode["Sound"];
+                            if (!sound.ContainsChild(imgPath) || !sound[imgPath].ContainsChild(bgmName))
+                            {
+                                Program.MainForm.LogAppend("Bgm {0} not found for map {1}", node.ValueString(), ID);
+                            }
+                            break;
                         case "snow": // ???? Only 1 map
                         case "rain": // ???? Only 1 map
                         case "moveLimit": // Unknown
                         case "mapMark":
                         case "version":
-                        case "bgm":
                         case "hideMinimap":
                         case "streetName":
                         case "mapName":
@@ -444,7 +453,7 @@ namespace WvsBeta.Game
                             map.Limitations = (FieldLimit)node.ValueInt32();
                             break;
                         default:
-                            Console.WriteLine($"Unhandled info node {node.Name} for map {ID}");
+                            //Console.WriteLine($"Unhandled info node {node.Name} for map {ID}");
                             break;
 
                     }
@@ -489,6 +498,7 @@ namespace WvsBeta.Game
 
                 map.GenerateMBR(Rectangle.FromLTRB(VRLeft, VRTop, VRRight, VRBottom));
 
+                ValidateMapLayers(mapNode, map);
                 ReadLife(mapNode, map);
                 ReadPortals(mapNode, map);
                 ReadSeats(mapNode, map);
@@ -500,6 +510,81 @@ namespace WvsBeta.Game
 
         }
 
+        static void ValidateMapLayers(NXNode mapNode, Map map)
+        {
+            var bNode = pFile.BaseNode["Map"];
+            for (int layer = 0; layer <= 7; layer++)
+            {
+                NXNode layerNode = mapNode[layer.ToString()];
+                foreach (NXNode layerSubNode in layerNode)
+                {
+                    switch (layerSubNode.Name)
+                    {
+                        case "tile":
+                            if (layerSubNode.ChildCount == 0) continue;
+                            string tS;
+                            try
+                            {
+                                tS = layerNode["info"]["tS"].ValueString();
+                            }
+                            catch (NullReferenceException)
+                            {
+                                Program.MainForm.LogAppend("tS not found when trying to parse tiles in map {0} at layer {1}", map.ID, layer);
+                                break;
+                            }
+                            foreach (NXNode tileNode in layerSubNode)
+                            {
+                                int tileIdx = int.Parse(tileNode.Name);
+                                string tileName = tileNode["u"].ValueString();
+                                int tileNo = tileNode["no"].ValueInt32();
+                                string tilePath = "Map/Tile/" + tS + ".img/" + tileName + "/" + tileNo;
+                                try
+                                {
+                                    pFile.ResolvePath(tilePath);
+                                }
+                                catch (NullReferenceException)
+                                {
+                                    Program.MainForm.LogAppend("Tile not found at \"{0}\" for map {1} at layer {2}, tile idx {3}", tilePath, map.ID, layer, tileIdx);
+                                }
+                            }
+                            break;
+                        case "obj":
+                            foreach (NXNode objNode in layerSubNode)
+                            {
+                                int objIdx = int.Parse(objNode.Name);
+                                string objectImgName = objNode["oS"].ValueString() + ".img";
+                                string imgSubPath = string.Join("/", objNode.Where(n => n.Name.StartsWith("l")).Select(n => n.ValueString()));
+                                string fullPath = "Map/Obj/" + objectImgName + "/" + imgSubPath;
+                                if (!pFile.ContainsPath(fullPath))
+                                {
+                                    Program.MainForm.LogAppend("Map obj not found at \"{0}\", for map {1} at layer {2}, obj idx {3}", fullPath, map.ID, layer, objIdx);
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                break_layer: continue;
+            }
+            foreach (NXNode backSubNode in mapNode["back"].Where(i => i.ChildCount > 0))
+            {
+                string bS = backSubNode["bS"].ValueString();
+                if (string.IsNullOrWhiteSpace(bS)) continue;
+                int backIdx = int.Parse(backSubNode.Name);
+                string img = bS + ".img";
+                int no = backSubNode["no"].ValueInt32();
+                string backPath = "Map/Back/" + img + "/back/" + no;
+                try
+                {
+                    pFile.ResolvePath(backPath);
+                }
+                catch (NullReferenceException)
+                {
+                    Program.MainForm.LogAppend("Map background not found at \"{0}\" for map {1}, back idx {2}", backPath, map.ID, backIdx);
+                }
+            }
+        }
         static void ReadLife(NXNode mapNode, Map map)
         {
             if (!mapNode.ContainsChild("life")) return;
@@ -553,6 +638,12 @@ namespace WvsBeta.Game
 
             foreach (var rNode in mapNode["reactor"])
             {
+                int rID = rNode["id"].ValueInt32();
+                if (!DataProvider.Reactors.ContainsKey(rID))
+                {
+                    Program.MainForm.LogAppend($"Reactor id {rID} not found in map {map.ID} at reactor {rNode.Name}! Skipping...");
+                    continue;
+                }
                 var mReactor = new FieldReactor(map, rNode);
                 map.ReactorPool.AddReactor(mReactor, true);
             }
@@ -623,6 +714,9 @@ namespace WvsBeta.Game
                 int ID = (int)Utils.ConvertNameToID(pNode.Name);
                 npc.ID = ID;
                 npc.Shop = new List<ShopItemData>();
+
+                if (!pFile.ContainsPath($"String/Npc.img/{ID}"))
+                    Program.MainForm.LogAppend("String not found for NPC " + ID);
                 
                 var nonInfoNodes = pNode;
                 if (infoNode.ContainsChild("link"))
@@ -1143,6 +1237,15 @@ namespace WvsBeta.Game
                 if (dropper.StartsWith("m"))
                 {
                     string trimmed = dropper.Trim().StartsWith("m0") ? dropper.Trim().Replace("m0", "m") : dropper;
+                    //int mobId = (int)Utils.ConvertNameToID(trimmed.Substring(1));
+                    //if (Mobs.ContainsKey(mobId))
+                    //{
+                    //    foreach (var drop in drops)
+                    //    {
+                    //        if (!Items.ContainsKey(drop.ItemID))
+                    //            Program.MainForm.LogAppend("Couldn't find item {0} from mob {1}", drop.ItemID, mobId);
+                    //    }
+                    //}
 
                     return new Tuple<string, DropData[]>(trimmed, drops);
                 }

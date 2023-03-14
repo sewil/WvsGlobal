@@ -152,3 +152,7 @@ Guild1Bonus = {
     cleanupDrops = 1
     resetReactors = 1
 }
+
+Pianus = {
+    0 = 230040420
+}

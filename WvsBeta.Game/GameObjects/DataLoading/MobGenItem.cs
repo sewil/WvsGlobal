@@ -50,24 +50,23 @@ namespace WvsBeta.Game
 
             if (currentTime == null) currentTime = MasterThread.CurrentTime;
 
-            var regenInterval = RegenInterval = life.RespawnTime * 1000;
-            if (regenInterval >= 0)
-            {
-                var T1 = regenInterval / 10;
-                var T2 = 6 * regenInterval / 10;
+            RegenInterval = life.RespawnTime * 1000;
+            //var regenInterval = RegenInterval = life.RespawnTime * 1000;
+            //if (regenInterval >= 0)
+            //{
+            //    var T1 = regenInterval / 10;
+            //    var T2 = 6 * regenInterval / 10;
 
-                RegenAfter = currentTime.Value;
-                if (T2 != 0)
-                    RegenAfter += T1 + Rand32.Next() % T2;
-                //else
-                //    RegenAfter += Rand32.Next();
-            }
-            else
-            {
-                RegenAfter = 0;
-            }
+            //    RegenAfter = currentTime.Value;
+            //    if (T2 != 0)
+            //        RegenAfter += T1 + Rand32.Next() % T2;
+            //    //else
+            //    //    RegenAfter += Rand32.Next();
+            //}
+            //else
+            //{
+            //    RegenAfter = 0;
+            //}
         }
-
-
     }
 }

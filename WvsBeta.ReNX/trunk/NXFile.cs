@@ -265,6 +265,16 @@ namespace reNX
                                                                             current[node]);
         }
 
+        public bool ContainsPath(string path)
+        {
+            try
+            {
+                var node = ResolvePath(path);
+                return node != null;
+            }
+            catch (NullReferenceException) { return false; }
+        }
+
         private void Parse()
         {
             HeaderData hd = *((HeaderData*)_start);
