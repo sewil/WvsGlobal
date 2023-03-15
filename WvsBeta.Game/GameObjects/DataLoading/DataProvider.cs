@@ -133,11 +133,36 @@ namespace WvsBeta.Game
                     }
                     if (mob.Skills != null)
                     {
-                        foreach (var mobSkillData in mob.Skills)
+                        foreach (var msd in mob.Skills)
                         {
-                            if (MobSkills.ContainsKey(mobSkillData.SkillID)) continue;
-                            Program.MainForm.LogAppend($"Mob {mob.ID} has skill {mobSkillData.SkillID}, but it does not exist!");
+                            if (!MobSkills.TryGetValue(msd.SkillID, out Dictionary<byte, MobSkillLevelData> levelDataMap) || !levelDataMap.ContainsKey(msd.Level))
+                            {
+                                Program.MainForm.LogAppend("Removing unknown mob skill {0} at level {1} from mob {2}.", msd.SkillID, msd.Level, mob.ID);
+                                mob.Skills.Remove(msd);
+                            }
                         }
+                    }
+                    if (mob.HPTagBgColor > 0 || mob.HPTagColor > 0)
+                    {
+                        string bPath = "UI/UIWindow.img/MobGage/";
+                        if (!pFile.ContainsPath($"{bPath}Mob/{mob.ID}"))
+                        {
+                            Program.MainForm.LogAppend("Mob {0} is missing hp gauge icon! Removing...", mob.ID);
+                        }
+                        else if (!pFile.ContainsPath($"{bPath}backgrnd{(mob.HPTagColor == 1 ? "" : mob.HPTagColor.ToString())}"))
+                        {
+                            Program.MainForm.LogAppend("Mob {0} is missing hp gauge background {1}! Removing...", mob.ID, mob.HPTagColor);
+                        }
+                        else if (!pFile.ContainsPath($"{bPath}Gage/{mob.HPTagBgColor}"))
+                        {
+                            Program.MainForm.LogAppend("Mob {0} is missing hp gauge tag color {1}! Removing...", mob.ID, mob.HPTagBgColor);
+                        }
+                        else
+                        {
+                            continue;
+                        }
+                        mob.HPTagBgColor = 0;
+                        mob.HPTagColor = 0;
                     }
                 }
             }
@@ -287,8 +312,8 @@ namespace WvsBeta.Game
                             data.Skills = new List<MobSkillData>();
                             foreach (var skillNode in node)
                             {
-                                var mobSkillData = new MobSkillData(data.ID, skillNode, out bool error);
-                                if (!error) data.Skills.Add(mobSkillData);
+                                var mobSkillData = new MobSkillData(skillNode);
+                                data.Skills.Add(mobSkillData);
                             }
 
                             break;
