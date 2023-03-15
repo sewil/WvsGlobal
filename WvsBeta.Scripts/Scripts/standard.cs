@@ -17,6 +17,7 @@ namespace WvsBeta.Scripts.Scripts
                 { "taxi3", "taxi" },
                 { "taxi4", "taxi" },
                 { "mTaxi", "taxi" },
+                { "aqua_taxi", "taxi" },
                 { "market00", "market" },
                 { "market01", "market" },
                 { "market02", "market" },
@@ -161,6 +162,9 @@ namespace WvsBeta.Scripts.Scripts
                 { "2041006", "shop" },
                 { "2041014", "shop" },
                 { "2041016", "shop" },
+                { "2060003", "shop" },
+                { "2060004", "shop" },
+                { "2060007", "shop" },
                 { "guildquest1_comment", "guildquest1" },
                 { "guildquest1_board", "guildquest1" },
                 { "guildquest1_knight", "guildquest1" },
@@ -220,7 +224,10 @@ namespace WvsBeta.Scripts.Scripts
                 { "9208011", "guildquest1" },
                 { "9208012", "guildquest1" },
                 { "9208013", "guildquest1" },
-                { "pianus", "pianus" },
+                { "pianus", "aqua" },
+                { "aquaItem0", "aqua" },
+                { "aquaItem1", "aqua" },
+                { "aquaItem2", "aqua" }
             };
         }
     }

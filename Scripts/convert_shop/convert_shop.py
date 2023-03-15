@@ -42,10 +42,10 @@ def get_item_names(root):
 					table[node_name] = node_id
 	return table
 
-item_tree = ET.parse('Item.img.xml')
+item_tree = ET.parse('..\..\ClientBin\Exports\String\Item.img.xml')
 item_names = get_item_names(item_tree.getroot())
 
-npc_tree = ET.parse('Npc.img.xml')
+npc_tree = ET.parse('..\..\ClientBin\Exports\String\\Npc.img.xml')
 
 
 shop = '''using System.Linq;
@@ -76,7 +76,7 @@ namespace WvsBeta.Scripts.Scripts
     }
 '''
 
-for shop_file in glob.glob("unconverted/*.txt"):
+for shop_file in glob.glob("to_convert/*.txt"):
 	fname, ext = os.path.splitext(os.path.basename(shop_file))
 	fspl = fname.split("_", 1)
 	npc_id = fspl[0]

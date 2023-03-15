@@ -1,0 +1,104 @@
+Jousting Helmet	120,000 mesos
+Great Blue Helmet	Great Blue Helmet	160,000 mesos
+Blue Jester	Blue Jester	60,000 mesos
+Blue Matty	Blue Matty	96,000 mesos
+Blue Hawkeye	Blue Hawkeye	60,000 mesos
+Blue Pole-Feather Hat	Blue Pole-Feather Hat	100,000 mesos
+Blue Guise	Blue Guise	60,000 mesos
+Blue Burgler	Blue Burgler	100,000 mesos
+Red Engrit (F)	Red Engrit (F)	60,000 mesos
+Blue Engrit (F)	Blue Engrit (F)	60,000 mesos
+Yellow Engrit (F)	Yellow Engrit (F)	60,000 mesos
+Black Dragon Robe (M)	Black Dragon Robe (M)	70,000 mesos
+Red Hwarang Shirt (M)	Red Hwarang Shirt (M)	40,000 mesos
+Green Hwarang Shirt (M)	Green Hwarang Shirt (M)	40,000 mesos
+Black Martial Arts Pants (M)	Black Martial Arts Pants (M)	38,000 mesos
+White Martial Arts Pants (M)	White Martial Arts Pants (M)	38,000 mesos
+White Crusader Chainmail (M)	White Crusader Chainmail (M)	112,500 mesos
+Blue Crusader Chainmail (M)	Blue Crusader Chainmail (M)	112,500 mesos
+Emerald Fitted Mail (F)	Emerald Fitted Mail (F)	112,500 mesos
+Sapphire Fitted Mail (F)	Sapphire Fitted Mail (F)	112,500 mesos
+Blood Fitted Mail (F)	Blood Fitted Mail (F)	112,500 mesos
+Maroon Jangoon Armor (M)	Maroon Jangoon Armor (M)	200,000 mesos
+Blue Jangoon Armor (M)	Blue Jangoon Armor (M)	200,000 mesos
+Red Jangoon Armor (F)	Red Jangoon Armor (F)	200,000 mesos
+Brown Jangoon Armor (F)	Brown Jangoon Armor (F)	200,000 mesos
+White Jangoon Pants (M)	White Jangoon Pants (M)	180,000 mesos
+Brown Jangoon Pants (M)	Brown Jangoon Pants (M)	180,000 mesos
+Red Jangoon Skirt (F) 	Red Jangoon Skirt (F)	180,000 mesos
+Brown Jangoon Skirt (F)	Brown Jangoon Skirt (F)	180,000 mesos
+Purple Fairy Top (F)	Purple Fairy Top (F)	42,000 mesos
+Green Fairy Top (F)	Green Fairy Top (F)	42,000 mesos
+Blue Fairy Top (F)	Blue Fairy Top (F)	42,000 mesos
+Purple Fairy Skirt (F)	Purple Fairy Skirt (F)	40,000 mesos
+Green Fairy Skirt (F)	Green Fairy Skirt (F)	40,000 mesos
+Blue Fairy Skirt (F)  	Blue Fairy Skirt (F)	40,000 mesos
+Blue Wizard Robe (M)	Blue Wizard Robe (M)	40,000 mesos
+White Wizard Robe (M)	White Wizard Robe (M)	40,000 mesos
+Green Wizard Robe (M)	Green Wizard Robe (M)	40,000 mesos
+Red Amoria Top (F)	Red Amoria Top (F)	120,000 mesos
+Blue Amoria Top (F)	Blue Amoria Top (F)	120,000 mesos
+Red Amoria Skirt (F)	Red Amoria Skirt (F)	120,000 mesos
+Blue Amoria Skirt (F)	Blue Amoria Skirt (F)	120,000 mesos
+Blood Chaos Robe (M)	Blood Chaos Robe (M)	300,000 mesos
+Blue Chaos Robe (M)	Blue Chaos Robe (M)	300,000 mesos
+White Chaos Robe (M)	White Chaos Robe (M)	300,000 mesos
+Purple Moonlight (F)	Purple Moonlight (F)	450,000 mesos
+Red Moonlight (F)	Red Moonlight (F)	450,000 mesos
+Blue Moonlight (F)	Blue Moonlight (F)	450,000 mesos
+Red Starlight (M)	Red Starlight (M)	450,000 mesos
+Green Starlight (M)	Green Starlight (M)	450,000 mesos
+Blue Starlight (M)	Blue Starlight (M)	450,000 mesos
+Green Huntress Armor (F)	Green Huntress Armor (F)	50,000 mesos
+Red Huntress Armor (F)	Red Huntress Armor (F)	50,000 mesos
+Green Huntress Pants (F)	Green Huntress Pants (F)	44,000 mesos
+Red Huntress Pants (F)	Red Huntress Pants (F)	44,000 mesos
+Green Hunter's Armor (M) 	Green Hunter's Armor (M)	50,000 mesos
+Red Hunter's Armor (M)	Red Hunter's Armor (M)	50,000 mesos
+Green Hunter's Pants (M)	Green Hunter's Pants (M)	44,000 mesos
+Red Hunter's Pants (M)	Red Hunter's Pants (M)	44,000 mesos
+Red Legolia (F)	Red Legolia (F)	114,000 mesos
+Blue Legolia (F)	Blue Legolia (F)	114,000 mesos
+Green Legolia (F)	Green Legolia (F)	114,000 mesos
+Red Legolia Pants (F)	Red Legolia Pants (F)	108,000 mesos
+Blue Legolia Pants (F)	Blue Legolia Pants (F)	108,000 mesos
+Green Legolia Pants (F)	Green Legolia Pants (F)	108,000 mesos
+Red Legolier (M)	Red Legolier (M)	114,000 mesos
+Blue Legolier (M)	Blue Legolier (M)	114,000 mesos
+Green Legolier (M)	Green Legolier (M)	114,000 mesos
+Red Legolier Pants (M)	Red Legolier Pants (M)	108,000 mesos
+Blue Legolier Pants (M)	Blue Legolier Pants (M)	108,000 mesos
+Green Legolier Pants (M)	Green Legolier Pants (M)	108,000 mesos
+Brown Piette (M)	Brown Piette (M)	180,000 mesos
+White Piette (M)	White Piette (M)	180,000 mesos
+Brown Piette Pants (M)	Brown Piette Pants (M)	160,000 mesos
+Blue Piette Pants (M)	Blue Piette Pants (M)	160,000 mesos
+White Piettra (F)	White Piettra (F)	180,000 mesos
+Brown Piettra (F)	Brown Piettra (F)	180,000 mesos
+White Piettra Skirt (F)	White Piettra Skirt (F)	160,000 mesos
+Brown Piettra Skirt (F)	Brown Piettra Skirt (F)	160,000 mesos
+Red Steal (F)	Red Steal (F)	45,000 mesos
+Blue Steal (F)	Blue Steal (F)	45,000 mesos
+Purple Steal (F)	Purple Steal (F)	45,000 mesos
+Red Steal Pants (F)	Red Steal Pants (F)	40,000 mesos
+Blue Steal Pants (F)	Blue Steal Pants (F)	40,000 mesos
+Purple Steal Pants (F)	Purple Steal Pants (F)	40,000 mesos
+Dark Brown Stealer (M)	Dark Brown Stealer (M)	45,000 mesos
+Red Gold Stealer (M)	Red Gold Stealer (M)	45,000 mesos
+Dark Brown Stealer Pants (M)	Dark Brown Stealer Pants (M)	45,000 mesos
+Red / Gold Stealer Pants (M)	Red / Gold Stealer Pants (M)	45,000 mesos
+Green Knucklevest (M)	Green Knucklevest (M)	114,000 mesos
+Red Knucklevest (M) 	Red Knucklevest (M)	114,000 mesos
+Blue Knucklevest Pants (M)	Blue Knucklevest Pants (M)	108,000 mesos
+Red Knucklevest Pants (M)	Red Knucklevest Pants (M)	108,000 mesos
+Red Avenger (F)	Red Avenger (F)	111,000 mesos
+Blue Avenger (F)	Blue Avenger (F)	111,000 mesos
+Purple Avenger (F)	Purple Avenger (F)	111,000 mesos
+Khaki Shadow (M)	Khaki Shadow (M)	180,000 mesos
+Marine Shadow (M)	Marine Shadow (M)	180,000 mesos
+Khaki Shadow Pants (M)	Khaki Shadow Pants (M)	160,000 mesos
+Marine Shadow Pants (M)	Marine Shadow Pants (M)	160,000 mesos
+Purple Shadow (F)	Purple Shadow (F)	180,000 mesos
+Red Shadow (F)	Red Shadow (F)	180,000 mesos
+Purple Shadow Pants (F)	Purple Shadow Pants (F)	160,000 mesos
+Red Shadow Pants (F)	Red Shadow Pants (F)	160,000 mesos

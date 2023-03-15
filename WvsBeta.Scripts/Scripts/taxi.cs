@@ -132,4 +132,71 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
+    // Aqua Dolphin's Taxi  ¾ÆÄí¾Æ·ÎµåÀÇ µ¹°í·¡ ÅÃ½Ã·Î »ç°¢Áö´ë °¡´Â °Í 
+    [Script("aqua_taxi")]
+    class aqua_taxi : INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            var inven = target.Inventory;
+            bool discount = target.Job == 0;
+            int fee = (int)(1000 * (discount ? 0.1 : 1));
+
+            bool haveTicket = inven.ItemCount(4031242) >= 1;
+            string prompt = "The oceans are all connected to each other. To places you cannot go on foot, you can easily go by sea. What do you think about taking the #bDolphin Taxi#k with us today?";
+            if (!haveTicket && discount) prompt += " We have a special 90% discount for beginners!";
+            string option;
+            if (haveTicket) option = $"#kUse #b#t4031242##k to go to #bThe Sharp Unknown#k.";
+            else option = $"#kGo to #bThe Sharp Unknown#k after paying {fee.Culture()} mesos.";
+            int ret1 = self.AskMenu(prompt, option);
+            if (ret1 == 0)
+            {
+                if (haveTicket)
+                {
+                    int ret2 = inven.Exchange(0, 4031242, -1);
+                    if (ret2 == 0)
+                    {
+                        self.Say("I don't think you have #b#t4031242##k there with you. There must be a way to get the #b#t4031242##k through Camila of Henesys...");
+                        return;
+                    }
+                }
+                else
+                {
+                    int ret2 = target.IncMoney(-fee, 1);
+                    if (ret2 == 0)
+                    {
+                        self.Say("I don't think you have enough mesos...");
+                        return;
+                    }
+                }
+                target.ChangeMap(230030200, "st00");
+            }
+        }
+    }
+    ////¹éÃÊ¸¶À» µ¹°í·¡ Å¸°í ¾ÆÄí¾Æ·Îµå·Î 
+    //[Script("aqua_taxi2")]
+    //class aqua_taxi2 : INpcScript
+    //{
+    //    public void Run(INpcHost self, GameCharacter target)
+    //    {
+    //        if (target.Job == 0)
+    //        {
+    //            var meso = 1000;
+    //            var v0 = self.AskYesNo("Você irá para #b#m230000000##k agora? Temos bilhetes especiais com 90% de desconto para aprendizes! O preço é #b" + meso + " mesos#k.");
+    //        }
+    //        else
+    //        {
+    //            meso = 10000;
+    //            v0 = self.AskYesNo("Você irá para #b#m230000000##k agora? O preço é #b" + meso + " mesos#k.");
+    //        }
+
+    //        if (v0 == 0) self.Say("Hummm... muito ocupado para fazer isso agora? De qualquer forma, se quiser, volte e me procure.");
+    //        else
+    //        {
+    //            var ret = target.IncMoney(-meso, 1);
+    //            if (ret == 0) self.Say("Acho que você não tem dinheiro suficiente...");
+    //            else target.ChangeMap(230000000, "");
+    //        }
+    //    }
+    //}
 }

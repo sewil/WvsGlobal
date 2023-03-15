@@ -5,6 +5,7 @@ using System.Drawing;
 using WvsBeta.Common;
 using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Scripting;
+using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game
 {
@@ -128,8 +129,11 @@ namespace WvsBeta.Game
                     if (ReactorTime > 0)
                     {
                         Shown = false;
-                        if (sendPacket) ReactorPacket.DestroyReactor(this);
-                        resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(), ReactorTime * 1000, 0);
+                        RepeatingAction.Start(() =>
+                        {
+                            if (sendPacket) ReactorPacket.DestroyReactor(this);
+                            resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(), ReactorTime * 1000, 0);
+                        }, 500, 0);
                     }
                 }
             }, animationTime, 0);
