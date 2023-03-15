@@ -1072,12 +1072,13 @@ namespace WvsBeta.Game
                         short maxx = (short)(Position.X + actualSkill.RBX);
                         short d = 0;
                         Random rnd = new Random();
+                        short randx = (short)rnd.Next(minx, maxx);
 
                         foreach (var summonId in actualSkill.Summons)
                         {
                             short summony = (short)rnd.Next(miny, maxy);
 
-                            short summonx = (short)(Position.X + ((d % 2) == 1 ? (35 * (d + 1) / 2) : -(40 * (d / 2))));
+                            short summonx = (short)(randx + ((d % 2) == 1 ? (35 * (d + 1) / 2) : -(40 * (d / 2))));
 
                             Pos tehfloor = Field.FindFloor(new Pos(summonx, summony));
                             if (tehfloor.Y == summony)
