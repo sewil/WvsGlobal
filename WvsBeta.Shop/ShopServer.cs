@@ -4,16 +4,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Character;
-using log4net.Core;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
-using WvsBeta.Game;
 
 namespace WvsBeta.Shop
 {
@@ -46,7 +41,7 @@ namespace WvsBeta.Shop
 
         private string ConfigFilePath { get; set; }
 
-        public List<CommodityInfo> BestItems { get; } = new List<CommodityInfo>();
+        public IDictionary<CommodityCategory, IList<CommodityInfo>> BestItems { get; } = new Dictionary<CommodityCategory, IList<CommodityInfo>>();
         public List<ShopTransaction> Transactions { get; } = new List<ShopTransaction>();
 
         public void LogToLogfile(string what)
@@ -170,7 +165,8 @@ namespace WvsBeta.Shop
         public void LoadCashShopData()
         {
             BestItems.Clear();
-            var sales = new List<CommodityInfo>();
+            var sales = new Dictionary<CommodityCategory, List<CommodityInfo>>();
+            foreach (CommodityCategory cat in Enum.GetValues(typeof(CommodityCategory))) { sales.Add(cat, new List<CommodityInfo>()); }
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT sn, COUNT(sn) AS snc FROM user_point_transactions WHERE sn > 0 GROUP BY sn ORDER BY snc DESC"))
             {
                 while (data.Read())
@@ -178,14 +174,14 @@ namespace WvsBeta.Shop
                     var sn = data.GetInt32("sn");
                     if (DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci))
                     {
-                        sales.Add(ci);
+                        sales[ci.Category].Add(ci);
                     }
                 }
             }
-            for (int c = 1; c <= 8; c++)
+            foreach (CommodityCategory cat in Enum.GetValues(typeof(CommodityCategory)))
             {
-                var top = sales.Where(i => (int)i.Category == c).Take(5);
-                top.ForEach(ci => BestItems.Add(ci));
+                var top = sales[cat].Take(5).ToList();
+                BestItems.Add(cat, top);
             }
         }
 

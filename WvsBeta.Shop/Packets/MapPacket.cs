@@ -4,6 +4,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common;
+using System;
 
 namespace WvsBeta.Shop
 {
@@ -37,19 +38,17 @@ namespace WvsBeta.Shop
             //// byte amount, foreach { byte category, byte categorySub, byte discountRate  }
 
             // Categories
-            for (byte cat = 1; cat <= 8; cat++)
+            foreach(CommodityCategory category in Enum.GetValues(typeof(CommodityCategory)))
             {
-                var sales = Server.Instance.BestItems.Where(i => (int)i.Category == cat).Take(5).ToList();
-                // Gender (0 = male, 1 = female)
-                for (byte gn = 0; gn <= 1; gn++)
+                for (byte gender = 0; gender <= 1; gender++)
                 {
                     // Top 5 items
-                    for (byte pos = 0; pos < 5; pos++)
+                    for (byte topIdx = 0; topIdx < 5; topIdx++)
                     {
-                        pack.WriteInt(cat);
-                        pack.WriteInt(gn);
+                        pack.WriteInt((int)category);
+                        pack.WriteInt(gender);
 
-                        int sn = sales.ElementAtOrDefault(pos)?.SerialNumber ?? 0;
+                        int sn = Server.Instance.BestItems[category].ElementAtOrDefault(topIdx)?.SerialNumber ?? 0;
                         pack.WriteInt(sn);
                     }
                 }

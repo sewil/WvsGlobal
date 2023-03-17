@@ -13,6 +13,7 @@ namespace WvsBeta.Shop
 
     public enum CommodityCategory
     {
+        Main = 1,
         Event = 2,
         Equip = 3,
         Use = 4,
