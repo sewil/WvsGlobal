@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
@@ -600,7 +601,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 if (target.Level >= 30)
                 {
-                    if (inventory.ItemCount(4031011) >= 1) self.Say("You still haven't seen him, have you? Go find #b#p1072003##k who is around #b#m102040000##k near #m103000000#. Give him this letter and he will tell you what to do.");
+                    if (inventory.ItemCount(4031011) >= 1) self.Say("You still haven't seen him, have you? Go find #b#p1072003##k who is located around #b#m102040000##k near #m103000000#. Give him this letter and he will tell you what to do.");
                     else if (inventory.ItemCount(4031012) >= 1)
                     {
                         self.Say("Hmm... you came back in one piece. I knew that test was going to be too easy for you. I admit that you are a great thief. Now... I'm going to make you even more powerful than you already are. But before that... you will have to choose one of two paths. It will be a difficult decision, but... you can ask me any questions.");
@@ -636,14 +637,14 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        nSec = self.AskYesNo("Hummm... vocę parece bem mais forte. Vocę se livrou daquele visual medíocre e fraco e se parece muito mais com um gatuno agora. Bom, o que vocę acha? Deseja se tornar ainda mais #Gpoderoso:poderosa#? É só fazer um simples teste. Vocę aceita?");
-                        if (nSec == 0) self.Say("Realmente...? Tornar-se mais forte rapidamente lhe ajudará muito durante sua jornada. Venha me ver se mudar de idéia. Vou torná-lo ainda mais #Gpoderoso:poderosa# do que já é.");
+                        nSec = self.AskYesNo("Hmm... you look a lot stronger. You got rid of that mediocre, weak look and look much more like a thief now. Well, what do you think? Want to become even more powerful? Just do a simple test. You accept?");
+                        if (nSec == 0) self.Say(Job2.StartDeny);
                         else if (nSec == 1)
                         {
-                            self.Say("Bem pensado. Mas preciso saber se vocę é tăo forte quanto parece. Năo é um teste difícil, vocę vai conseguir passar. Primeiro, pegue esta carta... năo a perca.");
+                            self.Say("Good thinking. But I need to know if you're as strong as you look. It's not a difficult test, you can pass it. First, take this letter... don't lose it.");
                             ret = inventory.Exchange(0, 4031011, 1);
-                            if (ret == 0) self.Say("Bem... parece que năo há espaço nas suas reservas para esta carta. Libere espaço no seu inventário de Etc. e venha falar comigo. Vocę poderá fazer o teste somente com a carta.");
-                            else self.Say("Leve esta carta ao #b#p1072003##k que está perto de #b#m102040000##k próximo a #m103000000#. Ele está me substituindo como instrutor. Entregue-lhe a carta e ele aplicará o teste em meu lugar. Se quiser mais detalhes, peça diretamente a ele. Desejo-lhe boa sorte.");
+                            if (ret == 0) self.Say("Well... it looks like there's no room in your inventory for this letter. Free up some space in your etc. inventory and come talk to me. You will only be able to take the test with the letter.");
+                            else self.Say("Take this letter to #b#p1072003##k who is around #b#m102040000##k near #m103000000#. He is replacing me as instructor. Give him the letter and he will administer the test on my behalf. If you want more details, ask him directly. I wish you good luck.");
                         }
                     }
                 }
