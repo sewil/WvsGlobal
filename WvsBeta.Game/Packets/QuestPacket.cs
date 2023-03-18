@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -116,13 +117,29 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestAct(GameCharacter chr, int npcid, WZQuestAct act)
         {
-            foreach (var item in act.Items) { if (!chr.Inventory.CanExchange(0, item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull); }
+            int nMax = act.Items.Sum(i => i.Prop);
+            int n = Rand32.NextBetween(0, nMax);
+            int from = 0;
+            int to = 0;
+            var itemsToGive = new List<QuestItem>();
+            foreach (QuestItem item in act.Items)
+            {
+                if (item.Prop > 0)
+                {
+                    to += item.Prop;
+                    bool win = from <= n && n < to;
+                    from += item.Prop;
+                    if (!win) continue;
+                }
+                if (!chr.Inventory.CanExchange(0, item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull);
+                itemsToGive.Add(item);
+            }
             if (act.Mesos > 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.UnknownError);
             if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
 
             if (act.Items.Count > 0)
             {
-                foreach (var item in act.Items)
+                foreach (QuestItem item in itemsToGive)
                 {
                     chr.Inventory.Exchange(0, item.ItemID, item.Amount);
                 }

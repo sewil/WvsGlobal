@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net.Sockets;
-using System.Runtime.ConstrainedExecution;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Common.Tracking;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
-using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -166,11 +162,11 @@ namespace WvsBeta.Game
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>
         {
             ServerMessages.PING,
-            //ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
-            //ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
-            //ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
-            //ServerMessages.DAMAGE_PLAYER,
-            //ServerMessages.UPDATE_PARTYMEMBER_HP
+            ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
+            ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
+            ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
+            ServerMessages.DAMAGE_PLAYER,
+            ServerMessages.UPDATE_PARTYMEMBER_HP
         };
 
         public override void AC_OnPacketInbound(Packet packet)

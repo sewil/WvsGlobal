@@ -34,14 +34,15 @@ namespace WvsBeta.Common.Objects
     }
     public class WZQuestAct
     {
-        public WZQuestStage Stage { get; private set; }
-        public short NextQuest { get; private set; }
-        public int Exp { get; private set; }
-        public int Mesos { get; private set; }
-        public List<QuestItem> Items { get; private set; } = new List<QuestItem>();
+        public WZQuestStage Stage { get; }
+        public short NextQuest { get; }
+        public int Exp { get; }
+        public int Mesos { get; }
+        public List<QuestItem> Items { get; }
 
         public WZQuestAct(WZQuestStage stage, NXNode node)
         {
+            Items = new List<QuestItem>();
             Stage = stage;
             foreach (var subNode in node)
             {
@@ -56,9 +57,7 @@ namespace WvsBeta.Common.Objects
                     case "item":
                         foreach (var itemNode in subNode)
                         {
-                            var item = new QuestItem();
-                            item.Amount = itemNode["count"].ValueInt16();
-                            item.ItemID = itemNode["id"].ValueInt32();
+                            var item = new QuestItem(itemNode);
                             Items.Add(item);
                         }
                         break;
@@ -109,9 +108,7 @@ namespace WvsBeta.Common.Objects
                     case "item":
                         foreach (var itemNode in subNode)
                         {
-                            var item = new QuestItem();
-                            item.Amount = itemNode["count"].ValueInt16();
-                            item.ItemID = itemNode["id"].ValueInt32();
+                            var item = new QuestItem(itemNode);
                             Items.Add(item);
                         }
                         break;
