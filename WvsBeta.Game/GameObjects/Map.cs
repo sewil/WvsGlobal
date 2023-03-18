@@ -12,6 +12,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
+using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game

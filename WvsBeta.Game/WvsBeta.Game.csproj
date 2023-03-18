@@ -140,9 +140,8 @@
     </Compile>
     <Compile Include="GameAcceptor.cs" />
     <Compile Include="GameMainForm.cs" />
-    <Compile Include="GameObjects\CONTIMOVE.cs" />
-    <Compile Include="GameObjects\ContinentMan Init.cs" />
-    <Compile Include="GameObjects\ContinentMan.cs" />
+    <Compile Include="Handlers\Contimove\CONTIMOVE.cs" />
+    <Compile Include="Handlers\Contimove\ContinentMan.cs" />
     <Compile Include="GameObjects\DataLoading\DataProvider.cs" />
     <Compile Include="GameObjects\DataLoading\QuizData.cs" />
     <Compile Include="GameObjects\Door.cs" />
@@ -154,6 +153,8 @@
     <Compile Include="GameObjects\FieldSet.cs" />
     <Compile Include="GameObjects\IFieldObj.cs" />
     <Compile Include="GameObjects\MiniRoom\Enums.cs" />
+    <Compile Include="Handlers\Contimove\MobGenEvent.cs" />
+    <Compile Include="Handlers\Contimove\IContiEvent.cs" />
     <Compile Include="Handlers\GuildQuest\GuildQuestHandler.cs" />
     <Compile Include="Handlers\GuildQuest\GuildQuestRegistration.cs" />
     <Compile Include="Handlers\Guild\GuildData.cs" />

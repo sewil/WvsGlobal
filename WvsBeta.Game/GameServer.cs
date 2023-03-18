@@ -10,6 +10,7 @@ using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
+using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Scripting;
@@ -170,7 +171,7 @@ namespace WvsBeta.Game
             GuildQuestRegistrations.Add(ID, new List<GuildQuestRegistration>());
         }
 
-        private string GetConfigPath(string filename) =>
+        public string GetConfigPath(string filename) =>
             Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", filename);
 
         void Load()
@@ -299,15 +300,6 @@ namespace WvsBeta.Game
             ScrollingHeader = tmpHeader;
 
             RedisBackend.Init(reader);
-        }
-
-        public void LoadFieldSet()
-        {
-            var reader = new ConfigReader(GetConfigPath("FieldSet.img"));
-            foreach (var node in reader.RootNode)
-            {
-                new FieldSet(node);
-            }
         }
 
         public void StartListening()

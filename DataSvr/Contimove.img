@@ -1,0 +1,71 @@
+Ellinia2Orbis = {
+    FieldStartStation = 101000300
+    FieldEndStation = 200000111
+    FieldWaitingRoom = 101000301
+    FieldShip = {
+        0 = 200090010
+        1 = 200090011
+    }
+    FieldDestination = 200000100
+    WaitMin = 5
+    TravelMin = 10
+    DepartureMin = 30
+    MobGenEvent = {
+        mobGenItem = 2100009
+        spawnX = 485
+        spawnY = -221
+        spawnChance = 30
+        spawnWithinMin = 10
+        spawnMinOffset = 2
+    }
+}
+
+Orbis2Ellinia = {
+    FieldStartStation = 200000111
+    FieldEndStation = 101000300
+    FieldWaitingRoom = 200000112
+    FieldShip = {
+        0 = 200090000
+        1 = 200090001
+    }
+    FieldDestination = 101000300
+    WaitMin = 5
+    TravelMin = 10
+    DelayMin = 15
+    DepartureMin = 30
+    MobGenEvent = {
+        mobGenItem = 2100009
+        spawnX = -590
+        spawnY = -221
+        spawnChance = 30
+        spawnWithinMin = 10
+        spawnMinOffset = 2
+    }
+}
+
+Ludi2Orbis = {
+    FieldStartStation = 220000110
+    FieldEndStation = 200000121
+    FieldWaitingRoom = 220000111
+    FieldShip = {
+        0 = 200090110
+    }
+    FieldDestination = 200000100
+    WaitMin = 5
+    TravelMin = 5
+    DepartureMin = 20
+}
+
+Orbis2Ludi = {
+    FieldStartStation = 200000121
+    FieldEndStation = 220000110
+    FieldWaitingRoom = 200000122
+    FieldShip = {
+        0 = 200090100
+    }
+    FieldDestination = 220000100
+    WaitMin = 5
+    TravelMin = 5
+    DelayMin = 10
+    DepartureMin = 20
+}

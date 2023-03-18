@@ -83,6 +83,15 @@ namespace WvsBeta.Game
             Maps = maps;
             Program.MainForm.LogAppend("Loaded fieldset '{0}' with maps {1}", Name, string.Join(", ", Maps.Select(x => x.ID)));
         }
+
+        public static void Load()
+        {
+            var reader = new ConfigReader(Server.Instance.GetConfigPath("FieldSet.img"));
+            foreach (var node in reader.RootNode)
+            {
+                new FieldSet(node);
+            }
+        }
         public void ResetOnTimerUpdate()
         {
             OnTimerUpdate?.ClearInvocations();

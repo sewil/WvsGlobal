@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
+using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -12,14 +14,14 @@ namespace WvsBeta.Scripts.Scripts
         public (string,string) destination;
         public int ticket;
         public bool sail;
-        public int departure;
         public (int, int) fee;
-        public StationData((string,string) destination, int ticket, bool sail, int departure, (int,int) fee)
+        public CONTIMOVE conti;
+        public StationData(string name, (string,string) destination, int ticket, bool sail, (int,int) fee)
         {
             this.destination = destination;
             this.ticket = ticket;
             this.sail = sail;
-            this.departure = departure;
+            conti = ContinentMan.Contimoves[name];
             this.fee = fee;
         }
     }
@@ -27,10 +29,10 @@ namespace WvsBeta.Scripts.Scripts
     {
         public static IDictionary<int, StationData> Data = new Dictionary<int, StationData>()
         {
-            { MapIds.ElliniaStation, new StationData(("Orbis Station in Ossyria", "Orbis"), ItemEtcIds.TicketToOrbisBasic, true, 15, (1000,5000)) },
-            { MapIds.Orbis2ElliniaStation, new StationData(("Ellinia of Victoria Island", "Ellinia"), ItemEtcIds.TicketToElliniaBasic, true, 15, (1000,5000)) },
-            { MapIds.Orbis2LudiStation, new StationData(("Ludibrium", "Ludibrium"), ItemEtcIds.TicketToLudiBasic, false, 10, (2000,6000)) },
-            { MapIds.LudiStation, new StationData(("Orbis Station in Ossyria", "Orbis"), ItemEtcIds.TicketToOrbisBasic, false, 10, (2000,6000)) },
+            { MapIds.ElliniaStation, new StationData("Ellinia2Orbis", ("Orbis Station in Ossyria", "Orbis"), ItemEtcIds.TicketToOrbisBasic, true, (1000,5000)) },
+            { MapIds.Orbis2ElliniaStation, new StationData("Orbis2Ellinia", ("Ellinia of Victoria Island", "Ellinia"), ItemEtcIds.TicketToElliniaBasic, true, (1000,5000)) },
+            { MapIds.Orbis2LudiStation, new StationData("Orbis2Ludi", ("Ludibrium", "Ludibrium"), ItemEtcIds.TicketToLudiBasic, false, (2000,6000)) },
+            { MapIds.LudiStation, new StationData("Ludi2Orbis", ("Orbis Station in Ossyria", "Orbis"), ItemEtcIds.TicketToOrbisBasic, false, (2000,6000)) },
         };
     }
 
@@ -45,7 +47,7 @@ namespace WvsBeta.Scripts.Scripts
             if (target.Level < 10) self.Say("Your level seems to be too low for this. For your own safety, we do not allow anyone below level 10 to enter this course.");
             else
             {
-                int[] stations = new int[]{};
+                int[] stations = new int[] {};
 
                 // Orbis 
                 if (field.ID == MapIds.OrbisStationEntrance)
@@ -64,28 +66,24 @@ namespace WvsBeta.Scripts.Scripts
                 }
 
                 StationData station;
-                string asktext;
+                int key;
+                int menuIdx = 0;
+                string ask = "";
                 if (stations.Length > 1)
                 {
-                    string menu = "";
-                    for (int i = 0; i < stations.Length; i++)
-                    {
-                        var s = contimove.Data[stations[i]];
-                        menu += $"\r\n#b#L{i}#{s.destination.Item1}#l#k";
-                    }
-                    var v1 = self.AskMenu($"Hello, I am in charge of selling tickets for the ship ride to all destinations. Which ticket would you like to buy?{menu}");
-                    station = contimove.Data[stations[v1]];
-                    asktext = "";
+                    string[] options = stations.Select(s => contimove.Data[s].destination.Item1).ToArray();
+                    menuIdx = self.AskMenu($"Hello, I am responsible for selling tickets for the ship ride to all destinations. Which ticket would you like to buy?", options);
                 }
-                else
-                {
-                    station = contimove.Data[stations[0]];
-                    asktext = $"Hello, I'm in charge of selling tickets for the ship ride to {station.destination.Item1}. ";
-                }
+                key = stations[menuIdx];
+                station = contimove.Data[key];
+                if (stations.Length == 0) ask += $"Hello, I am responsible for selling tickets for the boat trip to {station.destination.Item1}. ";
+
                 bool discount = target.Level < 30;
+                CONTIMOVE conti = station.conti;
                 int fee = discount ? station.fee.Item1 : station.fee.Item2;
                 int ticket = station.ticket + (discount ? 0 : 1);
-                var nRet = self.AskYesNo($"{asktext}The ride to {station.destination.Item2} takes off every {station.departure} minutes, beginning on the hour, and it'll cost you #b{fee.Culture()} mesos#k. Are you sure you want to purchase #b#t{ticket}##k?");
+                ask += $"The ride to {station.destination.Item2} leaves every {conti.DepartureMin} minutes, starting {(conti.DelayMin == 0 ? "on the hour" : "at " + conti.DelayMin + " minutes past")}, and will cost you #b{fee.Culture()} mesos#k. Are you sure you want to buy #b#t{ticket}##k?";
+                var nRet = self.AskYesNo(ask);
 
                 if (nRet == 0) self.Say("You must have some business to take care of, right?");
                 else
@@ -93,6 +91,7 @@ namespace WvsBeta.Scripts.Scripts
                     var inventory = target.Inventory;
                     var ret = inventory.Exchange(-fee, ticket, 1);
                     if (ret == 0) self.Say($"Are you sure you have #b{fee.Culture()} mesos#k? If so, then please check your etc. inventory and see if it is full or not.");
+                    else self.Say("Have a safe trip!");
                 }
             }
         }
@@ -105,14 +104,17 @@ namespace WvsBeta.Scripts.Scripts
         {
             Map field = target.Field;
             if (!contimove.Data.TryGetValue(field.ID, out StationData station)) return;
-            string cTime = MasterThread.CurrentTimeStr;
-            int tMinute = int.Parse(cTime.Substring(12, 2)) % station.departure;
-            if (tMinute < Math.Max(5, station.departure - 5)) self.Say("We will start boarding 5 minutes before departure. Please be patient and wait a few minutes. Please be assured that the ship will depart on time and we will not receive any more tickets 1 minute before it departs, so please be here on time.");
-            else if (tMinute >= station.departure - 1) self.Say($"The ship is about to {(station.sail ? "set sail" : "leave")}. Sorry, but you'll have to get on the next one. The tour schedule is available through the ticketing usher.");
+            var conti = station.conti;
+            long cTime = MasterThread.CurrentTime;
+            long tWait = conti.WaitMin;
+            long tDeparture = (conti.DepartingTime - cTime)/60000;
+            if (MasterThread.IsDebug) target.Notice($"tDeparture: {tDeparture}m, tWait: {tWait}m");
+            if (tDeparture <= 0) self.Say($"We will start boarding {tWait} minutes before departure. Please be patient and wait a few minutes. Please be assured that the ship will depart on time and we will not receive any more tickets 1 minute before it departs, so please be here on time.");
+            else if (tDeparture <= 1) self.Say($"The ship is about to {(station.sail ? "set sail" : "leave")}. Sorry, but you'll have to get on the next one. Travel schedules are available through the ticket seller agent.");
             else
             {
                 Map wField = DataProvider.Maps[field.ID + 1];
-                if (wField.Characters.Count >= 50) self.Say("I'm sorry, but this ride is already FULL. We cannot accept any more passengers. Please board the next one.");
+                if (wField.Characters.Count >= 500) self.Say("I'm sorry, but this ride is already full. We cannot accept any more passengers. Please board the next one.");
                 else
                 {
                     var nRet = self.AskYesNo("It looks like there's plenty of room for this ride. Please have your ticket ready so I can let you in. This ride will be long, but you'll get to your destination just fine. What do you think? Do you want to get on this ride?");

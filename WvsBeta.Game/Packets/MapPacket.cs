@@ -11,6 +11,7 @@ using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
