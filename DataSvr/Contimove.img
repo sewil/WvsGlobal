@@ -9,7 +9,7 @@ Ellinia2Orbis = {
     FieldDestination = 200000100
     WaitMin = 5
     TravelMin = 10
-    DepartureMin = 30
+    DepartureMin = 15
     MobGenEvent = {
         mobGenItem = 2100009
         spawnX = 485
@@ -31,8 +31,8 @@ Orbis2Ellinia = {
     FieldDestination = 101000300
     WaitMin = 5
     TravelMin = 10
-    DelayMin = 15
-    DepartureMin = 30
+    DelayMin = 0
+    DepartureMin = 15
     MobGenEvent = {
         mobGenItem = 2100009
         spawnX = -590
@@ -53,7 +53,7 @@ Ludi2Orbis = {
     FieldDestination = 200000100
     WaitMin = 5
     TravelMin = 5
-    DepartureMin = 20
+    DepartureMin = 10
 }
 
 Orbis2Ludi = {
@@ -66,6 +66,6 @@ Orbis2Ludi = {
     FieldDestination = 220000100
     WaitMin = 5
     TravelMin = 5
-    DelayMin = 10
-    DepartureMin = 20
+    DelayMin = 0
+    DepartureMin = 10
 }
