@@ -340,30 +340,6 @@ LOCK TABLES `character_cashshop_gifts` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `character_quest_mobs`
---
-
-DROP TABLE IF EXISTS `character_quest_mobs`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `character_quest_mobs` (
-  `id` int(11) NOT NULL,
-  `mobid` int(11) NOT NULL,
-  `killed` int(11) NOT NULL,
-  `needed` int(11) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `character_quest_mobs`
---
-
-LOCK TABLES `character_quest_mobs` WRITE;
-/*!40000 ALTER TABLE `character_quest_mobs` DISABLE KEYS */;
-/*!40000 ALTER TABLE `character_quest_mobs` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `character_quests`
 --
 
@@ -371,14 +347,15 @@ DROP TABLE IF EXISTS `character_quests`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_quests` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `charid` int(11) NOT NULL,
-  `questid` smallint(5) NOT NULL,
-  `data` varchar(40) DEFAULT NULL,
+  `id` INT(10) NOT NULL AUTO_INCREMENT,
+  `charid` INT(10) NOT NULL,
+  `questid` SMALLINT(5) NOT NULL,
+  `data` VARCHAR(40) NULL DEFAULT NULL COLLATE 'latin1_swedish_ci',
   `state` TINYINT(3) NOT NULL DEFAULT '-1',
   `endtime` BIGINT(19) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+  PRIMARY KEY (`id`) USING BTREE
+) COLLATE='latin1_swedish_ci' ENGINE=InnoDB;
+
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

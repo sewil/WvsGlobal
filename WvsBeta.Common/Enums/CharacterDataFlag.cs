@@ -23,6 +23,7 @@ namespace WvsBeta.Common.Enums
         All = 0xFFFF,
 
         AnyQuests = Quests|CompletedQuests,
-        Items = Equips | Consume | Install | Etc | Pet
+        Items = Equips | Consume | Install | Etc | Pet,
+        CashShop = Stats | Money | MaxSlots | Items,
     }
 }

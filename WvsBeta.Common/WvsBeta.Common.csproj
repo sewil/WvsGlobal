@@ -119,7 +119,6 @@
     <Compile Include="Character\AvatarLook.cs" />
     <Compile Include="Character\BaseCharacterInventory.cs" />
     <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
-    <Compile Include="Character\BaseCharacterQuests.cs" />
     <Compile Include="Character\BaseCharacterSkills.cs" />
     <Compile Include="Enums\EquipIds.cs" />
     <Compile Include="Enums\EquippedType.cs" />
@@ -135,6 +134,7 @@
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Extensions\TimeExtensions.cs" />
     <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
@@ -196,7 +196,6 @@
     <Compile Include="Objects\PetData.cs" />
     <Compile Include="Objects\PetReactionData.cs" />
     <Compile Include="Objects\Player.cs" />
-    <Compile Include="Objects\QuestData.cs" />
     <Compile Include="Objects\QuestMob.cs" />
     <Compile Include="Objects\ShopTransaction.cs" />
     <Compile Include="Objects\SkillData.cs" />

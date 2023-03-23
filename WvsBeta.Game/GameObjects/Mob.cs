@@ -266,7 +266,7 @@ namespace WvsBeta.Game
                     case DropType.Normal:
                         {
                             var User = Field.GetPlayer(OwnerID);
-                            SetMobCountQuestInfo(User);
+                            User.Quests.UpdateMobKillCount(MobID);
                             break;
                         }
                     case DropType.Party:
@@ -276,7 +276,7 @@ namespace WvsBeta.Game
                             {
                                 foreach (var User in Party)
                                 {
-                                    SetMobCountQuestInfo(User);
+                                    User.Quests.UpdateMobKillCount(MobID);
                                 }
                             }
                             break;
@@ -285,7 +285,7 @@ namespace WvsBeta.Game
                     case DropType.Explosive:
                         foreach (var User in Field.Characters)
                         {
-                            SetMobCountQuestInfo(User);
+                            User.Quests.UpdateMobKillCount(MobID);
                         }
                         break;
                 }
@@ -1237,14 +1237,6 @@ namespace WvsBeta.Game
                 MobPacket.SendMobRequestEndControl(Controller, SpawnID);
             }
             Controller = null;
-        }
-
-        public void SetMobCountQuestInfo(GameCharacter User)
-        {
-            if (User != null && User.HP > 0 && User.Field.ID == Field.ID)
-            {
-                //TODO
-            }
         }
 
         public void SetController(GameCharacter controller, bool chasing = false, bool sendStopControlPacket = true)

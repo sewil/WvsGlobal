@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -91,7 +92,7 @@ namespace WvsBeta.Game
                     //if (drop.Quest > 0 && reward.Data.IsOnly && owner.Inventory.ItemCount(drop.ItemID) > 0) continue;
                     if (Drop.Period > 0)
                     {
-                        Reward.Data.Expiration = Tools.GetFileTimeWithAddition(new TimeSpan(Drop.Period, 0, 0, 0));
+                        Reward.Data.Expiration = new TimeSpan(Drop.Period, 0, 0, 0).GetFileTimeWithAddition();
                     }
                     else if (Drop.DateExpire != DateTime.MaxValue)
                     {

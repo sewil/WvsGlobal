@@ -4,19 +4,6 @@ namespace WvsBeta.Common
 {
     public class Tools
     {
-        public static long GetFileTimeWithAddition(TimeSpan span)
-        {
-            return (MasterThread.CurrentDate + span).ToFileTimeUtc();
-        }
-        
-        public static long GetTimeAsMilliseconds(DateTime pNow)
-        {
-            return pNow.ToFileTime() / 10000;
-        }
-        public static DateTime DateFromMillis(long millis)
-        {
-            return new DateTime(TimeSpan.TicksPerMillisecond * millis);
-        }
         public static string Shuffle(int amount, string value)
         {
             char[] array = value.ToCharArray();

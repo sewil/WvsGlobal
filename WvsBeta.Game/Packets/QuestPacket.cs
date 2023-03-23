@@ -102,7 +102,7 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestCheck(GameCharacter chr, WZQuestCheck check)
         {
-            foreach (var item in check.Items) { if (!chr.Inventory.CanExchange(0, item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.UnknownError); }
+            foreach (var item in check.Items.Select(i => i.Value)) { if (!chr.Inventory.CanExchange(0, item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.UnknownError); }
             if (check.Mesos > 0 && !chr.Inventory.CanExchange(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (check.LvMin > 0 && chr.Level < check.LvMin) throw new QuestException(QuestActionResult.UnknownError);
             if (check.LvMax > 0 && chr.Level > check.LvMax) throw new QuestException(QuestActionResult.UnknownError);
@@ -152,7 +152,8 @@ namespace WvsBeta.Game
 
             if (act.Stage.Stage == QuestStage.Start)
             {
-                chr.Quests.AddNewQuest(act.Stage.Quest.QuestID);
+                chr.Quests.StartQuest(act.Stage.Quest.QuestID);
+                SendQuestActionResult(chr, QuestActionResult.Success, npcid, act.Stage.Quest.QuestID);
             }
             else if (act.Stage.Stage == QuestStage.Complete)
             {

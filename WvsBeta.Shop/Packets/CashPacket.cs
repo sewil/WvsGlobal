@@ -6,6 +6,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Shop
 {
@@ -106,7 +107,7 @@ namespace WvsBeta.Shop
 
         private static LockerItem CreateLockerItem(int userId, CommodityInfo ci, string buyCharacterName)
         {
-            var expiration = ci.Period > 0 ? Tools.GetFileTimeWithAddition(new TimeSpan(ci.Period, 0, 0, 0)) : BaseItem.NoItemExpiration;
+            var expiration = ci.Period > 0 ? new TimeSpan(ci.Period, 0, 0, 0).GetFileTimeWithAddition() : BaseItem.NoItemExpiration;
             var item = new LockerItem()
             {
                 ItemId = ci.ItemID,

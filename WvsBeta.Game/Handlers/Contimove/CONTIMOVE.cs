@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Game.Handlers.Contimove
 {
@@ -95,7 +96,7 @@ namespace WvsBeta.Game.Handlers.Contimove
                     if (systemTime - NextBoardingTime >= 0)
                     {
                         DepartingTime = TimeAddMins(NextBoardingTime, WaitMin);
-                        Program.MainForm.LogDebug($"[{Name}:WAIT] DEPARTING AT {Tools.DateFromMillis(DepartingTime).TimeOfDay}");
+                        Program.MainForm.LogDebug($"[{Name}:WAIT] DEPARTING AT {DepartingTime.DateFromMillis().TimeOfDay}");
                         State = Conti.Wait;
                         ArrivalTime = TimeAddMins(NextBoardingTime, TermMin);
                         NextBoardingTime = TimeAddMins(NextBoardingTime, DepartureMin);
@@ -105,7 +106,7 @@ namespace WvsBeta.Game.Handlers.Contimove
                 case Conti.Wait:
                     if (systemTime - DepartingTime >= 0)
                     {
-                        Program.MainForm.LogDebug($"[{Name}:MOVE] ARRIVAL AT {Tools.DateFromMillis(ArrivalTime).TimeOfDay}");
+                        Program.MainForm.LogDebug($"[{Name}:MOVE] ARRIVAL AT {ArrivalTime.DateFromMillis().TimeOfDay}");
                         State = Conti.Move;
                         // not an error
                         return Conti.Start;
@@ -119,7 +120,7 @@ namespace WvsBeta.Game.Handlers.Contimove
                         // Check if we have to end the boat trip
                         if (systemTime - ArrivalTime >= 0)
                         {
-                            Program.MainForm.LogDebug($"[{Name}:DORMANT] ARRIVED, NEXT BOARDING AT {Tools.DateFromMillis(NextBoardingTime).TimeOfDay}");
+                            Program.MainForm.LogDebug($"[{Name}:DORMANT] ARRIVED, NEXT BOARDING AT {NextBoardingTime.DateFromMillis().TimeOfDay}");
                             Event?.ResetEvent();
                             State = Conti.Dormant;
                             return Conti.End;

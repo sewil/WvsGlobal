@@ -35,7 +35,6 @@ namespace WvsBeta.Common
         public BaseCharacterInventory Inventory { get; set; }
         public BaseCharacterSkills Skills { get; protected set; }
         public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
-        public BaseCharacterQuests BaseQuests { get; protected set; }
         public virtual void DamageHP(short amount) => throw new NotImplementedException();
         public GW_CharacterStat CharacterStat { get; } = new GW_CharacterStat();
         public byte BuddyListCapacity { get; set; }

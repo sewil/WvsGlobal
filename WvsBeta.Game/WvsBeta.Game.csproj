@@ -122,6 +122,7 @@
     <Compile Include="GameObjects\CharacterData.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
     <Compile Include="GameObjects\MiniRoom\MiniRoomBalloonPacket.cs" />
+    <Compile Include="GameObjects\QuestData.cs" />
     <Compile Include="GameObjects\ReactorPool.cs" />
     <Compile Include="Handlers\CommandHandling.cs" />
     <Compile Include="Events\EventPackets\EventPackets.cs" />

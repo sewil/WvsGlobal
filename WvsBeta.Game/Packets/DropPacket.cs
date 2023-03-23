@@ -114,30 +114,20 @@ namespace WvsBeta.Game
                     );
                 }
             }
-            else if (Constants.isStar(reward.ItemID))
-            {
-                if (!chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount))
-                {
-                    CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
-                    InventoryOperationPacket.NoChange(chr);
-                    return;
-                }
-                var rewardItem = drop.Reward.Data;
-                chr.Inventory.AddItem(rewardItem);
-                ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), rewardItem);
-            }
-            else if (chr.Inventory.AddItem(drop.Reward.Data) == drop.Reward.Amount)
-            {
-                CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
-                InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
-                return;
-            }
             else
             {
-                if (Constants.isEquip(drop.Reward.ItemID))
+                bool isStar = Constants.isStar(reward.ItemID);
+                if ((isStar && !chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount)) || chr.Inventory.AddItem(drop.Reward.Data) == drop.Reward.Amount)
+                {
+                    CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
+                    InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
+                    return;
+                }
+                if (isStar || Constants.isEquip(drop.Reward.ItemID))
                 {
                     ItemTransfer.ItemPickedUp(chr.ID, chr.MapID, reward.ItemID, reward.Amount, chr.MapID + ", " + drop.GetHashCode(), drop.Reward.Data);
                 }
+                chr.Quests.ItemCheck(reward.ItemID);
             }
             if (!SentDropNotice)
             {

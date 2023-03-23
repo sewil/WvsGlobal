@@ -81,7 +81,7 @@ namespace WvsBeta.Game
         public Rand32 RndActionRandomizer { get; private set; }
         public CharacterSummons Summons { get; private set; }
         public CharacterStorage Storage { get; private set; }
-        public CharacterQuests Quests { get => (CharacterQuests)BaseQuests; }
+        public CharacterQuests Quests { get; private set; }
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
         public CharacterRings Rings { get; set; }
@@ -552,7 +552,7 @@ namespace WvsBeta.Game
 
             Summons = new CharacterSummons(this);
 
-            BaseQuests = new CharacterQuests(this);
+            Quests = new CharacterQuests(this);
             Quests.LoadQuests();
 
             Variables = new CharacterVariables(this);

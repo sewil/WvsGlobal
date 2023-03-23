@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Enums;
+﻿using System.Linq;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects
@@ -12,6 +13,32 @@ namespace WvsBeta.Game.GameObjects
         public override void Encode(Packet packet, CharacterDataFlag flags = CharacterDataFlag.All)
         {
             base.Encode(packet, flags);
+
+            if ((flags & CharacterDataFlag.AnyQuests) != 0)
+            {
+                var quests = Character.Quests.GetQuests();
+                if (flags.HasFlag(CharacterDataFlag.Quests))
+                {
+                    var questsInProgress = quests.Where(q => q.Value.State == QuestState.InProgress).ToList();
+                    packet.WriteShort((short)questsInProgress.Count); // Running quests
+                    foreach (var quest in questsInProgress)
+                    {
+                        packet.WriteShort(quest.Key);
+                        packet.WriteString(quest.Value.Data);
+                    }
+                }
+
+                if (flags.HasFlag(CharacterDataFlag.CompletedQuests))
+                {
+                    var completedQuests = quests.Where(q => q.Value.State == QuestState.Completed).ToList();
+                    packet.WriteShort((short)completedQuests.Count); // Completed quests
+                    foreach (var completedQuest in completedQuests)
+                    {
+                        packet.WriteShort(completedQuest.Key);
+                        packet.WriteLong(completedQuest.Value.FileTime);
+                    }
+                }
+            }
 
             if (flags.HasFlag(CharacterDataFlag.MinigameStats))
             {

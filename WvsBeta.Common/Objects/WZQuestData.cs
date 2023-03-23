@@ -1,7 +1,9 @@
 using reNX;
 using reNX.NXProperties;
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Common.Objects
@@ -74,14 +76,15 @@ namespace WvsBeta.Common.Objects
     {
         public WZQuestStage Stage { get; private set; }
         public List<WZQuestTrigger> Quests { get; private set; } = new List<WZQuestTrigger>();
-        public List<QuestMob> Mobs { get; private set; } = new List<QuestMob>();
-        public List<QuestItem> Items { get; private set; } = new List<QuestItem>();
+        public IDictionary<int, QuestMob> Mobs { get; private set; } = new Dictionary<int, QuestMob>();
+        public IDictionary<int, QuestItem> Items { get; private set; } = new Dictionary<int, QuestItem>();
         public int NpcID { get; private set; }
         public short Job { get; private set; }
         public int Mesos { get; private set; }
         public int LvMin { get; private set; }
         public int LvMax { get; private set; }
-        public long End { get; private set; }
+        public string End { get; private set; }
+        public int Interval { get; private set; }
         public WZQuestCheck(WZQuestStage stage, NXNode node)
         {
             Stage = stage;
@@ -92,10 +95,8 @@ namespace WvsBeta.Common.Objects
                     case "mob":
                         foreach (var mobNode in subNode)
                         {
-                            QuestMob mob = new QuestMob();
-                            mob.Count = mobNode["count"].ValueInt32();
-                            mob.MobID = mobNode["id"].ValueInt32();
-                            Mobs.Add(mob);
+                            QuestMob questMob = new QuestMob(mobNode);
+                            Mobs.Add(questMob.MobID, questMob);
                         }
                         break;
                     case "quest":
@@ -109,7 +110,7 @@ namespace WvsBeta.Common.Objects
                         foreach (var itemNode in subNode)
                         {
                             var item = new QuestItem(itemNode);
-                            Items.Add(item);
+                            Items.Add(item.ItemID, item);
                         }
                         break;
                     case "job":
@@ -127,10 +128,25 @@ namespace WvsBeta.Common.Objects
                     case "money":
                         Mesos = subNode.ValueInt32();
                         break;
+                    case "end":
+                        End = subNode.ValueString();
+                        break;
+                    case "interval":
+                        Interval = subNode.ValueInt32();
+                        break;
                     default:
                         break;
                 }
             }
+        }
+        public bool HasExpired()
+        {
+            if (End == null) return false;
+            // Parse end
+            if (!DateTime.TryParseExact(End, "yyyyMMddHH", CultureInfo.InvariantCulture, DateTimeStyles.None, out DateTime edate)) return false;
+            // Compare with now
+            var cdate = MasterThread.CurrentDate;
+            return edate <= cdate;
         }
     }
     public enum QuestStage : byte
