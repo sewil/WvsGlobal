@@ -49,10 +49,9 @@ namespace WvsBeta.Common.Enums
         Thaw = 0x20_000_000,
         Weakness = 0x40_000_000, // Mob Skill: Weakness
         Curse = 0x80_000_000, // Mob Skill: Curse
-
-        Unk100m = 0x100_000_000, // Unknown
+        Slow = 0x1_00_00_00_00, // Mob Skill: Slow
 
         ALL = 0xFFFFFFFF,
-        MOVEMENT_INFO_INDEX = Speed | Jump | Stun | Weakness, // 0x40020180
+        MOVEMENT_INFO_INDEX = Speed | Jump | Stun | Weakness | Slow, // flags & 0x40020180 or BYTE4(flags) & 1
     }
 }

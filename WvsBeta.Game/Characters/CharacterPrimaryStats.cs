@@ -293,7 +293,7 @@ namespace WvsBeta.Game
             flags |= BuffThaw.Reset();
             flags |= BuffWeakness.Reset();
             flags |= BuffCurse.Reset();
-            flags |= BuffUnk100m.Reset();
+            flags |= BuffSlow.Reset();
 
             Char.Buffs.FinalizeDebuff(flags, sendPacket);
         }
@@ -341,7 +341,7 @@ namespace WvsBeta.Game
             BuffThaw.DecodeForCC(packet, flags);
             BuffWeakness.DecodeForCC(packet, flags);
             BuffCurse.DecodeForCC(packet, flags);
-            BuffUnk100m.DecodeForCC(packet, flags);
+            BuffSlow.DecodeForCC(packet, flags);
 
             if (BuffComboAttack.IsSet())
             {
@@ -401,7 +401,7 @@ namespace WvsBeta.Game
             BuffThaw.EncodeForCC(packet, ref flags, currentTime);
             BuffWeakness.EncodeForCC(packet, ref flags, currentTime);
             BuffCurse.EncodeForCC(packet, ref flags, currentTime);
-            BuffUnk100m.EncodeForCC(packet, ref flags, currentTime);
+            BuffSlow.EncodeForCC(packet, ref flags, currentTime);
 
             packet.SetUInt(offset, (uint)flags);
         }
@@ -443,7 +443,7 @@ namespace WvsBeta.Game
             BuffThaw.TryReset(currentTime, ref endFlag);
             BuffWeakness.TryReset(currentTime, ref endFlag);
             BuffCurse.TryReset(currentTime, ref endFlag);
-            BuffUnk100m.TryReset(currentTime, ref endFlag);
+            BuffSlow.TryReset(currentTime, ref endFlag);
 
             Char.Buffs.FinalizeDebuff(endFlag);
         }
@@ -484,7 +484,7 @@ namespace WvsBeta.Game
             flags |= BuffThaw.GetState(currentTime);
             flags |= BuffWeakness.GetState(currentTime);
             flags |= BuffCurse.GetState(currentTime);
-            flags |= BuffUnk100m.GetState(currentTime);
+            flags |= BuffSlow.GetState(currentTime);
 
             return flags;
 
@@ -528,7 +528,7 @@ namespace WvsBeta.Game
             BuffThaw.TryResetByReference(pBuffValue, ref endFlag);
             BuffWeakness.TryResetByReference(pBuffValue, ref endFlag);
             BuffCurse.TryResetByReference(pBuffValue, ref endFlag);
-            BuffUnk100m.TryResetByReference(pBuffValue, ref endFlag);
+            BuffSlow.TryResetByReference(pBuffValue, ref endFlag);
 
             if (!onlyReturn)
             {
@@ -580,7 +580,7 @@ namespace WvsBeta.Game
             BuffThaw.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffWeakness.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffCurse.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
-            BuffUnk100m.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
+            BuffSlow.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
 
             pPacket.SetULong(tmpBuffPos, (ulong)endFlag); // Make sure correct flag is set
         }
@@ -621,7 +621,7 @@ namespace WvsBeta.Game
                 BuffThaw.HasReferenceId(referenceId, currentTime) ||
                 BuffWeakness.HasReferenceId(referenceId, currentTime) ||
                 BuffCurse.HasReferenceId(referenceId, currentTime) ||
-                BuffUnk100m.HasReferenceId(referenceId, currentTime);
+                BuffSlow.HasReferenceId(referenceId, currentTime);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace WvsBeta.Common.Character
         public Objects.Stats.BuffStat BuffThaw { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Thaw);
         public Objects.Stats.BuffStat BuffWeakness { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Weakness);
         public Objects.Stats.BuffStat BuffCurse { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Curse);
-        public Objects.Stats.BuffStat BuffUnk100m { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Unk100m);
+        public Objects.Stats.BuffStat BuffSlow { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Slow);
 
         public int Craft => CharacterStat.Dex + CharacterStat.Luk + CharacterStat.Int;
 

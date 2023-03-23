@@ -170,7 +170,7 @@ namespace WvsBeta.Game
                 added |= ps.BuffMesoGuard.Set(SkillID, data.XValue, expireTime);
                 ps.BuffMesoGuard.MesosLeft = data.MesosUsage;
             }
-            if (flags.HasFlag(BuffValueTypes.Unk100m)) added |= ps.BuffUnk100m.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(BuffValueTypes.Slow)) added |= ps.BuffSlow.Set(SkillID, data.Speed, expireTime);
 
             FinalizeBuff(added, delay);
         }
