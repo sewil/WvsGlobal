@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -155,7 +154,7 @@ namespace WvsBeta
                     RunningTasks--;
                     ScheduledForRemoval = false;
                     _task = null;
-                    Trace.WriteLine("Terminated task " + this + ", " + CurrentDate);
+                    _log.Info("Terminated task " + this + ", " + CurrentDate);
                 }, TaskCreationOptions.LongRunning);
             }
             
