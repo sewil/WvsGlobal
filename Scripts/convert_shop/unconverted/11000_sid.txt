@@ -1,0 +1,4 @@
+Sword	50 mesos
+Hand Axe 	Hand Axe	50 mesos
+Wooden Club	Wooden Club	50 mesos
+Razor	Razor	500 mesos

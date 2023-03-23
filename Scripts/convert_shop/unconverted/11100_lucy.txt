@@ -1,0 +1,5 @@
+Red Potion	50 mesos
+Orange Potion	Orange Potion	160 mesos
+White Potion	White Potion	320 mesos
+Apple	Apple	30 mesos
+Egg	Egg	50 mesos

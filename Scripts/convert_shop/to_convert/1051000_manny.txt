@@ -1,0 +1,18 @@
+Long Sword	3,000 mesos
+Triangular Zamadar	Triangular Zamadar	4,000 mesos
+Field Dagger	Field Dagger	7,000 mesos
+Triple-Tipped Zamadar	Triple-Tipped Zamadar	8,000 mesos
+Coconut Knife	Coconut Knife	10,000 mesos
+Stinger	Stinger	15,000 mesos
+Iron Dagger	Iron Dagger	22,000 mesos
+Forked Dagger	Forked Dagger	38,000 mesos
+Reef Claw	Reef Claw	40,000 mesos
+Cass	Cass	42,000 mesos
+Plunger	Plunger	20,000 mesos
+Wooden Sword	Wooden Sword	3,000 mesos
+Metal Axe	Metal Axe	3,000 mesos
+Wooden Mallet	Wooden Mallet	3,000 mesos
+Spear	Spear	3,000 mesos
+Fork on a Stick	Fork on a Stick	7,000 mesos
+Pole Arm	Pole Arm	3,000 mesos
+Garnier	Garnier	3,000 mesos

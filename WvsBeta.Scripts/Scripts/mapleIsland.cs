@@ -184,19 +184,19 @@ namespace WvsBeta.Scripts.Scripts
             {
                 mapleIsland.self = self;
                 mapleIsland.target = target;
-                nRet = self.AskYesNo("Take that ship and you'll leave for a bigger continent. With #e150 mesos#n I can take you to #Victoria Ball#k. Problem is, once you leave here, you can't come back never again. What do you think? Do you want to go to Victoria Island?");
+                nRet = self.AskYesNo("Take that ship and you'll leave for a bigger continent. With #e150 mesos#n I can take you to #bVictoria Island#k. Only thing is, once you leave here, you can't come back ever again. What do you think? Do you want to go to Victoria Island?");
                 if (nRet == 0) self.Say("Hmm... I suppose you still have some work to do here?");
                 else if (nRet == 1)
                 {
                     if (target.Level < 7) self.Say("Let's see... I don't think you're strong enough. You have to be at least #bLevel 7 #k to go to Victoria Island.");
                     else
                     {
-                        self.Say("Are you #Gtired:tired# of this place? Well... first, give me #e150 mesos#n...");
+                        self.Say("Are you tired of this place? Well... first, give me #e150 mesos#n...");
                         ret = target.IncMoney(-150, 1);
-                        if (ret == 0) self.Say("What? Are you trying to say that you want to travel without any money? You are #Girl:weird#...");
+                        if (ret == 0) self.Say("What? Are you trying to say that you want to travel without any money? You are weird...");
                         else
                         {
-                            self.Say("Too much! #e150 mesos#n accepted! Well done! Let's go to the #Victoria pool#k!");
+                            self.Say("Alright! #e150 mesos#n accepted! Well done! Let's go to #bVictoria Island#k!");
                             target.ChangeMap(104000000, "maple00");
                         }
                     }

@@ -27,6 +27,58 @@ namespace WvsBeta.Scripts.Scripts
             new ShopItemData(2070013),
         };
     }
+    // Sid
+    [Script("11000")]
+    class sid : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1302000, 50),
+                new ShopItemData(1312004, 50),
+                new ShopItemData(1322005, 50),
+                new ShopItemData(1332005, 500),
+            }.Concat(Rechargables));
+        }
+    }
+    // Lucy
+    [Script("11100")]
+    class lucy : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(2000000, 50),
+                new ShopItemData(2000001, 160),
+                new ShopItemData(2000002, 320),
+                new ShopItemData(2010000, 30),
+                new ShopItemData(2010002, 50),
+            }.Concat(Rechargables));
+        }
+    }
+    // Pan
+    [Script("21000")]
+    class pan : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1040002, 50),
+                new ShopItemData(1040006, 50),
+                new ShopItemData(1040010, 50),
+                new ShopItemData(1041002, 50),
+                new ShopItemData(1041006, 50),
+                new ShopItemData(1041010, 50),
+                new ShopItemData(1041011, 50),
+                new ShopItemData(1060002, 50),
+                new ShopItemData(1060006, 50),
+                new ShopItemData(1061002, 50),
+                new ShopItemData(1061008, 50),
+                new ShopItemData(1072001, 50),
+                new ShopItemData(1072005, 50),
+            }.Concat(Rechargables));
+        }
+    }
     // Karl Henesys Weapon Seller
     [Script("1011000")]
     class Karl : Shop, INpcScript
@@ -221,11 +273,11 @@ namespace WvsBeta.Scripts.Scripts
         {
             self.AskShop(new ShopItemData[] {
                 new ShopItemData(1002008, 500),
-                new ShopItemData(1002318, 1000),
+                new ShopItemData(1002014, 1000),
                 new ShopItemData(1002066, 450),
                 new ShopItemData(1002067, 450),
                 new ShopItemData(1002068, 450),
-                new ShopItemData(1002305, 450),
+                new ShopItemData(1002069, 450),
                 new ShopItemData(1002132, 800),
                 new ShopItemData(1002133, 800),
                 new ShopItemData(1002134, 800),
@@ -572,6 +624,183 @@ namespace WvsBeta.Scripts.Scripts
                 new ShopItemData(2044600, 70000),
                 new ShopItemData(2043700, 70000),
                 new ShopItemData(2043800, 70000),
+            }.Concat(Rechargables));
+        }
+    }
+    // Dr. Faymus
+    [Script("1051002")]
+    class drfaymus : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(2000000, 50),
+                new ShopItemData(2000001, 160),
+                new ShopItemData(2000002, 320),
+                new ShopItemData(2000003, 200),
+                new ShopItemData(2000006, 620),
+                new ShopItemData(2002000, 500),
+                new ShopItemData(2002001, 400),
+                new ShopItemData(2002002, 500),
+                new ShopItemData(2002004, 500),
+                new ShopItemData(2002005, 500),
+                new ShopItemData(2010000, 30),
+                new ShopItemData(2010002, 50),
+                new ShopItemData(2010001, 106),
+                new ShopItemData(2010003, 100),
+                new ShopItemData(2010004, 310),
+                new ShopItemData(2030000, 400),
+                new ShopItemData(2030005, 500),
+                new ShopItemData(2060000, 1),
+                new ShopItemData(2061000, 1),
+                new ShopItemData(2050000, 200),
+                new ShopItemData(2050001, 200),
+                new ShopItemData(2050002, 300),
+                new ShopItemData(2070000, 500),
+            }.Concat(Rechargables));
+        }
+    }
+    // Cutthroat Manny
+    [Script("1051000")]
+    class manny : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1302007, 3000),
+                new ShopItemData(1332000, 4000),
+                new ShopItemData(1332006, 7000),
+                new ShopItemData(1332002, 8000),
+                new ShopItemData(1332008, 10000),
+                new ShopItemData(1332013, 15000),
+                new ShopItemData(1332010, 22000),
+                new ShopItemData(1332004, 38000),
+                new ShopItemData(1332012, 40000),
+                new ShopItemData(1332009, 42000),
+                new ShopItemData(1322009, 20000),
+                new ShopItemData(1402001, 3000),
+                new ShopItemData(1412001, 3000),
+                new ShopItemData(1422000, 3000),
+                new ShopItemData(1432000, 3000),
+                new ShopItemData(1432001, 7000),
+                new ShopItemData(1442000, 3000),
+                new ShopItemData(1472000, 3000),
+            }.Concat(Rechargables));
+        }
+    }
+    // Don Hwang
+    [Script("1051001")]
+    class hwang : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1002122, 900),
+                new ShopItemData(1002123, 900),
+                new ShopItemData(1002124, 900),
+                new ShopItemData(1002125, 900),
+                new ShopItemData(1002126, 900),
+                new ShopItemData(1002001, 3000),
+                new ShopItemData(1002107, 4000),
+                new ShopItemData(1002108, 4000),
+                new ShopItemData(1002109, 4000),
+                new ShopItemData(1002110, 4000),
+                new ShopItemData(1002111, 4000),
+                new ShopItemData(1002127, 12000),
+                new ShopItemData(1002128, 12000),
+                new ShopItemData(1002129, 12000),
+                new ShopItemData(1002130, 12000),
+                new ShopItemData(1002131, 12000),
+                //new ShopItemData(1002454, 7400), // Red Starry Bandana, nonexisting
+                new ShopItemData(1002096, 7400),
+                new ShopItemData(1002097, 7400),
+                new ShopItemData(1002146, 20000),
+                new ShopItemData(1002147, 20000),
+                new ShopItemData(1002148, 20000),
+                new ShopItemData(1002149, 20000),
+                new ShopItemData(1002150, 20000),
+                new ShopItemData(1002171, 30000),
+                new ShopItemData(1002172, 30000),
+                new ShopItemData(1002173, 30000),
+                new ShopItemData(1002174, 30000),
+                new ShopItemData(1002175, 30000),
+                new ShopItemData(1041037, 3000),
+                new ShopItemData(1041036, 3000),
+                new ShopItemData(1041038, 3000),
+                new ShopItemData(1040034, 5000),
+                new ShopItemData(1040035, 5000),
+                new ShopItemData(1040042, 9000),
+                new ShopItemData(1040043, 9000),
+                new ShopItemData(1040044, 9000),
+                new ShopItemData(1040048, 16000),
+                new ShopItemData(1040049, 16000),
+                new ShopItemData(1040050, 16000),
+                new ShopItemData(1040057, 45000),
+                new ShopItemData(1040058, 45000),
+                new ShopItemData(1040059, 45000),
+                new ShopItemData(1040060, 45000),
+                new ShopItemData(1041036, 3000),
+                new ShopItemData(1041037, 3000),
+                new ShopItemData(1041038, 3000),
+                new ShopItemData(1041044, 5000),
+                new ShopItemData(1041045, 5000),
+                new ShopItemData(1041003, 9000),
+                new ShopItemData(1041039, 9000),
+                new ShopItemData(1041040, 9000),
+                new ShopItemData(1041057, 18000),
+                new ShopItemData(1041058, 18000),
+                new ShopItemData(1041059, 18000),
+                new ShopItemData(1041060, 18000),
+                new ShopItemData(1041047, 45000),
+                new ShopItemData(1041048, 45000),
+                new ShopItemData(1041049, 45000),
+                new ShopItemData(1041050, 45000),
+                new ShopItemData(1061030, 2800),
+                new ShopItemData(1061029, 2800),
+                new ShopItemData(1061031, 2800),
+                new ShopItemData(1060024, 4800),
+                new ShopItemData(1060025, 4800),
+                new ShopItemData(1060031, 8000),
+                new ShopItemData(1060032, 8000),
+                new ShopItemData(1060033, 8000),
+                new ShopItemData(1060037, 19000),
+                new ShopItemData(1060038, 19000),
+                new ShopItemData(1060039, 19000),
+                new ShopItemData(1060043, 40000),
+                new ShopItemData(1060044, 40000),
+                new ShopItemData(1060045, 40000),
+                new ShopItemData(1060046, 40000),
+                new ShopItemData(1061029, 2800),
+                new ShopItemData(1061030, 2800),
+                new ShopItemData(1061031, 2800),
+                new ShopItemData(1061037, 4800),
+                new ShopItemData(1061038, 4800),
+                new ShopItemData(1061032, 8000),
+                new ShopItemData(1061033, 8000),
+                new ShopItemData(1061003, 8000),
+                new ShopItemData(1061041, 12000),
+                new ShopItemData(1061042, 12000),
+                new ShopItemData(1061040, 12000),
+                new ShopItemData(1061053, 18000),
+                new ShopItemData(1061054, 18000),
+                new ShopItemData(1061055, 18000),
+                new ShopItemData(1061056, 18000),
+                new ShopItemData(1061043, 40000),
+                new ShopItemData(1061044, 40000),
+                new ShopItemData(1061045, 40000),
+                new ShopItemData(1061046, 40000),
+                new ShopItemData(1072070, 1800),
+                new ShopItemData(1072071, 1800),
+                new ShopItemData(1072004, 2000),
+                new ShopItemData(1072042, 2000),
+                new ShopItemData(1072043, 2000),
+                new ShopItemData(1072028, 45000),
+                new ShopItemData(1072029, 45000),
+                new ShopItemData(1072030, 45000),
+                new ShopItemData(1072031, 45000),
+                new ShopItemData(1072022, 9000),
+                new ShopItemData(1072065, 9000),
+                new ShopItemData(1072066, 9000),
             }.Concat(Rechargables));
         }
     }
