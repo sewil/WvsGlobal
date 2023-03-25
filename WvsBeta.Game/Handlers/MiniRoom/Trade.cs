@@ -32,7 +32,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
         }
 
-        public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.RoomIsClosed)
+        public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
+        {
+            RevertItems();
+            base.RemovePlayer(pCharacter, pReason);
+        }
+
+        public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Cancel)
         {
             RevertItems();
             base.Close(sendPacket, reason);
@@ -71,10 +77,20 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Close(true, MiniRoomLeaveReason.TradeSuccessful);
         }
 
-        private bool CheckInventories()
+        private bool CheckInventories(out byte userSlotFull)
         {
+            userSlotFull = 0xFF;
             // Both Inventories are checked, and have room
-            return CheckInventory(0) && CheckInventory(1);
+            for (byte userSlot = 0; userSlot < 2; userSlot++)
+            {
+                if (!CheckInventory(userSlot))
+                {
+                    userSlotFull = userSlot;
+                    return false;
+                }
+
+            }
+            return true;
         }
 
         private bool CheckInventory(byte userSlot)
@@ -241,9 +257,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                         if (Confirmed[0] && Confirmed[1])
                         {
-                            if (!CheckInventories())
+                            if (!CheckInventories(out byte userSlotFull))
                             {
-                                Close(reason: MiniRoomLeaveReason.TradeInventoryFull);
+                                MiniRoomPacket.SendLeaveRoom(Users[userSlotFull], MiniRoomLeaveReason.TradeInventoryFull);
+                                MiniRoomPacket.SendLeaveRoom(GetOtherUser(userSlotFull), MiniRoomLeaveReason.TradeUnsuccessful);
+                                Close(false);
                             }
                             else if (Users[0].MapID != Users[1].MapID)
                             {

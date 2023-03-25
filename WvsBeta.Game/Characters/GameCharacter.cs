@@ -310,12 +310,6 @@ namespace WvsBeta.Game
 
         public void CleanupInstances()
         {
-            if (Room != null)
-            {
-                Room.RemovePlayer(this, MiniRoomLeaveReason.YouHaveLeft);
-                Room = null;
-            }
-
             ShopNPCID = 0;
             TrunkNPCID = 0;
             NpcSession?.SoftStop();
