@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using log4net;
@@ -165,37 +166,34 @@ namespace WvsBeta.Common.Sessions
                         ScheduleDisconnect();
                         return;
                     }
-                    else if (Settings.Default.MemoryCRCEnabled)
+                    else if (!isConnectedAsClient && Settings.Default.MemoryCRCEnabled && header == (byte)ClientMessages.CLIENT_HASH && (BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0)
                     {
                         // Check for expected CRC packet
-                        if ((BitConverter.ToUInt16(pPacket.IV, 0) % 31) == 0 && header == (byte)ClientMessages.CLIENT_HASH)
+                        bool disconnect = true;
+                        byte mode = pPacket.ReadByte();
+                        if (mode == 1)
                         {
-                            bool disconnect = true;
-                            byte mode = pPacket.ReadByte();
-                            if (mode == 1)
+                            uint clientCRC = pPacket.ReadUInt();
+                            Trace.WriteLine($"[{GetType()}] Received CRC {clientCRC} previousDecryptIV: {previousDecryptIV.ToContentsString()}");
+                            if (ValidateCRC(previousDecryptIV, clientCRC, out uint expectedCRC))
                             {
-                                uint clientCRC = pPacket.ReadUInt();
-                                Trace.WriteLine($"[{GetType()}] Received CRC {clientCRC}");
-                                if (ValidateCRC(pPacket.IV, clientCRC, out uint expectedCRC))
-                                {
-                                    disconnect = false;
-                                }
-                                else
-                                {
-                                    Trace.WriteLine($"[{GetType()}] Disconnecting client, CRC {clientCRC} didnt match expected CRC {expectedCRC}");
-                                }
+                                disconnect = false;
                             }
                             else
                             {
-                                Trace.WriteLine($"Disconnecting client because unexpected mode: {mode}");
+                                Trace.WriteLine($"[{GetType()}] Disconnecting client, CRC {clientCRC} didnt match expected CRC {expectedCRC}");
                             }
+                        }
+                        else
+                        {
+                            Trace.WriteLine($"Disconnecting client because unexpected mode: {mode}");
+                        }
 
-                            if (disconnect)
-                            {
-                                Console.WriteLine("DC");
-                                Disconnect();
-                                return;
-                            }
+                        if (disconnect)
+                        {
+                            Console.WriteLine("DC");
+                            Disconnect();
+                            return;
                         }
                     }
                 }
@@ -215,23 +213,6 @@ namespace WvsBeta.Common.Sessions
         }
 
         public abstract void AC_OnPacketInbound(Packet pPacket);
-
-        public override void SendPacket(Packet pPacket)
-        {
-            while (isConnectedAsClient && Settings.Default.MemoryCRCEnabled && (BitConverter.ToUInt16(_encryptIV, 0) % 31) == 0)
-            {
-                var p = new Packet((byte)ClientMessages.CLIENT_HASH);
-                p.WriteByte(1);
-                uint crc = CRC32.CalcCrc32(_encryptIV, 2);
-                p.WriteUInt(crc); // TODO: Get CRC for memory
-
-                Trace.WriteLine($"[{GetType()}] Sent CRC {crc}");
-
-                base.SendPacket(p);
-            }
-
-            base.SendPacket(pPacket);
-        }
 
         private static Packet _pingPacket = new Packet(ServerMessages.PING);
         private static Packet _pongPacket = new Packet((byte)ClientMessages.PONG);

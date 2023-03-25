@@ -343,30 +343,33 @@ namespace WvsBeta.Center
                                 {
                                     bool ccing = packet.ReadBool();
                                     var character = CenterServer.Instance.FindCharacter(charid);
-                                    if (ccing == false)
+                                    if (character != null)
                                     {
-                                        character.IsOnline = false;
-
-                                        if (Party.Parties.TryGetValue(character.PartyID, out Party party))
+                                        if (ccing == false)
                                         {
-                                            if (party.leader.id == charid)
+                                            character.IsOnline = false;
+
+                                            if (Party.Parties.TryGetValue(character.PartyID, out Party party))
                                             {
-                                                // Disband the party
-                                                party.Leave(character);
+                                                if (party.leader.id == charid)
+                                                {
+                                                    // Disband the party
+                                                    party.Leave(character);
+                                                }
+                                                else
+                                                {
+                                                    party.SilentUpdate(character.ID);
+                                                }
                                             }
-                                            else
-                                            {
-                                                party.SilentUpdate(character.ID);
-                                            }
+
+                                            character.FriendsList?.OnOnlineCC(true, true);
+
+                                            // Fix this. When you log back in, the chat has 2 of you.
+                                            // Messenger.LeaveMessenger(character.ID);
                                         }
 
-                                        character.FriendsList?.OnOnlineCC(true, true);
-
-                                        // Fix this. When you log back in, the chat has 2 of you.
-                                        // Messenger.LeaveMessenger(character.ID);
+                                        if (Party.Invites.ContainsKey(character.ID)) Party.Invites.Remove(character.ID);
                                     }
-
-                                    if (Party.Invites.ContainsKey(character.ID)) Party.Invites.Remove(character.ID);
                                 }
 
                                 SendUserNoUpdateToLogins();

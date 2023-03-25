@@ -3,17 +3,7 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Crypto.Parameters;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
 using System.Threading;
-using System.Threading.Tasks;
-using Org.BouncyCastle.Crypto.Modes;
-using WvsBeta.Common.Crypto.Cryptography.Engines;
 using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common.Sessions
@@ -78,6 +68,8 @@ namespace WvsBeta.Common.Sessions
 
         public string IP { get; private set; }
         public ushort Port { get; private set; }
+        
+        protected byte[] previousDecryptIV = new byte[4];
 
         #endregion
 
@@ -297,7 +289,8 @@ namespace WvsBeta.Common.Sessions
                                 if (Disconnected) return;
                                 try
                                 {
-                                    packet.IV = tmpIV;
+                                    Array.Copy(tmpIV, 0, previousDecryptIV, 0, 4);
+                                    Trace.WriteLine($"[{GetType()}] previousDecryptIV: {previousDecryptIV.ToContentsString()}");
                                     OnPacketInbound(packet);
                                 }
                                 catch (Exception ex)

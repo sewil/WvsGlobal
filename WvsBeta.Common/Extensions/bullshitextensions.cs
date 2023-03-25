@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
@@ -8,6 +7,15 @@ namespace WvsBeta.Common
 {
     public static class BullshitExtensions
     {
+        public static string ToContentsString(this byte[] arr)
+        {
+            string str = "";
+            for (int i = 0; i < arr.Length; i++)
+            {
+                str += arr[i] + " ";
+            }
+            return str;
+        }
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (T element in enumerable)
