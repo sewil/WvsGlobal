@@ -1,12 +1,9 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using log4net;
-using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.MiniRoom;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
