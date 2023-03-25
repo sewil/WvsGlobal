@@ -8,7 +8,7 @@
         Enter = 4,
         Chat = 6,
         Leave = 10,
-        AddAnnounceBox = 11,
+        Open = 11,
         TradePutItem = 13,
         TradePutMesos = 14,
         TradeSelect = 15,
@@ -78,17 +78,39 @@
         YouHaveLeft = 0,
         YouCantEstablishAMiniRoomHere = 1,
         Cancel = 2,
-        RoomIsClosed = 3,
+        Closed = 3,
         Expelled = 4,
         TradeSuccessful = 6,
         TradeUnsuccessful = 7,
         TradeInventoryFull = 8,
         TradeWrongMap = 9,
+        PlayerShopOutOfStock = 10
     }
     public enum GameResult
     {
         Win = 0,
         Tie = 1,
         Forfeit = 2,
+    }
+    public enum MiniRoomChatType
+    {
+        Text = 0,
+        Notice = 7
+    }
+    public enum MiniRoomChatNoticeType
+    {
+        Expelled = 0,
+        PlayersTurn = 1,
+        Forfeited = 2,
+        HandicapRequested = 3,
+        PlayerLeft = 4,
+        CalledToLeave = 5,
+        LeaveCancelled = 6,
+        PlayerHasEntered = 7,
+        CantStartGameNotEnoughMesos = 8,
+        HasMatchedCardsPleaseContinue = 9,
+        TenSecondsLeft = 101,
+        GameHasStarted = 102,
+        GameHasEnded = 103,
     }
 }

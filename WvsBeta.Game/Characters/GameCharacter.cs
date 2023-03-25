@@ -440,9 +440,6 @@ namespace WvsBeta.Game
         {
             _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
 
-            // Initial load
-            var tmpUserId = UserID;
-
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
                 SELECT c.*, users.admin, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
                 FROM characters c
@@ -524,8 +521,6 @@ namespace WvsBeta.Game
 
             base.Inventory = new CharacterInventory(this);
             Inventory.LoadInventory();
-
-            UserID = tmpUserId;
 
             Rings = CharacterRings.Load(this);
 

@@ -13,6 +13,7 @@ using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Contimove;
+using WvsBeta.Game.Handlers.MiniRoom;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -67,8 +68,7 @@ namespace WvsBeta.Game
         public List<Portal> DoorPoints { get; } = new List<Portal>();
         public Dictionary<int, Seat> Seats { get; } = new Dictionary<int, Seat>();
         public Dictionary<int, Mist> SpawnedMists { get; } = new Dictionary<int, Mist>();
-        public Dictionary<int, PlayerShop> PlayerShops { get; } = new Dictionary<int, PlayerShop>();
-        public Dictionary<int, Omok> Omoks { get; } = new Dictionary<int, Omok>();
+        public Dictionary<int, BalloonRoom> BalloonRooms { get; } = new Dictionary<int, BalloonRoom>();
         public List<Kite> Kites { get; } = new List<Kite>();
         public Dictionary<string, MapArea> Areas { get; } = new Dictionary<string, MapArea>();
         public Rectangle MBR { get; private set; }
@@ -997,9 +997,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // ShowPlayer also redistibutes mobs, we want this
             ShowPlayer(chr, false);
 
-            PlayerShops.ForEach(ps => MiniRoomBalloonPacket.Send(ps.Value.Owner, ps.Value));
-
-            Omoks.ForEach(omok => MiniRoomBalloonPacket.Send(omok.Value.Owner, omok.Value));
+            BalloonRooms.ForEach(ps => MiniRoomBalloonPacket.Send(ps.Value.Owner, ps.Value));
 
             Kites.ForEach(kite => MapPacket.Kite(chr, kite));
 

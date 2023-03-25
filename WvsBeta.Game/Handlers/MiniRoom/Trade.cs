@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -30,6 +31,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     ItemList[i][j] = null;
                 }
             }
+            this.Initialize();
         }
 
         public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)

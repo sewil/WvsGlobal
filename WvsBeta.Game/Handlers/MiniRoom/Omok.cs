@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.MiniRoom;
 
@@ -45,6 +46,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones = new List<OmokStone>();
             mWinnerIndex = 1;
+            this.Initialize();
         }
 
         public override void Close(bool sendPacket, MiniRoomLeaveReason reason)

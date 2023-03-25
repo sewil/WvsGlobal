@@ -1,10 +1,12 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using log4net;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.MiniRoom;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
@@ -110,7 +112,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         else
                         {
                             miniroomChatLog.Info(chatLogLine);
-                            Chat(pCharacter.Room, pCharacter, text, -1);
+
+                            if ((pCharacter.IsGM || MasterThread.IsDebug) && text.StartsWith("/") && text.Length > 1)
+                            {
+                                MiniRoomCommand(pCharacter.Room, pCharacter, text);
+                            }
+                            else ChatText(pCharacter.Room, pCharacter, text);
                         }
 
                         break;
@@ -155,49 +162,27 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                         if (mr.Type == MiniRoomType.Trade)
                         {
-                            mr.Close(true, MiniRoomLeaveReason.Cancel);
+                            mr.Close(reason: MiniRoomLeaveReason.Cancel);
                         }
                         else if (mr.Type == MiniRoomType.PlayerShop)
                         {
-                            mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
+                            if (pCharacter == mr.Owner) mr.Close(reason: MiniRoomLeaveReason.Closed);
+                            else mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
                         }
                         else if (mr.Type == MiniRoomType.Omok)
                         {
-                            //MessagePacket.SendNotice("leave omok", pCharacter);
-                            Omok omok = (Omok)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
-
-                            if (pCharacter == omok.Owner)
-                            {
-                                omok.Close(true, MiniRoomLeaveReason.RoomIsClosed);
-                            }
-                            else
-                            {
-                                omok.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
-                            }
+                            if (pCharacter == mr.Owner) mr.Close(reason: MiniRoomLeaveReason.Closed);
+                            else mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
                         }
 
                         break;
                     }
 
-                case MiniRoomOpClient.AddAnnounceBox: //Add announce box
+                case MiniRoomOpClient.Open:
                     {
                         var room = pCharacter.Room;
                         if (room == null || !(room is BalloonRoom)) return;
-                        MiniRoomBalloonPacket.Send(pCharacter, room as BalloonRoom);
-
-                        switch (room.Type)
-                        {
-                            case MiniRoomType.Omok:
-                                {
-                                    pCharacter.Field.Omoks.Add(room.ID, (Omok)room);
-                                    break;
-                                }
-                            case MiniRoomType.PlayerShop:
-                                {
-                                    pCharacter.Field.PlayerShops.Add(room.ID, (PlayerShop)room);
-                                    break;
-                                }
-                        }
+                        (room as BalloonRoom).Open();
                         break;
                     }
 
@@ -378,13 +363,21 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     }
 
                 case MiniRoomType.PlayerShop:
-                    { // TODO: Handle shops overlap
+                    {
                         miniroomLog.Info($"{chr.Name} creates a player shop miniroom");
                         string title = packet.ReadString();
                         bool isPrivate = packet.ReadBool();
                         short x = packet.ReadShort(); // might be type of shop (different shops had different outer designs/looks)? unused var. not sure what it's purpose it serves.
                         int objectId = packet.ReadInt();
-                        PlayerShop shop = new PlayerShop(chr, title, objectId);
+                        // Check overlap
+                        if (PlayerShop.CanPlace(chr))
+                        {
+                            new PlayerShop(chr, title, objectId);
+                        }
+                        else
+                        {
+                            ChatPacket.SendBroadcastMessageToPlayer(chr, "You cannot open the store here.", BroadcastMessageType.PopupBox);
+                        }
                         break;
                     }
             }
@@ -526,27 +519,53 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             pWho.SendPacket(pw);
         }
-
-        public static void Chat(MiniRoomBase pRoom, GameCharacter pCharacter, string pText, sbyte pMessageCode)
+        public static void ChatNotice(MiniRoomBase room, GameCharacter chr, MiniRoomChatNoticeType noticeType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.Chat);
+            pw.WriteByte((byte)MiniRoomChatType.Notice);
+            pw.WriteByte((byte)noticeType);
+            pw.WriteString(chr.Name);
+            room.BroadcastPacket(pw);
+        }
+        public static void ChatText(MiniRoomBase room, GameCharacter chr, string text)
+        {
+            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
+            pw.WriteByte((byte)MiniRoomOpServer.Chat);
+            pw.WriteByte((byte)MiniRoomChatType.Text);
+            pw.WriteByte(chr.RoomSlotId);
+            pw.WriteString(chr.Name + " : " + text);
+            room.BroadcastPacket(pw);
+        }
 
-            if (pMessageCode < 0)
+        public static void MiniRoomCommand(MiniRoomBase room, GameCharacter character, string commandText)
+        {
+            var args = new Handlers.CommandHandling.CommandArgs(commandText);
+            switch (args.Command.ToLower())
             {
-                pw.WriteByte(8);
-                pw.WriteByte(pCharacter.RoomSlotId);
-                pw.WriteString($"{pCharacter.Name} : {pText}");
-
+                case "chatnotice":
+                    {
+                        if (byte.TryParse(args[0], out byte opCode))
+                        {
+                            ChatNotice(room, character, (MiniRoomChatNoticeType)opCode);
+                        }
+                        break;
+                    }
+                case "chattext":
+                    {
+                        if (args.Count >= 1)
+                        {
+                            string text = "";
+                            for (int i = 0; i < args.Count; i++) text += args[i];
+                            ChatText(room, character, text);
+                        }
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
             }
-            else
-            {
-                pw.WriteByte(7);
-                pw.WriteSByte(pMessageCode);
-                pw.WriteString(pCharacter.Name);
-            }
-
-            pRoom.BroadcastPacket(pw);
         }
 
         // This packet feels wonky and insecure - wackyracer

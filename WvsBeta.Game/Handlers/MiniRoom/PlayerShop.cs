@@ -1,6 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -29,36 +33,35 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
     public class PlayerShop : BalloonRoom
     {
         public Dictionary<byte, PlayerShopItem> Items { get; set; } = new Dictionary<byte, PlayerShopItem>();
-        public List<PlayerShopItem> BoughtItems { get; set; } = new List<PlayerShopItem>();
         public int Mesos { get; set; }
         public int ObjectID { get; }
         public PlayerShop(GameCharacter pOwner, string title, int objectId) : base(pOwner, 4, MiniRoomType.PlayerShop, title, null, false)
         {
             ObjectID = objectId;
+            this.Initialize();
         }
 
-        public void RevertItems(GameCharacter pOwner)
+        public void RevertItems()
         {
-            if (pOwner == pOwner.Room.Users[0])
+            foreach (var pst in Items)
             {
-                foreach (var pst in Items)
+                if (pst.Value.sItem.Amount != 0) //If an item is set to 0, no point of adding it.
                 {
-                    if (pst.Value.sItem.Amount != 0) //If an item is set to 0, no point of adding it.
-                    {
-                        pOwner.Inventory.AddItem(pst.Value.sItem);
-                        ItemTransfer.PersonalShopGetBackItem(pOwner.ID, pst.Value.sItem.ItemID, pst.Value.sItem.Amount, _transaction, pst.Value.sItem);
-                        pst.Value.sItem = null;
-                    }
+                    Owner.Inventory.AddItem(pst.Value.sItem);
+                    ItemTransfer.PersonalShopGetBackItem(Owner.ID, pst.Value.sItem.ItemID, pst.Value.sItem.Amount, _transaction, pst.Value.sItem);
+                    pst.Value.sItem = null;
                 }
             }
         }
 
+        public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)
+        {
+            RevertItems();
+            base.Close(sendPacket, reason);
+        }
+
         public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
-            if (pCharacter.Room.Type == MiniRoomType.PlayerShop)
-            {
-                RevertItems(pCharacter);
-            }
             base.RemovePlayer(pCharacter, pReason);
         }
 
@@ -197,6 +200,17 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             PlayerShopPackets.PersonalShopRefresh(pCharacter, this);
             PlayerShopPackets.SoldItemResult(Owner, pCharacter, slot, quantity);
+            CheckStock();
+        }
+
+        public void CheckStock()
+        {
+            foreach (var item in Items)
+            {
+                if (item.Value.sItem.Amount > 0) return;
+            }
+            // Out of stock
+            Close(reason: MiniRoomLeaveReason.PlayerShopOutOfStock);
         }
         public override void EncodeEnterResult(GameCharacter pCharacter, Packet pw)
         {
@@ -204,6 +218,30 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteString(Title);
             pw.WriteByte(0x10);
             pw.WriteByte(0);
+        }
+
+
+        const int BLN_DIST_X = 125;
+        const int BLN_DIST_Y = 100;
+        const int PTL_DIST_X = 150;
+        const int PTL_DIST_Y = 100;
+        public static bool CanPlace(GameCharacter chr)
+        {
+            Func<int, short, short, bool> compare = (dist, x1, x2) => Math.Abs(x1 - x2) > dist;
+            Pos chrPos = chr.Position;
+            var field = chr.Field;
+            // Check valid map
+            if (field.ID < 910000001 || field.ID > 910000022) return false;
+            // Check portal
+            Portal portal = field.Portals.Select(p => p.Value).FirstOrDefault(p => p.Name == "out00");
+            if (portal != null && !compare(PTL_DIST_X, chrPos.X, portal.X) && !compare(PTL_DIST_Y, chrPos.Y, portal.Y)) return false;
+            // Check other balloons
+            foreach (var blnKVP in field.BalloonRooms)
+            {
+                Pos blnPos = blnKVP.Value.Owner.Position;
+                if (!compare(BLN_DIST_X, chrPos.X, blnPos.X) && !compare(BLN_DIST_Y, chrPos.Y, blnPos.Y)) return false;
+            }
+            return true;
         }
     }
 }

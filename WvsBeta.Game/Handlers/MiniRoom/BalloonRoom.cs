@@ -1,5 +1,4 @@
-﻿using WvsBeta.Common.Sessions;
-using WvsBeta.Game.GameObjects.MiniRoom;
+﻿using WvsBeta.Game.GameObjects.MiniRoom;
 
 namespace WvsBeta.Game.Handlers.MiniRoom
 {
@@ -16,21 +15,34 @@ namespace WvsBeta.Game.Handlers.MiniRoom
             Private = @private;
         }
 
+        public override void OnInitialize()
+        {
+            base.OnInitialize();
+            Owner.Field.BalloonRooms.Add(ID, this);
+        }
+
         public void SendBalloon(bool remove)
         {
             if (Owner == null) return;
             if (remove) MiniRoomBalloonPacket.Remove(Owner);
             else MiniRoomBalloonPacket.Send(Owner, this);
         }
-        public override void Close(bool sendPacket = false, MiniRoomLeaveReason reason = MiniRoomLeaveReason.RoomIsClosed)
+
+        public void Open()
         {
-            base.Close(sendPacket, reason);
+            MiniRoomBalloonPacket.Send(Owner, this);
+        }
+
+        public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)
+        {
             SendBalloon(true);
+            Owner.Field.BalloonRooms.Remove(ID);
+            base.Close(sendPacket, reason);
         }
         public override void AddPlayer(GameCharacter pCharacter)
         {
             base.AddPlayer(pCharacter);
-            SendBalloon(false);
+            if (Users.Count > 1) SendBalloon(false);
         }
 
         public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)

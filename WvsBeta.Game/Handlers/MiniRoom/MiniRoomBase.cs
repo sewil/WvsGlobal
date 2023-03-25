@@ -1,14 +1,13 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.Linq;
-using System.Reflection;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
-    public class MiniRoomBase
+    public class MiniRoomBase : IInitialize
     {
         protected string _transaction = Cryptos.GetNewSessionHash();
         public string TransactionID => _transaction;
@@ -28,7 +27,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public byte mWinnerIndex { get; set; }
         public GameCharacter Owner { get; private set; }
 
-        public MiniRoomBase(GameCharacter owner, byte maxUsers, MiniRoomType type)
+        protected MiniRoomBase(GameCharacter owner, byte maxUsers, MiniRoomType type)
         {
             Owner = owner;
             ID = Server.Instance.MiniRoomIDs.NextValue();
@@ -40,10 +39,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Tournament = false;
             GameStarted = false;
             Type = type;
-            AddPlayer(owner);
+        }
+        public virtual void OnInitialize()
+        {
+            AddPlayer(Owner);
         }
 
-        public virtual void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.RoomIsClosed)
+        public virtual void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)
         {
             MiniRooms.Remove(ID);
             Owner = null;
@@ -122,7 +124,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteByte((byte)MiniRoomOpServer.EnterResult);
             pw.WriteByte((byte)Type);
             pw.WriteByte(MaxUsers);
-            pw.WriteBool(Users[0] != pCharacter);
+            pw.WriteBool(Owner != pCharacter);
 
             foreach (var user in Users.Select(i => i.Value))
             {

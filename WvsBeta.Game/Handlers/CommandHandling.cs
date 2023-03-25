@@ -1062,7 +1062,7 @@ namespace WvsBeta.Game.Handlers
                                             amount = -amount
                                         }
                                     });
-                                    character.Message($"You have been gifted {amount.Culture()} NX cash.");
+                                    victim.Message($"You have been gifted {amount.Culture()} NX cash.");
                                 }
                                 catch(Exception e)
                                 {
