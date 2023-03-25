@@ -312,14 +312,7 @@ namespace WvsBeta.Game
         {
             if (Room != null)
             {
-                if (Room.Type == MiniRoomType.PersonalShop)
-                {
-                    Room.RemovePlayerFromShop(this);
-                }
-                else
-                {
-                    Room.RemovePlayer(this, 0);
-                }
+                Room.RemovePlayer(this, MiniRoomLeaveReason.YouHaveLeft);
                 Room = null;
             }
 

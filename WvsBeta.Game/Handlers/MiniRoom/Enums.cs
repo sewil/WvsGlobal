@@ -1,6 +1,6 @@
 ﻿namespace WvsBeta.Game.GameObjects.MiniRoom
 {
-    public enum MiniRoomAction
+    public enum MiniRoomOpClient
     {
         Create = 0,
         Invite = 2,
@@ -9,6 +9,9 @@
         Chat = 6,
         Leave = 10,
         AddAnnounceBox = 11,
+        TradePutItem = 13,
+        TradePutMesos = 14,
+        TradeSelect = 15,
         AddShopItem = 18,
         BuyShopItem = 19,
         MoveItemShopToInv = 23,
@@ -24,13 +27,27 @@
         OmokWinner = 37,
         PlaceOmokPiece = 38,
     }
+    public enum MiniRoomOpServer
+    {
+        Invite = 2,
+        InviteResult = 3,
+        Enter = 4,
+        EnterResult = 5,
+        Chat = 6,
+        Avatar = 9,
+        Leave = 10,
+        TradePutItem = 13,
+        TradePutMesos = 14,
+        TradeSelect = 15,
+        MiniGameUpdate = 0x24
+    }
     public enum MiniRoomType
     {
         None = 0,
         Omok = 1,
         MatchCards = 2,
         Trade = 3,
-        PersonalShop = 4,
+        PlayerShop = 4,
         EntrustedShop = 5,
     }
     public enum MiniGameType : int
@@ -56,36 +73,17 @@
         UnableToEnterTournament = 0x0D,
         IncorrectPassword = 0x10,
     }
-    public enum MatchCardsType
-    {
-        Red = 0,
-        Green = 1,
-        Blue = 2
-    }
-    public enum MiniRoomBaseType
-    {
-        Invite = 2,
-        InviteResult = 3,
-        Enter = 4,
-        EnterResult = 5,
-        Avatar = 9,
-        Leave = 10
-    }
-    public enum MiniRoomBaseError
-    {
-        YouCantEstablishAMiniRoomHere = 1,
-        Unk = 2,
-        Closed = 3
-    }
     public enum MiniRoomLeaveReason : byte
     {
         YouHaveLeft = 0,
-        Unk1 = 1,
-        GameHasEnded = 2,
+        YouCantEstablishAMiniRoomHere = 1,
+        Cancel = 2,
         RoomIsClosed = 3,
         Expelled = 4,
-        Unk5 = 5,
-        TradeUnsuccessful = 6
+        TradeSuccessful = 6,
+        TradeUnsuccessful = 7,
+        TradeInventoryFull = 8,
+        TradeWrongMap = 9,
     }
     public enum GameResult
     {

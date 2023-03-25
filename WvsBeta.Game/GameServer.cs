@@ -25,7 +25,6 @@ namespace WvsBeta.Game
         public Rand32 Randomizer { get; set; } = new Rand32();
         public LoopingID MiniRoomIDs { get; set; } = new LoopingID();
         public LoopingID PartyIDs { get; set; } = new LoopingID();
-        public LoopingID MatchCardIDs { get; set; } = new LoopingID();
 
         public double RateMobEXP = 1.0d;
         public double RateMesoAmount = 1.0d;

@@ -2,7 +2,9 @@
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Handlers.MiniRoom;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
@@ -24,24 +26,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         }
     }
 
-    public class PlayerShop : MiniRoomBase
+    public class PlayerShop : BalloonRoom
     {
         public Dictionary<byte, PlayerShopItem> Items { get; set; } = new Dictionary<byte, PlayerShopItem>();
         public List<PlayerShopItem> BoughtItems { get; set; } = new List<PlayerShopItem>();
         public int Mesos { get; set; }
-
-        public PlayerShop(GameCharacter pOwner) : base(pOwner, 4, MiniRoomType.PersonalShop)
+        public int ObjectID { get; }
+        public PlayerShop(GameCharacter pOwner, string title, int objectId) : base(pOwner, 4, MiniRoomType.PlayerShop, title, null, false)
         {
-            EnteredUsers++;
-            Owner.RoomSlotId = GetEmptySlot();
-            Users[Owner.RoomSlotId] = Owner;
-        }
-        
-        public void AddUser(GameCharacter pTo)
-        {
-            EnteredUsers++;
-            pTo.RoomSlotId = GetEmptySlot();
-            Users[pTo.RoomSlotId] = pTo;
+            ObjectID = objectId;
         }
 
         public void RevertItems(GameCharacter pOwner)
@@ -62,18 +55,16 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
-            if (pCharacter.Room.Type == MiniRoomType.PersonalShop)
+            if (pCharacter.Room.Type == MiniRoomType.PlayerShop)
             {
                 RevertItems(pCharacter);
             }
             base.RemovePlayer(pCharacter, pReason);
         }
 
-        public static void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
+        public void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
         {
-            MiniRoomBase mrb = pCharacter.Room;
-
-            if (pCharacter.AssertForHack(mrb.Users[0] != pCharacter,
+            if (pCharacter.AssertForHack(Users[0] != pCharacter,
                 "PlayerShop hack: Tried to update shop item while not owner.")) return;
 
             BaseItem tehItem = pCharacter.Inventory.GetItem(inv, invslot);
@@ -103,7 +94,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pst.sItem.Amount = (short)(bundle * bundleamount);
             pst.Bundles = bundle;
             pst.BundleAmount = bundleamount;
-            mrb.AddItemToShop(pCharacter, pst);
+            AddItemToShop(pCharacter, pst);
             if (Constants.isStackable(pst.sItem.ItemID))
             {
                 pCharacter.Inventory.TakeItemAmountFromSlot(inv, invslot, (short)(bundle * bundleamount), false);
@@ -113,17 +104,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 pCharacter.Inventory.TakeItem(pst.sItem.ItemID, bundle);
             }
 
-            ItemTransfer.PersonalShopPutUpItem(pCharacter.ID, pst.sItem.ItemID, pst.sItem.Amount, mrb.TransactionID, pst.sItem);
+            ItemTransfer.PersonalShopPutUpItem(pCharacter.ID, pst.sItem.ItemID, pst.sItem.Amount, TransactionID, pst.sItem);
 
             InventoryOperationPacket.NoChange(pCharacter); //-.-
-
         }
 
-        public override void OnPacket(GameCharacter pCharacter, byte pOpcode, Common.Sessions.Packet pPacket)
-        {
-        }
-
-        public override void AddItemToShop(GameCharacter pCharacter, PlayerShopItem Item)
+        public void AddItemToShop(GameCharacter pCharacter, PlayerShopItem Item)
         {
             if (Items.Count == 0)
             {
@@ -136,7 +122,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 Item.ShopSlot = (byte)Items.Count;
             }
             PlayerShopPackets.PersonalShopRefresh(pCharacter, this);
-            base.AddItemToShop(pCharacter, Item);
         }
 
         public void HandleMoveItemBack(GameCharacter pCharacter, byte slot)
@@ -165,7 +150,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             //This may seem confusing, but the client calculates the amount left itself.
             //The formula is bundles * bundleamount, so if you have 2 bundles with 25 in each, it will obviously show 50. If you have 100 items in 1 bundle, it will show you 100
             PlayerShopItem pst = Items[slot];
-            PlayerShop ps = MiniRoomBase.PlayerShops[pCharacter.Room.ID];
 
             if (pst == null) return;
 
@@ -208,13 +192,18 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             MesosTransfer.PlayerBuysFromPersonalShop(pCharacter.ID, Owner.ID, cost, _transaction);
             ItemTransfer.PersonalShopBoughtItem(Owner.ID, pCharacter.ID, pst.sItem.ItemID, realAmount, TransactionID, pst.sItem);
 
-
-
             pst.Bundles -= quantity;
             pst.sItem.Amount -= realAmount;
 
-            PlayerShopPackets.PersonalShopRefresh(pCharacter, ps);
+            PlayerShopPackets.PersonalShopRefresh(pCharacter, this);
             PlayerShopPackets.SoldItemResult(Owner, pCharacter, slot, quantity);
+        }
+        public override void EncodeEnterResult(GameCharacter pCharacter, Packet pw)
+        {
+            base.EncodeEnterResult(pCharacter, pw);
+            pw.WriteString(Title);
+            pw.WriteByte(0x10);
+            pw.WriteByte(0);
         }
     }
 }

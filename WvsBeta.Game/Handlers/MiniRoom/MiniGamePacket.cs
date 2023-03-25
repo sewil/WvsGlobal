@@ -1,66 +1,12 @@
 ﻿using System;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Handlers.MiniRoom;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class MiniGamePacket
     {
-        private static void EncodeGameStats(MiniRoomBase mrb, byte slot, Packet pw)
-        {
-            pw.WriteByte(slot);
-            //GW_Minigamerecord_Decode (20 bytes)
-            mrb.Users[slot].GameStats.AllStats[(MiniGameType)mrb.Type].Encode(pw);
-        }
-        public static void ShowWindow(GameCharacter pOwner, MiniRoomBase mrb, byte OmokType)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(5);
-            pw.WriteByte((byte)MiniRoomType.Omok);
-            pw.WriteByte(mrb.MaxUsers);
-            pw.WriteBool(mrb.Users[0] == pOwner ? false : true);
-            for (byte i = 0; i < 2; i++)
-            {
-                GameCharacter pUser = pOwner.Room.Users[i];
-                if (pUser != null)
-                {
-                    pw.WriteByte(i);
-                    new AvatarLook(pUser).Encode(pw);
-                    pw.WriteString(pUser.Name);
-                }
-            }
-            pw.WriteByte(0xFF);
-            //End of Regular Enter base
-            //Start of Omok Enter Base
-
-            for (byte slot = 0; slot < Math.Min((byte)2, mrb.EnteredUsers); slot++)
-            {
-                EncodeGameStats(mrb, slot, pw);
-            }
-
-            pw.WriteByte(0xFF);
-            //Rest of packet
-            pw.WriteString(mrb.Title);
-            pw.WriteByte(OmokType); //Pieces type
-
-            //Continue, no idea what this part is.
-            pw.WriteByte(0);
-            pw.WriteByte(0);
-            pw.WriteLong(0);
-            pOwner.SendPacket(pw);
-        }
-
-        public static void AddVisitor(GameCharacter chr, MiniRoomBase mrb)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(4);
-            pw.WriteByte(chr.RoomSlotId);
-            new AvatarLook(chr).Encode(pw);
-            pw.WriteString(chr.Name);
-            EncodeGameStats(mrb, 1, pw);
-            mrb.BroadcastPacket(pw, chr);
-        }
-
         public static void ErrorMessage(GameCharacter chr, MiniGameError error)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -174,15 +120,15 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void UpdateGame(MiniRoomBase mrb, GameResult result)
+        public static void UpdateGame(MiniGameRoom mrb, GameResult result)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x24);
+            pw.WriteByte((byte)MiniRoomOpServer.MiniGameUpdate);
             pw.WriteByte((byte)result);
 
-            for (byte slot = 0; slot < Math.Min((byte)2, mrb.EnteredUsers); slot++)
+            foreach (var user in mrb.Users)
             {
-                EncodeGameStats(mrb, slot, pw);
+                mrb.EncodeGameStats(user.Value, pw);
             }
 
             pw.WriteLong(0);

@@ -1,5 +1,6 @@
 ﻿using System;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Handlers.MiniRoom;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
@@ -16,7 +17,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteByte(0);
             chr.Field.SendPacket(pw);
         }
-        public static void Send(GameCharacter chr, MiniRoomBase room)
+        public static void Send(GameCharacter chr, BalloonRoom room)
         {
             if (room == null)
             {
@@ -36,8 +37,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteInt(room.ID); //game object  (Make match cards done with characterid, and omok with objectid)
             pw.WriteString(room.Title);
             pw.WriteBool(room.Private); //0 : public 1 : private
-            pw.WriteByte((byte)room.CardType);
-            pw.WriteByte(room.EnteredUsers); // Current slots (1-4)
+            pw.WriteByte(room.PieceType);
+            pw.WriteByte((byte)room.Users.Count); // Current slots (1-4)
             pw.WriteByte(room.MaxUsers); // Max slots (1-4)
             pw.WriteBool(room.GameStarted);
             chr.Field.SendPacket(chr, pw);

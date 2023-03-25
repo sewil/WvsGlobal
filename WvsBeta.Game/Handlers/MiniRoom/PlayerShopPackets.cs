@@ -6,57 +6,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class PlayerShopPackets
     {
-        public static void OpenPlayerShop(GameCharacter pOwner, MiniRoomBase mrb)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte((byte)MiniRoomBaseType.EnterResult);
-            pw.WriteByte((byte)mrb.Type);
-            pw.WriteByte(mrb.MaxUsers);
-            pw.WriteBool(mrb.Users[0] == pOwner ? false : true); //owner 
-            for (byte i = 0; i < 4; i++)
-            {
-                GameCharacter pUser = mrb.Users[i];
-                if (pUser != null)
-                {
-                    pw.WriteByte(i);
-                    new AvatarLook(pUser).Encode(pw);
-                    pw.WriteString(pUser.Name);
-                }
-            }
-            pw.WriteByte(0xFF);
-            pw.WriteString(mrb.Title);
-            pw.WriteByte(0x10);
-            pw.WriteByte(0);
-            pOwner.SendPacket(pw);
-        }
-
-        public static void AddPlayer(GameCharacter pCharacter, GameCharacter pTo)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte((byte)MiniRoomBaseType.Enter);
-            pw.WriteByte(pCharacter.RoomSlotId);
-            new AvatarLook(pCharacter).Encode(pw);
-            pw.WriteString(pCharacter.Name);
-            pTo.SendPacket(pw);
-        }
-
-        public static void RemovePlayer(GameCharacter pCharacter, MiniRoomBase mrb)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte((byte)MiniRoomBaseType.Leave);
-            pw.WriteByte(pCharacter.RoomSlotId);
-            mrb.BroadcastPacket(pw, pCharacter);
-        }
-
-        public static void CloseShop(GameCharacter pCharacter, MiniRoomBaseError error)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte((byte)MiniRoomBaseType.Leave);
-            pw.WriteByte(pCharacter.RoomSlotId);
-            pw.WriteByte((byte)error);
-            pCharacter.SendPacket(pw);
-        }
-
         public static void PersonalShopRefresh(GameCharacter pCharacter, PlayerShop ps)
         {
 

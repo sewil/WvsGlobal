@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Org.BouncyCastle.Bcpg;
+using System;
 using System.Collections.Generic;
+using System.Reflection;
+using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Handlers.MiniRoom;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
@@ -18,7 +22,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         }
     }
 
-    public class Omok : MiniRoomBase
+    public class Omok : MiniGameRoom
     {
         private const int BOARD_WIDTH = 15;
         private const int BOARD_HEIGHT = 15;
@@ -35,40 +39,20 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public byte[,] Board { get; set; }
         public List<OmokStone> Stones { get; set; }
 
-        public Omok(GameCharacter owner) : base(owner, 2, MiniRoomType.Omok)
+        public Omok(GameCharacter owner, string title, bool @private, string password, byte pieceType) : base(owner, 2, MiniRoomType.Omok, title, password, @private, pieceType)
         {
             mCurrentTurnIndex = 0;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones = new List<OmokStone>();
+            mWinnerIndex = 1;
         }
 
-        public void AddOwner(GameCharacter pOwner)
+        public override void Close(bool sendPacket, MiniRoomLeaveReason reason)
         {
-            EnteredUsers++;
-            pOwner.RoomSlotId = GetEmptySlot();
-            Users[pOwner.RoomSlotId] = pOwner;
-            UpdateBalloon();
+            base.Close(true, MiniRoomLeaveReason.Cancel);
         }
 
-        public void AddUser(GameCharacter pTo)
-        {
-            EnteredUsers++;
-            pTo.RoomSlotId = GetEmptySlot();
-            Users[pTo.RoomSlotId] = pTo;
-            UpdateBalloon();
-        }
-
-        public void CloseOmok(GameCharacter pOwner)
-        {
-            for (int i = 0; i < 2; i++)
-            {
-                GameCharacter user = Users[i];
-                if (user == null) continue;
-                RemovePlayer(user, MiniRoomLeaveReason.GameHasEnded);
-            }
-        }
-
-        public void UpdateGame(GameCharacter pWinnner, GameResult result)
+        public void UpdateGame(GameCharacter winner, GameResult result)
         {
             if (result == GameResult.Tie)
             {
@@ -77,33 +61,33 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
             else
             {
-                for (int i = 0; i < 2; i++)
+                foreach (var user in Users)
                 {
-                    if (Users[i] == pWinnner)
+                    if (user.Value == winner)
                     {
-                        pWinnner.GameStats.AllStats[MiniGameType.Omok].wins++;
-                        if (pWinnner.RoomSlotId == 0) mWinnerIndex = 1;
-                        if (pWinnner.RoomSlotId == 1) mWinnerIndex = 0;
+                        winner.GameStats.AllStats[MiniGameType.Omok].wins++;
+                        if (winner.RoomSlotId == 0) mWinnerIndex = 1;
+                        if (winner.RoomSlotId == 1) mWinnerIndex = 0;
                     }
                     else
                     {
-                        Users[i].GameStats.AllStats[MiniGameType.Omok].losses++;
+                        user.Value.GameStats.AllStats[MiniGameType.Omok].losses++;
                     }
                 }
             }
-            MiniGamePacket.UpdateGame(pWinnner.Room, result);
+            MiniGamePacket.UpdateGame((MiniGameRoom)winner.Room, result);
 
             // Reset all values
             GameStarted = false;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones.Clear();
-            UpdateBalloon();
+            SendBalloon(false);
         }
         public void Start(GameCharacter chr)
         {
             MiniGamePacket.Start(chr, chr.Room);
             GameStarted = true;
-            UpdateBalloon();
+            SendBalloon(false);
         }
 
         public byte GetOtherType(byte type)
