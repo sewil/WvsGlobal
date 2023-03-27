@@ -86,7 +86,8 @@ namespace WvsBeta.Game.Handlers.MiniRoom
             SendBalloon(false);
             foreach (var leaveKVP in pendingLeaves.ToList())
             {
-                RemovePlayer(leaveKVP.Value, MiniRoomLeaveReason.ForcedLeave);
+                if (leaveKVP.Value == Owner) Close(reason: MiniRoomLeaveReason.Closed);
+                else RemovePlayer(leaveKVP.Value, MiniRoomLeaveReason.ForcedLeave);
                 pendingLeaves.Remove(leaveKVP.Key);
             }
         }
