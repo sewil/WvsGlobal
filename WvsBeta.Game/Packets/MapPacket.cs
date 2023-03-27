@@ -542,7 +542,7 @@ namespace WvsBeta.Game
         {
             int id = packet.ReadInt();
             GameCharacter victim = chr.Field.GetPlayer(id);
-            if (victim == null)
+            if (victim == null || (victim.IsGM && !MasterThread.IsDebug))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
@@ -553,13 +553,7 @@ namespace WvsBeta.Game
             pw.WriteByte(victim.CharacterStat.Level);
             pw.WriteShort(victim.CharacterStat.Job);
             pw.WriteShort(victim.CharacterStat.Fame);
-
-            if (chr.IsGM && !victim.IsGM)
-                pw.WriteString("" + id + ":" + victim.UserID);
-            else if (victim.IsGM && !victim.Undercover)
-                pw.WriteString("Administrator");
-            else
-                pw.WriteString("");
+            pw.WriteString(victim.Guild?.Name ?? "");
 
             var petItem = victim.GetSpawnedPet();
             pw.WriteBool(petItem != null);
