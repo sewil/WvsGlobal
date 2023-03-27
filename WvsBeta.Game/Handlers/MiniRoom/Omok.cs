@@ -40,56 +40,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public byte[,] Board { get; set; }
         public List<OmokStone> Stones { get; set; }
 
-        public Omok(GameCharacter owner, string title, bool @private, string password, byte pieceType) : base(owner, 2, MiniRoomType.Omok, title, password, @private, pieceType)
+        public Omok(GameCharacter owner, string title, bool @private, string password, byte pieceType) : base(owner, 2, MiniRoomType.Omok, title, password, @private, pieceType, MiniGameType.Omok)
         {
             mCurrentTurnIndex = 0;
             Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
             Stones = new List<OmokStone>();
             mWinnerIndex = 1;
             this.Initialize();
-        }
-
-        public override void Close(bool sendPacket, MiniRoomLeaveReason reason)
-        {
-            base.Close(true, MiniRoomLeaveReason.Cancel);
-        }
-
-        public void UpdateGame(GameCharacter winner, GameResult result)
-        {
-            if (result == GameResult.Tie)
-            {
-                Users[0].GameStats.AllStats[MiniGameType.Omok].ties++;
-                Users[1].GameStats.AllStats[MiniGameType.Omok].ties++;
-            }
-            else
-            {
-                foreach (var user in Users)
-                {
-                    if (user.Value == winner)
-                    {
-                        winner.GameStats.AllStats[MiniGameType.Omok].wins++;
-                        if (winner.RoomSlotId == 0) mWinnerIndex = 1;
-                        if (winner.RoomSlotId == 1) mWinnerIndex = 0;
-                    }
-                    else
-                    {
-                        user.Value.GameStats.AllStats[MiniGameType.Omok].losses++;
-                    }
-                }
-            }
-            MiniGamePacket.UpdateGame((MiniGameRoom)winner.Room, result);
-
-            // Reset all values
-            GameStarted = false;
-            Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
-            Stones.Clear();
-            SendBalloon(false);
-        }
-        public void Start(GameCharacter chr)
-        {
-            MiniGamePacket.Start(chr, chr.Room);
-            GameStarted = true;
-            SendBalloon(false);
         }
 
         public byte GetOtherType(byte type)
@@ -116,6 +73,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             if (CheckStoneDiagonal(Piece, true) || CheckStoneDiagonal(Piece, false)
             || CheckStoneHorizontal(Piece) || CheckStoneVertical(Piece)) return true;
             else return false;
+        }
+
+        public override void EndGame(GameCharacter winner, GameResult result)
+        {
+            base.EndGame(winner, result);
+            Board = new byte[BOARD_WIDTH, BOARD_HEIGHT];
+            Stones.Clear();
         }
 
         private bool CheckStones(int x, int y, byte piece)

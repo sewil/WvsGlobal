@@ -120,18 +120,20 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void UpdateGame(MiniGameRoom mrb, GameResult result)
+        public static void EndGame(MiniGameRoom mrb, GameResult result, GameCharacter winner)
         {
+            GameCharacter visitor = mrb.GetVisitor();
+            if (visitor == null || mrb.Owner == null)
+            {
+                Program.MainForm.LogAppend($"Tried to end game with null visitor or owner {result}, {mrb.ID}, {winner.ID}, {mrb.Owner?.ID}, {visitor?.ID}");
+                return;
+            }
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.MiniGameUpdate);
             pw.WriteByte((byte)result);
-
-            foreach (var user in mrb.Users)
-            {
-                mrb.EncodeGameStats(user.Value, pw);
-            }
-
-            pw.WriteLong(0);
+            if (result != GameResult.Tie) pw.WriteByte(winner.RoomSlotId);
+            mrb.EncodeGameStats(mrb.Owner, pw);
+            mrb.EncodeGameStats(visitor, pw);
             mrb.BroadcastPacket(pw);
         }
     }

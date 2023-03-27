@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using WvsBeta.Common;
+using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Objects;
@@ -58,11 +59,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             RevertItems();
             base.Close(sendPacket, reason);
-        }
-
-        public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
-        {
-            base.RemovePlayer(pCharacter, pReason);
         }
 
         public void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
@@ -212,6 +208,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             // Out of stock
             Close(reason: MiniRoomLeaveReason.PlayerShopOutOfStock);
         }
+
+        public override void EncodeEnter(GameCharacter pCharacter, Packet pw)
+        {
+            base.EncodeEnter(pCharacter, pw);
+        }
+
         public override void EncodeEnterResult(GameCharacter pCharacter, Packet pw)
         {
             base.EncodeEnterResult(pCharacter, pw);

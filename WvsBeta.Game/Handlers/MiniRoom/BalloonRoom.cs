@@ -4,6 +4,7 @@ namespace WvsBeta.Game.Handlers.MiniRoom
 {
     public class BalloonRoom : MiniRoomBase
     {
+        public bool GameStarted { get; protected set; }
         public byte PieceType { get; protected set; }
         public string Title { get; }
         public bool Private { get; }
@@ -18,7 +19,7 @@ namespace WvsBeta.Game.Handlers.MiniRoom
         public override void OnInitialize()
         {
             base.OnInitialize();
-            Owner.Field.BalloonRooms.Add(ID, this);
+            Field.BalloonRooms.Add(ID, this);
         }
 
         public void SendBalloon(bool remove)
@@ -30,13 +31,13 @@ namespace WvsBeta.Game.Handlers.MiniRoom
 
         public void Open()
         {
-            MiniRoomBalloonPacket.Send(Owner, this);
+            SendBalloon(false);
         }
 
         public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)
         {
             SendBalloon(true);
-            Owner.Field.BalloonRooms.Remove(ID);
+            Field.BalloonRooms.Remove(ID);
             base.Close(sendPacket, reason);
         }
         public override void AddPlayer(GameCharacter pCharacter)

@@ -157,21 +157,24 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                         miniroomLog.Info($"{pCharacter.Name} declined invite.");
 
-                        if (mr.Type == MiniRoomType.Trade)
-                        {
-                            mr.Close(reason: MiniRoomLeaveReason.Cancel);
-                        }
-                        else if (mr.Type == MiniRoomType.PlayerShop)
-                        {
-                            if (pCharacter == mr.Owner) mr.Close(reason: MiniRoomLeaveReason.Closed);
-                            else mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
-                        }
-                        else if (mr.Type == MiniRoomType.Omok)
-                        {
-                            if (pCharacter == mr.Owner) mr.Close(reason: MiniRoomLeaveReason.Closed);
-                            else mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.YouHaveLeft);
-                        }
+                        if (mr.Type == MiniRoomType.Trade) mr.Close(reason: MiniRoomLeaveReason.Cancel);
+                        else if (pCharacter == mr.Owner) mr.Close(reason: MiniRoomLeaveReason.Closed);
+                        else mr.RemovePlayer(pCharacter, MiniRoomLeaveReason.Leave);
+                        break;
+                    }
 
+                case MiniRoomOpClient.RequestLeave:
+                    {
+                        if (pCharacter.Room == null || !(pCharacter.Room is MiniGameRoom)) return;
+                        MiniGameRoom rm = pCharacter.Room as MiniGameRoom;
+                        rm.RequestLeave(pCharacter);
+                        break;
+                    }
+                case MiniRoomOpClient.CancelRequestLeave:
+                    {
+                        if (pCharacter.Room == null || !(pCharacter.Room is MiniGameRoom)) return;
+                        MiniGameRoom rm = pCharacter.Room as MiniGameRoom;
+                        rm.CancelRequestLeave(pCharacter);
                         break;
                     }
 
@@ -206,7 +209,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         bool result = pPacket.ReadBool();
                         if (result && MiniRoomBase.MiniRooms.TryGetValue(pCharacter.Room.ID, out MiniRoomBase omok))
                         {
-                            ((Omok)omok).UpdateGame(pCharacter, GameResult.Tie);
+                            ((Omok)omok).EndGame(pCharacter, GameResult.Tie);
                         }
                         else
                         {
@@ -219,46 +222,49 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         if (MiniRoomBase.MiniRooms.TryGetValue(pCharacter.Room.ID, out MiniRoomBase omok))
                         {
                             GameCharacter winner = omok.Users[(byte)(pCharacter.RoomSlotId == 0 ? 1 : 0)];
-                            ((Omok)omok).UpdateGame(winner, GameResult.Forfeit);
+                            ((Omok)omok).EndGame(winner, GameResult.Forfeit);
                         }
                         break;
                     }
 
                 case MiniRoomOpClient.Ready: //Ready
                     {
+                        if (pCharacter.Room == null) return;
                         MiniGamePacket.Ready(pCharacter, pCharacter.Room);
                         break;
                     }
 
                 case MiniRoomOpClient.Unready:
                     {
+                        if (pCharacter.Room == null) return;
                         MiniGamePacket.UnReady(pCharacter, pCharacter.Room);
                         break;
                     }
 
                 case MiniRoomOpClient.Expel:
                     {
+                        if (pCharacter.Room == null) return;
                         pCharacter.Room.RemovePlayer(pCharacter.Room.Users[1], MiniRoomLeaveReason.Expelled);
                         break;
                     }
 
-                case MiniRoomOpClient.StartOmok:
+                case MiniRoomOpClient.StartGame:
                     {
-                        Omok omok = (Omok)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
-                        omok.Start(pCharacter);
+                        if (!(pCharacter.Room is MiniGameRoom game) || game.GameStarted) return;
+                        game.StartGame(pCharacter);
                         break;
                     }
 
-                case MiniRoomOpClient.OmokWinner:
+                case MiniRoomOpClient.EndGame:
                     {
-                        Omok omok = (Omok)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
-                        omok.UpdateGame(pCharacter, GameResult.Win);
+                        if (!(pCharacter.Room is MiniGameRoom game) || !game.GameStarted) return;
+                        game.EndGame(pCharacter, GameResult.Win);
                         break;
                     }
 
                 case MiniRoomOpClient.PlaceOmokPiece: //Place omok piece
                     {
-                        Omok omok = (Omok)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
+                        if (!(pCharacter.Room is Omok omok)) return;
                         int X = pPacket.ReadInt();
                         int Y = pPacket.ReadInt();
                         byte type = pPacket.ReadByte();
@@ -277,21 +283,22 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         if (omok.CheckStone(type))
                         {
                             //MessagePacket.SendNotice("Win!", pCharacter);
-                            omok.UpdateGame(pCharacter, GameResult.Win);
+                            omok.EndGame(pCharacter, GameResult.Win);
                         }
                         break;
                     }
 
                 case MiniRoomOpClient.RequestHandicap:
                     {
+                        if (pCharacter.Room == null) return;
                         MiniGamePacket.RequestHandicap(pCharacter, pCharacter.Room);
                         break;
                     }
 
                 case MiniRoomOpClient.RequestHandicapResult: //Request handicap result
                     {
+                        if (!(pCharacter.Room is Omok omok)) return;
                         bool result = pPacket.ReadBool();
-                        Omok omok = (Omok)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
 
                         int otherPlrIdx = pCharacter.RoomSlotId == 0 ? 1 : 0;
                         byte countBack = omok.mCurrentTurnIndex == otherPlrIdx ? (byte)2 : (byte)1;
@@ -306,10 +313,8 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                 default:
                     {
-                        if (pCharacter.Room != null)
-                        {
-                            pCharacter.Room.OnPacket(pCharacter, action, pPacket);
-                        }
+                        if (pCharacter.Room == null) return;
+                        pCharacter.Room.OnPacket(pCharacter, action, pPacket);
                         //MessagePacket.SendNotice("This feature is currently disabled due to maintenance.", pCharacter);
                         break;
                     }
@@ -522,7 +527,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteByte((byte)MiniRoomOpServer.Chat);
             pw.WriteByte((byte)MiniRoomChatType.Notice);
             pw.WriteByte((byte)noticeType);
-            pw.WriteString(chr.Name);
+            pw.WriteString(chr?.Name ?? "");
             room.BroadcastPacket(pw);
         }
         public static void ChatText(MiniRoomBase room, GameCharacter chr, string text)

@@ -19,17 +19,18 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public IDictionary<byte, GameCharacter> Users { get; }
         public bool Opened { get; protected set; }
         public bool CloseRequest { get; protected set; }
-        public bool GameStarted { get; set; }
         public bool Tournament { get; protected set; }
         public int RoundID { get; protected set; }
         public Pos mHost { get; protected set; }
         public MiniRoomType Type { get; private set; }
         public byte mWinnerIndex { get; set; }
         public GameCharacter Owner { get; private set; }
+        public Map Field { get; }
 
         protected MiniRoomBase(GameCharacter owner, byte maxUsers, MiniRoomType type)
         {
             Owner = owner;
+            Field = owner.Field;
             ID = Server.Instance.MiniRoomIDs.NextValue();
             MiniRooms.Add(ID, this);
             MaxUsers = maxUsers;
@@ -37,7 +38,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             Opened = false;
             CloseRequest = false;
             Tournament = false;
-            GameStarted = false;
             Type = type;
         }
         public virtual void OnInitialize()
@@ -66,6 +66,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
 
             return 0xFF;
+        }
+
+        public GameCharacter GetVisitor()
+        {
+            Users.TryGetValue(1, out GameCharacter visitor);
+            return visitor;
         }
 
         public GameCharacter GetOtherUser(byte currentIdx)

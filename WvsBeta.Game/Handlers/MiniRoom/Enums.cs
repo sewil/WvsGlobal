@@ -20,11 +20,13 @@
         GiveUp = 26,
         RequestHandicap = 28,
         RequestHandicapResult = 29,
+        RequestLeave = 30,
+        CancelRequestLeave = 31,
         Ready = 32,
         Unready = 33,
         Expel = 34,
-        StartOmok = 35,
-        OmokWinner = 37,
+        StartGame = 35,
+        EndGame = 37,
         PlaceOmokPiece = 38,
     }
     public enum MiniRoomOpServer
@@ -75,11 +77,12 @@
     }
     public enum MiniRoomLeaveReason : byte
     {
-        YouHaveLeft = 0,
+        Leave = 0,
         YouCantEstablishAMiniRoomHere = 1,
         Cancel = 2,
         Closed = 3,
         Expelled = 4,
+        ForcedLeave = 5,
         TradeSuccessful = 6,
         TradeUnsuccessful = 7,
         TradeInventoryFull = 8,

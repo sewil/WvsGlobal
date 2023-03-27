@@ -36,8 +36,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         public override void RemovePlayer(GameCharacter pCharacter, MiniRoomLeaveReason pReason)
         {
-            RevertItems();
-            base.RemovePlayer(pCharacter, pReason);
+            Close(reason: MiniRoomLeaveReason.Cancel);
         }
 
         public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Cancel)
@@ -76,7 +75,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public void CompleteTrade()
         {
             AddItems();
-            Close(true, MiniRoomLeaveReason.TradeSuccessful);
+            Close(reason: MiniRoomLeaveReason.TradeSuccessful);
         }
 
         private bool CheckInventories(out byte userSlotFull)
