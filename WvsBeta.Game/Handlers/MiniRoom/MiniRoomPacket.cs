@@ -206,24 +206,17 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     }
                 case MiniRoomOpClient.RequestTieResult:
                     {
+                        if (!(pCharacter.Room is MiniGameRoom game)) return;
                         bool result = pPacket.ReadBool();
-                        if (result && MiniRoomBase.MiniRooms.TryGetValue(pCharacter.Room.ID, out MiniRoomBase omok))
-                        {
-                            ((Omok)omok).EndGame(pCharacter, GameResult.Tie);
-                        }
-                        else
-                        {
-                            MiniGamePacket.RequestTieDeny(pCharacter, pCharacter.Room);
-                        }
+                        if (result) game.EndGame(pCharacter, GameResult.Tie);
+                        else MiniGamePacket.RequestTieDeny(pCharacter, game);
                         break;
                     }
                 case MiniRoomOpClient.GiveUp:
                     {
-                        if (MiniRoomBase.MiniRooms.TryGetValue(pCharacter.Room.ID, out MiniRoomBase omok))
-                        {
-                            GameCharacter winner = omok.Users[(byte)(pCharacter.RoomSlotId == 0 ? 1 : 0)];
-                            ((Omok)omok).EndGame(winner, GameResult.Forfeit);
-                        }
+                        if (!(pCharacter.Room is MiniGameRoom game)) return;
+                        GameCharacter winner = game.Users[(byte)(pCharacter.RoomSlotId == 0 ? 1 : 0)];
+                        game.EndGame(winner, GameResult.Forfeit);
                         break;
                     }
 
@@ -287,7 +280,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         }
                         break;
                     }
-
+                case MiniRoomOpClient.MatchCardsPickCard:
+                    {
+                        if (!(pCharacter.Room is MatchCard mc)) return;
+                        bool first = pPacket.ReadBool();
+                        byte idx = pPacket.ReadByte();
+                        mc.FlipCard(pCharacter, first, idx);
+                        break;
+                    }
                 case MiniRoomOpClient.RequestHandicap:
                     {
                         if (pCharacter.Room == null) return;
@@ -347,13 +347,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 case MiniRoomType.MatchCards: // Match Cards TODO!
                     {
                         miniroomLog.Info($"{chr.Name} creates a match cards");
-                        string title = packet.ReadString();
+                        string title = packet.ReadString();//49 00 02 01 00 61 00 00
                         bool isPrivate = packet.ReadBool();
                         string password = null;
                         if (isPrivate) password = packet.ReadString();
-                        packet.Skip(7);
-                        byte cardType = packet.ReadByte();
-                        MatchCard mc = new MatchCard(chr, title, isPrivate, password, cardType);
+                        var boardSize = (MatchCardsSize)packet.ReadByte();
+                        MatchCard mc = new MatchCard(chr, title, isPrivate, password, boardSize);
                         break;
                     }
 
@@ -418,17 +417,18 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             switch (mrb.Type)
             {
+                case MiniRoomType.MatchCards:
                 case MiniRoomType.Omok:
                     {
                         bool usePassword = packet.ReadBool();
-                        Omok omok = (Omok)MiniRoomBase.MiniRooms[mrb.ID];
+                        MiniGameRoom game = mrb as MiniGameRoom;
 
                         if (usePassword)
                         {
                             string password = packet.ReadString();
-                            if (password != omok.Password)
+                            if (password != game.Password)
                             {
-                                miniroomLog.Info($"{chr.Name} cannot enter omok: invalid password");
+                                miniroomLog.Info($"{chr.Name} cannot enter minigame: invalid password");
                                 MiniGamePacket.ErrorMessage(chr, MiniGameError.IncorrectPassword);
                                 chr.Room = null;
                                 break;
@@ -436,14 +436,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         }
                         if (chr.Inventory.Mesos >= 100)
                         {
-                            omok.AddPlayer(chr);
-                            MiniRoomBalloonPacket.Send(omok.Owner, omok);
+                            game.AddPlayer(chr);
                             chr.Inventory.AddMesos(-100);
-                            miniroomLog.Info($"{chr.Name} entered omok");
+                            miniroomLog.Info($"{chr.Name} entered minigame");
                         }
                         else
                         {
-                            miniroomLog.Info($"{chr.Name} cannot enter omok: not enough mesos");
+                            miniroomLog.Info($"{chr.Name} cannot enter minigame: not enough mesos");
                             MiniGamePacket.ErrorMessage(chr, MiniGameError.NotEnoughMesos);
                         }
                         break;
@@ -457,9 +456,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 case MiniRoomType.PlayerShop:
                     {
                         miniroomLog.Info($"{chr.Name} entered playershop");
-                        PlayerShop shop = (PlayerShop)MiniRoomBase.MiniRooms[roomId];
-                        shop.AddPlayer(chr);
-                        PlayerShopPackets.PersonalShopRefresh(chr, shop); //Show items 
+                        mrb.AddPlayer(chr);
                         break;
                     }
             }
@@ -545,6 +542,16 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             var args = new Handlers.CommandHandling.CommandArgs(commandText);
             switch (args.Command.ToLower())
             {
+                case "packet":
+                    {
+                        if (args.Count > 0)
+                        {
+                            var pw = new Packet();
+                            pw.WriteHexString(args.CommandText);
+                            character.SendPacket(pw);
+                        }
+                        break;
+                    }
                 case "chatnotice":
                     {
                         if (byte.TryParse(args[0], out byte opCode))

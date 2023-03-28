@@ -5,7 +5,7 @@ namespace WvsBeta.Game.Handlers.MiniRoom
     public class BalloonRoom : MiniRoomBase
     {
         public bool GameStarted { get; protected set; }
-        public byte PieceType { get; protected set; }
+        public byte GameBoardType { get; protected set; }
         public string Title { get; }
         public bool Private { get; }
         public string Password { get; }

@@ -225,7 +225,7 @@
         ___END_MESSENGER,
 
         ___START_MINIROOM,
-        MINI_ROOM_BASE = 194,
+        MINI_ROOM_BASE = 0xC2,
         ___END_MINIROOM,
 
         ___START_TOURNAMENT,

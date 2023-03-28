@@ -28,6 +28,7 @@
         StartGame = 35,
         EndGame = 37,
         PlaceOmokPiece = 38,
+        MatchCardsPickCard = 0x2A
     }
     public enum MiniRoomOpServer
     {
@@ -41,7 +42,17 @@
         TradePutItem = 13,
         TradePutMesos = 14,
         TradeSelect = 15,
-        MiniGameUpdate = 0x24
+        GameRequestTie = 0x18,
+        GameRequestTieDeny = 0x19,
+        GameRequestHandicap = 0x1C,
+        GameRequestHandicapResult = 0x1D,
+        GameReady = 0x20,
+        GameUnready = 0x21,
+        GameStart = 0x23,
+        GameEnd = 0x24,
+        MatchCardsTurn = 0x25,
+        OmokMovePiece = 0x26,
+        MatchCardsFlipCard = 0x2A,
     }
     public enum MiniRoomType
     {
@@ -115,5 +126,24 @@
         TenSecondsLeft = 101,
         GameHasStarted = 102,
         GameHasEnded = 103,
+    }
+    public enum MatchCardsSize
+    {
+        Small = 0,
+        Medium = 1,
+        Large = 2
+    }
+    public static class EnumExtensions
+    {
+        public static byte GetCardsCount(this MatchCardsSize size)
+        {
+            switch (size)
+            {
+                case MatchCardsSize.Small: return 4 * 3;
+                case MatchCardsSize.Medium: return 5 * 4;
+                case MatchCardsSize.Large: return 6 * 5;
+                default: return 0;
+            }
+        }
     }
 }

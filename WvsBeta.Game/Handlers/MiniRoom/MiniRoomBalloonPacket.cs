@@ -37,7 +37,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteInt(room.ID); //game object  (Make match cards done with characterid, and omok with objectid)
             pw.WriteString(room.Title);
             pw.WriteBool(room.Private); //0 : public 1 : private
-            pw.WriteByte(room.PieceType);
+            pw.WriteByte(room.GameBoardType);
             pw.WriteByte((byte)room.Users.Count); // Current slots (1-4)
             pw.WriteByte(room.MaxUsers); // Max slots (1-4)
             pw.WriteBool(room.GameStarted);

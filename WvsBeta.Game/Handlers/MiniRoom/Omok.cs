@@ -1,5 +1,4 @@
-﻿using Org.BouncyCastle.Bcpg;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
 using WvsBeta.Common.Interfaces;
@@ -33,7 +32,6 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public int mGameResult { get; set; }
         public int[][] mCheckedStones { get; set; }
         public int[] mPlayerColor { get; set; }
-        public byte mCurrentTurnIndex { get; set; }
         public int mLastStoneChecker { get; set; }
         public bool mUserReady { get; set; }
         public byte OmokType { get; set; }
@@ -73,6 +71,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             if (CheckStoneDiagonal(Piece, true) || CheckStoneDiagonal(Piece, false)
             || CheckStoneHorizontal(Piece) || CheckStoneVertical(Piece)) return true;
             else return false;
+        }
+
+        public override void StartGame(GameCharacter chr)
+        {
+            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
+            pw.WriteByte((byte)MiniRoomOpServer.GameStart);
+            pw.WriteByte(mWinnerIndex); //0 Would let slot 1, 1 would let slot 0
+            SendStartGame(pw);
         }
 
         public override void EndGame(GameCharacter winner, GameResult result)

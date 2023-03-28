@@ -1,6 +1,4 @@
-﻿using System;
-using WvsBeta.Common.Character;
-using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.MiniRoom;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
@@ -10,7 +8,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void ErrorMessage(GameCharacter chr, MiniGameError error)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(5);
+            pw.WriteByte((byte)MiniRoomOpServer.EnterResult);
             pw.WriteByte(0);
             pw.WriteByte((byte)error);
             chr.SendPacket(pw);
@@ -19,14 +17,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void Ready(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x20);
+            pw.WriteByte((byte)MiniRoomOpServer.GameReady);
             mrb.BroadcastPacket(pw);
         }
 
         public static void UnReady(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x21);
+            pw.WriteByte((byte)MiniRoomOpServer.GameUnready);
             mrb.BroadcastPacket(pw);
         }
 
@@ -42,7 +40,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public static void RequestTie(GameCharacter chr, MiniRoomBase mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x18);
+            pw.WriteByte((byte)MiniRoomOpServer.GameRequestTie);
             mrb.BroadcastPacket(pw, chr);
         }
 
@@ -50,7 +48,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x19);
+            pw.WriteByte((byte)MiniRoomOpServer.GameRequestTieDeny);
             mrb.BroadcastPacket(pw, chr);
         }
 
@@ -58,7 +56,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             //Your opponent has requested for a handicap. Will you accept it? 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x1C);
+            pw.WriteByte((byte)MiniRoomOpServer.GameRequestHandicap);
             mrb.BroadcastPacket(pw, chr);
         }
 
@@ -66,7 +64,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             //Your opponent denied your request for a handicap
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x1D);
+            pw.WriteByte((byte)MiniRoomOpServer.GameRequestHandicapResult);
             pw.WriteBool(result); //deny or not ?
             pw.WriteByte(countBack);
             pw.WriteByte(chr.RoomSlotId == 0 ? (byte)1 : (byte)0);
@@ -77,47 +75,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             //decodebuffer (8 bytes.. obviously 2 ints)
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x26); //?
+            pw.WriteByte((byte)MiniRoomOpServer.OmokMovePiece); //?
             pw.WriteInt(X);
             pw.WriteInt(Y);
             //Type
             pw.WriteByte(Piece); //Works as piece too 
             mrb.BroadcastPacket(pw);
-        }
-
-        public static void RemoveOmokPieceTest(MiniRoomBase mrb, int X, int Y, byte Piece)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x26);
-            pw.WriteInt(X);
-            pw.WriteInt(Y);
-            pw.WriteSByte(-1);
-            mrb.BroadcastPacket(pw);
-        }
-
-        public static void Expel(MiniRoomBase mrb, byte pWho)
-        {
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x25);
-            pw.WriteByte(pWho);
-            mrb.BroadcastPacket(pw);
-        }
-
-        public static void Start(GameCharacter chr, MiniRoomBase mrb)
-        {
-            //Timer is (null) then client stops responding ;-;
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x23);
-            pw.WriteByte(mrb.mWinnerIndex); //0 Would let slot 1, 1 would let slot 0
-            mrb.BroadcastPacket(pw);
-        }
-        public static void Start2(GameCharacter chr, MiniRoomBase mrb)
-        {
-            //Timer is (null) then client stops responding ;-;
-            Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x23);
-            pw.WriteByte(1); //piece id 
-            chr.SendPacket(pw);
         }
 
         public static void EndGame(MiniGameRoom mrb, GameResult result, GameCharacter winner)
@@ -129,12 +92,35 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 return;
             }
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte((byte)MiniRoomOpServer.MiniGameUpdate);
+            pw.WriteByte((byte)MiniRoomOpServer.GameEnd);
             pw.WriteByte((byte)result);
             if (result != GameResult.Tie) pw.WriteByte(winner.RoomSlotId);
             mrb.EncodeGameStats(mrb.Owner, pw);
             mrb.EncodeGameStats(visitor, pw);
             mrb.BroadcastPacket(pw);
+        }
+
+        public static void MatchCardsTurn(MatchCard mc, byte slot)
+        {
+            var pw = new Packet(ServerMessages.MINI_ROOM_BASE);
+            pw.WriteByte((byte)MiniRoomOpServer.MatchCardsTurn);
+            pw.WriteByte(slot);
+            mc.BroadcastPacket(pw);
+        }
+        public static void FlipCard(GameCharacter chr, MatchCard mc, bool first, byte idx, byte firstIdx, bool match)
+        {
+            // /packet C2 2A 00 01 00 00
+            var pw = new Packet(ServerMessages.MINI_ROOM_BASE);
+            pw.WriteByte((byte)MiniRoomOpServer.MatchCardsFlipCard);
+            pw.WriteBool(first);
+            pw.WriteByte(idx);
+            if (!first)
+            {
+                pw.WriteByte(firstIdx);
+                byte type = (byte)(chr.RoomSlotId + (match ? 2 : 0));
+                pw.WriteByte(type); // 2 = match
+            }
+            mc.BroadcastPacket(pw, first ? chr : null);
         }
     }
 }

@@ -34,13 +34,15 @@ namespace WvsBeta.Game
     }
     public class CharacterGameStats
     {
+        public GameStats this[MiniGameType index] => allStats[index];
+
         public GameCharacter mCharacter { get; set; }
-        public readonly IDictionary<MiniGameType, GameStats> AllStats;
+        private readonly IDictionary<MiniGameType, GameStats> allStats;
 
         public CharacterGameStats(GameCharacter pCharacter)
         {
             mCharacter = pCharacter;
-            AllStats = new Dictionary<MiniGameType, GameStats>()
+            allStats = new Dictionary<MiniGameType, GameStats>()
             {
                 { MiniGameType.Omok, new GameStats(MiniGameType.Omok, 0, 0, 0, 0) },
                 { MiniGameType.MatchCards, new GameStats(MiniGameType.MatchCards, 0, 0, 0, 0) },
@@ -54,7 +56,7 @@ namespace WvsBeta.Game
                 while (reader.Read())
                 {
                     var type = (MiniGameType)reader.GetInt32("type");
-                    AllStats[type] = new GameStats(
+                    allStats[type] = new GameStats(
                         type,
                         reader.GetInt32("wins"),
                         reader.GetInt32("ties"),
@@ -73,7 +75,7 @@ namespace WvsBeta.Game
                 comm.Parameters.AddWithValue("@charid", mCharacter.ID);
                 comm.ExecuteNonQuery();
 
-                foreach (var stats in AllStats)
+                foreach (var stats in allStats)
                 {
                     comm.Parameters.Clear();
                     comm.CommandText = "INSERT INTO gamestats (charid, type, wins, losses, ties, points) VALUES (@charid, @type, @wins, @losses, @ties, @points)";
@@ -89,8 +91,8 @@ namespace WvsBeta.Game
         }
         public void Encode(Packet pw)
         {
-            pw.WriteShort((short)AllStats.Count);
-            foreach (var stats in AllStats)
+            pw.WriteShort((short)allStats.Count);
+            foreach (var stats in allStats)
             {
                 stats.Value.Encode(pw);
             }

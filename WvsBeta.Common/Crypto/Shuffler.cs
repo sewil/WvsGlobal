@@ -5,7 +5,7 @@ namespace System
 {
     public static class Shuffler
     {
-        public static void Shuffle<T>(this IList<T> list)
+        public static IList<T> Shuffle<T>(this IList<T> list)
         {
             RNGCryptoServiceProvider provider = new RNGCryptoServiceProvider();
             int n = list.Count;
@@ -20,6 +20,7 @@ namespace System
                 list[k] = list[n];
                 list[n] = value;
             }
+            return list;
         }
 
     }

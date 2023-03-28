@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Objects;
@@ -53,6 +51,12 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     pst.Value.sItem = null;
                 }
             }
+        }
+
+        public override void AddPlayer(GameCharacter pCharacter)
+        {
+            base.AddPlayer(pCharacter);
+            if (pCharacter != Owner) PlayerShopPackets.PersonalShopRefresh(pCharacter, this); //Show items
         }
 
         public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)
