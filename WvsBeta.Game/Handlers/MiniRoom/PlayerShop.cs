@@ -173,7 +173,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             if (cost > pCharacter.Inventory.Mesos)
             {
-                // TODO: Get packet?
+                PlayerShopPackets.SendItemResult(pCharacter, PlayerShopItemResult.NotEnoughMesos);
+                InventoryOperationPacket.NoChange(pCharacter);
+                return;
+            }
+            if (!pCharacter.Inventory.CanExchange(0, pst.sItem.ItemID, realAmount))
+            {
+                PlayerShopPackets.SendItemResult(pCharacter, PlayerShopItemResult.InventoryFull);
+                InventoryOperationPacket.NoChange(pCharacter);
                 return;
             }
 

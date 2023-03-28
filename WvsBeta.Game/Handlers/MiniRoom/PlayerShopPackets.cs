@@ -23,16 +23,11 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             ps.BroadcastPacket(pw);
         }
 
-        public static void OnItemResult(GameCharacter pCharacter, byte msg)
+        public static void SendItemResult(GameCharacter pCharacter, PlayerShopItemResult type)
         {
-            //1 : You do not have enough in stock. 
-            //2 : You have not enough mesos  o.o
-            //3 : The price of the item is too high for the trade
-            //4 i cant even read this one lol, something about not possessing enough mesos
-            //5 : Please check and see if your inventory is full or not.
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x14);
-            pw.WriteByte(msg);
+            pw.WriteByte((byte)MiniRoomOpServer.PlayerShopItemResult);
+            pw.WriteByte((byte)type);
             pCharacter.SendPacket(pw);
         }
 
@@ -49,7 +44,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             //Shows the information on who has bought an item.
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
-            pw.WriteByte(0x16);
+            pw.WriteByte((byte)MiniRoomOpServer.PlayerShopSoldItemResult);
             pw.WriteByte(slot); //Slot in shop 
             pw.WriteShort(amount); //Number of purchases
             pw.WriteString(pBuyer.Name);

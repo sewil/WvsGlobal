@@ -42,6 +42,8 @@
         TradePutItem = 13,
         TradePutMesos = 14,
         TradeSelect = 15,
+        PlayerShopItemResult = 0x14,
+        PlayerShopSoldItemResult = 0x16,
         GameRequestTie = 0x18,
         GameRequestTieDeny = 0x19,
         GameRequestHandicap = 0x1C,
@@ -69,7 +71,7 @@
         MatchCards = 2
     }
 
-    public enum MiniGameError : byte
+    public enum MiniRoomEnterError : byte
     {
         RoomAlreadyClosed = 0x01,
         FullCapacity = 0x02,
@@ -85,6 +87,15 @@
         BuiltAtMainTown = 0x0C,
         UnableToEnterTournament = 0x0D,
         IncorrectPassword = 0x10,
+    }
+    public enum PlayerShopItemResult : byte
+    {
+        NotEnoughInStock = 1,
+        NotEnoughMesos = 2,
+        PriceOfItemTooHighForTrade = 3,
+        BuyerDoesNotPossessEnoughMoney = 4,
+        CannotCarryMoreThanOne = 5,
+        InventoryFull = 6,
     }
     public enum MiniRoomLeaveReason : byte
     {

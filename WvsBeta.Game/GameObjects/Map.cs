@@ -997,7 +997,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // ShowPlayer also redistibutes mobs, we want this
             ShowPlayer(chr, false);
 
-            BalloonRooms.ForEach(ps => MiniRoomBalloonPacket.Send(ps.Value.Owner, ps.Value));
+            BalloonRooms.Where(i => i.Value.Opened).ForEach(ps => MiniRoomBalloonPacket.Send(ps.Value.Owner, ps.Value));
 
             Kites.ForEach(kite => MapPacket.Kite(chr, kite));
 

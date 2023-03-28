@@ -32,6 +32,7 @@ namespace WvsBeta.Game.Handlers.MiniRoom
         public void Open()
         {
             SendBalloon(false);
+            Opened = true;
         }
 
         public override void Close(bool sendPacket = true, MiniRoomLeaveReason reason = MiniRoomLeaveReason.Closed)

@@ -429,7 +429,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             if (password != game.Password)
                             {
                                 miniroomLog.Info($"{chr.Name} cannot enter minigame: invalid password");
-                                MiniGamePacket.ErrorMessage(chr, MiniGameError.IncorrectPassword);
+                                MiniGamePacket.SendEnterResultError(chr, MiniRoomEnterError.IncorrectPassword);
                                 chr.Room = null;
                                 break;
                             }
@@ -443,7 +443,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         else
                         {
                             miniroomLog.Info($"{chr.Name} cannot enter minigame: not enough mesos");
-                            MiniGamePacket.ErrorMessage(chr, MiniGameError.NotEnoughMesos);
+                            MiniGamePacket.SendEnterResultError(chr, MiniRoomEnterError.NotEnoughMesos);
                         }
                         break;
                     }

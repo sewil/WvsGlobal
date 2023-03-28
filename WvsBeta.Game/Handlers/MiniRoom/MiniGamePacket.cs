@@ -5,7 +5,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 {
     public static class MiniGamePacket
     {
-        public static void ErrorMessage(GameCharacter chr, MiniGameError error)
+        public static void SendEnterResultError(GameCharacter chr, MiniRoomEnterError error)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.EnterResult);
