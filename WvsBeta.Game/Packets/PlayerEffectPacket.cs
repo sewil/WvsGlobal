@@ -6,7 +6,8 @@ namespace WvsBeta.Game.Packets
     {
         SkillOnSelf = 1,
         SkillOnOther = 2,
-        Pet = 4
+        Pet = 4,
+        UseEXPCharm = 6,
     }
     public enum PetEffectType
     {
@@ -14,20 +15,18 @@ namespace WvsBeta.Game.Packets
         Tp = 1,
         TpBack = 2
     }
-    public class PlayerEffectPacket
+    public class PlayerEffectPacket : Packet
     {
         private Packet foreignpw;
-        private Packet localpw;
         private GameCharacter chr;
-        private PlayerEffectPacket(GameCharacter chr, PlayerEffectType type)
+        private PlayerEffectPacket(GameCharacter chr, PlayerEffectType type) : base(ServerMessages.PLAYER_EFFECT)
         {
             this.chr = chr;
             foreignpw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
             foreignpw.WriteInt(chr.ID);
             foreignpw.WriteByte((byte)type);
 
-            localpw = new Packet(ServerMessages.PLAYER_EFFECT);
-            localpw.WriteByte((byte)type);
+            WriteByte((byte)type);
         }
         private void Send(bool foreignOnly, bool localOnly)
         {
@@ -38,7 +37,7 @@ namespace WvsBeta.Game.Packets
 
             if (!foreignOnly)
             {
-                chr.SendPacket(localpw);
+                chr.SendPacket(this);
             }
         }
         public static void SendSkill(GameCharacter chr, int skillId, byte skillLevel, bool foreignOnly = false, bool localOnly = false, bool onOther = false)
@@ -51,8 +50,8 @@ namespace WvsBeta.Game.Packets
             }
             if (!foreignOnly)
             {
-                p.localpw.WriteInt(skillId);
-                p.localpw.WriteByte(skillLevel);
+                p.WriteInt(skillId);
+                p.WriteByte(skillLevel);
             }
             p.Send(foreignOnly, localOnly);
         }
@@ -66,9 +65,22 @@ namespace WvsBeta.Game.Packets
             }
             if (!foreignOnly)
             {
-                p.localpw.WriteByte((byte)type);
+                p.WriteByte((byte)type);
             }
             p.Send(foreignOnly, localOnly);
+        }
+
+        public static void SendUseEXPCharm(GameCharacter chr, bool isSafetyCharm, int itemid, byte daysLeft, byte timesLeft)
+        {
+            var pw = new PlayerEffectPacket(chr, PlayerEffectType.UseEXPCharm);
+            pw.WriteBool(isSafetyCharm);
+            pw.WriteByte(timesLeft);
+            pw.WriteByte(daysLeft);
+            if (!isSafetyCharm)
+            {
+                pw.WriteInt(itemid);
+            }
+            pw.Send(false, true);
         }
     }
 }
