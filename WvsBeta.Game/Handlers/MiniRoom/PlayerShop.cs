@@ -177,7 +177,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 InventoryOperationPacket.NoChange(pCharacter);
                 return;
             }
-            if (!pCharacter.Inventory.CanExchange(0, pst.sItem.ItemID, realAmount))
+            if (!pCharacter.Inventory.CanExchange(0, (pst.sItem.ItemID, realAmount)))
             {
                 PlayerShopPackets.SendItemResult(pCharacter, PlayerShopItemResult.InventoryFull);
                 InventoryOperationPacket.NoChange(pCharacter);

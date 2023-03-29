@@ -83,28 +83,12 @@ namespace WvsBeta.Common.Character
         public int GetItemAmount(int itemid)
         {
             int amount = 0;
-            BaseItem temp = null;
+            Inventory inv = Constants.getInventory(itemid);
 
-            foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
-            {
-                for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
-                { // Slot 1 - 24, not 0 - 23
-                    temp = GetItem(inventory, slot);
-                    if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
-                }
-            }
-
-            return amount;
-        }
-
-        public int GetItemAmount(Inventory inventory, int itemid)
-        {
-            int amount = 0;
-            BaseItem temp = null;
-            for (short i = 1; i <= MaxSlots[inventory]; i++)
+            for (short i = 1; i <= MaxSlots[inv]; i++)
             { // Slot 1 - 24, not 0 - 23
-                temp = GetItem(inventory, i);
-                if (temp != null && temp.ItemID == itemid) amount += temp.Amount;
+                BaseItem item = GetItem(inv, i);
+                if (item != null && item.ItemID == itemid) amount += item.Amount;
             }
             return amount;
         }

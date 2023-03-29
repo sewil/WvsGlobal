@@ -102,7 +102,7 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestCheck(GameCharacter chr, WZQuestCheck check)
         {
-            foreach (var item in check.Items.Select(i => i.Value)) { if (!chr.Inventory.CanExchange(0, item.ItemID, (short)-item.Amount)) throw new QuestException(QuestActionResult.UnknownError); }
+            foreach (var item in check.Items.Select(i => i.Value)) { if (!chr.Inventory.CanExchange(0, (item.ItemID, (short)-item.Amount))) throw new QuestException(QuestActionResult.UnknownError); }
             if (check.Mesos > 0 && !chr.Inventory.CanExchange(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (check.LvMin > 0 && chr.Level < check.LvMin) throw new QuestException(QuestActionResult.UnknownError);
             if (check.LvMax > 0 && chr.Level > check.LvMax) throw new QuestException(QuestActionResult.UnknownError);
@@ -131,7 +131,7 @@ namespace WvsBeta.Game
                     from += item.Prop;
                     if (!win) continue;
                 }
-                if (!chr.Inventory.CanExchange(0, item.ItemID, item.Amount)) throw new QuestException(QuestActionResult.InventoryFull);
+                if (!chr.Inventory.CanExchange(0, (item.ItemID, item.Amount))) throw new QuestException(QuestActionResult.InventoryFull);
                 itemsToGive.Add(item);
             }
             if (act.Mesos > 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.UnknownError);
@@ -141,7 +141,7 @@ namespace WvsBeta.Game
             {
                 foreach (QuestItem item in itemsToGive)
                 {
-                    chr.Inventory.Exchange(0, item.ItemID, item.Amount);
+                    chr.Inventory.MassExchange(0, (item.ItemID, item.Amount));
                 }
             }
             if (act.Mesos != 0)
@@ -192,7 +192,7 @@ namespace WvsBeta.Game
                         // lost item [42] [00] [E9 03] [01 00 00 00] [1B 82 3D 00]
                         int amount = packet.ReadInt();
                         int itemid = packet.ReadInt();
-                        if (chr.Inventory.Exchange(0, itemid, (short)amount) == 0)
+                        if (!chr.Inventory.MassExchange(0, (itemid, (short)amount)))
                         {
                             SendQuestActionResultError(chr, QuestActionResult.InventoryFull);
                         }

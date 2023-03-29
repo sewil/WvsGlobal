@@ -141,7 +141,7 @@ namespace WvsBeta.Game.GameObjects
             if (Check == null || ClearedItems) return;
             foreach (var item in Check.Items.Select(i => i.Value))
             {
-                if (!Character.Inventory.HasItemAmount(item.ItemID, item.Amount, out Inventory _)) return;
+                if (!Character.Inventory.HasItemAmount(item.ItemID, item.Amount)) return;
             }
             ClearedItems = true;
         }

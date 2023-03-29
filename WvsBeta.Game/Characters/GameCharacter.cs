@@ -663,7 +663,9 @@ namespace WvsBeta.Game
         public bool IncMoney(int inc, MessageAppearType appearType = MessageAppearType.None)
         {
             if (!Inventory.CanExchange(inc)) return false;
-            Inventory.Exchange(inc);
+            if (appearType == MessageAppearType.ChatGrey) MessagePacket.GainMesos(inc);
+            else if (appearType == MessageAppearType.SideWhite) MessagePacket.DropPickup(true, inc, 0);
+            Inventory.AddMesos(inc, false);
             return true;
         }
         public void IncPOP(short inc, int isSelf)
@@ -679,19 +681,19 @@ namespace WvsBeta.Game
         {
             if (0 <= avatarID && avatarID <= 4) // Skin
             {
-                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
+                if (!Inventory.MassExchange(0, (coupon, -1))) return AvatarSelectState.MissingCoupon;
                 SetSkin((byte)avatarID);
                 return AvatarSelectState.Success;
             }
             else if (avatarID % (20000 + (Gender * 1000)) < 1000) // Face
             {
-                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
+                if (!Inventory.MassExchange(0, (coupon, -1))) return AvatarSelectState.MissingCoupon;
                 SetFace(avatarID);
                 return AvatarSelectState.Success;
             }
             else if (avatarID % (30000 + (Gender * 1000)) < 1000) // Hair & hair color
             {
-                if (Inventory.Exchange(0, coupon, -1) == 0) return AvatarSelectState.MissingCoupon;
+                if (!Inventory.MassExchange(0, (coupon, -1))) return AvatarSelectState.MissingCoupon;
                 SetHair(avatarID);
                 return AvatarSelectState.Success;
             }

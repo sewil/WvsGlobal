@@ -403,22 +403,22 @@ namespace WvsBeta.Game
             }
         }
 
-        public bool HasItemAmount(int itemId, short amount, out Inventory inventory)
+        public bool HasItemAmount(int itemId, short amount)
         {
-            inventory = 0;
             if (amount <= 0) return false;
 
             short actualAmount = 0;
             var isRechargeable = Constants.isRechargeable(itemId);
-            inventory = Constants.getInventory(itemId);
-            for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
+            var inv = Constants.getInventory(itemId);
+            for (short slot = 1; slot <= MaxSlots[inv]; slot++)
             {
-                BaseItem item = GetItem(inventory, slot);
+                var item = GetItem(inv, slot);
                 if (item == null || item.ItemID != itemId) continue;
 
                 actualAmount += isRechargeable ? (short)1 : item.Amount;
+                if (actualAmount >= amount) return true;
             }
-            return actualAmount >= amount;
+            return false;
         }
 
         public void AddMesos(int value, bool isSelf = false)
@@ -492,7 +492,7 @@ namespace WvsBeta.Game
             else
             {
                 newItem = item.SplitInTwo(amount);
-                removeItem = item.Amount == 0 && Constants.isStar(item.ItemID) == false;
+                removeItem = item.Amount == 0 && !Constants.isStar(item.ItemID);
             }
 
             if (removeItem)
@@ -712,7 +712,7 @@ namespace WvsBeta.Game
         {
             foreach (var item in useItems)
             {
-                if (!HasItemAmount(item, 1, out Inventory _)) return false;
+                if (!HasItemAmount(item, 1)) return false;
             }
             var pets = GetPets();
             return false; // TODO: Implement pet revival
@@ -726,37 +726,24 @@ namespace WvsBeta.Game
             */
             return -1; // TODO: Implement move pet closeness, useItem is pet ap reset scroll
         }
-        public bool CanExchange(int mesos, params int[] items)
+        public bool CanExchange(int mesos, params (int itemid, short amount)[] items)
         {
-            if (items.Length % 2 != 0)
-            {
-                Program.MainForm.LogDebug("Invalid exchange args {0} {1}", mesos, items);
-                return false;
-            }
             if (mesos != 0)
             {
                 long newM = (long)Mesos + (long)mesos;
                 bool canExchangeMesos = 0 <= newM && newM <= int.MaxValue;
                 if (!canExchangeMesos) return false;
             }
-            if (items.Length > 0)
+            foreach (var (itemid,amount) in items)
             {
-                for (int i = 0; i < items.Length; i++)
+                if (amount == 0) continue;
+                if (amount < 0 && !HasItemAmount(itemid, Math.Abs(amount))) // Take item
                 {
-                    int itemId = items[i];
-                    if (i % 2 == 0) // itemid
-                    {
-                        short amount = (short)items[i + 1];
-                        if (amount == 0) continue;
-                        if (amount < 0) // Take item
-                        {
-                            if (!HasItemAmount(itemId, Math.Abs(amount), out Inventory _)) return false;
-                        }
-                        else // Give item
-                        {
-                            if (!HasSlotsFreeForItem(itemId, amount)) return false;
-                        }
-                    }
+                    return false;
+                }
+                else if (amount > 0 && !HasSlotsFreeForItem(itemid, amount)) // Give item
+                {
+                    return false;
                 }
             }
             return true;
@@ -769,31 +756,44 @@ namespace WvsBeta.Game
         /// <returns>Status code: 1 = success, 0 = error</returns>
         public int Exchange(int mesos, params int[] items)
         {
-            if (!CanExchange(mesos, items)) return 0;
+            if (items.Length % 2 != 0)
+            {
+                Program.MainForm.LogDebug("Invalid exchange args {0} {1}", mesos, items);
+                return 0;
+            }
+            // Parse
+            var parsedItems = new List<(int itemid, short amount)>();
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (i % 2 != 0) continue;
+                short amount = (short)items[i + 1];
+                if (amount == 0) continue;
+                parsedItems.Add((items[i], amount));
+            }
+            return MassExchange(mesos, parsedItems.ToArray()) ? 1 : 0;
+        }
+        public bool MassExchange(int mesos, params (int itemid, short amount)[] items)
+        {
+            if (!CanExchange(mesos, items)) return false;
 
             AddMesos(mesos);
             if (mesos != 0)
             {
                 Character.SendPacket(MessagePacket.GainMesos(mesos));
             }
-            for (int i = 0; i < items.Length; i++)
+            foreach(var (itemid,amount) in items)
             {
-                int itemid = items[i];
-                if (i % 2 == 0) // itemid
+                if (amount < 0) // Take item
                 {
-                    short amount = items.Length > i + 1 ? (short)items[i + 1] : (short)1;
-                    if (amount < 0) // Take item
-                    {
-                        TakeItem(itemid, (short)-amount);
-                    }
-                    else // Give item
-                    {
-                        AddItem(itemid, amount);
-                        Character.SendPacket(MessagePacket.DropPickup(false, itemid, amount)); // Is grey text vanilla?
-                    }
+                    TakeItem(itemid, (short)-amount);
+                }
+                else // Give item
+                {
+                    AddItem(itemid, amount);
                 }
             }
-            return 1;
+            PlayerEffectPacket.SendInventoryChanged(Character, items);
+            return true;
         }
         /// <summary>
         /// Mass exchange for rechargables:
@@ -851,7 +851,7 @@ namespace WvsBeta.Game
             if (party == null) return 0;
             foreach (var m in party.Characters)
             {
-                if (m.Inventory.HasItemAmount(itemid, 1, out Inventory _))
+                if (m.Inventory.HasItemAmount(itemid, 1))
                 {
                     return 1;
                 }
