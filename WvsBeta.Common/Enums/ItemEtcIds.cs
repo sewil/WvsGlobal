@@ -17,7 +17,9 @@
             TicketToLudiRegular= 4031074,
             MapleHistoryBookI = 4031157,
             MapleHistoryBookII = 4031158,
-            MapleHistoryBookIII = 4031159
+            MapleHistoryBookIII = 4031159,
+            SafetyCharm = 4120000,
+            EasterCharm = 4140903
         ;
     }
 }

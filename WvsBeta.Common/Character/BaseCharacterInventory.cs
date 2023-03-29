@@ -328,23 +328,34 @@ namespace WvsBeta.Common.Character
         public virtual short AddItem(BaseItem item, bool sendpacket = true) { throw new NotImplementedException(); }
 
         public virtual void TakeItem(BaseItem item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
-        public virtual BaseItem GetItem(int itemid, out Inventory inventory, out short slot)
+        /// <summary>
+        /// Get first item from an array of item ids
+        /// </summary>
+        public BaseItem GetFirstItem(Inventory inv, params int[] itemids)
         {
-            inventory = 0;
-            slot = 0;
-            foreach (Inventory _inventory in Enum.GetValues(typeof(Inventory)))
+            for (byte slot = 0; slot < MaxSlots[inv]; slot++)
             {
-                var items = this.Items[_inventory];
-                for (int j = 0; j < items.Length; j++)
+                var item = Items[inv][slot];
+                if (item == null) continue;
+                foreach (int itemid in itemids)
                 {
-                    var item = items[j];
-                    if (item != null && item.ItemID == itemid)
-                    {
-                        inventory = _inventory;
-                        slot = item.InventorySlot;
-                        return item;
-                    }
+                    if (item.ItemID == itemid) return item;
                 }
+            }
+            return null;
+        }
+        public bool TryGetItem(int itemid, out BaseItem item)
+        {
+            item = GetItem(itemid);
+            return item != null;
+        }
+        public BaseItem GetItem(int itemid)
+        {
+            Inventory inv = Constants.getInventory(itemid);
+            foreach (var item in Items[inv])
+            {
+                if (item == null || item.ItemID != itemid) continue;
+                return item;
             }
             return null;
         }

@@ -51,7 +51,7 @@ namespace WvsBeta.Scripts
             }
             else if (val == "ing")
             {
-                if (inventory.GetItemAmount(Inventory.Etc, 4031284) >= 1)
+                if (inventory.GetItemAmount(4031284) >= 1)
                 {
                     int nRet = self.AskYesNo("Wow! You found the Golden Egg? That's the rarest of the Easter Eggs! What are you going to do with it? If you give it to me, I'll give you some EXP! Now, I'm not used to giving out EXP, so I can't guarantee how much you're going to get. But life's a gamble, right? Otherwise, I've got a deal with all the store owners, and they'll give you some good money for it. (These EXP points may level you up as much as 'almost' two levels, depending on your level.) ");
                     if (nRet != 0)

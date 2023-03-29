@@ -1,7 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
 
@@ -546,6 +547,20 @@ namespace WvsBeta.Game
 
         public void loseEXP()
         {
+            BaseItem charm = Inventory.GetFirstItem(Common.Enums.Inventory.Etc, ItemEtcIds.SafetyCharm, ItemEtcIds.EasterCharm);
+            if (charm != null)
+            {
+                bool isSafetyCharm = charm.ItemID == ItemEtcIds.SafetyCharm;
+                byte daysLeft = 0;
+                byte timesLeft = 0;
+                Inventory.TakeItemAmountFromSlot(Common.Enums.Inventory.Etc, charm.InventorySlot, 1, false);
+                if (isSafetyCharm)
+                {
+                    daysLeft = (byte)Math.Max(0, (charm.Expiration - MasterThread.FileTime) / TimeSpan.TicksPerDay);
+                    timesLeft = (byte)Inventory.GetItemAmount(ItemEtcIds.SafetyCharm);
+                }
+                PlayerEffectPacket.SendUseEXPCharm(this, isSafetyCharm, charm.ItemID, daysLeft, timesLeft);
+            }
             if (CharacterStat.Job == 0 || PrimaryStats.Level >= 200) return;
 
             double lossPercent;

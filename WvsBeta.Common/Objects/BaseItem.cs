@@ -17,6 +17,9 @@ namespace WvsBeta.Common.Objects
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
+        /// <summary>
+        /// FileTime
+        /// </summary>
         public long Expiration { get; set; } = NoItemExpiration;
         public bool AlreadyInDatabase { get; set; } = false;
         public ItemType ItemType { get { return GetItemType(ItemID);  } }
@@ -55,8 +58,6 @@ namespace WvsBeta.Common.Objects
         public BaseItem SplitInTwo(short secondPairAmount)
         {
             if (this.Amount < secondPairAmount) return null;
-
-            if (CashId != 0) throw new Exception("Trying to split a cashitem in two!!!");
 
             var dupe = Duplicate();
             this.Amount -= secondPairAmount;
