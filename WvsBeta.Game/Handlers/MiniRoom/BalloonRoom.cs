@@ -2,7 +2,7 @@
 
 namespace WvsBeta.Game.Handlers.MiniRoom
 {
-    public class BalloonRoom : MiniRoomBase
+    public abstract class BalloonRoom : MiniRoomBase
     {
         public bool GameStarted { get; protected set; }
         public byte GameBoardType { get; protected set; }

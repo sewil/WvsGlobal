@@ -7,7 +7,7 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
 {
-    public class MiniRoomBase : IInitialize
+    public abstract class MiniRoomBase : IInitialize
     {
         protected string _transaction = Cryptos.GetNewSessionHash();
         public string TransactionID => _transaction;

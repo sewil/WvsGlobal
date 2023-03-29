@@ -6,7 +6,7 @@ using WvsBeta.Game.GameObjects.MiniRoom;
 
 namespace WvsBeta.Game.Handlers.MiniRoom
 {
-    public class MiniGameRoom : BalloonRoom
+    public abstract class MiniGameRoom : BalloonRoom
     {
         public byte mCurrentTurnIndex { get; set; }
         public MiniGameType GameType { get; }
@@ -55,10 +55,7 @@ namespace WvsBeta.Game.Handlers.MiniRoom
             }
         }
 
-        public virtual void StartGame(GameCharacter chr)
-        {
-            throw new NotImplementedException();
-        }
+        public abstract void StartGame(GameCharacter chr);
 
         protected void SendStartGame(Packet pw)
         {
