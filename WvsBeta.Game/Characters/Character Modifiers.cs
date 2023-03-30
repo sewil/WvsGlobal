@@ -48,6 +48,16 @@ namespace WvsBeta.Game
                 CharacterStatsPacket.SendStatChanged(this, StatFlags.Hp);
             }
         }
+        public void SetMP(short value)
+        {
+            if (value > CharacterStat.MaxMP) SetMPAndMaxMP(value);
+            else ModifyMP((short)(value - CharacterStat.MP));
+        }
+        public void SetHP(short value)
+        {
+            if (value > CharacterStat.MaxHP) SetHPAndMaxHP(value);
+            else ModifyHP((short)(value - HP));
+        }
         public void ModifyHP(short value, bool sendPacket = true)
         {
             var startValue = HP;

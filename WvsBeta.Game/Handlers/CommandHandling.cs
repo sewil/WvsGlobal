@@ -831,26 +831,21 @@ namespace WvsBeta.Game.Handlers
 
 #endregion
 
-#region MP
-
-                        case "mp":
-                            {
-                                if (Args.Count > 0 && Args[0].IsNumber())
-                                    character.SetMPAndMaxMP(Args[0].GetInt16());
-                                return true;
-                            }
-
-#endregion
-
-#region HP
-
-                        case "hp":
-                            {
-                                if (Args.Count > 0 && Args[0].IsNumber())
-                                    character.SetHPAndMaxHP(Args[0].GetInt16());
-                                return true;
-                            }
-
+#region MP/MP
+                    case "mp":
+                    {
+                        if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
+                            character.SetMP(mp);
+                        return true;
+                    }
+                    case "hp":
+                    {
+                        if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
+                        {
+                            character.SetHP(hp);
+                        }
+                        return true;
+                    }
 #endregion
 
 #region Str
