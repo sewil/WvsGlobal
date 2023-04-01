@@ -123,6 +123,7 @@
     <Compile Include="Enums\EquipIds.cs" />
     <Compile Include="Enums\EquippedType.cs" />
     <Compile Include="Enums\ItemEtcIds.cs" />
+    <Compile Include="Enums\ItemUseIds.cs" />
     <Compile Include="Enums\JobIds.cs" />
     <Compile Include="Enums\MapIds.cs" />
     <Compile Include="Enums\NpcIds.cs" />

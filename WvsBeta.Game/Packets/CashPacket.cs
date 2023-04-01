@@ -194,6 +194,14 @@ namespace WvsBeta.Game
 
                         break;
                     }
+                case Constants.Items.Types.ItemTypes.ItemAPSPReset:
+                    if (itemid == ItemUseIds.APReset)
+                    {
+                        StatFlags up = (StatFlags)packet.ReadInt();
+                        StatFlags down = (StatFlags)packet.ReadInt();
+                        CharacterStatsPacket.HandleAPReset(chr, up, down);
+                    }
+                    break;
                 default:
                     Program.MainForm.LogAppend("Unknown cashitem used: {0} {1} {2}", itemType, itemid, packet.ToString());
                     break;

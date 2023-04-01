@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using WvsBeta.Common;
-using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -38,23 +37,28 @@ namespace WvsBeta.Game
         Sp = 0x8000,
         Exp = 0x10000,
         Fame = 0x20000,
-        Mesos = 0x40000
+        Mesos = 0x40000,
+        MaxHpMp = MaxHp|MaxMp,
+        APReset = MaxHpMp|Str|Dex|Int|Luk
     };
 
     public static class CharacterStatsPacket
     {
         public static void HandleStats(GameCharacter chr, Packet packet)
         {
-            uint flag = packet.ReadUInt();
+            StatFlags flag = (StatFlags)packet.ReadUInt();
             if (chr.AssertForHack(chr.CharacterStat.AP <= 0, "Trying to use AP, but nothing left."))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
             }
-
+            HandleStats(chr, flag, 1, true, true);
+        }
+        public static void HandleStats(GameCharacter chr, StatFlags flag, sbyte value, bool deductAp, bool useHPMPGainFormula)
+        {
             short jobTrack = Constants.getJobTrack(chr.CharacterStat.Job);
 
-            switch ((StatFlags)flag)
+            switch (flag)
             {
                 case StatFlags.Str:
                     {
@@ -63,7 +67,7 @@ namespace WvsBeta.Game
                             InventoryOperationPacket.NoChange(chr);
                             return;
                         }
-                        chr.AddStr(1);
+                        chr.AddStr(value);
                         break;
                     }
                 case StatFlags.Dex:
@@ -73,7 +77,7 @@ namespace WvsBeta.Game
                             InventoryOperationPacket.NoChange(chr);
                             return;
                         }
-                        chr.AddDex(1);
+                        chr.AddDex(value);
                         break;
                     }
                 case StatFlags.Int:
@@ -83,7 +87,7 @@ namespace WvsBeta.Game
                             InventoryOperationPacket.NoChange(chr);
                             return;
                         }
-                        chr.AddInt(1);
+                        chr.AddInt(value);
                         break;
                     }
                 case StatFlags.Luk:
@@ -93,7 +97,7 @@ namespace WvsBeta.Game
                             InventoryOperationPacket.NoChange(chr);
                             return;
                         }
-                        chr.AddLuk(1);
+                        chr.AddLuk(value);
                         break;
                     }
                 case StatFlags.MaxHp:
@@ -104,18 +108,22 @@ namespace WvsBeta.Game
                             return;
                         }
                         short hpGain = 0;
-
-                        hpGain += RNG.Range.generate(
-                            Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.HPMin],
-                            Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.HPMax],
-                            true
-                        );
-
-                        byte improvedMaxHpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Swordsman.Skills.ImprovedMaxHpIncrease);
-                        if (improvedMaxHpIncreaseLvl > 0)
+                        if (useHPMPGainFormula)
                         {
-                            hpGain += CharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
+                            hpGain += RNG.Range.generate(
+                                Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.HPMin],
+                                Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.HPMax],
+                                true
+                            );
+
+                            byte improvedMaxHpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Swordsman.Skills.ImprovedMaxHpIncrease);
+                            if (improvedMaxHpIncreaseLvl > 0)
+                            {
+                                hpGain += CharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
+                            }
                         }
+                        else hpGain = value;
+
 
                         chr.ModifyMaxHP(hpGain);
                         break;
@@ -128,26 +136,30 @@ namespace WvsBeta.Game
                             return;
                         }
                         short mpGain = 0;
-                        short intt = chr.PrimaryStats.GetIntAddition(true);
-
-                        mpGain += RNG.Range.generate(
-                            Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPMin],
-                            Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPMax],
-                            true
-                        );
-
-                        // Additional buffing through INT stats
-                        mpGain += (short)(
-                            intt *
-                            Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPIntStatMultiplier] /
-                            200
-                        );
-
-                        byte improvedMaxMpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Magician.Skills.ImprovedMaxMpIncrease);
-                        if (improvedMaxMpIncreaseLvl > 0)
+                        if (useHPMPGainFormula)
                         {
-                            mpGain += CharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
+                            short intt = chr.PrimaryStats.GetIntAddition(true);
+
+                            mpGain += RNG.Range.generate(
+                                Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPMin],
+                                Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPMax],
+                                true
+                            );
+
+                            // Additional buffing through INT stats
+                            mpGain += (short)(
+                                intt *
+                                Constants.HpMpFormulaArguments[jobTrack, 1, (int)Constants.HpMpFormulaFields.MPIntStatMultiplier] /
+                                200
+                            );
+
+                            byte improvedMaxMpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Magician.Skills.ImprovedMaxMpIncrease);
+                            if (improvedMaxMpIncreaseLvl > 0)
+                            {
+                                mpGain += CharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
+                            }
                         }
+                        else mpGain = value;
 
                         chr.ModifyMaxMP(mpGain);
                         break;
@@ -159,10 +171,34 @@ namespace WvsBeta.Game
                     }
             }
 
-            chr.AddAP(-1, true);
+            if (deductAp) chr.AddAP(-1, true);
             chr.PrimaryStats.CalculateAdditions(false, false);
         }
 
+        public static void HandleAPReset(GameCharacter chr, StatFlags up, StatFlags down)
+        {
+            if ((up & StatFlags.APReset) == 0 || (down & StatFlags.APReset) == 0)
+            {
+                Program.MainForm.LogAppend("Chr {0} tried resetting non-ap reset stats! ({1} -> {2})", chr.ID, up, down);
+                return;
+            }
+
+            var jobTrack = Constants.getJobTrack(chr.Job);
+            Func<Constants.HpMpFormulaFields, sbyte> GetHpMpInc = (field) => (sbyte)Constants.HpMpFormulaArguments[jobTrack, 1, (int)field];
+
+            sbyte upValue, downValue;
+            if (up == StatFlags.MaxHp) upValue = GetHpMpInc(Constants.HpMpFormulaFields.HPMin);
+            else if (up == StatFlags.MaxMp) upValue = GetHpMpInc(Constants.HpMpFormulaFields.MPMin);
+            else upValue = 1;
+            if (down == StatFlags.MaxHp) downValue = (sbyte)-GetHpMpInc(Constants.HpMpFormulaFields.HPMax);
+            else if (down == StatFlags.MaxMp) downValue = (sbyte)-GetHpMpInc(Constants.HpMpFormulaFields.MPMax);
+            else downValue = -1;
+
+            HandleStats(chr, up, upValue, false, false);
+            HandleStats(chr, down, downValue, false, false);
+
+            // TODO: HP/MP validation (crazy formula, ap/class/level/skill dependent)
+        }
         public static void HandleHeal(GameCharacter chr, Packet packet)
         {
             // 2B 00 14 00 00 00 00 03 00 00

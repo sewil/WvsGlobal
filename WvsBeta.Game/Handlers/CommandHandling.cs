@@ -838,11 +838,25 @@ namespace WvsBeta.Game.Handlers
                             character.SetMP(mp);
                         return true;
                     }
+                    case "maxmp":
+                    {
+                        if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
+                            character.SetMPAndMaxMP(mp);
+                        return true;
+                    }
                     case "hp":
                     {
                         if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
                         {
                             character.SetHP(hp);
+                        }
+                        return true;
+                    }
+                    case "maxhp":
+                    {
+                        if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
+                        {
+                            character.SetHPAndMaxHP(hp);
                         }
                         return true;
                     }
@@ -1506,6 +1520,7 @@ namespace WvsBeta.Game.Handlers
 
 #region GiveEXP
 
+                        case "exp":
                         case "giveexp":
                             {
                                 if (Args.Count > 0 && Args[0].IsNumber())
