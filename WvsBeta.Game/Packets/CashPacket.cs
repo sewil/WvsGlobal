@@ -201,6 +201,12 @@ namespace WvsBeta.Game
                         StatFlags down = (StatFlags)packet.ReadInt();
                         CharacterStatsPacket.HandleAPReset(chr, up, down);
                     }
+                    else if (ItemUseIds.SPReset1st <= itemid && itemid <= ItemUseIds.SPReset3rd)
+                    {
+                        int up = packet.ReadInt();
+                        int down = packet.ReadInt();
+                        CharacterStatsPacket.HandleSPReset(chr, itemid, up, down);
+                    }
                     break;
                 default:
                     Program.MainForm.LogAppend("Unknown cashitem used: {0} {1} {2}", itemType, itemid, packet.ToString());

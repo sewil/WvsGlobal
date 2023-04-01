@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 using WvsBeta.Game.Packets;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Game
 {
@@ -177,9 +181,14 @@ namespace WvsBeta.Game
 
         public static void HandleAPReset(GameCharacter chr, StatFlags up, StatFlags down)
         {
+            if (!chr.Inventory.HasItemAmount(ItemUseIds.APReset, 1))
+            {
+                Program.MainForm.LogAppend("Chr {0} tried resetting without AP reset item!", chr.ID);
+                return;
+            }
             if ((up & StatFlags.APReset) == 0 || (down & StatFlags.APReset) == 0)
             {
-                Program.MainForm.LogAppend("Chr {0} tried resetting non-ap reset stats! ({1} -> {2})", chr.ID, up, down);
+                Program.MainForm.LogAppend("Chr {0} tried resetting non-ap reset stats! ({1} -> {2})", chr.ID, down, up);
                 return;
             }
 
@@ -197,7 +206,57 @@ namespace WvsBeta.Game
             HandleStats(chr, up, upValue, false, false);
             HandleStats(chr, down, downValue, false, false);
 
+            chr.Inventory.TakeItem(ItemUseIds.APReset, 1);
+
             // TODO: HP/MP validation (crazy formula, ap/class/level/skill dependent)
+        }
+        public static void HandleSPReset(GameCharacter chr, int itemid, int upSkillID, int downSkillID)
+        {
+            short jobUp = Constants.getSkillJob(upSkillID);
+            short jobDown = Constants.getSkillJob(upSkillID);
+            short jobTrackUp = Constants.getJobTrack(jobUp);
+            short jobTrackDown = Constants.getJobTrack(jobDown);
+            byte upSP = 0;
+            var chrSkills = chr.Skills.Skills;
+            chrSkills.TryGetValue(upSkillID, out upSP);
+            if (!chr.Inventory.HasItemAmount(itemid, 1))
+            {
+                Program.MainForm.LogAppend("Chr {0} tried resetting without SP reset item {1}!", chr.ID, itemid);
+            }
+            else if (!chrSkills.TryGetValue(downSkillID, out byte downSP) || !DataProvider.Skills.TryGetValue(upSkillID, out SkillData upSD) || !DataProvider.Skills.TryGetValue(downSkillID, out SkillData downSD))
+            {
+                Program.MainForm.LogAppend("SP reset skills not found for chr {0}! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else if (jobTrackUp != jobTrackDown || jobTrackUp != Constants.getJobTrack(chr.Job))
+            {
+                Program.MainForm.LogAppend("SP reset job tracks non-matching for chr {0} with job {1}! ({2} -> {3})", chr.ID, chr.Job, downSkillID, upSkillID);
+            }
+            else if (itemid == ItemUseIds.SPReset1st && (!Constants.IsFirstJob(jobDown) || !Constants.IsFirstJob(jobUp)))
+            {
+                Program.MainForm.LogAppend("SP reset chr {0} tried setting non-1st job with 1st job SP reset! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else if (itemid == ItemUseIds.SPReset2nd && (Constants.IsThirdJob(jobDown) || !Constants.IsSecondJob(jobUp)))
+            {
+                Program.MainForm.LogAppend("SP reset chr {0} tried setting non-2nd job with 2nd job SP reset! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else if (itemid == ItemUseIds.SPReset3rd && !Constants.IsThirdJob(jobUp))
+            {
+                Program.MainForm.LogAppend("SP reset chr {0} tried setting non-3rd job with 3rd job SP reset! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else if (downSP == 0 || upSP == upSD.MaxLevel)
+            {
+                Program.MainForm.LogAppend("SP reset invalid reset for chr {0}! Tried removing SP from skills with no SP or apply SP on skills already maxed! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else if (upSD.RequiredSkills != null && upSD.RequiredSkills.Where(rs => chrSkills.ContainsKey(rs.Key) && chrSkills[rs.Key] >= rs.Value).Count() != upSD.RequiredSkills.Count)
+            {
+                Program.MainForm.LogAppend("SP reset chr {0} missing required skills for set ({1} -> {2})", chr.ID, downSkillID, upSkillID);
+            }
+            else
+            {
+                chr.Skills.AddSkillPoint(upSkillID);
+                chr.Skills.SetSkillPoint(downSkillID, (byte)(downSP - 1));
+                chr.Inventory.TakeItem(itemid, 1);
+            }
         }
         public static void HandleHeal(GameCharacter chr, Packet packet)
         {
