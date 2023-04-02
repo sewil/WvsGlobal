@@ -35,36 +35,8 @@ namespace WvsBeta.Shop
 
             foreach (var node in pFile.BaseNode["Etc"]["Commodity.img"])
             {
-                var snId = node["SN"].ValueInt32();
-                var itemId = node["ItemId"].ValueInt32();
-
-                var ci = Commodity[snId] = new CommodityInfo
-                {
-                    Count = node["Count"].ValueInt16(),
-                    Gender = (CommodityGenders)node["Gender"].ValueSByte(),
-                    ItemID = itemId,
-                    Period = node["Period"].ValueInt16(),
-                    OnSale = node["OnSale"].ValueBool(),
-                    Price = node["Price"].ValueInt16(),
-                    SerialNumber = snId
-                };
-
-                if (!Items.ContainsKey(itemId) &&
-                    !Equips.ContainsKey(itemId) &&
-                    !Pets.ContainsKey(itemId))
-                {
-                    Program.MainForm.LogAppend("Ignoring commodity SN {0} as it contains unknown itemid {1}", snId, itemId);
-
-                    ci.OnSale = false;
-                    ci.StockState = StockState.NotAvailable;
-                }
-
-                if (ci.Price == 18000 && ci.OnSale)
-                {
-                    Program.MainForm.LogAppend("Making SN {0} itemid {1} not OnSale because its price is 18k", ci.SerialNumber, ci.ItemID);
-                    ci.OnSale = false;
-                    ci.StockState = StockState.NotAvailable;
-                }
+                var ci = new CommodityInfo(node);
+                Commodity[ci.SerialNumber] = ci;
             }
 
             Program.MainForm.LogAppend("Loaded {0} commodity items!", Commodity.Count);

@@ -30,9 +30,13 @@ namespace WvsBeta.Shop
                 pack.WriteString(chr.UserName);
             }
 
-            List<CommodityInfo> commodityItems = DataProvider.Commodity.Where(x => x.Value.OnSale == false).Select(i => i.Value).ToList();
+            // Commodity items not on sale (skip)
+            List<CommodityInfo> commodityItems = DataProvider.Commodity.Where(ci => !ci.Value.OnSale).Select(i => i.Value).ToList();
             pack.WriteShort((short)commodityItems.Count);
-            commodityItems.ForEach(i => i.Encode(pack));
+            foreach (var commodityItem in commodityItems)
+            {
+                commodityItem.Encode(pack);
+            }
 
             //// Newer versions will have discount-per-category stuff here
             //// byte amount, foreach { byte category, byte categorySub, byte discountRate  }
