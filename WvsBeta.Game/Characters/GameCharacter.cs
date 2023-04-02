@@ -201,15 +201,7 @@ namespace WvsBeta.Game
                 packet.WriteByte(0);
             }
 
-            packet.WriteByte(0); // Number of Rings, hardcoded 0 until implemented.
-            //Ring packet structure
-            /**
-            for (Ring ring in player.Rings()) {
-                pw.WriteLong(ring.getRingId()); // R
-                pw.WriteLong(ring.getPartnerRingId());
-                pw.WriteInt(ring.getItemId());
-            }
-            */
+            Rings.Encode(packet);
         }
 
         public void EncodeForCC(Packet pw)

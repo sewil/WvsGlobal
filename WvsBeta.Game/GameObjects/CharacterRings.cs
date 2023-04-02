@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -18,10 +20,8 @@ namespace WvsBeta.Game
         {
             if (!Equipped) return;
             // 33U
-            pw.WriteInt(RingID);
-            pw.WriteInt(0);
-            pw.WriteInt(PartnerRingID);
-            pw.WriteInt(0);
+            pw.WriteLong(RingID);
+            pw.WriteLong(PartnerRingID);
             pw.WriteInt(ItemID);
         }
     }
@@ -34,6 +34,15 @@ namespace WvsBeta.Game
             Rings = new List<Ring>();
         }
 
+        public void Encode(Packet pw)
+        {
+            pw.WriteByte((byte)Rings.Count);
+            foreach (var ring in Rings)
+            {
+                ring.Encode(pw);
+            }
+        }
+
         public static CharacterRings Load(GameCharacter chr)
         {
             var rings = new CharacterRings();
@@ -44,17 +53,15 @@ namespace WvsBeta.Game
             {
                 while (data.Read())
                 {
-                    bool equipped = (chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Ring1, true) == 1112001) ||
-                        (chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Ring2, true) == 1112001) ||
-                        (chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Ring3, true) == 1112001) ||
-                        (chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Ring4, true) == 1112001);
+                    BaseItem eq = chr.Inventory.GetEquippedItem(EquipIds.CrushRing, out EquippedType _);
+                    bool isEquipped = eq != null && (short)Constants.EquipSlots.Slots.Ring1 <= eq.InventorySlot && eq.InventorySlot <= (short)Constants.EquipSlots.Slots.Ring4;
                     rings.Rings.Add(new Ring
                     {
                         RingID = data.GetInt32("id"),
                         ItemID = data.GetInt32("itemid"),
                         CharacterID = chr.ID,
                         PartnerRingID = data.GetInt32("partnerid"),
-                        Equipped = equipped
+                        Equipped = isEquipped
                     });
                 }
             }
