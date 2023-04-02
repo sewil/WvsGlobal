@@ -67,6 +67,7 @@ namespace WvsBeta.Shop
             C_IncreaseSlots = 5,
             C_MoveLtoS = 10,
             C_MoveStoL = 11,
+            C_BuyCrushRing = 0x18,
             C_BuyPackage = 25,
 
             // Server packets (S)
@@ -431,6 +432,16 @@ namespace WvsBeta.Shop
                         chr.Locker.RemoveItem(lockerItem, item);
 
                         SendPlacedItemInInventory(chr, item);
+                        break;
+                    }
+                case CashPacketOpcodes.C_BuyCrushRing:
+                    {
+                        // [2D 46 30 01] [BC E8 3E 01] [07 00 61 73 64 66 73 61 66] [0A 00 61 73 64 66 73 61 66 73 61 0A] 
+                        int birthdate = packet.ReadInt();
+                        int sn = packet.ReadInt();
+                        string toName = packet.ReadString();
+                        string msg = packet.ReadString();
+                        // TODO:
                         break;
                     }
                 default:

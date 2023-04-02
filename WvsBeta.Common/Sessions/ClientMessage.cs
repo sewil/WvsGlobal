@@ -90,7 +90,7 @@
         __PADDING_78,
         __PADDING_79,
         FRIEND_OPERATION = 80,
-        NOTE_OPERATION,
+        NOTE_OPERATION = 0x51,
         ENTER_TOWN_PORTAL,
         __PADDING_72,
         __PADDING_73,

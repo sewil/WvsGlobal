@@ -211,7 +211,7 @@ namespace WvsBeta.Game
                             var actualDamage = DecreaseHP;
                             if (character.PrimaryStats.BuffThaw.IsSet(pNow))
                                 actualDamage -= character.PrimaryStats.BuffThaw.N;
-                            if (ProtectItem > 0 && character.Inventory.GetEquippedItem(ProtectItem, out short _, out EquippedType __) != null)
+                            if (ProtectItem > 0 && character.Inventory.GetEquippedItem(ProtectItem, out EquippedType __) != null)
                                 actualDamage = 0;
                             // TODO: If swim, negative multiple N value (Freeze damage?)
 

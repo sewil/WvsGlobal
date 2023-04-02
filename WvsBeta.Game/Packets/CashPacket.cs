@@ -4,6 +4,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -208,6 +209,13 @@ namespace WvsBeta.Game
                         CharacterStatsPacket.HandleSPReset(chr, itemid, up, down);
                     }
                     break;
+                case Constants.Items.Types.ItemTypes.ItemNote:
+                    {
+                        string name = packet.ReadString();
+                        string message = packet.ReadString();
+                        MemoHandler.SendNote(chr, name, message);
+                        break;
+                    }
                 default:
                     Program.MainForm.LogAppend("Unknown cashitem used: {0} {1} {2}", itemType, itemid, packet.ToString());
                     break;

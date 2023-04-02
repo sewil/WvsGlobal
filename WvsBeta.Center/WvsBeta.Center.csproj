@@ -130,6 +130,7 @@
     </Compile>
     <Compile Include="Messenger.cs" />
     <Compile Include="Packets\ChatPacket.cs" />
+    <Compile Include="Handlers\MemoHandler.cs" />
     <Compile Include="PartyData\Party.cs" />
     <Compile Include="PartyData\PartyPacket.cs" />
     <Compile Include="Program.cs" />

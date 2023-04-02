@@ -132,6 +132,7 @@
     <Compile Include="Enums\TransactionType.cs" />
     <Compile Include="Extensions\BitExtensions.cs" />
     <Compile Include="Extensions\CrossThreadExtensions.cs" />
+    <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Extensions\EventHandlerExtensions.cs" />
     <Compile Include="Extensions\IntExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
@@ -209,6 +210,7 @@
     <Compile Include="Objects\CharacterData.cs" />
     <Compile Include="Packets\CashPacket.cs" />
     <Compile Include="Enums\GroupMessageType.cs" />
+    <Compile Include="Packets\MemoPacket.cs" />
     <Compile Include="Packets\PacketHelper.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />

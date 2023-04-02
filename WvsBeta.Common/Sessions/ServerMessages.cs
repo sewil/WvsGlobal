@@ -41,7 +41,7 @@
         SKILL_USE_RESULT = 33,
         GIVE_POPULARITY_RESULT = 34,
         MESSAGE = 35,
-        MEMO_RESULT = 36,
+        MEMO_ACTION = 0x24,
         MAP_TRANSFER_RESULT = 37,
         ANTI_MACRO_RESULT = 38,
         __MISSING_39 = 39,

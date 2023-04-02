@@ -30,6 +30,10 @@
         MessengerChat,
         MessengerAvatar,
 
+        MemoSendNote,
+        MemoAdd,
+        MemoRead,
+
         PartyCreate,
         PartyInvite,
         PartyAccept,

@@ -121,6 +121,7 @@
     <Compile Include="CheatInspector.cs" />
     <Compile Include="GameObjects\CharacterData.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
+    <Compile Include="Handlers\MemoHandler.cs" />
     <Compile Include="Handlers\MiniRoom\BalloonRoom.cs" />
     <Compile Include="Handlers\MiniRoom\MiniGameRoom.cs" />
     <Compile Include="Handlers\MiniRoom\MiniRoomBalloonPacket.cs" />

@@ -929,6 +929,38 @@ LOCK TABLES `machine_ban` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `memos`
+--
+
+DROP TABLE IF EXISTS `memos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `memos` (
+	`id` INT(10) NOT NULL AUTO_INCREMENT,
+	`from` INT(10) NOT NULL,
+	`to` INT(10) NOT NULL,
+	`message` VARCHAR(255) NOT NULL COLLATE 'latin1_swedish_ci',
+	`sent` BIGINT(19) NOT NULL DEFAULT '0',
+	`read` BIGINT(19) NOT NULL DEFAULT '0',
+  `fromname` VARCHAR(13) NOT NULL COLLATE 'latin1_general_ci',
+	PRIMARY KEY (`id`) USING BTREE,
+	INDEX `fromcid_fk` (`from`) USING BTREE,
+	INDEX `tocid_fk` (`to`) USING BTREE,
+	CONSTRAINT `fromcid_fk` FOREIGN KEY (`from`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE NO ACTION,
+	CONSTRAINT `tocid_fk` FOREIGN KEY (`to`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `memos`
+--
+
+LOCK TABLES `memos` WRITE;
+/*!40000 ALTER TABLE `memos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `memos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `password_resets`
 --
 

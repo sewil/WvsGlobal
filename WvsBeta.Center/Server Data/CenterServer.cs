@@ -6,7 +6,10 @@ using System.Net;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
+using WvsBeta.Center.Handlers;
+using WvsBeta.Center.Packets;
 using WvsBeta.Common;
+using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -34,6 +37,7 @@ namespace WvsBeta.Center
 
         public List<Character> CharacterStore { get; } = new List<Character>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
+        public IDictionary<int, IList<Memo>> Memos { get; } = new Dictionary<int, IList<Memo>>();
         public void LogToLogfile(string what)
         {
             Program.LogFile.WriteLine(what);
@@ -169,6 +173,8 @@ namespace WvsBeta.Center
                     StartListening();
                 }
             }
+
+            MemoHandler.Load();
 
             CharacterDatabase.SetupPinger(MasterThread.Instance);
 

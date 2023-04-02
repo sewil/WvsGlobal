@@ -81,9 +81,8 @@ namespace WvsBeta.Game
 
         public override int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => GetEquippedItemId((short)slot, cash);
 
-        public BaseItem GetEquippedItem(int itemid, out short slotfrom, out EquippedType type)
+        public BaseItem GetEquippedItem(int itemid, out EquippedType type)
         {
-            slotfrom = 0;
             type = (EquippedType)(-1);
             foreach (var equips in Equipped)
             {
@@ -91,7 +90,6 @@ namespace WvsBeta.Game
                 {
                     if (item?.ItemID == itemid)
                     {
-                        slotfrom = item.InventorySlot;
                         type = equips.Key;
                         return item;
                     }
@@ -837,10 +835,10 @@ namespace WvsBeta.Game
         /// <returns>-1 = item not found, 0 = success, 1 = failed to unequip</returns>
         public int RemoveEquippedItem(int itemid)
         {
-            var item = GetEquippedItem(itemid, out short slotfrom, out EquippedType type);
+            var item = GetEquippedItem(itemid, out EquippedType type);
             if (item == null) return -1;
-            Equipped[type][-slotfrom] = null;
-            InventoryOperationPacket.SwitchSlots(Character, Inventory.Equip, slotfrom, 0);
+            Equipped[type][-item.InventorySlot] = null;
+            InventoryOperationPacket.SwitchSlots(Character, Inventory.Equip, item.InventorySlot, 0);
             MapPacket.SendAvatarModified(Character, MapPacket.AvatarModFlag.AvatarLook);
             return 0;
         }

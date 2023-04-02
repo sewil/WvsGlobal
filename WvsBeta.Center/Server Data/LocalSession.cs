@@ -5,6 +5,7 @@ using System.Linq;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
+using WvsBeta.Center.Handlers;
 using WvsBeta.Center.Packets;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
@@ -320,6 +321,7 @@ namespace WvsBeta.Center
                                     byte level = packet.ReadByte();
                                     byte admin = packet.ReadByte();
                                     var character = CenterServer.Instance.AddCharacter(charname, charid, Server.ChannelID, job, level, admin);
+                                    MemoHandler.SendMemos(character);
 
                                     if (Party.Parties.TryGetValue(character.PartyID, out Party party))
                                     {
@@ -345,7 +347,7 @@ namespace WvsBeta.Center
                                     var character = CenterServer.Instance.FindCharacter(charid);
                                     if (character != null)
                                     {
-                                        if (ccing == false)
+                                        if (!ccing)
                                         {
                                             character.IsOnline = false;
 
@@ -366,6 +368,7 @@ namespace WvsBeta.Center
 
                                             // Fix this. When you log back in, the chat has 2 of you.
                                             // Messenger.LeaveMessenger(character.ID);
+                                            MemoHandler.SaveChr(character);
                                         }
 
                                         if (Party.Invites.ContainsKey(character.ID)) Party.Invites.Remove(character.ID);
@@ -377,7 +380,23 @@ namespace WvsBeta.Center
                                 break;
                             }
 
-
+                        case ISClientMessages.MemoSendNote:
+                        case ISClientMessages.MemoAdd:
+                            {
+                                //check what client sends
+                                int from = packet.ReadInt();
+                                string name = packet.ReadString();
+                                string message = packet.ReadString();
+                                MemoHandler.HandleAddMemo(from, name, message, opcode == ISClientMessages.MemoSendNote);
+                                break;
+                            }
+                        case ISClientMessages.MemoRead:
+                            {
+                                int cid = packet.ReadInt();
+                                int memoid = packet.ReadInt();
+                                MemoHandler.HandleMemoRead(cid, memoid);
+                                break;
+                            }
                         case ISClientMessages.BroadcastPacketToGameServers:
                             {
                                 var p = new Packet(packet.ReadLeftoverBytes());

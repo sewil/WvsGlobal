@@ -258,7 +258,9 @@ namespace WvsBeta.Game
                         case ClientMessages.STORAGE_ACTION:
                             StoragePacket.HandleStorage(character, packet);
                             break;
-
+                        case ClientMessages.NOTE_OPERATION:
+                            MemoHandler.HandleNoteOperation(character, packet);
+                            break;
                         case ClientMessages.ITEM_MOVE:
                             InventoryPacket.HandleInventoryPacket(character, packet);
                             break;
