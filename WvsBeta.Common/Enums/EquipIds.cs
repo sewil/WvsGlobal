@@ -3,7 +3,8 @@
     public struct EquipIds
     {
         public const int
-            ProtectorRock = 1032033
+            ProtectorRock = 1032033,
+            CrushRing = 1112001
         ;
     }
 }
