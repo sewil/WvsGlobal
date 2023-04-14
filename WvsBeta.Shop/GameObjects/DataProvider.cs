@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using reNX.NXProperties;
 using WvsBeta.Common.DataProviders;
+using WvsBeta.Shop.GameObjects;
 
 namespace WvsBeta.Shop
 {

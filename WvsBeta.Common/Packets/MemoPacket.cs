@@ -1,10 +1,8 @@
-﻿using K4os.Compression.LZ4.Internal;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -26,6 +24,7 @@ namespace WvsBeta.Common.Packets
     {
         public static Packet MemoSend(IList<Memo> memos)
         {
+            if (memos.Count > byte.MaxValue) throw new ArgumentException("Too many memos!");
             Packet pw = new Packet(ServerMessages.MEMO_ACTION);
             pw.WriteByte((byte)MemoResult.Receive);
             pw.WriteByte((byte)memos.Count);
@@ -49,6 +48,28 @@ namespace WvsBeta.Common.Packets
             pw.WriteByte((byte)err);
             return pw;
         }
+
+        public static void SendMemo(ConnectionSession session, int charid, string recipientName, string message, long? giftCashId, bool onlyOffline)
+        {
+            SendMemo(session, charid, null, recipientName, message, giftCashId, onlyOffline);
+        }
+        public static void SendMemo(ConnectionSession session, int charid, int recipientId, string message, long? giftCashId, bool onlyOffline)
+        {
+            SendMemo(session, charid, recipientId, null, message, giftCashId, onlyOffline);
+        }
+        private static void SendMemo(ConnectionSession session, int charid, int? recipientId, string recipientName, string message, long? giftCashId, bool onlyOffline)
+        {
+            var pw = new Packet(ISClientMessages.MemoAdd);
+            pw.WriteInt(charid);
+            pw.WriteBool(recipientId != null);
+            if (recipientId != null) pw.WriteInt(recipientId.Value);
+            else pw.WriteString(recipientName);
+            pw.WriteString(message);
+            pw.WriteBool(giftCashId != null);
+            if (giftCashId != null) pw.WriteLong(giftCashId.Value);
+            pw.WriteBool(onlyOffline);
+            session.SendPacket(pw);
+        }
     }
 
     public class Memo
@@ -60,6 +81,7 @@ namespace WvsBeta.Common.Packets
         public string FromName { get; }
         public long Sent { get; }
         public long Read { get; set; }
+        public long? GiftCashId { get; }
 
         public Memo(MySqlDataReader reader)
         {
@@ -70,8 +92,9 @@ namespace WvsBeta.Common.Packets
             FromName = reader.GetString("fromname");
             Sent = reader.GetInt64("sent");
             Read = reader.GetInt64("read");
+            GiftCashId = reader.GetNullableFieldValue<long>("gift_cashid");
         }
-        public Memo(long ctime, int fromId, string fromName, int to, string message, MySQL_Connection conn)
+        public Memo(long ctime, int fromId, string fromName, int to, string message, MySQL_Connection conn, long? giftCashId = null)
         {
             int _insertid = 0;
             From = fromId;
@@ -80,16 +103,18 @@ namespace WvsBeta.Common.Packets
             FromName = fromName;
             Sent = ctime;
             Read = 0;
+            GiftCashId = giftCashId;
             
             conn.RunTransaction((cmd) =>
             {
-                cmd.CommandText = "INSERT INTO memos (`from`, `to`, `message`, `sent`, `read`, `fromname`) VALUES (@from, @to, @message, @sent, @read, @fromname)";
+                cmd.CommandText = "INSERT INTO memos (`from`, `to`, `message`, `sent`, `read`, `fromname`, `gift_cashid`) VALUES (@from, @to, @message, @sent, @read, @fromname, @cashid)";
                 cmd.Parameters.AddWithValue("@from", From);
                 cmd.Parameters.AddWithValue("@to", To);
                 cmd.Parameters.AddWithValue("@message", Message);
                 cmd.Parameters.AddWithValue("@sent", Sent);
                 cmd.Parameters.AddWithValue("@read", Read);
                 cmd.Parameters.AddWithValue("@fromname", FromName);
+                cmd.Parameters.AddWithValue("@cashid", GiftCashId);
                 cmd.ExecuteNonQuery();
                 _insertid = (int)cmd.LastInsertedId;
             });

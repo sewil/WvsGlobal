@@ -30,7 +30,6 @@
         MessengerChat,
         MessengerAvatar,
 
-        MemoSendNote,
         MemoAdd,
         MemoRead,
 

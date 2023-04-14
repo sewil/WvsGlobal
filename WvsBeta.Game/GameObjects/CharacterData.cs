@@ -45,13 +45,17 @@ namespace WvsBeta.Game.GameObjects
                 Character.GameStats.Encode(packet);
             }
 
-            if (flags.HasFlag(CharacterDataFlag.FriendRing))
+            if (flags.HasFlag(CharacterDataFlag.CoupleRing))
             {
-                var rings = Character.Rings.Rings;
-                packet.WriteShort((short)rings.Count); // ?
+                var rings = Character.Inventory.GetCoupleRings();
+                packet.WriteShort((short)rings.Count);
                 foreach (var ring in rings)
                 {
-                    ring.Encode(packet);
+                    // 33u
+                    packet.WriteInt(ring.ItemId);
+                    packet.WriteString(ring.CoupleCharName, 13);
+                    packet.WriteLong(ring.CashId);
+                    packet.WriteLong(ring.CoupleCashId);
                 }
             }
 

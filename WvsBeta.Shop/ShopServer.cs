@@ -9,6 +9,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Character;
+using WvsBeta.Shop.GameObjects;
 
 namespace WvsBeta.Shop
 {

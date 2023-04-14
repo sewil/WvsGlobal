@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common;
 using WvsBeta.Database;
 
 namespace WvsBeta.Common.Objects
@@ -284,13 +282,13 @@ namespace WvsBeta.Common.Objects
                     first = true;
                     sb.Clear();
                     sb.AppendLine("INSERT INTO itemlocker VALUES ");
-                    foreach (var item in allItems.Where(y => y.SavedToDatabase == false))
+                    foreach (var item in allItems.Where(y => !y.SavedToDatabase))
                     {
-                        if (first == false) sb.Append(',');
+                        if (!first) sb.Append(',');
 
                         if (baseItemDict.TryGetValue(item.CashId, out var baseItem))
                         {
-                            sb.AppendLine($"({item.CashId}, {baseItem.InventorySlot}, {item.UserId}, {item.CharacterId}, {item.ItemId}, {item.CommodityId}, {item.Amount}, '{MySqlHelper.EscapeString(item.BuyCharacterName)}', {item.Expiration}, {item.GiftUnread}, {WorldID})");
+                            sb.Append("(" + item.GetFullSaveColumns(baseItem, WorldID) + ")");
                             Console.WriteLine("Inserting itemlocker {0} cashid {1} userid {2}", item.ItemId, item.CashId, item.UserId);
 
                             first = false;
@@ -316,7 +314,13 @@ namespace WvsBeta.Common.Objects
         private static IEnumerable<LockerItem> GetLocker(int userId, int characterId)
         {
             using (var data = Connection.RunQuery(
-                "SELECT * FROM itemlocker WHERE userid = @userid AND characterid = @charid AND worldid = @worldid ORDER BY slot ASC LIMIT 400",
+                "SELECT itemlocker.*, characters.name AS couple_charname, memos.message AS memo_message, memos.fromname AS memo_fromname " +
+                "FROM itemlocker " +
+                "LEFT JOIN memos ON cashid = gift_cashid " +
+                "LEFT JOIN characters ON characters.ID = couple_charid " +
+                "WHERE itemlocker.userid = @userid AND charid = @charid AND worldid = @worldid " +
+                "ORDER BY slot ASC " +
+                "LIMIT 400",
                 "@userid", userId,
                 "@worldid", WorldID,
                 "@charid", characterId
@@ -336,7 +340,7 @@ namespace WvsBeta.Common.Objects
         private static IEnumerable<EquipItem> GetCashEquips(int userId, int characterId)
         {
             using (var data = Connection.RunQuery(
-                @"SELECT ci.*, l.slot FROM cashitem_eqp ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.characterid = @charid AND l.worldid = @worldid LIMIT 400",
+                @"SELECT ci.*, l.slot, l.charid, l.couplecashid FROM cashitem_eqp ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.charid = @charid AND l.worldid = @worldid LIMIT 400",
                 "@userid", userId,
                 "@worldid", WorldID,
                 "@charid", characterId
@@ -344,11 +348,12 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    var equip = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
+                    EquipItem equip = (BaseItem.CreateFromItemID(data.GetInt32("itemid")) as EquipItem);
                     equip.Load(data);
                     equip.InventorySlot = data.GetInt16("slot");
+                    equip.CoupleCashId = data.GetInt64("couplecashid");
                     Console.WriteLine("Loading equip {0} cashid {1}", equip.ItemID, equip.CashId);
-                    yield return equip as EquipItem;
+                    yield return equip;
                 }
             }
         }
@@ -356,7 +361,7 @@ namespace WvsBeta.Common.Objects
         private static IEnumerable<BundleItem> GetCashBundles(int userId, int characterId)
         {
             using (var data = Connection.RunQuery(
-                @"SELECT ci.*, l.slot FROM cashitem_bundle ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.characterid = @charid AND l.worldid = @worldid LIMIT 400",
+                @"SELECT ci.*, l.slot, l.charid FROM cashitem_bundle ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.charid = @charid AND l.worldid = @worldid LIMIT 400",
                 "@userid", userId,
                 "@worldid", WorldID,
                 "@charid", characterId
@@ -376,7 +381,7 @@ namespace WvsBeta.Common.Objects
         private static IEnumerable<PetItem> GetPets(int userId, int characterId)
         {
             using (var data = Connection.RunQuery(
-                @"SELECT ci.*, l.slot FROM cashitem_pet ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.characterid = @charid AND l.worldid = @worldid LIMIT 400",
+                @"SELECT ci.*, l.slot, l.charid FROM cashitem_pet ci JOIN itemlocker l ON l.cashid = ci.cashid AND l.userid = @userid AND l.charid = @charid AND l.worldid = @worldid LIMIT 400",
                 "@userid", userId,
                 "@worldid", WorldID,
                 "@charid", characterId

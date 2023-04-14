@@ -2,9 +2,9 @@
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
+using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
-using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -213,7 +213,7 @@ namespace WvsBeta.Game
                     {
                         string name = packet.ReadString();
                         string message = packet.ReadString();
-                        MemoHandler.SendNote(chr, name, message);
+                        MemoPacket.SendMemo(Server.Instance.CenterConnection, chr.ID, name, message, null, true);
                         break;
                     }
                 default:

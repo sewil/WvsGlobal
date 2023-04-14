@@ -17,7 +17,7 @@ namespace WvsBeta.Scripts.Scripts
             var qr = target.Quests;
             var val = qr.Get(QUEST_ID);
 
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
 
             if (val == "0") target.ChangeMap(100000100, "st00");
             else if (val == "1") target.ChangeMap(220000000, "st00");
@@ -34,7 +34,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "0");
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -46,7 +46,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "1");
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -58,7 +58,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "2");
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -70,7 +70,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "3");
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
             target.ChangeMap(910000000, "st00");
         }
     }
@@ -82,7 +82,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var qr = target.Quests;
             qr.Set(QUEST_ID, "4");
-            target.SendSound(Constants.Sounds.Portal);
+            target.PlayPortalSE();
             target.ChangeMap(910000000, "st00");
         }
     }

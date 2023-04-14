@@ -38,7 +38,7 @@ namespace WvsBeta.Shop
             return;
         }
         
-        public static BaseItem CreateCashItem(LockerItem li, CommodityInfo ci)
+        public static BaseItem CreateCashItem(LockerItem li)
         {
             li.CashId = (long)((long)(Rand32.Next()) << 32 | Rand32.Next());
             li.CashId &= 0x00FFFFFFFFFFFFFF; // Get rid of the first byte

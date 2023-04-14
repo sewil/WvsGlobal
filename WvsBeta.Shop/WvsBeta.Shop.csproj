@@ -98,14 +98,13 @@
     <Compile Include="Characters\CharacterCashLocker.cs" />
     <Compile Include="Characters\ClientSocket.cs" />
     <Compile Include="Characters\Player.cs" />
-    <Compile Include="GameObjects\CommodityGenders.cs" />
-    <Compile Include="GameObjects\CommodityInfo.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="frmMain.designer.cs">
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
+    <Compile Include="GameObjects\CommodityInfo.cs" />
     <Compile Include="GameObjects\DataProvider.cs" />
     <Compile Include="Packets\CashPacket.cs" />
     <Compile Include="Packets\CouponHandler.cs" />

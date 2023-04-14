@@ -7,6 +7,8 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
+using WvsBeta.Common.Packets;
+using System.Collections.Generic;
 
 namespace WvsBeta.Shop
 {
@@ -41,20 +43,21 @@ namespace WvsBeta.Shop
             CantGiftUnder14Year = 84,
             ExceededAllottedLimitOfPriceForGifts = 85,
             CheckExceededNumberOfCashItems = 86,
-            CheckCharacterNameOrItemRestrictions = 87,
+            CheckCharacterNameOrItemGenderRestrictions = 87,
             CheckCouponNumber = 88,
 
-            DueGenderRestrictionsNoCouponUse = 91,
-            CouponOnlyForRegularItemsThusNoGifting = 92,
-            CheckFullInventory = 93,
-            ItemOnlyAvailableForUsersAtPremiumInternetCafe = 94,
-            CoupleItemsCanBeGivenAsAGiftToACharOfDiffGenderAtSameWorld = 95,
-            ItemsAreNotAvailableForPurchaseAtThisHour = 96,
-            OutOfStock = 97,
-            ExceededSpendingLimitOfCash = 98,
-            NotEnoughMesos = 99,
-            UnavailableDuringBetaTestPhase = 100,
-            InvalidDoBEntered = 101,
+            RegisterCouponAtWebsite = 91,
+            DueGenderRestrictionsNoCouponUse = 92,
+            CouponOnlyForRegularItemsThusNoGifting = 93,
+            CheckFullInventory = 94,
+            ItemOnlyAvailableForUsersAtPremiumInternetCafe = 95,
+            IneligibleRecipientCheckNameAndGender = 96,
+            ItemsAreNotAvailableForPurchaseAtThisHour = 97,
+            OutOfStock = 98,
+            ExceededSpendingLimitOfCash = 99,
+            NotEnoughMesos = 100,
+            UnavailableDuringBetaTestPhase = 101,
+            InvalidDoBEntered = 102,
         }
 
         public enum CashPacketOpcodes
@@ -67,7 +70,7 @@ namespace WvsBeta.Shop
             C_IncreaseSlots = 5,
             C_MoveLtoS = 10,
             C_MoveStoL = 11,
-            C_BuyCrushRing = 0x18,
+            C_BuyCoupleRing = 0x18,
             C_BuyPackage = 25,
 
             // Server packets (S)
@@ -80,17 +83,17 @@ namespace WvsBeta.Shop
             S_Buy_Done = 34,
             S_Buy_Failed,
 
+            S_UseCoupon_Done = 36,
+            S_UseGiftCoupon_Done = 38,
+            S_UseCoupon_Failed = 39,
+
             S_Gift_Done = 41,
-            S_Gift_Failed,
+            S_Gift_Failed = 42, //|73|77
 
             S_IncSlotCount_Done,
             S_IncSlotCount_Failed,
             S_IncTrunkCount_Done,
             S_IncTrunkCount_Failed,
-            //S_IncCharSlotCount_Done,
-            //S_IncCharSlotCount_Failed,
-
-
 
             S_MoveLtoS_Done = 47,
             S_MoveLtoS_Failed = 48,
@@ -101,33 +104,20 @@ namespace WvsBeta.Shop
             S_Expired_Done = 53, // + long SN
             S_Expired_Failed = 54,
 
-            S_GiftPackage_Failed = 71,
-            S_GiftPackage_Done = 72, // + Itemdata, str, int, short ??
-        }
-
-
-        private static LockerItem CreateLockerItem(int userId, CommodityInfo ci, string buyCharacterName)
-        {
-            var expiration = ci.Period > 0 ? new TimeSpan(ci.Period, 0, 0, 0).GetFileTimeWithAddition() : BaseItem.NoItemExpiration;
-            var item = new LockerItem()
-            {
-                ItemId = ci.ItemID,
-                Amount = ci.Count,
-                CashId = 0, // Will be created on insert
-                Expiration = expiration,
-                BuyCharacterName = buyCharacterName, // Empty, only set when gift
-                CharacterId = 0, // 0, as its in the locker
-                CommodityId = ci.SerialNumber,
-                GiftUnread = string.IsNullOrEmpty(buyCharacterName) == false,
-                UserId = userId
-            };
-            return item;
+            S_Refund_Done = 70,
+            S_Refund_Failed = 71,
+            S_GiftCoupleRing_Done = 72,
+            //S_GiftCoupleRing_Failed = 73,
+            S_BuyEquipped_Done = 74,
+            S_BuyEquipped_Failed = 75,
+            S_GiftPackage_Done = 76,
+            //S_GiftPackage_Failed = 77
         }
 
         public static void HandleCashPacket(Character chr, Packet packet)
         {
-            var header = packet.ReadByte();
-            switch ((CashPacketOpcodes)header)
+            var header = (CashPacketOpcodes)packet.ReadByte();
+            switch (header)
             {
                 case CashPacketOpcodes.C_IncreaseSlots:
                     {
@@ -215,8 +205,8 @@ namespace WvsBeta.Shop
                             return;
                         }
 
-                        var lockerItem = CreateLockerItem(chr.UserID, ci, "");
-                        var baseItem = CharacterCashLocker.CreateCashItem(lockerItem, ci);
+                        var lockerItem = new LockerItem(chr.UserID, ci, "");
+                        var baseItem = CharacterCashLocker.CreateCashItem(lockerItem);
                         chr.Locker.AddItem(lockerItem, baseItem);
 
                         chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, ci.SerialNumber, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
@@ -233,97 +223,16 @@ namespace WvsBeta.Shop
 
                         break;
                     }
+                case CashPacketOpcodes.C_BuyCoupleRing:
                 case CashPacketOpcodes.C_GiftItem:
                     {
                         var dob = packet.ReadUInt();
                         var sn = packet.ReadInt();
                         var recipient = packet.ReadString();
-
-                        // check DoB
-                        if (chr.DoB != dob)
-                        {
-                            _log.Warn($"Gifting failed: invalid DoB entered");
-                            SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.InvalidDoBEntered);
-                            return;
-                        }
-
-                        // Check SN
-
-                        if (!DataProvider.Commodity.TryGetValue(sn, out var ci))
-                        {
-                            _log.Warn($"Gifting failed: commodity not found for SN {sn}");
-                            SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.OutOfStock);
-                            return;
-                        }
-
-                        if (ci.OnSale == false ||
-                            ci.StockState == StockState.NotAvailable ||
-                            ci.StockState == StockState.OutOfStock)
-                        {
-                            _log.Warn($"Gifting failed: commodity {sn} not on sale {ci.OnSale} or out of stock {ci.StockState}");
-                            SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.OutOfStock);
-                            return;
-                        }
-
-                        // Check price
-                        var points = chr.GetCashStatus();
-                        if (ci.Price > points.nx)
-                        {
-                            _log.Warn("Gifting failed: not enough NX");
-                            SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.NotEnoughCash);
-                            return;
-                        }
-                        
-                        // Check recipient
-                        int recipientId = 0;
-                        int recipientUserId = 0;
-                        int recipientGender = 0;
-                        using (var mdr = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
-                            "SELECT ID, userid, gender FROM characters WHERE `name` = @name",
-                            "@name", recipient
-                        ))
-                        {
-                            if (!mdr.Read())
-                            {
-                                // Not found
-                                _log.Warn($"Gifting failed: character named {recipient} not found");
-                                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CheckCharacterNameOrItemRestrictions);
-                                return;
-                            }
-
-                            recipientId = mdr.GetInt32(0);
-                            recipientUserId = mdr.GetInt32(1);
-                            recipientGender = mdr.GetInt32(2);
-                        }
-
-                        if (ci.Gender != CommodityGenders.Both && recipientGender != (int)ci.Gender)
-                        {
-                            _log.Warn($"Gifting failed: receipient not {ci.Gender}"); ;
-                            SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CheckCharacterNameOrItemRestrictions);
-                            return;
-                        }
-
-
-                        var lockerItem = CreateLockerItem(recipientUserId, ci, chr.Name);
-                        var baseItem = CharacterCashLocker.CreateCashItem(lockerItem, ci);
-                        // !!! We are saving the item to the current user, so we can save it alltogether at once!!!!
-                        // !!! THIS MEANS THAT IF SOMEONE MANAGED TO CRASH THE CASHSHOP, NOTHING IS LOST !!!!
-                        chr.Locker.AddItem(lockerItem, baseItem);
-
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16}) as a gift for {recipient}", ci.Price, ci.SerialNumber, TransactionType.NX);
-
-                        Character.CashLog.Info(new BuyItem
-                        {
-                            cashAmount = ci.Price,
-                            lockerItem = lockerItem,
-                            withMaplePoints = false
-                        });
-
-                        SendGiftDone(chr, lockerItem, recipient);
-                        SendCashAmounts(chr);
+                        string message = packet.ReadString();
+                        GiftItem(chr, dob, sn, recipient, message, header == CashPacketOpcodes.C_BuyCoupleRing);
                         break;
                     }
-
                 case CashPacketOpcodes.C_UpdateWishlist:
                     {
                         for (byte i = 0; i < 10; i++)
@@ -434,16 +343,6 @@ namespace WvsBeta.Shop
                         SendPlacedItemInInventory(chr, item);
                         break;
                     }
-                case CashPacketOpcodes.C_BuyCrushRing:
-                    {
-                        // [2D 46 30 01] [BC E8 3E 01] [07 00 61 73 64 66 73 61 66] [0A 00 61 73 64 66 73 61 66 73 61 0A] 
-                        int birthdate = packet.ReadInt();
-                        int sn = packet.ReadInt();
-                        string toName = packet.ReadString();
-                        string msg = packet.ReadString();
-                        // TODO:
-                        break;
-                    }
                 default:
                     {
                         //string what = "[" + DateTime.Now.ToString() + ":" + DateTime.Now.Millisecond.ToString("D3") + "] Unknown packet found: " + packet.ToString();
@@ -453,6 +352,140 @@ namespace WvsBeta.Shop
                         break;
                     }
             }
+        }
+        public static void GiftItem(Character chr, uint dob, int sn, string recipient, string message, bool isCoupleRing)
+        {
+            // Check SN
+            if (!DataProvider.Commodity.TryGetValue(sn, out var ci))
+            {
+                _log.Warn($"Gifting failed: commodity not found for SN {sn}");
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.OutOfStock);
+                return;
+            }
+
+            // check DoB
+            if (chr.DoB != dob)
+            {
+                _log.Warn($"Gifting failed: invalid DoB entered");
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.InvalidDoBEntered);
+                return;
+            }
+
+            // check age
+            TimeSpan age = (MasterThread.CurrentDate - chr.DoB.DateFromDoB());
+            if (age.GetYears() < 14)
+            {
+                _log.Warn("Gifting failed: too young");
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CantGiftUnder14Year);
+                return;
+            }
+            
+            if (ci.OnSale == false ||
+                ci.StockState == StockState.NotAvailable ||
+                ci.StockState == StockState.OutOfStock)
+            {
+                _log.Warn($"Gifting failed: commodity {sn} not on sale {ci.OnSale} or out of stock {ci.StockState}");
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.OutOfStock);
+            }
+
+            // Check price
+            var points = chr.GetCashStatus();
+            if (ci.Price > points.nx)
+            {
+                _log.Warn("Gifting failed: not enough NX");
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.NotEnoughCash);
+                return;
+            }
+
+            // Check recipient
+            int recipientId = 0;
+            int recipientUserId = 0;
+            int recipientGender = 0;
+            using (var mdr = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
+                "SELECT ID, userid, gender FROM characters WHERE `name` = @name",
+                "@name", recipient
+            ))
+            {
+                if (!mdr.Read())
+                {
+                    // Not found
+                    _log.Warn($"Gifting failed: character named {recipient} not found");
+                    SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
+                    return;
+                }
+
+                recipientId = mdr.GetInt32(0);
+                recipientUserId = mdr.GetInt32(1);
+                recipientGender = mdr.GetInt32(2);
+            }
+
+            if (ci.Gender != CommodityGenders.Both && recipientGender != (int)ci.Gender)
+            {
+                _log.Warn($"Gifting failed: receipient not {ci.Gender}"); ;
+                SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
+                return;
+            }
+
+            LockerItem giftedItem = new LockerItem(recipientUserId, ci, chr.Name, message, chr.ID, chr.Name);
+            chr.Locker.AddItem(giftedItem, CharacterCashLocker.CreateCashItem(giftedItem));
+
+            if (isCoupleRing)
+            {
+                LockerItem boughtItem = new LockerItem(chr.UserID, ci, coupleCharId: recipientId, coupleName: recipient);
+                chr.Locker.AddItem(boughtItem, CharacterCashLocker.CreateCashItem(boughtItem));
+                giftedItem.CoupleCashId = boughtItem.CashId;
+                boughtItem.CoupleCashId = giftedItem.CashId;
+                SendGiftCoupleRing(chr, boughtItem, recipient, ci.ItemID, ci.Count);
+            }
+
+            chr.Inventory.SaveCashItems(chr.Locker);
+             
+            chr.AddSale($"Bought cash item {giftedItem.ItemId} amount {giftedItem.Amount} (ref: {giftedItem.CashId:X16}) as a gift for {recipient}", ci.Price, ci.SerialNumber, TransactionType.NX);
+
+            Character.CashLog.Info(new BuyItem
+            {
+                cashAmount = ci.Price,
+                lockerItem = giftedItem,
+                withMaplePoints = false
+            });
+
+            if (!isCoupleRing) SendGiftDone(chr, ci.ItemID, ci.Count, recipient);
+            SendCashAmounts(chr);
+            MemoPacket.SendMemo(Server.Instance.CenterConnection, chr.ID, recipientId, message, giftedItem.CashId, false);
+        }
+
+        public static void SendGiftCoupleRing(Character chr, LockerItem item, string recipient, int itemid, short amount)
+        {
+            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
+            pw.WriteByte((byte)CashPacketOpcodes.S_GiftCoupleRing_Done);
+            item.Encode(pw);
+            pw.WriteString(recipient);
+            pw.WriteInt(itemid);
+            pw.WriteShort(amount);
+            chr.SendPacket(pw);
+        }
+
+        public static void SendGiftPackageDone(Character chr, string recipient, int itemid, short amount)
+        {
+            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
+            pw.WriteByte((byte)CashPacketOpcodes.S_GiftPackage_Done);
+            pw.WriteString(recipient);
+            pw.WriteInt(itemid);
+            pw.WriteShort(amount);
+            chr.SendPacket(pw);
+        }
+
+        public static void SendBuyEquippedDone(Character chr, IList<LockerItem> items)
+        {
+            if (items.Count > byte.MaxValue) throw new ArgumentException("Too many items!");
+            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
+            pw.WriteByte((byte)CashPacketOpcodes.S_BuyEquipped_Done);
+            pw.WriteByte((byte)items.Count);
+            foreach (var item in items)
+            {
+                item.Encode(pw);
+            }
+            chr.SendPacket(pw);
         }
 
         public static void SendWishlist(Character chr, bool update)
@@ -485,16 +518,27 @@ namespace WvsBeta.Shop
             var pw = GetPacketWriter(CashPacketOpcodes.S_LoadLocker_Done);
 
             var userLocker = chr.Locker.Items.Where(x => x.UserId == chr.UserID).ToList();
+            var gifts = userLocker.Where(i => i.GiftUnread).ToList();
 
             pw.WriteShort((short)userLocker.Count);
 
             foreach (var item in userLocker)
             {
                 item.Encode(pw);
-                item.GiftUnread = false;
             }
 
-            pw.WriteShort(0);
+            pw.WriteShort((short)gifts.Count);
+
+            foreach (var gift in gifts)
+            {
+                pw.WriteLong(gift.CashId);
+                pw.WriteInt(gift.ItemId);
+                pw.WriteString(gift.GiftName, 13);
+                pw.WriteString(gift.GiftMessage, 72);
+                pw.WriteByte(1); // ?
+                gift.GiftUnread = false;
+            }
+
             pw.WriteShort(3); // Storage slots
             chr.SendPacket(pw);
         }
@@ -507,13 +551,13 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendGiftDone(Character chr, LockerItem item, string receipient)
+        public static void SendGiftDone(Character chr, int itemid, short amount, string receipient)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_Gift_Done);
 
             pw.WriteString(receipient);
-            pw.WriteInt(item.ItemId);
-            pw.WriteShort(item.Amount);
+            pw.WriteInt(itemid);
+            pw.WriteShort(amount);
             chr.SendPacket(pw);
         }
 
@@ -566,7 +610,7 @@ namespace WvsBeta.Shop
         {
             //DecodeBuffer (40 bytes)
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
-            pw.WriteByte(0x1E);
+            pw.WriteByte((byte)CashPacketOpcodes.S_LoadWish_Done);
             /**
             //pw.WriteShort(0);
             Item item = new Item(chr.mStorage.GetCashItem(42));
@@ -580,7 +624,6 @@ namespace WvsBeta.Shop
 
         public static void Charge(Character chr)
         {
-
             //This minimizes your client :O 
             var pw = new Packet(ServerMessages.CASHSHOP_RECHARGE);
             pw.WriteString("C:\\Program Files (x86)\\Internet Explorer\\iexplore.exe");
@@ -592,5 +635,50 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
+        public static void SendUseCouponDone(Character chr, IList<LockerItem> lockerItems, int maplePoints, IList<long> cashIds, int mesos)
+        {
+            if (lockerItems.Count > byte.MaxValue) throw new ArgumentException("Too many locker items!");
+            else if (cashIds.Count > byte.MaxValue) throw new ArgumentException("Too many cash ids!");
+
+            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
+            pw.WriteByte((byte)CashPacketOpcodes.S_UseCoupon_Done);
+
+            pw.WriteByte((byte)lockerItems.Count);
+            foreach (LockerItem lockerItem in lockerItems)
+            {
+                lockerItem.Encode(pw);
+            }
+
+            pw.WriteInt(maplePoints);
+
+            pw.WriteByte((byte)cashIds.Count);
+            foreach (long cashId in cashIds)
+            {
+                pw.WriteLong(cashId);
+            }
+
+            pw.WriteInt(mesos);
+
+            chr.SendPacket(pw);
+        }
+
+        public static void SendUseGiftCouponDone(Character chr, string name, IList<LockerItem> lockerItems, int maplePoints)
+        {
+            if (lockerItems.Count > byte.MaxValue) throw new ArgumentException("Too many locker items!");
+
+            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
+            pw.WriteByte((byte)CashPacketOpcodes.S_UseGiftCoupon_Done);
+            pw.WriteString(name);
+
+            pw.WriteByte((byte)lockerItems.Count);
+            foreach (LockerItem lockerItem in lockerItems)
+            {
+                lockerItem.Encode(pw);
+            }
+
+            pw.WriteInt(maplePoints); // Maplepoints
+
+            chr.SendPacket(pw);
+        }
     }
 }

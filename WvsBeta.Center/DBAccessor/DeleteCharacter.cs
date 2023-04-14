@@ -9,7 +9,6 @@ namespace WvsBeta.Center.DBAccessor
     {
         private static readonly string[] CharacterDeleteQueries =
         {
-            "DELETE FROM items WHERE charid = @charid",
             "DELETE FROM inventory_eqp WHERE charid = @charid",
             "DELETE FROM inventory_bundle WHERE charid = @charid",
             "DELETE FROM character_wishlist WHERE charid = @charid",

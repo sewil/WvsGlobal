@@ -310,7 +310,6 @@ namespace WvsBeta.Common
         {
             public static readonly string EnchantSuccess = "Enchant/Success";
             public static readonly string EnchantFailure  = "Enchant/Failure";
-            public static readonly string Portal = "Portal";
         }
         public static class MobSkills
         {
@@ -390,6 +389,7 @@ namespace WvsBeta.Common
         public static bool isStar(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ItemStar); }
         public static bool isRechargeable(int itemid) { return isStar(itemid); }
         public static bool isEquip(int itemid) { return (getInventory(itemid) == Inventory.Equip); }
+        public static bool isCoupleRing(int itemid) { return itemid == EquipIds.CrushRing; }
         public static bool isPet(int itemid) { return (getInventory(itemid) == Inventory.Cash); }
         public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isPet(itemid)); }
         public static bool isOverall(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorOverall); }

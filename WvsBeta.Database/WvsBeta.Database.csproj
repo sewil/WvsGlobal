@@ -86,9 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataBasePatcher.cs" />
-    <Compile Include="DataBasePatcher.DataBasePatchException.cs" />
-    <Compile Include="DataBasePatcher.PatchFile.cs" />
     <Compile Include="MySQL Connection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -107,28 +104,7 @@
     <None Include="packages.config" />
     <None Include="SemVer.MSBuild.props" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="evolutions\base.sql" />
-    <Content Include="evolutions\center\1.sql" />
-    <Content Include="evolutions\center\2.sql" />
-    <Content Include="evolutions\center\3.sql" />
-    <Content Include="evolutions\center\4.sql" />
-    <Content Include="evolutions\center\5.sql" />
-    <Content Include="evolutions\login\1.sql" />
-    <Content Include="evolutions\login\2.sql" />
-    <Content Include="evolutions\login\3.sql" />
-    <Content Include="evolutions\login\4.sql" />
-    <Content Include="evolutions\login\5.sql" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
-    <PostBuildEvent>rmdir /Q /S "$(SolutionDir)BinSvr\evolutions\"
-xcopy /E /I "$(ProjectDir)\evolutions"  "$(SolutionDir)BinSvr\evolutions"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(OS)' != 'Windows_NT' ">
-    <PostBuildEvent>rm -rf "$(SolutionDir)BinSvr/evolutions/"
-			cp -r "$(ProjectDir)\evolutions"  "$(SolutionDir)BinSvr\evolutions"</PostBuildEvent>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

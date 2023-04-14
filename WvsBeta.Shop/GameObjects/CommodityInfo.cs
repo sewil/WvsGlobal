@@ -1,37 +1,11 @@
-using reNX.NXProperties;
+﻿using reNX.NXProperties;
 using System;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Shop
+namespace WvsBeta.Shop.GameObjects
 {
-    public enum StockState
-    {
-        InStock = -1,
-        DefaultState = 0,
-        OutOfStock = 1,
-        NotAvailable = 2,
-    }
-
-    public enum CommodityCategory
-    {
-        Main = 1,
-        Event = 2,
-        Equip = 3,
-        Use = 4,
-        Etc = 5,
-        Setup = 6,
-        Pet = 7,
-        Package = 8
-    }
-
-    public enum CommodityClass : int
-    {
-        New = 0,
-        Hot = 2,
-        Event = 3
-    }
-
-    public class CommodityInfo
+    public class CommodityInfo : ICommodityInfo
     {
         public int SerialNumber { get; }
         public int ItemID { get; }
@@ -39,6 +13,7 @@ namespace WvsBeta.Shop
         public short Period { get; }
         public bool OnSale { get; }
         public int Price { get; }
+        public int Priority { get; }
         public CommodityGenders Gender { get; }
         public CommodityClass Class { get; }
         public StockState StockState { get; }
@@ -53,9 +28,13 @@ namespace WvsBeta.Shop
             Period = node["Period"].ValueInt16();
             OnSale = node["OnSale"].ValueBool();
             Price = node["Price"].ValueInt16();
+            Priority = node["Priority"].ValueInt32();
             StockState = StockState.DefaultState;
             Category = (CommodityCategory)(Math.Floor((double)SerialNumber / 10000000) + 1);
-            if (node.ContainsChild("Class")) Class = (CommodityClass)node["Class"].ValueInt32();
+            if (node.ContainsChild("Class"))
+            {
+                Class = (CommodityClass)node["Class"].ValueInt32();
+            }
 
             if (!DataProvider.Items.ContainsKey(ItemID) && !DataProvider.Equips.ContainsKey(ItemID) && !DataProvider.Pets.ContainsKey(ItemID))
             {
@@ -75,21 +54,22 @@ namespace WvsBeta.Shop
         {
             packet.WriteInt(SerialNumber);
             packet.WriteInt(ItemID);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
-            packet.WriteInt(0);
+            packet.WriteInt(Count); // Count
+            packet.WriteInt(Priority); // Priority
+            packet.WriteInt(Price); // Discount price
+            packet.WriteInt(Period); // Period
+            packet.WriteInt(0); // ?
 
-            packet.WriteInt(0);
-            packet.WriteByte(0);
-            
-            packet.WriteInt(0);
-            packet.WriteByte(0);
-            
-            packet.WriteInt(0);
-            packet.WriteByte(0);
-            
+            packet.WriteInt(0); // ?
+            packet.WriteBool(false); // Disable buy
+
+            packet.WriteInt((int)Gender); // Gender
+            packet.WriteBool(OnSale); // On sale
+
+            packet.WriteInt((int)Class); // Class
+            packet.WriteBool(false); // Limited time
+
+            // ?
             var v5 = 0;
             packet.WriteInt(v5);
             for (int i = 0; i < v5; i++)

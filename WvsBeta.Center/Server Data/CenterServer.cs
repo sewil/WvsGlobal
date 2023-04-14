@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
-using WvsBeta.Center.Handlers;
-using WvsBeta.Center.Packets;
 using WvsBeta.Common;
-using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -37,7 +33,6 @@ namespace WvsBeta.Center
 
         public List<Character> CharacterStore { get; } = new List<Character>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
-        public IDictionary<int, IList<Memo>> Memos { get; } = new Dictionary<int, IList<Memo>>();
         public void LogToLogfile(string what)
         {
             Program.LogFile.WriteLine(what);
@@ -83,6 +78,11 @@ namespace WvsBeta.Center
                 chr.FriendsList = BuddyList.LoadBuddyList(id, name);
             }
 
+            if (chr.Memos == null)
+            {
+                CharacterMemos.Load(chr);
+            }
+
             chr.GMLevel = gm;
             Program.MainForm.LogDebug(chr.Name + " Staff? " + chr.IsGM + " GM Level: " + chr.GMLevel);
             chr.Job = job;
@@ -110,11 +110,6 @@ namespace WvsBeta.Center
             Program.MainForm.UpdateServerList();
 
             Program.MainForm.LogAppend(" Done!", false);
-
-            Program.MainForm.LogAppend("Starting to patch... ", false);
-            DataBasePatcher.StartPatching(CharacterDatabase, Path.Combine(Application.StartupPath, "evolutions", "center"), "center");
-            Program.MainForm.LogAppend(" Done!", false);
-
 
             using (var reader = CharacterDatabase.RunQuery(
                     "SELECT private_ip FROM servers WHERE configname = 'Center' AND world_id = " + World.ID
@@ -173,8 +168,6 @@ namespace WvsBeta.Center
                     StartListening();
                 }
             }
-
-            MemoHandler.Load();
 
             CharacterDatabase.SetupPinger(MasterThread.Instance);
 

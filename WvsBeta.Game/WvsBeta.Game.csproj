@@ -200,7 +200,6 @@
     <Compile Include="GameObjects\DataLoading\Portal.cs" />
     <Compile Include="GameObjects\Reactor.cs" />
     <Compile Include="GameObjects\Reward.cs" />
-    <Compile Include="GameObjects\CharacterRings.cs" />
     <Compile Include="Scripting\IPortalScript.cs" />
     <Compile Include="Scripting\PortalScriptSession.cs" />
     <Compile Include="Scripting\ReactorScriptSession.cs" />

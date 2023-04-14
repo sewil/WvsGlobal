@@ -5,11 +5,9 @@ using System.Linq;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
-using WvsBeta.Center.Handlers;
 using WvsBeta.Center.Packets;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
-using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center
@@ -321,7 +319,6 @@ namespace WvsBeta.Center
                                     byte level = packet.ReadByte();
                                     byte admin = packet.ReadByte();
                                     var character = CenterServer.Instance.AddCharacter(charname, charid, Server.ChannelID, job, level, admin);
-                                    MemoHandler.SendMemos(character);
 
                                     if (Party.Parties.TryGetValue(character.PartyID, out Party party))
                                     {
@@ -339,6 +336,11 @@ namespace WvsBeta.Center
                                         friendsList.OnOnlineCC(true, false);
                                         friendsList.SendBuddyList();
                                         friendsList.PollRequests();
+                                    }
+
+                                    if (character.Memos != null)
+                                    {
+                                        character.Memos.SendMemos();
                                     }
                                 }
                                 else
@@ -368,7 +370,7 @@ namespace WvsBeta.Center
 
                                             // Fix this. When you log back in, the chat has 2 of you.
                                             // Messenger.LeaveMessenger(character.ID);
-                                            MemoHandler.SaveChr(character);
+                                            character.Memos?.Save();
                                         }
 
                                         if (Party.Invites.ContainsKey(character.ID)) Party.Invites.Remove(character.ID);
@@ -380,21 +382,34 @@ namespace WvsBeta.Center
                                 break;
                             }
 
-                        case ISClientMessages.MemoSendNote:
                         case ISClientMessages.MemoAdd:
                             {
-                                //check what client sends
                                 int from = packet.ReadInt();
-                                string name = packet.ReadString();
+                                int? recipientId = null;
+                                string recipientName = null;
+                                if (packet.ReadBool()) recipientId = packet.ReadInt();
+                                else recipientName = packet.ReadString();
                                 string message = packet.ReadString();
-                                MemoHandler.HandleAddMemo(from, name, message, opcode == ISClientMessages.MemoSendNote);
+                                bool isGift = packet.ReadBool();
+                                long? giftCashId = null;
+                                if (isGift) giftCashId = packet.ReadLong();
+                                bool onlyOffline = packet.ReadBool();
+                                if (recipientId != null)
+                                    CharacterMemos.HandleAddMemo(from, recipientId.Value, message, onlyOffline, giftCashId);
+                                else
+                                    CharacterMemos.HandleAddMemo(from, recipientName, message, onlyOffline, giftCashId);
                                 break;
                             }
                         case ISClientMessages.MemoRead:
                             {
                                 int cid = packet.ReadInt();
-                                int memoid = packet.ReadInt();
-                                MemoHandler.HandleMemoRead(cid, memoid);
+                                int[] memos = new int[packet.ReadByte()];
+                                for (int i = 0; i < memos.Length; i++)
+                                {
+                                    memos[i] = packet.ReadInt();
+                                }
+                                Character to = CenterServer.Instance.FindCharacter(cid);
+                                to?.Memos.HandleMemoRead(memos);
                                 break;
                             }
                         case ISClientMessages.BroadcastPacketToGameServers:

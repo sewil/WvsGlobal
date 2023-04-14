@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects.MiniRoom;
 using WvsBeta.Game.Handlers;
@@ -191,7 +192,7 @@ namespace WvsBeta.Game
                     var character = Player.Character;
 
                     if (!ignoreClientPackets.Contains(header))
-                        Program.MainForm.LogAppend($"[{character.Name}->CH{Player.Channel}][{header}] {packet}");
+                        Program.MainForm.LogDebug($"[{character.Name}->CH{Player.Channel}][{header}] {packet}");
 
                     switch (header)
                     {
@@ -666,7 +667,7 @@ namespace WvsBeta.Game
         {
             var header = (ServerMessages)pPacket.Opcode;
             if (!ignoreServerPackets.Contains(header))
-                Program.MainForm.LogAppend($"[CH{Player.Channel}->{Player.Character?.Name}][{header}] {pPacket}");
+                Program.MainForm.LogDebug($"[CH{Player.Channel}->{Player.Character?.Name}][{header}] {pPacket}");
             base.SendPacket(pPacket);
         }
     }

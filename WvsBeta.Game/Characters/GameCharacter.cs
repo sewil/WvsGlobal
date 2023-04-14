@@ -8,6 +8,7 @@ using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
@@ -84,7 +85,6 @@ namespace WvsBeta.Game
         public CharacterQuests Quests { get; private set; }
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
-        public CharacterRings Rings { get; set; }
         public long PetLastInteraction { get; set; }
 
         public PartyData Party
@@ -201,7 +201,13 @@ namespace WvsBeta.Game
                 packet.WriteByte(0);
             }
 
-            Rings.Encode(packet);
+            // Couple rings
+            var coupleRing = Inventory.GetEquippedCoupleRing();
+            packet.WriteBool(coupleRing != null);
+            if (coupleRing != null)
+            {
+                coupleRing.EncodeRing(packet);
+            }
         }
 
         public void EncodeForCC(Packet pw)
@@ -515,8 +521,6 @@ namespace WvsBeta.Game
             base.Inventory = new CharacterInventory(this);
             Inventory.LoadInventory();
 
-            Rings = CharacterRings.Load(this);
-
             base.Skills = new CharacterSkills(this);
             Skills.LoadSkills();
 
@@ -600,7 +604,7 @@ namespace WvsBeta.Game
         public string SCharacterName => Name;
         public void PlayPortalSE()
         {
-            SendSound(Constants.Sounds.Portal);
+            PlayerEffectPacket.SendPortalSoundEffect(this);
         }
         public void SendSound(string path)
         {

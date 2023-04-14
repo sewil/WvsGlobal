@@ -139,6 +139,7 @@
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="Extensions\TimeExtensions.cs" />
     <Compile Include="Interfaces\IInitialize.cs" />
+    <Compile Include="Objects\ICommodityInfo.cs" />
     <Compile Include="Objects\MovableLife.cs" />
     <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
@@ -282,9 +283,7 @@
       <Name>reNX</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Handlers\Guild\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

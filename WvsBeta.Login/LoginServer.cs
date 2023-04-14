@@ -107,11 +107,6 @@ namespace WvsBeta.Login
             LoadDBConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Database.img"));
             Program.MainForm.LogAppend(" Done!", false);
             
-            Program.MainForm.LogAppend("Starting to patch... ", false);
-            DataBasePatcher.StartPatching(UsersDatabase, Path.Combine(Application.StartupPath, "evolutions", "login"), "login");
-
-            Program.MainForm.LogAppend(" Done!", false);
-
             MasterThread.RepeatingAction.Start("Center Reconnect Timer", time =>
             {
                 foreach (var kvp in Worlds)

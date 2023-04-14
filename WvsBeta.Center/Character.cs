@@ -19,6 +19,8 @@ namespace WvsBeta.Center
         public byte MessengerSlot { get; set; }
         public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
 
+        public CharacterMemos Memos;
+
         private int _PartyID;
         public override int PartyID
         {
@@ -47,6 +49,7 @@ namespace WvsBeta.Center
             GMLevel = gmLevel;
             IsOnline = isOnline;
             base.Inventory = new CharacterInventory(0, id);
+            CharacterMemos.Load(this);
         }
 
         public Character(Packet pr)

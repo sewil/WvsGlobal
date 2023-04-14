@@ -1,9 +1,6 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
@@ -679,6 +676,15 @@ namespace WvsBeta.Game
                 InventoryPacket.SendItemsExpired(Character, itemIds);
                 dict.ForEach(x => InventoryOperationPacket.MultiDelete(Character, x.Key, x.Value.ToArray()));
             });
+        }
+
+        public IList<LockerItem> GetCoupleRings()
+        {
+            return _cashItems.Items.Where(c => c != null && Constants.isCoupleRing(c.ItemId)).ToList();
+        }
+        public EquipItem GetEquippedCoupleRing()
+        {
+            return Equipped[EquippedType.Cash].FirstOrDefault(c => c != null && Constants.isCoupleRing(c.ItemID));
         }
         #region Script helpers
         public int SlotCount(byte inventory)

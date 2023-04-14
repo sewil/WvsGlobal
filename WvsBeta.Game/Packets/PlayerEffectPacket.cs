@@ -10,6 +10,7 @@ namespace WvsBeta.Game.Packets
         InventoryChanged = 3,
         Pet = 4,
         UseEXPCharm = 6,
+        Portal,
         JobChanged = 8,
     }
     public enum PetEffectType
@@ -110,6 +111,12 @@ namespace WvsBeta.Game.Packets
                 pw.WriteInt(itemid);
                 pw.WriteInt(amount);
             }
+            pw.Send(false, true);
+        }
+
+        public static void SendPortalSoundEffect(GameCharacter chr)
+        {
+            var pw = new PlayerEffectPacket(chr, PlayerEffectType.Portal);
             pw.Send(false, true);
         }
     }

@@ -25,7 +25,6 @@ namespace WvsBeta.Game
             AvatarLook = 1,
             Speed = 2,
             ItemEffects = 4,
-            Rings = 8
         }
 
         public static void HandleMove(GameCharacter chr, Packet packet)
@@ -570,9 +569,6 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)victim.Wishlist.Count);
             victim.Wishlist.ForEach(pw.WriteInt);
 
-            //todo : rings
-            pw.WriteLong(0);
-
             chr.SendPacket(pw);
         }
 
@@ -596,11 +592,11 @@ namespace WvsBeta.Game
             {
                 pw.WriteByte(0);
             }
-            pw.WriteBool(flags.HasFlag(AvatarModFlag.Rings));
-            if (flags.HasFlag(AvatarModFlag.Rings))
+            EquipItem coupleRing = chr.Inventory.GetEquippedCoupleRing();
+            pw.WriteBool(coupleRing != null);
+            if (coupleRing != null)
             {
-                pw.WriteLong(0);
-                pw.WriteLong(0);
+                coupleRing.EncodeRing(pw);
             }
 
             chr.Field.SendPacket(chr, pw, chr);

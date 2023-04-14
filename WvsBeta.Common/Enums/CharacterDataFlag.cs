@@ -17,7 +17,7 @@ namespace WvsBeta.Common.Enums
         Skills = 0x100,
         Quests = 0x200,
         MinigameStats = 0x400,
-        FriendRing = 0x800,
+        CoupleRing = 0x800,
         TeleportRock = 0x1000,
         CompletedQuests = 0x4000,
         All = 0xFFFF,

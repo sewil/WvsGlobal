@@ -130,7 +130,7 @@
     </Compile>
     <Compile Include="Messenger.cs" />
     <Compile Include="Packets\ChatPacket.cs" />
-    <Compile Include="Handlers\MemoHandler.cs" />
+    <Compile Include="CharacterMemos.cs" />
     <Compile Include="PartyData\Party.cs" />
     <Compile Include="PartyData\PartyPacket.cs" />
     <Compile Include="Program.cs" />
@@ -211,6 +211,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

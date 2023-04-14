@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using log4net;
 using WvsBeta.Common;
@@ -93,13 +94,31 @@ namespace WvsBeta.Shop
             Pinger.Remove(this);
         }
 
+
+        private static readonly HashSet<ClientMessages> clientLogIgnore = new HashSet<ClientMessages>
+        {
+            ClientMessages.PONG, ClientMessages.MOVE_PLAYER, ClientMessages.HEAL_OVER_TIME, ClientMessages.MOB_MOVE, ClientMessages.MOB_APPLY_CONTROL,
+            ClientMessages.TAKE_DAMAGE, ClientMessages.CLIENT_HASH, ClientMessages.NPC_ANIMATE,
+            ClientMessages.CHARACTER_IS_DEBUFFED
+        };
+
+        private static readonly HashSet<ServerMessages> serverLogIgnore = new HashSet<ServerMessages>
+        {
+            ServerMessages.PING,
+            ServerMessages.MOVE_PLAYER, ServerMessages.STAT_CHANGED,
+            ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
+            ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
+            ServerMessages.DAMAGE_PLAYER,
+            ServerMessages.UPDATE_PARTYMEMBER_HP
+        };
+
         public override void AC_OnPacketInbound(Packet packet)
         {
             try
             {
                 StartLogging();
                 var header = (ClientMessages)packet.ReadByte();
-                System.Diagnostics.Trace.WriteLine($"[Client->ShopServer] {header} - {packet}");
+
                 if (!Loaded)
                 {
                     switch (header)
@@ -111,6 +130,9 @@ namespace WvsBeta.Shop
                 }
                 else
                 {
+                    if (!clientLogIgnore.Contains(header))
+                        Program.MainForm.LogDebug($"[{Player.Character.Name}->Shop][{header}] {packet}");
+
                     switch (header)
                     {
                         case ClientMessages.ENTER_PORTAL:
@@ -177,7 +199,9 @@ namespace WvsBeta.Shop
         }
         public override void SendPacket(Packet pPacket)
         {
-            System.Diagnostics.Trace.WriteLine($"[ShopServer->Client] {(ServerMessages)pPacket.Opcode} - {pPacket}");
+            var header = (ServerMessages)pPacket.Opcode;
+            if (!serverLogIgnore.Contains(header))
+                Program.MainForm.LogDebug($"[Shop->{Player.Character?.Name}][{header}] {pPacket}");
             base.SendPacket(pPacket);
         }
 

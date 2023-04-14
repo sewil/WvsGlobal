@@ -2,35 +2,27 @@
 
 namespace WvsBeta.Game.Handlers
 {
-    public class MemoHandler
+    public static class MemoHandler
     {
         public static void HandleNoteOperation(GameCharacter chr, Packet pr)
         {
             pr.ReadByte();
-            byte action = pr.ReadByte();
-            int memoid = pr.ReadInt();
-            switch (action)
+            int[] memos = new int[pr.ReadByte()];
+            for (int i = 0; i < memos.Length; i++)
             {
-                case 0x01: // Read
-                    HandleRead(chr, memoid);
-                    break;
-                default:
-                    break;
+                memos[i] = pr.ReadInt();
             }
+            ISSendMemoRead(chr, memos);
         }
-        private static void HandleRead(GameCharacter chr, int memoid)
+        public static void ISSendMemoRead(GameCharacter chr, int[] memos)
         {
             var pw = new Packet(ISClientMessages.MemoRead);
             pw.WriteInt(chr.ID);
-            pw.WriteInt(memoid);
-            Server.Instance.CenterConnection.SendPacket(pw);
-        }
-        public static void SendNote(GameCharacter chr, string name, string message)
-        {
-            var pw = new Packet(ISClientMessages.MemoSendNote);
-            pw.WriteInt(chr.ID);
-            pw.WriteString(name);
-            pw.WriteString(message);
+            pw.WriteByte((byte)memos.Length);
+            foreach (int memo in memos)
+            {
+                pw.WriteInt(memo);
+            }
             Server.Instance.CenterConnection.SendPacket(pw);
         }
     }

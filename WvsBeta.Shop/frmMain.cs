@@ -86,6 +86,12 @@ namespace WvsBeta.Shop
             }, "LogAppend");
         }
 
+        public void LogDebug(string what)
+        {
+#if DEBUG
+            LogAppend(what);
+#endif
+        }
         private static bool alreadyShuttingDown = false;
         private static bool forceShutDown = false;
 

@@ -315,31 +315,6 @@ LOCK TABLES `cashshop_sell_log` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `character_cashshop_gifts`
---
-
-DROP TABLE IF EXISTS `character_cashshop_gifts`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `character_cashshop_gifts` (
-  `charid` int(11) NOT NULL,
-  `cashid` int(11) NOT NULL,
-  `itemid` int(11) NOT NULL,
-  `sender` varchar(13) NOT NULL,
-  `message` varchar(73) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `character_cashshop_gifts`
---
-
-LOCK TABLES `character_cashshop_gifts` WRITE;
-/*!40000 ALTER TABLE `character_cashshop_gifts` DISABLE KEYS */;
-/*!40000 ALTER TABLE `character_cashshop_gifts` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `character_quests`
 --
 
@@ -810,14 +785,15 @@ CREATE TABLE `itemlocker` (
   `cashid` bigint(20) NOT NULL,
   `slot` smallint(6) NOT NULL,
   `userid` int(11) NOT NULL,
-  `characterid` int(11) NOT NULL,
+  `charid` int(11) NOT NULL,
   `itemid` int(11) NOT NULL,
   `commodity_id` int(11) NOT NULL,
   `amount` smallint(6) NOT NULL,
-  `buycharactername` varchar(13) NOT NULL,
   `expiration` bigint(20) NOT NULL,
   `gift_unread` tinyint(4) NOT NULL DEFAULT 0,
   `worldid` tinyint(4) NOT NULL,
+  `couplecashid` BIGINT(19) NOT NULL DEFAULT 0,
+  `couple_charid` INT(10) NOT NULL DEFAULT 0,
   PRIMARY KEY (`cashid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -829,53 +805,6 @@ CREATE TABLE `itemlocker` (
 LOCK TABLES `itemlocker` WRITE;
 /*!40000 ALTER TABLE `itemlocker` DISABLE KEYS */;
 /*!40000 ALTER TABLE `itemlocker` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `items`
---
-
-DROP TABLE IF EXISTS `items`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `items` (
-  `charid` int(11) NOT NULL,
-  `inv` smallint(6) NOT NULL,
-  `slot` smallint(6) NOT NULL,
-  `itemid` int(11) NOT NULL,
-  `amount` int(11) NOT NULL DEFAULT 1,
-  `slots` tinyint(4) DEFAULT 7,
-  `scrolls` smallint(6) DEFAULT 0,
-  `istr` smallint(6) DEFAULT 0,
-  `idex` smallint(6) DEFAULT 0,
-  `iint` smallint(6) DEFAULT 0,
-  `iluk` smallint(6) DEFAULT 0,
-  `ihp` smallint(6) DEFAULT 0,
-  `imp` smallint(6) DEFAULT 0,
-  `iwatk` smallint(6) DEFAULT 0,
-  `imatk` smallint(6) DEFAULT 0,
-  `iwdef` smallint(6) DEFAULT 0,
-  `imdef` smallint(6) DEFAULT 0,
-  `iacc` smallint(6) DEFAULT 0,
-  `iavo` smallint(6) DEFAULT 0,
-  `ihand` smallint(6) DEFAULT 0,
-  `ispeed` smallint(6) DEFAULT 0,
-  `ijump` smallint(6) DEFAULT 0,
-  `name` varchar(12) COLLATE latin1_general_ci NOT NULL,
-  `cashid` int(11) NOT NULL DEFAULT 0,
-  `expiration` bigint(20) NOT NULL DEFAULT 150842304000000000,
-  PRIMARY KEY (`charid`,`inv`,`slot`),
-  KEY `charid` (`charid`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `items`
---
-
-LOCK TABLES `items` WRITE;
-/*!40000 ALTER TABLE `items` DISABLE KEYS */;
-/*!40000 ALTER TABLE `items` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -943,6 +872,7 @@ CREATE TABLE `memos` (
 	`sent` BIGINT(19) NOT NULL DEFAULT '0',
 	`read` BIGINT(19) NOT NULL DEFAULT '0',
   `fromname` VARCHAR(13) NOT NULL COLLATE 'latin1_general_ci',
+  `gift_cashid` BIGINT(19) NULL DEFAULT NULL,
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `fromcid_fk` (`from`) USING BTREE,
 	INDEX `tocid_fk` (`to`) USING BTREE,
@@ -1012,89 +942,6 @@ LOCK TABLES `pets` WRITE;
 UNLOCK TABLES;
 
 --
--- Table structure for table `rings`
---
-
-DROP TABLE IF EXISTS `rings`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `rings` (
-  `ringid` int(10) NOT NULL,
-  `itemid` int(15) NOT NULL,
-  `charid` int(10) NOT NULL,
-  `partnerid` int(10) NOT NULL,
-  `equipped` int(1) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `rings`
---
-
-LOCK TABLES `rings` WRITE;
-/*!40000 ALTER TABLE `rings` DISABLE KEYS */;
-/*!40000 ALTER TABLE `rings` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `server_evolutions_center`
---
-
-DROP TABLE IF EXISTS `server_evolutions_center`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `server_evolutions_center` (
-  `id` int(11) NOT NULL,
-  `script_up` longtext NOT NULL,
-  `script_down` longtext NOT NULL,
-  `file_hash` varchar(128) NOT NULL,
-  `apply_date` datetime NOT NULL,
-  `state` varchar(45) NOT NULL,
-  `last_error` longtext NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `server_evolutions_center`
---
-
-LOCK TABLES `server_evolutions_center` WRITE;
-/*!40000 ALTER TABLE `server_evolutions_center` DISABLE KEYS */;
-INSERT INTO `server_evolutions_center` VALUES (1,'CREATE TABLE `servers` (\r\n   `configname` varchar(45) NOT NULL,\r\n   `world_id` tinyint(4) NOT NULL,\r\n   `private_ip` varchar(45) DEFAULT NULL,\r\n   PRIMARY KEY (`world_id`,`configname`)\r\n ) ENGINE=InnoDB DEFAULT CHARSET=latin1;','DROP TABLE IF EXISTS `servers`;','445e89e2742cc5369d4c5226f46ad496832defbc8b29a66e48febb4ad15703b3e87780747bca111d715d06488b4f9a9e580a13e9c19c6578b6a0879147b6c245','2017-08-21 00:49:56','ApplyingUp','System.Exception: [8/21/2017 12:49:56 AM][DB LIB] Got exception @ MySQL_Connection::RunQuery(CREATE TABLE `servers` (\r\n   `configname` varchar(45) NOT NULL,\r\n   `world_id` tinyint(4) NOT NULL,\r\n   `private_ip` varchar(45) DEFAULT NULL,\r\n   PRIMARY KEY (`world_id`,`configname`)\r\n ) ENGINE=InnoDB DEFAULT CHARSET=latin1;) : MySql.Data.MySqlClient.MySqlException (0x80004005): Table \'servers\' already exists\r\n   at MySql.Data.MySqlClient.MySqlStream.ReadPacket()\r\n   at MySql.Data.MySqlClient.NativeDriver.GetResult(Int32& affectedRow, Int64& insertedId)\r\n   at MySql.Data.MySqlClient.Driver.NextResult(Int32 statementId, Boolean force)\r\n   at MySql.Data.MySqlClient.MySqlDataReader.NextResult()\r\n   at MySql.Data.MySqlClient.MySqlCommand.ExecuteReader(CommandBehavior behavior)\r\n   at MySql.Data.MySqlClient.MySqlCommand.ExecuteNonQuery()\r\n   at WvsBeta.Database.MySQL_Connection.ExecuteAndReturnPossibleReader(String pQuery)\r\n   at WvsBeta.Database.MySQL_Connection.RunQuery(String pQuery)\r\n   at WvsBeta.Database.MySQL_Connection.RunQuery(String pQuery)\r\n   at WvsBeta.Database.DataBasePatcher.ApplyPatchRoute(PatchRouteElem[] routeElements)'),(2,'ALTER TABLE `characters` \r\nADD COLUMN `last_savepoint` DATETIME NULL DEFAULT \'2012-01-09 12:37:00\' AFTER `party`;','ALTER TABLE `characters` \r\nDROP COLUMN `last_savepoint`;','9bf083d723cdb7074b48ae62246882d77303afe9d149efd0317d05ef9a1eff3572ba6051192b2c0ff89b69443567330b6f104cbc1e249cceea1242c2b5cb6631','2017-09-03 20:56:23','AppliedUp',''),(3,'DROP TABLE IF EXISTS `cashitem_bundle`;\r\nDROP TABLE IF EXISTS `cashitem_eqp`;\r\nDROP TABLE IF EXISTS `cashitem_pet`;\r\nDROP TABLE IF EXISTS itemlocker;\r\nDROP TABLE IF EXISTS inventory_eqp;\r\nDROP TABLE IF EXISTS inventory_bundle;\r\nDROP TABLE IF EXISTS storage_eqp;\r\nDROP TABLE IF EXISTS storage_bundle;\r\n\r\n\r\nCREATE TABLE `cashitem_bundle` (\r\n  `userid` int(11) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `amount` smallint(6) NOT NULL DEFAULT \'1\',\r\n  `cashid` bigint(20) NOT NULL,\r\n  `expiration` bigint(20) NOT NULL DEFAULT \'150842304000000000\',\r\n  PRIMARY KEY (`cashid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nCREATE TABLE `cashitem_eqp` (\r\n  `userid` int(11) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `slots` tinyint(4) NOT NULL DEFAULT 7,\r\n  `scrolls` tinyint(4) NOT NULL DEFAULT 0,\r\n  `istr` smallint(6) NOT NULL DEFAULT 0,\r\n  `idex` smallint(6) NOT NULL DEFAULT 0,\r\n  `iint` smallint(6) NOT NULL DEFAULT 0,\r\n  `iluk` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihp` smallint(6) NOT NULL DEFAULT 0,\r\n  `imp` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `imatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `imdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `iacc` smallint(6) NOT NULL DEFAULT 0,\r\n  `iavo` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihand` smallint(6) NOT NULL DEFAULT 0,\r\n  `ispeed` smallint(6) NOT NULL DEFAULT 0,\r\n  `ijump` smallint(6) NOT NULL DEFAULT 0,\r\n  `cashid` bigint(20) NOT NULL,\r\n  `expiration` bigint(20) NOT NULL DEFAULT \'150842304000000000\',\r\n  PRIMARY KEY (`cashid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nCREATE TABLE `cashitem_pet` (\r\n  `userid` int(11) NOT NULL,\r\n  `charid` int(11) NOT NULL,\r\n  `cashid` bigint(20) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `name` varchar(12) COLLATE latin1_general_ci NOT NULL,\r\n  `level` tinyint(3) NOT NULL,\r\n  `closeness` smallint(6) NOT NULL,\r\n  `fullness` tinyint(3) NOT NULL,\r\n  `expiration` bigint(20) NOT NULL,\r\n  `deaddate` bigint(20) NOT NULL,\r\n  PRIMARY KEY (`cashid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nCREATE TABLE `itemlocker` (\r\n  `cashid` bigint(20) NOT NULL,\r\n  `slot` smallint(6) NOT NULL,\r\n  `userid` int(11) NOT NULL,\r\n  `characterid` int(11) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `commodity_id` int(11) NOT NULL,\r\n  `amount` smallint(6) NOT NULL,\r\n  `buycharactername` varchar(13) NOT NULL,\r\n  `expiration` bigint(20) NOT NULL,\r\n  `discount_rate` int(11) NOT NULL,\r\n  `worldid` tinyint(4) NOT NULL,\r\n  PRIMARY KEY (`cashid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1;\r\n\r\n\r\nCREATE TABLE `inventory_eqp` (\r\n  `charid` int(11) NOT NULL,\r\n  `inv` tinyint(4) NOT NULL, -- Will be dropped\r\n  `slot` smallint(6) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `amount` smallint(11) NOT NULL DEFAULT 1, -- Will be dropped\r\n  `slots` tinyint(4) NOT NULL DEFAULT 7,\r\n  `scrolls` tinyint(4) NOT NULL DEFAULT 0,\r\n  `istr` smallint(6) NOT NULL DEFAULT 0,\r\n  `idex` smallint(6) NOT NULL DEFAULT 0,\r\n  `iint` smallint(6) NOT NULL DEFAULT 0,\r\n  `iluk` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihp` smallint(6) NOT NULL DEFAULT 0,\r\n  `imp` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `imatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `imdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `iacc` smallint(6) NOT NULL DEFAULT 0,\r\n  `iavo` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihand` smallint(6) NOT NULL DEFAULT 0,\r\n  `ispeed` smallint(6) NOT NULL DEFAULT 0,\r\n  `ijump` smallint(6) NOT NULL DEFAULT 0,\r\n  `name` varchar(12) COLLATE latin1_general_ci NOT NULL,\r\n  `cashid` bigint(20) NOT NULL DEFAULT 0,\r\n  `expiration` bigint(20) NOT NULL DEFAULT 150842304000000000,\r\n  PRIMARY KEY (`charid`,`slot`),\r\n  KEY `charid` (`charid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nCREATE TABLE `inventory_bundle` (\r\n  `charid` int(11) NOT NULL,\r\n  `inv` tinyint(4) NOT NULL,\r\n  `slot` smallint(6) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `amount` int(11) NOT NULL DEFAULT 1,\r\n  `cashid` bigint(20) NOT NULL DEFAULT 0,\r\n  `expiration` bigint(20) NOT NULL DEFAULT 150842304000000000,\r\n  PRIMARY KEY (`charid`,`inv`,`slot`),\r\n  KEY `charid` (`charid`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nINSERT INTO inventory_eqp SELECT * FROM items i WHERE i.inv = 1;\r\n\r\nINSERT INTO inventory_bundle SELECT i.charid, i.inv, i.slot, i.itemid, i.amount, i.cashid, i.expiration FROM items i WHERE i.inv <> 1;\r\n\r\n\r\n-- Storage\r\n\r\nCREATE TABLE `storage_eqp` (\r\n  `userid` int(11) NOT NULL,\r\n  `world_id` int(11) NOT NULL,\r\n  `slot` smallint(6) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `amount` smallint(11) NOT NULL DEFAULT 1, -- Will be dropped\r\n  `slots` tinyint(4) NOT NULL DEFAULT 7,\r\n  `scrolls` tinyint(4) NOT NULL DEFAULT 0,\r\n  `istr` smallint(6) NOT NULL DEFAULT 0,\r\n  `idex` smallint(6) NOT NULL DEFAULT 0,\r\n  `iint` smallint(6) NOT NULL DEFAULT 0,\r\n  `iluk` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihp` smallint(6) NOT NULL DEFAULT 0,\r\n  `imp` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `imatk` smallint(6) NOT NULL DEFAULT 0,\r\n  `iwdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `imdef` smallint(6) NOT NULL DEFAULT 0,\r\n  `iacc` smallint(6) NOT NULL DEFAULT 0,\r\n  `iavo` smallint(6) NOT NULL DEFAULT 0,\r\n  `ihand` smallint(6) NOT NULL DEFAULT 0,\r\n  `ispeed` smallint(6) NOT NULL DEFAULT 0,\r\n  `ijump` smallint(6) NOT NULL DEFAULT 0,\r\n  `name` varchar(12) COLLATE latin1_general_ci NOT NULL,\r\n  `expiration` bigint(20) NOT NULL DEFAULT 150842304000000000,\r\n  KEY `userid_worldid` (`userid`, `world_id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nCREATE TABLE `storage_bundle` (\r\n  `userid` int(11) NOT NULL,\r\n  `world_id` int(11) NOT NULL,\r\n  `inv` tinyint(4) NOT NULL,\r\n  `slot` smallint(6) NOT NULL,\r\n  `itemid` int(11) NOT NULL,\r\n  `amount` smallint(11) NOT NULL DEFAULT 1,\r\n  `expiration` bigint(20) NOT NULL DEFAULT 150842304000000000,\r\n  KEY `userid_worldid` (`userid`, `world_id`)\r\n) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;\r\n\r\nINSERT INTO storage_eqp SELECT * FROM storage_items i WHERE FLOOR(i.itemid / 1000000) = 1;\r\n\r\nINSERT INTO storage_bundle SELECT i.userid, i.world_id, FLOOR(i.itemid / 1000000), i.slot, i.itemid, i.amount, i.expiration FROM storage_items i WHERE FLOOR(i.itemid / 1000000) <> 1;\r\n\r\nALTER TABLE `storage_eqp` ADD COLUMN `cashid` BIGINT(20) NOT NULL AFTER `ijump`;\r\nALTER TABLE `storage_bundle` ADD COLUMN `cashid` BIGINT(20) NOT NULL AFTER `amount`;\r\n\r\nALTER TABLE inventory_eqp DROP COLUMN amount, DROP COLUMN inv, DROP COLUMN `name`;\r\nALTER TABLE storage_eqp DROP COLUMN amount, DROP COLUMN `name`;\r\n\r\n\r\nALTER TABLE characters ADD COLUMN pet_cash_id BIGINT(20) NOT NULL DEFAULT 0;','-- Put your down queries here, such as DROP TABLE, etc.','f821631845141590077076d338e469031e7d44426362946254768cad2ad1c5282d8cf596d204e302756d6a8c7d47d6a70140d90540933548d4cf4307c81f7029','2017-11-05 23:54:38','AppliedUp',''),(4,'ALTER TABLE itemlocker DROP COLUMN `discount_rate`, ADD COLUMN `gift_unread` tinyint NOT NULL default 0 AFTER `expiration`;','ALTER TABLE itemlocker DROP COLUMN `gift_unread`, ADD COLUMN `discount_rate` int(11) NOT NULL AFTER `expiration`;','cf9f478f05808f7405473ae9ff328c36af5f019afd331028fffb8c3848994c6ed874c219140d21ba8efb8158cfb49a3a2d842ef5e947e0899ec373d50c7107e1','2018-01-18 22:49:19','AppliedUp',''),(5,'ALTER TABLE cashitem_pet DROP COLUMN charid;','ALTER TABLE cashitem_pet ADD COLUMN charid INT(11) NOT NULL AFTER userid;','05945bf66c819a1d39f0be3420d248d87001ca0cec580b7e4d4a0958d1b732a87c3dfd12dcda19e7774a2b24ac9daaa79b64808cda4329675495250af9d8b2bb','2018-01-18 22:49:19','AppliedUp','');
-/*!40000 ALTER TABLE `server_evolutions_center` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `server_evolutions_login`
---
-
-DROP TABLE IF EXISTS `server_evolutions_login`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `server_evolutions_login` (
-  `id` int(11) NOT NULL,
-  `script_up` longtext NOT NULL,
-  `script_down` longtext NOT NULL,
-  `file_hash` varchar(128) NOT NULL,
-  `apply_date` datetime NOT NULL,
-  `state` varchar(45) NOT NULL,
-  `last_error` longtext NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `server_evolutions_login`
---
-
-LOCK TABLES `server_evolutions_login` WRITE;
-/*!40000 ALTER TABLE `server_evolutions_login` DISABLE KEYS */;
-INSERT INTO `server_evolutions_login` VALUES (1,'ALTER TABLE `machine_ban` \r\nCHANGE COLUMN `machineid` `machineid` VARCHAR(32) NOT NULL ,\r\nADD COLUMN `reason` TEXT NULL AFTER `last_try`;','ALTER TABLE `machine_ban` \r\nCHANGE COLUMN `machineid` `machineid` BIGINT(20) NOT NULL, DROP COLUMN `reason`;','666b174bb78b2ac4ce97cec1e806ad5485e4c9dfc67284c6ebb42fa19a26481b8f82cbcfb848fdbbb9e7cec72085ad57c40e03b2c5899750b3c5933d6e9f6885','2017-08-21 00:50:08','AppliedUp',''),(2,'ALTER TABLE `users` \r\nADD COLUMN `last_machine_id` VARCHAR(32) NULL AFTER `last_ip`;','ALTER TABLE `users` DROP COLUMN `last_machine_id`;','372e3c27fd475a1cf9e43758633555954feb07f57c1b4394e3f314b5cef6fff5f08904a819fc2ab16c2e5168b39fc98231f747df4544a902ca793e7812169e0c','2017-08-21 00:50:08','AppliedUp',''),(3,'ALTER TABLE users ADD COLUMN `confirmed_eula` TINYINT(1) NOT NULL DEFAULT \'0\';','ALTER TABLE users DROP COLUMN `confirmed_eula`;','4323b2f52a98e516b6d92bae148dcd593ddffc87264143edc86e5f053be7e2b18e5855f4878b69e9ef9b2ca68ed2886dc93540a3f1daa03a2c9c308f9b2461f0','2017-09-08 17:56:28','AppliedUp',''),(4,'ALTER TABLE users ADD last_unique_id VARCHAR(26) DEFAULT \'\';\r\nALTER TABLE users CHANGE donator donator TINYINT(1) DEFAULT 0;\r\n\r\nALTER TABLE machine_ban ADD last_unique_id VARCHAR(26) DEFAULT \'\';\r\n\r\nUPDATE users SET donator = 0;','ALTER TABLE users DROP last_unique_id;\r\nALTER TABLE users CHANGE donator donator INT(10) DEFAULT 1;\r\n\r\nALTER TABLE machine_ban DROP last_unique_id;\r\n\r\nUPDATE users SET donator = 1;','bee1054c551697b4d7e37727d8709944a302ce803c12ba51482a883c59a1c6cc6e2cb3f099c236c3eec0f36c47df827176025beb8683f55d93af4e5c2e56e9a7','2017-12-09 18:44:21','AppliedUp',''),(5,'ALTER TABLE users \r\nADD COLUMN max_unique_id_ban_count TINYINT(1) DEFAULT 5,\r\nADD COLUMN max_ip_ban_count TINYINT(1) DEFAULT 3,\r\nADD COLUMN banned_by VARCHAR(13) DEFAULT NULL AFTER ban_reason_message,\r\nADD COLUMN banned_at DATETIME DEFAULT NULL AFTER banned_by;','ALTER TABLE users\r\nDROP COLUMN max_unique_id_ban_count, \r\nDROP COLUMN max_ip_ban_count, \r\nDROP COLUMN banned_by, \r\nDROP COLUMN banned_at;','a7c9db699a68195e477082d57d4bf67cbb16d2f930a0b3e1f87b9a19ddefec4704675e3097f363a4a93bd910723c2d87f3ce13893cd01e30dc048be563418fe9','2018-01-18 22:53:02','AppliedUp',''),(6,'-- Put your up queries here, such as CREATE TABLE','-- Put your down queries here, such as DROP TABLE, etc.','c9c608ec4f1ac6075a26e11017823c7a80b9d2bf93b1854b0ae19e3bbb0dcd0e1e73e9508128cb27ec6fb24177f15ab824170c62714aff5a090513c6ff0b8019','2018-01-31 18:04:49','AppliedDown','');
-/*!40000 ALTER TABLE `server_evolutions_login` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `servers`
 --
 
@@ -1102,10 +949,11 @@ DROP TABLE IF EXISTS `servers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servers` (
-  `configname` varchar(15) DEFAULT NULL,
-  `world_id` tinyint(4) DEFAULT NULL,
-  `private_ip` varchar(15) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+   `configname` varchar(45) NOT NULL,
+   `world_id` tinyint(4) NOT NULL,
+   `private_ip` varchar(45) DEFAULT NULL,
+   PRIMARY KEY (`world_id`,`configname`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --

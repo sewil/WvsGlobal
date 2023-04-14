@@ -12,7 +12,7 @@ namespace WvsBeta.Center.DBAccessor
                 @"
 SELECT itemid, ABS(slot) FROM inventory_eqp WHERE charid = @charid AND slot < 0
 UNION
-SELECT itemid, ABS(slot) FROM itemlocker WHERE characterid = @charid AND slot < 0
+SELECT itemid, ABS(slot) FROM itemlocker WHERE charid = @charid AND slot < 0
 ",
                 "@charid", characterId
             ) as MySqlDataReader)

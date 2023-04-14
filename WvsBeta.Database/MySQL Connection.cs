@@ -539,7 +539,7 @@ FROM users WHERE ban_expire > NOW()",
                     transaction.Commit();
                 }
                 catch (Exception ex)
-                {
+                 {
                     transaction.Rollback();
                     var error = "Error running transaction. Rolling back. Error: " + ex + Environment.NewLine + "Command: " + executor.CommandText;
                     _logFile.WriteLine(error);

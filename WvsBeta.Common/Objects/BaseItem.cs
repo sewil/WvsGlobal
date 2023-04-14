@@ -14,6 +14,7 @@ namespace WvsBeta.Common.Objects
     public abstract class BaseItem
     {
         public readonly int ItemID;
+        public int CharacterID { get; set; }
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
@@ -45,6 +46,7 @@ namespace WvsBeta.Common.Objects
             IsQuest = itemBase.IsQuest;
             IsTradeBlock = itemBase.IsTradeBlock;
             BigSize = itemBase.BigSize;
+            CharacterID = itemBase.CharacterID;
         }
 
         public BaseItem Duplicate()
@@ -93,6 +95,7 @@ namespace WvsBeta.Common.Objects
             AlreadyInDatabase = true;
             CashId = data.GetInt64("cashid");
             Expiration = data.GetInt64("expiration");
+            CharacterID = data.GetInt32("charid");
         }
 
         public void EncodeForMigration(Packet pw)
@@ -120,6 +123,7 @@ namespace WvsBeta.Common.Objects
                 pw.WriteShort(equipItem.Hands);
                 pw.WriteShort(equipItem.Jump);
                 pw.WriteShort(equipItem.Speed);
+                pw.WriteLong(equipItem.CoupleCashId);
             }
             else
             {
@@ -142,6 +146,7 @@ namespace WvsBeta.Common.Objects
                 pw.WriteShort(0);
             }
 
+            pw.WriteInt(CharacterID);
             pw.WriteLong(CashId);
             pw.WriteLong(Expiration);
             pw.WriteBool(IsOnly);
@@ -177,6 +182,7 @@ namespace WvsBeta.Common.Objects
                 equipItem.Hands = pr.ReadShort();
                 equipItem.Jump = pr.ReadShort();
                 equipItem.Speed = pr.ReadShort();
+                equipItem.CoupleCashId = pr.ReadInt();
             }
             else
             {
@@ -199,6 +205,7 @@ namespace WvsBeta.Common.Objects
                 pr.ReadShort();
             }
 
+            item.CharacterID = pr.ReadInt();
             item.CashId = pr.ReadLong();
             item.Expiration = pr.ReadLong();
             item.IsOnly = pr.ReadBool();
@@ -224,15 +231,9 @@ namespace WvsBeta.Common.Objects
         /// Build a full insert statement that is not optimized.
         /// </summary>
         /// <returns>A comma delimited set of fields</returns>
-        public virtual string GetFullSaveColumns()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract string GetFullSaveColumns();
 
-        public virtual string GetFullUpdateColumns()
-        {
-            throw new NotImplementedException();
-        }
+        public abstract string GetFullUpdateColumns();
     }
 
     public class BundleItem : BaseItem
@@ -308,6 +309,7 @@ namespace WvsBeta.Common.Objects
         public short Hands { get; set; } = 0;
         public short Jump { get; set; } = 0;
         public short Speed { get; set; } = 0;
+        public long CoupleCashId { get; set; } = 0;
 
         public static EquipItem DummyEquipItem { get; } = new EquipItem(0);
 
@@ -340,6 +342,7 @@ namespace WvsBeta.Common.Objects
             Hands = itemBase.Hands;
             Jump = itemBase.Jump;
             Speed = itemBase.Speed;
+            CoupleCashId = itemBase.CoupleCashId;
         }
 
         public void GiveStats(ItemVariation enOption)
@@ -435,6 +438,12 @@ namespace WvsBeta.Common.Objects
             packet.WriteShort(Speed);
             packet.WriteShort(Jump);
             packet.WriteString(""); // Creator Name
+        }
+
+        public void EncodeRing(Packet pw)
+        {
+            pw.WriteLong(CashId);
+            pw.WriteLong(CoupleCashId);
         }
 
         public override string GetFullSaveColumns()
