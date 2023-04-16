@@ -500,10 +500,9 @@ namespace WvsBeta.Shop
 
         public static void SendInfo(Character chr)
         {
-            SendCashAmounts(chr);
-            SendWishlist(chr, false);
             SendLocker(chr);
-            //ShowGifts(chr);
+            SendWishlist(chr, false);
+            SendCashAmounts(chr);
         }
 
         private static Packet GetPacketWriter(CashPacketOpcodes opcode)
@@ -604,22 +603,6 @@ namespace WvsBeta.Shop
             pw.WriteInt(points.nx);
             pw.WriteInt(points.maplepoints);
             chr.SendPacket(pw);
-        }
-
-        public static void ShowGifts(Character chr)
-        {
-            //DecodeBuffer (40 bytes)
-            var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
-            pw.WriteByte((byte)CashPacketOpcodes.S_LoadWish_Done);
-            /**
-            //pw.WriteShort(0);
-            Item item = new Item(chr.mStorage.GetCashItem(42));
-            PacketHelper.AddGiftList(pw, item);
-             * **/
-            pw.WriteString("fasfsa", 13);
-            pw.WriteString("asfas", 73);
-            chr.SendPacket(pw);
-
         }
 
         public static void Charge(Character chr)
