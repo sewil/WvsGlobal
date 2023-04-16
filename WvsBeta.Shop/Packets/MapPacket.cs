@@ -44,8 +44,9 @@ namespace WvsBeta.Shop
             //// byte amount, foreach { byte category, byte categorySub, byte discountRate  }
 
             // Categories
-            foreach(CommodityCategory category in Enum.GetValues(typeof(CommodityCategory)))
+            foreach(CommodityCategory category in CommodityExtensions.GetCategories())
             {
+                Server.Instance.BestItems.TryGetValue(category, out var bi);
                 for (byte gender = 0; gender <= 1; gender++)
                 {
                     // Top 5 items
@@ -54,7 +55,7 @@ namespace WvsBeta.Shop
                         pack.WriteInt((int)category);
                         pack.WriteInt(gender);
 
-                        int sn = Server.Instance.BestItems[category].ElementAtOrDefault(topIdx)?.SerialNumber ?? 0;
+                        int sn = bi?.ElementAtOrDefault(topIdx)?.SerialNumber ?? 0;
                         pack.WriteInt(sn);
                     }
                 }

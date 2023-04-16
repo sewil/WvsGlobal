@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using System.Linq;
+
 namespace WvsBeta.Common.Objects
 {
     public enum StockState
@@ -25,7 +28,16 @@ namespace WvsBeta.Common.Objects
         Etc = 5,
         Setup = 6,
         Pet = 7,
-        Package = 8
+        Package = 8,
+        Quest = 9
+    }
+    public static class CommodityExtensions
+    {
+        public static IEnumerable<CommodityCategory> GetCategories()
+        {
+            return ((IEnumerable<CommodityCategory>)System.Enum.GetValues(typeof(CommodityCategory)))
+             .Except(new CommodityCategory[] { CommodityCategory.Quest });
+        }
     }
 
     public enum CommodityClass : int

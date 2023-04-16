@@ -10,6 +10,7 @@ using WvsBeta.Database;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Character;
 using WvsBeta.Shop.GameObjects;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Shop
 {
@@ -166,8 +167,7 @@ namespace WvsBeta.Shop
         public void LoadCashShopData()
         {
             BestItems.Clear();
-            var sales = new Dictionary<CommodityCategory, List<CommodityInfo>>();
-            foreach (CommodityCategory cat in Enum.GetValues(typeof(CommodityCategory))) { sales.Add(cat, new List<CommodityInfo>()); }
+            var sales = new Dictionary<CommodityCategory, IList<CommodityInfo>>();
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT sn, COUNT(sn) AS snc FROM user_point_transactions WHERE sn > 0 GROUP BY sn ORDER BY snc DESC"))
             {
                 while (data.Read())
@@ -175,12 +175,13 @@ namespace WvsBeta.Shop
                     var sn = data.GetInt32("sn");
                     if (DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci))
                     {
-                        sales[ci.Category].Add(ci);
+                        sales.SafeAdd(ci.Category, ci);
                     }
                 }
             }
-            foreach (CommodityCategory cat in Enum.GetValues(typeof(CommodityCategory)))
+            foreach (CommodityCategory cat in CommodityExtensions.GetCategories())
             {
+                if (!sales.ContainsKey(cat)) continue;
                 var top = sales[cat].Take(5).ToList();
                 BestItems.Add(cat, top);
             }

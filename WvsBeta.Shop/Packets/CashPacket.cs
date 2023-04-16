@@ -9,6 +9,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Packets;
 using System.Collections.Generic;
+using WvsBeta.Shop.GameObjects;
 
 namespace WvsBeta.Shop
 {
@@ -16,7 +17,7 @@ namespace WvsBeta.Shop
     {
         private static readonly ILog _log = LogManager.GetLogger("CashPacket");
 
-        public struct BuyItem
+        public struct BoughtItem
         {
             public LockerItem lockerItem { get; set; }
             public bool withMaplePoints { get; set; }
@@ -72,6 +73,8 @@ namespace WvsBeta.Shop
             C_MoveStoL = 11,
             C_BuyCoupleRing = 0x18,
             C_BuyPackage = 25,
+            C_GiftPackage = 26,
+            C_BuyQuestItem = 27,
 
             // Server packets (S)
             S_LoadLocker_Done = 28,
@@ -112,6 +115,8 @@ namespace WvsBeta.Shop
             S_BuyEquipped_Failed = 75,
             S_GiftPackage_Done = 76,
             //S_GiftPackage_Failed = 77
+            S_BuyUnk78_Done = 78,
+            S_BuyUnk79_Failed = 79
         }
 
         public static void HandleCashPacket(Character chr, Packet packet)
@@ -169,58 +174,10 @@ namespace WvsBeta.Shop
                         SendCashAmounts(chr);
                         break;
                     }
+                case CashPacketOpcodes.C_BuyQuestItem:
                 case CashPacketOpcodes.C_BuyItem:
                     {
-                        var maplepoints = packet.ReadBool();
-
-                        var id = packet.ReadInt();
-                        if (!DataProvider.Commodity.TryGetValue(id, out var ci))
-                        {
-                            _log.Warn($"Buying failed: commodity not found for SN {id}");
-                            SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
-                            return;
-                        }
-
-                        if (ci.OnSale == false ||
-                            ci.StockState == StockState.NotAvailable ||
-                            ci.StockState == StockState.OutOfStock)
-                        {
-                            _log.Warn($"Buying failed: commodity {id} not on sale {ci.OnSale} or out of stock {ci.StockState}");
-                            SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
-                            return;
-                        }
-
-                        var points = chr.GetCashStatus();
-                        if (ci.Gender != CommodityGenders.Both && (byte)ci.Gender != chr.Gender)
-                        {
-                            _log.Warn("Buying failed: invalid gender");
-                            SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.UnknownErrorDC_1);
-                            return;
-                        }
-
-                        if (ci.Price > (maplepoints ? points.maplepoints : points.nx))
-                        {
-                            _log.Warn("Buying failed: not enough NX or maplepoints");
-                            SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.NotEnoughCash);
-                            return;
-                        }
-
-                        var lockerItem = new LockerItem(chr.UserID, ci, "");
-                        var baseItem = CharacterCashLocker.CreateCashItem(lockerItem);
-                        chr.Locker.AddItem(lockerItem, baseItem);
-
-                        chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, ci.SerialNumber, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
-
-                        Character.CashLog.Info(new BuyItem
-                        {
-                            cashAmount = ci.Price,
-                            lockerItem = lockerItem,
-                            withMaplePoints = maplepoints
-                        });
-
-                        SendBoughtItem(chr, lockerItem);
-                        SendCashAmounts(chr);
-
+                        BuyItem(chr, packet, header == CashPacketOpcodes.C_BuyQuestItem);
                         break;
                     }
                 case CashPacketOpcodes.C_BuyCoupleRing:
@@ -442,7 +399,7 @@ namespace WvsBeta.Shop
              
             chr.AddSale($"Bought cash item {giftedItem.ItemId} amount {giftedItem.Amount} (ref: {giftedItem.CashId:X16}) as a gift for {recipient}", ci.Price, ci.SerialNumber, TransactionType.NX);
 
-            Character.CashLog.Info(new BuyItem
+            Character.CashLog.Info(new BoughtItem
             {
                 cashAmount = ci.Price,
                 lockerItem = giftedItem,
@@ -547,6 +504,17 @@ namespace WvsBeta.Shop
             var pw = GetPacketWriter(CashPacketOpcodes.S_Buy_Done);
 
             item.Encode(pw);
+            chr.SendPacket(pw);
+        }
+
+        public static void SendBoughtUnk78(Character chr, IList<long> cashIds)
+        {
+            var pw = GetPacketWriter(CashPacketOpcodes.S_BuyUnk78_Done);
+            pw.WriteInt(cashIds.Count);
+            foreach (long cashId in cashIds)
+            {
+                pw.WriteLong(cashId);
+            }
             chr.SendPacket(pw);
         }
 
@@ -662,6 +630,60 @@ namespace WvsBeta.Shop
             pw.WriteInt(maplePoints); // Maplepoints
 
             chr.SendPacket(pw);
+        }
+
+        public static void BuyItem(Character chr, Packet pr, bool isQuestItem)
+        {
+            CashPacketOpcodes S_Failed = isQuestItem ? CashPacketOpcodes.S_BuyUnk79_Failed : CashPacketOpcodes.S_Buy_Failed;
+            bool maplePoints = false;
+            if (!isQuestItem)
+            {
+                maplePoints = pr.ReadBool();
+            }
+            int sn = pr.ReadInt();
+            if (!DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
+            {
+                SendError(chr, S_Failed, CashErrors.OutOfStock);
+                return;
+            }
+
+            if ((ci.Gender != CommodityGenders.NotApplicable && ci.Gender != CommodityGenders.Both) && (byte)ci.Gender != chr.Gender)
+            {
+                _log.Warn("Buying failed: invalid gender");
+                SendError(chr, S_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
+                return;
+            }
+
+            int has;
+            if (isQuestItem) has = chr.Inventory.Mesos;
+            else
+            {
+                var (nx, maplepoints) = chr.GetCashStatus();
+                has = maplePoints ? maplepoints : nx;
+            }
+
+            if (ci.Price > has)
+            {
+                _log.Warn("Buying failed: not enough cash");
+                SendError(chr, S_Failed, isQuestItem ? CashErrors.NotEnoughMesos : CashErrors.NotEnoughCash);
+                return;
+            }
+
+            var lockerItem = new LockerItem(chr.UserID, ci, "");
+            var baseItem = CharacterCashLocker.CreateCashItem(lockerItem);
+            chr.Locker.AddItem(lockerItem, baseItem);
+
+            chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, ci.SerialNumber, maplePoints ? TransactionType.MaplePoints : TransactionType.NX);
+
+            Character.CashLog.Info(new BoughtItem
+            {
+                cashAmount = ci.Price,
+                lockerItem = lockerItem,
+                withMaplePoints = maplePoints
+            });
+
+            SendBoughtItem(chr, lockerItem);
+            SendCashAmounts(chr);
         }
     }
 }
