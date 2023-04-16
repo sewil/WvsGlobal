@@ -634,7 +634,6 @@ namespace WvsBeta.Shop
 
         public static void BuyItem(Character chr, Packet pr, bool isQuestItem)
         {
-            CashPacketOpcodes S_Failed = isQuestItem ? CashPacketOpcodes.S_BuyUnk79_Failed : CashPacketOpcodes.S_Buy_Failed;
             bool maplePoints = false;
             if (!isQuestItem)
             {
@@ -643,14 +642,14 @@ namespace WvsBeta.Shop
             int sn = pr.ReadInt();
             if (!DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
             {
-                SendError(chr, S_Failed, CashErrors.OutOfStock);
+                SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
                 return;
             }
 
             if ((ci.Gender != CommodityGenders.NotApplicable && ci.Gender != CommodityGenders.Both) && (byte)ci.Gender != chr.Gender)
             {
                 _log.Warn("Buying failed: invalid gender");
-                SendError(chr, S_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
+                SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
                 return;
             }
 
@@ -665,7 +664,7 @@ namespace WvsBeta.Shop
             if (ci.Price > has)
             {
                 _log.Warn("Buying failed: not enough cash");
-                SendError(chr, S_Failed, isQuestItem ? CashErrors.NotEnoughMesos : CashErrors.NotEnoughCash);
+                SendError(chr, CashPacketOpcodes.S_Buy_Failed, isQuestItem ? CashErrors.NotEnoughMesos : CashErrors.NotEnoughCash);
                 return;
             }
 
