@@ -111,8 +111,8 @@ namespace WvsBeta.Shop
             S_Refund_Failed = 71,
             S_GiftCoupleRing_Done = 72,
             //S_GiftCoupleRing_Failed = 73,
-            S_BuyEquipped_Done = 74,
-            S_BuyEquipped_Failed = 75,
+            S_BuyPackage_Done = 74,
+            S_BuyPackage_Failed = 75,
             S_GiftPackage_Done = 76,
             //S_GiftPackage_Failed = 77
             S_BuyUnk78_Done = 78,
@@ -175,9 +175,16 @@ namespace WvsBeta.Shop
                         break;
                     }
                 case CashPacketOpcodes.C_BuyQuestItem:
+                case CashPacketOpcodes.C_BuyPackage:
                 case CashPacketOpcodes.C_BuyItem:
                     {
-                        BuyItem(chr, packet, header == CashPacketOpcodes.C_BuyQuestItem);
+                        bool maplePoints = false;
+                        if (header != CashPacketOpcodes.C_BuyQuestItem)
+                        {
+                            maplePoints = packet.ReadBool();
+                        }
+                        int sn = packet.ReadInt();
+                        BuyItem(chr, sn, maplePoints, header);
                         break;
                     }
                 case CashPacketOpcodes.C_BuyCoupleRing:
@@ -432,11 +439,11 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendBuyEquippedDone(Character chr, IList<LockerItem> items)
+        public static void SendBoughtPackage(Character chr, IList<LockerItem> items)
         {
             if (items.Count > byte.MaxValue) throw new ArgumentException("Too many items!");
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
-            pw.WriteByte((byte)CashPacketOpcodes.S_BuyEquipped_Done);
+            pw.WriteByte((byte)CashPacketOpcodes.S_BuyPackage_Done);
             pw.WriteByte((byte)items.Count);
             foreach (var item in items)
             {
@@ -632,25 +639,18 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void BuyItem(Character chr, Packet pr, bool isQuestItem)
+        public static bool TryValidateBuy(Character chr, int sn, bool isQuestItem, bool maplePoints, out CommodityInfo ci)
         {
-            bool maplePoints = false;
-            if (!isQuestItem)
-            {
-                maplePoints = pr.ReadBool();
-            }
-            int sn = pr.ReadInt();
-            if (!DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
+            if (!DataProvider.Commodity.TryGetValue(sn, out ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
             {
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
-                return;
+                return false;
             }
-
-            if ((ci.Gender != CommodityGenders.NotApplicable && ci.Gender != CommodityGenders.Both) && (byte)ci.Gender != chr.Gender)
+            else if ((ci.Gender != CommodityGenders.NotApplicable && ci.Gender != CommodityGenders.Both) && (byte)ci.Gender != chr.Gender)
             {
                 _log.Warn("Buying failed: invalid gender");
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
-                return;
+                return false;
             }
 
             int has;
@@ -665,9 +665,24 @@ namespace WvsBeta.Shop
             {
                 _log.Warn("Buying failed: not enough cash");
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, isQuestItem ? CashErrors.NotEnoughMesos : CashErrors.NotEnoughCash);
-                return;
+                return false;
             }
+            return true;
+        }
+        public static bool TryGetPackage(CommodityInfo package, out IList<CommodityInfo> items)
+        {
+            items = new List<CommodityInfo>();
+            if (!DataProvider.Packages.TryGetValue(package.ItemID, out int[] sns)) return false;
+            foreach (int snI in sns)
+            {
+                if (!DataProvider.Commodity.TryGetValue(snI, out CommodityInfo item)) return false;
+                items.Add(item);
+            }
+            return true;
+        }
 
+        public static LockerItem BuyComplete(Character chr, CommodityInfo ci, bool maplePoints)
+        {
             var lockerItem = new LockerItem(chr.UserID, ci, "");
             var baseItem = CharacterCashLocker.CreateCashItem(lockerItem);
             chr.Locker.AddItem(lockerItem, baseItem);
@@ -680,8 +695,35 @@ namespace WvsBeta.Shop
                 lockerItem = lockerItem,
                 withMaplePoints = maplePoints
             });
+            return lockerItem;
+        }
 
-            SendBoughtItem(chr, lockerItem);
+        public static void BuyItem(Character chr, int sn, bool maplePoints, CashPacketOpcodes header)
+        {
+            bool isQuestItem = header == CashPacketOpcodes.C_BuyQuestItem;
+            bool isPackage = header == CashPacketOpcodes.C_BuyPackage;
+            if (!TryValidateBuy(chr, sn, isQuestItem, maplePoints, out CommodityInfo ci)) return;
+
+            if (isPackage)
+            {
+                if (!TryGetPackage(ci, out IList<CommodityInfo> items))
+                {
+                    SendError(chr, CashPacketOpcodes.S_BuyPackage_Failed, CashErrors.OutOfStock);
+                    return;
+                }
+                var lockerItems = new List<LockerItem>();
+                foreach (var item in items)
+                {
+                    var lockerItem = BuyComplete(chr, item, maplePoints);
+                    lockerItems.Add(lockerItem);
+                }
+                SendBoughtPackage(chr, lockerItems);
+            }
+            else
+            {
+                var lockerItem = BuyComplete(chr, ci, maplePoints);
+                SendBoughtItem(chr, lockerItem);
+            }
             SendCashAmounts(chr);
         }
     }
