@@ -951,6 +951,17 @@ namespace WvsBeta.Game.Handlers
 
 #endregion
 
+                    #region Fame
+                    case "fame":
+                        {
+                            if (short.TryParse(Args[0], out short fame))
+                            {
+                                character.SetFame(fame);
+                            }
+                            return true;
+                        }
+                    #endregion
+
 #region MaxSlots
 
                         case "maxslots":
