@@ -329,20 +329,8 @@ namespace WvsBeta.Game.Handlers
                                 {
                                     string other = Args[0].Value.ToLower();
                                     var otherChar = Server.Instance.GetCharacter(other);
-                                    if (otherChar != null)
-                                    {
-                                        if (character.MapID != otherChar.MapID)
-                                        {
-                                            character.ChangeMap(otherChar.MapID);
-                                        }
-
-                                        var p = new Packet(0xC1);
-                                        p.WriteShort(otherChar.Position.X);
-                                        p.WriteShort(otherChar.Position.Y);
-                                        character.SendPacket(p);
-                                        return true;
-                                    }
-                                    character.Message("Victim not found.");
+                                    if (otherChar == null) character.Message("Victim not found.");
+                                    else character.ChangeMap(otherChar.MapID);
                                 }
                                 return true;
                             }
@@ -358,20 +346,8 @@ namespace WvsBeta.Game.Handlers
                                 {
                                     string other = Args[0].Value.ToLower();
                                     var otherChar = Server.Instance.GetCharacter(other);
-                                    if (otherChar != null)
-                                    {
-                                        if (otherChar.MapID != character.MapID)
-                                        {
-                                            otherChar.ChangeMap(character.MapID);
-                                        }
-                                        var p = new Packet(0xC1);
-                                        p.WriteShort(character.Position.X);
-                                        p.WriteShort(character.Position.Y);
-                                        otherChar.SendPacket(p);
-                                        return true;
-                                    }
-
-                                    character.Message("Victim not found.");
+                                    if (otherChar == null) character.Message("Victim not found.");
+                                    else otherChar.ChangeMap(character.MapID);
                                 }
                                 return true;
                             }
