@@ -340,6 +340,7 @@ namespace WvsBeta.Game
                         case ClientMessages.PET_MOVE: PetsPacket.HandleMovePet(character, packet); break;
                         case ClientMessages.PET_INTERACTION: PetsPacket.HandleInteraction(character, packet); break;
                         case ClientMessages.PET_ACTION: PetsPacket.HandlePetAction(character, packet); break;
+                        case ClientMessages.PET_LOOT: PetsPacket.HandlePetLoot(character, packet); break;
 
                         case ClientMessages.FIELD_CONTIMOVE_STATE:
                             MapPacket.OnContiMoveState(character, packet);

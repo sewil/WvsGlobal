@@ -97,7 +97,7 @@
         PET_MOVE = 85,
         PET_ACTION,
         PET_INTERACTION,
-        __PADDING_88,
+        PET_LOOT,
         __PADDING_89,
         __PADDING_90,
         SUMMON_MOVE = 91,
