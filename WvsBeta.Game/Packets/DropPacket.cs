@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 using WvsBeta.Game.Packets;
@@ -42,7 +43,7 @@ namespace WvsBeta.Game
             InventoryOperationPacket.NoChange(chr);
         }
 
-        public static void HandlePickupDrop(GameCharacter chr, Packet packet)
+        public static void HandlePickupDrop(GameCharacter chr, Packet packet, PetItem byPet = null)
         {
             // 5F 18 FF 12 01 00 00 00 00 
             packet.Skip(4); // pos?
@@ -50,13 +51,21 @@ namespace WvsBeta.Game
             int dropid = packet.ReadInt();
             if (chr.AssertForHack(chr.Room != null, "Trying to loot a drop while in a 'room'") ||
                 !chr.Field.DropPool.Drops.TryGetValue(dropid, out Drop drop) ||
-                !drop.CanTakeDrop(chr))
+                !drop.CanTakeDrop(chr, byPet))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
-            var dropLootRange = drop.Pt2 - chr.Position;
+            int dropLootRange;
+            if (byPet != null)
+            {
+                dropLootRange = drop.Pt2 - byPet.MovableLife.Position;
+            }
+            else
+            {
+                dropLootRange = drop.Pt2 - chr.Position;
+            }
 
             chr.AssertForHack(dropLootRange > 200, "Possible drop VAC! Distance: " + dropLootRange, dropLootRange > 250);
 
@@ -134,7 +143,7 @@ namespace WvsBeta.Game
                 if (reward.Mesos) chr.SendPacket(MessagePacket.DropPickup(true, dropNoticeItemIdOrMesos, 0));
                 else chr.SendPacket(MessagePacket.DropPickup(false, dropNoticeItemIdOrMesos, pickupAmount));
             }
-            chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.FreeForAll, chr.ID);
+            chr.Field.DropPool.RemoveDrop(drop, byPet != null ? RewardLeaveType.PetPickup : RewardLeaveType.FreeForAll, chr.ID);
         }
 
         public static void SendMakeEnterFieldPacket(Drop drop, RewardEnterType EnterType, short Delay, GameCharacter chr = null)

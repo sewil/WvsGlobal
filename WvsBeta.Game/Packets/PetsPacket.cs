@@ -110,35 +110,9 @@ namespace WvsBeta.Game
 
         public static void HandlePetLoot(GameCharacter chr, Packet packet)
         {
-            // 4B 23 06 D7 00 3A 00 00 00
-            /*
-            Pet pet = chr.Pets.GetEquippedPet();
+            var pet = chr.GetSpawnedPet();
             if (pet == null) return;
-
-            packet.Skip(4); // X, Y
-            int dropid = packet.ReadInt();
-            if (!chr.Field.DropPool.Drops.ContainsKey(dropid)) return;
-            Drop drop = chr.Field.DropPool.Drops[dropid];
-            if (!drop.Reward.Mesos && !chr.Admin) return;
-
-            short pickupAmount = drop.Reward.Amount;
-            if (drop.Reward.Mesos)
-            {
-                chr.AddMesos(drop.Reward.Drop);
-            }
-            else
-            {
-                if (chr.Inventory.AddItem2(drop.Reward.GetData()) == drop.Reward.Amount)
-                {
-                    DropPacket.CannotLoot(chr, -1);
-                    InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
-                    return;
-                }
-                
-            }
-            CharacterStatsPacket.SendGainDrop(chr, drop.Reward.Mesos, drop.Reward.Drop, pickupAmount);
-            chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.PetPickup, chr.ID);
-            */
+            DropPacket.HandlePickupDrop(chr, packet, pet);
         }
 
         public static void HandlePetAction(GameCharacter chr, Packet packet)

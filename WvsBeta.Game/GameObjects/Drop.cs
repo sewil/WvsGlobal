@@ -1,7 +1,7 @@
-﻿using System.Drawing;
-using WvsBeta.Common;
+﻿using WvsBeta.Common;
+using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -48,7 +48,7 @@ namespace WvsBeta.Game
             this.ByUser = ByUser;
         }
 
-        public bool CanTakeDrop(GameCharacter chr)
+        public bool CanTakeDrop(GameCharacter chr, PetItem byPet = null)
         {
             if (Server.Instance.InMigration) return false;
 
