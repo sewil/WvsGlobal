@@ -61,6 +61,7 @@ namespace WvsBeta.Common.Character
             Fame = data.GetInt16("fame");
             MapID = data.GetInt32("map");
             MapPosition = (byte)data.GetInt16("pos");
+            PetCashId = data.GetInt64("pet_cash_id");
         }
 
         public void Encode(Packet pPacket)
