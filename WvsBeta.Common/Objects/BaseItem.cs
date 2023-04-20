@@ -1,16 +1,11 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common.DataProviders;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Objects
 {
-    public enum ItemType
-    {
-        Bundle = 0,
-        Equip = 1,
-        Pet = 5,
-    }
     public abstract class BaseItem
     {
         public readonly int ItemID;
@@ -23,7 +18,6 @@ namespace WvsBeta.Common.Objects
         /// </summary>
         public long Expiration { get; set; } = NoItemExpiration;
         public bool AlreadyInDatabase { get; set; } = false;
-        public ItemType ItemType { get { return GetItemType(ItemID);  } }
 
         public const long NoItemExpiration = 150842304000000000L;
         public bool IsOnly { get; set; }
@@ -67,19 +61,15 @@ namespace WvsBeta.Common.Objects
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-        public static ItemType GetItemType(int itemId)
-        {
-            return (ItemType)(itemId / 1000000);
-        }
         public static BaseItem CreateFromItemID(int itemId, short amount = 1)
         {
             if (itemId == 0) throw new Exception("Invalid ItemID in CreateFromItemID");
 
-            var itemType = GetItemType(itemId);
+            var slotType = Constants.getItemSlotType(itemId);
 
             BaseItem ret;
-            if (itemType == ItemType.Equip) ret = new EquipItem(itemId);
-            else if (itemType == ItemType.Pet) ret = new PetItem(itemId); // TODO: Pet
+            if (slotType == ItemSlotType.Equip) ret = new EquipItem(itemId);
+            else if (slotType == ItemSlotType.Pet) ret = new PetItem(itemId); // TODO: Pet
             else ret = new BundleItem(itemId);
 
             ret.Amount = amount;

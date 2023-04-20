@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Center
 {
@@ -63,13 +65,13 @@ namespace WvsBeta.Center
 
         public void SetFromAvatarLook(AvatarLook avatar)
         {
-            Inventory.Equipped[EquippedType.Cash] = avatar.CashEquips.Select(i => new EquipItem(i)).ToArray();
-            Inventory.Equipped[EquippedType.Normal] = avatar.NormalEquips.Select(i => new EquipItem(i)).ToArray();
+            Inventory.Equipped[EquippedType.Cash] = avatar.CashEquips.Select(i => new KeyValuePair<Slots, EquipItem>(i.Key, new EquipItem(i.Value))).ToDictionary(i => i.Key, i => i.Value);
+            Inventory.Equipped[EquippedType.Normal] = avatar.NormalEquips.Select(i => new KeyValuePair<Slots, EquipItem>(i.Key, new EquipItem(i.Value))).ToDictionary(i => i.Key, i => i.Value);
 
             Gender = avatar.Gender;
             Skin = avatar.Skin;
             Face = avatar.Face;
-            Hair = avatar.CashEquips[0];
+            Hair = avatar.Hair;
         }
 
         public new void EncodeForTransfer(Packet pw)

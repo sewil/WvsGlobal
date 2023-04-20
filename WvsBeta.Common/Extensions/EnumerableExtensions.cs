@@ -9,5 +9,10 @@ namespace WvsBeta.Common.Extensions
             if (!dictionary.ContainsKey(key)) dictionary.Add(key, new List<TValue>());
             dictionary[key].Add(value);
         }
+        public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
+        {
+            dictionary.TryGetValue(key, out TValue value);
+            return value;
+        }
     }
 }

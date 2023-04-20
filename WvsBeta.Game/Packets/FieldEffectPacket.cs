@@ -6,6 +6,7 @@ namespace WvsBeta.Game.Packets
     {
         public enum Type : byte
         {
+            Summon = 0,
             QuestEffect = 2,
             Effect = 3,
             Sound = 4,
@@ -15,6 +16,14 @@ namespace WvsBeta.Game.Packets
         private FieldEffectPacket(Type type) : base(ServerMessages.FIELD_EFFECT)
         {
             WriteByte((byte)type);
+        }
+        public static FieldEffectPacket Summon(byte id, int x, int y)
+        {
+            var pw = new FieldEffectPacket(Type.Summon);
+            pw.WriteByte(id);
+            pw.WriteInt(x);
+            pw.WriteInt(y);
+            return pw;
         }
         public static FieldEffectPacket EffectScreen(string path)
         {

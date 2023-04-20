@@ -121,7 +121,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             pw.WriteByte((byte)MiniRoomOpClient.Enter);
             pw.WriteByte(pCharacter.RoomSlotId);
-            new AvatarLook(pCharacter).Encode(pw);
+            new AvatarLook(pCharacter, false).Encode(pw);
             pw.WriteString(pCharacter.Name);
         }
 
@@ -135,7 +135,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             foreach (var user in Users.Select(i => i.Value))
             {
                 pw.WriteByte(user.RoomSlotId);
-                new AvatarLook(user).Encode(pw);
+                new AvatarLook(user, false).Encode(pw);
                 pw.WriteString(user.Name);
             }
 

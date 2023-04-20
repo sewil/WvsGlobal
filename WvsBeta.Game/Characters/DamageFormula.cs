@@ -247,7 +247,7 @@ namespace WvsBeta.Game
         // This formula retrieves the type of weapon that the character is currently using to attack with.
         public static string GetWeaponType(GameCharacter chr)
         {
-            var eqp = chr.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, false);
+            var eqp = chr.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, Common.Enums.EquippedType.Normal);
 
             if (eqp == 0)
             {

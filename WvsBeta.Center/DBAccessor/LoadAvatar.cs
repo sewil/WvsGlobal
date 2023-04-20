@@ -1,5 +1,8 @@
-﻿using WvsBeta.Common;
+﻿using System.Collections.Generic;
+using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Enums;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Center.DBAccessor
 {
@@ -11,21 +14,24 @@ namespace WvsBeta.Center.DBAccessor
 
             ad.CharacterStat = GetCharacterData(characterId);
 
-            var equips = new int[Constants.EquipSlots.MaxSlotIndex];
-            var equipsCash = new int[Constants.EquipSlots.MaxSlotIndex];
+            var equips = new Dictionary<Slots, int>();
+            var equipsCash = new Dictionary<Slots, int>();
 
             foreach (var (itemid, slot) in GetEquippedItemID(characterId))
             {
-                if (Constants.EquipSlots.IsValidEquipSlot(slot) == false) continue;
-
-                if (slot > 100)
-                    equipsCash[(short)(slot - 100)] = itemid;
+                var eqSlot = Constants.getEquipSlot(slot, out EquippedType type);
+                if (eqSlot == Slots.Invalid) continue;
+                if (type == EquippedType.Cash)
+                {
+                    equipsCash[eqSlot] = itemid;
+                }
                 else
-                    equips[slot] = itemid;
+                {
+                    equips[eqSlot] = itemid;
+                }
             }
 
-
-            ad.AvatarLook = new AvatarLook(ad.CharacterStat, equips, equipsCash);
+            ad.AvatarLook = new AvatarLook(ad.CharacterStat, equipsCash, equips, false);
 
             return ad;
         }

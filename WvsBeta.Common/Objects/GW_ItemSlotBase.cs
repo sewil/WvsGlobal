@@ -3,6 +3,12 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Objects
 {
+    public enum ItemSlotType
+    {
+        Equip = 1,
+        Bundle = 2,
+        Pet = 3,
+    }
     public class GW_ItemSlotBase
     {
         private BaseItem item;
@@ -29,19 +35,8 @@ namespace WvsBeta.Common.Objects
                     }
                 }
             }
-            var itemType = item.ItemType;
-            if (itemType == ItemType.Equip)
-            {
-                packet.WriteByte(1);
-            }
-            else if (itemType == ItemType.Pet)
-            {
-                packet.WriteByte(3);
-            }
-            else
-            {
-                packet.WriteByte(2);
-            }
+            var slotType = Constants.getItemSlotType(item.ItemID);
+            packet.WriteByte((byte)slotType);
 
             item.Encode(packet);
         }

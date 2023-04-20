@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Game.Packets
 {
@@ -152,8 +147,9 @@ namespace WvsBeta.Game.Packets
                 }
                 if (equipitem)
                 {
-                    byte v27 = 0;
-                    pw.WriteByte(v27);
+                    byte movementInfoIndex = 0;
+                    pw.WriteByte(movementInfoIndex);
+                    // CWvsContext::HandleMovementInfoIndex
                 }
                 chr.SendPacket(pw);
                 opIdx += chunk;

@@ -4,6 +4,7 @@ namespace WvsBeta.Game.Packets
 {
     public enum PlayerEffectType
     {
+        LevelUp = 0,
         SkillOnSelf = 1,
         SkillOnOther = 2,
         QuestEffect = 3,

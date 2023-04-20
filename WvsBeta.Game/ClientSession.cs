@@ -157,7 +157,8 @@ namespace WvsBeta.Game
         {
             ClientMessages.PONG, ClientMessages.MOVE_PLAYER, ClientMessages.HEAL_OVER_TIME, ClientMessages.MOB_MOVE, ClientMessages.MOB_APPLY_CONTROL,
             ClientMessages.TAKE_DAMAGE, ClientMessages.CLIENT_HASH, ClientMessages.NPC_ANIMATE,
-            ClientMessages.CHARACTER_IS_DEBUFFED
+            ClientMessages.CHARACTER_IS_DEBUFFED,
+            ClientMessages.PET_MOVE
         };
 
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>
@@ -167,7 +168,8 @@ namespace WvsBeta.Game
             ServerMessages.NPC_ANIMATE, ServerMessages.NPC_CHANGE_CONTROLLER,
             ServerMessages.MOB_CHANGE_CONTROLLER, ServerMessages.MOB_MOVE, ServerMessages.MOB_CTRL_ACK,
             ServerMessages.DAMAGE_PLAYER,
-            ServerMessages.UPDATE_PARTYMEMBER_HP
+            ServerMessages.UPDATE_PARTYMEMBER_HP,
+            ServerMessages.PET_MOVE
         };
 
         public override void AC_OnPacketInbound(Packet packet)

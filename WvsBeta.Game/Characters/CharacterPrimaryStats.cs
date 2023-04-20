@@ -209,9 +209,7 @@ namespace WvsBeta.Game
         
         public override void CheckBoosters()
         {
-            var equippedId = Char.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, false);
-
-            if (equippedId != 0) return;
+            if (!Char.Inventory.Equipped[EquippedType.Normal].ContainsKey(Constants.EquipSlots.Slots.Weapon)) return;
 
             Common.Enums.BuffValueTypes removed = 0;
             var currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();

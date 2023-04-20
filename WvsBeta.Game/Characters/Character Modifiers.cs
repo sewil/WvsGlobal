@@ -627,7 +627,7 @@ namespace WvsBeta.Game
         private void StartChangeMap(Map prevMap, Map newMap)
         {
             prevMap.RemovePlayer(this);
-            //PortalCount++;
+            PortalCount++;
             Field = newMap;
         }
 

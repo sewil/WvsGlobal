@@ -37,7 +37,7 @@ namespace WvsBeta.Center.CharacterPackets
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerAction.Enter);
             packet.WriteByte(chr.MessengerSlot);
-            new AvatarLook(chr).Encode(packet);
+            new AvatarLook(chr, true).Encode(packet);
             packet.WriteString(chr.Name);
             packet.WriteByte(chr.ChannelID);
             packet.WriteBool(true); //Announce in chat
@@ -94,7 +94,7 @@ namespace WvsBeta.Center.CharacterPackets
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerFunction.Avatar);
             packet.WriteByte(chr.MessengerSlot);
-            new AvatarLook(chr).Encode(packet);
+            new AvatarLook(chr, true).Encode(packet);
             return packet;
         }
     }

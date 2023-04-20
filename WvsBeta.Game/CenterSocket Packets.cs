@@ -248,7 +248,7 @@ namespace WvsBeta.Game
             packet.WriteInt(messengerid);
             packet.WriteInt(chr.ID);
             packet.WriteString(chr.Name);
-            new AvatarLook(chr).Encode(packet);
+            new AvatarLook(chr, true).Encode(packet);
             SendPacket(packet);
         }
 
@@ -298,7 +298,7 @@ namespace WvsBeta.Game
             Packet packet = new Packet(ISClientMessages.MessengerAvatar);
             packet.WriteInt(chr.ID);
             packet.WriteString(chr.Name);
-            new AvatarLook(chr).Encode(packet);
+            new AvatarLook(chr, true).Encode(packet);
             SendPacket(packet);
         }
 

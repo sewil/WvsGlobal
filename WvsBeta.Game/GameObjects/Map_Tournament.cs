@@ -126,7 +126,7 @@ namespace WvsBeta.Game.GameObjects
                 else
                 {
                     packet.WriteBool(true);
-                    new AvatarLook(toCharacter).Encode(packet);
+                    new AvatarLook(toCharacter, false).Encode(packet);
                     packet.WriteString(player.Name);
                 }
             }

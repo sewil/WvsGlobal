@@ -225,7 +225,7 @@ namespace WvsBeta.Game
             // Cash item on non-cash item slot
             else if (data.Cash && slot > 0 && slot < 100)
                 return false;
-            else if (!Constants.IsCorrectBodyPart(data.ID, data.Cash ? (short)(slot - 100) : slot, chr.Gender))
+            else if (!Constants.IsCorrectBodyPart(data.ID, data.Cash ? (short)(slot - 100) : slot))
                 return false;
             else
                 return stats.getTotalStr() >= data.RequiredStrength

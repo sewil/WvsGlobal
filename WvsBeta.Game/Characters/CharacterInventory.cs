@@ -52,31 +52,16 @@ namespace WvsBeta.Game
 
         public override void SetItem(Inventory inventory, short slot, BaseItem item)
         {
-            if (item != null) item.InventorySlot = slot;
-            if (slot < 0)
+            base.SetItem(inventory, slot, item);
+            if (Character.IsOnline)
             {
-
-                EquipItem equipItem = item as EquipItem;
-                slot = Math.Abs(slot);
-                if (slot > 100)
+                if (slot < 0 && Math.Abs(slot) <= 100)
                 {
-                    Equipped[EquippedType.Cash][(byte)(slot - 100)] = equipItem;
+                    Character.PrimaryStats.AddEquipStats((sbyte)slot, item as EquipItem, false);
                 }
-                else
-                {
-                    Equipped[EquippedType.Normal][(byte)slot] = equipItem;
-                    Character.PrimaryStats.AddEquipStats((sbyte)slot, equipItem, false);
-                }
+                UpdateChocoCount();
             }
-            else
-            {
-                Items[inventory][slot] = item;
-            }
-
-            UpdateChocoCount();
         }
-
-        public override int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => GetEquippedItemId((short)slot, cash);
 
         public BaseItem GetEquippedItem(int itemid, out EquippedType type)
         {
@@ -85,45 +70,14 @@ namespace WvsBeta.Game
             {
                 foreach (var item in equips.Value)
                 {
-                    if (item?.ItemID == itemid)
+                    if (item.Value.ItemID == itemid)
                     {
                         type = equips.Key;
-                        return item;
+                        return item.Value;
                     }
                 }
             }
             return null;
-        }
-
-        public override int GetEquippedItemId(short slot, bool cash)
-        {
-            if (!cash)
-            {
-                slot = Math.Abs(slot);
-                if (Equipped[EquippedType.Normal].Length > slot)
-                {
-                    if (Equipped[EquippedType.Normal][slot] != null)
-                    {
-                        return Equipped[EquippedType.Normal][slot].ItemID;
-                    }
-                }
-            }
-            else
-            {
-                if (slot < -100)
-                {
-                    slot += 100;
-                }
-                slot = Math.Abs(slot);
-                if (Equipped[EquippedType.Cash].Length > slot)
-                {
-                    if (Equipped[EquippedType.Cash][slot] != null)
-                    {
-                        return Equipped[EquippedType.Cash][slot].ItemID;
-                    }
-                }
-            }
-            return 0;
         }
 
         public void UpdateChocoCount(bool sendPacket = true)
@@ -264,6 +218,15 @@ namespace WvsBeta.Game
             }
 
             return givenAmount;
+        }
+
+        public bool HasEquipped(int itemId, EquippedType type, params Constants.EquipSlots.Slots[] checkSlots)
+        {
+            foreach (var slot in checkSlots)
+            {
+                if (Equipped[type].TryGetValue(slot, out EquipItem item) && item.ItemID == itemId) return true;
+            }
+            return false;
         }
 
         public override bool HasSlotsFreeForItem(int itemid, short amount)
@@ -509,38 +472,22 @@ namespace WvsBeta.Game
         {
             Dictionary<byte, int> shown = new Dictionary<byte, int>();
 
-
-            foreach (var item in Equipped[EquippedType.Cash])
+            foreach (var item in Equipped[EquippedType.Normal])
             {
-                if (item != null)
-                {
-                    byte slotuse = (byte)Math.Abs(item.InventorySlot);
-                    if (slotuse > 100) slotuse -= 100;
-                    shown.Add(slotuse, item.ItemID);
-                }
+                shown[(byte)item.Key] = item.Value.ItemID;
             }
 
-            foreach (var item in Equipped[0])
+            // Cash overrides normal
+            foreach (var item in Equipped[EquippedType.Cash])
             {
-                if (item != null && !shown.ContainsKey((byte)Math.Abs(item.InventorySlot)))
-                {
-                    shown.Add((byte)Math.Abs(item.InventorySlot), item.ItemID);
-                }
+                shown[(byte)item.Key] = item.Value.ItemID;
             }
             return shown;
         }
 
         public override int GetTotalWAttackInEquips(bool star)
         {
-            int totalWat = 0;
-
-            foreach (var item in Equipped[EquippedType.Normal])
-            {
-                if (item?.Watk > 0)
-                {
-                    totalWat += item.Watk;
-                }
-            }
+            int totalWat = Equipped[EquippedType.Normal].Sum(i => i.Value.Watk);
 
             if (star == true)
             {
@@ -613,17 +560,11 @@ namespace WvsBeta.Game
             if (time - lastCheck < 45000) return;
             lastCheck = time;
 
-            var allItems = Equipped.SelectMany(i => i.Value)
-                .Concat(Items.SelectMany(i => i.Value))
-                .Where(x =>
-                    x != null &&
-                    x.Expiration < time
-                )
-                .ToList();
+            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as BaseItem).ToList();
 
-            if (allItems.Count == 0) return;
+            if (expiredItems.Count == 0) return;
 
-            callback(allItems);
+            callback(expiredItems);
         }
 
         public override void CheckExpired()
@@ -684,7 +625,7 @@ namespace WvsBeta.Game
         }
         public EquipItem GetEquippedCoupleRing()
         {
-            return Equipped[EquippedType.Cash].FirstOrDefault(c => c != null && Constants.isCoupleRing(c.ItemID));
+            return Equipped[EquippedType.Cash].Select(i => i.Value).FirstOrDefault(c => Constants.isCoupleRing(c.ItemID));
         }
         #region Script helpers
         public int SlotCount(byte inventory)
@@ -841,11 +782,9 @@ namespace WvsBeta.Game
         /// <returns>-1 = item not found, 0 = success, 1 = failed to unequip</returns>
         public int RemoveEquippedItem(int itemid)
         {
-            var item = GetEquippedItem(itemid, out EquippedType type);
+            var item = GetEquippedItem(itemid, out EquippedType _);
             if (item == null) return -1;
-            Equipped[type][-item.InventorySlot] = null;
-            InventoryOperationPacket.SwitchSlots(Character, Inventory.Equip, item.InventorySlot, 0);
-            MapPacket.SendAvatarModified(Character, MapPacket.AvatarModFlag.AvatarLook);
+            InventoryPacket.Unequip(Character, item, 0);
             return 0;
         }
 

@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Common.Character
 {
@@ -10,92 +13,91 @@ namespace WvsBeta.Common.Character
         public byte Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
         public byte Skin { get => CharacterStat.Skin; set => CharacterStat.Skin = value; }
         public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
-        public int PetItemId { get; set; }
-        public int WeaponStickerID { get; set; }
-        
-        public int[] NormalEquips { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
-        public int[] CashEquips { get; } = new int[Constants.EquipSlots.MaxSlotIndex];
+        public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
+        public bool Messenger { get; set; }
 
-        public AvatarLook(CharacterBase character) : this(
+        public readonly Dictionary<Slots, int> CashEquips = new Dictionary<Slots, int>();
+        public readonly Dictionary<Slots, int> NormalEquips = new Dictionary<Slots, int>();
+
+        public AvatarLook(CharacterBase character, bool messenger) : this(
             character.CharacterStat,
-            character.Inventory?.Equipped[EquippedType.Normal].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex],
-            character.Inventory?.Equipped[EquippedType.Cash].Select(i => i?.ItemID ?? 0).ToArray() ?? new int[Constants.EquipSlots.MaxSlotIndex]
+            character.Inventory?.Equipped[EquippedType.Cash].Select(i => new KeyValuePair<Slots,int>(i.Key, i.Value.ItemID)).ToDictionary(i => i.Key, i => i.Value),
+            character.Inventory?.Equipped[EquippedType.Normal].Select(i => new KeyValuePair<Slots,int>(i.Key, i.Value.ItemID)).ToDictionary(i => i.Key, i => i.Value),
+            messenger
         ) { }
-        public AvatarLook(GW_CharacterStat cs, int[] equips, int[] cashEquips)
+        public AvatarLook(GW_CharacterStat cs, Dictionary<Slots, int> cashEquips, Dictionary<Slots, int> normalEquips, bool messenger)
         {
             CharacterStat = cs;
-            CashEquips[0] = cs.Hair;
-
-            for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
-            {
-                bool isCash = cashEquips[i] != 0;
-                CashEquips[i] = isCash ? cashEquips[i] : equips[i];
-                NormalEquips[i] = isCash ? equips[i] : cashEquips[i];
-            }
-
-            WeaponStickerID = cashEquips[(byte)Constants.EquipSlots.Slots.Weapon];
-            //PetItemId = equipsCash[(byte)Constants.EquipSlots.Slots.pet]
+            CashEquips = cashEquips;
+            NormalEquips = normalEquips;
+            Messenger = messenger;
         }
-
 
         public void Encode(Packet packet)
         {
             packet.WriteByte(Gender);
             packet.WriteByte(Skin);
             packet.WriteInt(Face);
+            packet.WriteBool(Messenger);
+            packet.WriteInt(Hair);
 
-            packet.WriteByte(0); // First slot
-            packet.WriteInt(CashEquips[0]); // First equip
-            // Note: this could use i = 0, but for the sake of clarity, we do not do that
-            // Because also the client doesn't go from zero.
-            for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
+            foreach (var item in NormalEquips)
             {
-                int itemid = CashEquips[i];
-                if (itemid == 0) continue;
-
-                packet.WriteByte(i);
-                packet.WriteInt(itemid);
+                packet.WriteByte((byte)item.Key);
+                packet.WriteInt(item.Value);
             }
+
+            foreach (var item in CashEquips.Where(i => i.Key >= Slots.Ring1))
+            {
+                packet.WriteByte((byte)item.Key);
+                packet.WriteInt(item.Value);
+            }
+
             packet.WriteSByte(-1);
 
-            for (byte i = 1; i < Constants.EquipSlots.MaxSlotIndex; i++)
+            foreach (var item in CashEquips.Where(i => i.Key < Slots.Ring1))
             {
-                int itemid = NormalEquips[i];
-                if (itemid == 0) continue;
-
-                packet.WriteByte(i);
-                packet.WriteInt(itemid);
+                if (item.Key == Slots.Weapon) continue;
+                packet.WriteByte((byte)item.Key);
+                packet.WriteInt(item.Value);
             }
+
             packet.WriteSByte(-1);
 
-            packet.WriteInt(WeaponStickerID);
-            packet.WriteInt(PetItemId);
+            packet.WriteInt(CashEquips.GetValue(Slots.Weapon));
+            packet.WriteInt(CashEquips.GetValue(Slots.PetAccessory));
         }
 
         public AvatarLook(Packet packet)
         {
-            for (var i = CashEquips.Length - 1; i >= 0; i--)
-                CashEquips[i] = 0;
-            for (var i = NormalEquips.Length - 1; i >= 0; i--)
-                NormalEquips[i] = 0;
-
             Gender = packet.ReadByte();
             Skin = packet.ReadByte();
             Face = packet.ReadInt();
+            Messenger = packet.ReadBool();
+            Hair = packet.ReadInt();
 
             byte slot = 0;
             while ((slot = packet.ReadByte()) != 0xFF)
             {
-                CashEquips[slot] = packet.ReadInt();
+                var eqSlot = Constants.getEquipSlot(slot, out EquippedType _);
+                if (eqSlot >= Slots.Ring1)
+                {
+                    CashEquips[eqSlot] = packet.ReadInt();
+                }
+                else
+                {
+                    NormalEquips[eqSlot] = packet.ReadInt();
+                }
             }
 
             while ((slot = packet.ReadByte()) != 0xFF)
             {
-                NormalEquips[slot] = packet.ReadInt();
+                var eqSlot = Constants.getEquipSlot(slot, out EquippedType _);
+                CashEquips[eqSlot] = packet.ReadInt();
             }
 
-            WeaponStickerID = packet.ReadInt();
-            PetItemId = packet.ReadInt();
+            CashEquips[Slots.Weapon] = packet.ReadInt();
+            CashEquips[Slots.PetAccessory] = packet.ReadInt();
         }
     }
 }

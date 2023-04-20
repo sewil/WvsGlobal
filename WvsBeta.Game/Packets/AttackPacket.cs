@@ -418,7 +418,7 @@ namespace WvsBeta.Game
             {
                 case 0: // Normal wep
                     {
-                        if (chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Helm, true) == 1002258) // Blue Diamondy Bandana
+                        if (chr.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Helm, EquippedType.Cash) == 1002258) // Blue Diamondy Bandana
                         {
                             var mobs = chr.Field.GetMobsInRange(chr.Position, new Pos(-10000, -10000), new Pos(10000, 10000));
 

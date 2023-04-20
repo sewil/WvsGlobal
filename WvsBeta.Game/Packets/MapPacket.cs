@@ -472,7 +472,8 @@ namespace WvsBeta.Game
         public enum PortalBlockedMessage
         {
             ClosedForNow = 1,
-            CannotGoToThatPlace = 2
+            CannotGoToThatPlace = 2,
+            CSUnavailable = 3
         }
 
         public static void BlockedMessage(GameCharacter chr, byte msg) => BlockedMessage(chr, (PortalBlockedMessage)msg);
@@ -563,7 +564,7 @@ namespace WvsBeta.Game
                 pw.WriteByte(petItem.Level);
                 pw.WriteShort(petItem.Closeness);
                 pw.WriteByte(petItem.Fullness);
-                pw.WriteInt(victim.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.PetEquip1, true)); // Pet equip.
+                pw.WriteInt(victim.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.PetAccessory, EquippedType.Cash));
             }
 
             pw.WriteByte((byte)victim.Wishlist.Count);
@@ -581,7 +582,7 @@ namespace WvsBeta.Game
 
             if (flags.HasFlag(AvatarModFlag.AvatarLook))
             {
-                new AvatarLook(chr).Encode(pw);
+                new AvatarLook(chr, false).Encode(pw);
             }
             if (flags.HasFlag(AvatarModFlag.Speed))
             {

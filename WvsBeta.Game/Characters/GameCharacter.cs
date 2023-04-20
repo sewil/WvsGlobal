@@ -162,7 +162,7 @@ namespace WvsBeta.Game
             (Guild ?? GuildData.Default).EncodeForRemote(packet);
 
             BuffPacket.EncodeForRemote(this, packet);
-            new AvatarLook(this).Encode(packet);
+            new AvatarLook(this, false).Encode(packet);
 
             packet.WriteInt(Inventory.ActiveItemID);
             packet.WriteInt(Inventory.ChocoCount);

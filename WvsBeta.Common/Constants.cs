@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Common
 {
@@ -105,7 +107,7 @@ namespace WvsBeta.Common
         public static class EquipSlots
         {
             // Update this when we go to a newer version with new slots (looks like third job?)
-            public const short MaxSlotIndex = (short)Slots.Saddle;
+            public const short MaxSlotIndex = (short)Slots._END;
 
             public static bool IsValidEquipSlot(short slot)
             {
@@ -115,7 +117,7 @@ namespace WvsBeta.Common
                 return slot > 0 && slot <= MaxSlotIndex;
             }
 
-            public enum Slots
+            public enum Slots : short
             {
                 Invalid = 0,
                 Helm = 1,
@@ -131,43 +133,12 @@ namespace WvsBeta.Common
                 Weapon = 11,
                 Ring1 = 12,
                 Ring2 = 13,
-                PetEquip1 = 14,
+                PetAccessory = 14,
                 Ring3 = 15,
                 Ring4 = 16,
-                Pendant = 17,
-                Mount = 18,
-                Saddle = 19,
-                PetCollar = 20,
-                PetLabelRing1 = 21,
-                PetItemPouch1 = 22,
-                PetMesoMagnet1 = 23,
-                PetAutoHp = 24,
-                PetAutoMp = 25,
-                PetWingBoots1 = 26,
-                PetBinoculars1 = 27,
-                PetMagicScales1 = 28,
-                PetQuoteRing1 = 29,
-                PetEquip2 = 30,
-                PetLabelRing2 = 31,
-                PetQuoteRing2 = 32,
-                PetItemPouch2 = 33,
-                PetMesoMagnet2 = 34,
-                PetWingBoots2 = 35,
-                PetBinoculars2 = 36,
-                PetMagicScales2 = 37,
-                PetEquip3 = 38,
-                PetLabelRing3 = 39,
-                PetQuoteRing3 = 40,
-                PetItemPouch3 = 41,
-                PetMesoMagnet3 = 42,
-                PetWingBoots3 = 43,
-                PetBinoculars3 = 44,
-                PetMagicScales3 = 45,
-                PetItemIgnore1 = 46,
-                PetItemIgnore2 = 47,
-                PetItemIgnore3 = 48,
-                Medal = 49,
-                Belt = 50
+                PetAbility1 = 18,
+                PetAbility2 = 19,
+                _END
             }
         }
 
@@ -382,6 +353,34 @@ namespace WvsBeta.Common
 
         public static short getSkillJob(int skillId) => (short)(skillId / 10000);
         public static Inventory getInventory(int itemid) { return (Inventory)(itemid / 1000000); }
+        public static ItemSlotType getItemSlotType(int itemid)
+        {
+            var inv = Constants.getInventory(itemid);
+            switch (inv)
+            {
+                case Inventory.Equip: return ItemSlotType.Equip;
+                case Inventory.Cash: return ItemSlotType.Pet;
+                default: return ItemSlotType.Bundle;
+            }
+        }
+        public static EquipSlots.Slots getEquipSlot(short slot, out EquippedType type)
+        {
+            slot = Math.Abs(slot);
+            if (slot > 100) type = EquippedType.Cash;
+            else type = EquippedType.Normal;
+
+            slot = (short)(slot % 100);
+            if (!Enum.IsDefined(typeof (EquipSlots.Slots), slot))
+            {
+                Trace.WriteLine("[Constants.getEquipSlot] Invalid equip slot " + slot + "!");
+                return EquipSlots.Slots.Invalid;
+            }
+            return (EquipSlots.Slots)slot;
+        }
+        public static bool IsRingSlot(EquipSlots.Slots slot)
+        {
+            return slot == EquipSlots.Slots.Ring1 || slot == EquipSlots.Slots.Ring2 || slot == EquipSlots.Slots.Ring3 || slot == EquipSlots.Slots.Ring4;
+        }
         public static int getItemType(int itemid) { return (itemid / 10000); }
         public static int getScrollType(int itemid) { return ((itemid % 10000) - (itemid % 100)); }
         public static int itemTypeToScrollType(int itemid) { return ((getItemType(itemid) % 100) * 100); }
@@ -432,172 +431,67 @@ namespace WvsBeta.Common
             return GetBaseJobTrack(jobId) == track;
         }
 
-        public static EquipSlots.Slots GetBodyPartFromItem(int ItemID)
+        public static EquipSlots.Slots getEquipSlot(int itemId)
         {
-            var ItemBodyPart = ItemID / 10000;
-            var ItemBodyPartEX = ItemBodyPart / 10;
+            var itemType = (Items.Types.ItemTypes)getItemType(itemId);
+            var ItemBodyPartEX = (int)itemType / 10;
 
-            if (ItemID / 10000 > 119)
+            switch (itemType)
             {
-                if (ItemBodyPart == 180)
-                    return EquipSlots.Slots.PetEquip1;
-
-                if (ItemBodyPart == 181)
-                {
-                    switch (ItemID)
-                    {
-                        case Items.PetMesoMagnet: return EquipSlots.Slots.PetMesoMagnet1;
-                        case Items.PetItemPouch: return EquipSlots.Slots.PetItemPouch1;
-                        case Items.PetAutoHp: return EquipSlots.Slots.PetAutoHp;
-                        case Items.PetAutoMp: return EquipSlots.Slots.PetAutoMp;
-                        case Items.PetWingBoots: return EquipSlots.Slots.PetWingBoots1;
-                        case Items.PetBinoculars: return EquipSlots.Slots.PetBinoculars1;
-                        case Items.PetMagicScales: return EquipSlots.Slots.PetMagicScales1;
-                    }
-                }
-                else if (ItemBodyPart != 182)
-                {
-                    switch (ItemBodyPart)
-                    {
-                        case 183: return EquipSlots.Slots.PetQuoteRing1;
-                        case 190: return EquipSlots.Slots.Mount;
-                        case 191: return EquipSlots.Slots.Saddle;
-                        case 192: return EquipSlots.Slots.PetCollar;
-                        default:
-                            if (ItemBodyPartEX != 13 && ItemBodyPartEX != 14 && ItemBodyPartEX != 16 && ItemBodyPartEX != 17)
-                                return EquipSlots.Slots.Invalid;
-                            return EquipSlots.Slots.Weapon;
-                    }
-                }
-                return EquipSlots.Slots.PetLabelRing1;
-            }
-            switch (ItemBodyPart)
-            {
-                case 100: return EquipSlots.Slots.Helm;
-                case 101: return EquipSlots.Slots.Face;
-                case 102: return EquipSlots.Slots.Eye;
-                case 103: return EquipSlots.Slots.Earring;
-                case 104: return EquipSlots.Slots.Top; //Could do a fallthrough but that would look weird
-                case 105: return EquipSlots.Slots.Top;
-                case 106: return EquipSlots.Slots.Bottom;
-                case 107: return EquipSlots.Slots.Shoe;
-                case 108: return EquipSlots.Slots.Glove;
-                case 110: return EquipSlots.Slots.Cape;
-                case 111: return EquipSlots.Slots.Ring1;//When this is returned keep in mind there are 4 slots and this is only 1 of them
-                case 112: return EquipSlots.Slots.Pendant;
-                case 119: return EquipSlots.Slots.Shield;
-                case 109: return EquipSlots.Slots.Shield;
+                case Items.Types.ItemTypes.ArmorHelm: return EquipSlots.Slots.Helm;
+                case Items.Types.ItemTypes.AccessoryFace: return EquipSlots.Slots.Face;
+                case Items.Types.ItemTypes.AccessoryEye: return EquipSlots.Slots.Eye;
+                case Items.Types.ItemTypes.AccessoryEarring: return EquipSlots.Slots.Earring;
+                case Items.Types.ItemTypes.ArmorTop:
+                case Items.Types.ItemTypes.ArmorOverall:
+                    return EquipSlots.Slots.Top;
+                case Items.Types.ItemTypes.ArmorBottom: return EquipSlots.Slots.Bottom;
+                case Items.Types.ItemTypes.ArmorShoe: return EquipSlots.Slots.Shoe;
+                case Items.Types.ItemTypes.ArmorGlove: return EquipSlots.Slots.Glove;
+                case Items.Types.ItemTypes.ArmorCape: return EquipSlots.Slots.Cape;
+                case Items.Types.ItemTypes.ArmorRing: return EquipSlots.Slots.Ring1; // When this is returned keep in mind there are 4 slots and this is only 1 of them
+                case Items.Types.ItemTypes.ArmorShield: return EquipSlots.Slots.Shield;
+                case Items.Types.ItemTypes.PetEquip: return EquipSlots.Slots.PetAccessory;
+                case Items.Types.ItemTypes.PetSkills: return EquipSlots.Slots.PetAbility1; // When this is returned keep in mind there are 2 slots and this is only 1 of them
                 default:
+                    if (ItemBodyPartEX == 13 || ItemBodyPartEX == 14 || ItemBodyPartEX == 16 || ItemBodyPartEX == 17)
+                        return EquipSlots.Slots.Weapon;
                     break;
             }
-            if (ItemBodyPartEX != 13 && ItemBodyPartEX != 14 && ItemBodyPartEX != 16 && ItemBodyPartEX != 17)
-                return EquipSlots.Slots.Invalid;
-            return EquipSlots.Slots.Weapon;
+            return EquipSlots.Slots.Invalid;
         }
 
-        public static bool IsCorrectBodyPart(int ItemID, short BodyPart, byte Gender)
+        public static bool IsCorrectBodyPart(int itemId, short _slot)
         {
-            var ItemBodyPart = ItemID / 10000;
-            var ItemBodyPartEX = ItemBodyPart / 10;
-            
-            if (ItemBodyPart <= 119)
-            {
-                if (ItemBodyPart != 119)
-                {
-                    switch (ItemBodyPart)
-                    {
-                        case 100:
-                            return BodyPart == 1;
-                        case 101:
-                            return BodyPart == 2;
-                        case 102:
-                            return BodyPart == 3;
-                        case 103:
-                            return BodyPart == 4;
-                        case 104:
-                        case 105:
-                            return BodyPart == 5;
-                        case 106:
-                            return BodyPart == 6;
-                        case 107:
-                            return BodyPart == 7;
-                        case 108:
-                            return BodyPart == 8;
-                        case 110:
-                            return BodyPart == 9;
-                        case 111:
-                            if (BodyPart == 12 || BodyPart == 13 || BodyPart == 15)
-                                return true;
-                            return BodyPart == 16;
-                        case 112:
-                            if (BodyPart == 17)
-                                return true;
-                            return BodyPart == 30;
-                        case 113:
-                            return BodyPart == 22;
-                        case 114:
-                            return BodyPart == 21;
-                        case 115:
-                            return BodyPart == 23;
-                        case 109:
-                            return BodyPart == 10;
-                        default:
-                            {
-                                if (ItemBodyPartEX == 13 || ItemBodyPartEX == 14 || ItemBodyPartEX == 16 || ItemBodyPartEX == 17)
-                                    return BodyPart == 11;
-                                return false;
-                            }
-                    }
-                }
-                return BodyPart == 10;
-            }
-            if (ItemBodyPart > 190)
-            {
-                if (ItemBodyPart == 191)
-                    return BodyPart == 19;
-                if (ItemBodyPart == 192)
-                    return BodyPart == 20;
-                if (ItemBodyPart == 194)
-                    return BodyPart == 1000;
-                if (ItemBodyPart == 195)
-                    return BodyPart == 1001;
-                if (ItemBodyPart == 196)
-                    return BodyPart == 1002;
-                if (ItemBodyPart == 197)
-                    return BodyPart == 1003;
-                if (ItemBodyPartEX == 13 || ItemBodyPartEX == 14 || ItemBodyPartEX == 16 || ItemBodyPartEX == 17)
-                    return BodyPart == 11;
-                return false;
-            }
-            if (ItemBodyPart == 190)
-                return BodyPart == 18;
-            if (ItemBodyPart == 134)
-                return BodyPart == 10;
-            switch (ItemBodyPart)
-            {
-                case 161:
-                    return BodyPart == 1100;
-                case 162:
-                    return BodyPart == 1101;
-                case 163:
-                    return BodyPart == 1102;
-                case 164:
-                    return BodyPart == 1103;
-                default:
-                    if (ItemBodyPart != 165)
-                    {
-                        if (ItemBodyPart == 180)
-                        {
-                            if (BodyPart == 14 || BodyPart == 24)
-                                return true;
-                            return BodyPart == 25;
-                        }
+            var slot = (EquipSlots.Slots)_slot;
+            var itemType = (Items.Types.ItemTypes)getItemType(itemId);
+            var ItemBodyPartEX = (int)itemType / 10;
 
+            switch (itemType)
+            {
+                case Items.Types.ItemTypes.ArmorHelm: return slot == EquipSlots.Slots.Helm;
+                case Items.Types.ItemTypes.AccessoryFace: return slot == EquipSlots.Slots.Face;
+                case Items.Types.ItemTypes.AccessoryEye: return slot == EquipSlots.Slots.Eye;
+                case Items.Types.ItemTypes.AccessoryEarring: return slot == EquipSlots.Slots.Earring;
+                case Items.Types.ItemTypes.ArmorTop:
+                case Items.Types.ItemTypes.ArmorOverall:
+                    return slot == EquipSlots.Slots.Top;
+                case Items.Types.ItemTypes.ArmorBottom: return slot == EquipSlots.Slots.Bottom;
+                case Items.Types.ItemTypes.ArmorShoe: return slot == EquipSlots.Slots.Shoe;
+                case Items.Types.ItemTypes.ArmorGlove: return slot == EquipSlots.Slots.Glove;
+                case Items.Types.ItemTypes.ArmorCape: return slot == EquipSlots.Slots.Cape;
+                case Items.Types.ItemTypes.ArmorRing:
+                    return slot == EquipSlots.Slots.Ring1 || slot == EquipSlots.Slots.Ring2 || slot == EquipSlots.Slots.Ring3 || slot == EquipSlots.Slots.Ring4;
+                case Items.Types.ItemTypes.ArmorShield: return slot == EquipSlots.Slots.Shield;
+                case Items.Types.ItemTypes.PetEquip: return slot == EquipSlots.Slots.PetAccessory;
+                case Items.Types.ItemTypes.PetSkills:
+                    return slot == EquipSlots.Slots.PetAbility1 || slot == EquipSlots.Slots.PetAbility2;
+                default:
+                    {
                         if (ItemBodyPartEX == 13 || ItemBodyPartEX == 14 || ItemBodyPartEX == 16 || ItemBodyPartEX == 17)
-                            return BodyPart == 11;
+                            return slot == EquipSlots.Slots.Weapon;
                         return false;
                     }
-                    return BodyPart == 1104;
             }
         }
 

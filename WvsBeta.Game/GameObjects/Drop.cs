@@ -2,6 +2,7 @@
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Game
 {
@@ -54,7 +55,14 @@ namespace WvsBeta.Game
 
             var isPartyAble = chr.PartyID != 0 && OwnPartyID == chr.PartyID;
             var isOwnerDrop = OwnerID == 0 || OwnerID == chr.ID;
-            
+
+            if (byPet != null)
+            {
+                var slots = new Slots[] { Slots.PetAbility1, Slots.PetAbility2 };
+                if (Reward.Mesos && !chr.Inventory.HasEquipped(Constants.Items.PetMesoMagnet, EquippedType.Cash, slots)) return false;
+                else if (!Reward.Mesos && !chr.Inventory.HasEquipped(Constants.Items.PetItemPouch, EquippedType.Cash, slots)) return false;
+            }
+
             if (Reward.Data?.IsOnly == true && chr.Inventory.ItemCount(Reward.ItemID) > 0)
             {
                 DropPacket.CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
@@ -87,7 +95,7 @@ namespace WvsBeta.Game
                     var Count = User.Inventory.GetItemAmount(Reward.ItemID);
 
                     //TODO If quests give out cash items this needs to be changed
-                    if (User.Inventory.GetEquippedItemId((short)Constants.GetBodyPartFromItem(Reward.ItemID), false) == Reward.ItemID)
+                    if (User.Inventory.GetEquippedItemId(Constants.getEquipSlot(Reward.ItemID), EquippedType.Normal) == Reward.ItemID)
                         Count++;
 
                     if (Count > ShowMax)

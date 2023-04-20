@@ -47,6 +47,8 @@ namespace WvsBeta.Game.Handlers
             // Ludus Lake area
             { "ludi", 220000000 },
             { "omega", 221000000 },
+            // Aquarium
+            { "aqua", 230000000 },
             // Training Areas
             { "hhg1", 104040000 },
             { "kerningconstruct", 103010000 },

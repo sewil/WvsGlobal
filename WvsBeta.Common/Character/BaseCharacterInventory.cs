@@ -2,12 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
-using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
@@ -17,10 +15,10 @@ namespace WvsBeta.Common.Character
     public abstract class BaseCharacterInventory
     {
         // Shown and hidden
-        public readonly Dictionary<EquippedType, EquipItem[]> Equipped = new Dictionary<EquippedType, EquipItem[]>()
+        public readonly Dictionary<EquippedType, Dictionary<Constants.EquipSlots.Slots, EquipItem>> Equipped = new Dictionary<EquippedType, Dictionary<Constants.EquipSlots.Slots, EquipItem>>()
         {
-            { EquippedType.Normal, new EquipItem[19] },
-            { EquippedType.Cash, new EquipItem[120] }
+            { EquippedType.Normal, new Dictionary<Constants.EquipSlots.Slots, EquipItem>() },
+            { EquippedType.Cash, new Dictionary<Constants.EquipSlots.Slots, EquipItem>() }
         };
         public int ChocoCount { get; protected set; }
         public int ActiveItemID { get; protected set; }
@@ -49,16 +47,12 @@ namespace WvsBeta.Common.Character
         public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
         public int GetTotalMAttInEquips()
         {
-            return Equipped[0]
-                .Where(i => i != null)
-                .Sum(item => item.Matk);
+            return Equipped[EquippedType.Normal].Sum(i => i.Value.Matk);
         }
 
         public int GetTotalAccInEquips()
         {
-            return Equipped[0]
-                .Where(i => i != null)
-                .Sum(item => item.Acc);
+            return Equipped[EquippedType.Normal].Sum(item => item.Value.Acc);
         }
 
         public short GetOpenSlotsInInventory(Inventory inventory)
@@ -75,7 +69,28 @@ namespace WvsBeta.Common.Character
         public virtual int ItemAmountAvailable(int itemid) { throw new NotImplementedException(); }
         public virtual bool HasSlotsFreeForItem(int itemid, short amount) { throw new NotImplementedException(); }
         public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
-        public virtual void SetItem(Inventory inventory, short slot, BaseItem item) { throw new NotImplementedException(); }
+
+        public virtual void SetItem(Inventory inventory, short slot, BaseItem item)
+        {
+            if (item != null) item.InventorySlot = slot;
+            if (slot < 0)
+            {
+                var eqSlot = Constants.getEquipSlot(slot, out EquippedType type);
+                if (eqSlot == Constants.EquipSlots.Slots.Invalid)
+                {
+                    Trace.WriteLine("Invalid eq slot " + slot + " in SetItem");
+                    return;
+                }
+                EquipItem equipItem = item as EquipItem;
+
+                if (item == null) Equipped[type].Remove(eqSlot);
+                else Equipped[type][eqSlot] = equipItem;
+            }
+            else
+            {
+                Items[inventory][slot] = item;
+            }
+        }
         public virtual short GetNextFreeSlotInInventory(Inventory inventory) { throw new NotImplementedException(); }
         public virtual short DeleteFirstItemInInventory(Inventory inv) { throw new NotImplementedException(); }
         public virtual void CheckExpired() { throw new NotImplementedException(); }
@@ -155,8 +170,8 @@ namespace WvsBeta.Common.Character
         {
             // Move cashitems back to the _cashItems object
 
-            // 'Hidden' equips
-            _cashItems.Equips.AddRange(Equipped[EquippedType.Cash].Where(y => y != null && y.CashId != 0));
+            // Cash equips
+            _cashItems.Equips.AddRange(Equipped[EquippedType.Cash].Select(i => i.Value).Where(y => y.CashId != 0));
             // Unequipped equips
             _cashItems.Equips.AddRange(Items[Inventory.Equip].Where(y => y is EquipItem && y.CashId != 0).Select(y => y as EquipItem));
             // Bundles
@@ -214,7 +229,7 @@ namespace WvsBeta.Common.Character
                     switch (type)
                     {
                         case SplitDBInventory.InventoryType.Eqp:
-                            return Equipped.SelectMany(x => x.Value.Where(y => y != null && y.CashId == 0)).Union(Items[Inventory.Equip].Where(x => x != null && x.CashId == 0));
+                            return Equipped.SelectMany(x => x.Value.Select(i => i.Value).Where(y => y.CashId == 0)).Union(Items[Inventory.Equip].Where(x => x != null && x.CashId == 0));
                         case SplitDBInventory.InventoryType.Bundle:
                             return Items[inventory].Where(x => x != null && x.CashId == 0);
                         default: throw new Exception();
@@ -255,8 +270,7 @@ namespace WvsBeta.Common.Character
         public BaseItem GetItemByCashID(long cashId, Inventory inventory)
         {
             BaseItem item = Items[inventory].FirstOrDefault(x => x != null && x.CashId == cashId);
-            if (item == null) item = Equipped[EquippedType.Normal].FirstOrDefault(x => x != null && x.CashId == cashId);
-            if (item == null) item = Equipped[EquippedType.Cash].FirstOrDefault(x => x != null && x.CashId == cashId);
+            if (item == null) Equipped[EquippedType.Cash].Select(i => i.Value).TryFind(i => i.CashId == cashId, out item);
             return item;
         }
 
@@ -287,26 +301,7 @@ namespace WvsBeta.Common.Character
             amount += item.Amount;
             ItemAmounts[itemid] = amount;
 
-            if (slot < 0)
-            {
-                if (item is EquipItem equipItem)
-                {
-                    slot = Math.Abs(slot);
-                    if (slot > 100)
-                    {
-                        Equipped[EquippedType.Cash][(byte)(slot - 100)] = equipItem;
-                    }
-                    else
-                    {
-                        Equipped[EquippedType.Normal][(byte)slot] = equipItem;
-                    }
-                }
-                else throw new Exception("Tried to AddItem on an equip slot but its not an equip! " + item);
-            }
-            else
-            {
-                Items[inventory][slot] = item;
-            }
+            SetItem(inventory, slot, item);
         }
 
         public virtual short AddItem(BaseItem item, bool sendpacket = true) { throw new NotImplementedException(); }
@@ -361,50 +356,26 @@ namespace WvsBeta.Common.Character
                 if (amount - item.Amount <= 0) ItemAmounts.Remove(itemid);
                 else ItemAmounts[itemid] -= item.Amount;
             }
-
-            if (slot < 0)
-            {
-                if (item is EquipItem)
-                {
-                    slot = Math.Abs(slot);
-                    if (slot > 100)
-                    {
-                        Equipped[EquippedType.Cash][(byte)(slot - 100)] = null;
-                    }
-                    else
-                    {
-                        Equipped[EquippedType.Normal][(byte)slot] = null;
-                    }
-                }
-                else throw new Exception("Tried to RemoveItem on an equip slot but its not an equip! " + item);
-            }
-            else
-            {
-                Items[inventory][slot] = null;
-            }
+            SetItem(inventory, slot, null);
         }
 
         public BaseItem GetItem(Inventory inventory, short slot)
         {
-            BaseItem itm;
             if (slot < 0)
             {
-                slot = Math.Abs(slot);
-                // Equip.
-                if (slot > 100)
+                var eqSlot = Constants.getEquipSlot(slot, out EquippedType type);
+                if (eqSlot == Constants.EquipSlots.Slots.Invalid)
                 {
-                    itm = Equipped[EquippedType.Cash][(short)(slot - 100)];
+                    Trace.WriteLine("Unknown eq slot " + slot + " in GetItem!");
+                    return null;
                 }
-                else
-                {
-                    itm = Equipped[EquippedType.Normal][slot];
-                }
+                Equipped[type].TryGetValue(eqSlot, out EquipItem item);
+                return item;
             }
             else
             {
-                itm = Items[inventory][slot];
+                return Items[inventory][slot];
             }
-            return itm;
         }
 
         public bool AddRockLocation(int map)
@@ -463,17 +434,15 @@ namespace WvsBeta.Common.Character
 
             if (flags.HasFlag(CharacterDataFlag.Equips))
             {
-                foreach (var item in Equipped[EquippedType.Normal])
+                foreach (var item in Equipped[EquippedType.Normal].Select(i => i.Value))
                 {
-                    if (item == null) continue;
                     new GW_ItemSlotBase(item).Encode(packet, true, false);
                 }
 
                 packet.WriteByte(0);
 
-                foreach (var item in Equipped[EquippedType.Cash])
+                foreach (var item in Equipped[EquippedType.Cash].Select(i => i.Value))
                 {
-                    if (item == null) continue;
                     new GW_ItemSlotBase(item).Encode(packet, true, false);
                 }
                 packet.WriteByte(0);
@@ -530,8 +499,13 @@ namespace WvsBeta.Common.Character
             return Items[Inventory.Cash].Where(x => x != null && Constants.isPet(x.ItemID)).Select(x => x as PetItem);
         }
 
-        public virtual int GetEquippedItemId(Constants.EquipSlots.Slots slot, bool cash) => throw new NotImplementedException();
-
-        public virtual int GetEquippedItemId(short slot, bool cash) { throw new NotImplementedException(); }
+        public EquipItem GetEquippedItem(Constants.EquipSlots.Slots slot, EquippedType type)
+        {
+            return Equipped[type].GetValue(slot);
+        }
+        public int GetEquippedItemId(Constants.EquipSlots.Slots slot, EquippedType type)
+        {
+            return GetEquippedItem(slot, type)?.ItemID ?? 0;
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using log4net;
 using System;
 using WvsBeta.Common.Character;
-using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -20,8 +19,6 @@ namespace WvsBeta.Common
         public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
         public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
         public int MapID { get => CharacterStat.MapID; set => CharacterStat.MapID = value; }
-        public EquipItem WeaponSticker { get => Inventory.Equipped[EquippedType.Cash][(byte)Constants.EquipSlots.Slots.Weapon]; }
-        public int WeaponStickerID { get => WeaponSticker?.ItemID ?? 0; }
         public byte PortalID { get; set; }
         public virtual int PartyID { get; set; }
 

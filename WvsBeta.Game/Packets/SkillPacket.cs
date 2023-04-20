@@ -55,7 +55,7 @@ namespace WvsBeta.Game
                 }
             }
             else if (SkillID != Constants.Cleric.Skills.Heal ||
-                chr.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, false) == 0)
+                !chr.Inventory.Equipped[EquippedType.Normal].ContainsKey(Constants.EquipSlots.Slots.Weapon))
             {
                 // If you are using Heal, and are not using a wand/weapon, it won't show anything.
                 PlayerEffectPacket.SendSkill(chr, SkillID, SkillLevel, foreignOnly: true);

@@ -253,7 +253,7 @@ namespace WvsBeta.Game
         public override int GetMastery()
         {
             var masteryid = 0;
-            switch (Constants.getItemType(Character.Inventory.GetEquippedItemId((short)Constants.EquipSlots.Slots.Weapon, false)))
+            switch (Constants.getItemType(Character.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, EquippedType.Normal)))
             {
                 case (int)Constants.Items.Types.ItemTypes.Weapon1hSword:
                 case (int)Constants.Items.Types.ItemTypes.Weapon2hSword:
