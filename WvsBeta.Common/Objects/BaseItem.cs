@@ -24,15 +24,16 @@ namespace WvsBeta.Common.Objects
         public bool IsQuest { get; set; }
         public bool IsTradeBlock { get; set; }
         public bool BigSize { get; set; }
+        public Inventory Inventory { get; }
 
         protected BaseItem(int itemId)
         {
-            this.ItemID = itemId;
+            ItemID = itemId;
+            Inventory = Constants.getInventory(itemId);
         }
 
-        protected BaseItem(BaseItem itemBase)
+        protected BaseItem(BaseItem itemBase) : this(itemBase.ItemID)
         {
-            ItemID = itemBase.ItemID;
             Amount = itemBase.Amount;
             CashId = itemBase.CashId;
             Expiration = itemBase.Expiration;
