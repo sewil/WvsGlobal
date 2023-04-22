@@ -215,6 +215,7 @@
     <Compile Include="Enums\GroupMessageType.cs" />
     <Compile Include="Packets\MemoPacket.cs" />
     <Compile Include="Packets\PacketHelper.cs" />
+    <Compile Include="Packets\UserCommonPacket.cs" />
     <Compile Include="Pinger.cs" />
     <Compile Include="Crypto\Rand32.cs" />
     <Compile Include="Crypto\RNG.cs" />
