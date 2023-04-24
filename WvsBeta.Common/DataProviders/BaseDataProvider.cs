@@ -543,66 +543,9 @@ namespace WvsBeta.Common.DataProviders
         {
             Pets = IterateAllToDict(pFile.BaseNode["Item"]["Pet"], pNode =>
             {
-                int ID = (int)Utils.ConvertNameToID(pNode.Name);
-                var pd = new PetData
-                {
-                    ID = ID,
-                    Reactions = new Dictionary<byte, PetReactionData>()
-                };
-
-                foreach (var mNode in pNode["interact"])
-                {
-                    var prd = new PetReactionData
-                    {
-                        ReactionID = byte.Parse(mNode.Name),
-                        Inc = mNode["inc"].ValueByte(),
-                        Prob = mNode["prob"].ValueByte(),
-                        LevelMin = mNode["l0"].ValueByte(),
-                        LevelMax = mNode["l1"].ValueByte()
-                    };
-                    pd.Reactions.Add(prd.ReactionID, prd);
-                }
-
-                foreach (var node in pNode["info"])
-                {
-                    switch (node.Name)
-                    {
-                        case "icon":
-                        case "iconD":
-                        case "iconRaw":
-                        case "iconRawD":
-                        case "cash":
-                            break;
-
-                        case "hungry":
-                            pd.Hungry = node.ValueByte();
-                            break;
-                        case "life":
-                            pd.Life = node.ValueByte();
-                            break;
-
-                        default:
-                            Console.WriteLine($"Unhandled Pet node {node.Name} for id {ID}");
-                            break;
-                    }
-                }
+                var pd = new PetData(pNode);
                 return pd;
             }, x => x.ID);
-
-            foreach (var node in pFile.BaseNode["String"]["Item.img"]["Pet"])
-            {
-                var itemId = int.Parse(node.Name);
-                if (!Pets.ContainsKey(itemId))
-                {
-                    int ID = (int)Utils.ConvertNameToID(node.Name);
-                    Pets.Add(itemId, new PetData
-                    {
-                        ID = ID,
-                        Reactions = new Dictionary<byte, PetReactionData>(),
-                        Name = node["name"].ValueString()
-                    });
-                }
-            }
         }
 
 
