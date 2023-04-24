@@ -324,7 +324,7 @@ namespace WvsBeta.Game
                         else
                         {
                             item.Amount -= amount;
-                            InventoryOperationPacket.ChangeAmount(chr, item, inv);
+                            InventoryOperationPacket.ChangeAmount(chr, item);
                         }
                         chr.Inventory.AddMesos(sellPrice);
 
@@ -375,7 +375,7 @@ namespace WvsBeta.Game
                             item.Amount = maxslot;
 
                             chr.Inventory.AddMesos(sellPrice);
-                            InventoryOperationPacket.ChangeAmount(chr, item, inv);
+                            InventoryOperationPacket.ChangeAmount(chr, item);
                             SendShopResult(chr, ShopRes.RechargeSuccess);
                         }
                         else

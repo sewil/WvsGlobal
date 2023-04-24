@@ -78,7 +78,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                InventoryOperationPacket.ChangeAmount(chr, item, Inventory.Use);
+                InventoryOperationPacket.ChangeAmount(chr, item);
             }
         }
 
@@ -154,13 +154,13 @@ namespace WvsBeta.Game
                 {
                     to.Amount += leftover;
                     from.Amount -= leftover;
-                    InventoryOperationPacket.ChangeAmount(chr, to, inventory, to.Amount);
-                    InventoryOperationPacket.ChangeAmount(chr, from, inventory, from.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, to, to.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, from, from.Amount);
                 }
                 else if (leftover >= from.Amount)
                 {
                     to.Amount += from.Amount;
-                    InventoryOperationPacket.ChangeAmount(chr, to, inventory, to.Amount);
+                    InventoryOperationPacket.ChangeAmount(chr, to, to.Amount);
                     chr.Inventory.TakeItemAmountFromSlot(inventory, slotFrom, from.Amount, false);
                     InventoryOperationPacket.NoChange(chr);
                 }
@@ -515,7 +515,7 @@ namespace WvsBeta.Game
 
                 scrollSuccess = true;
 
-                InventoryOperationPacket.Add(chr, equip, Inventory.Equip);
+                InventoryOperationPacket.Add(chr, equip);
                 MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
             }
             else
@@ -532,7 +532,7 @@ namespace WvsBeta.Game
                 else
                 {
                     equip.Slots--;
-                    InventoryOperationPacket.Add(chr, equip, Inventory.Equip);
+                    InventoryOperationPacket.Add(chr, equip);
                 }
             }
 

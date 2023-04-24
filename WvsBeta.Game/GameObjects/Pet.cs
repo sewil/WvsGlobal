@@ -36,7 +36,7 @@ namespace WvsBeta.Game
 
         public static void UpdatePet(GameCharacter chr, PetItem petItem)
         {
-            InventoryOperationPacket.Add(chr, petItem, Common.Enums.Inventory.Cash);
+            InventoryOperationPacket.Add(chr, petItem);
         }
 
         public static bool IsNamedPet(PetItem petItem)

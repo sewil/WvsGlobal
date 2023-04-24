@@ -1,6 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -16,12 +16,13 @@ namespace WvsBeta.Game.Packets
             SwitchSlots = 2,
             Unk3 = 3
         }
-        public static void Add(GameCharacter chr, BaseItem item, Inventory inventory)
+
+        public static void Add(GameCharacter chr, BaseItem item)
         {
-            Run(chr, () => new OperationOut
+            Run(chr, new OperationOut
             {
                 type = Type.Add,
-                inventory = inventory,
+                inventory = Constants.getInventory(item.ItemID),
                 slot = item.InventorySlot,
                 item = item
             });
@@ -29,30 +30,30 @@ namespace WvsBeta.Game.Packets
 
         public static void NoChange(GameCharacter chr)
         {
-            Run(chr, new List<Func<OperationOut>>());
+            Run(chr);
         }
 
-        public static void ChangeAmount(GameCharacter chr, BaseItem item, Inventory inventory, short amount)
+        public static void ChangeAmount(GameCharacter chr, BaseItem item)
         {
-            Run(chr, () => new OperationOut
+            ChangeAmount(chr, item, item.Amount);
+        }
+        public static void ChangeAmount(GameCharacter chr, BaseItem item, short amount)
+        {
+            Run(chr, new OperationOut
             {
                 type = Type.ChangeAmount,
-                inventory = inventory,
+                inventory = Constants.getInventory(item.ItemID),
                 slot = item.InventorySlot,
                 amount = amount
             });
         }
-        public static void ChangeAmount(GameCharacter chr, BaseItem item, Inventory inventory)
+        public static void SwitchSlots(GameCharacter chr, BaseItem item, short newSlot)
         {
-            ChangeAmount(chr, item, inventory, item.Amount);
-        }
-        public static void SwitchSlots(GameCharacter chr, BaseItem item, Inventory inventory, short newSlot)
-        {
-            SwitchSlots(chr, inventory, item.InventorySlot, newSlot);
+            SwitchSlots(chr, Constants.getInventory(item.ItemID), item.InventorySlot, newSlot);
         }
         public static void SwitchSlots(GameCharacter chr, Inventory inventory, short slot1, short slot2)
         {
-            Run(chr, () => new OperationOut
+            Run(chr, new OperationOut
             {
                 type = Type.SwitchSlots,
                 inventory = inventory,
@@ -63,19 +64,13 @@ namespace WvsBeta.Game.Packets
 
         public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
         {
-            IList<Func<OperationOut>> operations = slots.Select(slot => {
-                OperationOut f()
-                {
-                    return new OperationOut
-                    {
-                        type = Type.SwitchSlots,
-                        slot = slot,
-                        slot2 = 0,
-                        inventory = inventory
-                    };
-                }
-                return (Func<OperationOut>)f;
-            }).ToList();
+            OperationOut[] operations = slots.Select(slot => new OperationOut
+            {
+                type = Type.SwitchSlots,
+                slot = slot,
+                slot2 = 0,
+                inventory = inventory
+            }).ToArray();
             Run(chr, operations);
         }
 
@@ -89,13 +84,6 @@ namespace WvsBeta.Game.Packets
             public short amount;
             public BaseItem item;
         }
-        private static void Run(GameCharacter chr, Func<OperationOut> operation)
-        {
-            Run(chr, new List<Func<OperationOut>>()
-            {
-                operation
-            });
-        }
         private static Packet Init(byte operations)
         {
             var pw = new Packet(ServerMessages.INVENTORY_OPERATION);
@@ -103,22 +91,22 @@ namespace WvsBeta.Game.Packets
             pw.WriteByte(operations);
             return pw;
         }
-        private static void Run(GameCharacter chr, IList<Func<OperationOut>> operations)
+        private static void Run(GameCharacter chr, params OperationOut[] operations)
         {
-            if (operations.Count == 0)
+            if (operations.Length == 0)
             {
                 var pw = Init(0);
                 chr.SendPacket(pw);
                 return;
             }
-            for (int opIdx = 0; opIdx < operations.Count;)
+            for (int opIdx = 0; opIdx < operations.Length;)
             {
-                byte chunk = (byte)Math.Min(MaxPacketOperations, operations.Count - opIdx);
+                byte chunk = (byte)Math.Min(MaxPacketOperations, operations.Length - opIdx);
                 Packet pw = Init(chunk);
                 bool equipitem = false;
                 for (byte chunkIdx = 0; chunkIdx < chunk; chunkIdx++)
                 {
-                    var opout = operations[opIdx + chunkIdx]();
+                    var opout = operations[opIdx + chunkIdx];
                     pw.WriteByte((byte)opout.type);
                     pw.WriteByte((byte)opout.inventory);
                     pw.WriteShort(opout.slot);

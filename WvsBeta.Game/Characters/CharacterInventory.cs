@@ -123,7 +123,7 @@ namespace WvsBeta.Game
                             item.Amount -= amount;
                             temp.Amount = maxSlots;
                             if (sendpacket)
-                                InventoryOperationPacket.ChangeAmount(Character, temp, inventory);
+                                InventoryOperationPacket.ChangeAmount(Character, temp);
                         }
                         else
                         {
@@ -132,7 +132,7 @@ namespace WvsBeta.Game
                             SetItem(inventory, i, null);
                             AddItem(inventory, i, item, false);
                             if (sendpacket)
-                                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
+                                InventoryOperationPacket.ChangeAmount(Character, item);
                             return 0;
                         }
                     }
@@ -150,7 +150,7 @@ namespace WvsBeta.Game
             {
                 SetItem(inventory, slot, item);
                 if (sendpacket)
-                    InventoryOperationPacket.Add(Character, item, inventory);
+                    InventoryOperationPacket.Add(Character, item);
                 return 0;
             }
             else
@@ -357,7 +357,7 @@ namespace WvsBeta.Game
             else
             {
                 // Update item with new amount
-                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
+                InventoryOperationPacket.ChangeAmount(Character, item);
             }
         }
 
@@ -423,7 +423,7 @@ namespace WvsBeta.Game
                 else
                 {
                     // Update item with new amount
-                    InventoryOperationPacket.ChangeAmount(Character, item, inventory);
+                    InventoryOperationPacket.ChangeAmount(Character, item);
                 }
             }
         }
@@ -462,7 +462,7 @@ namespace WvsBeta.Game
             else
             {
                 // Update item
-                InventoryOperationPacket.ChangeAmount(Character, item, inventory);
+                InventoryOperationPacket.ChangeAmount(Character, item);
             }
 
             return newItem;
