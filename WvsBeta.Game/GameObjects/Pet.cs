@@ -7,17 +7,20 @@ namespace WvsBeta.Game
 {
     public static class Pet
     {
-        public static void IncreaseCloseness(GameCharacter chr, PetItem petItem, short inc)
+        public static void IncreaseCloseness(GameCharacter chr, PetItem petItem, short inc, bool sendUpdate = true)
         {
             if (petItem.Closeness >= Constants.MaxCloseness) return;
-            petItem.Closeness = (short)Math.Min(Constants.MaxCloseness, petItem.Closeness + inc);
 
+            short minCloseness = (short)(petItem.Level > 1 ? Constants.PetExp[petItem.Level - 2] : 0);
+            short maxCloseness = (short)(Constants.PetExp[petItem.Level - 1] - 1);
+            petItem.Closeness = (short)Math.Max(minCloseness, Math.Min(Constants.MaxCloseness, petItem.Closeness + inc));
             var possibleLevel = GetLevel(petItem);
-            if (possibleLevel != petItem.Level)
+            if (petItem.Closeness > maxCloseness)
             {
                 petItem.Level = possibleLevel;
                 PlayerEffectPacket.SendPetEffect(chr, PetEffectType.LevelUp);
             }
+            if (sendUpdate) UpdatePet(chr, petItem);
         }
 
         public static byte GetLevel(PetItem petItem)
@@ -33,7 +36,7 @@ namespace WvsBeta.Game
 
         public static void UpdatePet(GameCharacter chr, PetItem petItem)
         {
-            InventoryOperationPacket.ChangeAmount(chr, petItem, Constants.getInventory(petItem.ItemID));
+            InventoryOperationPacket.Add(chr, petItem, Common.Enums.Inventory.Cash);
         }
 
         public static bool IsNamedPet(PetItem petItem)

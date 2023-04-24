@@ -55,7 +55,7 @@
         ITEM_MOVE = 41,
         ITEM_USE,
         SUMMON_BAG_USE = 44,
-        PET_EAT_FOOD,
+        PET_EAT_FOOD = 0x2D,
         CASH_ITEM_USE, // Assumed Value
         RETURN_SCROLL_USE = 47, // Assumed Value
         SCROLL_USE = 48, // Assumed Value

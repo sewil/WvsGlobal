@@ -1,5 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
@@ -71,7 +73,7 @@ namespace WvsBeta.Game
             var petItem = chr.GetSpawnedPet();
             if (petItem == null) return;
 
-            bool success = false;
+            bool inc = false;
             double multiplier = 1.0;
             // 4A 00 00 
             byte doMultiplier = packet.ReadByte();
@@ -100,12 +102,11 @@ namespace WvsBeta.Game
             if (random >= (petReactionData.Prob * additionalSucceedProbability) ||
                 petItem.Fullness < 50) goto send_response;
 
-            success = true;
+            inc = true;
             Pet.IncreaseCloseness(chr, petItem, petReactionData.Inc);
-            Pet.UpdatePet(chr, petItem);
 
             send_response:
-            SendPetInteraction(chr, interactionId, success);
+            SendPetInteraction(chr, interactionId, inc, false);
         }
 
         public static void HandlePetLoot(GameCharacter chr, Packet packet)
@@ -123,16 +124,39 @@ namespace WvsBeta.Game
 
             Trace.WriteLine($"Pet Action {type} {action} {message}");
             
-            SendPetChat(chr, type, action, message);
+            SendPetAction(chr, type, action, message);
 
         }
 
         public static void HandlePetFeed(GameCharacter chr, Packet packet)
         {
-            // 26 06 00 40 59 20 00 
+            try
+            {
+                short slot = packet.ReadShort();
+                int itemId = packet.ReadInt();
+                Inventory inv = Constants.getInventory(itemId);
+
+                var petItem = chr.GetSpawnedPet();
+                if (petItem == null) throw new ControlledException("Tried feeding non-spawned pet");
+                if (!DataProvider.Items.ContainsKey(itemId)) throw new ControlledException("Invalid pet food item id " + itemId);
+                var food = chr.Inventory.GetItem(inv, slot);
+                if (food == null) throw new ControlledException("Not enough pet food.");
+                chr.Inventory.TakeItem(food, food.Inventory, food.InventorySlot, 1);
+                bool full = petItem.Fullness >= 100;
+                short inc = (short)(full ? -1 : 1);
+                Pet.IncreaseCloseness(chr, petItem, inc, false);
+                petItem.Fullness = (byte)Math.Min(100, petItem.Fullness + 30);
+                Pet.UpdatePet(chr, petItem);
+                SendPetInteraction(chr, 0, !full, true);
+            }
+            catch (ControlledException e)
+            {
+                if (!string.IsNullOrWhiteSpace(e.Message)) Program.MainForm.LogDebug("Pet feed controlled exception: " + e.Message);
+                InventoryOperationPacket.NoChange(chr);
+            }
         }
 
-        public static void SendPetChat(GameCharacter chr, byte type, byte action, string text)
+        public static void SendPetAction(GameCharacter chr, byte type, byte action, string text)
         {
             var pw = new Packet(ServerMessages.PET_ACTION);
             pw.WriteInt(chr.ID);
@@ -150,27 +174,14 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(chr, pw);
         }
 
-        public static void SendPetAction(GameCharacter chr, byte a, byte b)
+        public static void SendPetInteraction(GameCharacter chr, byte reactionId, bool inc, bool food)
         {
             var pw = new Packet(ServerMessages.PET_INTERACTION);
             pw.WriteInt(chr.ID);
-            pw.WriteByte(a);
-            pw.WriteByte(b);
-            pw.WriteBool(false);
-            pw.WriteLong(0);
-            pw.WriteLong(0);
-            chr.Field.SendPacket(chr, pw);
-        }
-
-        public static void SendPetInteraction(GameCharacter chr, byte action, bool inc)
-        {
-            var pw = new Packet(ServerMessages.PET_INTERACTION);
-            pw.WriteInt(chr.ID);
-            pw.WriteByte(0);
-            pw.WriteByte(action);
+            pw.WriteBool(food);
+            if (!food)
+                pw.WriteByte(reactionId);
             pw.WriteBool(inc);
-            pw.WriteLong(0);
-            pw.WriteLong(0);
             chr.Field.SendPacket(chr, pw);
         }
 
