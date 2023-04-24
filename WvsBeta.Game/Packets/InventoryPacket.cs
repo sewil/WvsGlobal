@@ -6,6 +6,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
@@ -460,16 +461,24 @@ namespace WvsBeta.Game
         {
             short scrollslot = packet.ReadShort();
             short itemslot = packet.ReadShort();
+            var eqSlot = Constants.getEquipSlot(itemslot, out EquippedType type);
 
-            if (itemslot < -100)
+            if (eqSlot == Constants.EquipSlots.Slots.Invalid)
             {
-                _scrollingLog.Warn($"Tried to scroll a cashequip on slot {scrollslot}");
+                _scrollingLog.Warn("Tried to scroll on invalid equip slot " + itemslot);
+                InventoryOperationPacket.NoChange(chr);
+                return;
+            }
+
+            if (type == EquippedType.Cash && eqSlot != Constants.EquipSlots.Slots.PetAccessory)
+            {
+                _scrollingLog.Warn($"Tried to scroll a cash equip that's not a pet equip, slot " + itemslot);
                 InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
             BaseItem scroll = chr.Inventory.GetItem(Inventory.Use, scrollslot);
-            EquipItem equip = (EquipItem)chr.Inventory.GetItem(Inventory.Equip, itemslot);
+            EquipItem equip = chr.Inventory.Equipped[type].GetValue(eqSlot);
             if (scroll == null ||
                 equip == null ||
                 Constants.itemTypeToScrollType(equip.ItemID) != Constants.getScrollType(scroll.ItemID) ||
