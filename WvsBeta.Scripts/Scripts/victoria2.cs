@@ -487,7 +487,7 @@ namespace WvsBeta.Scripts.Scripts
                     if (ret == 0) self.Say("Hey, do you really have my brother's letter? Go to your etc inventory and see if the letter is really there or not!");
                     else
                     {
-                        Pet.IncreaseCloseness(target, pet, 2);
+                        target.IncPetTame(2);
                         self.Say("What do you think? Don't you think you got closer to your pet? If you have time, train your pet again on this obstacle course... of course, with my brother's permission.");
                     }
                 }
