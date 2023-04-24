@@ -353,7 +353,7 @@ namespace WvsBeta.Game
                     pw.WriteInt(chr.Inventory.Mesos);
 
                 if ((flags & StatFlags.Pet) == StatFlags.Pet)
-                    pw.WriteBool(false);
+                    pw.WriteByte(0); // Movement info index
 
                 chr.SendPacket(pw);
             }
