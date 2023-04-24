@@ -32,9 +32,9 @@
         // ___END_SOCKET
 
         // __START_CWVSCONTEXT
-        INVENTORY_OPERATION = 27,
-        INVENTORY_GROW = 28,
-        STAT_CHANGED = 29,
+        INVENTORY_OPERATION = 0x1B,
+        INVENTORY_GROW = 0x1C,
+        STAT_CHANGED = 0x1D,
         BUFFS_ADD = 30,
         BUFFS_REMOVE = 31,
         CHANGE_SKILL_RECORD_RESULT = 32,
@@ -93,10 +93,10 @@
 
         ___START_PET,
         SPAWN_PET,
-        PET_MOVE = 83,
-        PET_ACTION = 84,
-        PET_NAME_CHANGED = 85,
-        PET_INTERACTION = 86,
+        PET_MOVE = 0x53,
+        PET_ACTION = 0x54,
+        PET_NAME_CHANGED = 0x55,
+        PET_INTERACTION = 0x56,
         ___END_PET,
 
         ___START_SPAWN,
