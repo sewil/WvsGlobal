@@ -146,7 +146,7 @@ namespace WvsBeta.Shop
                             return;
                         }
 
-                        var slots = chr.Inventory.MaxSlots[inventory - 1];
+                        var slots = chr.Inventory.MaxSlots[inventory];
 
                         // Client sided limit
                         if (slots > 80)
