@@ -4,6 +4,7 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
@@ -24,11 +25,14 @@ namespace WvsBeta.Game
         public short ReqQuest { get; private set; }
         public bool EnterAsParty { get; private set; }
         public PartyData Party { get; private set; }
+        public GameCharacter Leader { get; private set; }
         public bool CleanupMobs { get; private set; }
         public bool CleanupDrops { get; private set; }
+        public bool CleanupEffectObjects { get; private set; }
         public int[] CleanupNpcs { get; private set; }
         public bool ResetReactors { get; private set; }
         public int UserCount => Maps.Sum(m => m.Characters.Count);
+        public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
         public event EventHandler OnEnd;
         public event EventHandler<long> OnTimerUpdate;
         public FieldSet(ConfigReader.Node fsNode)
@@ -67,6 +71,9 @@ namespace WvsBeta.Game
                             break;
                         case "cleanupDrops":
                             CleanupDrops = subNode.GetBool();
+                            break;
+                        case "cleanupEffectObjects":
+                            CleanupEffectObjects = subNode.GetBool();
                             break;
                         case "cleanupNpcs":
                             CleanupNpcs = subNode.GetString().Split(',').Select(i => int.Parse(i)).ToArray();
@@ -133,6 +140,10 @@ namespace WvsBeta.Game
                 {
                     map.DropPool.Clear();
                 }
+                if (CleanupEffectObjects)
+                {
+                    map.EffectObjects.Clear();
+                }
                 if (ResetReactors)
                 {
                     map.ReactorPool.Reset(false);
@@ -174,6 +185,7 @@ namespace WvsBeta.Game
                 if (!PartyData.Parties.TryGetValue(chr.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
                 this.Party = pt;
                 members = pt.Characters.Where(c => c.Field.ID == chr.Field.ID).ToList(); // needs to be in same map on enter
+                Leader = chr; // Enter player should always be leader
 
                 if (!string.IsNullOrWhiteSpace(PartyParams))
                 {
@@ -284,6 +296,20 @@ namespace WvsBeta.Game
         public void TriggerReactor(int mapIdx, string reactorName)
         {
             Maps[mapIdx].ReactorPool.TriggerReactor(reactorName);
+        }
+        public void IncExpAll(int exp)
+        {
+            IncExpAll(exp, 0);
+        }
+        /// <summary>
+        /// Party inc exp for all party members.
+        /// </summary>
+        /// <param name="exp">Amount of exp</param>
+        /// <param name="quest">QuestID required to have data set to "1" to increase the exp</param>
+        public void IncExpAll(int exp, short quest)
+        {
+            if (Leader == null || (quest > 0 && Leader.QuestRecord.GetQuestData(quest) != "1")) return;
+            Party.Characters.ForEach(m => m.AddEXP(exp, MessageAppearType.ChatGrey));
         }
         #endregion
     }

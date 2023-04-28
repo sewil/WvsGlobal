@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
@@ -72,6 +75,15 @@ namespace WvsBeta.Scripts.Scripts
                 { "party1_enter", "party" },
                 { "party1_play", "party" },
                 { "party1_out", "party" },
+                { "party2_enter", "party2" },
+                { "party2_play", "party2" },
+                { "party2_out", "party2" },
+                { "ludiquest3", "party2" },
+                { "go922010201", "party2" },
+                { "ludiMob1", "party2" },
+                { "ludiMob2", "party2" },
+                { "ludiBoss0", "party2" },
+                { "ludiquest4", "party2" },
                 { "refine_henesys", "make1" },
                 { "refine_sleepy", "make1" },
                 { "face_henesys1", "face" },

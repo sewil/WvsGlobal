@@ -3,6 +3,8 @@
     public struct ItemEtcIds
     {
         public const int
+            PassOfDimension = 4001022,
+            KeyOfDimension = 4001023,
             DancesWithBalrogLetter = 4031008,
             GrendelLetter = 4031009,
             AthenaLetter = 4031010,

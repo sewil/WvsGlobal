@@ -5,8 +5,9 @@ namespace WvsBeta.Game
         public Map Field { get; }
         public uint SpawnID { get; set; }
 
-        public NpcLife(Life life) : base(life)
+        public NpcLife(Map field, Life life) : base(life)
         {
+            Field = field;
         }
 
         public bool IsShownTo(IFieldObj Object) => true;

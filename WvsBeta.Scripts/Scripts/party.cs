@@ -335,12 +335,11 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 var field = target.Field;
 
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/clear"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
-                field.SendPacket(FieldEffectPacket.EffectObject("gate"));
-                field.Portals["next00"].Enabled = true; // ?
+                field.EffectPartyClear();
+                field.EffectObject("gate");
+                field.EnablePortal("next00", 1);
                 quest.SetVar("stage", "2");
-                quest.Party.Characters.ForEach(m => m.AddEXP(100, MessageAppearType.ChatGrey));
+                quest.IncExpAll(100);
             }
         }
 
@@ -396,17 +395,15 @@ namespace WvsBeta.Scripts.Scripts
             if (answer == "") self.Say("Looks like you haven't found the 3 ropes yet. Think of a different rope combination. Only 3 members can hang from the ropes. And don't hang too low or the answer won't count. Keep going!");
             else if (question != answer)
             {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/wrong_kor"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Failed"));
+                field.EffectPartyWrong();
             }
             else
             {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/clear"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
-                field.SendPacket(FieldEffectPacket.EffectObject("gate"));
-                field.Portals["next00"].Enabled = true; // ?
+                field.EffectPartyClear();
+                field.EffectObject("gate");
+                field.EnablePortal("next00", 1);
                 quest.SetVar("stage", "3");
-                quest.Party.Characters.ForEach(m => m.AddEXP(200, MessageAppearType.ChatGrey));
+                quest.IncExpAll(200);
             }
         }
         public static void party1_stage3(INpcHost self, GameCharacter target)
@@ -428,17 +425,15 @@ namespace WvsBeta.Scripts.Scripts
             if (answer == "") self.Say("Looks like you haven't found the 3 platforms yet. Think of a different combination of platforms. And remember that only 3 members may stand on the platforms, firmly in the center, for the answer to be valid. Keep going!");
             else if (question != answer)
             {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/wrong_kor"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Failed"));
+                field.EffectPartyWrong();
             }
             else
             {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/clear"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
-                field.SendPacket(FieldEffectPacket.EffectObject("gate"));
-                field.Portals["next00"].Enabled = true; // ?
+                field.EffectPartyClear();
+                field.EffectObject("gate");
+                field.EnablePortal("next00", 1);
                 quest.SetVar("stage", "4");
-                quest.Party.Characters.ForEach(m => m.AddEXP(400, MessageAppearType.ChatGrey));
+                quest.IncExpAll(400);
             }
         }
         public static void party1_stage4(INpcHost self, GameCharacter target)
@@ -459,16 +454,15 @@ namespace WvsBeta.Scripts.Scripts
             if ( answer == "" ) self.Say("Looks like you haven't found the 3 barrels yet. Think of a different combination of barrels. And don't forget that only 3 members may stand on top of the barrels, firmly in the center for the answer to count as correct. Continues!"); 
             else if ( question != answer )
             {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/wrong_kor"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Failed"));
+                field.EffectPartyWrong();
             } 
-            else {
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/clear"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
-                field.SendPacket(FieldEffectPacket.EffectObject("gate"));
-                field.Portals["next00"].Enabled = true; // ?
+            else
+            {
+                field.EffectPartyClear();
+                field.EffectObject("gate");
+                field.EnablePortal("next00", 1);
                 quest.SetVar( "stage", "5" );
-                quest.Party.Characters.ForEach(m => m.AddEXP(800, MessageAppearType.ChatGrey));
+                quest.IncExpAll(800);
             } 
         } 
 
@@ -480,19 +474,19 @@ namespace WvsBeta.Scripts.Scripts
 
             var inven = target.Inventory;
             if ( inven.ItemCount( 4001008 ) < 10 ) self.Say("Hello. Welcome to the 5th and final stage. Walk around the map and you might see some Boss Monsters. Defeat them all and gather 10 #bpasses#k for me. Once you've obtained your pass, your party leader will round them up and hand them to me when he has all 10. The monsters may look familiar, but they're a lot stronger than you think. So be careful. Good luck!"); 
-            else { 
+            else
+            { 
                 if ( inven.Exchange( 0, 4001008, -10 ) == 0 ) { 
                     self.Say("You've wiped out all the Boss Monsters and collected all the #b10 passes#k. Good job."); 
-                    return; 
+                    return;
                 }
                 var field = target.Field;
-                field.SendPacket(FieldEffectPacket.EffectScreen("quest/party/clear"));
-                field.SendPacket(FieldEffectPacket.EffectSound("Party1/Clear"));
-                field.SendPacket(FieldEffectPacket.EffectObject("gate"));
+                field.EffectPartyClear();
+                field.EffectObject("gate");
                 quest.SetVar( "stage", "clear" );
-                quest.Party.Characters.ForEach(m => m.AddEXP(1500, MessageAppearType.ChatGrey));
+                quest.IncExpAll(1500);
                 self.Say("Here is the portal that leads to the last bonus stage. It's a stage that lets you defeat common monsters a little easier. You will have a limited time to defeat as many of them as possible, but you can leave the stage whenever you want by talking to the NPC. Once again, congratulations on completing all stages. Be careful...");
-                return; 
+                return;
             } 
         } 
     }

@@ -122,7 +122,7 @@ namespace WvsBeta.Game
                 }
 #endif
 
-                NpcChatSession.Start(npcData, chr, errorHandlerFnc);
+                NpcChatSession.Start(npc, npcData, chr, errorHandlerFnc);
             }
         }
 

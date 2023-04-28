@@ -16,6 +16,7 @@ namespace WvsBeta.Game
 
     public interface INpcHost
     {
+        Map Field { get; }
         int mNpcID { get; }
         void Say(string message);
         int AskYesNo(string Message);
@@ -52,6 +53,7 @@ namespace WvsBeta.Game
     }
     public class NpcChatSession : INpcHost
     {
+        public Map Field { get; }
         public int mNpcID { get; set; }
         public GameCharacter mCharacter { get; set; }
         private INpcScript compiledScript = null;
@@ -70,9 +72,10 @@ namespace WvsBeta.Game
         public bool WaitingForResponse => thread.ThreadState == ThreadState.WaitSleepJoin;
         private EventWaitHandle ewh;
         private Thread thread;
-        public NpcChatSession(int npcID, GameCharacter chr, INpcScript npcScript, string scriptName)
+        public NpcChatSession(NpcLife npc, GameCharacter chr, INpcScript npcScript, string scriptName)
         {
-            mNpcID = npcID;
+            Field = npc.Field;
+            mNpcID = npc.ID;
             mCharacter = chr;
             mCharacter.NpcSession = this;
             scriptVars = Server.Instance.ScriptVars[scriptName];
@@ -97,30 +100,30 @@ namespace WvsBeta.Game
             }
         }
 
-        private static INpcScript GetScript(NPCData npc, Action<string> errorHandlerFnc, out string scriptName)
+        private static INpcScript GetScript(NPCData npcData, Action<string> errorHandlerFnc, out string scriptName)
         {
             INpcScript script = null;
             scriptName = null;
-            if (npc.Quest != null)
+            if (npcData.Quest != null)
             {
-                scriptName = npc.Quest;
+                scriptName = npcData.Quest;
                 script = (INpcScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
             }
             if (script == null)
             {
-                scriptName = npc.ID.ToString();
+                scriptName = npcData.ID.ToString();
                 script = (INpcScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
             }
             if (script == null) scriptName = null;
             return script;
         }
         
-        public static void Start(NPCData npc, GameCharacter chr, Action<string> errorHandlerFnc)
+        public static void Start(NpcLife npcLife, NPCData npcData, GameCharacter chr, Action<string> errorHandlerFnc)
         {
-            INpcScript script = GetScript(npc, errorHandlerFnc, out string scriptName);
+            INpcScript script = GetScript(npcData, errorHandlerFnc, out string scriptName);
             if (script == null || chr.NpcSession != null) return;
 
-            new NpcChatSession(npc.ID, chr, script, scriptName);
+            new NpcChatSession(npcLife, chr, script, scriptName);
         }
 
         public void HandleResponse(byte nRet = 0, string nRetStr = "", int nRetNum = 0)

@@ -17,6 +17,7 @@ Party1 = {
     enterAsParty = 1
     ptParams = 4,4,21,30
     cleanupDrops = 1
+    cleanupEffectObjects = 1
 }
 
 ZakumBoss = {
@@ -143,6 +144,7 @@ Guild1 = {
     resetReactors = 1
     cleanupNpcs = 9040003
     guildParams = 6,100,10,200
+    cleanupEffectObjects = 1
 }
 
 Guild1Bonus = {
@@ -155,4 +157,47 @@ Guild1Bonus = {
 
 Pianus = {
     0 = 230040420
+}
+
+# LPQ
+Party3 = {
+    0 = 922010100
+    1 = 922010200
+    2 = 922010201
+    3 = 922010300
+    4 = 922010400
+    5 = 922010401
+    6 = 922010402
+    7 = 922010403
+    8 = 922010404
+    9 = 922010405
+    10 = 922010500
+    11 = 922010501
+    12 = 922010502
+    13 = 922010503
+    14 = 922010504
+    15 = 922010505
+    16 = 922010506
+    17 = 922010600
+    18 = 922010700
+    19 = 922010800
+    20 = 922010900
+    returnMap = 922010000
+    enterAsParty = 1
+    ptParams = 2,6,35,50
+    timeOut = 3600
+    cleanupMobs = 1
+    cleanupDrops = 1
+    cleanupEffectObjects = 1
+    resetReactors = 1
+}
+
+# LPQ Bonus
+Party4 = {
+    0 = 922011000
+    returnMap = 922011100
+    timeOut = 60
+    enterAsParty = 1
+    cleanupDrops = 1
+    resetReactors = 1
 }

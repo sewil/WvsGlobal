@@ -7,8 +7,8 @@ namespace WvsBeta.Game.Packets
         public enum Type : byte
         {
             Summon = 0,
-            QuestEffect = 2,
-            Effect = 3,
+            Object = 2,
+            Screen = 3,
             Sound = 4,
             BossHPBar = 5,
             Music = 6,
@@ -27,7 +27,7 @@ namespace WvsBeta.Game.Packets
         }
         public static FieldEffectPacket EffectScreen(string path)
         {
-            var pw = new FieldEffectPacket(Type.Effect);
+            var pw = new FieldEffectPacket(Type.Screen);
             pw.WriteString(path);
             return pw;
         }
@@ -56,7 +56,7 @@ namespace WvsBeta.Game.Packets
 
         public static FieldEffectPacket EffectObject(string objectName)
         {
-            var pw = new FieldEffectPacket(Type.QuestEffect);
+            var pw = new FieldEffectPacket(Type.Object);
             pw.WriteByte(2); // Portal type? 0 1 2 3 4
             pw.WriteString(objectName);
             return pw;

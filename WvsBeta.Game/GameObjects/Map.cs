@@ -69,6 +69,7 @@ namespace WvsBeta.Game
         public Dictionary<int, Seat> Seats { get; } = new Dictionary<int, Seat>();
         public Dictionary<int, Mist> SpawnedMists { get; } = new Dictionary<int, Mist>();
         public Dictionary<int, BalloonRoom> BalloonRooms { get; } = new Dictionary<int, BalloonRoom>();
+        public HashSet<string> EffectObjects = new HashSet<string>();
         public List<Kite> Kites { get; } = new List<Kite>();
         public Dictionary<string, MapArea> Areas { get; } = new Dictionary<string, MapArea>();
         public Rectangle MBR { get; private set; }
@@ -632,7 +633,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
             else if (LF.Type == 'n')
             {
-                NPC.Add(new NpcLife(LF)
+                NPC.Add(new NpcLife(this, LF)
                 {
                     SpawnID = _npcidCounter++
                 });
@@ -1014,6 +1015,8 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             Summons.ShowAllSummonsTo(chr);
 
             DoorPool.ShowAllDoorsTo(chr);
+
+            EffectObjects.ForEach(ShowEffectObject);
         }
 
         /// <summary>
@@ -1539,6 +1542,18 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             else if (items.Any(i => i.Reward.ItemID == itemid)) return 1;
             else return 0;
         }
+        public bool CheckArea(int areas, int minOccupiedAreas, out string answer)
+        {
+            int occupiedAreas = 0;
+            answer = "";
+            for (int areaId = 0; areaId < areas; areaId++)
+            {
+                int cur = CountUserInArea(areaId.ToString());
+                occupiedAreas += cur;
+                answer += cur.ToString();
+            }
+            return occupiedAreas == minOccupiedAreas;
+        }
         public void SummonMob(short x, short y, int summoningsack)
         {
             if (!DataProvider.Items.TryGetValue(summoningsack, out ItemData sack))
@@ -1574,6 +1589,24 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         public void EffectMusic(string music)
         {
             SendPacket(FieldEffectPacket.EffectMusic(music));
+        }
+        private void ShowEffectObject(string effect)
+        {
+            SendPacket(FieldEffectPacket.EffectObject(effect));
+        }
+        public void EffectObject(string effect)
+        {
+            EffectObjects.Add(effect);
+            ShowEffectObject(effect);
+        }
+        public void EnablePortal(string portal, byte enabled)
+        {
+            Portals[portal].Enabled = enabled == 1;
+        }
+        public void EffectPartyWrong()
+        {
+            EffectScreen("quest/party/wrong_kor");
+            EffectSound("Party1/Failed");
         }
         public void EffectPartyClear()
         {
