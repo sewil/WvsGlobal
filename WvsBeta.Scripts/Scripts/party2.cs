@@ -477,7 +477,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var offset = new Pos((short)(1 - target.Position.X), (short)(-211 - target.Position.Y));
             target.SpawnMob(offset, (9300010, 1, SummonType.Poof, null));
-            target.Field.Message("Rombard has been summoned somewhere in the map.");
+            target.Field.Message("Rombard is summoned somewhere in the map.");
         }
     }
     [Script("ludiBoss0")]
@@ -487,7 +487,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             var offset = new Pos((short)(941 - target.Position.X), (short)(184 - target.Position.Y));
             target.SpawnMob(offset, (9300012, 1, SummonType.Poof, null));
-            target.Field.Message("Alishar has been summoned.");
+            target.Field.Message("Alishar is summoned.");
         }
     }
     [Script("ludiquest4")]
