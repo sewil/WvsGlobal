@@ -1016,7 +1016,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             DoorPool.ShowAllDoorsTo(chr);
 
-            EffectObjects.ForEach(ShowEffectObject);
+            EffectObjects.ForEach((effect) => ShowEffectObjectTo(chr, effect));
         }
 
         /// <summary>
@@ -1590,14 +1590,14 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         {
             SendPacket(FieldEffectPacket.EffectMusic(music));
         }
-        private void ShowEffectObject(string effect)
+        private void ShowEffectObjectTo(GameCharacter to, string effect)
         {
-            SendPacket(FieldEffectPacket.EffectObject(effect));
+            to.SendPacket(FieldEffectPacket.EffectObject(effect));
         }
         public void EffectObject(string effect)
         {
             EffectObjects.Add(effect);
-            ShowEffectObject(effect);
+            SendPacket(FieldEffectPacket.EffectObject(effect));
         }
         public void EnablePortal(string portal, byte enabled)
         {

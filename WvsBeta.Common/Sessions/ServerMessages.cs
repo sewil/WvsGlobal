@@ -70,7 +70,7 @@
         GROUP_MESSAGE = 60,
         WHISPER = 61,
         SUMMON_ITEM_INAVAILABLE = 62,
-        FIELD_EFFECT = 63,
+        FIELD_EFFECT = 0x3F,
         BLOW_WEATHER = 64,
         PLAY_JUKE_BOX = 65,
         ADMIN_RESULT = 66,
