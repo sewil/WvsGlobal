@@ -92,7 +92,7 @@
         SET_CONSUME_ITEM_EFFECT = 80, // int itemid; See Effect\ItemEff.img\(itemid)
 
         ___START_PET,
-        SPAWN_PET,
+        SPAWN_PET = 0x52,
         PET_MOVE = 0x53,
         PET_ACTION = 0x54,
         PET_NAME_CHANGED = 0x55,

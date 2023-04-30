@@ -794,7 +794,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             if (!gmhide)
             {
                 Characters.Remove(chr);
-                PetsPacket.SendRemovePet(chr);
+                PetsPacket.SendRemovePet(chr, PetsPacket.PetRemoveReason.None);
                 OnExit?.Invoke(chr, this);
             }
 

@@ -22,7 +22,7 @@ namespace WvsBeta.Game
             if (chr.CharacterStat.PetCashId != 0)
             {
                 // Already spawned a pet
-                SendRemovePet(chr);
+                SendRemovePet(chr, PetRemoveReason.None);
 
                 if (chr.CharacterStat.PetCashId == petItem.CashId)
                 {
@@ -34,15 +34,8 @@ namespace WvsBeta.Game
             }
             
             chr.CharacterStat.PetCashId = petItem.CashId;
-            DoPetSpawn(chr);
-            InventoryOperationPacket.NoChange(chr);
-        }
-
-        public static void DoPetSpawn(GameCharacter chr)
-        {
             chr.PetLastInteraction = MasterThread.CurrentTime;
 
-            var petItem = chr.GetSpawnedPet();
             var ml = petItem.MovableLife;
             ml.Foothold = chr.Foothold;
             ml.Position = new Pos(chr.Position);
@@ -50,6 +43,8 @@ namespace WvsBeta.Game
             ml.Stance = 0;
 
             SendSpawnPet(chr, petItem);
+            CharacterStatsPacket.SendStatChanged(chr, StatFlags.Pet);
+            InventoryOperationPacket.NoChange(chr);
         }
 
         public static void HandleMovePet(GameCharacter chr, Packet packet)
@@ -200,28 +195,25 @@ namespace WvsBeta.Game
             var pw = new Packet(ServerMessages.SPAWN_PET);
             pw.WriteInt(chr.ID);
             pw.WriteBool(true); // Spawns
-            pw.WriteInt(pet.ItemID);
-            pw.WriteString(pet.Name);
-            pw.WriteLong(pet.CashId);
-            pw.WriteShort(pet.MovableLife.Position.X);
-            pw.WriteShort(pet.MovableLife.Position.Y);
-            pw.WriteByte(pet.MovableLife.Stance);
-            pw.WriteShort(pet.MovableLife.Foothold);
-            pw.WriteLong(0);
-            pw.WriteLong(0);
+            pet.EncodeForRemote(pw);
             if (tochar == null)
                 chr.Field.SendPacket(chr, pw);
             else
                 tochar.SendPacket(pw);
         }
 
-        public static void SendRemovePet(GameCharacter chr, bool gmhide = false)
+        public enum PetRemoveReason
+        {
+            None = 0,
+            Hungry = 1,
+            Expire = 2
+        }
+        public static void SendRemovePet(GameCharacter chr, PetRemoveReason reason, bool gmhide = false)
         {
             var pw = new Packet(ServerMessages.SPAWN_PET);
             pw.WriteInt(chr.ID);
             pw.WriteBool(false);
-            pw.WriteLong(0);
-            pw.WriteLong(0);
+            pw.WriteByte((byte)reason);
             chr.Field.SendPacket(chr, pw, (gmhide ? chr : null));
         }
     }

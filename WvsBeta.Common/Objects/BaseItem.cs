@@ -607,6 +607,17 @@ namespace WvsBeta.Common.Objects
             packet.WriteLong(DeadDate);
         }
 
+        public void EncodeForRemote(Packet pw)
+        {
+            pw.WriteInt(ItemID);
+            pw.WriteString(Name);
+            pw.WriteLong(CashId);
+            pw.WriteShort(MovableLife.Position.X);
+            pw.WriteShort(MovableLife.Position.Y);
+            pw.WriteByte(MovableLife.Stance);
+            pw.WriteShort(MovableLife.Foothold);
+        }
+
         public override string GetFullSaveColumns()
         {
             return
