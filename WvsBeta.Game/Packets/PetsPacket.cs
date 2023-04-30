@@ -138,8 +138,8 @@ namespace WvsBeta.Game
                 if (food == null) throw new ControlledException("Not enough pet food.");
                 chr.Inventory.TakeItem(food, food.Inventory, food.InventorySlot, 1);
                 bool full = petItem.Fullness >= 100;
-                short inc = (short)(full ? -1 : 1);
-                Pet.IncreaseCloseness(chr, petItem, inc, false);
+                short inc = (short)(full ? -1 : petItem.Fullness <= 75 ? 1 : 0);
+                if (inc != 0) Pet.IncreaseCloseness(chr, petItem, inc, false);
                 petItem.Fullness = (byte)Math.Min(100, petItem.Fullness + 30);
                 Pet.UpdatePet(chr, petItem);
                 SendPetInteraction(chr, 0, !full, true);
