@@ -9,29 +9,28 @@ namespace WvsBeta.Game
     {
         public static void IncreaseCloseness(GameCharacter chr, PetItem petItem, short inc, bool sendUpdate = true)
         {
-            if (petItem.Closeness >= Constants.MaxCloseness) return;
-
-            short minCloseness = (short)(petItem.Level > 1 ? Constants.PetExp[petItem.Level - 2] : 0);
-            short maxCloseness = (short)(Constants.PetExp[petItem.Level - 1] - 1);
-            petItem.Closeness = (short)Math.Max(minCloseness, Math.Min(Constants.MaxCloseness, petItem.Closeness + inc));
-            var possibleLevel = GetLevel(petItem);
-            if (petItem.Closeness > maxCloseness)
+            petItem.Closeness = (short)Math.Max(0, Math.Min(Constants.MaxCloseness, petItem.Closeness + inc));
+            petItem.Level = GetLevel(petItem, out bool levelUp);
+            if (levelUp)
             {
-                petItem.Level = possibleLevel;
                 PlayerEffectPacket.SendPetEffect(chr, PetEffectType.LevelUp);
             }
             if (sendUpdate) UpdatePet(chr, petItem);
         }
 
-        public static byte GetLevel(PetItem petItem)
+        public static byte GetLevel(PetItem petItem, out bool levelUp)
         {
-            var expCurve = Constants.PetExp;
-            for (byte i = 0; i < expCurve.Length; i++)
+            short min = (short)(petItem.Level > 1 ? Constants.PetExp[petItem.Level - 2] : 0);
+            short max = (short)(petItem.Level < Constants.PetLevels ? Constants.PetExp[petItem.Level - 1] - 1 : short.MaxValue);
+            levelUp = false;
+
+            if (petItem.Closeness < min) return (byte)Math.Max(1, petItem.Level - 1);
+            else if (petItem.Closeness > max)
             {
-                if (expCurve[i] > petItem.Closeness)
-                    return (byte)(i + 1);
+                levelUp = true;
+                return (byte)Math.Min(Constants.PetLevels, petItem.Level + 1);
             }
-            return 1;
+            else return petItem.Level;
         }
 
         public static void UpdatePet(GameCharacter chr, PetItem petItem)
