@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
-using System.Net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
-using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 namespace WvsBeta.Game
 {
