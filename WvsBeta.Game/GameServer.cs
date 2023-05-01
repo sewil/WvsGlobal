@@ -7,6 +7,7 @@ using System.Management.Instrumentation;
 using System.Net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
@@ -60,6 +61,7 @@ namespace WvsBeta.Game
         public Dictionary<int, GuildData> Guilds { get; } = new Dictionary<int, GuildData>();
         public IDictionary<byte, List<GuildQuestRegistration>> GuildQuestRegistrations = new Dictionary<byte,List<GuildQuestRegistration>>();
         public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
+        public IDictionary<int, PetItem> SpawnedPets = new Dictionary<int, PetItem>();
 
         public Dictionary<int, (string reason, string name, byte level, GameCharacter.BanReasons banReason, long time)> DelayedBanRecords { get; } = new Dictionary<int, (string, string, byte, GameCharacter.BanReasons, long)>();
 
@@ -110,6 +112,35 @@ namespace WvsBeta.Game
         public void CheckMaps(long pNow)
         {
             DataProvider.Maps.ForEach(x => x.Value.MapTimer(pNow));
+        }
+
+        public void CheckPets(long ctime)
+        {
+            foreach (var petKVP in SpawnedPets.ToList())
+            {
+                GameCharacter chr = GetCharacter(petKVP.Key);
+
+                var pet = petKVP.Value;
+                if (chr == null || pet == null || !DataProvider.Pets.TryGetValue(pet.ItemID, out PetData petData))
+                {
+                    SpawnedPets.Remove(petKVP.Key);
+                    continue;
+                }
+
+                long timeSinceLastHunger = ctime - chr.PetLastHunger;
+                if (timeSinceLastHunger < 180000) continue;
+                chr.PetLastHunger = ctime;
+
+                byte newFullness = (byte)Math.Max(0, pet.Fullness - petData.Hungry);
+                pet.Fullness = newFullness;
+
+                if (newFullness <= 5)
+                {
+                    Pet.IncreaseCloseness(chr, pet, -1);
+                    PetsPacket.RemovePet(chr, PetRemoveReason.Hungry, true);
+                }
+                else Pet.UpdatePet(chr, pet);
+            }
         }
 
         public void AddPlayer(Player player)

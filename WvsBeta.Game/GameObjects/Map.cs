@@ -794,7 +794,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             if (!gmhide)
             {
                 Characters.Remove(chr);
-                PetsPacket.SendRemovePet(chr, PetsPacket.PetRemoveReason.None);
+                PetsPacket.RemovePet(chr, PetRemoveReason.None, false);
                 OnExit?.Invoke(chr, this);
             }
 
@@ -939,26 +939,26 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             // GMS actually doesn't care wether its you or not. lol.
             Characters
-                .Where(x => x != chr)
-                .ForEach(p =>
+                .Where(c => c != chr)
+                .ForEach(c =>
                 {
                     // Do not send a packet when they already know its joined
-                    if (gmhide && p.IsGM) return;
+                    if (gmhide && c.IsGM) return;
 
                     // Show character to P
-                    if (chr.IsShownTo(p))
+                    if (chr.IsShownTo(c))
                     {
-                        MapPacket.SendCharacterEnterPacket(chr, p);
-                        if (spawneePet != null) PetsPacket.SendSpawnPet(chr, spawneePet, p);
+                        MapPacket.SendCharacterEnterPacket(chr, c);
+                        if (spawneePet != null) PetsPacket.SpawnPet(chr, spawneePet, PetSpawnFlags.ShowRemote, c);
                     }
 
                     // Show P to character
-                    if (p.IsShownTo(chr))
+                    if (c.IsShownTo(chr))
                     {
-                        MapPacket.SendCharacterEnterPacket(p, chr);
+                        MapPacket.SendCharacterEnterPacket(c, chr);
 
-                        var petItem = p.GetSpawnedPet();
-                        if (petItem != null) PetsPacket.SendSpawnPet(p, petItem, chr);
+                        var petItem = c.GetSpawnedPet();
+                        if (petItem != null) PetsPacket.SpawnPet(c, petItem, PetSpawnFlags.ShowRemote, chr);
                     }
                 });
 
@@ -979,11 +979,8 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             var petItem = chr.GetSpawnedPet();
             if (petItem != null)
             {
-                var ml = petItem.MovableLife;
-                ml.Position = new Pos(chr.Position);
-                ml.Foothold = chr.Foothold;
-                ml.Stance = 0;
-                PetsPacket.SendSpawnPet(chr, petItem, chr);
+                PetSpawnFlags spawnFlags = chr.IsOnline ? PetSpawnFlags.ChangeMap : PetSpawnFlags.Connect;
+                PetsPacket.SpawnPet(chr, petItem, spawnFlags, chr);
             }
 
             NPC.ForEach(n => chr.SendPacket(MapPacket.NpcEnterField(n)));

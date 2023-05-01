@@ -14,7 +14,7 @@ namespace WvsBeta.Common.Extensions
 
         public static long GetTimeAsMilliseconds(this DateTime pNow)
         {
-            return pNow.ToFileTime() / 10000;
+            return pNow.ToFileTimeUtc() / 10000;
         }
         public static DateTime DateFromMillis(this long millis)
         {
@@ -27,6 +27,11 @@ namespace WvsBeta.Common.Extensions
         public static double GetYears(this TimeSpan timeSpan)
         {
             return timeSpan.TotalDays / DaysPerYear;
+        }
+
+        public static long GetFileTimeFromCurrentTime(long ctime)
+        {
+            return new DateTime(ctime * TimeSpan.TicksPerMillisecond).ToFileTimeUtc();
         }
     }
 }

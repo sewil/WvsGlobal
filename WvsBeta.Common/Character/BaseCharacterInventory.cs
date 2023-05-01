@@ -93,7 +93,6 @@ namespace WvsBeta.Common.Character
         }
         public virtual short GetNextFreeSlotInInventory(Inventory inventory) { throw new NotImplementedException(); }
         public virtual short DeleteFirstItemInInventory(Inventory inv) { throw new NotImplementedException(); }
-        public virtual void CheckExpired() { throw new NotImplementedException(); }
 
         public int GetItemAmount(int itemid)
         {

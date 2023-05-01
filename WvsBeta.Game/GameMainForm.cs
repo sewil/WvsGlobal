@@ -48,7 +48,7 @@ namespace WvsBeta.Game
             FieldSet.Load();
             MasterThread.RepeatingAction.Start("Map Checker", Server.Instance.CheckMaps, 0, 1000);
             MasterThread.RepeatingAction.Start("FieldSet Checker", FieldSet.Update, 0, 1000);
-
+            MasterThread.RepeatingAction.Start("Pet Checker", Server.Instance.CheckPets, 0, 10000);
 
             MasterThread.RepeatingAction.Start(
                 "Console title updater",

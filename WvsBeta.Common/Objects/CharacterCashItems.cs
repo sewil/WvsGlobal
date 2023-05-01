@@ -454,6 +454,5 @@ namespace WvsBeta.Common.Objects
 
             callback(Items.Where(x => x.Expiration < time).ToList());
         }
-
     }
 }

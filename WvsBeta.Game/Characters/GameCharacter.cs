@@ -86,6 +86,7 @@ namespace WvsBeta.Game
         public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
         public long PetLastInteraction { get; set; }
+        public long PetLastHunger { get; set; }
 
         public PartyData Party
         {

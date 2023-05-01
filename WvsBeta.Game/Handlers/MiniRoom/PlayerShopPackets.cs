@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common.Character;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects.MiniRoom
@@ -17,8 +18,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 pw.WriteShort(pst.Value.Bundles);
                 pw.WriteShort(pst.Value.BundleAmount);
                 pw.WriteInt(pst.Value.Price);
-                pw.WriteByte(WvsBeta.Common.Constants.getItemTypeInPacket(pst.Value.sItem.ItemID));
-                pst.Value.sItem.Encode(pw);
+                new GW_ItemSlotBase(pst.Value.sItem).Encode(pw, false, false);
             }
             ps.BroadcastPacket(pw);
         }

@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Net;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Packets;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Menu;
 
 namespace WvsBeta.Game
 {
@@ -169,7 +172,7 @@ namespace WvsBeta.Game
             }
 
             short max = 1;
-            if (!Constants.isEquip(id) && !Constants.isPet(id))
+            if (!Constants.isEquip(id) && !Constants.isCash(id))
             {
                 max = (short)DataProvider.Items[id].MaxSlot;
                 if (max == 0)
@@ -184,7 +187,7 @@ namespace WvsBeta.Game
                 thisAmount = (short)(max + Character.Skills.GetRechargeableBonus());
                 amount -= 1;
             }
-            else if (Constants.isEquip(id) || Constants.isPet(id))
+            else if (Constants.isEquip(id) || Constants.isCash(id))
             {
                 thisAmount = 1;
                 amount -= 1;
@@ -200,7 +203,7 @@ namespace WvsBeta.Game
                 amount = 0;
             }
 
-            if (Constants.isPet(id))
+            if (Constants.isCash(id))
             {
                 givenAmount = 0;
             }
@@ -560,14 +563,16 @@ namespace WvsBeta.Game
             if (time - lastCheck < 45000) return;
             lastCheck = time;
 
-            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as BaseItem).ToList();
+            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as BaseItem)
+                .Concat(Items.SelectMany(i => i.Value).Where(i => i != null).Where(i => i.Expiration < time || ((i is PetItem pi) && pi.DeadDate < time)))
+                .ToList();
 
             if (expiredItems.Count == 0) return;
 
             callback(expiredItems);
         }
 
-        public override void CheckExpired()
+        public void CheckExpired()
         {
             var currentTime = MasterThread.CurrentDate.ToFileTimeUtc();
             _cashItems.GetExpiredItems(currentTime, expiredItems =>
@@ -597,21 +602,34 @@ namespace WvsBeta.Game
             {
                 var dict = new Dictionary<Inventory, List<short>>();
                 var itemIds = new List<int>();
+                Server.Instance.SpawnedPets.TryGetValue(Character.ID, out PetItem spawnedPet);
                 expiredItems.ForEach(x =>
                 {
-                    Inventory inventory = Constants.getInventory(x.ItemID);
-                    if (x.CashId != 0)
+                    if (x is PetItem pi)
                     {
-                        var baseItem = GetItemByCashID(x.CashId, inventory);
-                        if (dict.TryGetValue(inventory, out var curList)) curList.Add(baseItem.InventorySlot);
-                        else
+                        if (spawnedPet.CashId == pi.CashId)
                         {
-                            dict[inventory] = new List<short> {baseItem.InventorySlot};
+                            PetsPacket.RemovePet(Character, PetRemoveReason.Expire, true);
                         }
-                        TryRemoveCashItem(x);
+                        pi.DeadDate = BaseItem.NoItemExpiration;
+                        Pet.UpdatePet(Character, pi);
                     }
-                    SetItem(inventory, x.InventorySlot, null);
-                    itemIds.Add(x.ItemID);
+                    else
+                    {
+                        Inventory inventory = Constants.getInventory(x.ItemID);
+                        if (x.CashId != 0)
+                        {
+                            var baseItem = GetItemByCashID(x.CashId, inventory);
+                            if (dict.TryGetValue(inventory, out var curList)) curList.Add(baseItem.InventorySlot);
+                            else
+                            {
+                                dict[inventory] = new List<short> { baseItem.InventorySlot };
+                            }
+                            TryRemoveCashItem(x);
+                        }
+                        SetItem(inventory, x.InventorySlot, null);
+                        itemIds.Add(x.ItemID);
+                    }
                 });
 
                 InventoryPacket.SendItemsExpired(Character, itemIds);

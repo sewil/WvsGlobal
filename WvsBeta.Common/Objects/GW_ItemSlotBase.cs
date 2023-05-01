@@ -8,6 +8,7 @@ namespace WvsBeta.Common.Objects
         Equip = 1,
         Bundle = 2,
         Pet = 3,
+        Cash = 4,
     }
     public class GW_ItemSlotBase
     {

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game;
 
@@ -54,6 +55,7 @@ namespace WvsBeta.Shop
                 pi.Closeness = 0;
                 pi.Fullness = 100;
                 pi.Level = 1;
+                pi.DeadDate = new TimeSpan(90, 0, 0, 0).GetFileTimeWithAddition();
             }
 
             return item;

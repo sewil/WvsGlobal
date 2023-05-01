@@ -70,7 +70,7 @@ namespace WvsBeta.Common.Objects
 
             BaseItem ret;
             if (slotType == ItemSlotType.Equip) ret = new EquipItem(itemId);
-            else if (slotType == ItemSlotType.Pet) ret = new PetItem(itemId); // TODO: Pet
+            else if (slotType == ItemSlotType.Pet) ret = new PetItem(itemId); // TODO: Non-pet cash items, effects etc
             else ret = new BundleItem(itemId);
 
             ret.Amount = amount;

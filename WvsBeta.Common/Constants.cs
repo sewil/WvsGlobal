@@ -339,13 +339,6 @@ namespace WvsBeta.Common
             }
         }
 
-        public static byte getItemTypeInPacket(int itemid)
-        {
-            if (isEquip(itemid)) return 1;
-            else if (isPet(itemid)) return 5;
-            else return 2;
-        }
-
         public static string getDropName(int objectid, bool isMob)
         {
             return (isMob ? "m" : "r") + objectid.ToString();
@@ -355,11 +348,12 @@ namespace WvsBeta.Common
         public static Inventory getInventory(int itemid) { return (Inventory)(itemid / 1000000); }
         public static ItemSlotType getItemSlotType(int itemid)
         {
+            if (Constants.isPet(itemid)) return ItemSlotType.Pet;
             var inv = Constants.getInventory(itemid);
             switch (inv)
             {
                 case Inventory.Equip: return ItemSlotType.Equip;
-                case Inventory.Cash: return ItemSlotType.Pet;
+                case Inventory.Cash: return ItemSlotType.Cash;
                 default: return ItemSlotType.Bundle;
             }
         }
@@ -389,8 +383,9 @@ namespace WvsBeta.Common
         public static bool isRechargeable(int itemid) { return isStar(itemid); }
         public static bool isEquip(int itemid) { return (getInventory(itemid) == Inventory.Equip); }
         public static bool isCoupleRing(int itemid) { return itemid == EquipIds.CrushRing; }
-        public static bool isPet(int itemid) { return (getInventory(itemid) == Inventory.Cash); }
-        public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isPet(itemid)); }
+        public static bool isCash(int itemid) { return (getInventory(itemid) == Inventory.Cash); }
+        public static bool isPet(int itemid) { return getItemType(itemid) == (int)Items.Types.ItemTypes.Pet; }
+        public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isCash(itemid)); }
         public static bool isOverall(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorOverall); }
         public static bool isTop(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorTop); }
         public static bool isBottom(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorBottom); }
