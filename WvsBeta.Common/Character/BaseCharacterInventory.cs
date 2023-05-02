@@ -303,8 +303,6 @@ namespace WvsBeta.Common.Character
             SetItem(inventory, slot, item);
         }
 
-        public virtual short AddItem(BaseItem item, bool sendpacket = true) { throw new NotImplementedException(); }
-
         public virtual void TakeItem(BaseItem item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
         /// <summary>
         /// Get first item from an array of item ids
@@ -491,6 +489,17 @@ namespace WvsBeta.Common.Character
             {
                 pw.WriteInt(TeleportRockLocations[i]);
             }
+        }
+
+        public bool TryGetPet(long cashId, out PetItem petItem)
+        {
+            petItem = null;
+            if (!Items[Inventory.Cash].TryFind(i => i?.CashId == cashId, out BaseItem baseItem) || !(baseItem is PetItem pi))
+            {
+                return false;
+            }
+            petItem = pi;
+            return true;
         }
 
         public IEnumerable<PetItem> GetPets()

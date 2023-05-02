@@ -126,7 +126,10 @@ namespace WvsBeta.Game
             else
             {
                 bool isStar = Constants.isStar(reward.ItemID);
-                if ((isStar && !chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount)) || chr.Inventory.AddItem(drop.Reward.Data) == drop.Reward.Amount)
+                bool full = isStar && !chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount);
+                short amountLeft = 0;
+                if (!full) chr.Inventory.AddItem(drop.Reward.Data, out amountLeft);
+                if (full || amountLeft == drop.Reward.Amount)
                 {
                     CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
                     InventoryOperationPacket.NoChange(chr); // ._. stupid nexon

@@ -4,8 +4,10 @@ using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Character;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game.Packets;
+using static WvsBeta.Common.Constants;
 
 namespace WvsBeta.Game
 {
@@ -30,10 +32,10 @@ namespace WvsBeta.Game
             UpdateChocoCount(false);
         }
 
-        public void AddItem(int itemId, short amount)
+        public IList<OperationOut> AddItem(int itemId, short amount, bool sendOperations = true)
         {
             var item = BaseItem.CreateFromItemID(itemId, amount);
-            AddItem(item);
+            return AddItem(item, out short _, sendOperations);
         }
         public override void AddItem(Inventory inventory, short slot, BaseItem item, bool isLoading)
         {
@@ -92,70 +94,70 @@ namespace WvsBeta.Game
             }
         }
 
-        public override short AddItem(BaseItem item, bool sendpacket = true)
+        public IList<OperationOut> AddItem(BaseItem item, out short amountLeft, bool sendOperations = true)
         {
             Inventory inventory = Constants.getInventory(item.ItemID);
-            short slot = 0;
-            // see if there's a free slot
-            BaseItem temp = null;
+            short freeSlot = 0;
+            IList<OperationOut> operations = new List<OperationOut>();
+            bool stackable = Constants.isStackable(item.ItemID);
             short maxSlots = 1;
+            amountLeft = item.Amount;
+
             if (DataProvider.Items.TryGetValue(item.ItemID, out ItemData itemData))
             {
                 maxSlots = (short)itemData.MaxSlot;
-                if (maxSlots == 0)
-                {
-                    // 1, 100 or specified
-                    maxSlots = 100;
-                }
+                if (maxSlots == 0) maxSlots = 100;
             }
-            for (short i = 1; i <= MaxSlots[inventory]; i++)
-            { // Slot 1 - 24, not 0 - 23
-                temp = GetItem(inventory, i);
-                if (temp != null)
-                {
-                    if (Constants.isStackable(item.ItemID) && item.ItemID == temp.ItemID && temp.Amount < maxSlots)
-                    {
-                        if (item.Amount + temp.Amount > maxSlots)
-                        {
 
-                            short amount = (short)(maxSlots - temp.Amount);
-                            item.Amount -= amount;
-                            temp.Amount = maxSlots;
-                            if (sendpacket)
-                                InventoryOperationPacket.ChangeAmount(Character, temp);
-                        }
-                        else
-                        {
-                            item.Amount += temp.Amount;
-                            // Removing the item looks a bit odd to me?
-                            SetItem(inventory, i, null);
-                            AddItem(inventory, i, item, false);
-                            if (sendpacket)
-                                InventoryOperationPacket.ChangeAmount(Character, item);
-                            return 0;
-                        }
-                    }
-                }
-                else if (slot == 0)
+            for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
+            {
+                BaseItem slotItem = GetItem(inventory, slot);
+
+                if (freeSlot == 0 && slotItem == null) freeSlot = slot;
+                if (!stackable)
                 {
-                    slot = i;
-                    if (!Constants.isStackable(item.ItemID))
-                    {
-                        break;
-                    }
+                    if (freeSlot == 0) continue;
+                    else break;
+                }
+                if (slotItem == null) continue;
+                if (item.ItemID != slotItem.ItemID) continue;
+                if (slotItem.Amount == maxSlots) continue;
+
+                if (item.Amount + slotItem.Amount > maxSlots) // Bundle overflow
+                {
+                    item.Amount -= (short)(maxSlots - slotItem.Amount);
+                    amountLeft = item.Amount;
+                    slotItem.Amount = maxSlots;
+                    operations.Add(InventoryOperationPacket.ChangeAmountOperation(inventory, slot, maxSlots));
+                }
+                else // Update slot amount
+                {
+                    slotItem.Amount += item.Amount;
+                    amountLeft = 0;
+                    operations.Add(InventoryOperationPacket.ChangeAmountOperation(inventory, slot, slotItem.Amount));
+                    break;
                 }
             }
-            if (slot != 0)
+            if (amountLeft > 0)
             {
-                SetItem(inventory, slot, item);
-                if (sendpacket)
-                    InventoryOperationPacket.Add(Character, item);
-                return 0;
+                if (freeSlot != 0)
+                {
+                    SetItem(inventory, freeSlot, item);
+                    operations.Add(InventoryOperationPacket.AddOperation(item));
+                    amountLeft = 0;
+                }
+                else
+                {
+                    amountLeft = item.Amount;
+                }
             }
-            else
+
+            if (sendOperations)
             {
-                return item.Amount;
+                InventoryOperationPacket.Run(Character, operations.ToArray());
             }
+
+            return operations;
         }
 
         public override short AddNewItem(int id, short amount) // Only normal items!
@@ -210,7 +212,8 @@ namespace WvsBeta.Game
                 if (item is EquipItem)
                     (item as EquipItem).GiveStats(ItemVariation.None);
                 givenAmount += thisAmount;
-                if (AddItem(item) == 0 && amount > 0)
+                AddItem(item, out short amountLeft);
+                if (amountLeft == 0 && amount > 0)
                 {
                     givenAmount += AddNewItem(id, amount);
                 }
@@ -233,13 +236,13 @@ namespace WvsBeta.Game
             short slotsRequired = 0;
             Inventory inventory = Constants.getInventory(itemid);
             bool stackable = Constants.isStackable(itemid);
-            if (!stackable)
-            {
-                slotsRequired = amount;
-            }
-            else if (Constants.isStar(itemid))
+            if (Constants.isStar(itemid))
             {
                 slotsRequired = 1;
+            }
+            else if (!stackable)
+            {
+                slotsRequired = amount;
             }
             else
             {
@@ -395,10 +398,12 @@ namespace WvsBeta.Game
         /// </summary>
         /// <param name="itemid">The Item ID</param>
         /// <param name="amount">Amount</param>
+        /// <param name="sendOperations">Send operations</param>
         /// <returns>Amount of items that were _not_ taken away</returns>
-        public void TakeItem(int itemid, short amount)
+        public IList<OperationOut> TakeItem(int itemid, short amount, bool sendOperations = true)
         {
-            if (amount == 0) return;
+            var operations = new List<OperationOut>();
+            if (amount == 0) return operations;
 
             var isRechargeable = Constants.isRechargeable(itemid);
             Inventory inventory = Constants.getInventory(itemid);
@@ -417,14 +422,21 @@ namespace WvsBeta.Game
                     // Your item. Gone.
                     SetItem(inventory, slot, null);
                     TryRemoveCashItem(item);
-                    InventoryOperationPacket.SwitchSlots(Character, inventory, slot, 0);
+                    operations.Add(InventoryOperationPacket.SwitchSlotsOperation(inventory, slot, 0));
                 }
                 else
                 {
                     // Update item with new amount
-                    InventoryOperationPacket.ChangeAmount(Character, item);
+                    operations.Add(InventoryOperationPacket.ChangeAmountOperation(item.Inventory, item.InventorySlot, item.Amount));
                 }
             }
+
+            if (sendOperations)
+            {
+                InventoryOperationPacket.Run(Character, operations.ToArray());
+            }
+
+            return operations;
         }
 
         public override BaseItem TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars)
@@ -603,7 +615,7 @@ namespace WvsBeta.Game
                 {
                     if (x is PetItem pi)
                     {
-                        if (spawnedPet.CashId == pi.CashId)
+                        if (spawnedPet != null && spawnedPet.CashId == pi.CashId)
                         {
                             PetsPacket.RemovePet(Character, PetRemoveReason.Expire, true);
                         }
@@ -667,23 +679,39 @@ namespace WvsBeta.Game
         {
             return GetItemAmount(itemid);
         }
-        public bool SetPetLife(string petcashid, params int[] useItems)
+        public bool SetPetLife(long petCashID, params (int itemid, short amount)[] exchangeItems)
         {
-            foreach (var item in useItems)
-            {
-                if (!HasItemAmount(item, 1)) return false;
-            }
-            var pets = GetPets();
-            return false; // TODO: Implement pet revival
+            if (!TryGetPet(petCashID, out PetItem petItem)) return false;
+            if (!MassExchange(0, exchangeItems)) return false;
+
+            petItem.DeadDate = new TimeSpan(90, 0, 0, 0).GetFileTimeWithAddition();
+            petItem.Fullness = 100;
+            Pet.UpdatePet(Character, petItem);
+
+            return true;
         }
-        public int MovePetStat(string petcashidfrom, string petcashidto, int useItem)
+        public enum MovePetStatResult
         {
-            /*
-                0 = The pet's closeness was transferred successfully.
-                1 = Please see if you have the appropriate item.
-                2 = The closeness of the new pet seems to be higher than the existing pet. Check again.
-            */
-            return -1; // TODO: Implement move pet closeness, useItem is pet ap reset scroll
+            Success = 0,
+            MissingItem = 1,
+            WrongCloseness = 2,
+        }
+        public MovePetStatResult MovePetStat(long petcashidfrom, long petcashidto, int exchangeItem)
+        {
+            if (!TryGetPet(petcashidfrom, out PetItem petFrom) || !TryGetPet(petcashidto, out PetItem petTo)) return MovePetStatResult.MissingItem;
+            if (!HasItemAmount(exchangeItem, 1)) return MovePetStatResult.MissingItem;
+            if (petTo.Closeness > petFrom.Closeness) return MovePetStatResult.WrongCloseness;
+
+            MassExchange(0, (exchangeItem, 1));
+
+            petTo.Closeness = petFrom.Closeness;
+            petTo.Level = petFrom.Level;
+            petFrom.Level = 1;
+            petFrom.Closeness = 0;
+
+            Pet.UpdatePet(Character, petFrom);
+            Pet.UpdatePet(Character, petTo);
+            return MovePetStatResult.Success;
         }
         public bool CanExchange(int mesos, params (int itemid, short amount)[] items)
         {
@@ -740,17 +768,19 @@ namespace WvsBeta.Game
             {
                 Character.SendPacket(MessagePacket.GainMesos(mesos));
             }
+            var operations = new List<OperationOut>();
             foreach(var (itemid,amount) in items)
             {
                 if (amount < 0) // Take item
                 {
-                    TakeItem(itemid, (short)-amount);
+                    operations.AddRange(TakeItem(itemid, (short)-amount, false));
                 }
                 else // Give item
                 {
-                    AddItem(itemid, amount);
+                    operations.AddRange(AddItem(itemid, amount, false));
                 }
             }
+            InventoryOperationPacket.Run(Character, operations.ToArray());
             PlayerEffectPacket.SendInventoryChanged(Character, items);
             return true;
         }

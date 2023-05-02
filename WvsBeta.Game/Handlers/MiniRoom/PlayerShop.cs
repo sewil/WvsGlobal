@@ -46,7 +46,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             {
                 if (pst.Value.sItem.Amount != 0) //If an item is set to 0, no point of adding it.
                 {
-                    Owner.Inventory.AddItem(pst.Value.sItem);
+                    Owner.Inventory.AddItem(pst.Value.sItem, out short _);
                     ItemTransfer.PersonalShopGetBackItem(Owner.ID, pst.Value.sItem.ItemID, pst.Value.sItem.Amount, _transaction, pst.Value.sItem);
                     pst.Value.sItem = null;
                 }
@@ -131,7 +131,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         {
             if (Items.TryGetValue(slot, out PlayerShopItem pst))
             {
-                pCharacter.Inventory.AddItem(pst.sItem);
+                pCharacter.Inventory.AddItem(pst.sItem, out short _);
                 ItemTransfer.PersonalShopGetBackItem(pCharacter.ID, pst.sItem.ItemID, pst.sItem.Amount, _transaction, pst.sItem);
                 var x = pst.sItem.Amount;
                 if (x == 1)

@@ -2346,10 +2346,8 @@ namespace WvsBeta.Game.Handlers
                                     }
                                     else
                                     {
-                                        if (character.Inventory.AddItem(drop.Reward.Data) == drop.Reward.Amount)
-                                        {
-                                            continue;
-                                        }
+                                        character.Inventory.AddItem(drop.Reward.Data, out short amountLeft);
+                                        if (amountLeft == drop.Reward.Amount) continue;
                                     }
                                     if (drop.Reward.Mesos) character.SendPacket(MessagePacket.DropPickup(true, drop.Reward.Drop, 0));
                                     else character.SendPacket(MessagePacket.DropPickup(false, drop.Reward.Drop, pickupAmount));

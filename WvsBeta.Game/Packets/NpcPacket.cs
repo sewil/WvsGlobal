@@ -530,7 +530,7 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendNPCChatTextRequestPet(GameCharacter chr, int NpcID, string Text, int skipPet = -1)
+        public static void SendNPCChatTextRequestPet(GameCharacter chr, int NpcID, string Text, long skip = -1)
         {
             chr.NpcSession.mLastSentType = NpcState.Pet;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
@@ -539,7 +539,7 @@ namespace WvsBeta.Game
             pw.WriteByte(0x06);
             pw.WriteString(Text);
 
-            var pets = chr.Inventory.GetPets().Where(p => skipPet > -1 ? p.ItemID != skipPet : true).ToList();
+            var pets = chr.Inventory.GetPets().Where(p => p.DeadDate == BaseItem.NoItemExpiration && (skip == -1 || p.ItemID != skip)).ToList();
 
             pw.WriteByte((byte)pets.Count());
             foreach (var petItem in pets)

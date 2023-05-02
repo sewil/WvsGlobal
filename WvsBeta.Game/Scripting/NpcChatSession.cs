@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using WvsBeta.Common;
+using WvsBeta.Common.Objects;
 using WvsBeta.Game.Scripting;
 using ThreadState = System.Threading.ThreadState;
 
@@ -23,9 +24,18 @@ namespace WvsBeta.Game
         int AskMenu(string Message);
         int AskMenu(string message, params string[] options);
         int AskNumber(string Message, int Default, int MinValue, int MaxValue);
-        string AskPet(string message);
+        /// <summary>
+        /// Have pet doll.
+        /// </summary>
+        /// <param name="skip">Pet doll to skip</param>
+        bool HavePetDoll(long skip = -1);
+        /// <summary>
+        /// Pet doll selector.
+        /// </summary>
+        /// <param name="message">Selector text</param>
+        /// <param name="skip">Pet doll to skip</param>
+        long AskPetDoll(string message, long skip = -1);
         string AskText(string Message, string Default, short MinLength, short MaxLength);
-        string AskPetAllExcept(string message, string petcashid);
         int AskAvatar(string message, int coupon, params int[] values);
         int MakeRandAvatar(int coupon, params int[] values);
         void AskShop(IEnumerable<ShopItemData> items);
@@ -259,37 +269,24 @@ namespace WvsBeta.Game
             nAvatarSelectState = mCharacter.ChangeAvatar(coupon, avatars[nRet]);
             HandleResponse(nRet, "", 0);
         }
-        public string AskPet(string message)
+
+        public bool HavePetDoll(long skip = -1)
         {
-            sayLines.Clear();
-            sayIndex = 0;
-            if (string.IsNullOrWhiteSpace(message)) // Check if have any pets
-            {
-                return mCharacter.Inventory.GetPets().FirstOrDefault()?.CashId.ToString() ?? "";
-            }
-            else
-            {
-                NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message);
-                Wait();
-                return nRetStr;
-            }
+            return mCharacter.Inventory.GetPets().Where(i => i.DeadDate == BaseItem.NoItemExpiration && (skip == -1 || i.CashId != skip)).Count() > 0;
         }
 
-        public string AskPetAllExcept(string message, string petid)
+        public long AskPetDoll(string message, long skip = -1)
         {
+            if (string.IsNullOrWhiteSpace(message)) throw new ArgumentNullException();
+
             sayLines.Clear();
             sayIndex = 0;
-
-            int petskip = -1;
-            try
-            {
-                petskip = int.Parse(petid);
-            }
-            catch { }
-            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message, petskip);
+            NpcPacket.SendNPCChatTextRequestPet(mCharacter, mNpcID, message, skip);
             Wait();
-            return nRetStr;
+            if (long.TryParse(nRetStr, out long petCashID)) return petCashID;
+            else return 0;
         }
+
         public void AskShop(params ShopItemData[] items)
         {
             AskShop(items.ToList());

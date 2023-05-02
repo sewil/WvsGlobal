@@ -1,15 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.IO;
-using System.Net.NetworkInformation;
-using System.Reflection.Emit;
-using WvsBeta.Common;
+﻿using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Game;
-using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Scripting;
+using static WvsBeta.Game.CharacterInventory;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -212,7 +205,7 @@ namespace WvsBeta.Scripts.Scripts
         int v1;
         public void Run(INpcHost self, GameCharacter target)
         {
-            self.Say("Hmmmm... are you by any chance educating one of my children? I have perfected a spell that uses #t5180000# to breathe life into a doll. People call it #bPet#k. If you have one, you can ask me anything you want.");
+            self.Say("Hmmmm... are you by any chance educating one of my children? I have perfected a spell that uses #t4070000# to breathe life into a doll. People call it #bPet#k. If you have one, you can ask me anything you want.");
             /*
             Brown Kitty y
             Brown Puppy y
@@ -231,8 +224,8 @@ namespace WvsBeta.Scripts.Scripts
             int v1 = self.AskMenu("What do you want to know more about? \r\n#b#L0# Tell me more about Pets. #l\r\n#L1# How to educate Pets? #l\r\n#L2# Do pets die too? \r\n#b#L3# What are the commands for the Brown and Black Kittens? \r\n#b#L4# What are the commands for Brown Puppy? \r\n#b#L5# What are the commands for the Pink and White Bunnies? \r\n#b#L6# What are the commands for Mini Kargo? \r\n#b#L7# What are the commands for Rudolph? \r\n#b#L8# What are the commands for Black Pig? \r\n#b#L9# What are the commands for Panda? \r\n#b#L10# What are the commands for Husky? \r\n#b#L11# What are the commands for Dino Boy, Dino Girl? \r\n#b#L12# What are the commands for Monkey?");
             if (v1 == 0)
             {
-                self.Say("So you wish to know more about pets. A long time ago I made a doll, sprinkled #t5180000# on it and cast a charm to create a magical animal. I know it sounds unbelievable, but these are dolls that have really come to life. They understand and obey people very well.");
-                self.Say("But #t5180000# only appears a little bit, right at the base of the World Tree, so I can't give it much time to live... I know, it's very sad... but even if it becomes a doll again, I can always bring it back to life. Be nice while you're with it.");
+                self.Say("So you wish to know more about pets. A long time ago I made a doll, sprinkled #t4070000# on it and cast a charm to create a magical animal. I know it sounds unbelievable, but these are dolls that have really come to life. They understand and obey people very well.");
+                self.Say("But #t4070000# only appears a little bit, right at the base of the World Tree, so I can't give it much time to live... I know, it's very sad... but even if it becomes a doll again, I can always bring it back to life. Be nice while you're with it.");
                 self.Say("Ah yes! They will react when you give them special commands. You can scold them, give them affection... it all depends on how you are going to take care of them. They are afraid to be separated from their owners, so be nice to them, show them you love them. They may suddenly become sad...");
             }
             else if (v1 == 1)
@@ -245,8 +238,8 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (v1 == 2)
             {
-                self.Say("Die... well, they aren't technically ALIVE, they came to life through someone else's influence, so I don't know if death is the right term. They are dolls with my magic power, and the power of #t5180000# makes objects come alive. Of course, while alive, they are just like a normal animal...");
-                self.Say("After some time... that's for sure, they stop moving. They simply revert back to dolls after the spell's effect wears off and #t5180000# wears off. But that doesn't mean it stopped forever, because if you spill #t5180000# on it, it will come back to life.");
+                self.Say("Die... well, they aren't technically ALIVE, they came to life through someone else's influence, so I don't know if death is the right term. They are dolls with my magic power, and the power of #t4070000# makes objects come alive. Of course, while alive, they are just like a normal animal...");
+                self.Say("After some time... that's for sure, they stop moving. They simply revert back to dolls after the spell's effect wears off and #t4070000# wears off. But that doesn't mean it stopped forever, because if you spill #t4070000# on it, it will come back to life.");
                 self.Say("Even if they move again, it's sad to see them completely stopped. Be nice to them while they're alive, okay? Feed them well, too. Isn't it nice to know that there's something alive that keeps you company and obeys only you?");
             }
             else if (v1 == 3)
@@ -300,93 +293,94 @@ namespace WvsBeta.Scripts.Scripts
             var qr = target.Quests;
             var val = qr.GetState(2049);
 
-            var inventory = target.Inventory;
-            int v1 = self.AskMenu("I'm Mar the Fairy. I can revive pets or transfer existing EXP to another one. \r\n#b#L0# I want the doll to become my pet again. #l\r\n#L1# I want to transfer my pet's existing EXP to a new pet.#l\r\n#k");
+            bool havePetDoll = self.HavePetDoll();
+            if (!havePetDoll)
+            {
+                if (val == 2) self.Say("Hi... how is the pet with this new life? I feel very good to see you happy with your pet. Well, then... I'll have to go back to my studies...");
+                else self.Say("Hi, I'm #p1032102# and I study various types of spells here at #m101000000#. I've been studying the magic of life for hundreds of years, but it's never ending... Well, then I'll have to go back to my studies...");
+                return;
+            }
+
+            int v1 = self.AskMenu(
+                "Nice to meet you! I'm #p1032102# and I study various types of spells here in #m101000000#. I am especially fascinated by the magic of life. The mystery that has no end, the mystery known as life... I'm trying to figure out how to create life.",
+                "I want to revive my pet."
+                /*, "I want to transfer my pet's existing EXP to a new pet."*/
+            );
 
             if (v1 == 0) // Revive pet
             {
-                string isPet = self.AskPet("");
-                if (isPet != "")
+                if (val == 0 || val == 2)
                 {
-                    if (val == 0 || val == 2)
+                    int nRet1 = self.AskYesNo("Looks like you already found #p1012005#. #p1012005# is a person who studied the magic of life with me. I heard that he used an incomplete life spell on a doll to create a living animal... Is the doll you have the same one that #p1012005# created, called #bPet#k?");
+                    if (nRet1 == 0)
                     {
-                        self.Say("Nice to meet you! I'm #p1032102# and I study various types of spells here at #m101000000#. I am especially fascinated by the magic of life. The mystery that has no end, the mystery known as life... I'm trying to figure out how to create life.");
-                        int nRet1 = self.AskYesNo("Looks like you already found #p1012005#. #p1012005# is a person who studied the magic of life with me. I heard that he used an incomplete life spell on a doll to create a living animal... Is the doll you have the same one that #p1012005# created, called #bPet#k?");
-                        if (nRet1 == 0)
-                        {
-                            self.Say("But it looks like the one made by #p1012005# for sure. Ah... well, never mind. I've seen #p1012005# for years and I'm pretty sure he can't succeed in life magic for dolls. Well then...");
-                        }
-                        else if (nRet1 == 1)
-                        {
-                            self.Say("I understand. The doll became a living animal... but the same item that #p1012005# used to bring the animal to life, #b#t5180000##k ran out of stock and so it returned to being a doll... obviously it's not moving, since it's a doll now... hmmm... is this thing called life really, not something you can create with magic...?");
-                            self.Say("Do you want to bring back the doll as it was, with life? You want to go back to the time when your pet obeyed you, only you, and kept you company, right? Of course, it's totally possible. Since I'm the Fairy who studied the magic of life with #p1012005#... Maybe I can get it moving again...");
-                            int nRet2 = self.AskYesNo("If you can get me #b#t5180000##k and a #b#t4031034##k, maybe I can bring the doll back to life. What do you think? Do you want to gather the items? Bring me the items and I'll try to make your doll come back to life...");
-                            if (nRet2 == 0)
-                            {
-                                self.Say("Do you want to leave the doll as it is? It's a dummy and all, but... it'll be hard to erase your memory with this too. If you regret it, look for me, okay?");
-                            }
-                            else
-                            {
-                                qr.Set(2049, "");
-                                self.Say("Very good. I'll say it again, what I need is #b#t5180000##k and a #b#t4031034##k. Get them and I can bring the doll back to life. The #b#t4031034##k is the hardest to get... how about looking for #b#p1012006##k from #bHenesys#k? Maybe that person can give you a tip or two...");
-                            }
-                        }
+                        self.Say("But it looks like the one made by #p1012005# for sure. Ah... well, never mind. I've seen #p1012005# for years and I'm pretty sure he can't succeed in life magic for dolls. Well then...");
                     }
-                    else if (val == 1)
+                    else if (nRet1 == 1)
                     {
-                        inventory = target.Inventory;
-                        if (inventory.ItemCount(5180000) > 0 && inventory.ItemCount(4031034) > 0)
+                        self.Say("I understand. The doll became a living animal... but the same item that #p1012005# used to bring the animal to life, #b#t4070000##k ran out of stock and so it returned to being a doll... obviously it's not moving, since it's a doll now... hmmm... is this thing called life really, not something you can create with magic...?");
+                        self.Say("Do you want to bring back the doll as it was, with life? You want to go back to the time when your pet obeyed you, only you, and kept you company, right? Of course, it's totally possible. Since I'm the Fairy who studied the magic of life with #p1012005#... Maybe I can get it moving again...");
+                        int nRet2 = self.AskYesNo("If you can get me #b#t4070000##k and a #b#t4031034##k, maybe I can bring the doll back to life. What do you think? Do you want to gather the items? Bring me the items and I'll try to make your doll come back to life...");
+                        if (nRet2 == 0)
                         {
-                            int nRet3 = self.AskYesNo("You bought #b#t5180000##k and #b#t4031034##k... With them I can bring the doll back to life with my magic power. What do you think? Do you want to use the items and wake up your pet...?");
-                            if (nRet3 == 0)
-                            {
-                                self.Say("I understand... you're not 100% ready for this, are you? You're not thinking of leaving this little animal as a doll, right? Please come back if you change your mind...");
-                            }
-                            else
-                            {
-                                string petcashid = self.AskPet("So which pet do you want to revive? Choose the pet you most want alive...");
-                                var okPet = inventory.SetPetLife(petcashid, 5180000, 4031034);
-                                if (!okPet) self.Say("Something is not right... are you sure you have #b#t5180000##k and #b#t4031034##k? Without these two I can't make the doll go back to being a pet.");
-                                else
-                                {
-                                    qr.SetComplete(2049);
-                                    self.Say("Your doll is now your pet again. However, my magic is not perfect, so I can't promise it eternal life... Please take good care of this pet before #t5180000# runs out. Well then... bye...");
-                                }
-                            }
+                            self.Say("Do you want to leave the doll as it is? It's a doll and all, but... it'll be hard to erase your memory with this too. If you regret it, look for me, okay?");
                         }
                         else
                         {
-                            self.Say("Still didn't get #b#t5180000##k and #b#t4031034##k, right? Go see #b#p1012006##k, from #m100000000#, that person should know about the scroll. Please gather these items quickly...");
+                            qr.Set(2049, "");
+                            self.Say("Very good. I'll say it again, what I need is #b#t4070000##k and a #b#t4031034##k. Get them and I can bring the doll back to life. The #b#t4031034##k is the hardest to get... how about looking for #b#p1012006##k from #bHenesys#k? Maybe that person can give you a tip or two...");
                         }
                     }
                 }
-                else
+                else if (val == 1)
                 {
-                    if (val == 2) self.Say("Hi... how is the pet with this new life? I feel very good to see you happy with your pet. Well, then... I'll have to go back to my studies...");
-                    else self.Say("Hi, I'm #p1032102# and I study various types of spells here at #m101000000#. I've been studying the magic of life for hundreds of years, but it's never ending... Well, then I'll have to go back to my studies...");
-                }
-            }
-            else if (v1 == 1) // Transfer pet exp
-            {
-                string isPet = self.AskPetAllExcept("", "");
-                if (isPet != "" && inventory.ItemCount(4160011) > 0)
-                {
-                    string petcashid = self.AskPetAllExcept("So you want to transfer your pet's existing closeness? If you do this, your pet's closeness and level will be set to 0, and the new pet will have its closeness and level. Please choose the pet you want to transfer your proximity to.", "");
-                    string petcashid2 = self.AskPetAllExcept("It's time to transfer the closeness of the chosen pet to the new pet. Please choose the new pet.", petcashid);
-                    int nRet4 = self.AskYesNo("Now the magic will begin. Are you sure you want to make this transfer?");
-                    if (nRet4 != 0)
+                    var inventory = target.Inventory;
+                    if (inventory.ItemCount(4070000) > 0 && inventory.ItemCount(4031034) > 0)
                     {
-                        var okPet = inventory.MovePetStat(petcashid, petcashid2, 4160011);
-                        if (okPet == 0) self.Say("Pet closeness transferred successfully.");
-                        else if (okPet == 1) self.Say("Please check that you have the required item.");
-                        else if (okPet == 2) self.Say("The closeness of the new pet appears to be higher than that of the existing pet. Check again.");
+                        int nRet3 = self.AskYesNo("You bought #b#t4070000##k and #b#t4031034##k... With them I can bring the doll back to life with my magic power. What do you think? Do you want to use the items and wake up your pet...?");
+                        if (nRet3 == 0)
+                        {
+                            self.Say("I understand... you're not 100% ready for this, are you? You're not thinking of leaving this little animal as a doll, right? Please come back if you change your mind...");
+                        }
+                        else
+                        {
+                            long petCashID = self.AskPetDoll("So which pet do you want to revive? Choose the pet you most want alive...");
+                            var okPet = inventory.SetPetLife(petCashID, (4070000, -1), (4031034, -1));
+                            if (!okPet) self.Say("Something is not right... are you sure you have #b#t4070000##k and #b#t4031034##k? Without these two I can't make the doll go back to being a pet.");
+                            else
+                            {
+                                qr.SetComplete(2049);
+                                self.Say("Your doll is now your pet again. However, my magic is not perfect, so I can't promise it eternal life... Please take good care of this pet before #t4070000# runs out. Well then... bye...");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        self.Say("Still didn't get #b#t4070000##k and #b#t4031034##k, right? Go see #b#p1012006##k, from #m100000000#, that person should know about the scroll. Please gather these items quickly...");
                     }
                 }
-                else
-                {
-                    self.Say("I don't think you have #t4160011# or a pet for closeness to be transferred... Cloy of Henesys would definitely know about #t4160011#...");
-                }
             }
+            //else if (v1 == 1) // Transfer pet exp
+            //{
+            //    bool havePet = self.HavePet();
+            //    if (havePet && inventory.ItemCount(4160011) > 0)
+            //    {
+            //        long petcashid = self.AskPet("So you want to transfer your pet's existing closeness? If you do this, your pet's closeness and level will be set to 0, and the new pet will have its closeness and level. Please choose the pet you want to transfer your proximity to.");
+            //        long petcashid2 = self.AskPet("It's time to transfer the closeness of the chosen pet to the new pet. Please choose the new pet.", petcashid);
+            //        int nRet4 = self.AskYesNo("Now the magic will begin. Are you sure you want to make this transfer?");
+            //        if (nRet4 != 0)
+            //        {
+            //            var okPet = inventory.MovePetStat(petcashid, petcashid2, 4160011);
+            //            if (okPet == MovePetStatResult.Success) self.Say("Pet closeness transferred successfully.");
+            //            else if (okPet == MovePetStatResult.MissingItem) self.Say("Please check that you have the required item.");
+            //            else if (okPet == MovePetStatResult.WrongCloseness) self.Say("The closeness of the new pet appears to be higher than that of the existing pet. Check again.");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        self.Say("I don't think you have #t4160011# or a pet for closeness to be transferred... Cloy of Henesys would definitely know about #t4160011#...");
+            //    }
+            //}
         }
     }
     // Giving the item that extends the life of the pet
@@ -398,7 +392,7 @@ namespace WvsBeta.Scripts.Scripts
             var qr = target.Quests;
             var val = qr.GetState(2049);
 
-            var isPet = self.AskPet("");
+            bool havePet = self.HavePetDoll();
 
             var v = self.AskMenu("Do you have any business with me? \r\n#b#L0#Tell me about this place. #l\r\n#L1#I'm here because of the Scroll of Life. #l\r\n#L1#...#l");
             if (v == 0)
@@ -419,7 +413,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else if (v == 1)
             {
-                if (isPet != "" && val == 1)
+                if (havePet && val == 1)
                 {
                     var inventory = target.Inventory;
                     if (inventory.ItemCount(4031034) > 0) self.Say("Hmm... you already have #b#t4031034##k. Take this scroll to #b#p1032102##k of #m101000000#.");
@@ -456,7 +450,7 @@ namespace WvsBeta.Scripts.Scripts
                                                 inventory = target.Inventory;
                                                 var ret = inventory.Exchange(0, 4031034, 1);
                                                 if (ret == 0) self.Say("Ouch... do you have a slot available in your etc. inventory? I can't give it to you if it's full.");
-                                                else self.Say("Ok... So, all you need to do now is take it and go talk to #p1032102# and also get a #b#t5180000##k... Hahaha good luck to you!");
+                                                else self.Say("Ok... So, all you need to do now is take it and go talk to #p1032102# and also get a #b#t4070000##k... Hahaha good luck to you!");
                                             }
                                         }
                                     }

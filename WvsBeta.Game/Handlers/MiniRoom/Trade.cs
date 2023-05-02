@@ -56,7 +56,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                     if (item != null) //just to make sure that the player actually has items in trade..
                     {
-                        user.Value.Inventory.AddItem(item);
+                        user.Value.Inventory.AddItem(item, out short _);
                         ItemTransfer.PlayerTradeReverted(user.Value.ID, item.ItemID, item.Amount, _transaction, item);
                         ItemList[user.Key][itemSlot] = null;
                     }
@@ -139,7 +139,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                     BaseItem item = ItemList[srcUserSlot][itemSlot];
                     if (item == null) continue;
 
-                    dstUser.Inventory.AddItem(item);
+                    dstUser.Inventory.AddItem(item, out short _);
                     ItemTransfer.PlayerTradeExchange(srcUser.ID, dstUser.ID, item.ItemID, item.Amount, _transaction, item);
                     ItemList[srcUserSlot][itemSlot] = null;
                 }

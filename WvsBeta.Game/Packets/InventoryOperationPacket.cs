@@ -4,10 +4,20 @@ using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Game.Packets
 {
-    class InventoryOperationPacket
+    public struct OperationOut
+    {
+        public InventoryOperationPacket.Type type;
+        public Inventory inventory;
+        public short slot;
+        public short slot2;
+        public short amount;
+        public BaseItem item;
+    }
+    public class InventoryOperationPacket
     {
         public enum Type
         {
@@ -17,15 +27,19 @@ namespace WvsBeta.Game.Packets
             Unk3 = 3
         }
 
-        public static void Add(GameCharacter chr, BaseItem item)
+        public static OperationOut AddOperation(BaseItem item)
         {
-            Run(chr, new OperationOut
+            return new OperationOut
             {
                 type = Type.Add,
                 inventory = Constants.getInventory(item.ItemID),
                 slot = item.InventorySlot,
                 item = item
-            });
+            };
+        }
+        public static void Add(GameCharacter chr, BaseItem item)
+        {
+            Run(chr, AddOperation(item));
         }
 
         public static void NoChange(GameCharacter chr)
@@ -37,29 +51,37 @@ namespace WvsBeta.Game.Packets
         {
             ChangeAmount(chr, item, item.Amount);
         }
-        public static void ChangeAmount(GameCharacter chr, BaseItem item, short amount)
+        public static OperationOut ChangeAmountOperation(Inventory inventory, short slot, short amount)
         {
-            Run(chr, new OperationOut
+            return new OperationOut
             {
                 type = Type.ChangeAmount,
-                inventory = Constants.getInventory(item.ItemID),
-                slot = item.InventorySlot,
+                inventory = inventory,
+                slot = slot,
                 amount = amount
-            });
+            };
+        }
+        public static void ChangeAmount(GameCharacter chr, BaseItem item, short amount)
+        {
+            Run(chr, ChangeAmountOperation(item.Inventory, item.InventorySlot, amount));
         }
         public static void SwitchSlots(GameCharacter chr, BaseItem item, short newSlot)
         {
             SwitchSlots(chr, Constants.getInventory(item.ItemID), item.InventorySlot, newSlot);
         }
-        public static void SwitchSlots(GameCharacter chr, Inventory inventory, short slot1, short slot2)
+        public static OperationOut SwitchSlotsOperation(Inventory inventory, short slot1, short slot2)
         {
-            Run(chr, new OperationOut
+            return new OperationOut
             {
                 type = Type.SwitchSlots,
                 inventory = inventory,
                 slot = slot1,
                 slot2 = slot2
-            });
+            };
+        }
+        public static void SwitchSlots(GameCharacter chr, Inventory inventory, short slot1, short slot2)
+        {
+            Run(chr, SwitchSlotsOperation(inventory, slot1, slot2));
         }
 
         public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
@@ -75,15 +97,7 @@ namespace WvsBeta.Game.Packets
         }
 
         private const byte MaxPacketOperations = 100;
-        struct OperationOut
-        {
-            public Type type;
-            public Inventory inventory;
-            public short slot;
-            public short slot2;
-            public short amount;
-            public BaseItem item;
-        }
+        
         private static Packet Init(byte operations)
         {
             var pw = new Packet(ServerMessages.INVENTORY_OPERATION);
@@ -91,7 +105,7 @@ namespace WvsBeta.Game.Packets
             pw.WriteByte(operations);
             return pw;
         }
-        private static void Run(GameCharacter chr, params OperationOut[] operations)
+        public static void Run(GameCharacter chr, params OperationOut[] operations)
         {
             if (operations.Length == 0)
             {
@@ -114,7 +128,6 @@ namespace WvsBeta.Game.Packets
                     if (opout.type == Type.Add)
                     {
                         new GW_ItemSlotBase(opout.item).Encode(pw, false, false);
-                        break;
                     }
                     else if (opout.type == Type.ChangeAmount)
                     {

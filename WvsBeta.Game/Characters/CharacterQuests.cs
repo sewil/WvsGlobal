@@ -177,8 +177,9 @@ namespace WvsBeta.Game
         /// <param name="data"></param>
         public void Set(short questID, string data)
         {
-            if (HasQuest(questID))
+            if (Quests.TryGetValue(questID, out QuestData quest))
             {
+                quest.State = QuestState.InProgress;
                 SetQuestData(questID, data);
             }
             else
