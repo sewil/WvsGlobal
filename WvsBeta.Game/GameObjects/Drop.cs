@@ -55,11 +55,10 @@ namespace WvsBeta.Game
 
             var isPartyAble = chr.PartyID != 0 && OwnPartyID == chr.PartyID;
             var isOwnerDrop = OwnerID == 0 || OwnerID == chr.ID;
-            bool isSelfDrop = SourceID == chr.ID && DropType == DropType.FreeForAll;
 
             if (byPet != null)
             {
-                if (isSelfDrop) return false;
+                if (DropType == DropType.FreeForAll) return false;
                 var slots = new Slots[] { Slots.PetAbility1, Slots.PetAbility2 };
                 if (Reward.Mesos && !chr.Inventory.HasEquipped(Constants.Items.PetMesoMagnet, EquippedType.Cash, slots)) return false;
                 else if (!Reward.Mesos && !chr.Inventory.HasEquipped(Constants.Items.PetItemPouch, EquippedType.Cash, slots)) return false;
