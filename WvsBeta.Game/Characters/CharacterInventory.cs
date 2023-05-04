@@ -94,7 +94,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public IList<OperationOut> AddItem(BaseItem item, out short amountLeft, bool sendOperations = true)
+        public IList<OperationOut> AddItem(BaseItem item, out short amountLeft, bool sendOperations = true, bool isSelf = true)
         {
             Inventory inventory = Constants.getInventory(item.ItemID);
             short freeSlot = 0;
@@ -154,7 +154,7 @@ namespace WvsBeta.Game
 
             if (sendOperations)
             {
-                InventoryOperationPacket.Run(Character, operations.ToArray());
+                InventoryOperationPacket.Run(Character, isSelf, operations.ToArray());
             }
 
             return operations;
@@ -433,7 +433,7 @@ namespace WvsBeta.Game
 
             if (sendOperations)
             {
-                InventoryOperationPacket.Run(Character, operations.ToArray());
+                InventoryOperationPacket.Run(Character, true, operations.ToArray());
             }
 
             return operations;
@@ -780,7 +780,7 @@ namespace WvsBeta.Game
                     operations.AddRange(AddItem(itemid, amount, false));
                 }
             }
-            InventoryOperationPacket.Run(Character, operations.ToArray());
+            InventoryOperationPacket.Run(Character, false, operations.ToArray());
             PlayerEffectPacket.SendInventoryChanged(Character, items);
             return true;
         }

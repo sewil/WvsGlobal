@@ -48,12 +48,13 @@ namespace WvsBeta.Game
             // 5F 18 FF 12 01 00 00 00 00 
             packet.Skip(4); // pos?
 
+            bool isPet = byPet != null;
             int dropid = packet.ReadInt();
             if (chr.AssertForHack(chr.Room != null, "Trying to loot a drop while in a 'room'") ||
                 !chr.Field.DropPool.Drops.TryGetValue(dropid, out Drop drop) ||
                 !drop.CanTakeDrop(chr, byPet))
             {
-                InventoryOperationPacket.NoChange(chr);
+                if (!isPet) InventoryOperationPacket.NoChange(chr);
                 return;
             }
 
@@ -98,12 +99,13 @@ namespace WvsBeta.Game
                         foreach (var BonusUser in PartyData)
                         {
                             int mesosGiven = reward.Drop;
-                            if (chr.ID == BonusUser.ID)
+                            bool isSelf = chr.ID == BonusUser.ID;
+                            if (isSelf)
                             {
                                 mesosGiven += Bonus;
                             }
                             // Now figure out what we really gave the user
-                            BonusUser.Inventory.AddMesos(mesosGiven, true, out mesosGiven);
+                            BonusUser.Inventory.AddMesos(mesosGiven, isSelf && !isPet, out mesosGiven);
 
                             Common.Tracking.MesosTransfer.PlayerLootMesos(drop.SourceID, chr.ID, mesosGiven, "Party " + chr.PartyID + ", " + chr.MapID + ", " + drop.GetHashCode());
 
@@ -114,7 +116,7 @@ namespace WvsBeta.Game
 
                 if (!SentDropNotice)
                 {
-                    chr.Inventory.AddMesos(reward.Drop, true, out dropNoticeItemIdOrMesos);
+                    chr.Inventory.AddMesos(reward.Drop, !isPet, out dropNoticeItemIdOrMesos);
                     Common.Tracking.MesosTransfer.PlayerLootMesos(
                         drop.SourceID,
                         chr.ID,
@@ -128,11 +130,11 @@ namespace WvsBeta.Game
                 bool isStar = Constants.isStar(reward.ItemID);
                 bool full = isStar && !chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount);
                 short amountLeft = 0;
-                if (!full) chr.Inventory.AddItem(drop.Reward.Data, out amountLeft);
+                if (!full) chr.Inventory.AddItem(drop.Reward.Data, out amountLeft, true, !isPet);
                 if (full || amountLeft == drop.Reward.Amount)
                 {
                     CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);
-                    InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
+                    if (!isPet) InventoryOperationPacket.NoChange(chr); // ._. stupid nexon
                     return;
                 }
                 if (isStar || Constants.isEquip(drop.Reward.ItemID))

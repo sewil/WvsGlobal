@@ -39,12 +39,12 @@ namespace WvsBeta.Game.Packets
         }
         public static void Add(GameCharacter chr, BaseItem item)
         {
-            Run(chr, AddOperation(item));
+            Run(chr, true, AddOperation(item));
         }
 
         public static void NoChange(GameCharacter chr)
         {
-            Run(chr);
+            Run(chr, true);
         }
 
         public static void ChangeAmount(GameCharacter chr, BaseItem item)
@@ -63,7 +63,7 @@ namespace WvsBeta.Game.Packets
         }
         public static void ChangeAmount(GameCharacter chr, BaseItem item, short amount)
         {
-            Run(chr, ChangeAmountOperation(item.Inventory, item.InventorySlot, amount));
+            Run(chr, true, ChangeAmountOperation(item.Inventory, item.InventorySlot, amount));
         }
         public static void SwitchSlots(GameCharacter chr, BaseItem item, short newSlot)
         {
@@ -81,7 +81,7 @@ namespace WvsBeta.Game.Packets
         }
         public static void SwitchSlots(GameCharacter chr, Inventory inventory, short slot1, short slot2)
         {
-            Run(chr, SwitchSlotsOperation(inventory, slot1, slot2));
+            Run(chr, true, SwitchSlotsOperation(inventory, slot1, slot2));
         }
 
         public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
@@ -93,30 +93,30 @@ namespace WvsBeta.Game.Packets
                 slot2 = 0,
                 inventory = inventory
             }).ToArray();
-            Run(chr, operations);
+            Run(chr, true, operations);
         }
 
         private const byte MaxPacketOperations = 100;
         
-        private static Packet Init(byte operations)
+        private static Packet Init(byte operations, bool isSelf)
         {
             var pw = new Packet(ServerMessages.INVENTORY_OPERATION);
-            pw.WriteBool(true);
+            pw.WriteBool(isSelf);
             pw.WriteByte(operations);
             return pw;
         }
-        public static void Run(GameCharacter chr, params OperationOut[] operations)
+        public static void Run(GameCharacter chr, bool isSelf, params OperationOut[] operations)
         {
             if (operations.Length == 0)
             {
-                var pw = Init(0);
+                var pw = Init(0, isSelf);
                 chr.SendPacket(pw);
                 return;
             }
             for (int opIdx = 0; opIdx < operations.Length;)
             {
                 byte chunk = (byte)Math.Min(MaxPacketOperations, operations.Length - opIdx);
-                Packet pw = Init(chunk);
+                Packet pw = Init(chunk, isSelf);
                 bool equipitem = false;
                 for (byte chunkIdx = 0; chunkIdx < chunk; chunkIdx++)
                 {
