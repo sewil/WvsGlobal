@@ -1,6 +1,6 @@
 ﻿using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Common.Character
+namespace WvsBeta.Common.Characters
 {
     public class AvatarData
     {

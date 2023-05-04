@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Runtime.ConstrainedExecution;
 using System.Windows.Forms;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Packets;

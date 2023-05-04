@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Login.Objects;
 using WvsBeta.Login.PacketHandlers;

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game;
 
@@ -10,9 +10,9 @@ namespace WvsBeta.Shop
 {
     public class CharacterInventory : BaseCharacterInventory
     {
-        private Character Character { get; set; }
+        private ShopCharacter Character { get; set; }
 
-        public CharacterInventory(Character character) : base(character.UserID, character.ID)
+        public CharacterInventory(ShopCharacter character) : base(character.UserID, character.ID)
         {
             Character = character;
         }

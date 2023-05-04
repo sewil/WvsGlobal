@@ -75,7 +75,7 @@ namespace WvsBeta.Center
 
         public bool IsOnline => CenterServer.Instance.IsOnline(id);
 
-        public Character GetCharacter(bool onlyOnline)
+        public CenterCharacter GetCharacter(bool onlyOnline)
         {
             return CenterServer.Instance.FindCharacter(id, onlyOnline);
         }
@@ -99,7 +99,7 @@ namespace WvsBeta.Center
 
         public void SendHpUpdate()
         {
-            Character chr = GetCharacter(true);
+            CenterCharacter chr = GetCharacter(true);
             if (chr != null)
                 CenterServer.Instance.World.GameServers[chr.ChannelID].Connection.SendPacket(PartyPacket.RequestHpUpdate(chr.ID));
         }
@@ -224,7 +224,7 @@ namespace WvsBeta.Center
             }
         });
 
-        public void DeclineInvite(Character decliner)
+        public void DeclineInvite(CenterCharacter decliner)
         {
             if (Invites.ContainsKey(decliner.ID))
             {
@@ -238,7 +238,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public void TryJoin(Character chr, Packet packet)
+        public void TryJoin(CenterCharacter chr, Packet packet)
         {
             if (!Invites.ContainsKey(chr.ID))
             {
@@ -273,7 +273,7 @@ namespace WvsBeta.Center
             Join(chr, packet);
         }
 
-        private void Join(Character chr, Packet packet)
+        private void Join(CenterCharacter chr, Packet packet)
         {
             var slot = GetFirstFreeSlot();
             if (slot == -1)
@@ -307,7 +307,7 @@ namespace WvsBeta.Center
             CenterServer.Instance.SendPacketToServer(pw, (byte)joined.GetChannel());
         }
 
-        public void Leave(Character fucker)
+        public void Leave(CenterCharacter fucker)
         {
             var slot = GetCharacterSlot(fucker.ID);
 
@@ -337,7 +337,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public void SendPartyMemberLeft(Character left)
+        public void SendPartyMemberLeft(CenterCharacter left)
         {
             var pw = new Packet(ISServerMessages.PartyMemberLeft);
             pw.WriteInt(partyId);
@@ -358,7 +358,7 @@ namespace WvsBeta.Center
             UpdateAllDoors();
         }
         
-        private void Disband(Character disbander) => OnlyWithLeader(disbander.ID, ldr =>
+        private void Disband(CenterCharacter disbander) => OnlyWithLeader(disbander.ID, ldr =>
         {
             _log.Debug($"Disbanding party {partyId} by character {disbander.ID}");
 
@@ -496,7 +496,7 @@ namespace WvsBeta.Center
         public static readonly Dictionary<int, Party> Parties = new Dictionary<int, Party>(); //partyId -> party
         public static readonly Dictionary<int, Party> Invites = new Dictionary<int, Party>(); //invitee -> party
 
-        public static void CreateParty(Character leader, Packet packet)
+        public static void CreateParty(CenterCharacter leader, Packet packet)
         {
             if (leader == null)
             {

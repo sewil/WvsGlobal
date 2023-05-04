@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -8,7 +8,7 @@ using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Center
 {
-    public class Character : Common.CharacterBase
+    public class CenterCharacter : Character
     {
         public byte ChannelID { get; set; }
         public bool isCCing { get; set; }
@@ -43,7 +43,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public Character(string name, int id, bool isCCing, byte gmLevel, bool isOnline)
+        public CenterCharacter(string name, int id, bool isCCing, byte gmLevel, bool isOnline)
         {
             Name = name;
             ID = id;
@@ -54,7 +54,7 @@ namespace WvsBeta.Center
             CharacterMemos.Load(this);
         }
 
-        public Character(Packet pr)
+        public CenterCharacter(Packet pr)
         {
             ChannelID = pr.ReadByte();
             LastChannel = pr.ReadByte();

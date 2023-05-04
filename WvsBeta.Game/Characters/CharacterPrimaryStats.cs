@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;

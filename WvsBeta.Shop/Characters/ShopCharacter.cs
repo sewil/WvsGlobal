@@ -4,14 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Shop
 {
-    public class Character : CharacterBase
+    public class ShopCharacter : Character
     {
         private static ILog _characterLog = LogManager.GetLogger("CharacterLog");
         public static ILog CashLog = LogManager.GetLogger("CashLog");
@@ -28,7 +28,7 @@ namespace WvsBeta.Shop
 
         public IList<ShopTransaction> Transactions { get; } = new List<ShopTransaction>();
 
-        public Character(int CharacterID)
+        public ShopCharacter(int CharacterID)
         {
             CharacterStat.ID = CharacterID;
         }

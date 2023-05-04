@@ -8,7 +8,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 using WvsBeta.Common.Objects;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Shop.GameObjects;
 using WvsBeta.Common.Extensions;
 
@@ -36,7 +36,7 @@ namespace WvsBeta.Shop
         public MySQL_Connection CharacterDatabase { get; private set; }
 
         public Dictionary<string, Player> PlayerList { get; } = new Dictionary<string, Player>();
-        public Dictionary<int, Character> CharacterList { get; } = new Dictionary<int, Character>();
+        public Dictionary<int, ShopCharacter> CharacterList { get; } = new Dictionary<int, ShopCharacter>();
         public Dictionary<int, Packet> CCIngPlayerList { get; } = new Dictionary<int, Packet>();
 
         public int GetOnlineId() => RedisBackend.GetOnlineId(WorldID, 50);
@@ -67,13 +67,13 @@ namespace WvsBeta.Shop
             PlayerList.Remove(hash);
         }
 
-        public Character GetCharacter(int ID)
+        public ShopCharacter GetCharacter(int ID)
         {
-            if (CharacterList.TryGetValue(ID, out Character chr)) return chr;
+            if (CharacterList.TryGetValue(ID, out ShopCharacter chr)) return chr;
             return null;
         }
 
-        public Character GetCharacter(string name)
+        public ShopCharacter GetCharacter(string name)
         {
             name = name.ToLowerInvariant();
             foreach (var kvp in CharacterList)

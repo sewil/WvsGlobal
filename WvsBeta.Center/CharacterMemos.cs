@@ -8,17 +8,17 @@ namespace WvsBeta.Center
 {
     public class CharacterMemos
     {
-        private readonly Character chr;
+        private readonly CenterCharacter chr;
         public IList<Memo> Memos { get; } = new List<Memo>();
         static CenterServer S => CenterServer.Instance;
         static MySQL_Connection Db => S.CharacterDatabase;
 
-        private CharacterMemos(Character chr)
+        private CharacterMemos(CenterCharacter chr)
         {
             this.chr = chr;
         }
 
-        public static void Load(Character chr)
+        public static void Load(CenterCharacter chr)
         {
             chr.Memos = new CharacterMemos(chr);
             chr.Memos.Load();
@@ -92,10 +92,10 @@ namespace WvsBeta.Center
             if (from == null) return;
             HandleAddMemo(from, toId, message, onlyOffline, giftCashId);
         }
-        public static void HandleAddMemo(Character from, int toId, string message, bool onlyOffline, long? giftCashId)
+        public static void HandleAddMemo(CenterCharacter from, int toId, string message, bool onlyOffline, long? giftCashId)
         {
             long ctime = MasterThread.FileTime;
-            Character to = S.FindCharacter(toId, true);
+            CenterCharacter to = S.FindCharacter(toId, true);
 
             if (onlyOffline && to != null)
             {

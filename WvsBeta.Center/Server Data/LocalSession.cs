@@ -408,7 +408,7 @@ namespace WvsBeta.Center
                                 {
                                     memos[i] = packet.ReadInt();
                                 }
-                                Character to = CenterServer.Instance.FindCharacter(cid);
+                                CenterCharacter to = CenterServer.Instance.FindCharacter(cid);
                                 to?.Memos.HandleMemoRead(memos);
                                 break;
                             }
@@ -699,7 +699,7 @@ namespace WvsBeta.Center
                         }
                         string message = packet.ReadString();
                         var victims = recipients.Select(r => CenterServer.Instance.FindCharacter(r, true)).Where(c => c != null);
-                        foreach (Character victim in victims)
+                        foreach (CenterCharacter victim in victims)
                         {
                             ChatPacket.SendGroupMessage(victim, type, fromName, message);
                         }
@@ -737,7 +737,7 @@ namespace WvsBeta.Center
                 case ISClientMessages.PartyCreate:
                     {
                         int fuker = packet.ReadInt();
-                        Character fucker = CenterServer.Instance.FindCharacter(fuker);
+                        CenterCharacter fucker = CenterServer.Instance.FindCharacter(fuker);
                         Party.CreateParty(fucker, packet);
                         break;
                     }
@@ -746,7 +746,7 @@ namespace WvsBeta.Center
                     {
                         int fuker1 = packet.ReadInt();
                         int fuker2 = packet.ReadInt();
-                        Character fucker1 = CenterServer.Instance.FindCharacter(fuker1);
+                        CenterCharacter fucker1 = CenterServer.Instance.FindCharacter(fuker1);
                         if (fucker1 != null && Party.Parties.TryGetValue(fucker1.PartyID, out Party party))
                         {
                             party.Invite(fuker1, fuker2);
@@ -757,7 +757,7 @@ namespace WvsBeta.Center
                 case ISClientMessages.PartyAccept:
                     {
                         int AcceptorID = packet.ReadInt();
-                        Character fucker1 = CenterServer.Instance.FindCharacter(AcceptorID);
+                        CenterCharacter fucker1 = CenterServer.Instance.FindCharacter(AcceptorID);
 
                         if (fucker1 != null && Party.Invites.TryGetValue(AcceptorID, out Party party))
                         {
@@ -770,7 +770,7 @@ namespace WvsBeta.Center
                 case ISClientMessages.PartyLeave:
                     {
                         int LeaverID = packet.ReadInt();
-                        Character fucker = CenterServer.Instance.FindCharacter(LeaverID);
+                        CenterCharacter fucker = CenterServer.Instance.FindCharacter(LeaverID);
 
                         if (fucker != null && Party.Parties.TryGetValue(fucker.PartyID, out Party party))
                         {
@@ -784,7 +784,7 @@ namespace WvsBeta.Center
                     {
                         int leader = packet.ReadInt();
                         int expelledCharacter = packet.ReadInt();
-                        Character fucker = CenterServer.Instance.FindCharacter(leader);
+                        CenterCharacter fucker = CenterServer.Instance.FindCharacter(leader);
                         if (fucker != null && Party.Parties.TryGetValue(fucker.PartyID, out Party party))
                         {
                             party.Expel(leader, expelledCharacter);
@@ -797,7 +797,7 @@ namespace WvsBeta.Center
                     {
                         int decliner = packet.ReadInt();
                         String declinerName = packet.ReadString();
-                        Character chr = CenterServer.Instance.FindCharacter(decliner);
+                        CenterCharacter chr = CenterServer.Instance.FindCharacter(decliner);
                         if (chr != null && Party.Invites.TryGetValue(decliner, out Party party))
                         {
                             party.DeclineInvite(chr);
@@ -808,7 +808,7 @@ namespace WvsBeta.Center
                     {
                         int id = packet.ReadInt();
                         int map = packet.ReadInt();
-                        Character fucker = CenterServer.Instance.FindCharacter(id);
+                        CenterCharacter fucker = CenterServer.Instance.FindCharacter(id);
 
                         if (fucker != null)
                         {
@@ -845,8 +845,8 @@ namespace WvsBeta.Center
                         String inviterName = packet.ReadString();
                         String toInviteName = packet.ReadString();
 
-                        Character inviter = CenterServer.Instance.FindCharacter(inviterName);
-                        Character toInvite = CenterServer.Instance.FindCharacter(toInviteName, false);
+                        CenterCharacter inviter = CenterServer.Instance.FindCharacter(inviterName);
+                        CenterCharacter toInvite = CenterServer.Instance.FindCharacter(toInviteName, false);
                         if (inviter == null) return;
 
                         if (inviter.FriendsList.IsFull())
@@ -919,7 +919,7 @@ namespace WvsBeta.Center
                     {
                         int id = packet.ReadInt();
                         string name = packet.ReadString();
-                        Character toUpdate = CenterServer.Instance.FindCharacter(id);
+                        CenterCharacter toUpdate = CenterServer.Instance.FindCharacter(id);
                         toUpdate.FriendsList.OnOnlineCC(true, false);
                         break;
                     }
@@ -927,7 +927,7 @@ namespace WvsBeta.Center
                     {
                         int id = packet.ReadInt();
                         String name = packet.ReadString();
-                        Character toAccept = CenterServer.Instance.FindCharacter(id);
+                        CenterCharacter toAccept = CenterServer.Instance.FindCharacter(id);
                         toAccept.FriendsList.AcceptRequest();
                         break;
                     }
@@ -938,9 +938,9 @@ namespace WvsBeta.Center
                     }
                 case ISClientMessages.BuddyDecline:
                     {
-                        Character Who = CenterServer.Instance.FindCharacter(packet.ReadInt());
+                        CenterCharacter Who = CenterServer.Instance.FindCharacter(packet.ReadInt());
                         int victimId = packet.ReadInt();
-                        Character Victim = CenterServer.Instance.FindCharacter(victimId);
+                        CenterCharacter Victim = CenterServer.Instance.FindCharacter(victimId);
                         Who.FriendsList.RemoveBuddyOrRequest(Victim, victimId);
                         break;
                     }
@@ -959,13 +959,13 @@ namespace WvsBeta.Center
                 case ISClientMessages.PlayerWhisperOrFindOperation: // WhisperOrFind
                     {
                         int sender = packet.ReadInt();
-                        Character senderChar = CenterServer.Instance.FindCharacter(sender);
+                        CenterCharacter senderChar = CenterServer.Instance.FindCharacter(sender);
                         if (senderChar == null)
                             return;
 
                         bool whisper = packet.ReadBool();
                         string receiver = packet.ReadString();
-                        Character receiverChar = CenterServer.Instance.FindCharacter(receiver);
+                        CenterCharacter receiverChar = CenterServer.Instance.FindCharacter(receiver);
 
                         if (whisper)
                         {
@@ -1093,7 +1093,7 @@ namespace WvsBeta.Center
                         string hash = packet.ReadString();
                         int charid = packet.ReadInt();
                         byte world = packet.ReadByte();
-                        Character chr = CenterServer.Instance.FindCharacter(charid);
+                        CenterCharacter chr = CenterServer.Instance.FindCharacter(charid);
                         if (chr == null) return;
 
                         Packet pw = new Packet(ISServerMessages.PlayerChangeServerResult);

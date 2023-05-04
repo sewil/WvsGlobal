@@ -10,7 +10,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
-namespace WvsBeta.Common.Character
+namespace WvsBeta.Common.Characters
 {
     public abstract class BaseCharacterInventory
     {

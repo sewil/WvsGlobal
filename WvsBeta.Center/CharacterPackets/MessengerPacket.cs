@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.ConstrainedExecution;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center.CharacterPackets
@@ -32,7 +32,7 @@ namespace WvsBeta.Center.CharacterPackets
         }
 
         // Used for visually displaying Characters in messenger
-        public static Packet Enter(Character chr)
+        public static Packet Enter(CenterCharacter chr)
         {
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerAction.Enter);
@@ -89,7 +89,7 @@ namespace WvsBeta.Center.CharacterPackets
             return packet;
         }
 
-        public static Packet Avatar(Character chr)
+        public static Packet Avatar(CenterCharacter chr)
         {
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerFunction.Avatar);

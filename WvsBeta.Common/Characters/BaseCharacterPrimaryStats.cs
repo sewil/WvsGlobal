@@ -5,7 +5,7 @@ using WvsBeta.Common.Objects.BuffStats;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Common.Character
+namespace WvsBeta.Common.Characters
 {
     public class BaseCharacterPrimaryStats
     {

@@ -5,7 +5,7 @@ namespace WvsBeta.Shop
 {
     public static class MessagePacket
     {
-        public static void SendCharge(Character victim)
+        public static void SendCharge(ShopCharacter victim)
         {
             Packet pw = new Packet(0xB9); // 185, pressumably 188 in v12
             pw.WriteString("ilub");
@@ -17,7 +17,7 @@ namespace WvsBeta.Shop
             victim.SendPacket(pw);
         }
 
-        public static void SendCharge(Character victim, bool derp)
+        public static void SendCharge(ShopCharacter victim, bool derp)
         {
             Packet pw = new Packet(0xBB); // 187, pressumably 190 in v12
             pw.WriteByte(0xBB);
@@ -29,7 +29,7 @@ namespace WvsBeta.Shop
             victim.SendPacket(pw);
         }
 
-        public static void SendNotice(string what, Character victim)
+        public static void SendNotice(string what, ShopCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte(0);
@@ -37,7 +37,7 @@ namespace WvsBeta.Shop
             victim.SendPacket(pw);
         }
 
-        public static void SendScrollingHeader(string what, Character victim)
+        public static void SendScrollingHeader(string what, ShopCharacter victim)
         {
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte(4);

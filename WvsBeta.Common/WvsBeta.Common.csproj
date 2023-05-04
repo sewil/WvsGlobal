@@ -115,11 +115,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character\AvatarData.cs" />
-    <Compile Include="Character\AvatarLook.cs" />
-    <Compile Include="Character\BaseCharacterInventory.cs" />
-    <Compile Include="Character\BaseCharacterPrimaryStats.cs" />
-    <Compile Include="Character\BaseCharacterSkills.cs" />
+    <Compile Include="Characters\AvatarData.cs" />
+    <Compile Include="Characters\AvatarLook.cs" />
+    <Compile Include="Characters\BaseCharacterInventory.cs" />
+    <Compile Include="Characters\BaseCharacterPrimaryStats.cs" />
+    <Compile Include="Characters\BaseCharacterSkills.cs" />
     <Compile Include="ControlledException.cs" />
     <Compile Include="Enums\EquipIds.cs" />
     <Compile Include="Enums\EquippedType.cs" />
@@ -155,8 +155,8 @@
     <Compile Include="Enums\WorldWarning.cs" />
     <Compile Include="Enums\WorldRibbon.cs" />
     <Compile Include="Extensions\bullshitextensions.cs" />
-    <Compile Include="Character\CharacterBase.cs" />
-    <Compile Include="Character\GW_CharacterStat.cs" />
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\GW_CharacterStat.cs" />
     <Compile Include="ConfigReader.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Crypto\CRC32.cs" />
@@ -182,7 +182,7 @@
     <Compile Include="LoopingID.cs" />
     <Compile Include="MainFormConsole.cs" />
     <Compile Include="MemoryRegions.cs" />
-    <Compile Include="Character\Pos.cs" />
+    <Compile Include="Characters\Pos.cs" />
     <Compile Include="DataProviders\BaseDataProvider.cs" />
     <Compile Include="Objects\AttackData.cs" />
     <Compile Include="Objects\Item.cs" />

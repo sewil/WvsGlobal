@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Center.CharacterPackets;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center
@@ -25,13 +25,13 @@ namespace WvsBeta.Center
         public static List<Messenger> Messengers = new List<Messenger>();
 
         public int ID { get; set; }
-        public Character Owner { get; set; }
-        public Character[] Members { get; set; }
+        public CenterCharacter Owner { get; set; }
+        public CenterCharacter[] Members { get; set; }
         public const int MAX_MEMBERS = 3;
 
-        public Messenger(Character pOwner)
+        public Messenger(CenterCharacter pOwner)
         {
-            Members = new Character[MAX_MEMBERS];
+            Members = new CenterCharacter[MAX_MEMBERS];
             Owner = pOwner;
             ID = pOwner.ID;
             AddMember(pOwner);
@@ -86,7 +86,7 @@ namespace WvsBeta.Center
         public static void JoinMessenger(Packet packet)
         {
             int messengerID = packet.ReadInt();
-            Character chr = ParseMessengerCharacter(packet);
+            CenterCharacter chr = ParseMessengerCharacter(packet);
 
             if (messengerID > 0 && Messengers.Exists(m => m.ID == messengerID))
             {
@@ -99,13 +99,13 @@ namespace WvsBeta.Center
         }
 
 
-        private static void CreateMessenger(Character pOwner)
+        private static void CreateMessenger(CenterCharacter pOwner)
         {
             new Messenger(pOwner);
             pOwner.SendPacket(MessengerPacket.SelfEnter(pOwner.MessengerSlot));
         }
 
-        private static void JoinExistingMessenger(int messengerID, Character joining)
+        private static void JoinExistingMessenger(int messengerID, CenterCharacter joining)
         {
             Messenger messenger = Messengers.First(m => m.ID == messengerID);
             if (messenger == null) // This should already be confirmed when joining, but just to make sure.
@@ -115,7 +115,7 @@ namespace WvsBeta.Center
             if (messenger.AddMember(joining)) // No action if messenger is full afaik.
             {
                 joining.Messenger = messenger;
-                foreach (Character mMember in messenger.Members)
+                foreach (CenterCharacter mMember in messenger.Members)
                 {
 
                     if (mMember == null) continue;
@@ -135,7 +135,7 @@ namespace WvsBeta.Center
 
         public static void LeaveMessenger(int cid)
         {
-            Character chr = CenterServer.Instance.FindCharacter(cid);
+            CenterCharacter chr = CenterServer.Instance.FindCharacter(cid);
             Messenger messenger = chr.Messenger;
 
             if (messenger == null)
@@ -146,7 +146,7 @@ namespace WvsBeta.Center
             byte slot = chr.MessengerSlot;
             bool empty = true;
 
-            foreach (Character mChr in messenger.Members)
+            foreach (CenterCharacter mChr in messenger.Members)
             {
                 if (mChr != null)
                 {
@@ -175,8 +175,8 @@ namespace WvsBeta.Center
 
         public static void SendInvite(int senderID, String recipientName)
         {
-            Character recipient = CenterServer.Instance.FindCharacter(recipientName);
-            Character sender = CenterServer.Instance.FindCharacter(senderID);
+            CenterCharacter recipient = CenterServer.Instance.FindCharacter(recipientName);
+            CenterCharacter sender = CenterServer.Instance.FindCharacter(senderID);
             Messenger messenger = sender.Messenger;
 
             if (sender == null || messenger == null || messenger.usersInChat() >= MAX_MEMBERS)
@@ -193,14 +193,14 @@ namespace WvsBeta.Center
 
         public static void Chat(int cid, String message)
         {
-            Character chr = CenterServer.Instance.FindCharacter(cid);
+            CenterCharacter chr = CenterServer.Instance.FindCharacter(cid);
 
             if (chr.Messenger == null)
             {
                 return;
             }
 
-            foreach (Character mChr in chr.Messenger.Members)
+            foreach (CenterCharacter mChr in chr.Messenger.Members)
             {
                 if (mChr != null && mChr.ID != cid)
                 {
@@ -209,16 +209,16 @@ namespace WvsBeta.Center
             }
         }
 
-        private static Character ParseMessengerCharacter(Packet packet)
+        private static CenterCharacter ParseMessengerCharacter(Packet packet)
         {
-            Character pCharacter = CenterServer.Instance.FindCharacter(packet.ReadInt());
+            CenterCharacter pCharacter = CenterServer.Instance.FindCharacter(packet.ReadInt());
 
             pCharacter.Name = packet.ReadString();
             pCharacter.SetFromAvatarLook(new AvatarLook(packet));
             return pCharacter;
         }
 
-        public bool AddMember(Character pCharacter)
+        public bool AddMember(CenterCharacter pCharacter)
         {
             byte slot = (byte)Array.IndexOf(Members, null);
             if (slot < MAX_MEMBERS)
@@ -237,7 +237,7 @@ namespace WvsBeta.Center
 
         public static void OnAvatar(Packet packet)
         {
-            Character chr = ParseMessengerCharacter(packet); //, chr, false);
+            CenterCharacter chr = ParseMessengerCharacter(packet); //, chr, false);
             if (chr == null || chr.Messenger == null)
             {
                 return;

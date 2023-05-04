@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Enums;
+﻿using WvsBeta.Common.Characters;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using static WvsBeta.MasterThread;
@@ -7,10 +8,10 @@ namespace WvsBeta.Common.Objects.BuffStats
 {
     public class BuffStat_DragonBlood : BuffStat
     {
-        private readonly CharacterBase Owner;
+        private readonly Character Owner;
         private long tLastDamaged;
 
-        public BuffStat_DragonBlood(BuffValueTypes flag, CharacterBase own) : base(flag)
+        public BuffStat_DragonBlood(BuffValueTypes flag, Character own) : base(flag)
         {
             Owner = own;
         }

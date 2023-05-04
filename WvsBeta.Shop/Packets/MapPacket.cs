@@ -12,7 +12,7 @@ namespace WvsBeta.Shop
 
     public static class MapPacket
     {
-        public static void SendJoinCashServer(Character chr)
+        public static void SendJoinCashServer(ShopCharacter chr)
         {
             Packet pack = new Packet(ServerMessages.SET_CASH_SHOP);
             var flags = (

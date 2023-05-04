@@ -6,6 +6,7 @@ using System.Net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -31,36 +32,36 @@ namespace WvsBeta.Center
         public CenterToCenterAcceptor CenterToCenterAcceptor { get; private set; }
         public CenterToCenterSession CenterToCenterConnection { get; set; }
 
-        public List<Character> CharacterStore { get; } = new List<Character>();
+        public List<CenterCharacter> CharacterStore { get; } = new List<CenterCharacter>();
         public List<Messenger> MessengerRooms { get; } = new List<Messenger>();
         public void LogToLogfile(string what)
         {
             Program.LogFile.WriteLine(what);
         }
 
-        public Character FindCharacter(string name, bool onlyOnline = true)
+        public CenterCharacter FindCharacter(string name, bool onlyOnline = true)
         {
             var chr = CharacterStore.Find(x => x.Name.Equals(name, StringComparison.InvariantCultureIgnoreCase));
             if (onlyOnline && (chr?.IsOnline ?? false) == false) return null;
             return chr;
         }
 
-        public Character FindCharacter(int id, bool onlyOnline = true)
+        public CenterCharacter FindCharacter(int id, bool onlyOnline = true)
         {
             var chr = CharacterStore.Find(c => c.ID == id);
             if (onlyOnline && (chr?.IsOnline ?? false) == false) return null;
             return chr;
         }
 
-        public bool IsOnline(CharacterBase pCharacter) => pCharacter?.IsOnline ?? false;
+        public bool IsOnline(Character pCharacter) => pCharacter?.IsOnline ?? false;
         public bool IsOnline(int CharacterID) => IsOnline(FindCharacter(CharacterID));
 
-        public Character AddCharacter(string name, int id, byte channel, short job, byte level, byte gm)
+        public CenterCharacter AddCharacter(string name, int id, byte channel, short job, byte level, byte gm)
         {
             var chr = FindCharacter(id, false);
             if (chr == null)
             {
-                chr = new Character(name, id, false, gm, true);
+                chr = new CenterCharacter(name, id, false, gm, true);
                 CharacterStore.Add(chr);
             }
             else if (chr.isCCing)

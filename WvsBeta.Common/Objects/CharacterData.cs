@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
@@ -6,8 +7,8 @@ namespace WvsBeta.Common.Objects
 {
     public class CharacterData
     {
-        protected virtual CharacterBase Character { get; private set; }
-        public CharacterData(CharacterBase chr)
+        protected virtual Character Character { get; private set; }
+        public CharacterData(Character chr)
         {
             Character = chr;
         }

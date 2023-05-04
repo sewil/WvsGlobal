@@ -27,7 +27,7 @@ namespace WvsBeta.Center
             pw.WriteString(charName);
         }
 
-        public Character GetChar()
+        public CenterCharacter GetChar()
         {
             return CenterServer.Instance.FindCharacter(charId);
         }

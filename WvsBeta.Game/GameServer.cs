@@ -6,7 +6,7 @@ using System.Linq;
 using System.Management.Instrumentation;
 using System.Net;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;

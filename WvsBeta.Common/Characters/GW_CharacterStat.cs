@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
-namespace WvsBeta.Common.Character
+namespace WvsBeta.Common.Characters
 {
     public class GW_CharacterStat
     {

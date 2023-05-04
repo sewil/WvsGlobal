@@ -5,7 +5,7 @@ namespace WvsBeta.Center.Packets
 {
     static class ChatPacket
     {
-        public static void SendGroupMessage(Character victim, GroupMessageType type, string fromName, string message)
+        public static void SendGroupMessage(CenterCharacter victim, GroupMessageType type, string fromName, string message)
         {
             Packet pw = new Packet(ServerMessages.GROUP_MESSAGE);
             pw.WriteByte((byte)type);

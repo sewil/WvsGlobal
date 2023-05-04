@@ -1,12 +1,11 @@
 ﻿using log4net;
 using System;
-using WvsBeta.Common.Character;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Common
+namespace WvsBeta.Common.Characters
 {
-    public class CharacterBase : MovableLife
+    public class Character : MovableLife
     {
         public int UserID { get; set; }
         public string Name { get => CharacterStat.Name; set => CharacterStat.Name = value; }
@@ -74,7 +73,7 @@ namespace WvsBeta.Common
             if (CharacterStat.PetCashId == 0) return null;
             return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
         }
-        public bool InPartyWith(CharacterBase chr)
+        public bool InPartyWith(Character chr)
         {
             return PartyID > 0 && PartyID == chr.PartyID;
         }

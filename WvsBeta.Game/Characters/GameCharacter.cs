@@ -7,7 +7,7 @@ using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
@@ -20,7 +20,7 @@ using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
 {
-    public partial class GameCharacter : CharacterBase, IFieldObj
+    public partial class GameCharacter : Character, IFieldObj
     {
         private static ILog _characterLog = LogManager.GetLogger("CharacterLog");
 

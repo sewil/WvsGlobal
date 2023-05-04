@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CenterSocket.cs" />
-    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\ShopCharacter.cs" />
     <Compile Include="Characters\CharacterInventory.cs" />
     <Compile Include="Characters\CharacterCashLocker.cs" />
     <Compile Include="Characters\ClientSocket.cs" />

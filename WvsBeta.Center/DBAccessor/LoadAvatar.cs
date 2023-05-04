@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using static WvsBeta.Common.Constants.EquipSlots;
 

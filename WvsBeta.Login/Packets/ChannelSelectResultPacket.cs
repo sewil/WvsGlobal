@@ -1,4 +1,4 @@
-﻿using WvsBeta.Common.Character;
+﻿using WvsBeta.Common.Characters;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 

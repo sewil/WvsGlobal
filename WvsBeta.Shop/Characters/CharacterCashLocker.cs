@@ -15,10 +15,10 @@ namespace WvsBeta.Shop
 {
     public class CharacterCashLocker : CharacterCashItems
     {
-        public Character Character { get; private set; }
+        public ShopCharacter Character { get; private set; }
         
         // No CharacterID as this is the cross-account locker
-        public CharacterCashLocker(Character chr) : base(chr.UserID, 0)
+        public CharacterCashLocker(ShopCharacter chr) : base(chr.UserID, 0)
         {
             Character = chr;
         }

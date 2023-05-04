@@ -119,7 +119,7 @@ namespace WvsBeta.Shop
             S_BuyUnk79_Failed = 79
         }
 
-        public static void HandleCashPacket(Character chr, Packet packet)
+        public static void HandleCashPacket(ShopCharacter chr, Packet packet)
         {
             var header = (CashPacketOpcodes)packet.ReadByte();
             switch (header)
@@ -162,7 +162,7 @@ namespace WvsBeta.Shop
 
                         chr.AddSale($"Bought inventory expansion for inventory type {inventory} character {chr.ID}", price, 0, maplepoints ? TransactionType.MaplePoints : TransactionType.NX);
 
-                        Character.CashLog.Info(new BuySlotIncrease
+                        ShopCharacter.CashLog.Info(new BuySlotIncrease
                         {
                             cashAmount = price,
                             inventory = inventory,
@@ -317,7 +317,7 @@ namespace WvsBeta.Shop
                     }
             }
         }
-        public static void GiftItem(Character chr, uint dob, int sn, string recipient, string message, bool isCoupleRing)
+        public static void GiftItem(ShopCharacter chr, uint dob, int sn, string recipient, string message, bool isCoupleRing)
         {
             // Check SN
             if (!DataProvider.Commodity.TryGetValue(sn, out var ci))
@@ -406,7 +406,7 @@ namespace WvsBeta.Shop
              
             chr.AddSale($"Bought cash item {giftedItem.ItemId} amount {giftedItem.Amount} (ref: {giftedItem.CashId:X16}) as a gift for {recipient}", ci.Price, ci.SerialNumber, TransactionType.NX);
 
-            Character.CashLog.Info(new BoughtItem
+            ShopCharacter.CashLog.Info(new BoughtItem
             {
                 cashAmount = ci.Price,
                 lockerItem = giftedItem,
@@ -418,7 +418,7 @@ namespace WvsBeta.Shop
             MemoPacket.SendMemo(Server.Instance.CenterConnection, chr.ID, recipientId, message, giftedItem.CashId, false);
         }
 
-        public static void SendGiftCoupleRing(Character chr, LockerItem item, string recipient, int itemid, short amount)
+        public static void SendGiftCoupleRing(ShopCharacter chr, LockerItem item, string recipient, int itemid, short amount)
         {
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
             pw.WriteByte((byte)CashPacketOpcodes.S_GiftCoupleRing_Done);
@@ -429,7 +429,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendGiftPackageDone(Character chr, string recipient, int itemid, short amount)
+        public static void SendGiftPackageDone(ShopCharacter chr, string recipient, int itemid, short amount)
         {
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
             pw.WriteByte((byte)CashPacketOpcodes.S_GiftPackage_Done);
@@ -439,7 +439,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendBoughtPackage(Character chr, IList<LockerItem> items)
+        public static void SendBoughtPackage(ShopCharacter chr, IList<LockerItem> items)
         {
             if (items.Count > byte.MaxValue) throw new ArgumentException("Too many items!");
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
@@ -452,7 +452,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendWishlist(Character chr, bool update)
+        public static void SendWishlist(ShopCharacter chr, bool update)
         {
             var pw = GetPacketWriter(update ? CashPacketOpcodes.S_UpdateWish_Done : CashPacketOpcodes.S_LoadWish_Done);
             foreach (var val in chr.Wishlist)
@@ -462,7 +462,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendInfo(Character chr)
+        public static void SendInfo(ShopCharacter chr)
         {
             SendLocker(chr);
             SendWishlist(chr, false);
@@ -476,7 +476,7 @@ namespace WvsBeta.Shop
             return pw;
         }
 
-        public static void SendLocker(Character chr)
+        public static void SendLocker(ShopCharacter chr)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_LoadLocker_Done);
 
@@ -506,7 +506,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendBoughtItem(Character chr, LockerItem item)
+        public static void SendBoughtItem(ShopCharacter chr, LockerItem item)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_Buy_Done);
 
@@ -514,7 +514,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendBoughtUnk78(Character chr, IList<long> cashIds)
+        public static void SendBoughtUnk78(ShopCharacter chr, IList<long> cashIds)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_BuyUnk78_Done);
             pw.WriteInt(cashIds.Count);
@@ -525,7 +525,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendGiftDone(Character chr, int itemid, short amount, string receipient)
+        public static void SendGiftDone(ShopCharacter chr, int itemid, short amount, string receipient)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_Gift_Done);
 
@@ -536,7 +536,7 @@ namespace WvsBeta.Shop
         }
 
 
-        public static void SendIncreasedSlots(Character chr, Inventory inventory, short slots)
+        public static void SendIncreasedSlots(ShopCharacter chr, Inventory inventory, short slots)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_IncSlotCount_Done);
             pw.WriteByte((byte)inventory);
@@ -544,7 +544,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendPlacedItemInInventory(Character chr, Item item)
+        public static void SendPlacedItemInInventory(ShopCharacter chr, Item item)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_MoveLtoS_Done);
             pw.WriteShort(item.InventorySlot);
@@ -552,7 +552,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendPlacedItemInStorage(Character chr, LockerItem item)
+        public static void SendPlacedItemInStorage(ShopCharacter chr, LockerItem item)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_MoveStoL_Done);
             item.Encode(pw);
@@ -560,7 +560,7 @@ namespace WvsBeta.Shop
         }
 
 
-        public static void SendError(Character chr, CashPacketOpcodes opcode, CashErrors error, int v = 0)
+        public static void SendError(ShopCharacter chr, CashPacketOpcodes opcode, CashErrors error, int v = 0)
         {
             var pw = new Packet(ServerMessages.CASHSHOP_ACTION);
             pw.WriteByte((byte)opcode);
@@ -570,7 +570,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendCashAmounts(Character chr)
+        public static void SendCashAmounts(ShopCharacter chr)
         {
             var points = chr.GetCashStatus();
 
@@ -580,7 +580,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void Charge(Character chr)
+        public static void Charge(ShopCharacter chr)
         {
             //This minimizes your client :O 
             var pw = new Packet(ServerMessages.CASHSHOP_RECHARGE);
@@ -593,7 +593,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendUseCouponDone(Character chr, IList<LockerItem> lockerItems, int maplePoints, IList<long> cashIds, int mesos)
+        public static void SendUseCouponDone(ShopCharacter chr, IList<LockerItem> lockerItems, int maplePoints, IList<long> cashIds, int mesos)
         {
             if (lockerItems.Count > byte.MaxValue) throw new ArgumentException("Too many locker items!");
             else if (cashIds.Count > byte.MaxValue) throw new ArgumentException("Too many cash ids!");
@@ -620,7 +620,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendUseGiftCouponDone(Character chr, string name, IList<LockerItem> lockerItems, int maplePoints)
+        public static void SendUseGiftCouponDone(ShopCharacter chr, string name, IList<LockerItem> lockerItems, int maplePoints)
         {
             if (lockerItems.Count > byte.MaxValue) throw new ArgumentException("Too many locker items!");
 
@@ -639,7 +639,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static bool TryValidateBuy(Character chr, int sn, bool isQuestItem, bool maplePoints, out CommodityInfo ci)
+        public static bool TryValidateBuy(ShopCharacter chr, int sn, bool isQuestItem, bool maplePoints, out CommodityInfo ci)
         {
             if (!DataProvider.Commodity.TryGetValue(sn, out ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
             {
@@ -681,7 +681,7 @@ namespace WvsBeta.Shop
             return true;
         }
 
-        public static LockerItem BuyComplete(Character chr, CommodityInfo ci, bool maplePoints)
+        public static LockerItem BuyComplete(ShopCharacter chr, CommodityInfo ci, bool maplePoints)
         {
             var lockerItem = new LockerItem(chr.UserID, ci, "");
             var baseItem = CharacterCashLocker.CreateCashItem(lockerItem);
@@ -689,7 +689,7 @@ namespace WvsBeta.Shop
 
             chr.AddSale($"Bought cash item {lockerItem.ItemId} amount {lockerItem.Amount} (ref: {lockerItem.CashId:X16})", ci.Price, ci.SerialNumber, maplePoints ? TransactionType.MaplePoints : TransactionType.NX);
 
-            Character.CashLog.Info(new BoughtItem
+            ShopCharacter.CashLog.Info(new BoughtItem
             {
                 cashAmount = ci.Price,
                 lockerItem = lockerItem,
@@ -698,7 +698,7 @@ namespace WvsBeta.Shop
             return lockerItem;
         }
 
-        public static void BuyItem(Character chr, int sn, bool maplePoints, CashPacketOpcodes header)
+        public static void BuyItem(ShopCharacter chr, int sn, bool maplePoints, CashPacketOpcodes header)
         {
             bool isQuestItem = header == CashPacketOpcodes.C_BuyQuestItem;
             bool isPackage = header == CashPacketOpcodes.C_BuyPackage;

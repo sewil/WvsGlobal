@@ -6,7 +6,7 @@ using System.Linq;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 using System.Text;
 using log4net.Appender;

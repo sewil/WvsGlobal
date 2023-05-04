@@ -45,7 +45,7 @@ namespace WvsBeta.Shop
         public override void EndLogging()
         {
             base.EndLogging();
-            Character.RemoveLogging();
+            ShopCharacter.RemoveLogging();
         }
 
         public override void OnDisconnect()
@@ -232,9 +232,9 @@ namespace WvsBeta.Shop
                 goto cleanup_and_disconnect;
             }
 
-            var character = new Character(characterId);
+            var character = new ShopCharacter(characterId);
             var loadResult = character.Load(IP);
-            if (loadResult != Character.LoadFailReasons.None)
+            if (loadResult != ShopCharacter.LoadFailReasons.None)
             {
                 Program.MainForm.LogAppend($"Player tried to login, but we failed loading the char! Playerid: {characterId}, reason {loadResult}");
                 goto cleanup_and_disconnect;

@@ -107,7 +107,7 @@ namespace WvsBeta.Center
                                     var memberCount = decompressedPacket.ReadInt();
                                     for (var i = 0; i < memberCount; i++)
                                     {
-                                        var member = new Character(decompressedPacket);
+                                        var member = new CenterCharacter(decompressedPacket);
                                         var possibleCopy = CenterServer.Instance.FindCharacter(member.Name, false);
                                         if (possibleCopy != null)
                                         {
@@ -155,7 +155,7 @@ namespace WvsBeta.Center
                                                 var memberCount = decompressedPacket.ReadInt();
                                                 for (var i = 0; i < memberCount; i++)
                                                 {
-                                                    var member = new Character(decompressedPacket);
+                                                    var member = new CenterCharacter(decompressedPacket);
                                                     var possibleCopy = CenterServer.Instance.FindCharacter(member.Name, false);
                                                     if (possibleCopy != null)
                                                     {

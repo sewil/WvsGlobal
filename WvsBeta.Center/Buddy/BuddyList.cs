@@ -17,7 +17,7 @@ namespace WvsBeta.Center
         public readonly BuddyData Owner;
         private readonly Queue<BuddyData> BuddyRequests;
 
-        private BuddyList(byte cap, Character own)
+        private BuddyList(byte cap, CenterCharacter own)
         {
             Capacity = cap;
             Owner = new BuddyData(own.ID, own.Name);
@@ -137,7 +137,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public void RemoveBuddyOrRequest(Character Victim, int victimId)
+        public void RemoveBuddyOrRequest(CenterCharacter Victim, int victimId)
         {
             if (BuddyRequests.Count != 0 && BuddyRequests.Peek().charId == victimId)
             {
@@ -276,12 +276,12 @@ namespace WvsBeta.Center
             return list;
         }
 
-        private static BuddyList LoadDefault(Character chr)
+        private static BuddyList LoadDefault(CenterCharacter chr)
         {
             return new BuddyList(20, chr);
         }
 
-        private static BuddyList LoadFromDb(Character chr, byte capacity)
+        private static BuddyList LoadFromDb(CenterCharacter chr, byte capacity)
         {
             var newlist = new BuddyList(capacity, chr);
 

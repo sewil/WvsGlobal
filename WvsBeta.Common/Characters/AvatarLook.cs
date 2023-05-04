@@ -5,7 +5,7 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using static WvsBeta.Common.Constants.EquipSlots;
 
-namespace WvsBeta.Common.Character
+namespace WvsBeta.Common.Characters
 {
     public class AvatarLook
     {
@@ -19,7 +19,7 @@ namespace WvsBeta.Common.Character
         public readonly Dictionary<Slots, int> CashEquips = new Dictionary<Slots, int>();
         public readonly Dictionary<Slots, int> NormalEquips = new Dictionary<Slots, int>();
 
-        public AvatarLook(CharacterBase character, bool messenger) : this(
+        public AvatarLook(Character character, bool messenger) : this(
             character.CharacterStat,
             character.Inventory?.Equipped[EquippedType.Cash].Select(i => new KeyValuePair<Slots,int>(i.Key, i.Value.ItemID)).ToDictionary(i => i.Key, i => i.Value),
             character.Inventory?.Equipped[EquippedType.Normal].Select(i => new KeyValuePair<Slots,int>(i.Key, i.Value.ItemID)).ToDictionary(i => i.Key, i => i.Value),

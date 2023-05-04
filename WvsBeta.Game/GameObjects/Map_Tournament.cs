@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers;

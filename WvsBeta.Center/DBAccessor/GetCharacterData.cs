@@ -1,6 +1,6 @@
 ﻿using System;
 using MySql.Data.MySqlClient;
-using WvsBeta.Common.Character;
+using WvsBeta.Common.Characters;
 
 namespace WvsBeta.Center.DBAccessor
 {
