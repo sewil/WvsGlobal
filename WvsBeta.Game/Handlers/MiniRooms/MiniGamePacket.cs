@@ -1,7 +1,7 @@
 ﻿using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public static class MiniGamePacket
     {
@@ -14,21 +14,21 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void Ready(GameCharacter chr, MiniRoomBase mrb)
+        public static void Ready(GameCharacter chr, MiniRoom mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.GameReady);
             mrb.BroadcastPacket(pw);
         }
 
-        public static void UnReady(GameCharacter chr, MiniRoomBase mrb)
+        public static void UnReady(GameCharacter chr, MiniRoom mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.GameUnready);
             mrb.BroadcastPacket(pw);
         }
 
-        public static void OmokMessage(GameCharacter chr, MiniRoomBase mrb, byte Type)
+        public static void OmokMessage(GameCharacter chr, MiniRoom mrb, byte Type)
         {
             //You have double -3's o.o
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -37,14 +37,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             chr.SendPacket(pw);
         }
 
-        public static void RequestTie(GameCharacter chr, MiniRoomBase mrb)
+        public static void RequestTie(GameCharacter chr, MiniRoom mrb)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.GameRequestTie);
             mrb.BroadcastPacket(pw, chr);
         }
 
-        public static void RequestTieDeny(GameCharacter chr, MiniRoomBase mrb)
+        public static void RequestTieDeny(GameCharacter chr, MiniRoom mrb)
         {
             //Your opononent denied your request for a tie
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -52,7 +52,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw, chr);
         }
 
-        public static void RequestHandicap(GameCharacter chr, MiniRoomBase mrb)
+        public static void RequestHandicap(GameCharacter chr, MiniRoom mrb)
         {
             //Your opponent has requested for a handicap. Will you accept it? 
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -60,7 +60,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw, chr);
         }
 
-        public static void RequestHandicapResult(GameCharacter chr, MiniRoomBase mrb, bool result, byte countBack)
+        public static void RequestHandicapResult(GameCharacter chr, MiniRoom mrb, bool result, byte countBack)
         {
             //Your opponent denied your request for a handicap
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
@@ -71,7 +71,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             mrb.BroadcastPacket(pw, null);
         }
 
-        public static void MoveOmokPiece(GameCharacter chr, MiniRoomBase mrb, int X, int Y, byte Piece)
+        public static void MoveOmokPiece(GameCharacter chr, MiniRoom mrb, int X, int Y, byte Piece)
         {
             //decodebuffer (8 bytes.. obviously 2 ints)
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);

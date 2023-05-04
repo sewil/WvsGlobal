@@ -3,9 +3,9 @@ using log4net;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public static class MiniRoomPacket
     {
@@ -73,7 +73,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         int roomid = pPacket.ReadInt();
 
                         miniroomLog.Info($"{pCharacter.Name} declined invite.");
-                        if (!MiniRoomBase.MiniRooms.ContainsKey(roomid))
+                        if (!MiniRoom.MiniRooms.ContainsKey(roomid))
                         {
                             // REPORT
                             //ReportManager.FileNewReport("Tried opening a trade room without a proper ID.", pCharacter.ID, 0);
@@ -81,7 +81,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             return;
                         }
 
-                        MiniRoomBase mrb = MiniRoomBase.MiniRooms[roomid];
+                        MiniRoom mrb = MiniRoom.MiniRooms[roomid];
                         //if (mrb.IsFull())
                         //{
 
@@ -140,7 +140,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                         byte slot = pPacket.ReadByte();
                         short bundleamount = pPacket.ReadShort();
-                        PlayerShop ps = (PlayerShop)MiniRoomBase.MiniRooms[pCharacter.Room.ID];
+                        PlayerShop ps = (PlayerShop)MiniRoom.MiniRooms[pCharacter.Room.ID];
 
                         if (ps != null)
                         {
@@ -152,7 +152,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
                 case MiniRoomOpClient.Leave: //Leave
                     {
-                        MiniRoomBase mr = pCharacter.Room;
+                        MiniRoom mr = pCharacter.Room;
                         if (mr == null) return;
 
                         miniroomLog.Info($"{pCharacter.Name} declined invite.");
@@ -395,7 +395,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             
             //MessagePacket.SendNotice("PACKET: " + packet.ToString(), chr);
             int roomId = packet.ReadInt();
-            if (!MiniRoomBase.MiniRooms.TryGetValue(roomId, out var mrb))
+            if (!MiniRoom.MiniRooms.TryGetValue(roomId, out var mrb))
             {
                 ReportManager.FileNewReport("Tried entering a trade room without a proper ID.", chr.ID, 0);
                 return; // Invalid Room ID
@@ -462,14 +462,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             }
         }
 
-        public static void SendEnter(MiniRoomBase pRoom, GameCharacter pWho)
+        public static void SendEnter(MiniRoom pRoom, GameCharacter pWho)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pRoom.EncodeEnter(pWho, pw);
             pRoom.BroadcastPacket(pw, pWho);
         }
 
-        public static void SendEnterResult(MiniRoomBase pRoom, GameCharacter pTo)
+        public static void SendEnterResult(MiniRoom pRoom, GameCharacter pTo)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pRoom.EncodeEnterResult(pTo, pw);
@@ -489,13 +489,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             var pw = LeaveRoom(victim, reason);
             victim.SendPacket(pw);
         }
-        public static void SendLeaveRoom(MiniRoomBase room, GameCharacter victim, MiniRoomLeaveReason reason)
+        public static void SendLeaveRoom(MiniRoom room, GameCharacter victim, MiniRoomLeaveReason reason)
         {
             var pw = LeaveRoom(victim, reason);
             room.BroadcastPacket(pw);
         }
 
-        public static void Invite(MiniRoomBase pRoom, GameCharacter pWho, GameCharacter pVictim)
+        public static void Invite(MiniRoom pRoom, GameCharacter pWho, GameCharacter pVictim)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.Invite);
@@ -518,7 +518,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
             pWho.SendPacket(pw);
         }
-        public static void ChatNotice(MiniRoomBase room, GameCharacter chr, MiniRoomChatNoticeType noticeType)
+        public static void ChatNotice(MiniRoom room, GameCharacter chr, MiniRoomChatNoticeType noticeType)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.Chat);
@@ -527,7 +527,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             pw.WriteString(chr?.Name ?? "");
             room.BroadcastPacket(pw);
         }
-        public static void ChatText(MiniRoomBase room, GameCharacter chr, string text)
+        public static void ChatText(MiniRoom room, GameCharacter chr, string text)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpServer.Chat);
@@ -537,7 +537,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             room.BroadcastPacket(pw);
         }
 
-        public static void MiniRoomCommand(MiniRoomBase room, GameCharacter character, string commandText)
+        public static void MiniRoomCommand(MiniRoom room, GameCharacter character, string commandText)
         {
             var args = new Handlers.CommandHandling.CommandArgs(commandText);
             switch (args.Command.ToLower())

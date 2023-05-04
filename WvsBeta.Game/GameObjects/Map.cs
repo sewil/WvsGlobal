@@ -10,10 +10,10 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
-using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.GameObjects.MiniRooms;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Contimove;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game

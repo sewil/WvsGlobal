@@ -5,7 +5,7 @@ using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.GameObjects.MiniRooms;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
 

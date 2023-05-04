@@ -1,4 +1,4 @@
-﻿namespace WvsBeta.Game.GameObjects.MiniRoom
+﻿namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public enum MiniRoomOpClient
     {

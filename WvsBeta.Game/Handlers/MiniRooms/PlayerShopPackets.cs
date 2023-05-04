@@ -3,7 +3,7 @@ using WvsBeta.Common.Characters;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public static class PlayerShopPackets
     {

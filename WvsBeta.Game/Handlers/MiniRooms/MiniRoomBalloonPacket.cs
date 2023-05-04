@@ -1,8 +1,8 @@
 ﻿using System;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public static class MiniRoomBalloonPacket
     {

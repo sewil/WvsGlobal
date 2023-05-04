@@ -7,9 +7,9 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 using WvsBeta.Game.Packets;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
-    public class Trade : MiniRoomBase
+    public class Trade : MiniRoom
     {
         private const byte MAX_SLOTS = 10;
 

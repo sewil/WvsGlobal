@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.GameObjects.MiniRooms;
 
 namespace WvsBeta.Game
 {

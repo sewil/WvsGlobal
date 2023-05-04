@@ -5,14 +5,14 @@ using WvsBeta.Common.Characters;
 using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Sessions;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
-    public abstract class MiniRoomBase : IInitialize
+    public abstract class MiniRoom : IInitialize
     {
         protected string _transaction = Cryptos.GetNewSessionHash();
         public string TransactionID => _transaction;
 
-        public static Dictionary<int, MiniRoomBase> MiniRooms = new Dictionary<int, MiniRoomBase>();
+        public static Dictionary<int, MiniRoom> MiniRooms = new Dictionary<int, MiniRoom>();
 
         public int ID { get; }
         public byte MaxUsers { get; }
@@ -27,7 +27,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public GameCharacter Owner { get; private set; }
         public Map Field { get; }
 
-        protected MiniRoomBase(GameCharacter owner, byte maxUsers, MiniRoomType type)
+        protected MiniRoom(GameCharacter owner, byte maxUsers, MiniRoomType type)
         {
             Owner = owner;
             Field = owner.Field;

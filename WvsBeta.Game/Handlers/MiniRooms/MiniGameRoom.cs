@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.GameObjects.MiniRooms;
 
-namespace WvsBeta.Game.Handlers.MiniRoom
+namespace WvsBeta.Game.Handlers.MiniRooms
 {
     public abstract class MiniGameRoom : BalloonRoom
     {

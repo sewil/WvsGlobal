@@ -7,10 +7,10 @@ using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 using WvsBeta.Game.Packets;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public class PlayerShopItem
     {

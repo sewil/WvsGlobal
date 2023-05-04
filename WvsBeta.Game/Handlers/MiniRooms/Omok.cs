@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using WvsBeta.Common.Interfaces;
 using WvsBeta.Common.Sessions;
-using WvsBeta.Game.Handlers.MiniRoom;
+using WvsBeta.Game.Handlers.MiniRooms;
 
-namespace WvsBeta.Game.GameObjects.MiniRoom
+namespace WvsBeta.Game.GameObjects.MiniRooms
 {
     public class OmokStone
     {

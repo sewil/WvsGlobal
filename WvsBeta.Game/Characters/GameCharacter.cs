@@ -12,7 +12,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
-using WvsBeta.Game.GameObjects.MiniRoom;
+using WvsBeta.Game.GameObjects.MiniRooms;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Handlers.GuildQuest;
@@ -70,7 +70,7 @@ namespace WvsBeta.Game
         public bool GMHideEnabled { get; private set; }
         public bool Donator { get; private set; }
         public bool BetaPlayer { get; private set; }
-        public MiniRoomBase Room { get; set; }
+        public MiniRoom Room { get; set; }
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
 

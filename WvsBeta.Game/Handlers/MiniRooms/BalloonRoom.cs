@@ -1,8 +1,8 @@
-﻿using WvsBeta.Game.GameObjects.MiniRoom;
+﻿using WvsBeta.Game.GameObjects.MiniRooms;
 
-namespace WvsBeta.Game.Handlers.MiniRoom
+namespace WvsBeta.Game.Handlers.MiniRooms
 {
-    public abstract class BalloonRoom : MiniRoomBase
+    public abstract class BalloonRoom : MiniRoom
     {
         public bool GameStarted { get; protected set; }
         public byte GameBoardType { get; protected set; }
