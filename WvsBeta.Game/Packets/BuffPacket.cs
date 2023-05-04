@@ -7,7 +7,7 @@ namespace WvsBeta.Game
     {
         public static void EncodeForRemote(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
         {
-            CharacterPrimaryStats ps = (CharacterPrimaryStats)chr.PrimaryStats;
+            GameCharacterPrimaryStats ps = (GameCharacterPrimaryStats)chr.PrimaryStats;
             long currentTime = MasterThread.CurrentTime;
             BuffValueTypes added = 0;
 

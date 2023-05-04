@@ -5,7 +5,6 @@ using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;
-using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -28,7 +27,7 @@ namespace WvsBeta.Game
         public int ID { get; set; }
     }
 
-    public class CharacterPrimaryStats : BaseCharacterPrimaryStats
+    public class GameCharacterPrimaryStats : CharacterPrimaryStats
     {
         private GameCharacter Char { get; }
 
@@ -87,7 +86,7 @@ namespace WvsBeta.Game
         }
         private Dictionary<byte, EquipBonus> EquipStats { get; } = new Dictionary<byte, EquipBonus>();
 
-        public CharacterPrimaryStats(GameCharacter chr) : base(chr.CharacterStat)
+        public GameCharacterPrimaryStats(GameCharacter chr) : base(chr.CharacterStat)
         {
             Char = chr;
             BuffDragonBlood = new BuffStat_DragonBlood(Common.Enums.BuffValueTypes.DragonBlood, Char);

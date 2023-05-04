@@ -218,7 +218,7 @@ namespace WvsBeta.Game
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
-        private static bool canWearItem(GameCharacter chr, CharacterPrimaryStats stats, EquipData data, short slot)
+        private static bool canWearItem(GameCharacter chr, GameCharacterPrimaryStats stats, EquipData data, short slot)
         {
             // Non-cash item on cash item slot
             if (!data.Cash && slot > 100)
@@ -264,7 +264,7 @@ namespace WvsBeta.Game
 
         private static void HandleEquip(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
-            if (chr.AssertForHack(!canWearItem(chr, (CharacterPrimaryStats)chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
+            if (chr.AssertForHack(!canWearItem(chr, (GameCharacterPrimaryStats)chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
                 $"Trying to wear an item that he cannot. from {slotFrom} to {slotTo}. Itemid: {from.ItemID}"))
             {
                 // This should be handled by the client unless data.wz is editted

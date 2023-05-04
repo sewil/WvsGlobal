@@ -24,7 +24,7 @@ namespace WvsBeta.Game
             public int totalSpeed { get; set; }
             public int totalCraft { get; set; }
 
-            public DamageLogState(CharacterPrimaryStats primaryStats)
+            public DamageLogState(GameCharacterPrimaryStats primaryStats)
             {
                 level = primaryStats.Level;
                 totalStr = primaryStats.TotalStr;
@@ -83,12 +83,12 @@ namespace WvsBeta.Game
 
         private void InitDamageLog()
         {
-            _damageLogState = new DamageLogState((CharacterPrimaryStats)PrimaryStats);
+            _damageLogState = new DamageLogState((GameCharacterPrimaryStats)PrimaryStats);
         }
 
         public void FlushDamageLog(bool force = false)
         {
-            var actualState = new DamageLogState((CharacterPrimaryStats)PrimaryStats);
+            var actualState = new DamageLogState((GameCharacterPrimaryStats)PrimaryStats);
             if (_damageLogState.IsSame(actualState) && !force) return;
 
             RunFlushDamageLog();

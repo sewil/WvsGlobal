@@ -77,7 +77,7 @@ namespace WvsBeta.Game
         public new GameInventory Inventory => (GameInventory)base.Inventory;
         public new GameCharacterSkills Skills => (GameCharacterSkills)base.Skills;
         public CharacterBuffs Buffs { get; private set; }
-        public new CharacterPrimaryStats PrimaryStats { get => (CharacterPrimaryStats)base.PrimaryStats; set => base.PrimaryStats = value; }
+        public new GameCharacterPrimaryStats PrimaryStats { get => (GameCharacterPrimaryStats)base.PrimaryStats; set => base.PrimaryStats = value; }
         public Rand32 CalcDamageRandomizer { get; private set; }
         public Rand32 RndActionRandomizer { get; private set; }
         public CharacterSummons Summons { get; private set; }
@@ -510,7 +510,7 @@ namespace WvsBeta.Game
                 CalcDamageRandomizer = new Rand32();
                 RndActionRandomizer = new Rand32();
 
-                PrimaryStats = new CharacterPrimaryStats(this);
+                PrimaryStats = new GameCharacterPrimaryStats(this);
 
                 CharacterStat.LoadFromReader(data);
                 BuddyListCapacity = (byte)data.GetInt32("buddylist_size");

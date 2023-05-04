@@ -118,7 +118,7 @@
     <Compile Include="Characters\AvatarData.cs" />
     <Compile Include="Characters\AvatarLook.cs" />
     <Compile Include="Characters\Inventory.cs" />
-    <Compile Include="Characters\BaseCharacterPrimaryStats.cs" />
+    <Compile Include="Characters\CharacterPrimaryStats.cs" />
     <Compile Include="Characters\CharacterSkills.cs" />
     <Compile Include="ControlledException.cs" />
     <Compile Include="Enums\EquipIds.cs" />

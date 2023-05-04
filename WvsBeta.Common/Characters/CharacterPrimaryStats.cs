@@ -1,13 +1,11 @@
 ﻿using System;
-using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;
-using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Characters
 {
-    public class BaseCharacterPrimaryStats
+    public class CharacterPrimaryStats
     {
         public byte Level { get => CharacterStat.Level; }
         public BonusSet EquipBonuses = new BonusSet();
@@ -70,7 +68,7 @@ namespace WvsBeta.Common.Characters
         public byte TotalSpeed => (byte)Math.Max(100, Math.Min(EquipBonuses.Speed + BuffBonuses.Speed, 200));
 
         public GW_CharacterStat CharacterStat { get; private set; }
-        public BaseCharacterPrimaryStats(GW_CharacterStat characterStat)
+        public CharacterPrimaryStats(GW_CharacterStat characterStat)
         {
             CharacterStat = characterStat;
         }
