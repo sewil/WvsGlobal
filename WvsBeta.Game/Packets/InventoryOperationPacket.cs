@@ -11,7 +11,7 @@ namespace WvsBeta.Game.Packets
     public struct OperationOut
     {
         public InventoryOperationPacket.Type type;
-        public Inventory inventory;
+        public InventoryType inventory;
         public short slot;
         public short slot2;
         public short amount;
@@ -51,7 +51,7 @@ namespace WvsBeta.Game.Packets
         {
             ChangeAmount(chr, item, item.Amount);
         }
-        public static OperationOut ChangeAmountOperation(Inventory inventory, short slot, short amount)
+        public static OperationOut ChangeAmountOperation(InventoryType inventory, short slot, short amount)
         {
             return new OperationOut
             {
@@ -69,7 +69,7 @@ namespace WvsBeta.Game.Packets
         {
             SwitchSlots(chr, Constants.getInventory(item.ItemID), item.InventorySlot, newSlot);
         }
-        public static OperationOut SwitchSlotsOperation(Inventory inventory, short slot1, short slot2)
+        public static OperationOut SwitchSlotsOperation(InventoryType inventory, short slot1, short slot2)
         {
             return new OperationOut
             {
@@ -79,12 +79,12 @@ namespace WvsBeta.Game.Packets
                 slot2 = slot2
             };
         }
-        public static void SwitchSlots(GameCharacter chr, Inventory inventory, short slot1, short slot2)
+        public static void SwitchSlots(GameCharacter chr, InventoryType inventory, short slot1, short slot2)
         {
             Run(chr, true, SwitchSlotsOperation(inventory, slot1, slot2));
         }
 
-        public static void MultiDelete(GameCharacter chr, Inventory inventory, params short[] slots)
+        public static void MultiDelete(GameCharacter chr, InventoryType inventory, params short[] slots)
         {
             OperationOut[] operations = slots.Select(slot => new OperationOut
             {
@@ -136,7 +136,7 @@ namespace WvsBeta.Game.Packets
                     else if (opout.type == Type.SwitchSlots)
                     {
                         pw.WriteShort(opout.slot2);
-                        equipitem = opout.inventory == Inventory.Equip && (opout.slot < 0 || opout.slot2 < 0);
+                        equipitem = opout.inventory == InventoryType.Equip && (opout.slot < 0 || opout.slot2 < 0);
                     }
                     //if (type == Type.Unk3)
                     //{

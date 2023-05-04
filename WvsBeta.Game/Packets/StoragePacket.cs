@@ -56,7 +56,7 @@ namespace WvsBeta.Game
             {
                 case StorageAction.Withdraw: // Remove
                     {
-                        Inventory inventory = (Inventory)pr.ReadByte();
+                        InventoryType inventory = (InventoryType)pr.ReadByte();
                         byte slot = pr.ReadByte();
                         Item item = chr.Storage.GetItem(inventory, slot);
                         if (item == null)
@@ -99,7 +99,7 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        Inventory inventory = Constants.getInventory(itemid);
+                        InventoryType inventory = Constants.getInventory(itemid);
                         Item item = chr.Inventory.GetItem(inventory, slot);
                         if (item == null || item.ItemID != itemid || item.CashId != 0)
                         {
@@ -200,16 +200,16 @@ namespace WvsBeta.Game
             chr.SendPacket(packet);
         }
 
-        private static StorageEncodeFlags GetEncodeFlagForInventory(Inventory inventory)
+        private static StorageEncodeFlags GetEncodeFlagForInventory(InventoryType inventory)
         {
             StorageEncodeFlags flag;
             switch (inventory)
             {
-                case Inventory.Equip: flag = StorageEncodeFlags.EncodeInventoryEquip; break;
-                case Inventory.Use: flag = StorageEncodeFlags.EncodeInventoryUse; break;
-                case Inventory.Setup: flag = StorageEncodeFlags.EncodeInventorySetUp; break;
-                case Inventory.Etc: flag = StorageEncodeFlags.EncodeInventoryEtc; break;
-                case Inventory.Cash: flag = StorageEncodeFlags.EncodeInventoryPet; break;
+                case InventoryType.Equip: flag = StorageEncodeFlags.EncodeInventoryEquip; break;
+                case InventoryType.Use: flag = StorageEncodeFlags.EncodeInventoryUse; break;
+                case InventoryType.Setup: flag = StorageEncodeFlags.EncodeInventorySetUp; break;
+                case InventoryType.Etc: flag = StorageEncodeFlags.EncodeInventoryEtc; break;
+                case InventoryType.Cash: flag = StorageEncodeFlags.EncodeInventoryPet; break;
                 default: flag = 0; break;
             }
             return flag;
@@ -224,7 +224,7 @@ namespace WvsBeta.Game
             if (flags.HasFlag(StorageEncodeFlags.EncodeMesos))
                 packet.WriteInt(chr.Storage.Mesos);
 
-            foreach (Inventory inv in Enum.GetValues(typeof(Inventory)))
+            foreach (InventoryType inv in Enum.GetValues(typeof(InventoryType)))
             {
                 StorageEncodeFlags flag = GetEncodeFlagForInventory(inv);
                 if (flags.HasFlag(flag))
@@ -234,7 +234,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void AddInvItems(GameCharacter chr, Packet pw, Inventory inv)
+        public static void AddInvItems(GameCharacter chr, Packet pw, InventoryType inv)
         {
             var itemsInInventory = chr.Storage.GetInventoryItems(inv).ToArray();
             pw.WriteByte((byte)itemsInInventory.Length);

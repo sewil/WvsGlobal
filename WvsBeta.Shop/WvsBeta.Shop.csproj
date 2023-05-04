@@ -94,7 +94,7 @@
   <ItemGroup>
     <Compile Include="CenterSocket.cs" />
     <Compile Include="Characters\ShopCharacter.cs" />
-    <Compile Include="Characters\CharacterInventory.cs" />
+    <Compile Include="Characters\ShopInventory.cs" />
     <Compile Include="Characters\CharacterCashLocker.cs" />
     <Compile Include="Characters\ClientSocket.cs" />
     <Compile Include="Characters\Player.cs" />

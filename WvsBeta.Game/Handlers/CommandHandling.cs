@@ -944,11 +944,11 @@ namespace WvsBeta.Game.Handlers
 
                         case "maxslots":
                             {
-                                character.Inventory.SetInventorySlots(Inventory.Equip, 100);
-                                character.Inventory.SetInventorySlots(Inventory.Use, 100);
-                                character.Inventory.SetInventorySlots(Inventory.Setup, 100);
-                                character.Inventory.SetInventorySlots(Inventory.Etc, 100);
-                                character.Inventory.SetInventorySlots(Inventory.Cash, 100);
+                                character.Inventory.SetInventorySlots(InventoryType.Equip, 100);
+                                character.Inventory.SetInventorySlots(InventoryType.Use, 100);
+                                character.Inventory.SetInventorySlots(InventoryType.Setup, 100);
+                                character.Inventory.SetInventorySlots(InventoryType.Etc, 100);
+                                character.Inventory.SetInventorySlots(InventoryType.Cash, 100);
                                 return true;
                             }
 
@@ -1222,7 +1222,7 @@ namespace WvsBeta.Game.Handlers
                         case "d":
                         case "delete":
                             {
-                                if (Args.Count == 1 && Args[0].IsNumber() && Enum.TryParse(Args[0].GetByte().ToString(), out Inventory inv))
+                                if (Args.Count == 1 && Args[0].IsNumber() && Enum.TryParse(Args[0].GetByte().ToString(), out InventoryType inv))
                                 {
                                     // Find first item to delete
                                     var slot = character.Inventory.DeleteFirstItemInInventory(inv);

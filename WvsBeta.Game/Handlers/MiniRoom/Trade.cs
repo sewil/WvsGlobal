@@ -96,14 +96,14 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
 
         private bool CheckInventory(byte userSlot)
         {
-            var neededSlots = new Dictionary<Inventory, int>();
+            var neededSlots = new Dictionary<InventoryType, int>();
             var user = Users[userSlot];
             for (byte itemSlot = 0; itemSlot < MAX_SLOTS; itemSlot++)
             {
                 Item item = ItemList[userSlot == 0 ? 1 : 0][itemSlot];
                 if (item == null) continue;
 
-                Inventory inv = Constants.getInventory(item.ItemID);
+                InventoryType inv = Constants.getInventory(item.ItemID);
 
                 if (!neededSlots.ContainsKey(inv))
                 {
@@ -180,7 +180,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             return;
                         }
 
-                        Inventory inventory = (Inventory)pPacket.ReadByte();
+                        InventoryType inventory = (InventoryType)pPacket.ReadByte();
                         short slot = pPacket.ReadShort();
                         short amount = pPacket.ReadShort();
                         byte toslot = pPacket.ReadByte();

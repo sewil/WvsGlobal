@@ -117,7 +117,7 @@
   <ItemGroup>
     <Compile Include="Characters\AvatarData.cs" />
     <Compile Include="Characters\AvatarLook.cs" />
-    <Compile Include="Characters\BaseCharacterInventory.cs" />
+    <Compile Include="Characters\Inventory.cs" />
     <Compile Include="Characters\BaseCharacterPrimaryStats.cs" />
     <Compile Include="Characters\BaseCharacterSkills.cs" />
     <Compile Include="ControlledException.cs" />
@@ -147,7 +147,7 @@
     <Compile Include="Enums\BuffValueTypes.cs" />
     <Compile Include="Enums\CureFlag.cs" />
     <Compile Include="Enums\GameState.cs" />
-    <Compile Include="Enums\Inventory.cs" />
+    <Compile Include="Enums\InventoryType.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="Enums\PlayerGender.cs" />
     <Compile Include="Enums\SkillElement.cs" />

@@ -31,7 +31,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else if (val == 2)
                 {
-                    if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
+                    if (inventory.SlotCount(InventoryType.Etc) > inventory.HoldCount(InventoryType.Etc))
                     {
                         var nNewItemID = 0;
                         var rnum = Rand32.NextBetween(0, 12);
@@ -86,7 +86,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else if (val == 2)
                 {
-                    if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc) && inventory.SlotCount(Inventory.Equip) > inventory.HoldCount(Inventory.Equip))
+                    if (inventory.SlotCount(InventoryType.Etc) > inventory.HoldCount(InventoryType.Etc) && inventory.SlotCount(InventoryType.Equip) > inventory.HoldCount(InventoryType.Equip))
                     {
                         int nNewItemID = 0;
                         int rnum = Rand32.NextBetween(1, 30);

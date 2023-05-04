@@ -27,7 +27,7 @@ namespace WvsBeta.Common.Objects
             }
         }
 
-        public delegate void AddItemCallback(InventoryType type, Inventory inventory, short slot, Item item);
+        public delegate void AddItemCallback(InventoryType type, Enums.InventoryType inventory, short slot, Item item);
 
         public static void Load(MySQL_Connection connection, string baseTableName, string whereStatement, AddItemCallback callback)
         {
@@ -37,7 +37,7 @@ namespace WvsBeta.Common.Objects
                 {
                     var item = Item.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
-                    callback(InventoryType.Eqp, Inventory.Equip, data.GetInt16("slot"), item);
+                    callback(InventoryType.Eqp, Enums.InventoryType.Equip, data.GetInt16("slot"), item);
                 }
             }
 
@@ -47,13 +47,13 @@ namespace WvsBeta.Common.Objects
                 {
                     var item = Item.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
-                    callback(InventoryType.Bundle, (Inventory)data.GetInt16("inv"), data.GetInt16("slot"), item);
+                    callback(InventoryType.Bundle, (Enums.InventoryType)data.GetInt16("inv"), data.GetInt16("slot"), item);
                 }
             }
         }
 
 
-        public delegate IEnumerable<Item> StoredItemsCallback(InventoryType type, Inventory inventory);
+        public delegate IEnumerable<Item> StoredItemsCallback(InventoryType type, Enums.InventoryType inventory);
         public static void Save(MySQL_Connection connection, string baseTableName, string columnsBeforeItemInfo, string whereStatement, StoredItemsCallback callback, MySQL_Connection.LogAction dbgCallback)
         {
 
@@ -71,7 +71,7 @@ namespace WvsBeta.Common.Objects
 
                 bool firstrun = true;
                 // Inventories
-                for (Inventory inventory = Inventory.Use; inventory <= Inventory.Cash; inventory++)
+                for (Enums.InventoryType inventory = Enums.InventoryType.Use; inventory <= Enums.InventoryType.Cash; inventory++)
                 {
                     var items = callback(InventoryType.Bundle, inventory);
 
@@ -120,7 +120,7 @@ namespace WvsBeta.Common.Objects
 
                 bool firstrun = true;
 
-                var equips = callback(InventoryType.Eqp, Inventory.Equip);
+                var equips = callback(InventoryType.Eqp, Enums.InventoryType.Equip);
                 foreach (var item in equips)
                 {
                     if (item == null) continue;

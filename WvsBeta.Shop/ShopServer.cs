@@ -139,7 +139,7 @@ namespace WvsBeta.Shop
             CharacterDatabase = new MySQL_Connection(MasterThread.Instance, Username, Password, Database, Host);
 
             CharacterCashItems.Connection = CharacterDatabase;
-            BaseCharacterInventory.Connection = CharacterDatabase;
+            Inventory.Connection = CharacterDatabase;
         }
 
         private void LoadConfig(string configFile)

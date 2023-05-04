@@ -125,7 +125,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                         var room = pCharacter.Room;
                         if (room?.Type != MiniRoomType.PlayerShop) return;
 
-                        Inventory inventory = (Inventory)pPacket.ReadByte();
+                        InventoryType inventory = (InventoryType)pPacket.ReadByte();
                         short inventoryslot = pPacket.ReadShort();
                         short bundleamount = pPacket.ReadShort();
                         short AmountPerBundle = pPacket.ReadShort();

@@ -1,6 +1,6 @@
 ﻿namespace WvsBeta.Common.Enums
 {
-    public enum Inventory : byte
+    public enum InventoryType : byte
     {
         Equip = 1,
         Use = 2,

@@ -19,7 +19,6 @@ namespace WvsBeta.Center
 
         public Messenger Messenger { get; set; }
         public byte MessengerSlot { get; set; }
-        public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
 
         public CharacterMemos Memos;
 
@@ -50,7 +49,7 @@ namespace WvsBeta.Center
             this.isCCing = isCCing;
             GMLevel = gmLevel;
             IsOnline = isOnline;
-            base.Inventory = new CharacterInventory(0, id);
+            base.Inventory = new Common.Characters.Inventory(0, id);
             CharacterMemos.Load(this);
         }
 
@@ -60,7 +59,7 @@ namespace WvsBeta.Center
             LastChannel = pr.ReadByte();
             FriendsList = new BuddyList(pr);
             base.DecodeForTransfer(pr);
-            base.Inventory = new CharacterInventory(UserID, ID);
+            base.Inventory = new Common.Characters.Inventory(UserID, ID);
         }
 
         public void SetFromAvatarLook(AvatarLook avatar)

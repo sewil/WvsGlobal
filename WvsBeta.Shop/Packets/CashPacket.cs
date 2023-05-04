@@ -26,7 +26,7 @@ namespace WvsBeta.Shop
 
         public struct BuySlotIncrease
         {
-            public Inventory inventory { get; set; }
+            public InventoryType inventory { get; set; }
             public byte newSlots { get; set; }
             public bool withMaplePoints { get; set; }
             public int cashAmount { get; set; }
@@ -127,9 +127,9 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_IncreaseSlots:
                     {
                         var maplepoints = packet.ReadBool();
-                        Inventory inventory = (Inventory)packet.ReadByte();
+                        InventoryType inventory = (InventoryType)packet.ReadByte();
 
-                        if (!Enum.IsDefined(typeof(Inventory), inventory))
+                        if (!Enum.IsDefined(typeof(InventoryType), inventory))
                         {
                             _log.Warn("Increase slots failed: Invalid inventory");
                             SendError(chr, CashPacketOpcodes.S_IncSlotCount_Failed, CashErrors.OutOfStock);
@@ -220,7 +220,7 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_MoveStoL:
                     {
                         var cashid = packet.ReadLong();
-                        Inventory inv = (Inventory)packet.ReadByte();
+                        InventoryType inv = (InventoryType)packet.ReadByte();
 
                         var lockerItem = chr.Inventory.GetLockerItemByCashID(cashid);
                         if (lockerItem == null)
@@ -251,7 +251,7 @@ namespace WvsBeta.Shop
                 case CashPacketOpcodes.C_MoveLtoS:
                     {
                         var cashid = packet.ReadLong();
-                        Inventory inv = (Inventory)packet.ReadByte();
+                        InventoryType inv = (InventoryType)packet.ReadByte();
                         var slot = packet.ReadShort();
 
                         var lockerItem = chr.Locker.GetLockerItemFromCashID(cashid);
@@ -536,7 +536,7 @@ namespace WvsBeta.Shop
         }
 
 
-        public static void SendIncreasedSlots(ShopCharacter chr, Inventory inventory, short slots)
+        public static void SendIncreasedSlots(ShopCharacter chr, InventoryType inventory, short slots)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_IncSlotCount_Done);
             pw.WriteByte((byte)inventory);

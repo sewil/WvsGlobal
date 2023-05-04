@@ -55,7 +55,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            Item item = chr.Inventory.GetItem(Inventory.Use, slot);
+            Item item = chr.Inventory.GetItem(InventoryType.Use, slot);
 
             if (chr.AssertForHack(item == null, "HandleCashItem with null item") ||
                 chr.AssertForHack(item.ItemID != itemid, "HandleCashItem with itemid inconsistency") ||

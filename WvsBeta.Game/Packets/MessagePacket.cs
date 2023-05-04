@@ -42,8 +42,8 @@ namespace WvsBeta.Game.Packets
             pw.WriteInt(itemIdOrMesos);
             if (!isMesos)
             {
-                Inventory inv = Constants.getInventory(itemIdOrMesos);
-                pw.WriteInt(inv == Inventory.Equip ? (int)Inventory.Equip : itemAmount);
+                InventoryType inv = Constants.getInventory(itemIdOrMesos);
+                pw.WriteInt(inv == InventoryType.Equip ? (int)InventoryType.Equip : itemAmount);
             }
             return pw;
         }

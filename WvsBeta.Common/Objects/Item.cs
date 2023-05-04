@@ -24,7 +24,7 @@ namespace WvsBeta.Common.Objects
         public bool IsQuest { get; set; }
         public bool IsTradeBlock { get; set; }
         public bool BigSize { get; set; }
-        public Inventory Inventory { get; }
+        public InventoryType Inventory { get; }
 
         protected Item(int itemId)
         {

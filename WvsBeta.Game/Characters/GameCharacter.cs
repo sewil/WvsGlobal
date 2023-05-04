@@ -74,7 +74,7 @@ namespace WvsBeta.Game
         public byte RoomSlotId { get; set; }
         public bool UsingTimer { get; set; }
 
-        public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
+        public new GameInventory Inventory => (GameInventory)base.Inventory;
         public new CharacterSkills Skills => (CharacterSkills)base.Skills;
         public CharacterBuffs Buffs { get; private set; }
         public new CharacterPrimaryStats PrimaryStats { get => (CharacterPrimaryStats)base.PrimaryStats; set => base.PrimaryStats = value; }
@@ -153,7 +153,7 @@ namespace WvsBeta.Game
         public PetItem GetSpawnedPet()
         {
             if (CharacterStat.PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.InventoryType.Cash) as PetItem;
         }
 
         public void EncodeForRemote(Packet packet)
@@ -519,7 +519,7 @@ namespace WvsBeta.Game
                 lastSaveStep = CalculateSaveStep();
             }
 
-            base.Inventory = new CharacterInventory(this);
+            base.Inventory = new GameInventory(this);
             Inventory.LoadInventory();
 
             base.Skills = new CharacterSkills(this);

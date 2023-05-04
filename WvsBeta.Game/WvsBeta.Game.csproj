@@ -108,7 +108,7 @@
     <Compile Include="Characters\GameCharacter.cs" />
     <Compile Include="Characters\CharacterBuffs.cs" />
     <Compile Include="Characters\CharacterGameStats.cs" />
-    <Compile Include="Characters\CharacterInventory.cs" />
+    <Compile Include="Characters\GameInventory.cs" />
     <Compile Include="Characters\CharacterPrimaryStats.cs" />
     <Compile Include="Characters\CharacterQuests.cs" />
     <Compile Include="Characters\CharacterSkills.cs" />

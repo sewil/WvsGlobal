@@ -557,13 +557,13 @@ namespace WvsBeta.Game
 
         public void loseEXP()
         {
-            Item charm = Inventory.GetFirstItem(Common.Enums.Inventory.Etc, ItemEtcIds.SafetyCharm, ItemEtcIds.EasterCharm);
+            Item charm = Inventory.GetFirstItem(Common.Enums.InventoryType.Etc, ItemEtcIds.SafetyCharm, ItemEtcIds.EasterCharm);
             if (charm != null)
             {
                 bool isSafetyCharm = charm.ItemID == ItemEtcIds.SafetyCharm;
                 byte daysLeft = 0;
                 byte timesLeft = 0;
-                Inventory.TakeItemAmountFromSlot(Common.Enums.Inventory.Etc, charm.InventorySlot, 1, false);
+                Inventory.TakeItemAmountFromSlot(Common.Enums.InventoryType.Etc, charm.InventorySlot, 1, false);
                 if (isSafetyCharm)
                 {
                     daysLeft = (byte)Math.Max(0, (charm.Expiration - MasterThread.FileTime) / TimeSpan.TicksPerDay);

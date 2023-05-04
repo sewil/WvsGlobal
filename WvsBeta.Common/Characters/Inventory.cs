@@ -12,7 +12,7 @@ using WvsBeta.Database;
 
 namespace WvsBeta.Common.Characters
 {
-    public abstract class BaseCharacterInventory
+    public class Inventory
     {
         // Shown and hidden
         public readonly Dictionary<EquippedType, Dictionary<Constants.EquipSlots.Slots, EquipItem>> Equipped = new Dictionary<EquippedType, Dictionary<Constants.EquipSlots.Slots, EquipItem>>()
@@ -23,10 +23,10 @@ namespace WvsBeta.Common.Characters
         public int ChocoCount { get; protected set; }
         public int ActiveItemID { get; protected set; }
         // All inventories
-        public readonly Dictionary<Inventory, Item[]> Items = new Dictionary<Inventory, Item[]>();
+        public readonly Dictionary<InventoryType, Item[]> Items = new Dictionary<InventoryType, Item[]>();
 
         protected Dictionary<int, short> ItemAmounts { get; } = new Dictionary<int, short>();
-        public Dictionary<Inventory, byte> MaxSlots { get; } = new Dictionary<Inventory, byte>();
+        public Dictionary<InventoryType, byte> MaxSlots { get; } = new Dictionary<InventoryType, byte>();
         protected int[] TeleportRockLocations { get; } = new int[5];
 
         public int Mesos { get; set; }
@@ -37,13 +37,13 @@ namespace WvsBeta.Common.Characters
         private int UserID { get; }
         private int CharacterID { get; }
 
-        protected BaseCharacterInventory(int userId, int characterId)
+        public Inventory(int userId, int characterId)
         {
             UserID = userId;
             CharacterID = characterId;
             _cashItems = new CharacterCashItems(UserID, CharacterID);
         }
-        public virtual Item TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
+        public virtual Item TakeItemAmountFromSlot(InventoryType inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
         public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
         public int GetTotalMAttInEquips()
         {
@@ -55,7 +55,7 @@ namespace WvsBeta.Common.Characters
             return Equipped[EquippedType.Normal].Sum(item => item.Value.Acc);
         }
 
-        public short GetOpenSlotsInInventory(Inventory inventory)
+        public short GetOpenSlotsInInventory(InventoryType inventory)
         {
             short amount = 0;
             for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
@@ -70,7 +70,7 @@ namespace WvsBeta.Common.Characters
         public virtual bool HasSlotsFreeForItem(int itemid, short amount) { throw new NotImplementedException(); }
         public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
 
-        public virtual void SetItem(Inventory inventory, short slot, Item item)
+        public virtual void SetItem(InventoryType inventory, short slot, Item item)
         {
             if (item != null) item.InventorySlot = slot;
             if (slot < 0)
@@ -91,13 +91,13 @@ namespace WvsBeta.Common.Characters
                 Items[inventory][slot] = item;
             }
         }
-        public virtual short GetNextFreeSlotInInventory(Inventory inventory) { throw new NotImplementedException(); }
-        public virtual short DeleteFirstItemInInventory(Inventory inv) { throw new NotImplementedException(); }
+        public virtual short GetNextFreeSlotInInventory(InventoryType inventory) { throw new NotImplementedException(); }
+        public virtual short DeleteFirstItemInInventory(InventoryType inv) { throw new NotImplementedException(); }
 
         public int GetItemAmount(int itemid)
         {
             int amount = 0;
-            Inventory inv = Constants.getInventory(itemid);
+            InventoryType inv = Constants.getInventory(itemid);
 
             for (short i = 1; i <= MaxSlots[inv]; i++)
             { // Slot 1 - 24, not 0 - 23
@@ -114,16 +114,16 @@ namespace WvsBeta.Common.Characters
                 data.Read();
 
                 Mesos = data.GetInt32("mesos");
-                SetInventorySlots(Inventory.Equip, (byte)data.GetInt16("equip_slots"), false);
-                SetInventorySlots(Inventory.Use, (byte)data.GetInt16("use_slots"), false);
-                SetInventorySlots(Inventory.Setup, (byte)data.GetInt16("setup_slots"), false);
-                SetInventorySlots(Inventory.Etc, (byte)data.GetInt16("etc_slots"), false);
-                SetInventorySlots(Inventory.Cash, (byte)data.GetInt16("cash_slots"), false);
+                SetInventorySlots(InventoryType.Equip, (byte)data.GetInt16("equip_slots"), false);
+                SetInventorySlots(InventoryType.Use, (byte)data.GetInt16("use_slots"), false);
+                SetInventorySlots(InventoryType.Setup, (byte)data.GetInt16("setup_slots"), false);
+                SetInventorySlots(InventoryType.Etc, (byte)data.GetInt16("etc_slots"), false);
+                SetInventorySlots(InventoryType.Cash, (byte)data.GetInt16("cash_slots"), false);
             }
 
             SplitDBInventory.Load(Connection, "inventory", "charid = " + CharacterID, (type, inventory, slot, item) =>
             {
-                AddItem((Inventory)inventory, slot, item, true);
+                AddItem(inventory, slot, item, true);
             });
 
             _cashItems.Load();
@@ -133,7 +133,7 @@ namespace WvsBeta.Common.Characters
             foreach (var cashItemsEquip in _cashItems.Equips)
             {
                 Console.WriteLine("Adding cash equip on slot {0}", cashItemsEquip.InventorySlot);
-                AddItem(Inventory.Equip, cashItemsEquip.InventorySlot, cashItemsEquip, true);
+                AddItem(InventoryType.Equip, cashItemsEquip.InventorySlot, cashItemsEquip, true);
             }
 
             foreach (var cashItemsBundle in _cashItems.Bundles)
@@ -172,7 +172,7 @@ namespace WvsBeta.Common.Characters
             // Cash equips
             _cashItems.Equips.AddRange(Equipped[EquippedType.Cash].Select(i => i.Value).Where(y => y.CashId != 0));
             // Unequipped equips
-            _cashItems.Equips.AddRange(Items[Inventory.Equip].Where(y => y is EquipItem && y.CashId != 0).Select(y => y as EquipItem));
+            _cashItems.Equips.AddRange(Items[InventoryType.Equip].Where(y => y is EquipItem && y.CashId != 0).Select(y => y as EquipItem));
             // Bundles
             _cashItems.Bundles.AddRange(Items.SelectMany(x => x.Value.Where(y => y is BundleItem && y.CashId != 0).Select(y => y as BundleItem)));
             // Pets
@@ -195,11 +195,11 @@ namespace WvsBeta.Common.Characters
 
             string query = "UPDATE characters SET " +
                            "mesos = " + Mesos + " ," +
-                           "equip_slots = " + MaxSlots[Inventory.Equip] + ", " +
-                           "use_slots = " + MaxSlots[Inventory.Use] + ", " +
-                           "setup_slots = " + MaxSlots[Inventory.Setup] + ", " +
-                           "etc_slots = " + MaxSlots[Inventory.Etc] + ", " +
-                           "cash_slots = " + MaxSlots[Inventory.Cash] + " " +
+                           "equip_slots = " + MaxSlots[InventoryType.Equip] + ", " +
+                           "use_slots = " + MaxSlots[InventoryType.Use] + ", " +
+                           "setup_slots = " + MaxSlots[InventoryType.Setup] + ", " +
+                           "etc_slots = " + MaxSlots[InventoryType.Etc] + ", " +
+                           "cash_slots = " + MaxSlots[InventoryType.Cash] + " " +
                            "WHERE ID = " + CharacterID;
 
             Connection.RunTransaction(query, dbgCallback);
@@ -228,7 +228,7 @@ namespace WvsBeta.Common.Characters
                     switch (type)
                     {
                         case SplitDBInventory.InventoryType.Eqp:
-                            return Equipped.SelectMany(x => x.Value.Select(i => i.Value).Where(y => y.CashId == 0)).Union(Items[Inventory.Equip].Where(x => x != null && x.CashId == 0));
+                            return Equipped.SelectMany(x => x.Value.Select(i => i.Value).Where(y => y.CashId == 0)).Union(Items[InventoryType.Equip].Where(x => x != null && x.CashId == 0));
                         case SplitDBInventory.InventoryType.Bundle:
                             return Items[inventory].Where(x => x != null && x.CashId == 0);
                         default: throw new Exception();
@@ -266,14 +266,14 @@ namespace WvsBeta.Common.Characters
             return _cashItems.GetLockerItemFromCashID(cashId);
         }
 
-        public Item GetItemByCashID(long cashId, Inventory inventory)
+        public Item GetItemByCashID(long cashId, InventoryType inventory)
         {
             Item item = Items[inventory].FirstOrDefault(x => x != null && x.CashId == cashId);
             if (item == null) Equipped[EquippedType.Cash].Select(i => i.Value).TryFind(i => i.CashId == cashId, out item);
             return item;
         }
 
-        public virtual void AddItem(Inventory inventory, short slot, Item item, bool isLoading)
+        public virtual void AddItem(InventoryType inventory, short slot, Item item, bool isLoading)
         {
             if (slot == 0)
             {
@@ -303,11 +303,11 @@ namespace WvsBeta.Common.Characters
             SetItem(inventory, slot, item);
         }
 
-        public virtual void TakeItem(Item item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
+        public virtual void TakeItem(Item item, InventoryType inventory, short slot, short amount) { throw new NotImplementedException(); }
         /// <summary>
         /// Get first item from an array of item ids
         /// </summary>
-        public Item GetFirstItem(Inventory inv, params int[] itemids)
+        public Item GetFirstItem(InventoryType inv, params int[] itemids)
         {
             for (byte slot = 0; slot < MaxSlots[inv]; slot++)
             {
@@ -327,7 +327,7 @@ namespace WvsBeta.Common.Characters
         }
         public Item GetItem(int itemid)
         {
-            Inventory inv = Constants.getInventory(itemid);
+            InventoryType inv = Constants.getInventory(itemid);
             foreach (var item in Items[inv])
             {
                 if (item == null || item.ItemID != itemid) continue;
@@ -356,7 +356,7 @@ namespace WvsBeta.Common.Characters
             SetItem(inventory, slot, null);
         }
 
-        public Item GetItem(Inventory inventory, short slot)
+        public Item GetItem(InventoryType inventory, short slot)
         {
             if (slot < 0)
             {
@@ -422,9 +422,9 @@ namespace WvsBeta.Common.Characters
 
             if (flags.HasFlag(CharacterDataFlag.MaxSlots))
             {
-                foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
+                foreach (InventoryType inventory in Enum.GetValues(typeof(InventoryType)))
                 {
-                    if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << ((byte)inventory-1))) == false) continue;
+                    if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << ((byte)inventory - 1))) == false) continue;
                     packet.WriteByte(MaxSlots[inventory]);
                 }
             }
@@ -446,9 +446,9 @@ namespace WvsBeta.Common.Characters
             }
 
 
-            foreach (Inventory inventory in Enum.GetValues(typeof(Inventory)))
+            foreach (InventoryType inventory in Enum.GetValues(typeof(InventoryType)))
             {
-                if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << ((byte)inventory-1))) == false) continue;
+                if (flags.HasFlag((CharacterDataFlag)((short)CharacterDataFlag.Equips << ((byte)inventory - 1))) == false) continue;
                 foreach (var item in Items[inventory])
                 {
                     if (item != null && item.InventorySlot > 0)
@@ -467,7 +467,7 @@ namespace WvsBeta.Common.Characters
         /// </summary>
         /// <param name="inventory">Inventory type</param>
         /// <param name="slots">Amount of slots</param>
-        public virtual void SetInventorySlots(Inventory inventory, byte slots, bool sendPacket = true)
+        public virtual void SetInventorySlots(InventoryType inventory, byte slots, bool sendPacket = true)
         {
             if (slots < 24) slots = 24;
             if (slots > 100) slots = 100;
@@ -494,7 +494,7 @@ namespace WvsBeta.Common.Characters
         public bool TryGetPet(long cashId, out PetItem petItem)
         {
             petItem = null;
-            if (!Items[Inventory.Cash].TryFind(i => i?.CashId == cashId, out Item baseItem) || !(baseItem is PetItem pi))
+            if (!Items[InventoryType.Cash].TryFind(i => i?.CashId == cashId, out Item baseItem) || !(baseItem is PetItem pi))
             {
                 return false;
             }
@@ -504,7 +504,7 @@ namespace WvsBeta.Common.Characters
 
         public IEnumerable<PetItem> GetPets()
         {
-            return Items[Inventory.Cash].Where(x => x != null && Constants.isPet(x.ItemID)).Select(x => x as PetItem);
+            return Items[InventoryType.Cash].Where(x => x != null && Constants.isPet(x.ItemID)).Select(x => x as PetItem);
         }
 
         public EquipItem GetEquippedItem(Constants.EquipSlots.Slots slot, EquippedType type)

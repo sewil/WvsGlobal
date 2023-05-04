@@ -300,7 +300,7 @@ namespace WvsBeta.Game
             string Host = lines[3];
 
             CharacterDatabase = new MySQL_Connection(MasterThread.Instance, Username, Password, Database, Host);
-            BaseCharacterInventory.Connection = CharacterDatabase;
+            Inventory.Connection = CharacterDatabase;
             CharacterCashItems.Connection = CharacterDatabase;
         }
 

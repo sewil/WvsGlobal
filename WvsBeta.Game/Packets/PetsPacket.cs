@@ -61,7 +61,7 @@ namespace WvsBeta.Game
 
         public static void HandleSpawnPet(GameCharacter chr, short slot)
         {
-            if (!(chr.Inventory.GetItem(Inventory.Cash, slot) is PetItem petItem))
+            if (!(chr.Inventory.GetItem(InventoryType.Cash, slot) is PetItem petItem))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
@@ -165,7 +165,7 @@ namespace WvsBeta.Game
             {
                 short slot = packet.ReadShort();
                 int itemId = packet.ReadInt();
-                Inventory inv = Constants.getInventory(itemId);
+                InventoryType inv = Constants.getInventory(itemId);
 
                 var petItem = chr.GetSpawnedPet();
                 if (petItem == null) throw new ControlledException("Tried feeding non-spawned pet");

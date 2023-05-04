@@ -101,7 +101,7 @@ namespace WvsBeta.Game
             {
                 ad.StarItemSlot = packet.ReadShort();
                 packet.ReadShort(); // ?
-                Item item = chr.Inventory.GetItem(Inventory.Use, ad.StarItemSlot);
+                Item item = chr.Inventory.GetItem(InventoryType.Use, ad.StarItemSlot);
 
                 if (ad.StarItemSlot == 0)
                 {

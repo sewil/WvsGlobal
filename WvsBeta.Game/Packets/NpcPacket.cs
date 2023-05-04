@@ -268,7 +268,7 @@ namespace WvsBeta.Game
                         short itemslot = packet.ReadShort();
                         int itemid = packet.ReadInt();
                         short amount = packet.ReadShort();
-                        Inventory inv = Constants.getInventory(itemid);
+                        InventoryType inv = Constants.getInventory(itemid);
 
                         Item item = chr.Inventory.GetItem(inv, itemslot);
 
@@ -335,7 +335,7 @@ namespace WvsBeta.Game
                     {
                         short itemslot = packet.ReadShort();
 
-                        Inventory inv = Inventory.Use;
+                        InventoryType inv = InventoryType.Use;
                         Item item = chr.Inventory.GetItem(inv, itemslot);
                         if (item == null ||
                             !Constants.isRechargeable(item.ItemID))

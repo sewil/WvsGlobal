@@ -211,7 +211,7 @@ namespace WvsBeta.Game
             }
             if (pos > 0 && !Character.PrimaryStats.HasBuff((int)BuffValueTypes.SoulArrow))
             {
-                Character.Inventory.TakeItemAmountFromSlot(Inventory.Use, pos, bullets, false);
+                Character.Inventory.TakeItemAmountFromSlot(InventoryType.Use, pos, bullets, false);
             }
         }
 

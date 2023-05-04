@@ -65,7 +65,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             base.Close(sendPacket, reason);
         }
 
-        public void HandleShopUpdateItem(GameCharacter pCharacter, Inventory inv, short invslot, short bundle, short bundleamount, int price)
+        public void HandleShopUpdateItem(GameCharacter pCharacter, InventoryType inv, short invslot, short bundle, short bundleamount, int price)
         {
             if (pCharacter.AssertForHack(Users[0] != pCharacter,
                 "PlayerShop hack: Tried to update shop item while not owner.")) return;

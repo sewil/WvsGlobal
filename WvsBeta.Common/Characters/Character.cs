@@ -26,7 +26,7 @@ namespace WvsBeta.Common.Characters
         public byte GMLevel { get; set; }
         public bool IsGM { get => GMLevel > 0; }
         public bool IsAdmin { get => GMLevel >= 3; }
-        public BaseCharacterInventory Inventory { get; set; }
+        public Inventory Inventory { get; set; }
         public BaseCharacterSkills Skills { get; protected set; }
         public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
         public virtual void DamageHP(short amount) => throw new NotImplementedException();
@@ -71,7 +71,7 @@ namespace WvsBeta.Common.Characters
         public PetItem GetSpawnedPet()
         {
             if (CharacterStat.PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.Inventory.Cash) as PetItem;
+            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.InventoryType.Cash) as PetItem;
         }
         public bool InPartyWith(Character chr)
         {

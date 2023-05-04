@@ -2,7 +2,7 @@
 using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
-using static WvsBeta.Game.CharacterInventory;
+using static WvsBeta.Game.GameInventory;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -134,7 +134,7 @@ namespace WvsBeta.Scripts.Scripts
             if (val == 0) self.Say("Many flowers are blooming around here, except the one for #b#t" + flowerID + "##k.");
             else if (val == 2)
             {
-                if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
+                if (inventory.SlotCount(InventoryType.Etc) > inventory.HoldCount(InventoryType.Etc))
                 {
                     var rnum = Rand32.NextBetween(0, rewards.Length-1);
                     int nNewItemID = rewards[rnum];
@@ -147,7 +147,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 if (inventory.ItemCount(flowerID) == 0)
                 {
-                    if (inventory.SlotCount(Inventory.Etc) > inventory.HoldCount(Inventory.Etc))
+                    if (inventory.SlotCount(InventoryType.Etc) > inventory.HoldCount(InventoryType.Etc))
                     {
                         var ret = inventory.Exchange(0, flowerID, flowerAmount);
                         if (ret == 0) self.Say("Sorry, but your etc inventory is full, so you cannot hold the flowers. Leave at least one slot empty for the flowers.");

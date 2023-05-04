@@ -20,7 +20,7 @@ namespace WvsBeta.Shop
         public long PetCashId { get; set; }
         public int DoB { get; set; }
 
-        public new CharacterInventory Inventory => (CharacterInventory)base.Inventory;
+        public new ShopInventory Inventory => (ShopInventory)base.Inventory;
         public CharacterCashLocker Locker { get; private set; }
         public int[] Wishlist { get; } = new int[10];
 
@@ -97,7 +97,7 @@ namespace WvsBeta.Shop
                 BuddyListCapacity = (byte)data.GetInt32("buddylist_size");
             }
 
-            base.Inventory = new CharacterInventory(this);
+            base.Inventory = new ShopInventory(this);
             Inventory.LoadInventory();
 
             Skills = new BaseCharacterSkills();

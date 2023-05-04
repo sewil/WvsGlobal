@@ -8,11 +8,11 @@ using WvsBeta.Game;
 
 namespace WvsBeta.Shop
 {
-    public class CharacterInventory : BaseCharacterInventory
+    public class ShopInventory : Inventory
     {
         private ShopCharacter Character { get; set; }
 
-        public CharacterInventory(ShopCharacter character) : base(character.UserID, character.ID)
+        public ShopInventory(ShopCharacter character) : base(character.UserID, character.ID)
         {
             Character = character;
         }
