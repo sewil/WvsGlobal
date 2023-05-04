@@ -296,13 +296,13 @@ namespace WvsBeta.Game
                 var improvedMaxHpIncreaseLvl = Skills.GetSkillLevel(Constants.Swordsman.Skills.ImprovedMaxHpIncrease);
                 if (improvedMaxHpIncreaseLvl > 0)
                 {
-                    hpgain += CharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
+                    hpgain += GameCharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
                 }
 
                 var improvedMaxMpIncreaseLvl = Skills.GetSkillLevel(Constants.Magician.Skills.ImprovedMaxMpIncrease);
                 if (improvedMaxMpIncreaseLvl > 0)
                 {
-                    mpgain += CharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
+                    mpgain += GameCharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
                 }
 
                 if (CharacterStat.Job != 0)

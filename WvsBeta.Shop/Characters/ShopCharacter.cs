@@ -100,7 +100,7 @@ namespace WvsBeta.Shop
             base.Inventory = new ShopInventory(this);
             Inventory.LoadInventory();
 
-            Skills = new BaseCharacterSkills();
+            Skills = new CharacterSkills();
             Skills.LoadSkills(ID, Server.Instance.CharacterDatabase);
 
             Locker = new CharacterCashLocker(this);

@@ -75,7 +75,7 @@ namespace WvsBeta.Game
         public bool UsingTimer { get; set; }
 
         public new GameInventory Inventory => (GameInventory)base.Inventory;
-        public new CharacterSkills Skills => (CharacterSkills)base.Skills;
+        public new GameCharacterSkills Skills => (GameCharacterSkills)base.Skills;
         public CharacterBuffs Buffs { get; private set; }
         public new CharacterPrimaryStats PrimaryStats { get => (CharacterPrimaryStats)base.PrimaryStats; set => base.PrimaryStats = value; }
         public Rand32 CalcDamageRandomizer { get; private set; }
@@ -522,7 +522,7 @@ namespace WvsBeta.Game
             base.Inventory = new GameInventory(this);
             Inventory.LoadInventory();
 
-            base.Skills = new CharacterSkills(this);
+            base.Skills = new GameCharacterSkills(this);
             Skills.LoadSkills();
 
             Storage = new CharacterStorage(this);

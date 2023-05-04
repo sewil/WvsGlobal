@@ -119,7 +119,7 @@
     <Compile Include="Characters\AvatarLook.cs" />
     <Compile Include="Characters\Inventory.cs" />
     <Compile Include="Characters\BaseCharacterPrimaryStats.cs" />
-    <Compile Include="Characters\BaseCharacterSkills.cs" />
+    <Compile Include="Characters\CharacterSkills.cs" />
     <Compile Include="ControlledException.cs" />
     <Compile Include="Enums\EquipIds.cs" />
     <Compile Include="Enums\EquippedType.cs" />

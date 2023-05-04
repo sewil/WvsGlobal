@@ -123,7 +123,7 @@ namespace WvsBeta.Game
                             byte improvedMaxHpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Swordsman.Skills.ImprovedMaxHpIncrease);
                             if (improvedMaxHpIncreaseLvl > 0)
                             {
-                                hpGain += CharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
+                                hpGain += GameCharacterSkills.GetSkillLevelData(Constants.Swordsman.Skills.ImprovedMaxHpIncrease, improvedMaxHpIncreaseLvl).XValue;
                             }
                         }
                         else hpGain = value;
@@ -160,7 +160,7 @@ namespace WvsBeta.Game
                             byte improvedMaxMpIncreaseLvl = chr.Skills.GetSkillLevel(Constants.Magician.Skills.ImprovedMaxMpIncrease);
                             if (improvedMaxMpIncreaseLvl > 0)
                             {
-                                mpGain += CharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
+                                mpGain += GameCharacterSkills.GetSkillLevelData(Constants.Magician.Skills.ImprovedMaxMpIncrease, improvedMaxMpIncreaseLvl).XValue;
                             }
                         }
                         else mpGain = value;

@@ -1,22 +1,18 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Forms;
+﻿using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
-using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
-using WvsBeta.Common.Sessions;
 using WvsBeta.Common.Tracking;
 
 namespace WvsBeta.Game
 {
-    public class CharacterSkills : BaseCharacterSkills
+    public class GameCharacterSkills : CharacterSkills
     {
         private GameCharacter Character { get; }
 
-        public CharacterSkills(GameCharacter character)
+        public GameCharacterSkills(GameCharacter character)
         {
             Character = character;
         }

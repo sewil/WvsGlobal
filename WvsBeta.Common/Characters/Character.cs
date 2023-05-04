@@ -27,7 +27,7 @@ namespace WvsBeta.Common.Characters
         public bool IsGM { get => GMLevel > 0; }
         public bool IsAdmin { get => GMLevel >= 3; }
         public Inventory Inventory { get; set; }
-        public BaseCharacterSkills Skills { get; protected set; }
+        public CharacterSkills Skills { get; protected set; }
         public virtual BaseCharacterPrimaryStats PrimaryStats { get; protected set; }
         public virtual void DamageHP(short amount) => throw new NotImplementedException();
         public GW_CharacterStat CharacterStat { get; } = new GW_CharacterStat();

@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using WvsBeta.Common.DataProviders;
@@ -9,7 +8,7 @@ using WvsBeta.Database;
 
 namespace WvsBeta.Common.Characters
 {
-    public class BaseCharacterSkills
+    public class CharacterSkills
     {
         public Dictionary<int, byte> Skills { get; } = new Dictionary<int, byte>();
 

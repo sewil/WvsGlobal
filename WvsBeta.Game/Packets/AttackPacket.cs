@@ -735,7 +735,7 @@ namespace WvsBeta.Game
                                 {
                                     case Constants.Ranger.Skills.SilverHawk:
                                     case Constants.Sniper.Skills.GoldenEagle:
-                                        var sld = CharacterSkills.GetSkillLevelData(summon.SkillId, summon.SkillLevel);
+                                        var sld = GameCharacterSkills.GetSkillLevelData(summon.SkillId, summon.SkillLevel);
                                         if (!mob.IsBoss && totalDamage > 0 && Rand32.NextBetween(0, 100) < sld.Property)
                                         {
                                             int stunTime = ai.HitDelay + 4000;
