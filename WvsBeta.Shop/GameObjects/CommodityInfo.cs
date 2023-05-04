@@ -36,7 +36,7 @@ namespace WvsBeta.Shop.GameObjects
                 Class = (CommodityClass)node["Class"].ValueInt32();
             }
 
-            if (!DataProvider.Items.ContainsKey(ItemID) && !DataProvider.Equips.ContainsKey(ItemID) && !DataProvider.Pets.ContainsKey(ItemID))
+            if (!ShopDataProvider.Items.ContainsKey(ItemID) && !ShopDataProvider.Equips.ContainsKey(ItemID) && !ShopDataProvider.Pets.ContainsKey(ItemID))
             {
                 Program.MainForm.LogAppend("Ignoring commodity SN {0} as it contains unknown itemid {1}", SerialNumber, ItemID);
                 OnSale = false;

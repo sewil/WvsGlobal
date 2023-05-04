@@ -136,7 +136,7 @@ namespace WvsBeta.Game
                 var availableSkills = mob.Data.Skills.Where(skill =>
                 {
                     Dictionary<byte, MobSkillLevelData> msdLevels;
-                    if (!DataProvider.MobSkills.TryGetValue(skill.SkillID, out msdLevels) ||
+                    if (!GameDataProvider.MobSkills.TryGetValue(skill.SkillID, out msdLevels) ||
                         !msdLevels.ContainsKey(skill.Level)) return false;
 
                     // Handle HP restriction

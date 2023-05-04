@@ -1,14 +1,11 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
-using reNX.NXProperties;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Shop.GameObjects;
 
 namespace WvsBeta.Shop
 {
-    public class DataProvider : BaseDataProvider
+    public class ShopDataProvider : DataProvider
     {
         public static Dictionary<int, CommodityInfo> Commodity { get; } = new Dictionary<int, CommodityInfo>();
         public static Dictionary<int, int[]> Packages { get; } = new Dictionary<int, int[]>();

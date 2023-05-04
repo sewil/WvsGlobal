@@ -105,7 +105,7 @@
       <DependentUpon>frmMain.cs</DependentUpon>
     </Compile>
     <Compile Include="GameObjects\CommodityInfo.cs" />
-    <Compile Include="GameObjects\DataProvider.cs" />
+    <Compile Include="GameObjects\ShopDataProvider.cs" />
     <Compile Include="Packets\CashPacket.cs" />
     <Compile Include="Packets\CouponHandler.cs" />
     <Compile Include="Packets\MapPacket.cs" />

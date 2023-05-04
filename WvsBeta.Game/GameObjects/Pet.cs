@@ -40,7 +40,7 @@ namespace WvsBeta.Game
 
         public static bool IsNamedPet(PetItem petItem)
         {
-            return (DataProvider.Pets.TryGetValue(petItem.ItemID, out var petData) &&
+            return (GameDataProvider.Pets.TryGetValue(petItem.ItemID, out var petData) &&
                     petItem.Name != petData.Name);
         }
     }

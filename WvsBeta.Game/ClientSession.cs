@@ -64,7 +64,7 @@ namespace WvsBeta.Game
                     {
                         if (chr.DoorMapId != Constants.InvalidMap)
                         {
-                            DataProvider.Maps[chr.DoorMapId].DoorPool.TryRemoveDoor(chr.ID);
+                            GameDataProvider.Maps[chr.DoorMapId].DoorPool.TryRemoveDoor(chr.ID);
                         }
 
                         if (chr.MapChair != -1 && !migrating)

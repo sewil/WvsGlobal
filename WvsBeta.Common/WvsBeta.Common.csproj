@@ -183,7 +183,7 @@
     <Compile Include="MainFormConsole.cs" />
     <Compile Include="MemoryRegions.cs" />
     <Compile Include="Characters\Pos.cs" />
-    <Compile Include="DataProviders\BaseDataProvider.cs" />
+    <Compile Include="DataProviders\DataProvider.cs" />
     <Compile Include="Objects\AttackData.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\BonusSet.cs" />

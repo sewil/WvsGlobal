@@ -113,7 +113,7 @@ namespace WvsBeta.Scripts.Scripts
             else if (tDeparture <= 1) self.Say($"The ship is about to {(station.sail ? "set sail" : "leave")}. Sorry, but you'll have to get on the next one. Travel schedules are available through the ticket seller agent.");
             else
             {
-                Map wField = DataProvider.Maps[field.ID + 1];
+                Map wField = GameDataProvider.Maps[field.ID + 1];
                 if (wField.Characters.Count >= 500) self.Say("I'm sorry, but this ride is already full. We cannot accept any more passengers. Please board the next one.");
                 else
                 {
@@ -325,7 +325,7 @@ namespace WvsBeta.Scripts.Scripts
                     val = self.AskMenu("Olá! Eu sou a cegonha que voa de #bMu Lung#k para #bOrbis#k e volta. Vôo o tempo todo, então imaginei por que não fazer algum dinheiro levando viajantes como você por um preço baixo? É um bom negócio para mim. O que você acha? \r\n#b#L0# Orbis(" + meso + "mesos)#l\r\n#L1# Vila das Ervas(" + meso2 + "mesos#l");
                     if (val == 0)
                     {
-                        var cNum = DataProvider.Maps[200090310].Characters.Count;
+                        var cNum = GameDataProvider.Maps[200090310].Characters.Count;
                         if (cNum <= 0)
                         {
                             if (target.Inventory.Mesos < meso) self.Say("Tem certeza de que você tem mesos suficientes?");

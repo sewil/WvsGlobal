@@ -103,7 +103,7 @@ namespace WvsBeta.Game
             short maxSlots = 1;
             amountLeft = item.Amount;
 
-            if (DataProvider.Items.TryGetValue(item.ItemID, out ItemData itemData))
+            if (GameDataProvider.Items.TryGetValue(item.ItemID, out ItemData itemData))
             {
                 maxSlots = (short)itemData.MaxSlot;
                 if (maxSlots == 0) maxSlots = 100;
@@ -162,9 +162,9 @@ namespace WvsBeta.Game
 
         public override short AddNewItem(int id, short amount) // Only normal items!
         {
-            if (!DataProvider.Items.ContainsKey(id) &&
-                !DataProvider.Equips.ContainsKey(id) &&
-                !DataProvider.Pets.ContainsKey(id))
+            if (!GameDataProvider.Items.ContainsKey(id) &&
+                !GameDataProvider.Equips.ContainsKey(id) &&
+                !GameDataProvider.Pets.ContainsKey(id))
             {
                 return 0;
             }
@@ -172,7 +172,7 @@ namespace WvsBeta.Game
             short max = 1;
             if (!Constants.isEquip(id) && !Constants.isCash(id))
             {
-                max = (short)DataProvider.Items[id].MaxSlot;
+                max = (short)GameDataProvider.Items[id].MaxSlot;
                 if (max == 0)
                 {
                     max = 100;
@@ -246,7 +246,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                short maxPerSlot = (short)DataProvider.Items[itemid].MaxSlot;
+                short maxPerSlot = (short)GameDataProvider.Items[itemid].MaxSlot;
                 if (maxPerSlot == 0) maxPerSlot = 100; // default 100 O.o >_>
                 short hasAmounts = (short)(ItemAmounts.ContainsKey(itemid) ? ItemAmounts[itemid] : 0);
                 if (stackable && hasAmounts > 0)
@@ -287,7 +287,7 @@ namespace WvsBeta.Game
         {
             Common.Enums.InventoryType inv = Constants.getInventory(itemid);
             int available = 0;
-            short maxPerSlot = (short)(DataProvider.Items.ContainsKey(itemid) ? DataProvider.Items[itemid].MaxSlot : 1); // equip
+            short maxPerSlot = (short)(GameDataProvider.Items.ContainsKey(itemid) ? GameDataProvider.Items[itemid].MaxSlot : 1); // equip
             if (maxPerSlot == 0) maxPerSlot = 100; // default 100 O.o >_>
 
             short openSlots = GetOpenSlotsInInventory(inv);
@@ -555,7 +555,7 @@ namespace WvsBeta.Game
             foreach (Item item in Items[Common.Enums.InventoryType.Etc])
             {
                 if (item == null || item.ItemID < 4100000 || item.ItemID >= 4200000) continue; // ???
-                ItemData id = DataProvider.Items[item.ItemID];
+                ItemData id = GameDataProvider.Items[item.ItemID];
                 if (ItemData.RateCardEnabled(id, false))
                 {
                     if (rate < id.Rate) rate = id.Rate;

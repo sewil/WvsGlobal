@@ -33,7 +33,7 @@ namespace WvsBeta.Shop
             Server.Init(Program.IMGFilename);
 
             LogAppend("Loading data file... ", false);
-            DataProvider.Load();
+            ShopDataProvider.Load();
             LogAppend("DONE");
             Server.Instance.LoadCashShopData();
 

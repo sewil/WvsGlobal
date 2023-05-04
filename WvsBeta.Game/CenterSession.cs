@@ -172,7 +172,7 @@ namespace WvsBeta.Game
                                         using (var uncompressedPacket = new Packet())
                                         {
                                             var mapsWithDrops =
-                                                DataProvider.Maps.Where(x => x.Value.DropPool.Drops.Count > 0)
+                                                GameDataProvider.Maps.Where(x => x.Value.DropPool.Drops.Count > 0)
                                                     .ToArray();
                                             uncompressedPacket.WriteInt(mapsWithDrops.Length);
                                             foreach (var map in mapsWithDrops)
@@ -201,7 +201,7 @@ namespace WvsBeta.Game
                                             for (var i = 0; i < maps; i++)
                                             {
                                                 var mapid = decompressedPacket.ReadInt();
-                                                DataProvider.Maps[mapid].DropPool
+                                                GameDataProvider.Maps[mapid].DropPool
                                                     .DecodeForMigration(decompressedPacket);
                                             }
 
@@ -486,7 +486,7 @@ namespace WvsBeta.Game
                         if (fucker != null)
                         {
                             fucker.PartyID = packet.ReadInt();
-                            if (DataProvider.Maps.TryGetValue(fucker.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(fucker.ID, out MysticDoor door))
+                            if (GameDataProvider.Maps.TryGetValue(fucker.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(fucker.ID, out MysticDoor door))
                             {
                                 door.OwnerPartyId = fucker.PartyID;
                             }

@@ -111,7 +111,7 @@ namespace WvsBeta.Game
 
         public void CheckMaps(long pNow)
         {
-            DataProvider.Maps.ForEach(x => x.Value.MapTimer(pNow));
+            GameDataProvider.Maps.ForEach(x => x.Value.MapTimer(pNow));
         }
 
         public void CheckPets(long ctime)
@@ -121,7 +121,7 @@ namespace WvsBeta.Game
                 GameCharacter chr = GetCharacter(petKVP.Key);
 
                 var pet = petKVP.Value;
-                if (chr == null || pet == null || !DataProvider.Pets.TryGetValue(pet.ItemID, out PetData petData))
+                if (chr == null || pet == null || !GameDataProvider.Pets.TryGetValue(pet.ItemID, out PetData petData))
                 {
                     SpawnedPets.Remove(petKVP.Key);
                     continue;

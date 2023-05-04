@@ -776,7 +776,7 @@ namespace WvsBeta.Scripts.Scripts
         }
         void TriggerGate()
         {
-            DataProvider.Maps[MapIds.TheDoorToZakum].ReactorPool.TriggerReactor("gate");
+            GameDataProvider.Maps[MapIds.TheDoorToZakum].ReactorPool.TriggerReactor("gate");
         }
     }
     #endregion

@@ -16,9 +16,9 @@ namespace WvsBeta.Game.Events
     {
         private static ILog _log = LogManager.GetLogger("MapleSnowballEvent");
         private static readonly int sMapId = 109060000;
-        private static readonly Map_Snowball SnowballMap = (Map_Snowball)DataProvider.Maps[sMapId];
+        private static readonly Map_Snowball SnowballMap = (Map_Snowball)GameDataProvider.Maps[sMapId];
         private static readonly int lobbyMapId = 109060001;
-        private static readonly Map LobbyMap = DataProvider.Maps[lobbyMapId];
+        private static readonly Map LobbyMap = GameDataProvider.Maps[lobbyMapId];
         private static readonly int WinMapId = 109050000;
         private static readonly int LoseMapId = 109050001;
 

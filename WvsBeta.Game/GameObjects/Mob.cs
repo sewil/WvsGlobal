@@ -73,7 +73,7 @@ namespace WvsBeta.Game
 
         internal Mob(int spawnId, Map field, int mobid, Pos position, short foothold, bool facesLeft = false) : base(foothold, position, (byte)(facesLeft ? 0 : 2))
         {
-            DataProvider.Mobs.TryGetValue(mobid, out Data);
+            GameDataProvider.Mobs.TryGetValue(mobid, out Data);
             if (Data.Flies)
             {
                 // Yes, this is what they do
@@ -939,7 +939,7 @@ namespace WvsBeta.Game
             var mobSkill = mobSkills.FirstOrDefault(x => x.SkillID == skillId && (FIX_ZERO_LVL_BUG || x.Level == level));
 
             if (mobSkill == null ||
-                !DataProvider.MobSkills.TryGetValue(skillId, out var msdLevels))
+                !GameDataProvider.MobSkills.TryGetValue(skillId, out var msdLevels))
             {
                 SkillCommand = 0;
                 return false;
@@ -1183,7 +1183,7 @@ namespace WvsBeta.Game
                 {
                     Reward StolenDrop = null;
                     int Limit = 0;
-                    while (StolenDrop == null || DataProvider.QuestItems.Contains(StolenDrop.ItemID))
+                    while (StolenDrop == null || GameDataProvider.QuestItems.Contains(StolenDrop.ItemID))
                     {
                         StolenDrop = Rewards[(int)(Rand32.Next() % Rewards.Count)];
                         if (Limit++ > 100)

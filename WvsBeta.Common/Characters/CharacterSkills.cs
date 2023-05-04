@@ -118,7 +118,7 @@ namespace WvsBeta.Common.Characters
 
         public static SkillLevelData GetSkillLevelData(int skill, byte level)
         {
-            if (BaseDataProvider.Skills.TryGetValue(skill, out var skillData))
+            if (DataProvider.Skills.TryGetValue(skill, out var skillData))
             {
                 if (skillData.MaxLevel >= level) return skillData.Levels[level];
             }

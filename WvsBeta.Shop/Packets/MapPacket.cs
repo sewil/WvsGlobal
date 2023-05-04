@@ -63,7 +63,7 @@ namespace WvsBeta.Shop
 
             pack.WriteBytes(new byte[120]); // TODO: Why is gift button disabled
 
-            var customStockState = DataProvider.Commodity.Values.Where(x => x.StockState != StockState.DefaultState).ToList();
+            var customStockState = ShopDataProvider.Commodity.Values.Where(x => x.StockState != StockState.DefaultState).ToList();
             pack.WriteShort((short)customStockState.Count);
             customStockState.ForEach(x =>
             {

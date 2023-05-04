@@ -23,7 +23,7 @@ namespace WvsBeta.Game
                 if (_initializedYAxis) return _y;
 
                 MobData md;
-                if (DataProvider.Mobs.TryGetValue(ID, out md) == false)
+                if (GameDataProvider.Mobs.TryGetValue(ID, out md) == false)
                 {
                     Console.WriteLine($"Invalid mob template ID({ID})");
                     return -1;

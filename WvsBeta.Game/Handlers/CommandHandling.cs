@@ -312,7 +312,7 @@ namespace WvsBeta.Game.Handlers
                                     else
                                         FieldID = Args[0].GetInt32();
 
-                                    if (DataProvider.Maps.ContainsKey(FieldID))
+                                    if (GameDataProvider.Maps.ContainsKey(FieldID))
                                         character.ChangeMap(FieldID);
                                     else
                                         character.Message("Map not found.");
@@ -785,7 +785,7 @@ namespace WvsBeta.Game.Handlers
                         case "maxskills":
                             {
                                 var mMaxedSkills = new Dictionary<int, byte>();
-                                foreach (var kvp in DataProvider.Skills)
+                                foreach (var kvp in GameDataProvider.Skills)
                                 {
                                     var level = kvp.Value.MaxLevel;
                                     character.Skills.SetSkillPoint(kvp.Key, level, false);
@@ -1092,9 +1092,9 @@ namespace WvsBeta.Game.Handlers
                                         byte Inv = (byte)(ItemID / 1000000);
 
                                         if (Inv <= 0 || Inv > 5 ||
-                                            (!DataProvider.Equips.ContainsKey(ItemID) &&
-                                             !DataProvider.Items.ContainsKey(ItemID) &&
-                                             !DataProvider.Pets.ContainsKey(ItemID)))
+                                            (!GameDataProvider.Equips.ContainsKey(ItemID) &&
+                                             !GameDataProvider.Items.ContainsKey(ItemID) &&
+                                             !GameDataProvider.Pets.ContainsKey(ItemID)))
                                         {
                                             character.Message("Item not found :(");
                                             return true;
@@ -1165,7 +1165,7 @@ namespace WvsBeta.Game.Handlers
 
                                     Amount = character.IsAdmin ? Amount : Math.Min(Amount, 100);
 
-                                    if (DataProvider.Mobs.ContainsKey(MobID))
+                                    if (GameDataProvider.Mobs.ContainsKey(MobID))
                                     {
                                         for (int i = 0; i < Amount; i++)
                                         {
@@ -1427,7 +1427,7 @@ namespace WvsBeta.Game.Handlers
                                 {
                                     int SkillID = Args[0].GetInt32();
                                     byte Level = 1;
-                                    byte MaxLevel = (byte)(DataProvider.Skills.TryGetValue(SkillID, out var sd)
+                                    byte MaxLevel = (byte)(GameDataProvider.Skills.TryGetValue(SkillID, out var sd)
                                         ? sd.MaxLevel
                                         : 0);
 
@@ -2083,9 +2083,9 @@ namespace WvsBeta.Game.Handlers
                                         var Inv = (byte)(ItemID / 1000000);
 
                                         if (Inv <= 0 || Inv > 5 ||
-                                            (!DataProvider.Equips.ContainsKey(ItemID) &&
-                                             !DataProvider.Items.ContainsKey(ItemID) &&
-                                             !DataProvider.Pets.ContainsKey(ItemID)))
+                                            (!GameDataProvider.Equips.ContainsKey(ItemID) &&
+                                             !GameDataProvider.Items.ContainsKey(ItemID) &&
+                                             !GameDataProvider.Pets.ContainsKey(ItemID)))
                                         {
                                             character.Message("Item not found :(");
                                             return true;
@@ -2435,7 +2435,7 @@ namespace WvsBeta.Game.Handlers
                                         character.Notice("Error while recompiling " + scriptName + ". See logs. Script: " + script);
                                     }, true) != null)
                                     {
-                                        if (int.TryParse(scriptName, out int npcid) && DataProvider.NPCs.TryGetValue(npcid, out NPCData data))
+                                        if (int.TryParse(scriptName, out int npcid) && GameDataProvider.NPCs.TryGetValue(npcid, out NPCData data))
                                         {
                                             data.Shop.Clear();
                                         }
@@ -2532,7 +2532,7 @@ namespace WvsBeta.Game.Handlers
                                 character.Notice("Usage: <int reactorId> <byte state> <bool facesLeft>");
                                 return true;
                             }
-                            if (!int.TryParse(Args[0], out int rid) || !DataProvider.Reactors.TryGetValue(rid, out Reactor reactor))
+                            if (!int.TryParse(Args[0], out int rid) || !GameDataProvider.Reactors.TryGetValue(rid, out Reactor reactor))
                             {
                                 character.Notice("Unknown reactor id " + Args[0]);
                                 return true;

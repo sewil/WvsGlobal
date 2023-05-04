@@ -31,7 +31,7 @@ namespace WvsBeta.Game
             try
             {
                 Server.Init(Program.IMGFilename);
-                DataProvider.Load();
+                GameDataProvider.Load();
 
                 for (var reconnects = 0; reconnects < 8; reconnects++)
                 {

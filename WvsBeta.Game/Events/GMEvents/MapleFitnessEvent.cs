@@ -7,7 +7,7 @@ namespace WvsBeta.Game.Events.GMEvents
     class MapleFitnessEvent : Event
     {
         private static readonly int LobbyMapId = 109040000;
-        private static readonly Map LobbyMap = DataProvider.Maps[LobbyMapId];
+        private static readonly Map LobbyMap = GameDataProvider.Maps[LobbyMapId];
         private static readonly List<Map> Maps = new List<int>()
         {
             LobbyMapId,
@@ -15,7 +15,7 @@ namespace WvsBeta.Game.Events.GMEvents
             109040002,  //s2
             109040003,  //s3
             109040004,  //s4
-        }.Select(id => DataProvider.Maps[id]).ToList();
+        }.Select(id => GameDataProvider.Maps[id]).ToList();
         //portal in stage 4 automatically takes all winners to the win map
         private static readonly int LoseMapId = 109050001;
         private static int EventTimeLimitSeconds = 15 * 60; //15 minutes

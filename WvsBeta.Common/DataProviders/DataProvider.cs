@@ -1,19 +1,16 @@
 using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using reNX;
 using reNX.NXProperties;
-using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 
 namespace WvsBeta.Common.DataProviders
 {
-    public abstract class BaseDataProvider
+    public abstract class DataProvider
     {
         public static IDictionary<int, EquipData> Equips { get; protected set; }
         public static IDictionary<int, ItemData> Items { get; protected set; }

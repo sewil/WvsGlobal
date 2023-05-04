@@ -398,7 +398,7 @@ namespace WvsBeta.Game
                 });
                 if (fart != null)
                 {
-                    var sld = DataProvider.Skills[fart.SkillID].Levels[fart.SkillLevel];
+                    var sld = GameDataProvider.Skills[fart.SkillID].Levels[fart.SkillLevel];
                     if (Rand32.NextBetween(0, 100) < sld.Property)
                     {
                         long buffTimeInMilliseconds = sld.BuffTime * 1000;
@@ -651,7 +651,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         }
         public NpcLife SpawnNpc(int npcid, Pos position, Foothold? fh)
         {
-            if (DataProvider.NPCs.TryGetValue(npcid, out NPCData npc))
+            if (GameDataProvider.NPCs.TryGetValue(npcid, out NPCData npc))
             {
                 var life = new Life();
                 life.Foothold = fh?.ID ?? 0;
@@ -857,7 +857,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             }
 
 
-            var map = DataProvider.Maps[newMap];
+            var map = GameDataProvider.Maps[newMap];
             chr.Field = map;
 
             // If you did not get kicked out, this should place you on a portal near you.
@@ -1553,7 +1553,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         }
         public void SummonMob(short x, short y, int summoningsack)
         {
-            if (!DataProvider.Items.TryGetValue(summoningsack, out ItemData sack))
+            if (!GameDataProvider.Items.TryGetValue(summoningsack, out ItemData sack))
             {
                 Program.MainForm.LogAppend("Summoning sack {0} not found", summoningsack);
                 return;
@@ -1562,7 +1562,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             var fh = GetFootholdUnderneath(pos.X, pos.Y, out int maxY);
             foreach (var isi in sack.Summons)
             {
-                if (DataProvider.Mobs.ContainsKey(isi.MobID))
+                if (GameDataProvider.Mobs.ContainsKey(isi.MobID))
                 {
                     if (Rand32.Next() % 100 < isi.Chance)
                     {

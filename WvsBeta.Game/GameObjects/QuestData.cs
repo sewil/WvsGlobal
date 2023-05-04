@@ -31,7 +31,7 @@ namespace WvsBeta.Game.GameObjects
         private WZQuestData wzQuest;
         private void SetWzQuestData()
         {
-            if (DataProvider.Quests.TryGetValue(QuestID, out wzQuest))
+            if (GameDataProvider.Quests.TryGetValue(QuestID, out wzQuest))
             {
                 Check = wzQuest.Stages[QuestStage.Complete].Check;
                 if (Check.Mobs.Count == 0) ClearedMobs = true;

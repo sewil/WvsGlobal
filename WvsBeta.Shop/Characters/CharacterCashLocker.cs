@@ -51,7 +51,7 @@ namespace WvsBeta.Shop
 
             if (item is PetItem pi)
             {
-                pi.Name = DataProvider.Pets[pi.ItemID].Name;
+                pi.Name = ShopDataProvider.Pets[pi.ItemID].Name;
                 pi.Closeness = 0;
                 pi.Fullness = 100;
                 pi.Level = 1;

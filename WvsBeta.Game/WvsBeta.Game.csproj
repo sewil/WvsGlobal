@@ -146,7 +146,7 @@
     <Compile Include="GameMainForm.cs" />
     <Compile Include="Handlers\Contimove\CONTIMOVE.cs" />
     <Compile Include="Handlers\Contimove\ContinentMan.cs" />
-    <Compile Include="GameObjects\DataLoading\DataProvider.cs" />
+    <Compile Include="GameObjects\DataLoading\GameDataProvider.cs" />
     <Compile Include="GameObjects\DataLoading\QuizData.cs" />
     <Compile Include="GameObjects\Door.cs" />
     <Compile Include="GameObjects\Drop.cs" />

@@ -59,7 +59,7 @@ namespace WvsBeta.Game
 
             if (chr.AssertForHack(item == null, "HandleCashItem with null item") ||
                 chr.AssertForHack(item.ItemID != itemid, "HandleCashItem with itemid inconsistency") ||
-                chr.AssertForHack(!DataProvider.Items.TryGetValue(itemid, out var data), "HandleCashItem with unknown item") ||
+                chr.AssertForHack(!GameDataProvider.Items.TryGetValue(itemid, out var data), "HandleCashItem with unknown item") ||
                 chr.AssertForHack(!data.Cash, "HandleCashItem with non-cash item"))
             {
                 return;
@@ -172,7 +172,7 @@ namespace WvsBeta.Game
                         {
                             //I don't think it's even possible for you to be in a map that doesn't exist and use a Teleport rock?
                             Map from = chr.Field;
-                            Map to = DataProvider.Maps.ContainsKey(map) ? DataProvider.Maps[map] : null;
+                            Map to = GameDataProvider.Maps.ContainsKey(map) ? GameDataProvider.Maps[map] : null;
 
                             if (to == from)
                             {

@@ -18,7 +18,7 @@ using WvsBeta.Game.GameObjects.DataLoading;
 // case $1: $2 break;
 namespace WvsBeta.Game
 {
-    public class DataProvider : BaseDataProvider
+    public class GameDataProvider : DataProvider
     {
         public static IDictionary<int, Map> Maps { get; private set; }
         public static IDictionary<int, Reactor> Reactors { get; private set; }
@@ -664,7 +664,7 @@ namespace WvsBeta.Game
             foreach (var rNode in mapNode["reactor"])
             {
                 int rID = rNode["id"].ValueInt32();
-                if (!DataProvider.Reactors.ContainsKey(rID))
+                if (!GameDataProvider.Reactors.ContainsKey(rID))
                 {
                     Program.MainForm.LogAppend($"Reactor id {rID} not found in map {map.ID} at reactor {rNode.Name}! Skipping...");
                     continue;

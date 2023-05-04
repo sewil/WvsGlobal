@@ -10,7 +10,7 @@ namespace WvsBeta.Game.Events.GMEvents
     class MapleQuizEvent : Event
     {
         private static readonly int QuizMapId = 109020001;
-        private static readonly Map QuizMap = DataProvider.Maps[QuizMapId];
+        private static readonly Map QuizMap = GameDataProvider.Maps[QuizMapId];
         private static readonly int WinMapId = 109050000;
         private static readonly int LoseMapId = 109050001;
         private static readonly Rectangle AreaO = new Rectangle(-1030, -150, 780, 510);
@@ -28,7 +28,7 @@ namespace WvsBeta.Game.Events.GMEvents
         {
             questions.Clear();
             
-            var page = DataProvider.QuizQuestions[(byte)(1 + Rand32.Next() % 7)];
+            var page = GameDataProvider.QuizQuestions[(byte)(1 + Rand32.Next() % 7)];
             while(questions.Count < 10)
             {
                 var nextQuestion = page.RandomElement();

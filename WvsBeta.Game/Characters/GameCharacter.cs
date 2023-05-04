@@ -466,11 +466,11 @@ namespace WvsBeta.Game
                 var _mapId = data.GetInt32("map");
 
                 Map field;
-                if (!DataProvider.Maps.TryGetValue(_mapId, out field))
+                if (!GameDataProvider.Maps.TryGetValue(_mapId, out field))
                 {
                     Program.MainForm.LogAppend(
                         "The map of {0} is not valid (nonexistant)! Map was {1}. Returning to 0", CharacterStat.ID, _mapId);
-                    field = DataProvider.Maps[0];
+                    field = GameDataProvider.Maps[0];
                     PortalID = 0;
                 }
                 Field = field;

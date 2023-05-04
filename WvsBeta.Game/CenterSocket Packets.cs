@@ -20,7 +20,7 @@ namespace WvsBeta.Game
         }
         public void EncodeDoor(Packet pw, GameCharacter chr)
         {
-            if (DataProvider.Maps.TryGetValue(chr.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(chr.ID, out MysticDoor door))
+            if (GameDataProvider.Maps.TryGetValue(chr.DoorMapId, out Map map) && map.DoorPool.TryGetDoor(chr.ID, out MysticDoor door))
             {
                 pw.WriteBool(true);
                 pw.WriteInt(map.ReturnMap);
@@ -77,7 +77,7 @@ namespace WvsBeta.Game
         {
             Packet pw = new Packet(ISClientMessages.PartyDoorChanged);
             pw.WriteInt(door.OwnerId);
-            pw.WriteInt(DataProvider.Maps[door.FieldId].ReturnMap);
+            pw.WriteInt(GameDataProvider.Maps[door.FieldId].ReturnMap);
             pw.WriteInt(door.FieldId);
             pw.WriteShort(door.X);
             pw.WriteShort(door.Y);

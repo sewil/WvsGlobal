@@ -167,7 +167,7 @@ namespace WvsBeta.Game
 
         public override void UseMeleeAttack(int skillid, AttackData attackData)
         {
-            if (!DataProvider.Skills.TryGetValue(skillid, out var skillData)) return;
+            if (!GameDataProvider.Skills.TryGetValue(skillid, out var skillData)) return;
 
             var level = (byte)(Skills.ContainsKey(skillid) ? Skills[skillid] : 0);
             if (level == 0) return;
@@ -192,12 +192,12 @@ namespace WvsBeta.Game
             short bullets = 1;
             if (skillid != 0)
             {
-                if (!DataProvider.Skills.ContainsKey(skillid)) return;
+                if (!GameDataProvider.Skills.ContainsKey(skillid)) return;
 
                 byte level = (byte)(Skills.ContainsKey(skillid) ? Skills[skillid] : 0);
                 if (level == 0) return;
                 DoSkillCost(skillid, level);
-                short bulletUsage = DataProvider.Skills[skillid].Levels[level].BulletUsage;
+                short bulletUsage = GameDataProvider.Skills[skillid].Levels[level].BulletUsage;
                 if (bulletUsage > 0)
                     bullets = bulletUsage;
             }
@@ -225,12 +225,12 @@ namespace WvsBeta.Game
 
         public override double GetSpellAttack(int spellId)
         {
-            return DataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].MagicAttack;
+            return GameDataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].MagicAttack;
         }
 
         public override double GetSpellMastery(int spellId)
         {
-            return DataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].Mastery;
+            return GameDataProvider.Skills[spellId].Levels[Character.Skills.GetSkillLevel(spellId)].Mastery;
         }
 
         public override ushort GetRechargeableBonus()

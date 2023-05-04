@@ -54,7 +54,7 @@ namespace WvsBeta.Game
             var door = Doors[ownerId];
             Doors.Remove(door.OwnerId);
             Field.SendPacket(MapPacket.RemoveDoor(ownerId, 0));
-            var town = DataProvider.Maps[Field.ReturnMap];
+            var town = GameDataProvider.Maps[Field.ReturnMap];
             town.DoorPool.TownDoors.Remove(door.OwnerId);
             var owner = Server.Instance.GetCharacter(door.OwnerId);
             if (owner != null && owner.Field.ID == Field.ReturnMap)
@@ -72,7 +72,7 @@ namespace WvsBeta.Game
         {
             var door = new MysticDoor(chr.ID, chr.PartyID, x, y, Field.ID, endTime);
             Doors.Add(chr.ID, door);
-            DataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Add(chr.ID, door);
+            GameDataProvider.Maps[Field.ReturnMap].DoorPool.TownDoors.Add(chr.ID, door);
             foreach (var c in UpdatableChars(door))
             {
                 c.SendPacket(MapPacket.ShowDoor(door, DoorEnterType.Drop));

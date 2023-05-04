@@ -190,7 +190,7 @@ namespace WvsBeta.Game
         {
             if (chr.ShopNPCID == 0) return;
 
-            var shopInfo = DataProvider.NPCs[chr.ShopNPCID].Shop;
+            var shopInfo = GameDataProvider.NPCs[chr.ShopNPCID].Shop;
             var transferId = "" + chr.ID + "-" + chr.ShopNPCID + "-" + RNG.Range.generate(0, long.MaxValue).ToString();
 
             byte type = packet.ReadByte();
@@ -237,7 +237,7 @@ namespace WvsBeta.Game
                         if (Constants.isRechargeable(itemid))
                         {
                             costs = amount * sid.Price;
-                            if (amount > DataProvider.Items[itemid].MaxSlot) // You can't but multiple sets at once
+                            if (amount > GameDataProvider.Items[itemid].MaxSlot) // You can't but multiple sets at once
                             {
                                 SendShopResult(chr, ShopRes.BuyUnknown);
                                 return;
@@ -278,8 +278,8 @@ namespace WvsBeta.Game
                             // Do not trigger this when selling stars and such.
                             (!Constants.isRechargeable(itemid) && amount > item.Amount) ||
                             (Constants.isEquip(itemid)
-                            ? DataProvider.Equips.ContainsKey(itemid) == false
-                            : DataProvider.Items.ContainsKey(itemid) == false) ||
+                            ? GameDataProvider.Equips.ContainsKey(itemid) == false
+                            : GameDataProvider.Items.ContainsKey(itemid) == false) ||
                             item.CashId != 0)
                         {
                             Program.MainForm.LogAppend("Disconnecting player: invalid trade packet: " + packet);
@@ -291,12 +291,12 @@ namespace WvsBeta.Game
                         int sellPrice = 0;
                         if (Constants.isEquip(itemid))
                         {
-                            var ed = DataProvider.Equips[itemid];
+                            var ed = GameDataProvider.Equips[itemid];
                             sellPrice = ed.Price;
                         }
                         else
                         {
-                            var id = DataProvider.Items[itemid];
+                            var id = GameDataProvider.Items[itemid];
                             sellPrice = id.Price * amount;
                         }
 
@@ -353,7 +353,7 @@ namespace WvsBeta.Game
                             return;
                         }
 
-                        ItemData data = DataProvider.Items[item.ItemID];
+                        ItemData data = GameDataProvider.Items[item.ItemID];
                         if (data.UnitPrice <= 0.0)
                         {
                             SendShopResult(chr, ShopRes.RechargeIncorrectRequest);
@@ -400,7 +400,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.SHOP);
             pw.WriteInt(NPCID);
 
-            List<ShopItemData> ShopItems = DataProvider.NPCs[NPCID].Shop;
+            List<ShopItemData> ShopItems = GameDataProvider.NPCs[NPCID].Shop;
 
             ushort maxSlots = 1;
 
@@ -411,7 +411,7 @@ namespace WvsBeta.Game
                 pw.WriteInt(item.Price);
 
                 float unitPrice = 0;
-                if (DataProvider.Items.TryGetValue(item.ItemID, out ItemData id))
+                if (GameDataProvider.Items.TryGetValue(item.ItemID, out ItemData id))
                 {
                     unitPrice = id.UnitPrice;
                     maxSlots = id.MaxSlot;

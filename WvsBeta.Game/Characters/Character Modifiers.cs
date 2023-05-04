@@ -646,7 +646,7 @@ namespace WvsBeta.Game
         // Change map, but take random spawn
         public void ChangeMap(int mapid)
         {
-            ChangeMap(mapid, DataProvider.Maps[mapid].GetRandomStartPoint());
+            ChangeMap(mapid, GameDataProvider.Maps[mapid].GetRandomStartPoint());
         }
 
         // Change map, but go to a specific portal
@@ -657,7 +657,7 @@ namespace WvsBeta.Game
                 ChangeMap(toMapId);
                 return;
             }
-            var newMap = DataProvider.Maps[toMapId];
+            var newMap = GameDataProvider.Maps[toMapId];
             if (newMap.Portals.TryGetValue(toPortalName, out var portal))
                 ChangeMap(toMapId, portal);
             else
@@ -679,14 +679,14 @@ namespace WvsBeta.Game
         }
         public void ChangeMap(int toMapId, Portal toPortal)
         {
-            Map toMap = DataProvider.Maps[toMapId];
+            Map toMap = GameDataProvider.Maps[toMapId];
             ChangeMap(toMap, toPortal);
         }
 
         public void ChangeMap(int mapid, byte partyMemberIdx, MysticDoor door)
         {
             var prevmap = Field;
-            var newMap = DataProvider.Maps[mapid];
+            var newMap = GameDataProvider.Maps[mapid];
 
             StartChangeMap(prevmap, newMap);
             {

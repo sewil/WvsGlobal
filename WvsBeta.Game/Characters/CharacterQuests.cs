@@ -23,7 +23,7 @@ namespace WvsBeta.Game
         }
         public Dictionary<short, QuestData> GetQuests(bool wzFilter = true)
         {
-            if (wzFilter) return Quests.Where((i) => BaseDataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
+            if (wzFilter) return Quests.Where((i) => DataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
             else return Quests;
         }
         public CharacterQuests(GameCharacter character)
@@ -93,7 +93,7 @@ namespace WvsBeta.Game
         {
             if (Quests.TryGetValue(questID, out QuestData eQuest)) return RepeatQuest(eQuest);
             WZQuestData wzQuest = null;
-            if (DataProvider.Quests.ContainsKey(questID)) wzQuest = DataProvider.Quests[questID];
+            if (GameDataProvider.Quests.ContainsKey(questID)) wzQuest = GameDataProvider.Quests[questID];
             if (wzQuest?.Stages[QuestStage.Start].Check.HasExpired() == true) return false;
             return AddNewQuest(questID, wzQuest, data);
         }

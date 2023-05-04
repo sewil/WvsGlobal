@@ -25,7 +25,7 @@ namespace WvsBeta.Game
         public override void InitializeServer()
         {
             Server.Init(Program.IMGFilename);
-            DataProvider.Load();
+            GameDataProvider.Load();
 
             for (var reconnects = 0; reconnects < 8; reconnects++)
             {
@@ -68,7 +68,7 @@ namespace WvsBeta.Game
             MasterThread.RepeatingAction.Start("Log killed mobs",
                 curTime =>
                 {
-                    DataProvider.Maps.Values.ForEach(x => x.FlushMobKillCount());
+                    GameDataProvider.Maps.Values.ForEach(x => x.FlushMobKillCount());
                 },
                 0,
                 60 * 1000

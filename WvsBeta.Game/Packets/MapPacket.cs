@@ -94,7 +94,7 @@ namespace WvsBeta.Game
             }
 
             int RealID = npc.ID;
-            if (!DataProvider.NPCs.TryGetValue(RealID, out NPCData npcData)) return;
+            if (!GameDataProvider.NPCs.TryGetValue(RealID, out NPCData npcData)) return;
 
             if (npcData.Shop.Count > 0)
             {
@@ -129,7 +129,7 @@ namespace WvsBeta.Game
         public static void HandleEnterPortal(GameCharacter chr, int toMapID, string toPortalName)
         {
             if (
-                DataProvider.Maps.TryGetValue(toMapID, out Map toMap) &&
+                GameDataProvider.Maps.TryGetValue(toMapID, out Map toMap) &&
                 toMap.Portals.TryGetValue(toPortalName, out Portal toPortal)
             )
             {

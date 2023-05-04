@@ -159,7 +159,7 @@ namespace WvsBeta.Game
             {
                 if (act.NextQuest > 0)
                 {
-                    if (!DataProvider.Quests.TryGetValue(act.NextQuest, out WZQuestData nextQuest)) throw new QuestException(QuestActionResult.UnknownError);
+                    if (!GameDataProvider.Quests.TryGetValue(act.NextQuest, out WZQuestData nextQuest)) throw new QuestException(QuestActionResult.UnknownError);
                     SendQuestActionResult(chr, QuestActionResult.Success, npcid, 0, act.NextQuest);
                 }
                 else
@@ -202,7 +202,7 @@ namespace WvsBeta.Game
                     {
                         int npcid = packet.ReadInt();
                         // start quest [42] [01] [E8 03] [35 08 00 00]
-                        if (!DataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
+                        if (!GameDataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
                             SendQuestActionResultError(chr, QuestActionResult.UnknownError);
                             return;
@@ -216,7 +216,7 @@ namespace WvsBeta.Game
                         // complete quest [42] [02] [E8 03] [34 08 00 00] [FF FF FF FF]
                         packet.ReadInt();
 
-                        if (!DataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
+                        if (!GameDataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
                             SendQuestActionResultError(chr, QuestActionResult.UnknownError);
                             return;

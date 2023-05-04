@@ -222,7 +222,7 @@ namespace WvsBeta.Game
             pw.WriteByte((byte)BroadcastMessageType.Megaphone);
             pw.WriteString(what);
 
-            foreach (KeyValuePair<int, Map> kvp in DataProvider.Maps)
+            foreach (KeyValuePair<int, Map> kvp in GameDataProvider.Maps)
             {
                 kvp.Value.SendPacket(pw);
             }
@@ -235,7 +235,7 @@ namespace WvsBeta.Game
             Packet pw = new Packet(ServerMessages.BROADCAST_MSG);
             pw.WriteByte((byte)BroadcastMessageType.Megaphone);
             pw.WriteString(what);
-            DataProvider.Maps[mapid].SendPacket(pw);
+            GameDataProvider.Maps[mapid].SendPacket(pw);
         }
 
         public static void SendSuperMegaphoneMessage(string what, bool WhisperOrFind, byte channel)
@@ -249,7 +249,7 @@ namespace WvsBeta.Game
             pw.WriteByte(channel);
             pw.WriteBool(WhisperOrFind);
 
-            foreach (KeyValuePair<int, Map> kvp in DataProvider.Maps)
+            foreach (KeyValuePair<int, Map> kvp in GameDataProvider.Maps)
                 kvp.Value.SendPacket(pw);
         }
 
@@ -289,7 +289,7 @@ namespace WvsBeta.Game
         public static void SendBroadcastMessageToChannel(string text, BroadcastMessageType type)
         {
             var pw = BroadcastMessage(text, type);
-            foreach (var kvp in DataProvider.Maps)
+            foreach (var kvp in GameDataProvider.Maps)
             {
                 kvp.Value.SendPacket(pw);
             }
@@ -302,7 +302,7 @@ namespace WvsBeta.Game
         }
         public static void SendBroadcastMessageToMap(int mapId, string text, BroadcastMessageType type)
         {
-            SendBroadcastMessageToMap(DataProvider.Maps[mapId], text, type);
+            SendBroadcastMessageToMap(GameDataProvider.Maps[mapId], text, type);
         }
         public static void SendBroadcastMessageToMap(Map map, string text, BroadcastMessageType type)
         {

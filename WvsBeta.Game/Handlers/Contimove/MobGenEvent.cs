@@ -44,9 +44,9 @@ namespace WvsBeta.Game.Handlers.Contimove
         void SummonMob()
         {
             if (conti.FieldsShip[0] == Constants.InvalidMap) return;
-            if (!DataProvider.Maps.TryGetValue(conti.FieldsShip[0], out var field)) return;
+            if (!GameDataProvider.Maps.TryGetValue(conti.FieldsShip[0], out var field)) return;
             if (field.Limitations.HasFlag(FieldLimit.SummonLimit)) return;
-            if (!DataProvider.Items.TryGetValue(mobItemId, out var itemData)) return;
+            if (!GameDataProvider.Items.TryGetValue(mobItemId, out var itemData)) return;
 
             EventInProgress = true;
 
@@ -70,7 +70,7 @@ namespace WvsBeta.Game.Handlers.Contimove
         {
             doSpawn = false;
             EventInProgress = false;
-            if (!DataProvider.Maps.TryGetValue(conti.FieldsShip[0], out var field)) return;
+            if (!GameDataProvider.Maps.TryGetValue(conti.FieldsShip[0], out var field)) return;
             if (field.Mobs.Count == 0) return;
 
             Program.MainForm.LogAppend($"Removing mobs for contimove trip {conti.Name} on map " + field.ID);

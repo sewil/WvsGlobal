@@ -85,7 +85,7 @@ namespace WvsBeta.Game
             ID = (int)Utils.ConvertNameToID(node.Name);
             Field = map;
             int rID = node["id"].ValueInt32();
-            Reactor = DataProvider.Reactors[rID];
+            Reactor = GameDataProvider.Reactors[rID];
             Position = new Pos(node["x"].ValueInt16(), node["y"].ValueInt16());
             FacesLeft = node["f"].ValueBool();
             ReactorTime = node["reactorTime"].ValueInt32();

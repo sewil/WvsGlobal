@@ -48,7 +48,7 @@ namespace WvsBeta.Game
                 {
                     if (idx >= maps.Length)
                         Array.Resize(ref maps, idx + 1);
-                    var map = DataProvider.Maps[subNode.GetInt()];
+                    var map = GameDataProvider.Maps[subNode.GetInt()];
                     maps[idx] = map;
                     map.ParentFieldSet = this;
                 }

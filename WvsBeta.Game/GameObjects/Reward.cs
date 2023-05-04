@@ -50,7 +50,7 @@ namespace WvsBeta.Game
 
             var Result = new List<Reward>();
 
-            if (!DataProvider.Drops.TryGetValue($"{Type}{ID}", out var Rewards)) return Result;
+            if (!GameDataProvider.Drops.TryGetValue($"{Type}{ID}", out var Rewards)) return Result;
 
             foreach (var Drop in Rewards)
             {

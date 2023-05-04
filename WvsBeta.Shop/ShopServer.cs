@@ -173,7 +173,7 @@ namespace WvsBeta.Shop
                 while (data.Read())
                 {
                     var sn = data.GetInt32("sn");
-                    if (DataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci))
+                    if (ShopDataProvider.Commodity.TryGetValue(sn, out CommodityInfo ci))
                     {
                         sales.SafeAdd(ci.Category, ci);
                     }

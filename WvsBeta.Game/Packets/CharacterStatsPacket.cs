@@ -223,7 +223,7 @@ namespace WvsBeta.Game
             {
                 Program.MainForm.LogAppend("Chr {0} tried resetting without SP reset item {1}!", chr.ID, itemid);
             }
-            else if (!chrSkills.TryGetValue(downSkillID, out byte downSP) || !DataProvider.Skills.TryGetValue(upSkillID, out SkillData upSD) || !DataProvider.Skills.TryGetValue(downSkillID, out SkillData downSD))
+            else if (!chrSkills.TryGetValue(downSkillID, out byte downSP) || !GameDataProvider.Skills.TryGetValue(upSkillID, out SkillData upSD) || !GameDataProvider.Skills.TryGetValue(downSkillID, out SkillData downSD))
             {
                 Program.MainForm.LogAppend("SP reset skills not found for chr {0}! ({1} -> {2})", chr.ID, downSkillID, upSkillID);
             }
@@ -545,7 +545,7 @@ namespace WvsBeta.Game
             {
                 // Check if the skill exists and has any extra effect.
 
-                if (!DataProvider.MobSkills.TryGetValue(mobSkillId, out var skillLevels)) return;
+                if (!GameDataProvider.MobSkills.TryGetValue(mobSkillId, out var skillLevels)) return;
 
                 // Still going strong
                 if (!skillLevels.TryGetValue(mobSkillLevel, out var msld)) return;
@@ -562,7 +562,7 @@ namespace WvsBeta.Game
                 // Shit's poisonous!
                 // Hmm... We could actually make snails give buffs... hurr
 
-                if (!DataProvider.MobSkills.TryGetValue(mad.Disease, out var skillLevels)) return;
+                if (!GameDataProvider.MobSkills.TryGetValue(mad.Disease, out var skillLevels)) return;
 
                 // Still going strong
                 if (!skillLevels.TryGetValue(mad.SkillLevel, out var msld)) return;

@@ -231,7 +231,7 @@ namespace WvsBeta.Common.Objects
     {
         public BundleItem(int itemId) : base(itemId)
         {
-            if (!BaseDataProvider.Items.TryGetValue(base.ItemID, out ItemData itemData)) return;
+            if (!DataProvider.Items.TryGetValue(base.ItemID, out ItemData itemData)) return;
             IsQuest = itemData.IsQuest;
             IsOnly = itemData.IsOnly;
             IsTradeBlock = itemData.IsTradeBlock;
@@ -306,7 +306,7 @@ namespace WvsBeta.Common.Objects
 
         public EquipItem(int itemId) : base(itemId) 
         {
-            if (BaseDataProvider.Equips == null || !BaseDataProvider.Equips.TryGetValue(base.ItemID, out EquipData data)) return;
+            if (DataProvider.Equips == null || !DataProvider.Equips.TryGetValue(base.ItemID, out EquipData data)) return;
             IsQuest = data.IsQuest;
             IsOnly = data.IsOnly;
             IsTradeBlock = data.IsTradeBlock;
@@ -338,7 +338,7 @@ namespace WvsBeta.Common.Objects
 
         public void GiveStats(ItemVariation enOption)
         {
-            if (!BaseDataProvider.Equips.TryGetValue(ItemID, out EquipData data))
+            if (!DataProvider.Equips.TryGetValue(ItemID, out EquipData data))
             {
                 return;
             }

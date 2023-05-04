@@ -91,7 +91,7 @@ namespace WvsBeta.Game
                         byte slot = (byte)pr.ReadShort();
                         int itemid = pr.ReadInt();
                         short amount = pr.ReadShort();
-                        NPCData data = DataProvider.NPCs[chr.TrunkNPCID];
+                        NPCData data = GameDataProvider.NPCs[chr.TrunkNPCID];
                         var storageCost = data.Trunk;
                         if (chr.Inventory.Mesos < storageCost)
                         {

@@ -61,7 +61,7 @@ namespace WvsBeta.Game
                 PlayerEffectPacket.SendSkill(chr, SkillID, SkillLevel, foreignOnly: true);
             }
 
-            var sld = DataProvider.Skills[SkillID].Levels[SkillLevel];
+            var sld = GameDataProvider.Skills[SkillID].Levels[SkillLevel];
 
 
             if (SkillID == (int)Constants.Spearman.Skills.HyperBody && !chr.PrimaryStats.HasBuff((int)Constants.Spearman.Skills.HyperBody)) // Buff already exists, do not execute bonus again. Allow multiple casts for duration refresh
@@ -285,7 +285,7 @@ namespace WvsBeta.Game
 
                         if (chr.DoorMapId != Constants.InvalidMap)
                         {
-                            DataProvider.Maps[chr.DoorMapId].DoorPool.TryRemoveDoor(chr.ID);
+                            GameDataProvider.Maps[chr.DoorMapId].DoorPool.TryRemoveDoor(chr.ID);
                         }
 
                         chr.DoorMapId = chr.MapID;
@@ -516,7 +516,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            if (!DataProvider.Skills.TryGetValue(SkillID, out var sd))
+            if (!GameDataProvider.Skills.TryGetValue(SkillID, out var sd))
             {
                 Program.MainForm.LogAppend("Character {0} tried to put points in a skill ({1}) that doesnt exist.", chr.ID, SkillID);
                 return;

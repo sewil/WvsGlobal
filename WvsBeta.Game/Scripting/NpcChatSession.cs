@@ -293,7 +293,7 @@ namespace WvsBeta.Game
         }
         public void AskShop(IEnumerable<ShopItemData> items)
         {
-            DataProvider.NPCs[mNpcID].Shop = items.ToList(); // MapPacket takes over handling once shop is loaded. Reload shop with /reloadscript
+            GameDataProvider.NPCs[mNpcID].Shop = items.ToList(); // MapPacket takes over handling once shop is loaded. Reload shop with /reloadscript
             mCharacter.ShopNPCID = mNpcID;
             NpcPacket.SendShowNPCShop(mCharacter, mNpcID);
         }

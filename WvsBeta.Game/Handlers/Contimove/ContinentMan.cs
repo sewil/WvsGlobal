@@ -96,7 +96,7 @@ namespace WvsBeta.Game.Handlers.Contimove
 
         public void MoveField(int fieldFrom, int fieldTo)
         {
-            if (!DataProvider.Maps.TryGetValue(fieldFrom, out var field)) return;
+            if (!GameDataProvider.Maps.TryGetValue(fieldFrom, out var field)) return;
 
             foreach (var character in field.Characters.ToArray())
             {
@@ -132,7 +132,7 @@ namespace WvsBeta.Game.Handlers.Contimove
 
         public static void SendContiPacket(int fieldId, Conti target, Conti flag)
         {
-            if (!DataProvider.Maps.TryGetValue(fieldId, out var field)) return;
+            if (!GameDataProvider.Maps.TryGetValue(fieldId, out var field)) return;
 
             var packet = new Packet(ServerMessages.CONTI_TARGET_FIELD);
             packet.WriteByte((byte)target);

@@ -265,7 +265,7 @@ namespace WvsBeta.Game
             }
 
 
-            var sld = ad.SkillID == 0 ? null : DataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
+            var sld = ad.SkillID == 0 ? null : GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
             long buffTime = sld?.BuffTime * 1000 ?? 0;
             long buffExpireTime = MasterThread.CurrentTime + buffTime;
             bool IsSuccessRoll() => sld != null && (Rand32.Next() % 100) < sld.Property;
@@ -637,7 +637,7 @@ namespace WvsBeta.Game
 
                     if (!died)
                     {
-                        var sld = DataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
+                        var sld = GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
                         long buffTime = sld.BuffTime * 1000;
 
                         //TODO refactor element code when we get the proper element loading with calcdamage branch

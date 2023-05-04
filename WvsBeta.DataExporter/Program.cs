@@ -51,7 +51,7 @@ namespace WvsBeta.DataExporter
             using (var sw = new StreamWriter(fs))
             {
                 sw.WriteLine("Dropper ID\tIs Mesos\tItem ID or amount of mesos\tMin\tMax\tChance\tExpire date\tPeriod\tPremium drop");
-                foreach (var dropperAndData in Game.DataProvider.Drops)
+                foreach (var dropperAndData in Game.GameDataProvider.Drops)
                 {
                     foreach (var drop in dropperAndData.Value)
                     {
@@ -69,23 +69,23 @@ namespace WvsBeta.DataExporter
         static void Main(string[] args)
         {
             Game.Program.MainForm = new DummyMainForm();
-            Game.DataProvider.Load();
+            Game.GameDataProvider.Load();
 
 
-            File.WriteAllText("drops.json", JsonConvert.SerializeObject(Game.DataProvider.Drops, Formatting.Indented));
-            File.WriteAllText("items.json", JsonConvert.SerializeObject(Game.DataProvider.Items, Formatting.Indented));
-            File.WriteAllText("equips.json", JsonConvert.SerializeObject(Game.DataProvider.Equips, Formatting.Indented));
-            File.WriteAllText("mobs.json", JsonConvert.SerializeObject(Game.DataProvider.Mobs, Formatting.Indented));
+            File.WriteAllText("drops.json", JsonConvert.SerializeObject(Game.GameDataProvider.Drops, Formatting.Indented));
+            File.WriteAllText("items.json", JsonConvert.SerializeObject(Game.GameDataProvider.Items, Formatting.Indented));
+            File.WriteAllText("equips.json", JsonConvert.SerializeObject(Game.GameDataProvider.Equips, Formatting.Indented));
+            File.WriteAllText("mobs.json", JsonConvert.SerializeObject(Game.GameDataProvider.Mobs, Formatting.Indented));
 
             ExportDrops();
 
             // Cleanup footholds
-            Game.DataProvider.Maps.ForEach(x =>
+            Game.GameDataProvider.Maps.ForEach(x =>
             {
                 x.Value.SetFootholds(new List<Foothold>());
             });
 
-            File.WriteAllText("maps.json", JsonConvert.SerializeObject(Game.DataProvider.Maps, Formatting.Indented, new JsonSerializerSettings
+            File.WriteAllText("maps.json", JsonConvert.SerializeObject(Game.GameDataProvider.Maps, Formatting.Indented, new JsonSerializerSettings
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             }));
@@ -185,7 +185,7 @@ namespace WvsBeta.DataExporter
 
             // Package
 
-            var nxFileKVP = BaseDataProvider.GetMergedDatafiles();
+            var nxFileKVP = DataProvider.GetMergedDatafiles();
             var nxFile = nxFileKVP.Key;
 
             var cashItemData = new Dictionary<int, List<(byte count, byte gender, byte onSale, byte period, int price, byte priority)>>();
@@ -217,9 +217,9 @@ namespace WvsBeta.DataExporter
                 sr.WriteLine("#Property");
                 var i = 0;
 
-                var allCashItems = Game.DataProvider.Equips.Where(x => x.Value.Cash).Select(x => x.Key)
-                    .Union(Game.DataProvider.Items.Where(x => x.Value.Cash).Select(x => x.Key))
-                    .Union(Game.DataProvider.Pets.Select(x => x.Key))
+                var allCashItems = Game.GameDataProvider.Equips.Where(x => x.Value.Cash).Select(x => x.Key)
+                    .Union(Game.GameDataProvider.Items.Where(x => x.Value.Cash).Select(x => x.Key))
+                    .Union(Game.GameDataProvider.Pets.Select(x => x.Key))
                     .OrderBy(x => x);
 
                 foreach (var itemId in allCashItems)
@@ -296,7 +296,7 @@ namespace WvsBeta.DataExporter
                 byte level = 0;
                 var itemid = int.Parse(item.Name.TrimStart('0'));
                 if (Constants.isEquip(itemid))
-                    if (DataProvider.Equips.TryGetValue(itemid, out var ed)) level = ed.RequiredLevel;
+                    if (GameDataProvider.Equips.TryGetValue(itemid, out var ed)) level = ed.RequiredLevel;
 
                 sb.AppendFormat("{0}\t{1}\t{2}\r\n", itemid, hasName ? item["name"].ValueString() : "-- NO NAME --", level);
 

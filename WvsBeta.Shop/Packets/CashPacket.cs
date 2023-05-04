@@ -203,7 +203,7 @@ namespace WvsBeta.Shop
                         {
                             var val = packet.ReadInt();
 
-                            if (val == 0 || DataProvider.Commodity.ContainsKey(val))
+                            if (val == 0 || ShopDataProvider.Commodity.ContainsKey(val))
                             {
                                 chr.Wishlist[i] = val;
                             }
@@ -320,7 +320,7 @@ namespace WvsBeta.Shop
         public static void GiftItem(ShopCharacter chr, uint dob, int sn, string recipient, string message, bool isCoupleRing)
         {
             // Check SN
-            if (!DataProvider.Commodity.TryGetValue(sn, out var ci))
+            if (!ShopDataProvider.Commodity.TryGetValue(sn, out var ci))
             {
                 _log.Warn($"Gifting failed: commodity not found for SN {sn}");
                 SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.OutOfStock);
@@ -641,7 +641,7 @@ namespace WvsBeta.Shop
 
         public static bool TryValidateBuy(ShopCharacter chr, int sn, bool isQuestItem, bool maplePoints, out CommodityInfo ci)
         {
-            if (!DataProvider.Commodity.TryGetValue(sn, out ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
+            if (!ShopDataProvider.Commodity.TryGetValue(sn, out ci) || !ci.OnSale || ci.StockState == StockState.NotAvailable || ci.StockState == StockState.OutOfStock)
             {
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
                 return false;
@@ -672,10 +672,10 @@ namespace WvsBeta.Shop
         public static bool TryGetPackage(CommodityInfo package, out IList<CommodityInfo> items)
         {
             items = new List<CommodityInfo>();
-            if (!DataProvider.Packages.TryGetValue(package.ItemID, out int[] sns)) return false;
+            if (!ShopDataProvider.Packages.TryGetValue(package.ItemID, out int[] sns)) return false;
             foreach (int snI in sns)
             {
-                if (!DataProvider.Commodity.TryGetValue(snI, out CommodityInfo item)) return false;
+                if (!ShopDataProvider.Commodity.TryGetValue(snI, out CommodityInfo item)) return false;
                 items.Add(item);
             }
             return true;

@@ -6,28 +6,28 @@ namespace WvsBeta.Game.Events.GMEvents
     public class MapleJewelEvent : Event
     {
         private static readonly int JewelItem = 4031004;
-        private static readonly Map HubMap = DataProvider.Maps[109010000];
+        private static readonly Map HubMap = GameDataProvider.Maps[109010000];
         private static readonly Map[] Maps = {
             HubMap,
-            DataProvider.Maps[109010100],
-            DataProvider.Maps[109010101],
-            DataProvider.Maps[109010102],
-            DataProvider.Maps[109010103],
-            DataProvider.Maps[109010200],
-            DataProvider.Maps[109010201],
-            DataProvider.Maps[109010202],
-            DataProvider.Maps[109010203],
-            DataProvider.Maps[109010300],
-            DataProvider.Maps[109010301],
-            DataProvider.Maps[109010302],
-            DataProvider.Maps[109010303],
-            DataProvider.Maps[109010400],
-            DataProvider.Maps[109010401],
-            DataProvider.Maps[109010402],
-            DataProvider.Maps[109010403]
+            GameDataProvider.Maps[109010100],
+            GameDataProvider.Maps[109010101],
+            GameDataProvider.Maps[109010102],
+            GameDataProvider.Maps[109010103],
+            GameDataProvider.Maps[109010200],
+            GameDataProvider.Maps[109010201],
+            GameDataProvider.Maps[109010202],
+            GameDataProvider.Maps[109010203],
+            GameDataProvider.Maps[109010300],
+            GameDataProvider.Maps[109010301],
+            GameDataProvider.Maps[109010302],
+            GameDataProvider.Maps[109010303],
+            GameDataProvider.Maps[109010400],
+            GameDataProvider.Maps[109010401],
+            GameDataProvider.Maps[109010402],
+            GameDataProvider.Maps[109010403]
         };
-        private static readonly Map ExitMap = DataProvider.Maps[109050001];
-        private static readonly Map RewardMap = DataProvider.Maps[109050000];
+        private static readonly Map ExitMap = GameDataProvider.Maps[109050001];
+        private static readonly Map RewardMap = GameDataProvider.Maps[109050000];
         private static readonly long EventRuntimeSeconds = 15 * 60 ;
 
         private RepeatingAction EndAction = null;

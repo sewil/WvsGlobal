@@ -28,7 +28,7 @@ namespace WvsBeta.Game
             int itemid = packet.ReadInt();
 
             Item item = chr.Inventory.GetItem(InventoryType.Use, slot);
-            if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
+            if (item == null || item.ItemID != itemid || !GameDataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 return;
             }
@@ -140,7 +140,7 @@ namespace WvsBeta.Game
 
         private static void StackItems(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
-            short slotMax = (short)DataProvider.Items[from.ItemID].MaxSlot;
+            short slotMax = (short)GameDataProvider.Items[from.ItemID].MaxSlot;
             if (slotMax == 0)
             {
                 slotMax = 100;
@@ -264,7 +264,7 @@ namespace WvsBeta.Game
 
         private static void HandleEquip(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
-            if (chr.AssertForHack(!canWearItem(chr, (GameCharacterPrimaryStats)chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
+            if (chr.AssertForHack(!canWearItem(chr, (GameCharacterPrimaryStats)chr.PrimaryStats, GameDataProvider.Equips[from.ItemID], (short)-slotTo),
                 $"Trying to wear an item that he cannot. from {slotFrom} to {slotTo}. Itemid: {from.ItemID}"))
             {
                 // This should be handled by the client unless data.wz is editted
@@ -377,7 +377,7 @@ namespace WvsBeta.Game
             int itemid = packet.ReadInt();
 
             Item item = chr.Inventory.GetItem(InventoryType.Use, slot);
-            if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
+            if (item == null || item.ItemID != itemid || !GameDataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
@@ -399,7 +399,7 @@ namespace WvsBeta.Game
 
             foreach (var isi in data.Summons)
             {
-                if (DataProvider.Mobs.ContainsKey(isi.MobID))
+                if (GameDataProvider.Mobs.ContainsKey(isi.MobID))
                 {
                     if (Rand32.Next() % 100 < isi.Chance)
                     {
@@ -420,7 +420,7 @@ namespace WvsBeta.Game
             int itemid = packet.ReadInt();
 
             Item item = chr.Inventory.GetItem(InventoryType.Use, slot);
-            if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
+            if (item == null || item.ItemID != itemid || !GameDataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 InventoryOperationPacket.NoChange(chr);
                 return;
@@ -432,7 +432,7 @@ namespace WvsBeta.Game
                 return;
             }
             int map;
-            if (data.MoveTo == Constants.InvalidMap || !DataProvider.Maps.ContainsKey(data.MoveTo))
+            if (data.MoveTo == Constants.InvalidMap || !GameDataProvider.Maps.ContainsKey(data.MoveTo))
             {
                 map = chr.Field.ReturnMap;
             }
@@ -482,7 +482,7 @@ namespace WvsBeta.Game
             if (scroll == null ||
                 equip == null ||
                 Constants.itemTypeToScrollType(equip.ItemID) != Constants.getScrollType(scroll.ItemID) ||
-                !DataProvider.Items.TryGetValue(scroll.ItemID, out ItemData scrollData)
+                !GameDataProvider.Items.TryGetValue(scroll.ItemID, out ItemData scrollData)
                 )
             {
                 _scrollingLog.Warn($"Tried to use a scroll that didn't exist {scroll == null}, equip that didnt exist {equip == null}, scroll types that didnt match or no scroll data available.");

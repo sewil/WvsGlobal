@@ -114,7 +114,7 @@ namespace WvsBeta.Game
 
             byte interactionId = packet.ReadByte();
             
-            if (!DataProvider.Pets.TryGetValue(petItem.ItemID, out var petData) || 
+            if (!GameDataProvider.Pets.TryGetValue(petItem.ItemID, out var petData) || 
                 !petData.Reactions.TryGetValue(interactionId, out var petReactionData)) return;
 
             long timeSinceLastInteraction = MasterThread.CurrentTime - chr.PetLastInteraction;
@@ -169,7 +169,7 @@ namespace WvsBeta.Game
 
                 var petItem = chr.GetSpawnedPet();
                 if (petItem == null) throw new ControlledException("Tried feeding non-spawned pet");
-                if (!DataProvider.Items.ContainsKey(itemId)) throw new ControlledException("Invalid pet food item id " + itemId);
+                if (!GameDataProvider.Items.ContainsKey(itemId)) throw new ControlledException("Invalid pet food item id " + itemId);
                 var food = chr.Inventory.GetItem(inv, slot);
                 if (food == null) throw new ControlledException("Not enough pet food.");
                 chr.Inventory.TakeItem(food, food.Inventory, food.InventorySlot, 1);

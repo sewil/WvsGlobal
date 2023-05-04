@@ -23,7 +23,7 @@ namespace WvsBeta.Game
 
         public void AddItemBuff(int itemid)
         {
-            var data = DataProvider.Items[itemid];
+            var data = GameDataProvider.Items[itemid];
             long buffTime = data.BuffTime;
 
             var expireTime = Common.Objects.Stats.BuffStat.GetTimeForBuff(buffTime);
@@ -126,7 +126,7 @@ namespace WvsBeta.Game
             {
                 level = Character.Skills.Skills[SkillID];
             }
-            var data = DataProvider.Skills[SkillID].Levels[level];
+            var data = GameDataProvider.Skills[SkillID].Levels[level];
 
 
             long time = data.BuffTime * 1000;
