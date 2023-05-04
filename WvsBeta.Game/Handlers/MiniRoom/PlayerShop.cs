@@ -18,9 +18,9 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         public short Bundles { get; set; }
         public short BundleAmount { get; set; }
         public byte ShopSlot { get; set; }
-        public BaseItem sItem { get; set; }
+        public Item sItem { get; set; }
 
-        public PlayerShopItem(BaseItem Item)
+        public PlayerShopItem(Item Item)
         {
             this.sItem = Item;
             this.Price = 0;
@@ -70,7 +70,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             if (pCharacter.AssertForHack(Users[0] != pCharacter,
                 "PlayerShop hack: Tried to update shop item while not owner.")) return;
 
-            BaseItem tehItem = pCharacter.Inventory.GetItem(inv, invslot);
+            Item tehItem = pCharacter.Inventory.GetItem(inv, invslot);
             if (tehItem == null)
             {
                 //Doesn't have item in inventory

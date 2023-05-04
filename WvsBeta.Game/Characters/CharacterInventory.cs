@@ -34,10 +34,10 @@ namespace WvsBeta.Game
 
         public IList<OperationOut> AddItem(int itemId, short amount, bool sendOperations = true)
         {
-            var item = BaseItem.CreateFromItemID(itemId, amount);
+            var item = Item.CreateFromItemID(itemId, amount);
             return AddItem(item, out short _, sendOperations);
         }
-        public override void AddItem(Inventory inventory, short slot, BaseItem item, bool isLoading)
+        public override void AddItem(Inventory inventory, short slot, Item item, bool isLoading)
         {
             base.AddItem(inventory, slot, item, isLoading);
 
@@ -51,7 +51,7 @@ namespace WvsBeta.Game
                 UpdateChocoCount();
         }
 
-        public override void SetItem(Inventory inventory, short slot, BaseItem item)
+        public override void SetItem(Inventory inventory, short slot, Item item)
         {
             base.SetItem(inventory, slot, item);
             if (Character.IsOnline)
@@ -64,7 +64,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public BaseItem GetEquippedItem(int itemid, out EquippedType type)
+        public Item GetEquippedItem(int itemid, out EquippedType type)
         {
             type = (EquippedType)(-1);
             foreach (var equips in Equipped)
@@ -94,7 +94,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public IList<OperationOut> AddItem(BaseItem item, out short amountLeft, bool sendOperations = true, bool isSelf = true)
+        public IList<OperationOut> AddItem(Item item, out short amountLeft, bool sendOperations = true, bool isSelf = true)
         {
             Inventory inventory = Constants.getInventory(item.ItemID);
             short freeSlot = 0;
@@ -111,7 +111,7 @@ namespace WvsBeta.Game
 
             for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
             {
-                BaseItem slotItem = GetItem(inventory, slot);
+                Item slotItem = GetItem(inventory, slot);
 
                 if (freeSlot == 0 && slotItem == null) freeSlot = slot;
                 if (!stackable)
@@ -207,7 +207,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                var item = BaseItem.CreateFromItemID(id);
+                var item = Item.CreateFromItemID(id);
                 item.Amount = thisAmount;
                 if (item is EquipItem)
                     (item as EquipItem).GiveStats(ItemVariation.None);
@@ -293,7 +293,7 @@ namespace WvsBeta.Game
             short openSlots = GetOpenSlotsInInventory(inv);
             available += (openSlots * maxPerSlot);
 
-            BaseItem temp = null;
+            Item temp = null;
 
             for (short i = 1; i <= MaxSlots[inv]; i++)
             {
@@ -344,7 +344,7 @@ namespace WvsBeta.Game
                 InventoryPacket.IncreaseSlots(Character, inventory, slots);
         }
 
-        public override void TakeItem(BaseItem item, Inventory inventory, short slot, short amount)
+        public override void TakeItem(Item item, Inventory inventory, short slot, short amount)
         {
             var isRechargeable = Constants.isRechargeable(item.ItemID);
             if (amount > item.Amount) return;
@@ -411,7 +411,7 @@ namespace WvsBeta.Game
             for (short slot = 1; slot <= MaxSlots[inventory]; slot++)
             {
                 if (amountLeft == 0) break; // Nothing more to take
-                BaseItem item = GetItem(inventory, slot);
+                Item item = GetItem(inventory, slot);
                 if (item == null || item.ItemID != itemid) continue;
 
                 short maxTake = Math.Min(item.Amount, amountLeft);
@@ -439,7 +439,7 @@ namespace WvsBeta.Game
             return operations;
         }
 
-        public override BaseItem TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars)
+        public override Item TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars)
         {
             var item = GetItem(inventory, slot);
 
@@ -451,7 +451,7 @@ namespace WvsBeta.Game
             }
 
             bool removeItem = false;
-            BaseItem newItem;
+            Item newItem;
             if (takeStars && Constants.isStar(item.ItemID))
             {
                 // Take the whole item
@@ -502,7 +502,7 @@ namespace WvsBeta.Game
 
             if (star == true)
             {
-                foreach (BaseItem item in Items[Inventory.Use])
+                foreach (Item item in Items[Inventory.Use])
                 {
                     if (item != null)
                     {
@@ -552,7 +552,7 @@ namespace WvsBeta.Game
             // Holiday stuff here.
             double rate = 1;
 
-            foreach (BaseItem item in Items[Inventory.Etc])
+            foreach (Item item in Items[Inventory.Etc])
             {
                 if (item == null || item.ItemID < 4100000 || item.ItemID >= 4200000) continue; // ???
                 ItemData id = DataProvider.Items[item.ItemID];
@@ -566,12 +566,12 @@ namespace WvsBeta.Game
 
 
         private long lastCheck = 0;
-        public void GetExpiredItems(long time, Action<List<BaseItem>> callback)
+        public void GetExpiredItems(long time, Action<List<Item>> callback)
         {
             if (time - lastCheck < 45000) return;
             lastCheck = time;
 
-            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as BaseItem)
+            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as Item)
                 .Concat(Items.SelectMany(i => i.Value).Where(i => i != null).Where(i => i.Expiration < time || ((i is PetItem pi) && pi.DeadDate < time)))
                 .ToList();
 
@@ -619,7 +619,7 @@ namespace WvsBeta.Game
                         {
                             PetsPacket.RemovePet(Character, PetRemoveReason.Expire, true);
                         }
-                        pi.DeadDate = BaseItem.NoItemExpiration;
+                        pi.DeadDate = Item.NoItemExpiration;
                         Pet.UpdatePet(Character, pi);
                     }
                     else

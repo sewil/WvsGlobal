@@ -270,7 +270,7 @@ namespace WvsBeta.Game
                         short amount = packet.ReadShort();
                         Inventory inv = Constants.getInventory(itemid);
 
-                        BaseItem item = chr.Inventory.GetItem(inv, itemslot);
+                        Item item = chr.Inventory.GetItem(inv, itemslot);
 
                         if (item == null ||
                             item.ItemID != itemid ||
@@ -336,7 +336,7 @@ namespace WvsBeta.Game
                         short itemslot = packet.ReadShort();
 
                         Inventory inv = Inventory.Use;
-                        BaseItem item = chr.Inventory.GetItem(inv, itemslot);
+                        Item item = chr.Inventory.GetItem(inv, itemslot);
                         if (item == null ||
                             !Constants.isRechargeable(item.ItemID))
                         {
@@ -539,7 +539,7 @@ namespace WvsBeta.Game
             pw.WriteByte(0x06);
             pw.WriteString(Text);
 
-            var pets = chr.Inventory.GetPets().Where(p => p.DeadDate == BaseItem.NoItemExpiration && (skip == -1 || p.ItemID != skip)).ToList();
+            var pets = chr.Inventory.GetPets().Where(p => p.DeadDate == Item.NoItemExpiration && (skip == -1 || p.ItemID != skip)).ToList();
 
             pw.WriteByte((byte)pets.Count());
             foreach (var petItem in pets)

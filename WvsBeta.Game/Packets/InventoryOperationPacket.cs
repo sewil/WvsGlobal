@@ -15,7 +15,7 @@ namespace WvsBeta.Game.Packets
         public short slot;
         public short slot2;
         public short amount;
-        public BaseItem item;
+        public Item item;
     }
     public class InventoryOperationPacket
     {
@@ -27,7 +27,7 @@ namespace WvsBeta.Game.Packets
             Unk3 = 3
         }
 
-        public static OperationOut AddOperation(BaseItem item)
+        public static OperationOut AddOperation(Item item)
         {
             return new OperationOut
             {
@@ -37,7 +37,7 @@ namespace WvsBeta.Game.Packets
                 item = item
             };
         }
-        public static void Add(GameCharacter chr, BaseItem item)
+        public static void Add(GameCharacter chr, Item item)
         {
             Run(chr, true, AddOperation(item));
         }
@@ -47,7 +47,7 @@ namespace WvsBeta.Game.Packets
             Run(chr, true);
         }
 
-        public static void ChangeAmount(GameCharacter chr, BaseItem item)
+        public static void ChangeAmount(GameCharacter chr, Item item)
         {
             ChangeAmount(chr, item, item.Amount);
         }
@@ -61,11 +61,11 @@ namespace WvsBeta.Game.Packets
                 amount = amount
             };
         }
-        public static void ChangeAmount(GameCharacter chr, BaseItem item, short amount)
+        public static void ChangeAmount(GameCharacter chr, Item item, short amount)
         {
             Run(chr, true, ChangeAmountOperation(item.Inventory, item.InventorySlot, amount));
         }
-        public static void SwitchSlots(GameCharacter chr, BaseItem item, short newSlot)
+        public static void SwitchSlots(GameCharacter chr, Item item, short newSlot)
         {
             SwitchSlots(chr, Constants.getInventory(item.ItemID), item.InventorySlot, newSlot);
         }

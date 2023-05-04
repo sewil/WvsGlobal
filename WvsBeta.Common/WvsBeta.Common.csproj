@@ -185,7 +185,7 @@
     <Compile Include="Character\Pos.cs" />
     <Compile Include="DataProviders\BaseDataProvider.cs" />
     <Compile Include="Objects\AttackData.cs" />
-    <Compile Include="Objects\BaseItem.cs" />
+    <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\BonusSet.cs" />
     <Compile Include="Objects\BuffStats\BuffStat_DragonBlood.cs" />
     <Compile Include="Objects\BuffStats\BuffStat_ComboAttack.cs" />

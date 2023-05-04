@@ -39,12 +39,12 @@ namespace WvsBeta.Shop
             return;
         }
         
-        public static BaseItem CreateCashItem(LockerItem li)
+        public static Item CreateCashItem(LockerItem li)
         {
             li.CashId = (long)((long)(Rand32.Next()) << 32 | Rand32.Next());
             li.CashId &= 0x00FFFFFFFFFFFFFF; // Get rid of the first byte
 
-            var item = BaseItem.CreateFromItemID(li.ItemId);
+            var item = Item.CreateFromItemID(li.ItemId);
             item.Amount = li.Amount;
             item.CashId = li.CashId;
             item.Expiration = li.Expiration;

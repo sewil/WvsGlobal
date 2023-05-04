@@ -23,7 +23,7 @@ namespace WvsBeta.Common.Character
         public int ChocoCount { get; protected set; }
         public int ActiveItemID { get; protected set; }
         // All inventories
-        public readonly Dictionary<Inventory, BaseItem[]> Items = new Dictionary<Inventory, BaseItem[]>();
+        public readonly Dictionary<Inventory, Item[]> Items = new Dictionary<Inventory, Item[]>();
 
         protected Dictionary<int, short> ItemAmounts { get; } = new Dictionary<int, short>();
         public Dictionary<Inventory, byte> MaxSlots { get; } = new Dictionary<Inventory, byte>();
@@ -43,7 +43,7 @@ namespace WvsBeta.Common.Character
             CharacterID = characterId;
             _cashItems = new CharacterCashItems(UserID, CharacterID);
         }
-        public virtual BaseItem TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
+        public virtual Item TakeItemAmountFromSlot(Inventory inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
         public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
         public int GetTotalMAttInEquips()
         {
@@ -70,7 +70,7 @@ namespace WvsBeta.Common.Character
         public virtual bool HasSlotsFreeForItem(int itemid, short amount) { throw new NotImplementedException(); }
         public virtual short AddNewItem(int id, short amount) { throw new NotImplementedException(); }
 
-        public virtual void SetItem(Inventory inventory, short slot, BaseItem item)
+        public virtual void SetItem(Inventory inventory, short slot, Item item)
         {
             if (item != null) item.InventorySlot = slot;
             if (slot < 0)
@@ -101,7 +101,7 @@ namespace WvsBeta.Common.Character
 
             for (short i = 1; i <= MaxSlots[inv]; i++)
             { // Slot 1 - 24, not 0 - 23
-                BaseItem item = GetItem(inv, i);
+                Item item = GetItem(inv, i);
                 if (item != null && item.ItemID == itemid) amount += item.Amount;
             }
             return amount;
@@ -238,7 +238,7 @@ namespace WvsBeta.Common.Character
             );
         }
 
-        public void TryRemoveCashItem(BaseItem item)
+        public void TryRemoveCashItem(Item item)
         {
             var lockerItem = GetLockerItemByCashID(item.CashId);
             if (lockerItem != null)
@@ -252,7 +252,7 @@ namespace WvsBeta.Common.Character
             _cashItems.Items.Add(item);
         }
 
-        public void RemoveLockerItem(LockerItem li, BaseItem item, bool deleteFromDB)
+        public void RemoveLockerItem(LockerItem li, Item item, bool deleteFromDB)
         {
             _cashItems.RemoveItem(li, item);
             if (item != null)
@@ -266,14 +266,14 @@ namespace WvsBeta.Common.Character
             return _cashItems.GetLockerItemFromCashID(cashId);
         }
 
-        public BaseItem GetItemByCashID(long cashId, Inventory inventory)
+        public Item GetItemByCashID(long cashId, Inventory inventory)
         {
-            BaseItem item = Items[inventory].FirstOrDefault(x => x != null && x.CashId == cashId);
+            Item item = Items[inventory].FirstOrDefault(x => x != null && x.CashId == cashId);
             if (item == null) Equipped[EquippedType.Cash].Select(i => i.Value).TryFind(i => i.CashId == cashId, out item);
             return item;
         }
 
-        public virtual void AddItem(Inventory inventory, short slot, BaseItem item, bool isLoading)
+        public virtual void AddItem(Inventory inventory, short slot, Item item, bool isLoading)
         {
             if (slot == 0)
             {
@@ -303,11 +303,11 @@ namespace WvsBeta.Common.Character
             SetItem(inventory, slot, item);
         }
 
-        public virtual void TakeItem(BaseItem item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
+        public virtual void TakeItem(Item item, Inventory inventory, short slot, short amount) { throw new NotImplementedException(); }
         /// <summary>
         /// Get first item from an array of item ids
         /// </summary>
-        public BaseItem GetFirstItem(Inventory inv, params int[] itemids)
+        public Item GetFirstItem(Inventory inv, params int[] itemids)
         {
             for (byte slot = 0; slot < MaxSlots[inv]; slot++)
             {
@@ -320,12 +320,12 @@ namespace WvsBeta.Common.Character
             }
             return null;
         }
-        public bool TryGetItem(int itemid, out BaseItem item)
+        public bool TryGetItem(int itemid, out Item item)
         {
             item = GetItem(itemid);
             return item != null;
         }
-        public BaseItem GetItem(int itemid)
+        public Item GetItem(int itemid)
         {
             Inventory inv = Constants.getInventory(itemid);
             foreach (var item in Items[inv])
@@ -335,7 +335,7 @@ namespace WvsBeta.Common.Character
             }
             return null;
         }
-        public virtual void RemoveItem(BaseItem item)
+        public virtual void RemoveItem(Item item)
         {
             var inventory = Constants.getInventory(item.ItemID);
             var slot = item.InventorySlot;
@@ -356,7 +356,7 @@ namespace WvsBeta.Common.Character
             SetItem(inventory, slot, null);
         }
 
-        public BaseItem GetItem(Inventory inventory, short slot)
+        public Item GetItem(Inventory inventory, short slot)
         {
             if (slot < 0)
             {
@@ -473,7 +473,7 @@ namespace WvsBeta.Common.Character
             if (slots > 100) slots = 100;
 
             var invArraySlots = slots + 1;
-            if (!Items.ContainsKey(inventory)) Items.Add(inventory, new BaseItem[invArraySlots]);
+            if (!Items.ContainsKey(inventory)) Items.Add(inventory, new Item[invArraySlots]);
             else
             {
                 var items = Items[inventory];
@@ -494,7 +494,7 @@ namespace WvsBeta.Common.Character
         public bool TryGetPet(long cashId, out PetItem petItem)
         {
             petItem = null;
-            if (!Items[Inventory.Cash].TryFind(i => i?.CashId == cashId, out BaseItem baseItem) || !(baseItem is PetItem pi))
+            if (!Items[Inventory.Cash].TryFind(i => i?.CashId == cashId, out Item baseItem) || !(baseItem is PetItem pi))
             {
                 return false;
             }

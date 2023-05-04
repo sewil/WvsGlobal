@@ -13,7 +13,7 @@ namespace WvsBeta.Game
     {
         public bool Mesos;
         public int Drop;
-        public BaseItem Data { get; private set; }
+        public Item Data { get; private set; }
 
         public long DateExpire
         {
@@ -21,7 +21,7 @@ namespace WvsBeta.Game
             {
                 long Result = 0;
                 if (Data != null) Result = Data.Expiration;
-                return (Result == 0) ? BaseItem.NoItemExpiration : Result;
+                return (Result == 0) ? Item.NoItemExpiration : Result;
             }
         }
 
@@ -82,7 +82,7 @@ namespace WvsBeta.Game
                 {
                     Mesos = Drop.Mesos != 0,
                     Drop = Drop.Mesos != 0 ? Drop.Mesos : Drop.ItemID,
-                    Data = Drop.Mesos != 0 ? null : BaseItem.CreateFromItemID(Drop.ItemID, GetItemAmount(Drop.ItemID, Drop.Min, Drop.Max))
+                    Data = Drop.Mesos != 0 ? null : Item.CreateFromItemID(Drop.ItemID, GetItemAmount(Drop.ItemID, Drop.Min, Drop.Max))
                 };
 
                 if (!Reward.Mesos)
@@ -122,7 +122,7 @@ namespace WvsBeta.Game
             return Result;
         }
 
-        public static Reward Create(BaseItem Item)
+        public static Reward Create(Item Item)
         {
             return new Reward()
             {
@@ -166,7 +166,7 @@ namespace WvsBeta.Game
             reward.Drop = pr.ReadInt();
             if (!reward.Mesos)
             {
-                reward.Data = BaseItem.DecodeForMigration(pr);
+                reward.Data = Item.DecodeForMigration(pr);
             }
             return reward;
         }

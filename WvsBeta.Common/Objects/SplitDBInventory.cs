@@ -27,7 +27,7 @@ namespace WvsBeta.Common.Objects
             }
         }
 
-        public delegate void AddItemCallback(InventoryType type, Inventory inventory, short slot, BaseItem item);
+        public delegate void AddItemCallback(InventoryType type, Inventory inventory, short slot, Item item);
 
         public static void Load(MySQL_Connection connection, string baseTableName, string whereStatement, AddItemCallback callback)
         {
@@ -35,7 +35,7 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    var item = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
+                    var item = Item.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
                     callback(InventoryType.Eqp, Inventory.Equip, data.GetInt16("slot"), item);
                 }
@@ -45,7 +45,7 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    var item = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
+                    var item = Item.CreateFromItemID(data.GetInt32("itemid"));
                     item.Load(data);
                     callback(InventoryType.Bundle, (Inventory)data.GetInt16("inv"), data.GetInt16("slot"), item);
                 }
@@ -53,7 +53,7 @@ namespace WvsBeta.Common.Objects
         }
 
 
-        public delegate IEnumerable<BaseItem> StoredItemsCallback(InventoryType type, Inventory inventory);
+        public delegate IEnumerable<Item> StoredItemsCallback(InventoryType type, Inventory inventory);
         public static void Save(MySQL_Connection connection, string baseTableName, string columnsBeforeItemInfo, string whereStatement, StoredItemsCallback callback, MySQL_Connection.LogAction dbgCallback)
         {
 

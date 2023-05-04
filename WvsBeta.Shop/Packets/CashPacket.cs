@@ -544,7 +544,7 @@ namespace WvsBeta.Shop
             chr.SendPacket(pw);
         }
 
-        public static void SendPlacedItemInInventory(Character chr, BaseItem item)
+        public static void SendPlacedItemInInventory(Character chr, Item item)
         {
             var pw = GetPacketWriter(CashPacketOpcodes.S_MoveLtoS_Done);
             pw.WriteShort(item.InventorySlot);

@@ -24,7 +24,7 @@ namespace WvsBeta.Common.Objects
 
         public LockerItem(int userId, ICommodityInfo ci, string giftName = "", string giftMessage = "", int coupleCharId = 0, string coupleName = "")
         {
-            long expiration = ci.Period > 0 ? new TimeSpan(ci.Period, 0, 0, 0).GetFileTimeWithAddition() : BaseItem.NoItemExpiration;
+            long expiration = ci.Period > 0 ? new TimeSpan(ci.Period, 0, 0, 0).GetFileTimeWithAddition() : Item.NoItemExpiration;
             ItemId = ci.ItemID;
             Amount = ci.Count;
             CashId = 0; // Will be created on insert
@@ -71,7 +71,7 @@ namespace WvsBeta.Common.Objects
             ;
         }
 
-        public string GetFullSaveColumns(BaseItem baseItem, byte worldId)
+        public string GetFullSaveColumns(Item baseItem, byte worldId)
         {
             return $"{CashId}, {baseItem.InventorySlot}, {UserId}, {CharacterId}, {ItemId}, {CommodityId}, {Amount}, {Expiration}, {GiftUnread}, {worldId}, {CoupleCashId}, {CoupleCharId}";
         }

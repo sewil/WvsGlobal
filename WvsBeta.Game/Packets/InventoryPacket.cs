@@ -27,7 +27,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
+            Item item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 return;
@@ -113,7 +113,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void ChangeSlot(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void ChangeSlot(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
             if (to != null)
             {
@@ -138,7 +138,7 @@ namespace WvsBeta.Game
             MapPacket.SendAvatarModified(chr, MapPacket.AvatarModFlag.AvatarLook);
         }
 
-        private static void StackItems(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void StackItems(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
             short slotMax = (short)DataProvider.Items[from.ItemID].MaxSlot;
             if (slotMax == 0)
@@ -169,13 +169,13 @@ namespace WvsBeta.Game
             }
         }
 
-        private static void EquipSpecial(GameCharacter chr, BaseItem from, BaseItem swordOrTop, short slotTo, bool unequipTwo = false)
+        private static void EquipSpecial(GameCharacter chr, Item from, Item swordOrTop, short slotTo, bool unequipTwo = false)
         {
             Inventory inventory = Constants.getInventory(from.ItemID);
             if (unequipTwo) // If it's 2h Weapon or Overall, try to unequip both Shield + Weapon or Bottom + Top
             {
-                BaseItem overallOr2h = from;
-                BaseItem bottomOrShield = Constants.is2hWeapon(from.ItemID) ? chr.Inventory.GetItem(inventory, -10) : chr.Inventory.GetItem(inventory, -6);
+                Item overallOr2h = from;
+                Item bottomOrShield = Constants.is2hWeapon(from.ItemID) ? chr.Inventory.GetItem(inventory, -10) : chr.Inventory.GetItem(inventory, -6);
 
                 if (bottomOrShield != null)
                 {
@@ -194,8 +194,8 @@ namespace WvsBeta.Game
             }
             else // If it's Bottom or Shield, check if an Overall or 2h Weapon is equipped.
             {
-                BaseItem bottomOrShield = from;
-                BaseItem overallOr2h = Constants.isShield(from.ItemID) ? chr.Inventory.GetItem(inventory, -11) : chr.Inventory.GetItem(inventory, -5);
+                Item bottomOrShield = from;
+                Item overallOr2h = Constants.isShield(from.ItemID) ? chr.Inventory.GetItem(inventory, -11) : chr.Inventory.GetItem(inventory, -5);
                 if (overallOr2h != null)
                 {
                     if (Constants.is2hWeapon(overallOr2h.ItemID) || Constants.isOverall(overallOr2h.ItemID))
@@ -209,7 +209,7 @@ namespace WvsBeta.Game
             Equip(chr, from, swordOrTop, from.InventorySlot, slotTo); // If there's no special action required, go through regular equip.
         }
 
-        private static void Equip(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void Equip(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
             Inventory inventory = Constants.getInventory(from.ItemID);
             chr.Inventory.SetItem(inventory, slotFrom, to);
@@ -262,7 +262,7 @@ namespace WvsBeta.Game
             return reqJob == 0 || ((short)job & reqJob) > 0;
         }
 
-        private static void HandleEquip(GameCharacter chr, BaseItem from, BaseItem to, short slotFrom, short slotTo)
+        private static void HandleEquip(GameCharacter chr, Item from, Item to, short slotFrom, short slotTo)
         {
             if (chr.AssertForHack(!canWearItem(chr, (CharacterPrimaryStats)chr.PrimaryStats, DataProvider.Equips[from.ItemID], (short)-slotTo),
                 $"Trying to wear an item that he cannot. from {slotFrom} to {slotTo}. Itemid: {from.ItemID}"))
@@ -287,12 +287,12 @@ namespace WvsBeta.Game
             }
         }
 
-        public static bool Unequip(GameCharacter chr, BaseItem equip, short slotTo)
+        public static bool Unequip(GameCharacter chr, Item equip, short slotTo)
         {
             Inventory inventory = Constants.getInventory(equip.ItemID);
             short slotFrom = equip.InventorySlot;
 
-            BaseItem swap = chr.Inventory.GetItem(inventory, slotTo);
+            Item swap = chr.Inventory.GetItem(inventory, slotTo);
 
             if (swap == null && !chr.Inventory.HasSlotsFreeForItem(equip.ItemID, 1)) // Client checks this for us, but in case of PE
             {
@@ -376,7 +376,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
+            Item item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 InventoryOperationPacket.NoChange(chr);
@@ -419,7 +419,7 @@ namespace WvsBeta.Game
             short slot = packet.ReadShort();
             int itemid = packet.ReadInt();
 
-            BaseItem item = chr.Inventory.GetItem(Inventory.Use, slot);
+            Item item = chr.Inventory.GetItem(Inventory.Use, slot);
             if (item == null || item.ItemID != itemid || !DataProvider.Items.TryGetValue(itemid, out ItemData data))
             {
                 InventoryOperationPacket.NoChange(chr);
@@ -477,7 +477,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            BaseItem scroll = chr.Inventory.GetItem(Inventory.Use, scrollslot);
+            Item scroll = chr.Inventory.GetItem(Inventory.Use, scrollslot);
             EquipItem equip = chr.Inventory.Equipped[type].GetValue(eqSlot);
             if (scroll == null ||
                 equip == null ||

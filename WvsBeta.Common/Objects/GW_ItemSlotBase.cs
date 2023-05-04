@@ -12,8 +12,8 @@ namespace WvsBeta.Common.Objects
     }
     public class GW_ItemSlotBase
     {
-        private BaseItem item;
-        public GW_ItemSlotBase(BaseItem item)
+        private Item item;
+        public GW_ItemSlotBase(Item item)
         {
             this.item = item;
         }

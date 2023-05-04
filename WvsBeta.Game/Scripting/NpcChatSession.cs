@@ -272,7 +272,7 @@ namespace WvsBeta.Game
 
         public bool HavePetDoll(long skip = -1)
         {
-            return mCharacter.Inventory.GetPets().Where(i => i.DeadDate == BaseItem.NoItemExpiration && (skip == -1 || i.CashId != skip)).Count() > 0;
+            return mCharacter.Inventory.GetPets().Where(i => i.DeadDate == Item.NoItemExpiration && (skip == -1 || i.CashId != skip)).Count() > 0;
         }
 
         public long AskPetDoll(string message, long skip = -1)

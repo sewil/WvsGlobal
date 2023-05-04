@@ -6,7 +6,7 @@ using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Objects
 {
-    public abstract class BaseItem
+    public abstract class Item
     {
         public readonly int ItemID;
         public int CharacterID { get; set; }
@@ -26,13 +26,13 @@ namespace WvsBeta.Common.Objects
         public bool BigSize { get; set; }
         public Inventory Inventory { get; }
 
-        protected BaseItem(int itemId)
+        protected Item(int itemId)
         {
             ItemID = itemId;
             Inventory = Constants.getInventory(itemId);
         }
 
-        protected BaseItem(BaseItem itemBase) : this(itemBase.ItemID)
+        protected Item(Item itemBase) : this(itemBase.ItemID)
         {
             Amount = itemBase.Amount;
             CashId = itemBase.CashId;
@@ -44,7 +44,7 @@ namespace WvsBeta.Common.Objects
             CharacterID = itemBase.CharacterID;
         }
 
-        public BaseItem Duplicate()
+        public Item Duplicate()
         {
             if (this is EquipItem ei) return new EquipItem(ei);
             if (this is PetItem pi) return new PetItem(pi);
@@ -52,7 +52,7 @@ namespace WvsBeta.Common.Objects
             return null;
         }
 
-        public BaseItem SplitInTwo(short secondPairAmount)
+        public Item SplitInTwo(short secondPairAmount)
         {
             if (this.Amount < secondPairAmount) return null;
 
@@ -62,13 +62,13 @@ namespace WvsBeta.Common.Objects
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-        public static BaseItem CreateFromItemID(int itemId, short amount = 1)
+        public static Item CreateFromItemID(int itemId, short amount = 1)
         {
             if (itemId == 0) throw new Exception("Invalid ItemID in CreateFromItemID");
 
             var slotType = Constants.getItemSlotType(itemId);
 
-            BaseItem ret;
+            Item ret;
             if (slotType == ItemSlotType.Equip) ret = new EquipItem(itemId);
             else if (slotType == ItemSlotType.Pet) ret = new PetItem(itemId); // TODO: Non-pet cash items, effects etc
             else ret = new BundleItem(itemId);
@@ -148,7 +148,7 @@ namespace WvsBeta.Common.Objects
             pw.WriteString("");
         }
 
-        public static BaseItem DecodeForMigration(Packet pr)
+        public static Item DecodeForMigration(Packet pr)
         {
             var itemId = pr.ReadInt();
 
@@ -227,7 +227,7 @@ namespace WvsBeta.Common.Objects
         public abstract string GetFullUpdateColumns();
     }
 
-    public class BundleItem : BaseItem
+    public class BundleItem : Item
     {
         public BundleItem(int itemId) : base(itemId)
         {
@@ -281,7 +281,7 @@ namespace WvsBeta.Common.Objects
         Gachapon = 4,
     }
 
-    public class EquipItem : BaseItem
+    public class EquipItem : Item
     {
         public byte Slots { get; set; } = 7;
         public byte Scrolls { get; set; } = 0;
@@ -561,7 +561,7 @@ namespace WvsBeta.Common.Objects
 
     }
 
-    public class PetItem : BaseItem
+    public class PetItem : Item
     {
         public string Name { get; set; }
         public byte Level { get; set; }

@@ -14,13 +14,13 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         private const byte MAX_SLOTS = 10;
 
         public bool[] Confirmed;
-        private BaseItem[][] ItemList;
+        private Item[][] ItemList;
 
         private int[] Mesos;
 
         public Trade(GameCharacter pOwner) : base(pOwner, 2, MiniRoomType.Trade)
         {
-            ItemList = new BaseItem[2][] { new BaseItem[MAX_SLOTS], new BaseItem[MAX_SLOTS] };
+            ItemList = new Item[2][] { new Item[MAX_SLOTS], new Item[MAX_SLOTS] };
             Confirmed = new bool[2] { false, false };
             Mesos = new int[2] { 0, 0 };
 
@@ -100,7 +100,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
             var user = Users[userSlot];
             for (byte itemSlot = 0; itemSlot < MAX_SLOTS; itemSlot++)
             {
-                BaseItem item = ItemList[userSlot == 0 ? 1 : 0][itemSlot];
+                Item item = ItemList[userSlot == 0 ? 1 : 0][itemSlot];
                 if (item == null) continue;
 
                 Inventory inv = Constants.getInventory(item.ItemID);
@@ -136,7 +136,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                 if (dstUser == null) return;
                 for (byte itemSlot = 0; itemSlot < MAX_SLOTS; itemSlot++)
                 {
-                    BaseItem item = ItemList[srcUserSlot][itemSlot];
+                    Item item = ItemList[srcUserSlot][itemSlot];
                     if (item == null) continue;
 
                     dstUser.Inventory.AddItem(item, out short _);
@@ -197,7 +197,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
                             return;
                         }
 
-                        BaseItem item = pCharacter.Inventory.TakeItemAmountFromSlot(inventory, slot, amount, Constants.isRechargeable(demItem.ItemID));
+                        Item item = pCharacter.Inventory.TakeItemAmountFromSlot(inventory, slot, amount, Constants.isRechargeable(demItem.ItemID));
 
                         if (ItemList[charslot][toslot] == null)
                         {

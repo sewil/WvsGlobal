@@ -578,7 +578,7 @@ namespace WvsBeta.Game.GameObjects.MiniRoom
         }
 
         // This packet feels wonky and insecure - wackyracer
-        public static void TradePutItem(GameCharacter pTo, byte tradeSlot, BaseItem pItem, byte userSlot)
+        public static void TradePutItem(GameCharacter pTo, byte tradeSlot, Item pItem, byte userSlot)
         {
             Packet pw = new Packet(ServerMessages.MINI_ROOM_BASE);
             pw.WriteByte((byte)MiniRoomOpClient.TradePutItem);

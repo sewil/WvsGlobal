@@ -2094,7 +2094,7 @@ namespace WvsBeta.Game.Handlers
                                         if (Args.Count > 1 && Args[1].IsNumber())
                                             Amount = Args[1].GetInt16();
 
-                                        var dropItem = BaseItem.CreateFromItemID(ItemID);
+                                        var dropItem = Item.CreateFromItemID(ItemID);
                                         dropItem.Amount = Amount;
                                         if (dropItem is EquipItem) (dropItem as EquipItem).GiveStats(ItemVariation.None);
 
@@ -2161,7 +2161,7 @@ namespace WvsBeta.Game.Handlers
                                         return itemidAlphabet + posTextAlphabet.IndexOf(lowerx);
                                     }
                                     return 1;
-                                }).Select(x => Reward.Create(BaseItem.CreateFromItemID(x, 1))).ToList();
+                                }).Select(x => Reward.Create(Item.CreateFromItemID(x, 1))).ToList();
 
                                 var Pos = character.Position;
 

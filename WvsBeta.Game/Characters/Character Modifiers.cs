@@ -557,7 +557,7 @@ namespace WvsBeta.Game
 
         public void loseEXP()
         {
-            BaseItem charm = Inventory.GetFirstItem(Common.Enums.Inventory.Etc, ItemEtcIds.SafetyCharm, ItemEtcIds.EasterCharm);
+            Item charm = Inventory.GetFirstItem(Common.Enums.Inventory.Etc, ItemEtcIds.SafetyCharm, ItemEtcIds.EasterCharm);
             if (charm != null)
             {
                 bool isSafetyCharm = charm.ItemID == ItemEtcIds.SafetyCharm;

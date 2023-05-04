@@ -58,7 +58,7 @@ namespace WvsBeta.Game
                     {
                         Inventory inventory = (Inventory)pr.ReadByte();
                         byte slot = pr.ReadByte();
-                        BaseItem item = chr.Storage.GetItem(inventory, slot);
+                        Item item = chr.Storage.GetItem(inventory, slot);
                         if (item == null)
                         {
                             return;
@@ -100,7 +100,7 @@ namespace WvsBeta.Game
                         }
 
                         Inventory inventory = Constants.getInventory(itemid);
-                        BaseItem item = chr.Inventory.GetItem(inventory, slot);
+                        Item item = chr.Inventory.GetItem(inventory, slot);
                         if (item == null || item.ItemID != itemid || item.CashId != 0)
                         {
                             // hax
@@ -239,7 +239,7 @@ namespace WvsBeta.Game
             var itemsInInventory = chr.Storage.GetInventoryItems(inv).ToArray();
             pw.WriteByte((byte)itemsInInventory.Length);
 
-            foreach (BaseItem item in itemsInInventory)
+            foreach (Item item in itemsInInventory)
             {
                 new GW_ItemSlotBase(item).Encode(pw, false, false);
             }

@@ -74,7 +74,7 @@ namespace WvsBeta.Common.Objects
             if (allItems.Count > 0)
             {
                 var cashidUseridMapping = allItems.Select(x => (x.CashId, x.UserId)).ToDictionary(x => x.Item1, x => x.Item2);
-                var baseItemDict = new Dictionary<long, BaseItem>();
+                var baseItemDict = new Dictionary<long, Item>();
 
                 var allEquips = stores.SelectMany(x => x.Equips).ToList();
                 var allBundles = stores.SelectMany(x => x.Bundles).ToList();
@@ -348,7 +348,7 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    EquipItem equip = (BaseItem.CreateFromItemID(data.GetInt32("itemid")) as EquipItem);
+                    EquipItem equip = (Item.CreateFromItemID(data.GetInt32("itemid")) as EquipItem);
                     equip.Load(data);
                     equip.InventorySlot = data.GetInt16("slot");
                     equip.CoupleCashId = data.GetInt64("couplecashid");
@@ -369,7 +369,7 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    var bundleItem = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
+                    var bundleItem = Item.CreateFromItemID(data.GetInt32("itemid"));
                     bundleItem.Load(data);
                     bundleItem.InventorySlot = data.GetInt16("slot");
                     Console.WriteLine("Loading bundle {0} cashid {1}", bundleItem.ItemID, bundleItem.CashId);
@@ -389,7 +389,7 @@ namespace WvsBeta.Common.Objects
             {
                 while (data.Read())
                 {
-                    var bundleItem = BaseItem.CreateFromItemID(data.GetInt32("itemid"));
+                    var bundleItem = Item.CreateFromItemID(data.GetInt32("itemid"));
                     bundleItem.Load(data);
                     bundleItem.InventorySlot = data.GetInt16("slot");
                     Console.WriteLine("Loading pet {0} cashid {1}", bundleItem.ItemID, bundleItem.CashId);
@@ -402,7 +402,7 @@ namespace WvsBeta.Common.Objects
         public LockerItem GetLockerItemFromCashID(long cashId) => Items.FirstOrDefault(x => x.CashId == cashId);
 
 
-        public BaseItem GetItemFromCashID(long cashId, int itemid = 0)
+        public Item GetItemFromCashID(long cashId, int itemid = 0)
         {
             if (itemid == 0)
             {
@@ -420,7 +420,7 @@ namespace WvsBeta.Common.Objects
         }
 
 
-        public void AddItem(LockerItem lockerItem, BaseItem baseItem)
+        public void AddItem(LockerItem lockerItem, Item baseItem)
         {
             Items.Add(lockerItem);
 
@@ -432,7 +432,7 @@ namespace WvsBeta.Common.Objects
                 Pets.Add(pi);
         }
 
-        public void RemoveItem(LockerItem lockerItem, BaseItem baseItem)
+        public void RemoveItem(LockerItem lockerItem, Item baseItem)
         {
             Items.Remove(lockerItem);
             

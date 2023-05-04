@@ -359,7 +359,7 @@ namespace WvsBeta.Game.GameObjects
 
                         if (Portals.TryGetValue(portalName, out Portal portal))
                         {
-                            var item = BaseItem.CreateFromItemID(itemid);
+                            var item = Item.CreateFromItemID(itemid);
                             if (item is EquipItem) (item as EquipItem).GiveStats(ItemVariation.None);
                             var reward = Reward.Create(item);
 
