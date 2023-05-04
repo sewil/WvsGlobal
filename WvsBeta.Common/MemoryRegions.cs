@@ -122,7 +122,8 @@ namespace WvsBeta.Common
                         }
                     }
 
-                    int minimumSize = Regions.Select(x => x.Length).Min();
+                    var regionSizes = Regions.Select(x => x.Length).ToList();
+                    int minimumSize = regionSizes.Count > 0 ? regionSizes.Min() : 0;
                     MaxRandomMemoryOffset = Math.Max(0, minimumSize - 1); // Make sure we do not go negative
                 }
             }

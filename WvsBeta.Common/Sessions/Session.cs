@@ -290,7 +290,6 @@ namespace WvsBeta.Common.Sessions
                                 try
                                 {
                                     Array.Copy(tmpIV, 0, previousDecryptIV, 0, 4);
-                                    Trace.WriteLine($"[{GetType()}] previousDecryptIV: {previousDecryptIV.ToContentsString()}");
                                     OnPacketInbound(packet);
                                 }
                                 catch (Exception ex)
