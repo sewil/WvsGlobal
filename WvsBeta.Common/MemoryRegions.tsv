@@ -19,3 +19,4 @@ seg003	00671000	0026FA00
 
 START_MEMORY_REGIONS
 # Address	Size	Additional comment
+006120F8	6298	CCashItem::Use
