@@ -1,14 +1,26 @@
 using reNX.NXProperties;
+using System;
 using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Common.Objects
 {
+    [Flags]
+    public enum QuestJob : byte
+    {
+        Beginner = 1,
+        Warrior = 2,
+        Magician = 4,
+        Bowman = 8,
+        Thief = 16,
+        GM = 0xFF
+    }
     public class QuestItem
     {
         public int ItemID { get; }
         public short Amount { get; }
         public int Prop { get; }
         public PlayerGender Gender { get; }
+        public QuestJob? Job { get; }
         public QuestItem(NXNode node)
         {
             foreach (var subNode in node)
@@ -26,6 +38,9 @@ namespace WvsBeta.Common.Objects
                         break;
                     case "gender":
                         Gender = (PlayerGender)subNode.ValueByte();
+                        break;
+                    case "job":
+                        Job = (QuestJob)subNode.ValueByte();
                         break;
                 }
             }

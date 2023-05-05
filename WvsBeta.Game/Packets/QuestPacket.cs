@@ -117,12 +117,14 @@ namespace WvsBeta.Game
         }
         public static void HandleQuestAct(GameCharacter chr, int npcid, WZQuestAct act)
         {
-            int nMax = act.Items.Sum(i => i.Prop);
+            var questJob = Constants.GetQuestJob(chr.Job);
+            var items = act.Items.Where(i => i.Job == null || questJob.HasFlag(i.Job)).ToList();
+            int nMax = items.Sum(i => i.Prop);
             int n = Rand32.NextBetween(0, nMax);
             int from = 0;
             int to = 0;
             var itemsToGive = new List<QuestItem>();
-            foreach (QuestItem item in act.Items)
+            foreach (QuestItem item in items)
             {
                 if (item.Prop > 0)
                 {
@@ -137,7 +139,7 @@ namespace WvsBeta.Game
             if (act.Mesos > 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.UnknownError);
             if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
 
-            if (act.Items.Count > 0)
+            if (items.Count > 0)
             {
                 foreach (QuestItem item in itemsToGive)
                 {

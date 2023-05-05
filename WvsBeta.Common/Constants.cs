@@ -406,6 +406,13 @@ namespace WvsBeta.Common
 
         public static JobTracks.Tracks GetBaseJobTrack(short jobId) { return (JobTracks.Tracks)getJobTrack(jobId, true); }
 
+        public static QuestJob GetQuestJob(short jobID)
+        {
+            if (jobID == Gm.ID) return QuestJob.GM;
+            var jobTrack = getJobTrack(jobID, true);
+            return (QuestJob)Math.Pow(2, jobTrack);
+        }
+
         public static bool IsThirdJob(short jobid)
         {
             return !IsSecondJob(jobid) && jobid % 10 == 1;
