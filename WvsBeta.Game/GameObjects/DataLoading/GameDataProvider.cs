@@ -9,6 +9,7 @@ using reNX.NXProperties;
 using WvsBeta.Common;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.GameObjects;
@@ -28,7 +29,7 @@ namespace WvsBeta.Game
         public static IDictionary<byte, Dictionary<byte, MobSkillLevelData>> MobSkills { get; private set; }
         public static IDictionary<string, DropData[]> Drops { get; private set; }
         public static Dictionary<byte, List<QuizData>> QuizQuestions { get; } = new Dictionary<byte, List<QuizData>>();
-
+        public static IDictionary<int, HashSet<short>> QuestItems { get; } = new Dictionary<int, HashSet<short>>();
         private static NXFile pDropFile;
 
 
@@ -165,6 +166,19 @@ namespace WvsBeta.Game
                         mob.HPTagColor = 0;
                     }
                 }
+
+                // Add quest items
+                foreach (var quest in Quests)
+                {
+                    foreach (var questStage in quest.Value.Stages)
+                    {
+                        foreach (var questItem in questStage.Value.Check.Items)
+                        {
+                            if (!Items.TryGetValue(questItem.Key, out ItemData itemData) || !itemData.IsQuest) continue;
+                            QuestItems.SafeAdd(questItem.Key, quest.Key);
+                        }
+                    }
+                }
             }
 
             Console.WriteLine($"Maps: {Maps.Count}");
@@ -172,6 +186,7 @@ namespace WvsBeta.Game
             Console.WriteLine($"NPCs: {NPCs.Count}");
             Console.WriteLine($"Eqps: {Equips.Count}");
             Console.WriteLine($"Itms: {Items.Count}");
+            Console.WriteLine($"Quest items: {QuestItems.Count}");
 
             FinishInit();
         }

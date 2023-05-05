@@ -18,7 +18,6 @@ namespace WvsBeta.Common.DataProviders
         protected set; }
         public static IDictionary<int, SkillData> Skills { get; protected set; }
         public static IDictionary<short, WZQuestData> Quests { get; protected set; }
-        public static List<int> QuestItems { get; } = new List<int>();
 
         protected static List<NXFile> pOverride;
         protected static NXFile pFile;
@@ -204,13 +203,6 @@ namespace WvsBeta.Common.DataProviders
                         case "incMMP": eq.MP = nxNode.ValueInt16(); break;
                         case "quest":
                             eq.IsQuest = nxNode.ValueBool();
-                            if (eq.IsQuest)
-                            {
-                                lock (QuestItems)
-                                {
-                                    QuestItems.Add(eq.ID);
-                                }
-                            }
                             break;
                         case "only":
                             if (nxNode.ValueBool())
@@ -289,13 +281,6 @@ namespace WvsBeta.Common.DataProviders
                                 break;
                             case "quest":
                                 item.IsQuest = node.ValueBool();
-                                if (item.IsQuest)
-                                {
-                                    lock (QuestItems)
-                                    {
-                                        QuestItems.Add(item.ID);
-                                    }
-                                }
                                 break;
                             case "success":
                                 item.ScrollSuccessRate = node.ValueByte();

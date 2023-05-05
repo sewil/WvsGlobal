@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
@@ -1183,7 +1184,7 @@ namespace WvsBeta.Game
                 {
                     Reward StolenDrop = null;
                     int Limit = 0;
-                    while (StolenDrop == null || GameDataProvider.QuestItems.Contains(StolenDrop.ItemID))
+                    while (StolenDrop == null || GameDataProvider.QuestItems.ContainsKey(StolenDrop.ItemID))
                     {
                         StolenDrop = Rewards[(int)(Rand32.Next() % Rewards.Count)];
                         if (Limit++ > 100)
@@ -1208,8 +1209,11 @@ namespace WvsBeta.Game
 
                     foreach (Reward Drop in Rewards)
                     {
-                        if (/*(DataProvider.QuestItems.Contains(Drop.ItemID) && !User.Quests.ItemCheck(Drop.ItemID)) || */(ItemID_Stolen == Drop.ItemID && !Drop.Mesos))
+                        if (GameDataProvider.QuestItems.TryGetValue(Drop.ItemID, out var questIDs) && !questIDs.Any(questID => User.Quests.HasQuest(questID)))
+                        {
                             continue;
+                        }
+                        if (ItemID_Stolen == Drop.ItemID && !Drop.Mesos) continue;
                         if (Drop.Mesos)
                         {
                             if (MesoUp > 0)
