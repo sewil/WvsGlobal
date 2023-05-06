@@ -150,12 +150,6 @@ namespace WvsBeta.Game
             Player?.Socket?.SendPacket(pw);
         }
 
-        public PetItem GetSpawnedPet()
-        {
-            if (CharacterStat.PetCashId == 0) return null;
-            return Inventory.GetItemByCashID(CharacterStat.PetCashId, Common.Enums.InventoryType.Cash) as PetItem;
-        }
-
         public void EncodeForRemote(Packet packet)
         {
             packet.WriteString(Name);
