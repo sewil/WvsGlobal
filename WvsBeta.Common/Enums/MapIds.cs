@@ -35,7 +35,12 @@ namespace WvsBeta.Common.Enums
 
             LudiTicketingPlace = 220000100,
             LudiStation = 220000110,
-            LudiWaitingRoom = 220000111
+            LudiWaitingRoom = 220000111,
+
+            EosTower100thFloor = 221024400,
+            EosTower71stFloor = 221022900,
+            EosTower41stFloor = 221021700,
+            EosTower1stFloor = 221020000
         ;
     }
 }

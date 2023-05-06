@@ -6,12 +6,16 @@ namespace WvsBeta.Common
 {
     public static class Strings
     {
-        public static string ToCardinal(this int num)
+        public static string Ordinal(int num)
         {
             string suffix;
-            if (num < 3)
-                suffix = num <= 1 ? "st" : num == 2 ? "nd" : "rd";
-            else suffix = "th";
+            switch (num % 10)
+            {
+                case 1: suffix = "st"; break;
+                case 2: suffix = "nd"; break;
+                case 3: suffix = "rd"; break;
+                default: suffix = "th"; break;
+            }
             return num + suffix;
         }
         public static class Gender

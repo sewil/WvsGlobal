@@ -3,6 +3,7 @@
     public struct ItemEtcIds
     {
         public const int
+            EosRockScroll = 4001020,
             PassOfDimension = 4001022,
             KeyOfDimension = 4001023,
             DancesWithBalrogLetter = 4031008,

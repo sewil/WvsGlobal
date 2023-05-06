@@ -8,19 +8,19 @@ using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
 {
-    public static class StringPool
-    {
-        public static Func<int, string> WrongAmount = (itemID) => $"Are you sure you have the right amount of #t{itemID}#? Please check again.";
-        public static string UseEquipFull = "Your use and equip inventories must have at least one slot available. Please make the necessary adjustments and then talk to me again.";
-        public static string RewardInventoryFull = "Hmmm... are you sure you have a free slot in your use and etc inventories? I cannot reward you for your effort if your inventory is full...";
-        public static string PortalIsOpen = "The portal leading to the next stage is open.";
-        public static string StagePassed(int itemID, int count)
-        {
-            return $"Good job defeating all the monsters and collecting #b{(count > 1 ? count + " " : "")}#t{itemID}#s#k. Very impressive!";
-        }
-    }
     public static class party2
     {
+        static class StringPool
+        {
+            public static Func<int, string> WrongAmount = (itemID) => $"Are you sure you have the right amount of #t{itemID}#? Please check again.";
+            public static string UseEquipFull = "Your use and equip inventories must have at least one slot available. Please make the necessary adjustments and then talk to me again.";
+            public static string RewardInventoryFull = "Hmmm... are you sure you have a free slot in your use and etc inventories? I cannot reward you for your effort if your inventory is full...";
+            public static string PortalIsOpen = "The portal leading to the next stage is open.";
+            public static string StagePassed(int itemID, int count)
+            {
+                return $"Good job defeating all the monsters and collecting #b{(count > 1 ? count + " " : "")}#t{itemID}#s#k. Very impressive!";
+            }
+        }
         static INpcHost self;
         static GameCharacter target;
         public static void party2_reward()

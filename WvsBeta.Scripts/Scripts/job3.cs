@@ -24,7 +24,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             public bool Ask(INpcHost self, int num)
             {
-                string text = $"Here's the {num.ToCardinal()} question. ";
+                string text = $"Here's the {num.Ordinal()} question. ";
                 int idx = self.AskMenu(text + question, options);
                 return idx == answer;
             }
