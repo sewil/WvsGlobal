@@ -38,7 +38,7 @@ namespace WvsBeta.Common.Objects
     {
         public WZQuestStage Stage { get; }
         public short NextQuest { get; }
-        public int Exp { get; }
+        public uint Exp { get; }
         public int Mesos { get; }
         public List<QuestItem> Items { get; }
 
@@ -54,7 +54,7 @@ namespace WvsBeta.Common.Objects
                         Mesos = subNode.ValueInt32();
                         break;
                     case "exp":
-                        Exp = subNode.ValueInt32();
+                        Exp = subNode.ValueUInt32();
                         break;
                     case "item":
                         foreach (var itemNode in subNode)

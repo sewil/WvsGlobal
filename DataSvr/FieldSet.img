@@ -210,3 +210,13 @@ Ludi020 = {
     cleanupDrops = 1
     resetReactors = 1
 }
+
+# Dollhouse
+Ludi023 = {
+    0 = 922000010
+    returnMap = 221024400
+    returnPortal = q000
+    timeOut = 600
+    cleanupDrops = 1
+    resetReactors = 1
+}

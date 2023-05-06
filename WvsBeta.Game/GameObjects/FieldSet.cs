@@ -21,6 +21,7 @@ namespace WvsBeta.Game
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
         
         public int ReturnMap { get; private set; } = -1;
+        public string ReturnPortal { get; private set; }
         public string PartyParams { get; private set; }
         public short ReqQuest { get; private set; }
         public bool EnterAsParty { get; private set; }
@@ -59,6 +60,9 @@ namespace WvsBeta.Game
                             break;
                         case "returnMap":
                             ReturnMap = subNode.GetInt();
+                            break;
+                        case "returnPortal":
+                            ReturnPortal = subNode.GetString();
                             break;
                         case "enterAsParty":
                             EnterAsParty = subNode.GetBool();
@@ -129,7 +133,7 @@ namespace WvsBeta.Game
                     int returnMap = ReturnMap == 0 ? map.ForcedReturn : ReturnMap;
                     foreach (var character in map.Characters.ToList())
                     {
-                        character.ChangeMap(returnMap);
+                        character.ChangeMap(returnMap, ReturnPortal);
                     }
                 }
                 if (CleanupMobs)

@@ -210,26 +210,26 @@ namespace WvsBeta.Scripts.Scripts
                 if (val == 1)
                 {
                     var nItem = inven.ItemCount(4031145);
-                    var nRet1 = self.AskYesNo("Humm... eu ouvi falar muito de você através de #b#p2040001##k. Você conseguiu um bocado de #b#t4031093##k para que ele pudesse fugir do tédio no trabalho. Bem... é isso aí. Há um monstro muito, muito perigoso lá dentro. Eu quero pedir que você nos ajude encontrando o monstro. Você gostaria de me ajudar?");
-                    if (nRet1 == 0) self.Say("Entendo. É totalmente compreensível, considerando o fato de que você estará enfrentando um monstro muito perigoso. Se algum dia você mudar de idéia, venha e volte a falar comigo. Eu tenho certeza de que sua ajuda seria muito útil.");
+                    var nRet1 = self.AskYesNo("Hmm... I've heard a lot about you from #b#p2040001##k. You got him some #b#t4031093##k so he could escape boredom at work. Well... this is it. There's a very, very dangerous monster inside. I want to ask you to help us by finding the monster. Would you like to help me?");
+                    if (nRet1 == 0) self.Say("I understand. It's totally understandable considering the fact that you'll be facing a very dangerous monster. If you ever change your mind, come and talk to me again. I'm sure your assistance would be very helpful.");
                     else
                     {
-                        self.Say("Muito obrigado. Na verdade, #b#p2040001##k pediu que você conseguisse #b#t4031093#s#k como uma forma de testar suas habilidades e ver se você consegue lidar com isso. Então, não pense que isso é um pedido vindo do nada. Eu acho que alguém como você pode enfrentar os problemas.");
-                        var nRet2 = self.AskYesNo("Há um tempo, um monstro de outra dimensão veio aqui graças a uma fenda interdimensional, e roubou o pêndulo do relógio. Ele se escondeu naquela sala e se disfarçou de casa de bonecas. Pra mim parece tudo igual, então não tem como descobri-lo. Você nos ajudaria a encontrá-lo?");
-                        if (nRet2 == 0) self.Say("Entendo. Venha falar comigo quando estiver #Gpronto:pronta# para aceitar essa tarefa. Eu te aconselho a não demorar muito, pois o monstro pode se disfarçar de outra coisa totalmente diferente. Nós temos que agir como se não soubéssemos de nada.");
+                        self.Say("Thank you very much. In fact, #b#p2040001##k asked you to get #b#t4031093#s#k as a way to test your skills and see if you can handle it. So, don't think of this as a request coming out of nowhere. I think someone like you can tackle this challenge.");
+                        var nRet2 = self.AskYesNo("A while ago, a monster from another dimension came here due to an interdimensional rift, and stole the clock's pendulum. It hid in that room and disguised itself as a dollhouse. To me they all look the same, so there's no way to figure out which is which. Would you help us find it?");
+                        if (nRet2 == 0) self.Say("I understand. Come talk to me when you're ready to accept this task. I advise you not to take too long, as the monster can disguise itself as something else entirely. We have to act like we don't know anything.");
                         else
                         {
-                            self.Say("Certo! Eu vou te levar para uma sala, onde você irá encontrar várias casas de bonecas espalhadas. Uma delas irá parecer um pouco diferente das outras. O seu trabalho é localizar e quebrar sua porta. Se conseguir encontrá-la, você encontrará o #b#t4031145##k. Se você quebrar uma das casas de bonecas verdadeiras, será #Gmandado:mandada# de volta para cá, então preste bastante atenção.");
-                            self.Say("Você também encontrará monstros lá, e eles ficaram poderosos demais graças ao monstro da outra dimensão, tão poderosos que você não conseguirá eliminá-los. Por favor, encontre o #b#t4031145##k antes de o tempo acabar e avise #b#p2040028##k, que deve estar lá dentro. Vamos começar logo!");
+                            self.Say("Great! I'll take you to a room, where you'll find dollhouses scattered around. One of them will look a little different from the others. Your job is to locate and break down its door. If you can find it, you'll find the #b#t4031145##k. If you break one of the real dollhouses, you'll be sent back here, so pay close attention.");
+                            self.Say("You'll also find monsters there, and they've gotten too powerful due to the monster from the other dimension, so powerful that you won't be able to eliminate them. Please find the #b#t4031145##k before the time runs out and notify #b#p2040028##k, who should be inside. Let's get started soon!");
                             if (nItem > 0) inven.Exchange(0, 4031145, -nItem);
                             var setParty = FieldSet.Instances["Ludi023"];
                             var res = setParty.Enter(target, 0);
-                            if (res != 0) self.Say("Outra pessoa deve estar lá dentro procurando pela casa de bonecas. Infelizmente, eu só posso deixar entrar uma pessoa por vez, então, por favor, espere sua vez.");
+                            if (res != 0) self.Say("Someone else must be inside looking for the dollhouse. Unfortunately, I can only let one person in at a time, so please wait your turn.");
                         }
                     }
                 }
-                else if (val == 2) self.Say("Graças a" + target.SCharacterName + ", nos recuperamos o #b#t4031145##k e destruímos o monstro da outra dimensão. Ainda bem que não achamos um assim desde então. Eu nem sei como te agradecer por nos ajudar. Espero que goste de sua estadia aqui em Ludibrium!");
-                else self.Say("Nós somos os soldados de brinquedo que protegemos essa sala para impedir que qualquer outra pessoa entre. Eu não posso te dizer por que. Agora, se você me desculpar, eu tenho trabalho a fazer.");
+                else if (val == 2) self.Say("Thanks to " + target.SCharacterName + ", we recovered the #b#t4031145##k and destroyed the monster from the other dimension. Good thing we haven't found one like that since. I don't even know how to thank you for helping us. Hope you enjoy your stay here in Ludibrium!");
+                else self.Say("We are the toy soldiers who guard this room to prevent anyone else from entering. I can't tell you why. Now, if you'll excuse me, I have work to do.");
             }
         }
         // mark the toy soldier : 2040028
@@ -246,31 +246,31 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (inven.ItemCount(4031145) >= 1)
                     {
-                        self.Say("Ah! Uau! Você encontrou a casa de bonecas diferente e achou o #b#t4031145##k! Isso foi um trabalho bem-feito!! Graças a isso a Torre do Relógio de Ludibrium poderá funcionar novamente! Obrigado por sua ajuda e aceite uma pequena recompensa pelo seu trabalho. Mas, antes de recebê-la, por favor, veja se o seu inventário de uso não está cheio.");
+                        self.Say("Oh wow, you did locate the different-looking dollhouse and found the #b#t4031145##k! That was just incredible!! With this, the Ludibrium Clocktower will be running again! Thank you for your work and here's a little reward for your effort. Before that, though, please check your use inventory and see if it's full or not.");
                         var ret = inven.Exchange(0, 4031145, -1, 2000010, 100);
-                        if (ret == 0) self.Say("Você tem certeza de que tem 1 #b#t4031145##k? Se tiver certeza, verifique o seu inventário de uso, ele pode estar cheio!!");
+                        if (ret == 0) self.Say("Are you sure you have 1 #b#t4031145##k? If you're sure, please check your use inventory, it might be full!!");
                         else
                         {
                             target.IncEXP(2400, 0);
                             qr.SetComplete(3230);
-                            self.Say("O que você acha? Você gosta dos #b100 #t2000010#s#k que eu te dei? Muito obrigado por ter nos ajudado. A Torre do Relógio vai funcionar novamente graças ao seu trabalho heróico, e parece que os monstros da outra dimensão sumiram também. Vou te deixar sair agora. Te vejo por aí!");
+                            self.Say("What do you think? Do you like the #b100 #t2000010#s#k that I gave you? Thank you so much for helping us out. The clocktower will be running again thanks to your heroic effort, and the monsters from the other dimension seem to have disappeared, too. I'll let you out now. I'll see you around!");
                             target.ChangeMap(221024400, "q000");
                         }
                     }
                     else
                     {
-                        var v1 = self.AskMenu("Olá! Eu sou #b#p2040028##k, sou eu o encarregado de proteger esta sala. Lá dentro, você vai encontrar um monte de casas de bonecas e poderá encontrar a que parece um pouco diferente das outras. O seu trabalho é encontrá-la, quebrar sua porta e achar o #b#t4031145##k, que é uma parte integral da Torre do Relógio de Ludibrium. Você terá um limite de tempo para fazer isto e, se quebrar a casa de bonecas errada, será obrigado a voltar para cá, então, por favor, tenha cuidado.\r\n#b#L0# Eu quero sair daqui.#l");
+                        var v1 = self.AskMenu("Hello! I am #b#p2040028##k, and I'm in charge of protecting this room. Here, you'll find a bunch of dollhouses and you might find the one that looks a little different from the others. Your job is to find it, break down its door and find #b#t4031145##k, which is an integral part of the Ludibrium Clocktower. You will have a time limit to do this, and if you break the wrong dollhouse, you will have to come back here, so please be careful.", "I want to get out of here.");
                         if (v1 == 0)
                         {
-                            var nRet = self.AskYesNo("Tem certeza de que deseja desistir agora? Tudo bem, então... mas lembre-se de que, da próxima vez que visitar este local, as casas de boneca irão trocar de lugar e você terá que olhar cada uma de novo com muito cuidado. O que você acha? Você ainda quer sair desse lugar?");
-                            if (nRet == 0) self.Say("Eu sabia que você ficaria! É importante que você termine o que começou! Agora, por favor, vá encontrar a casa de boneca diferente das outras, quebre-a e traga o #b#t4031145##k para mim!");
+                            var nRet = self.AskYesNo("Are you sure you want to quit now? Alright then... but remember that the next time you visit this place, the dollhouses will switch places and you'll have to look at each one very carefully again. What do you think? Do you still want to leave this place?");
+                            if (nRet == 0) self.Say("I knew you'd stay! It's important to finish what you started! Now, please go find the dollhouse that is different from the others, break it and bring me the #b#t4031145##k!");
                             else target.ChangeMap(221024400, "q000");
                         }
                     }
                 }
                 else
                 {
-                    self.Say("Mas o que é isso... nós temos proibido que as pessoas entrem nessa sala porque um monstro de outra dimensão está se escondendo lá. Eu não sei como você chegou aqui, mas terei que pedir que saia imediatamente, pois dentro desta sala o perigo é enorme.");
+                    self.Say("What's this... we have prohibited people from entering this room because a monster from another dimension is hiding here. I don't know how you got here, but I'll have to ask you to leave immediately, because inside this room there is great danger.");
                     target.ChangeMap(221024400, "");
                 }
             }
@@ -464,15 +464,15 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (inven.ItemCount(4031034) >= 1)
                     {
-                        self.Say("Você já tem #b#t4031034##k.");
+                        self.Say("You already have #b#t4031034##k.");
                         return;
                     }
 
-                    var nRet = self.AskYesNo("No meio de tantos pergaminhos deixados por #b#p1012005##k, eu vejo um que emite uma luz brilhante. Será que devo pegar?");
+                    var nRet = self.AskYesNo("Among so many scrolls left by #b#p1012005##k, I see one that emits a bright light. Should I take it?");
                     if (nRet != 0)
                     {
                         var ret = inven.Exchange(0, 4031034, 1);
-                        if (ret == 0) self.Say("Eu não tenho nenhum espaço livre em meu inventário. É melhor eu desocupar um espaço para que possa carregar esse pergaminho comigo.");
+                        if (ret == 0) self.Say("I don't have any free space in my inventory. I'd better clear up some space so I can carry this scroll with me.");
                     }
                 }
             }
@@ -595,6 +595,23 @@ namespace WvsBeta.Scripts.Scripts
         }
     }
     #region Reactors
+    [Script("ludiquest0")]
+    public class LudiQuest0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    [Script("go221024400")]
+    public class go221024400 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Owner.ChangeMap(221024400, "q000");
+            target.Owner.Message("You will be expelled from this map by an unknown force.");
+        }
+    }
     [Script("ludiquest1")]
     public class LudiQuest1 : IReactorScript
     {

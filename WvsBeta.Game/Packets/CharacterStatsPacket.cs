@@ -298,12 +298,12 @@ namespace WvsBeta.Game
             }
         }
 
-        public static void SendStatChanged(GameCharacter chr, StatFlags flags, bool isExcel = false)
+        public static void SendStatChanged(GameCharacter chr, StatFlags flags, bool isSelf = false)
         {
-            if (isExcel || flags > 0)
+            if (isSelf || flags > 0)
             {
                 Packet pw = new Packet(ServerMessages.STAT_CHANGED);
-                pw.WriteBool(isExcel);
+                pw.WriteBool(isSelf);
                 pw.WriteUInt((uint)flags);
 
                 if ((flags & StatFlags.Skin) == StatFlags.Skin)

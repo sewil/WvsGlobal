@@ -243,7 +243,7 @@ namespace WvsBeta.Game
 
         public void AddEXP(double value, MessageAppearType appearType) { AddEXP((uint)value, appearType); }
 
-        public void AddEXP(uint value, MessageAppearType appearType)
+        public void AddEXP(uint value, MessageAppearType appearType, bool isSelf = false)
         {
             if (value == 0 || PrimaryStats.Level >= 200 || HP <= 0) return;
 
@@ -392,7 +392,7 @@ namespace WvsBeta.Game
                 Save();
             }
 
-            CharacterStatsPacket.SendStatChanged(this, StatFlags.Exp);
+            CharacterStatsPacket.SendStatChanged(this, StatFlags.Exp, isSelf);
         }
 
         public void IncreaseBuddySlots()

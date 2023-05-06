@@ -613,13 +613,9 @@ namespace WvsBeta.Game
         {
             ChatPacket.SendBroadcastMessageToPlayer(this, text, type);
         }
-        public void IncEXP(int amount, int isQuest)
+        public void IncEXP(uint amount, int isSelf)
         {
-            IncEXP(amount, isQuest == 1 ? MessageAppearType.ChatGrey : MessageAppearType.SideWhite);
-        }
-        public void IncEXP(int amount, MessageAppearType appearType)
-        {
-            AddEXP(amount, appearType);
+            AddEXP(amount, MessageAppearType.ChatGrey, isSelf == 1);
         }
         public void IncHP(double value, int isSelf)
         {

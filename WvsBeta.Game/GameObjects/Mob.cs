@@ -1209,7 +1209,7 @@ namespace WvsBeta.Game
 
                     foreach (Reward Drop in Rewards)
                     {
-                        if (GameDataProvider.QuestItems.TryGetValue(Drop.ItemID, out var questIDs) && !questIDs.Any(questID => User.Quests.HasQuest(questID)))
+                        if (GameDataProvider.QuestItems.TryGetValue(Drop.ItemID, out var questIDs) && !questIDs.Any(questID => User.Quests.Quests.TryGetValue(questID, out var questData) && questData.State == QuestState.InProgress))
                         {
                             continue;
                         }
