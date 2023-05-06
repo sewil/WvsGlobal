@@ -17,6 +17,7 @@ namespace WvsBeta.Game
 
     public interface INpcHost
     {
+        IStandardScript Standard { get; }
         Map Field { get; }
         int mNpcID { get; }
         void Say(string message);
@@ -63,6 +64,7 @@ namespace WvsBeta.Game
     }
     public class NpcChatSession : INpcHost
     {
+        public IStandardScript Standard { get; }
         public Map Field { get; }
         public int mNpcID { get; set; }
         public GameCharacter mCharacter { get; set; }
@@ -84,6 +86,7 @@ namespace WvsBeta.Game
         private Thread thread;
         public NpcChatSession(NpcLife npc, GameCharacter chr, INpcScript npcScript, string scriptName)
         {
+            Standard = ScriptAccessor.GetScript(Server.Instance, "standard", null) as IStandardScript;
             Field = npc.Field;
             mNpcID = npc.ID;
             mCharacter = chr;

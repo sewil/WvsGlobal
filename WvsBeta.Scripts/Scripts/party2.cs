@@ -459,7 +459,7 @@ namespace WvsBeta.Scripts.Scripts
         public void Run(IReactorHost host, FieldReactor target)
         {
             target.Owner.ChangeMap(922010201);
-            //target.Owner.Message("An unknown force has warped you into a trap.");
+            target.Owner.Message("You will be moved to a different map.");
         }
     }
     [Script("ludiMob1")]

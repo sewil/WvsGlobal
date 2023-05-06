@@ -14,7 +14,8 @@
             FirstEosRock = 2040024,
             SecondEosRock = 2040025,
             ThirdEosRock = 2040026,
-            FourthEosRock = 2040027
+            FourthEosRock = 2040027,
+            Wisp = 2040030
         ;
     }
 }

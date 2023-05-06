@@ -19,5 +19,12 @@ namespace WvsBeta.Common.Extensions
             dictionary.TryGetValue(key, out TValue value);
             return value;
         }
+        public static void AddRange<TValue>(this IList<TValue> list, params TValue[] values)
+        {
+            foreach (var value in values)
+            {
+                list.Add(value);
+            }
+        }
     }
 }

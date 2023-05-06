@@ -221,67 +221,7 @@ namespace WvsBeta.Scripts.Scripts
             Monkey y
             Rudolph y
             */
-            int v1 = self.AskMenu("What do you want to know more about? \r\n#b#L0# Tell me more about Pets. #l\r\n#L1# How to educate Pets? #l\r\n#L2# Do pets die too? \r\n#b#L3# What are the commands for the Brown and Black Kittens? \r\n#b#L4# What are the commands for Brown Puppy? \r\n#b#L5# What are the commands for the Pink and White Bunnies? \r\n#b#L6# What are the commands for Mini Kargo? \r\n#b#L7# What are the commands for Rudolph? \r\n#b#L8# What are the commands for Black Pig? \r\n#b#L9# What are the commands for Panda? \r\n#b#L10# What are the commands for Husky? \r\n#b#L11# What are the commands for Dino Boy, Dino Girl? \r\n#b#L12# What are the commands for Monkey?");
-            if (v1 == 0)
-            {
-                self.Say("So you wish to know more about pets. A long time ago I made a doll, sprinkled #t4070000# on it and cast a charm to create a magical animal. I know it sounds unbelievable, but these are dolls that have really come to life. They understand and obey people very well.");
-                self.Say("But #t4070000# only appears a little bit, right at the base of the World Tree, so I can't give it much time to live... I know, it's very sad... but even if it becomes a doll again, I can always bring it back to life. Be nice while you're with it.");
-                self.Say("Ah yes! They will react when you give them special commands. You can scold them, give them affection... it all depends on how you are going to take care of them. They are afraid to be separated from their owners, so be nice to them, show them you love them. They may suddenly become sad...");
-            }
-            else if (v1 == 1)
-            {
-                self.Say("Depending on the command you give, pets can love, hate and demonstrate other types of reactions. If you give a command and the pet obeys correctly, closeness increases. By double clicking on the pet you can see closeness, level, energy, etc.");
-                self.Say("Talk to the pet, pay attention to it, and your level of closeness will grow. Eventually your overall level will go up as well. If the level of closeness increases, the general level of the pet will increase soon after. As the general level increases, one day the pet can even speak a little bit, like a person. Then try to increase it for real! Of course it won't be that easy...");
-                self.Say("They may just be living dolls, but they have a normal life, just like us. So they feel hungry too. The #bFullness#k shows the pet's hunger level. 100 is the maximum, and the lower it gets, it means the pet is getting hungry. After a while it won't even obey your commands and will get aggressive, so be careful with that.");
-                self.Say("Ah yes! Pets cannot eat human food. My disciple #b#p1012004##k sells #b#t2120000##k at the #m100000000# market. If you need food for your pet, look in #m100000000#. It's a good idea to keep a supply of food and feed your pet before it gets too hungry.");
-                self.Say("Oh... and if you don't feed the pet for an extended period of time, it will go home on its own. You can take it out of its house and feed it, but that is not good for its health. Try to feed it regularly so it doesn't get to that level, okay? I think that will do it.");
-            }
-            else if (v1 == 2)
-            {
-                self.Say("Die... well, they aren't technically ALIVE, they came to life through someone else's influence, so I don't know if death is the right term. They are dolls with my magic power, and the power of #t4070000# makes objects come alive. Of course, while alive, they are just like a normal animal...");
-                self.Say("After some time... that's for sure, they stop moving. They simply revert back to dolls after the spell's effect wears off and #t4070000# wears off. But that doesn't mean it stopped forever, because if you spill #t4070000# on it, it will come back to life.");
-                self.Say("Even if they move again, it's sad to see them completely stopped. Be nice to them while they're alive, okay? Feed them well, too. Isn't it nice to know that there's something alive that keeps you company and obeys only you?");
-            }
-            else if (v1 == 3)
-            {
-                self.Say("These are the commands for the #rBrown Kitty and Black Kitty#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#b sit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#b stupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#b iloveyou#k (level 1 ~ 30) \r\n#b poop#k (level 1 ~ 30) \r\n#b talk, chat, say#k (level 10 ~ 30) \r\n#b cutie#k (level 10 ~ 30) \r\n#b up, stand, rise#k (level 20 ~ 30)");
-            }
-            else if (v1 == 4)
-            {
-                self.Say("These are the commands for the #rBrown Puppy#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#b sit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#b stupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#b iloveyou#k (level 1 ~ 30) \r\n#b pee#k (level 1 ~ 30) \r\n#b talk, chat, say#k (level 10 ~ 30) \r\n#bdown#k (level 10 ~ 30) \r\n#b up, stand, rise#k (level 20 ~ 30)");
-            }
-            else if (v1 == 5)
-            {
-                self.Say("These are the commands for the #rPink Bunny and White Bunny#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bup, stand, rise#k (level 1 ~ 30) \r\n#b iloveyou#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#b talk, chat, say#k (level 10 ~ 30) \r\n#bhug#k (level 10 ~ 30) \r\n#bsleep, sleepy, gotobed#k (level 20 ~ 30)");
-            }
-            else if (v1 == 6)
-            {
-                self.Say("These are the commands for the #rMini Kargo#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bup, stand, rise#k (level 1 ~ 30) \r\n#b iloveyou#k (level 1 ~ 30) \r\n#bpee#k (level 1 ~ 30) \r\n#b talk, chat, say#k (level 10 ~ 30) \r\n#bthelook, charisma#k (level 10 ~ 30) \r\n#bdown#k (level 20 ~ 30) \r\n#bgoodboy, goodgirl#k (level 20 ~ 30)");
-            }
-            else if (v1 == 7)
-            {
-                self.Say("These are the commands for #rRudolph#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#bbad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bup, stand#k (level 1 ~ 30) \r\n#b stupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#bmerryxmas, merrychristmas#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#btalk, chat, say#k (level 11 ~ 30) \r\n#blonely, alone#k (level 11 ~ 30) \r\n#bcutie#k (level 11 ~ 30) \r\n#bmush, go#k (level 21 ~ 30)");
-            }
-            else if (v1 == 8)
-            {
-                self.Say("These are the commands for the #rBlack Pig#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bhand#k (level 1 ~ 30) \r\n#bstupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#btalk, chat, say#k (level 10 ~ 30) \r\n#bsmile#k (level 10 ~ 30) \r\n#bthelook, charisma#k (level 20 ~ 30)");
-            }
-            else if (v1 == 9)
-            {
-                self.Say("These are the commands for the #rPanda#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#bchill, relax#k (level 1 ~ 30) \r\n#bbad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bup, stand, rise#k (level 1 ~ 30) \r\n#btalk, chat, say#k (level 10 ~ 30) \r\n#bletsplay#k (level 10 ~ 30) \r\n#bmeh, bleh#k (level 10 ~ 30) \r\n#bsleep#k (level 20 ~ 30)");
-            }
-            else if (v1 == 10)
-            {
-                self.Say("These are the commands for the #rHusky#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#b sit#k (level 1 ~ 30) \r\n#bbad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bstupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#bhand#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bdown#k (level 10 ~ 30) \r\n#btalk, chat, say#k (level 10 ~ 30) \r\n#bup, stand, rise#k (level 20 ~ 30)");
-            }
-            else if (v1 == 11)
-            {
-                self.Say("These are the commands for the #rDino Boy and Dino Girl#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#b bad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bpoop#k (level 1 ~ 30) \r\n#bsmile, laugh#k (level 1 ~ 30) \r\n#bstupid, ihateyou, dummy#k (level 1 ~ 30) \r\n#btalk, chat, say#k (level 10 ~ 30) \r\n#bcutie#k (level 10 ~ 30) \r\n#bsleep, nap, sleepy#k (level 20 ~ 30)");
-            }
-            else if (v1 == 12)
-            {
-                self.Say("These are the commands for the #rMonkey#k. The level displayed next to the command shows what level the pet needs to be in order for it to respond. \r\n#bsit#k (level 1 ~ 30) \r\n#brest#k (level 1 ~ 30) \r\n#bbad, no, badgirl, badboy#k (level 1 ~ 30) \r\n#bpee#k (level 1 ~ 30) \r\n#biloveyou#k (level 1 ~ 30) \r\n#bup, stand#k (level 1 ~ 30) \r\n#btalk, chat, say#k (level 10 ~ 30) \r\n#bplay#k (level 10 ~ 30) \r\n#bmelong#k (level 10 ~ 30) \r\n#bsleep, gotobed, sleepy#k (level 20 ~ 30)");
-            }
+            self.Standard.PetMenu(self, target, "What do you want to know more about?");
         }
     }
     // Extending pet's life
