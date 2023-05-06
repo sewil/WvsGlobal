@@ -1209,10 +1209,6 @@ namespace WvsBeta.Game
 
                     foreach (Reward Drop in Rewards)
                     {
-                        if (GameDataProvider.QuestItems.TryGetValue(Drop.ItemID, out var questIDs) && !questIDs.Any(questID => User.Quests.Quests.TryGetValue(questID, out var questData) && questData.State == QuestState.InProgress))
-                        {
-                            continue;
-                        }
                         if (ItemID_Stolen == Drop.ItemID && !Drop.Mesos) continue;
                         if (Drop.Mesos)
                         {
@@ -1229,7 +1225,6 @@ namespace WvsBeta.Game
                     }
                 }
             }
-
         }
 
         public void RemoveController(bool sendPacket)

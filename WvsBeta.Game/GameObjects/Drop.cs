@@ -1,7 +1,10 @@
-﻿using WvsBeta.Common;
+﻿using System.Collections.Generic;
+using System.Linq;
+using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects;
 using static WvsBeta.Common.Constants.EquipSlots;
 
 namespace WvsBeta.Game
@@ -27,7 +30,6 @@ namespace WvsBeta.Game
         public int SourceID { get; set; }
         public long DateExpire { get; set; }
         public int Period { get; set; }
-        public short QuestID { get; set; }
         public short ShowMax { get; set; }
 
         public Drop(int DropID, Reward reward, int OwnerID, int OwnPartyID, DropType dropType, int SourceID, short x1, short y1, short x2, short y2, bool ByPet, bool ByUser)
@@ -103,9 +105,11 @@ namespace WvsBeta.Game
                         return false;
                 }
 
-                if (QuestID > 0)
+
+                if (!Reward.Mesos && GameDataProvider.QuestItems.TryGetValue(Reward.ItemID, out HashSet<short> questIDs))
                 {
-                    if (User.Quests.HasQuest(QuestID))
+                    bool hasQuest = questIDs.Any(questID => User.Quests.Quests.TryGetValue(questID, out QuestData questData) && questData.State == QuestState.InProgress);
+                    if (hasQuest)
                     {
                         if (DropType == DropType.Normal && User.ID == OwnerID ||
                             DropType == DropType.Party && User.PartyID == OwnPartyID ||
