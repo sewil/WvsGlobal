@@ -201,3 +201,12 @@ Party4 = {
     cleanupDrops = 1
     resetReactors = 1
 }
+
+# Cheng Toy Factory JQ
+Ludi020 = {
+    0 = 922000000
+    returnMap = 922000009
+    timeOut = 1200
+    cleanupDrops = 1
+    resetReactors = 1
+}

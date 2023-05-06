@@ -82,6 +82,7 @@ namespace WvsBeta.Scripts.Scripts
                 { "ludi021", "ludibrium0" },
                 { "ludi022", "ludibrium0" },
                 { "ludi023", "ludibrium0" },
+                { "ludiquest1", "ludibrium0" },
                 { "party1_enter", "party" },
                 { "party1_play", "party" },
                 { "party1_out", "party" },

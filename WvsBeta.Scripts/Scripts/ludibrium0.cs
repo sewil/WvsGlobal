@@ -115,6 +115,12 @@ namespace WvsBeta.Scripts.Scripts
         [Script("ludi020")]
         class ludi020 : INpcScript
         {
+            private void Leave(INpcHost self, GameCharacter target)
+            {
+                var nRet = self.AskYesNo("Are you sure you want to quit? Well, I can let you out, but you'll have to start over from the very beginning the next time you pay a visit here. Do you still want to leave this place?");
+                if (nRet == 0) self.Say("That's the kind of attitude I've been looking for! If you've started something, you have to learn how to finish it! Now please search the plastic barrels and find #b10 #t4031092##k for me.");
+                else target.ChangeMap(922000009, "");
+            }
             public void Run(INpcHost self, GameCharacter target)
             {
                 var field = self.Field;
@@ -123,15 +129,16 @@ namespace WvsBeta.Scripts.Scripts
 
                 if (val == 1)
                 {
+                    string instructions = "Inside this room, you'll see a lot of plastic barrels lying around. Hit the barrels to make them fall and see if you can find the missing #b#t4031092##k.";
                     if (field.ID == 220020000)
                     {
                         var inven = target.Inventory;
-                        self.Say("Certo, então. Dentro desse quarto, você verá muitos barris de plástico jogados pelos cantos. Acerte os barrís para fazê-los cair e veja se consegue achar o #b#t4031092##k perdido. Você deve coletar #b10 #t4031092#s#k e depois voltar para falar comigo. Há um limite de tempo para fazer isso! Então, vá logo!");
+                        self.Say($"Right then. {instructions}. You must collect #b10 #t4031092##k and then come back to me. There is a time limit to do this, so make sure to be quick!");
                         var hItem = inven.ItemCount(4031092);
                         if (hItem > 0) inven.Exchange(0, 4031092, -hItem);
                         var setParty = FieldSet.Instances["Ludi020"];
                         var res = setParty.Enter(target, 0);
-                        if (res != 0) self.Say("Desculpe, mas parece que outra pessoa está lá dentro olhando os barris. Só é permitido uma pessoa por vez aqui, por isso, você terá que esperar pela sua vez.");
+                        if (res != 0) self.Say("Sorry, but it looks like someone else is inside inspecting the barrels. Only one person is allowed here at a time, so you'll have to wait your turn.");
                     }
                     else if (field.ID == 922000000)
                     {
@@ -139,17 +146,12 @@ namespace WvsBeta.Scripts.Scripts
                         var nItem = inven.ItemCount(4031092);
                         if (nItem == 0)
                         {
-                            var v1 = self.AskMenu("Dentro desse quarto, você verá muitos barris de plástico jogados pelos cantos. Acerte os barris para fazê-los cair e veja se consegue achar o #b#t4031092##k perdido. Você deve coletar #b10 #t4031092##k antes do tempo limite acabar e depois voltar para falar comigo. O tempo está passando enquanto conversamos, então, por favor, se apresse!\r\n#b#L0# Eu quero sair daqui.#l");
-                            if (v1 == 0)
-                            {
-                                var nRet = self.AskYesNo("Tem certeza de que deseja desistir ? Bem, eu posso deixar você sair, mas você terá que começar bem do início na próxima vez em que fizer uma visita aqui. Você ainda quer sair desse lugar?");
-                                if (nRet == 0) self.Say("Esse é o tipo de atitude que eu tenho procurado! Se você começou uma coisa, tem que aprender a terminá-la! Agora, por favor, procure nos barris de plástico e encontre #b10 #t4031092##k para mim.");
-                                else target.ChangeMap(922000009, "");
-                            }
+                            var v1 = self.AskMenu($"{instructions} You must collect #b10 #t4031092##k before the time limit expires and then come back to me. Time is ticking as we speak, so please hurry!", "I want to get out of here.");
+                            if (v1 == 0) Leave(self, target);
                         }
                         else if (nItem >= 10)
                         {
-                            self.Say("Bom trabalho! Você conseguiu coletar #b10 #t4031092##k. Bem, já que você nos fez esse grande favor, eu vou te recompensar com algo bem legal. Antes de fazer isso, por favor, veja se o seu inventário de uso possui algum espaço disponível.");
+                            self.Say("Well done! You managed to collect #b10 #t4031092##k. Well, since you've done us this huge favor, I'll reward you with something really nice. Before doing so, please check that you have space available in your use inventory.");
                             if (inven.SlotCount(2) > inven.HoldCount(2))
                             {
                                 var rnum = Rand32.NextBetween(1, 4);
@@ -161,41 +163,34 @@ namespace WvsBeta.Scripts.Scripts
                                 var nNeed = inven.ItemCount(4031092);
 
                                 var ret = inven.Exchange(0, 4031092, -nNeed, nNewItemID, 1);
-                                if (ret == 0) self.Say("Você tem certeza de que tem #b10 #t4031092#s#k? Se tiver certeza, veja se o seu inventário de uso possui algum espaço disponível.");
+                                if (ret == 0) self.Say("Are you sure you have #b10 #t4031092#s#k? If you're sure, please check that you have space available in your use inventory.");
                                 else
                                 {
                                     target.IncEXP(2700, 0);
                                     qr.SetComplete(3239);
-                                    self.Say("O que você acha? Você gosta do #b#t" + nNewItemID + "##k que eu te dei? Eu nem sei como te agradecer por me ajudar. Obrigado pelo seu esforço, a Fábrica de Brinquedos deve estar funcionando muito bem. Vou te mandar para fora agora. Se cuida!");
+                                    self.Say("What do you think? Do you like the #b#t" + nNewItemID + "##k I gave you? I don't even know how to thank you for helping me. Thanks to you, the Toy Factory is running smoothly again. I'm going to send you out now. Take care!");
                                     target.ChangeMap(220020000, "q000");
                                 }
                             }
-                            else self.Say("Humm... o seu inventário de uso parece estar cheio no momento. Assim, você não poderá receber minha recompensa. Por favor, libere espaço no seu inventário e venha falar comigo novamente.");
+                            else self.Say("Hmm... your use inventory seems to be full at the moment. Therefore, you will not be able to receive my reward. Please free up some space in your inventory and come talk to me again.");
                         }
                         else
                         {
-                            var v1 = self.AskMenu("Eu acho que você não coletou 10 #b#t4031092#s#k perdidos. Quebre os barris de plástico que você vê nesta sala e veja se algum deles contém o #b#t4031092##k perdido. Se você conseguir pegar os 10 #b#t4031092#s#k antes do limite de tempo terminar, então venha trazê-los para mim. Se você quiser sair deste lugar a qualquer momento, venha falar comigo.\r\n#b#L0# Eu quero sair daqui.#l");
-                            if (v1 == 0)
-                            {
-                                var nRet = self.AskYesNo("Tem certeza de que deseja desistir ? Bem, eu posso deixar você sair, mas você terá que começar bem do início na próxima vez em que fizer uma visita aqui. Você ainda quer sair desse lugar?");
-                                if (nRet == 0) self.Say("Esse é o tipo de atitude que eu tenho procurado! Se você começou uma coisa, tem que aprender a terminá-la! Agora, por favor, procure nos barris de plástico e encontre #b10 #t4031092#s#k para mim.");
-                                else target.ChangeMap(922000009, "");
-                            }
+                            var v1 = self.AskMenu("Looks like you didn't collect the 10 missing #b#t4031092#s#k. Break the plastic barrels you see in this room and see if any of them contain the missing #b#t4031092##k. If you manage to get the 10 #b#t4031092#s#k before the time limit expires, then come and bring them to me. If you want to leave this place at any time, come talk to me.", "I want to leave this place.");
+                            if (v1 == 0) Leave(self, target);
                         }
                     }
                 }
-                else if (val == 2) self.Say("Graças a você, a Fábrica de Brinquedos está funcionando perfeitamente novamente. Estou tão feliz que você veio nos ajudar. Nós temos cuidado bem de nossas peças extras, por isso, não se preocupe. Bem, é isso! Eu preciso voltar ao trabalho!");
-                else self.Say("Ultimamente, as peças mecânicas estão sumindo da Fábrica de Brinquedos, e isso me preocupa muito. Eu quero pedir ajuda, mas você não parece forte o suficiente para nos ajudar. A quem eu deveria pedir para nos ajudar?");
+                else if (val == 2) self.Say("Thanks to you, the Toy Factory is running smoothly again. I'm so glad you came to help us. We've taken good care of our extra parts, so don't worry. Well that's it! I need to get back to work!");
+                else self.Say("Lately, mechanical parts have been disappearing from the Toy Factory, and that worries me a lot. I want to ask for help, but you don't seem strong enough to help us. Who should I ask to help us?");
             }
         }
         // kicking out of the toy factory quest
         [Script("ludi021")]
-        class ludi021 : INpcScript
+        class ludi021 : IPortalScript
         {
-            public void Run(INpcHost self, GameCharacter target)
+            public void Run(IPortalHost self, GameCharacter target)
             {
-                var qr = target.QuestRecord;
-
                 var inven = target.Inventory;
                 var qItem = inven.ItemCount(4031092);
                 if (qItem > 0) inven.Exchange(0, 4031092, -qItem);
@@ -599,4 +594,14 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
+    #region Reactors
+    [Script("ludiquest1")]
+    public class LudiQuest1 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    #endregion
 }
