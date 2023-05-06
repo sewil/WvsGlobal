@@ -40,6 +40,9 @@ namespace WvsBeta.Common.Objects
         public short NextQuest { get; }
         public uint Exp { get; }
         public int Mesos { get; }
+        /// <summary>
+        /// Important that it's a list rather than a dictionary. Needs to be indexed correctly for item selection.
+        /// </summary>
         public List<QuestItem> Items { get; }
 
         public WZQuestAct(WZQuestStage stage, NXNode node)

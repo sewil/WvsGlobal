@@ -115,7 +115,7 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public static void HandleQuestAct(GameCharacter chr, int npcid, WZQuestAct act)
+        public static void HandleQuestAct(GameCharacter chr, int npcID, int selectIdx, WZQuestAct act)
         {
             var questJob = Constants.GetQuestJob(chr.Job);
             var items = act.Items.Where(i => i.Job == null || questJob.HasFlag(i.Job)).ToList();
@@ -124,8 +124,10 @@ namespace WvsBeta.Game
             int from = 0;
             int to = 0;
             var itemsToGive = new List<QuestItem>();
-            foreach (QuestItem item in items)
+            for (int itemIdx = 0; itemIdx < items.Count; itemIdx++)
             {
+                QuestItem item = items[itemIdx];
+                if (selectIdx > -1 && itemIdx != selectIdx) continue;
                 if (item.Prop > 0)
                 {
                     to += item.Prop;
@@ -155,28 +157,28 @@ namespace WvsBeta.Game
             if (act.Stage.Stage == QuestStage.Start)
             {
                 chr.Quests.StartQuest(act.Stage.Quest.QuestID);
-                SendQuestActionResult(chr, QuestActionResult.Success, npcid, act.Stage.Quest.QuestID);
+                SendQuestActionResult(chr, QuestActionResult.Success, npcID, act.Stage.Quest.QuestID);
             }
             else if (act.Stage.Stage == QuestStage.Complete)
             {
                 if (act.NextQuest > 0)
                 {
                     if (!GameDataProvider.Quests.TryGetValue(act.NextQuest, out WZQuestData nextQuest)) throw new QuestException(QuestActionResult.UnknownError);
-                    SendQuestActionResult(chr, QuestActionResult.Success, npcid, 0, act.NextQuest);
+                    SendQuestActionResult(chr, QuestActionResult.Success, npcID, 0, act.NextQuest);
                 }
                 else
                 {
                     chr.Quests.SetComplete(act.Stage.Quest.QuestID);
-                    SendQuestActionResult(chr, QuestActionResult.Success, npcid, act.Stage.Quest.QuestID);
+                    SendQuestActionResult(chr, QuestActionResult.Success, npcID, act.Stage.Quest.QuestID);
                 }
             }
         }
-        public static void HandleQuestStage(GameCharacter chr, int npcid, WZQuestStage stage)
+        public static void HandleQuestStage(GameCharacter chr, int npcID, WZQuestStage stage, int selectIdx = -1)
         {
             try
             {
                 HandleQuestCheck(chr, stage.Check);
-                HandleQuestAct(chr, npcid, stage.Act);
+                HandleQuestAct(chr, npcID, selectIdx, stage.Act);
             }
             catch (QuestException e)
             {
@@ -214,16 +216,16 @@ namespace WvsBeta.Game
                     break;
                 case 2:
                     {
-                        int npcid = packet.ReadInt();
+                        int npcID = packet.ReadInt();
                         // complete quest [42] [02] [E8 03] [34 08 00 00] [FF FF FF FF]
-                        packet.ReadInt();
+                        int selectIdx = packet.ReadInt();
 
                         if (!GameDataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
                             SendQuestActionResultError(chr, QuestActionResult.UnknownError);
                             return;
                         }
-                        HandleQuestStage(chr, npcid, qd.Stages[QuestStage.Complete]);
+                        HandleQuestStage(chr, npcID, qd.Stages[QuestStage.Complete], selectIdx);
                     }
                     break;
                 case 3: // forfeit quest [42] [03] [EB 03]
