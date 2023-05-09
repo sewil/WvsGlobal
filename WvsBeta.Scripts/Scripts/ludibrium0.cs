@@ -318,16 +318,16 @@ namespace WvsBeta.Scripts.Scripts
             public void Run(INpcHost self, GameCharacter target)
             {
                 var inven = target.Inventory;
-                if (inven.ItemCount(4031128) > 0) self.Say("Pegue essa carta, pule sobre os obstáculos com seu bichinho e leve a carta para meu irmão #p2040033#. Leve a carta para ele e algo bom vai acontecer com seu bichinho.");
+                if (inven.ItemCount(4031128) > 0) self.Say("Take this letter, jump over the obstacles with your pet and take the letter to my brother #p2040033#. Bring him the letter to him and something good will happen to your pet.");
                 else
                 {
-                    var nRet = self.AskYesNo("Essa é a estrada onde você pode levar seu bichinho para dar uma volta. Você pode andar nela ou pode treinar seu bichinho para que ele pule os obstáculos. Se você ainda não é muito intimo de seu bichinho, isso pode ser um prolema e ele não vai seguir suas ordens tão bem... então... o que você acha? Quer treinar seu bichinho?");
-                    if (nRet == 0) self.Say("Humm... muito #Gocupado:ocupada# agora? Se você quiser fazer isso depois, é só voltar e falar comigo.");
+                    var nRet = self.AskYesNo("This is the walkway where you can take your pet for a walk. You can walk on it or you can train your pet to jump over obstacles. If you're not very close with your pet yet, this could be a problem and they won't follow your orders as well... so... what do you think? Want to train your pet?");
+                    if (nRet == 0) self.Say("Hmm... too busy right now? If you want to do it later, just come back and talk to me.");
                     else
                     {
                         var ret = inven.Exchange(0, 4031128, 1);
-                        if (ret == 0) self.Say("Seu inventário de etc. está cheio! Eu não posso te dar a carta a nao ser que exista espaço livre em seu inventário. Libere espaço no seu inventário e venha falar comigo novamente.");
-                        else self.Say("Ok, aqui está a carta. Se eu te mandasse lá sem a carta, ele não saberia quem é você, por isso, passe pelos obstáculos com seu bichinho, vá até o topo e depois fale com #p2040033# e entregue a carta. Não será difícil se você prestar atenção no seu bichinho enquanto estiver ultrapassando os obstáculos. Boa sorte!");
+                        if (ret == 0) self.Say("Your etc. inventory is full! I cannot give you the letter unless there is free space in your inventory. Please free up space in your inventory and come talk to me again.");
+                        else self.Say("Okay, here's the letter. If I sent you there without the letter, he wouldn't know who you are, so go through the obstacles with your pet, go to the top and then talk to #p2040033# and deliver the letter. It won't be difficult if you pay attention to your pet while you're overcoming the obstacles. Good luck!");
                     }
                 }
             }
@@ -341,21 +341,21 @@ namespace WvsBeta.Scripts.Scripts
                 var inven = target.Inventory;
                 if (inven.ItemCount(4031128) > 0)
                 {
-                    self.Say("Ei! Essa carta é do meu irmão! Provavelmente me dando uma bronca por achar que eu não estou trabalhando com vontade... O quê? Ahhh... você seguiu os conselhos de meu irmão e treinou o seu bichinho até chegar aqui em cima? Lega!! Já que você se esforçou tanto para chegar aqui, eu vou vou aumentar seu nível de intimidade com seu bichinho.");
+                    self.Say("Hey! This letter is from my brother! Probably scolding me for not feeling like I'm working... What? Ahhh... did you follow my brother's advice and train your pet to get up here? Cool!! Since you've worked so hard to get here, I'm going to increase your pet's level of closeness.");
                     PetItem pet = target.GetSpawnedPet();
-                    if (pet == null) self.Say("Humm... você conseguiu chegar aqui com seu bichinho!? Esses obstáculos são para os bichinhos. O que você está fazendo aqui sem ele? Saia daqui!");
+                    if (pet == null) self.Say("Humm... did you manage to get here without your pet!? These obstacles are for pets. What are you doing here without one? Get out of here!");
                     else
                     {
                         var ret = inven.Exchange(0, 4031128, -1);
-                        if (ret == 0) self.Say("Ei! Você tem certeza de que está com a carta do meu irmão? Verifique no seu inventário de etc. para ver se a carta está lá ou não!");
+                        if (ret == 0) self.Say("Hey! Are you sure you have my brother's letter? Please check your etc. inventory to see if the letter is there or not!");
                         else
                         {
                             target.IncPetTame(4);
-                            self.Say("O que você acha? Você não acha que ficou muito íntimo do seu bichinho? Se você estiver com tempo, treine seu bichinho novamente nesse curso de obstáculos... com a permissão de meu irmão, é claro!");
+                            self.Say("What do you think? Don't you think you've gotten closer to your pet? If you have time, retrain your pet on this obstacle course... with my brother's permission of course!");
                         }
                     }
                 }
-                else self.Say("Meu irmão me disse para tomar conta do curso de obstáculos, mas... já que estou tão longe dele, não consigo evitar de ficar brincando, hehe... já que ele não pode me controlar, eu aproveito para relaxar um pouco.");
+                else self.Say("My brother told me to take care of the obstacle course, but... since I'm so far away from him, I can't help but play around, hehe... since he can't control me, I take the opportunity to relax a little.");
             }
         }
         [Script("library")]
