@@ -747,14 +747,14 @@ namespace WvsBeta.Scripts.Scripts
                 if ((inventory.SlotCount(2) > inventory.HoldCount(2)) && (inventory.SlotCount(4) > inventory.HoldCount(4)))
                 {
                     var ret = inventory.Exchange(0, itemCode, -100, nNewItemID, nNewItemNum);
-                    if (ret == 0) self.Say("Hmmm... Tem certeza de que coletou #b100 #t" + itemCode + "#s#k? Se sim, verifique se seu inventário está cheio.");
+                    if (ret == 0) self.Say("Hmmm... Are you sure you collected #b100 #t" + itemCode + "#s#k? If so, please check if your inventory is full.");
                     else
                     {
                         target.IncEXP(500, 0);
-                        self.Say("Para seu #b100 #t" + itemCode + "#s#k, aqui está meu #b" + nNewItemNum + " #t" + nNewItemID + "#(s)#k. O que você acha? Gostou do item que dei em troca? Devo ficar aqui por um tempo, então, se juntar mais itens, estou sempre disposto a negociar...");
+                        self.Say("For your #b100 #t" + itemCode + "#s#k, I'll give you #b" + nNewItemNum + " #t" + nNewItemID + "#(s)#k. What do you think? Did you like the item I gave in return? I'm supposed to be here for a while, so if you gather more items, I'm always willing to trade...");
                     }
                 }
-                else self.Say("Seu inventário de etc. parece estar cheio. Você precisa de espaço livre para trocar comigo! Abra espaço e me encontre...");
+                else self.Say("Looks like your etc. inventory is full. You need free space to trade with me! Please make some room and then talk to me again...");
             }
         }
         // The NPC that warps the character to the different boarding platform
