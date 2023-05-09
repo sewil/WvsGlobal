@@ -69,6 +69,8 @@ namespace WvsBeta.Scripts.Scripts
                 { "getAboard", "ossyria0" },
                 { "goDungeon", "ossyria0" },
                 { "carlie", "ossyria0" },
+                { "ossyria3_1", "ossyria2" },
+                { "ossyria3_2", "ossyria2" },
                 { "guild_proc", "ossyria2" },
                 { "guild_mark", "ossyria2" },
                 { "ludi014", "ludibrium0" },
@@ -85,6 +87,8 @@ namespace WvsBeta.Scripts.Scripts
                 { "ludi025", "ludibrium0" },
                 { "ludi026", "ludibrium0" },
                 { "ludi027", "ludibrium0" },
+                { "ludi028", "ludibrium0" },
+                { "ludi029", "ludibrium0" },
                 { "ludiquest0", "ludibrium0" },
                 { "go221024400", "ludibrium0" },
                 { "ludiquest1", "ludibrium0" },
@@ -273,7 +277,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             bool isWisp = self.mNpcID == NpcIds.Wisp;
             var menu = new List<string>();
-            if (isWisp) menu.Add("My pet is back to being a doll. Please help me get him moving again!");
+            if (isWisp) menu.Add("My pet is back to being a doll. Please help me get it moving again!");
             menu.AddRange(
                 "Tell me more about Pets.",
                 "How do I take care of Pets?",
