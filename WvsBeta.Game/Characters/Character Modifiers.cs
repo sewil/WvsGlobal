@@ -657,9 +657,15 @@ namespace WvsBeta.Game
                 ChangeMap(toMapId);
                 return;
             }
+            bool isSP = toPortalName == "sp";
             var newMap = GameDataProvider.Maps[toMapId];
-            if (newMap.Portals.TryGetValue(toPortalName, out var portal))
+            if (
+                (isSP && newMap.SpawnPoints.TryFind(sp => sp.Name == toPortalName, out Portal portal))
+                ||
+                (!isSP && newMap.Portals.TryGetValue(toPortalName, out portal))
+            ) {
                 ChangeMap(toMapId, portal);
+            }
             else
                 Program.MainForm.LogAppend("Did not find portal {0} for mapid {1}", toPortalName, toMapId);
         }

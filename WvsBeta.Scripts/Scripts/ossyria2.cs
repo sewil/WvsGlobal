@@ -7,54 +7,39 @@ namespace WvsBeta.Scripts.Scripts
 {
     public static class ossyria2
     {
-        static INpcHost self;
-        static GameCharacter target;
-        // The Magic Rock @ Orbis 
+        private static void MagicSpot(INpcHost self, GameCharacter target, int npcFrom, int npcTo, int mapTo)
+        {
+            var inven = target.Inventory;
+
+            if (inven.ItemCount(4001019) >= 1)
+            {
+                var ret1 = self.AskYesNo($"You can use #b#t4001019##k to activate #b#p{npcFrom}##k. Will you teleport from where you are to #b#p{npcTo}##k?");
+                if (ret1 != 0)
+                {
+                    var ret2 = inven.Exchange(0, 4001019, -1);
+                    if (ret2 == 0) self.Say($"Unable to activate #b#p{npcFrom}##k because you don't have #b#t4001019##k.");
+                    else target.ChangeMap(mapTo, "sp");
+                }
+            }
+            else self.Say($"There is an #b#p{npcFrom}##k that allows you to teleport from where you are to an #b#p{npcTo}##k, but you can't activate it without the scroll.");
+        }
+
+        // The Magic Rock @ Orbis
         [Script("ossyria3_1")]
         class ossyria3_1 : INpcScript
         {
-            dynamic inven, ret1, ret2;
             public void Run(INpcHost self, GameCharacter target)
             {
-                ossyria2.self = self;
-                ossyria2.target = target;
-                inven = target.Inventory;
-
-                if (inven.ItemCount(4001019) >= 1)
-                {
-                    ret1 = self.AskYesNo("Você pode usar #b#t4001019##k para ativar #b#p2012014##k. Você vai se teletransportar para onde está #b#p2012015##k?");
-                    if (ret1 != 0)
-                    {
-                        ret2 = inven.Exchange(0, 4001019, -1);
-                        if (ret2 == 0) self.Say("Impossível ativar #b#p2012014##k porque você não tem #b#t4001019##k.");
-                        else target.ChangeMap(200082100, "sp");
-                    }
-                }
-                else self.Say("Existe um #b#p2012014##k que permite que você se teletransporte para onde está #b#p2012015##k, mas você não pode ativá-lo sem o pergaminho.");
+                MagicSpot(self, target, 2012014, 2012015, 200082100);
             }
         }
         // The Magic Rock @ El Nath 
         [Script("ossyria3_2")]
         class ossyria3_2 : INpcScript
         {
-            dynamic inven, ret1, ret2;
             public void Run(INpcHost self, GameCharacter target)
             {
-                ossyria2.self = self;
-                ossyria2.target = target;
-                inven = target.Inventory;
-
-                if (inven.ItemCount(4001019) >= 1)
-                {
-                    ret1 = self.AskYesNo("Você pode usar #b#t4001019##k para ativar #b#p2012015##k. Você vai se teletransportar para onde está #b#p2012014##k?");
-                    if (ret1 != 0)
-                    {
-                        ret2 = inven.Exchange(0, 4001019, -1);
-                        if (ret2 == 0) self.Say("Impossível ativar #b#p2012015##k porque você não tem #b#t4001019##k.");
-                        else target.ChangeMap(200080200, "sp");
-                    }
-                }
-                else self.Say("Existe um #b#p2012015##k que permite que você se teletransporte para onde está #b#p2012014##k, mas você não pode ativá-lo sem o pergaminho.");
+                MagicSpot(self, target, 2012015, 2012014, 200080200);
             }
         }
         // Guild 
@@ -65,8 +50,6 @@ namespace WvsBeta.Scripts.Scripts
             int nRequiredMeso, nRet1, v1, nRet, nCountMax;
             public void Run(INpcHost self, GameCharacter target)
             {
-                ossyria2.self = self;
-                ossyria2.target = target;
                 isGuildMaster = target.IsGuildMaster;
                 isGuildMember = target.IsGuildMember;
                 if (!isGuildMember)
@@ -178,8 +161,6 @@ namespace WvsBeta.Scripts.Scripts
             dynamic v1, nRet;
             public void Run(INpcHost self, GameCharacter target)
             {
-                ossyria2.self = self;
-                ossyria2.target = target;
                 if (target.IsGuildMaster)
                 {
                     v1 = self.AskMenu("Hey? My name is #bLea#k. I am responsible for the #bGuild Emblem#k.\r\n#b#L0#I'd like to register a guild emblem.#l\r\n#L1#I' like to delete a guild emblem.#l");
