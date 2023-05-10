@@ -14,6 +14,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             ScriptNameMap = new Dictionary<string, string>
             {
+                { "cny", "cny" },
                 { "taxi1", "taxi" },
                 { "taxi2", "taxi" },
                 { "taxi3", "taxi" },
