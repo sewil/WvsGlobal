@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Scripts\cny.cs" />
     <Compile Include="Scripts\contimove.cs" />
     <Compile Include="Scripts\face.cs" />
     <Compile Include="Scripts\guildquest1.cs" />
