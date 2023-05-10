@@ -55,6 +55,7 @@
     <Compile Include="Scripts\mapleIsland.cs" />
     <Compile Include="Scripts\minigame.cs" />
     <Compile Include="Scripts\ossyria0.cs" />
+    <Compile Include="Scripts\ossyria1.cs" />
     <Compile Include="Scripts\ossyria2.cs" />
     <Compile Include="Scripts\aqua.cs" />
     <Compile Include="Scripts\party2.cs" />
