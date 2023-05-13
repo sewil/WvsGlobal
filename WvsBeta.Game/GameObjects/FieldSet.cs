@@ -32,7 +32,7 @@ namespace WvsBeta.Game
         public bool CleanupEffectObjects { get; private set; }
         public int[] CleanupNpcs { get; private set; }
         public bool ResetReactors { get; private set; }
-        public int UserCount => Maps.Sum(m => m.Characters.Count);
+        public int UserCount { get; private set; }
         public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
         public event EventHandler OnEnd;
         public event EventHandler<long> OnTimerUpdate;
@@ -161,6 +161,7 @@ namespace WvsBeta.Game
                 }
             }
             Started = false;
+            UserCount = 0;
             Party = null;
             OnEnd?.Invoke(this, null);
             OnEnd?.ClearInvocations();
@@ -217,9 +218,14 @@ namespace WvsBeta.Game
             var mapId = Maps[mapIdx].ID;
             if (EnterAsParty)
             { // Move caller last as npc script terminates on move map
-                members.Where(c => c.ID != chr.ID).ForEach(m => m.ChangeMap(mapId));
+                members.Where(c => c.ID != chr.ID).ForEach(m =>
+                {
+                    m.ChangeMap(mapId);
+                    UserCount++;
+                });
             }
             chr.ChangeMap(mapId);
+            if (!chr.IsAdmin) UserCount++;
             return EnterStatus.Success;
 
         }
