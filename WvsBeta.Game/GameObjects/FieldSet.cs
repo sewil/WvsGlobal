@@ -33,6 +33,7 @@ namespace WvsBeta.Game
         public int[] CleanupNpcs { get; private set; }
         public bool ResetReactors { get; private set; }
         public int UserCount { get; private set; }
+        public bool StartOnEnter { get; } = true;
         public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
         public event EventHandler OnEnd;
         public event EventHandler<long> OnTimerUpdate;
@@ -87,6 +88,9 @@ namespace WvsBeta.Game
                             break;
                         case "reqQuest":
                             ReqQuest = subNode.GetShort();
+                            break;
+                        case "startOnEnter":
+                            StartOnEnter = subNode.GetBool();
                             break;
                     }
             }
@@ -214,7 +218,10 @@ namespace WvsBeta.Game
                 if (weak)
                     return EnterStatus.TooWeak;
             }
-            Start();
+            if (StartOnEnter)
+            {
+                Start();
+            }
             var mapId = Maps[mapIdx].ID;
             if (EnterAsParty)
             { // Move caller last as npc script terminates on move map
