@@ -181,6 +181,7 @@ namespace WvsBeta.Game
         }
         public EnterStatus Enter(GameCharacter chr, int mapIdx)
         {
+            if (mapIdx < 0 || mapIdx > Maps.Length - 1) return EnterStatus.Invalid;
             if (Started) return EnterStatus.Full;
             bool checkPt = (EnterAsParty || !string.IsNullOrWhiteSpace(PartyParams));
             IList<GameCharacter> members = new List<GameCharacter>();
