@@ -188,6 +188,7 @@ namespace WvsBeta.Game
             if (checkPt)
             {
                 if (!PartyData.Parties.TryGetValue(chr.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
+                if (pt.Leader != chr.ID) return EnterStatus.Invalid;
                 this.Party = pt;
                 members = pt.Characters.Where(c => c.Field.ID == chr.Field.ID).ToList(); // needs to be in same map on enter
                 Leader = chr; // Enter player should always be leader
