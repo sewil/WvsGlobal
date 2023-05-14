@@ -439,8 +439,6 @@ CREATE TABLE `characters` (
   `job_opos` int(11) NOT NULL DEFAULT 0,
   `fame_cpos` int(11) NOT NULL DEFAULT 0,
   `fame_opos` int(11) NOT NULL DEFAULT 0,
-  `event` datetime NOT NULL DEFAULT '2012-01-09 12:37:00',
-  `eventmap` int(11) unsigned NOT NULL DEFAULT 0,
   `party` int(11) NOT NULL DEFAULT -1,
   `last_savepoint` datetime DEFAULT '2012-01-09 12:37:00',
   `hash` varchar(50) COLLATE latin1_general_ci DEFAULT NULL,
@@ -572,14 +570,13 @@ DROP TABLE IF EXISTS `gamestats`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `gamestats` (
-  `id` int(11) NOT NULL DEFAULT 0,
-  `omokwins` int(11) NOT NULL DEFAULT 0,
-  `omoklosses` int(11) NOT NULL DEFAULT 0,
-  `omokties` int(11) NOT NULL DEFAULT 0,
-  `matchcardwins` int(11) NOT NULL DEFAULT 0,
-  `matchcardties` int(11) NOT NULL DEFAULT 0,
-  `matchcardlosses` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`)
+  `charid` INT(10) NOT NULL DEFAULT '0',
+	`type` INT(10) NOT NULL DEFAULT '0',
+	`wins` INT(10) NOT NULL DEFAULT '0',
+	`losses` INT(10) NOT NULL DEFAULT '0',
+	`ties` INT(10) NOT NULL DEFAULT '0',
+	`points` INT(10) NOT NULL DEFAULT '0',
+  UNIQUE INDEX `charid_type` (`charid`, `type`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
