@@ -1077,7 +1077,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             MapPacket.SendWeatherEffect(this);
         }
 
-        public void Reset(bool shuffleReactor)
+        public void Reset(bool shuffleReactors)
         {
             // Reset portals
             foreach (var keyValuePair in Portals)
@@ -1097,7 +1097,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             // Remove drops
             DropPool.Clear();
 
-            // Update reactors
+            // Shuffle reactors
+            if (shuffleReactors)
+            {
+                ReactorPool.Shuffle();
+            }
         }
 
         public int DamageAllMobs(GameCharacter chr, int damage)

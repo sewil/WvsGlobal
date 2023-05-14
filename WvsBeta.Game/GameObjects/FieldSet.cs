@@ -19,7 +19,7 @@ namespace WvsBeta.Game
         public bool Started { get; private set; }
         public long EndTime { get; private set; }
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
-        
+
         public int ReturnMap { get; private set; } = -1;
         public string ReturnPortal { get; private set; }
         public string PartyParams { get; private set; }
@@ -31,7 +31,8 @@ namespace WvsBeta.Game
         public bool CleanupDrops { get; private set; }
         public bool CleanupEffectObjects { get; private set; }
         public int[] CleanupNpcs { get; private set; }
-        public bool ResetReactors { get; private set; }
+        public bool ResetReactors { get; }
+        public bool ShuffleReactors { get; }
         public int UserCount { get; private set; }
         public bool StartOnEnter { get; } = true;
         public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
@@ -86,6 +87,9 @@ namespace WvsBeta.Game
                         case "resetReactors":
                             ResetReactors = subNode.GetBool();
                             break;
+                        case "shuffleReactors":
+                            ShuffleReactors = subNode.GetBool();
+                            break;
                         case "reqQuest":
                             ReqQuest = subNode.GetShort();
                             break;
@@ -120,7 +124,7 @@ namespace WvsBeta.Game
 
             foreach (var map in Maps)
             {
-                map.Reset(false); // bool Should be option from config
+                map.Reset(ShuffleReactors); // bool Should be option from config
                 map.OnEnter = RunTimer;
             }
             Program.MainForm.LogAppend("Started fieldset '{0}'", Name);

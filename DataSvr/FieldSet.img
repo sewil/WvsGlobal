@@ -67,6 +67,7 @@ Party2 = {
     cleanupMobs = 1
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
     reqQuest = 7000
 }
 
@@ -209,6 +210,7 @@ Ludi020 = {
     timeOut = 1200
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
 }
 
 # Dollhouse
@@ -219,4 +221,5 @@ Ludi023 = {
     timeOut = 600
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
 }

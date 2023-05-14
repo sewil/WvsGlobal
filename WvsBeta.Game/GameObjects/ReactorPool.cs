@@ -75,5 +75,30 @@ namespace WvsBeta.Game.GameObjects
         {
             reactor.Trigger(owner);
         }
+
+        public void Shuffle()
+        {
+            lock (Reactors)
+            {
+                var reactors = Reactors.Values.ToList();
+                Reactors.Clear();
+
+                int idxRight = reactors.Count;
+                while (idxRight > 1)
+                {
+                    idxRight--;
+                    int idxLeft = Rand32.NextBetween(0, idxRight + 1);
+                    FieldReactor valueLeft = reactors[idxLeft];
+                    FieldReactor valueRight = reactors[idxRight];
+                    Pos leftPos = valueLeft.Position;
+                    Pos rightPos = valueRight.Position;
+                    reactors[idxLeft] = valueRight;
+                    reactors[idxLeft].Position = leftPos;
+                    reactors[idxRight] = valueLeft;
+                    reactors[idxRight].Position = rightPos;
+                }
+                reactors.ForEach(r => AddReactor(r, false));
+            }
+        }
     }
 }

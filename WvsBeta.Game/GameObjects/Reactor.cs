@@ -62,7 +62,7 @@ namespace WvsBeta.Game
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
-        public Pos Position { get; }
+        public Pos Position { get; set; }
         public short FrameDelay { get; }
         public bool FacesLeft { get; }
         public int ReactorTime { get; }
