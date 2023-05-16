@@ -82,9 +82,7 @@ namespace WvsBeta.Database
         {
             if (alreadyConnecting)
             {
-                _logFile.WriteLine("Already tried to connect!");
-                Environment.Exit(1);
-                return;
+                throw new Exception("Already tried to connect!");
             }
             alreadyConnecting = true;
             try
