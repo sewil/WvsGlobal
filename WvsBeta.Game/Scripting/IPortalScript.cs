@@ -9,5 +9,7 @@ namespace WvsBeta.Game.Scripting
 
     public interface IPortalHost
     {
+        Map Field { get; }
+        int GetPortalID { get; }
     }
 }

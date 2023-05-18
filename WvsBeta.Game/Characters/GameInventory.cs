@@ -37,6 +37,11 @@ namespace WvsBeta.Game
             var item = Item.CreateFromItemID(itemId, amount);
             return AddItem(item, out short _, sendOperations);
         }
+        public IList<OperationOut> AddItem(ExchangeItem exchangeItem, bool sendOperations = true)
+        {
+            var item = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes);
+            return AddItem(item, out short _, sendOperations);
+        }
         public override void AddItem(Common.Enums.InventoryType inventory, short slot, Item item, bool isLoading)
         {
             base.AddItem(inventory, slot, item, isLoading);
@@ -715,14 +720,21 @@ namespace WvsBeta.Game
         }
         public bool CanExchange(int mesos, params (int itemid, short amount)[] items)
         {
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0));
+            return CanExchange(mesos, itemsList);
+        }
+        public bool CanExchange(int mesos, IEnumerable<ExchangeItem> items)
+        {
             if (mesos != 0)
             {
                 long newM = (long)Mesos + (long)mesos;
                 bool canExchangeMesos = 0 <= newM && newM <= int.MaxValue;
                 if (!canExchangeMesos) return false;
             }
-            foreach (var (itemid,amount) in items)
+            foreach (var item in items)
             {
+                short amount = item.amount;
+                int itemid = item.itemID;
                 if (amount == 0) continue;
                 if (amount < 0 && !HasItemAmount(itemid, Math.Abs(amount))) // Take item
                 {
@@ -761,6 +773,11 @@ namespace WvsBeta.Game
         }
         public bool MassExchange(int mesos, params (int itemid, short amount)[] items)
         {
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0)).ToList();
+            return MassExchange(mesos, itemsList);
+        }
+        public bool MassExchange(int mesos, IList<ExchangeItem> items)
+        {
             if (!CanExchange(mesos, items)) return false;
 
             AddMesos(mesos);
@@ -769,50 +786,70 @@ namespace WvsBeta.Game
                 Character.SendPacket(MessagePacket.GainMesos(mesos));
             }
             var operations = new List<OperationOut>();
-            foreach(var (itemid,amount) in items)
+            foreach(var item in items)
             {
+                short amount = item.amount;
+                int itemid = item.itemID;
                 if (amount < 0) // Take item
                 {
                     operations.AddRange(TakeItem(itemid, (short)-amount, false));
                 }
                 else // Give item
                 {
-                    operations.AddRange(AddItem(itemid, amount, false));
+                    operations.AddRange(AddItem(item, false));
                 }
             }
             InventoryOperationPacket.Run(Character, false, operations.ToArray());
             PlayerEffectPacket.SendInventoryChanged(Character, items);
             return true;
         }
+
+        public struct ExchangeItem
+        {
+            public readonly int itemID;
+            public readonly short amount;
+            public readonly int periodMinutes;
+            public ExchangeItem(int itemID, short amount, int periodMinutes)
+            {
+                this.itemID = itemID;
+                this.amount = amount;
+                this.periodMinutes = periodMinutes;
+            }
+        }
         /// <summary>
-        /// Mass exchange for rechargables:
+        /// Mass exchange with query:
         /// ExchangeEx(0, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800, "2070006,Count:800", 800)
         /// </summary>
         /// <returns>Status code: 1 = success, 0 = error</returns>
         /// <exception cref="ArgumentException"></exception>
         public int ExchangeEx(int mesos, params object[] items)
         {
-            int[] parsedItems = new int[items.Length];
-            try
+            var exchangeItems = new List<ExchangeItem>();
+            for (int i = 0; i < items.Length; i++)
             {
-                for (int i = 0; i < items.Length; i++)
+                object item = items[i];
+                if (!(item is string query)) continue;
+
+                string[] queries = query.Split(',');
+                int itemid = int.Parse(queries[0]);
+                int periodMinutes = 0;
+
+                for (int queryIdx = 1; queryIdx < queries.Length; queryIdx++)
                 {
-                    object item = items[i];
-                    if (item is string)
+                    var kv = queries[queryIdx].Split(':');
+                    string key = kv[0];
+                    int value = int.Parse(kv[1]);
+                    if (key == "Period")
                     {
-                        int itemid = string.Join(",", item.ToString())[0];
-                        int amount = (int)items[i + 1];
-                        parsedItems[i] = itemid;
-                        parsedItems[i + 1] = amount;
+                        periodMinutes = value;
+                        break;
                     }
                 }
+
+                short amount = Convert.ToInt16(items[i + 1]);
+                exchangeItems.Add(new ExchangeItem(itemid, amount, periodMinutes));
             }
-            catch
-            {
-             // fu then
-                throw new ArgumentException();
-            }
-            return Exchange(mesos, parsedItems);
+            return MassExchange(mesos, exchangeItems) ? 1 : 0;
         }
 
         public void IncSlotCount(byte inventory, byte slots)

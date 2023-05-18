@@ -83,7 +83,6 @@ namespace WvsBeta.Game
         public CharacterSummons Summons { get; private set; }
         public CharacterStorage Storage { get; private set; }
         public CharacterQuests Quests { get; private set; }
-        public CharacterVariables Variables { get; private set; }
         public CharacterGameStats GameStats { get; private set; }
         public long PetLastInteraction { get; set; }
         public long PetLastHunger { get; set; }
@@ -388,7 +387,6 @@ namespace WvsBeta.Game
             Skills.SaveSkills();
             Storage.Save();
             Quests.SaveQuests();
-            Variables.Save();
             GameStats.Save();
             if (GuildID > 0) GuildDbHandler.SaveMember(GuildID, ID, GuildMember.Rank);
 
@@ -528,9 +526,6 @@ namespace WvsBeta.Game
 
             Quests = new CharacterQuests(this);
             Quests.LoadQuests();
-
-            Variables = new CharacterVariables(this);
-            Variables.Load();
 
             GameStats = new CharacterGameStats(this);
             GameStats.Load();

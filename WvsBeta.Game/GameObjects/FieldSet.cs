@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
+using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WvsBeta.Game
 {
@@ -16,7 +20,7 @@ namespace WvsBeta.Game
         public Map[] Maps { get; private set; }
         public int Timeout { get; private set; }
 
-        public bool Started { get; private set; }
+        public bool Started { get; set; }
         public long EndTime { get; private set; }
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
 
@@ -34,7 +38,6 @@ namespace WvsBeta.Game
         public bool ResetReactors { get; }
         public bool ShuffleReactors { get; }
         public int UserCount { get; private set; }
-        public bool StartOnEnter { get; } = true;
         public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
         public event EventHandler OnEnd;
         public event EventHandler<long> OnTimerUpdate;
@@ -93,9 +96,6 @@ namespace WvsBeta.Game
                         case "reqQuest":
                             ReqQuest = subNode.GetShort();
                             break;
-                        case "startOnEnter":
-                            StartOnEnter = subNode.GetBool();
-                            break;
                     }
             }
 
@@ -108,6 +108,11 @@ namespace WvsBeta.Game
             var reader = new ConfigReader(Server.Instance.GetConfigPath("FieldSet.img"));
             foreach (var node in reader.RootNode)
             {
+                if (node.Name.StartsWith("Event"))
+                {
+                    EventFieldSet.Create(node);
+                    continue;
+                }
                 new FieldSet(node);
             }
         }
@@ -117,7 +122,7 @@ namespace WvsBeta.Game
             OnTimerUpdate = null;
         }
 
-        public void Start()
+        public virtual void Start()
         {
             Started = true;
             EndTime = MasterThread.CurrentTime + (Timeout * 1000);
@@ -130,7 +135,7 @@ namespace WvsBeta.Game
             Program.MainForm.LogAppend("Started fieldset '{0}'", Name);
         }
 
-        public void End()
+        public virtual void End()
         {
             foreach (var map in Maps)
             {
@@ -186,31 +191,34 @@ namespace WvsBeta.Game
             NotInParty = 1,
             WrongMemberCount = 2,
             TooWeak = 3,
-            Full = 4
+            Full = 4,
+            InventoryFull
         }
-        public EnterStatus Enter(GameCharacter chr, int mapIdx)
+
+        public virtual EnterStatus EnterCheck(GameCharacter chr, int mapIdx, out IList<GameCharacter> partyMembers)
         {
+            partyMembers = new List<GameCharacter>();
             if (mapIdx < 0 || mapIdx > Maps.Length - 1) return EnterStatus.Invalid;
             if (Started) return EnterStatus.Full;
+
             bool checkPt = (EnterAsParty || !string.IsNullOrWhiteSpace(PartyParams));
-            IList<GameCharacter> members = new List<GameCharacter>();
             if (checkPt)
             {
                 if (!PartyData.Parties.TryGetValue(chr.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
                 if (pt.Leader != chr.ID) return EnterStatus.Invalid;
                 this.Party = pt;
-                members = pt.Characters.Where(c => c.Field.ID == chr.Field.ID).ToList(); // needs to be in same map on enter
-                Leader = chr; // Enter player should always be leader
+                partyMembers = pt.Characters.Where(c => c.Field.ID == chr.Field.ID).ToList(); // needs to be in same map on enter
+                Leader = chr;
 
                 if (!string.IsNullOrWhiteSpace(PartyParams))
                 {
                     int[] ptparams = PartyParams.Split(',').Select(s => int.Parse(s)).ToArray();
                     int minrequired = Math.Max(pt.MemberCount, ptparams[0]);
-                    if (members.Count < minrequired || members.Count > ptparams[1])
+                    if (partyMembers.Count < minrequired || partyMembers.Count > ptparams[1])
                     {
                         return EnterStatus.WrongMemberCount;
                     }
-                    if (members.Any(m => m.Level < ptparams[2] || m.Level > ptparams[3]))
+                    if (partyMembers.Any(m => m.Level < ptparams[2] || m.Level > ptparams[3]))
                     {
                         return EnterStatus.TooWeak;
                     }
@@ -218,28 +226,40 @@ namespace WvsBeta.Game
             }
             if (ReqQuest > 0)
             {
-                bool weak = checkPt ? members.Any(m => !m.Quests.HasQuest(ReqQuest)) : !chr.Quests.HasQuest(ReqQuest);
+                bool weak = checkPt ? partyMembers.Any(m => !m.Quests.HasQuest(ReqQuest)) : !chr.Quests.HasQuest(ReqQuest);
                 if (weak)
                     return EnterStatus.TooWeak;
             }
-            if (StartOnEnter)
+            return EnterStatus.Success;
+        }
+
+        public EnterStatus Enter(GameCharacter chr, int mapIdx, string portalName = null, bool start = true)
+        {
+            var status = EnterCheck(chr, mapIdx, out IList<GameCharacter> partyMembers);
+            if (status != EnterStatus.Success) return status;
+            FinishEnter(chr, mapIdx, partyMembers, portalName, start);
+            return status;
+        }
+
+        protected void FinishEnter(GameCharacter chr, int mapIdx, IList<GameCharacter> partyMembers, string portalName = null, bool start = true)
+        {
+            if (start)
             {
                 Start();
             }
             var mapId = Maps[mapIdx].ID;
             if (EnterAsParty)
             { // Move caller last as npc script terminates on move map
-                members.Where(c => c.ID != chr.ID).ForEach(m =>
+                partyMembers.Where(c => c.ID != chr.ID).ForEach(m =>
                 {
-                    m.ChangeMap(mapId);
+                    m.ChangeMap(mapId, portalName);
                     UserCount++;
                 });
             }
-            chr.ChangeMap(mapId);
+            chr.ChangeMap(mapId, portalName);
             if (!chr.IsAdmin) UserCount++;
-            return EnterStatus.Success;
-
         }
+
         public static EnterStatus Enter(string name, GameCharacter chr, int mapIdx)
         {
             if (!Instances.TryGetValue(name, out var fs)) return EnterStatus.Invalid;
@@ -268,7 +288,7 @@ namespace WvsBeta.Game
             }
         }
 
-        private void RunTimer(GameCharacter chr, Map map)
+        protected void RunTimer(GameCharacter chr, Map map)
         {
             if (Started && Timeout > 0)
             {

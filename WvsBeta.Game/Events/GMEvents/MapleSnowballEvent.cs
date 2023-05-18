@@ -1,82 +1,59 @@
 ﻿using System.Collections.Generic;
 using WvsBeta.Common;
-using WvsBeta.Game.Events.GMEvents;
 using System.Linq;
 using WvsBeta.Game.GameObjects;
 using static WvsBeta.MasterThread;
 using static WvsBeta.Game.GameObjects.Map_Snowball;
 using System;
 using log4net;
-using log4net.Core;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game.Events
 {
-    class MapleSnowballEvent : Event
+    class MapleSnowballEvent : TeamEvent
     {
         private static ILog _log = LogManager.GetLogger("MapleSnowballEvent");
-        private static readonly int sMapId = 109060000;
-        private static readonly Map_Snowball SnowballMap = (Map_Snowball)GameDataProvider.Maps[sMapId];
-        private static readonly int lobbyMapId = 109060001;
-        private static readonly Map LobbyMap = GameDataProvider.Maps[lobbyMapId];
-        private static readonly int WinMapId = 109050000;
-        private static readonly int LoseMapId = 109050001;
+        private Map_Snowball SnowballMap => (Map_Snowball)Maps[1];
 
-        public static int EventTimeSeconds = 60 * 10; //10 Minutes
-
-        private readonly HashSet<GameCharacter> MapleTeam;
-        private readonly HashSet<GameCharacter> StoryTeam;
-        private RepeatingAction End;
-
-        public MapleSnowballEvent() : base()
+        public MapleSnowballEvent(ConfigReader.Node fsNode) : base(fsNode)
         {
-            MapleTeam = new HashSet<GameCharacter>();
-            StoryTeam = new HashSet<GameCharacter>();
         }
 
-        public override void Prepare()
+        public override void Enable()
         {
-            MapleTeam.Clear();
-            StoryTeam.Clear();
+            base.Enable();
             SnowballMap.Reset();
-            base.Prepare();
         }
 
-        public override void Join(GameCharacter chr)
+        public override EnterStatus Enter(GameCharacter chr, int mapIdx)
         {
-            base.Join(chr);
-            chr.ChangeMap(lobbyMapId);
+            return Enter(chr, mapIdx, null);
         }
 
-        public override void Start(bool joinDuringEvent = false)
+        public override void Start()
         {
-            foreach (var chr in LobbyMap.Characters.ToList())
+            base.Start();
+            foreach (var chr in Lobby.Characters.ToList())
             {
                 if (MapleTeam.Count < StoryTeam.Count)
                 {
                     MapleTeam.Add(chr);
-                    chr.ChangeMap(sMapId, SnowballMap.Top.Name);
+                    chr.ChangeMap(SnowballMap.ID, SnowballMap.Top.Name);
                 }
                 else
                 {
                     StoryTeam.Add(chr);
-                    chr.ChangeMap(sMapId, SnowballMap.Bottom.Name);
+                    chr.ChangeMap(SnowballMap.ID, SnowballMap.Bottom.Name);
                 }
             }
 
             Program.MainForm.LogDebug("Starting..." + " Maple " + string.Join(", ", MapleTeam.Select(c => c.Name)) + "... Story " + string.Join(", ", StoryTeam.Select(c => c.Name)));
-
-            End = RepeatingAction.Start("SnowballWatcher", Stop, EventTimeSeconds * 1000, 0);
-            SnowballMap.StartTimer(EventTimeSeconds);
             SnowballMap.SnowballState = SnowballEventState.IN_PROGRESS;
-            base.Start(joinDuringEvent);
         }
 
-        public override void Stop()
+        public override void End()
         {
             Program.MainForm.LogDebug("Stopping." + Environment.StackTrace);
-            End?.Stop();
-            End = null;
 
             List<GameCharacter> Winners;
             List<GameCharacter> Losers;
@@ -109,13 +86,8 @@ namespace WvsBeta.Game.Events
 
             RepeatingAction.Start("snowball warper", e =>
             {
-                Winners.ForEach(c => c.ChangeMap(WinMapId));
-                Losers.ForEach(c => c.ChangeMap(LoseMapId));
-                SnowballMap.TimerEndTime = MasterThread.CurrentTime;
-                MapleTeam.Clear();
-                StoryTeam.Clear();
-                SnowballMap.Reset();
-                base.Stop();
+                Winners.ForEach(c => c.ChangeMap(WinMap.ID));
+                base.End();
             }, 10 * 1000, 0);
         }
 

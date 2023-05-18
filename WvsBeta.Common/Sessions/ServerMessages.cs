@@ -76,15 +76,15 @@
         ADMIN_RESULT = 66,
         QUIZ = 67,
         DESC = 68,
-        CLOCK = 69,
+        CLOCK = 0x45,
         CONTI_TARGET_FIELD = 70,
         CONTISTATE = 71,
         __UNKNOWN_72, // Decodes filetime?
         WARN_MESSAGE = 73,
 
         ___START_USERPOOL,
-        USER_ENTER_FIELD = 75,
-        USER_LEAVE_FIELD = 76,
+        USER_ENTER_FIELD = 0x4B,
+        USER_LEAVE_FIELD = 0x4C,
 
         ___START_USERCOMMON,
         CHAT = 78,
@@ -198,8 +198,8 @@
         SNOWBALL_STATE,
         SNOWBALL_HIT,
 
-        COCONUT_ATTACK = 175,
-        COCONUT_SCORE = 176,
+        COCONUT_ATTACK = 0xAF,
+        COCONUT_SCORE = 0xB0,
         // MC stuff comes here
         // Zakum timer here
         ___END_ETCFIELDOBJ,

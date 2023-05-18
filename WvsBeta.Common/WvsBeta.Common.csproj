@@ -57,6 +57,7 @@
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="MySql.Data, Version=8.0.31.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.31\lib\net48\MySql.Data.dll</HintPath>
     </Reference>
@@ -242,9 +243,9 @@
     <Compile Include="Sessions\ServerMigrationStatus.cs" />
     <Compile Include="Sessions\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Crypto\Shuffler.cs" />
     <Compile Include="Sessions\SessionDisconnectException.cs" />
     <Compile Include="Sessions\Shanda.cs" />
+    <Compile Include="StringPool.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Tools.cs" />
     <Compile Include="Tracking\ClientChecksum.cs" />
@@ -266,6 +267,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <None Include="SemVer.MSBuild.props" />
+    <None Include="StringPool.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WvsBeta.Database\WvsBeta.Database.csproj">

@@ -196,6 +196,11 @@ namespace WvsBeta.Game
             if (!HasQuest(questID)) return (byte)QuestState.Available;
             return (byte)Quests[questID].State;
         }
+
+        public void Remove(short questID)
+        {
+            Quests.Remove(questID);
+        }
         #endregion
     }
 }

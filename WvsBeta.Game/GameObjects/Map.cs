@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.ConstrainedExecution;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
@@ -15,6 +16,7 @@ using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Handlers.MiniRooms;
 using WvsBeta.Game.Packets;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Game
 {
@@ -36,6 +38,7 @@ namespace WvsBeta.Game
         public bool AcceptPersonalShop { get; set; } = false;
         public bool DisableGoToCashShop { get; set; } = false;
         public bool DisableChangeChannel { get; set; } = false;
+        public string Name { get; set; }
 
         public bool EverlastingDrops
         {
@@ -932,6 +935,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             });
         }
 
+        public virtual void SendCharacterEnter(GameCharacter player, GameCharacter victim)
+        {
+            var pw = MapPacket.CharacterEnterPacket(player);
+            victim.SendPacket(pw);
+        }
 
         public void ShowPlayer(GameCharacter chr, bool gmhide)
         {
@@ -948,14 +956,14 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                     // Show character to P
                     if (chr.IsShownTo(c))
                     {
-                        MapPacket.SendCharacterEnterPacket(chr, c);
+                        SendCharacterEnter(chr, c);
                         if (spawneePet != null) PetsPacket.SpawnPet(chr, spawneePet, PetSpawnFlags.ShowRemote, c);
                     }
 
                     // Show P to character
                     if (c.IsShownTo(chr))
                     {
-                        MapPacket.SendCharacterEnterPacket(c, chr);
+                        SendCharacterEnter(c, chr);
 
                         var petItem = c.GetSpawnedPet();
                         if (petItem != null) PetsPacket.SpawnPet(c, petItem, PetSpawnFlags.ShowRemote, chr);
@@ -1529,6 +1537,16 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             return new Pos(x, maxy);
         }
 
+        public bool IsCharacterInArea(GameCharacter chr, string areaId)
+        {
+            if (!Areas.TryGetValue(areaId, out MapArea area)) return false;
+            return IsCharacterInArea(chr, area);
+        }
+        public bool IsCharacterInArea(GameCharacter chr, MapArea area)
+        {
+            return area.Contains(chr);
+        }
+
         #region Script helpers
         public int CountUserInArea(string areaId)
         {
@@ -1617,6 +1635,10 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         public void Message(string text, BroadcastMessageType type = BroadcastMessageType.RedText)
         {
             ChatPacket.SendBroadcastMessageToMap(this, text, type);
+        }
+        public void Notice(int type, string text)
+        {
+            ChatPacket.SendBroadcastMessageToMap(this, text, (BroadcastMessageType)type);
         }
         #endregion
     }

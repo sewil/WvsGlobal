@@ -2,6 +2,7 @@
 using MySql.Data.MySqlClient;
 using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common.Objects
@@ -62,7 +63,7 @@ namespace WvsBeta.Common.Objects
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-        public static Item CreateFromItemID(int itemId, short amount = 1)
+        public static Item CreateFromItemID(int itemId, short amount = 1, int periodMinutes = 0)
         {
             if (itemId == 0) throw new Exception("Invalid ItemID in CreateFromItemID");
 
@@ -74,6 +75,10 @@ namespace WvsBeta.Common.Objects
             else ret = new BundleItem(itemId);
 
             ret.Amount = amount;
+            if (periodMinutes > 0)
+            {
+                ret.Expiration = new TimeSpan(0, 0, periodMinutes, 0).GetFileTimeWithAddition();
+            }
             return ret;
         }
 

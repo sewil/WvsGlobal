@@ -31,7 +31,7 @@ namespace WvsBeta.Game
             Enabled = true;
         }
 
-        public readonly byte ID;
+        public byte ID;
         public readonly byte Type;
         public readonly short X;
         public readonly short Y;

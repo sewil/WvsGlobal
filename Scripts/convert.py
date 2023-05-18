@@ -41,8 +41,9 @@ with open(args.input) as f:
         line = line.replace("registerTransferField", "target.ChangeMap")
         line = line.replace(" = random(", " = Rand32.NextBetween(")
         line = line.replace(".n", ".")
+        line = line.replace("event", "@event")
         
-        substr_m = re.search(r'substring\(\s*(.+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)', line)
+        substr_m = re.search(r'substring\(\s*([^)]+)\s*,\s*([^)]+)\s*,\s*(\d+)\s*\)', line)
         if substr_m is not None:
             line = line.replace(substr_m.group(0), substr_m.group(1) + ".Substring(" + substr_m.group(2) +", " + substr_m.group(3) + ")")
 
@@ -86,7 +87,7 @@ with open(args.input) as f:
                 func_idx = 0
                 func_name = None
         if script_name is not None or func_name is not None:
-            var_m = re.search(r'([A-Za-z_][A-Za-z_\d]*) = ([^;]+);', line)
+            var_m = re.search(r'(@?[A-Za-z_][A-Za-z_\d]*) = ([^;]+);', line)
             if var_m is not None: # Var init
                 var_name = var_m.group(1)
                 if (var_name in vars) == False:

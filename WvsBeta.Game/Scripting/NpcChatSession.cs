@@ -43,6 +43,9 @@ namespace WvsBeta.Game
         void AskShop(params ShopItemData[] items);
         object GetStrReg(string pName);
         void SetStrReg(string pName, object pValue);
+        int GetIntReg(string name);
+        void SetIntReg(string name, int value);
+        int IncIntReg(string name, int value);
         void Log(string text);
     }
     public enum NpcState
@@ -315,6 +318,23 @@ namespace WvsBeta.Game
                 scriptVars[pName] = pValue;
         }
 
+        public int GetIntReg(string name)
+        {
+            object obj = GetStrReg(name);
+            if (obj == null || !(obj is int value)) return -1;
+            else return value;
+        }
+
+        public void SetIntReg(string name, int value)
+        {
+            SetStrReg(name, value);
+        }
+        public int IncIntReg(string name, int value)
+        {
+            int newValue = GetIntReg(name) + value;
+            SetIntReg(name, newValue);
+            return newValue;
+        }
         public void Log(string text)
         {
             Program.MainForm.LogAppend(text);

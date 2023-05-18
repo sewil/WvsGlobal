@@ -1,4 +1,8 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using WvsBeta.Common.Sessions;
+using static WvsBeta.Game.GameInventory;
 
 namespace WvsBeta.Game.Packets
 {
@@ -98,19 +102,24 @@ namespace WvsBeta.Game.Packets
             pw.WriteInt(effectid);
             pw.Send(false, true);
         }
+        public static void SendInventoryChanged(GameCharacter chr, params (int itemid, short amount)[] items)
+        {
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0)).ToList();
+            SendInventoryChanged(chr, itemsList);
+        }
         /// <summary>
         /// Sends grey text items gained/lost. Max 255 items.
         /// </summary>
-        public static void SendInventoryChanged(GameCharacter chr, params (int itemid, short amount)[] items)
+        public static void SendInventoryChanged(GameCharacter chr, IList<ExchangeItem> items)
         {
-            if (items.Length == 0) return; // Prevent triggering quest effect
+            if (items.Count == 0) return; // Prevent triggering quest effect
 
             var pw = new PlayerEffectPacket(chr, PlayerEffectType.InventoryChanged);
-            pw.WriteByte((byte)items.Length);
-            foreach (var (itemid, amount) in items)
+            pw.WriteByte((byte)items.Count);
+            foreach (var item in items)
             {
-                pw.WriteInt(itemid);
-                pw.WriteInt(amount);
+                pw.WriteInt(item.itemID);
+                pw.WriteInt(item.amount);
             }
             pw.Send(false, true);
         }

@@ -14,6 +14,9 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
+using WvsBeta.Game.Scripting;
+using static WvsBeta.Common.ConfigReader;
+using static WvsBeta.Common.Strings;
 
 // if \(.*Node.ContainsChild\((.*)\)\)[\s\r\n]+\{[\s\r\n]+(.*)\r\n[\s\r\n]+\}
 // case $1: $2 break;
@@ -104,11 +107,14 @@ namespace WvsBeta.Game
                     var npcs = map.NPC.ToList();
                     foreach (var npc in npcs)
                     {
-                        if (NPCs.ContainsKey(npc.ID)) continue;
+                        if (NPCs.TryGetValue(npc.ID, out NPCData npcData))
+                        {
+                            npcData.IsAccessible = true;
+                            continue;
+                        }
                         Console.WriteLine($"Removing NPC {npc.ID} from map {map.ID}, as it does not exist");
                         map.NPC.Remove(npc);
                     }
-
 
                     foreach (var portal in map.Portals)
                     {
@@ -179,6 +185,16 @@ namespace WvsBeta.Game
                         }
                     }
                 }
+
+                // Check and instantiate NPC scripts
+                //foreach (var npc in NPCs.Values)
+                //{
+                //    if (string.IsNullOrWhiteSpace(npc.Quest) || !npc.IsAccessible) continue;
+                //    ScriptAccessor.GetScript(Server.Instance, npc.Quest, (err) =>
+                //    {
+                //        Program.MainForm.LogAppend($"Failed to find NPC script {npc.Quest} for NPC {npc.ID}!");
+                //    });
+                //}
             }
 
             Console.WriteLine($"Maps: {Maps.Count}");
@@ -365,35 +381,40 @@ namespace WvsBeta.Game
                 var fieldType = infoNode.ContainsChild("fieldType") ? infoNode["fieldType"].ValueByte() : 0;
 
                 string stringConti = null;
+                string mapName = null;
                 if (ID < 100_000_000) stringConti = "maple";
                 else if (mapNode.Name.StartsWith("1")) stringConti = "victoria";
                 else if (mapNode.Name.StartsWith("2")) stringConti = "ossyria";
                 else if (mapNode.Name.StartsWith("6")) stringConti = "weddingGL";
                 else if (mapNode.Name.StartsWith("9")) stringConti = "etc";
-                if (stringConti == null || !pFile.BaseNode["String"]["Map.img"][stringConti].ContainsChild(ID.ToString()))
+                
+                if (stringConti != null && pFile.BaseNode["String"]["Map.img"][stringConti].TryGetValue(ID.ToString(), out NXNode stringNode))
+                {
+                    mapName = stringNode["mapName"].ValueString();
+                }
+                else
+                {
                     Program.MainForm.LogAppend("Missing strings for map " + ID);
+                }
 
                 Map map;
                 switch (fieldType)
                 {
                     case 8: // Ergoth boss map 990000900
                     case 7: // Snowball entry map 109060001
-                    case 4: // Coconut harvest 109080000
+                    case 5: // OX Quiz 109020001
                     case 2: // Contimove 101000300
+                    case 0:
                         map = new Map(ID);
+                        break;
+                    case 4: // Coconut harvest 109080000
+                        map = new Map_Coconut(ID, p);
                         break;
                     case 1: // Snowball 109060000
                         map = new Map_Snowball(ID);
                         break;
-                    case 0:
-                        map = new Map(ID);
-                        break;
                     case 6: // JQ maps and such
                         map = new Map_PersonalTimeLimit(ID);
-                        break;
-                    case 5:
-                        Trace.WriteLine("Possible OX quiz? " + ID);
-                        map = new Map(ID);
                         break;
                     case 3:
                         map = new Map_Tournament(ID);
@@ -403,6 +424,7 @@ namespace WvsBeta.Game
                 }
 
                 map.HasClock = mapNode.ContainsChild("clock");
+                map.Name = mapName;
 
                 int VRLeft = 0, VRTop = 0, VRRight = 0, VRBottom = 0;
                 foreach (var node in infoNode)

@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
@@ -162,6 +163,24 @@ namespace WvsBeta.Game.Handlers
 
                 default: return GameCharacter.BanReasons.Hack;
             }
+        }
+
+        private static bool TryGetEvent(CommandArgs Args, GameCharacter character, out EventFieldSet @event)
+        {
+            @event = null;
+            if (Args.Count == 0)
+            {
+                character.Notice("Missing event name!");
+                return false;
+            }
+            string name = Args[0];
+            if (!FieldSet.Instances.TryGetValue(name, out FieldSet fs) || !(fs is EventFieldSet e))
+            {
+                character.Notice("Invalid event name \"" + name + "\"");
+                return false;
+            }
+            @event = e;
+            return true;
         }
 
         enum UserIdFetchResult
@@ -1575,18 +1594,7 @@ namespace WvsBeta.Game.Handlers
 
 #endregion
 
-                        //Event Stuff
-#region EventReset
-                        case "eventreset":
-                            {
-                                var ytd = new DateTime(2010, 1, 1);
-                                Server.Instance.CharacterDatabase.RunQuery("UPDATE characters SET event = '" + ytd.ToString("yyyy-MM-dd HH:mm:ss") + "' WHERE ID = @charid", "@charid", character.ID);
-                                character.Message("Reset event participation time.");
-                                return true;
-                            }
-#endregion
-
-#region EventHelp
+#region Event
 
                         case "event":
                         case "events":
@@ -1608,21 +1616,60 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-
-#endregion
-
-#region eventdesc
-
                         case "eventdesc":
                             MapPacket.SendGMEventInstructions(character.Field);
                             character.Message("Sent event description to everybody");
                             return true;
+                    case "eventenable":
+                    case "enableevent":
+                        {
+                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
+                            if (@event.Started)
+                            {
+                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not enable entry!");
+                            }
+                            else
+                            {
+                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} enabled. Portals disabled until start.");
+                                @event.Enable();
+                            }
+                            return true;
+                        }
+                    case "eventstart":
+                    case "startevent":
+                        {
+                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
+                            if (!@event.IsEnabled)
+                            {
+                                character.Notice("Event not enabled, please run /eventenable first to start the event.");
+                            }
+                            else if (@event.Started)
+                            {
+                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not start a new one!");
+                            }
+                            else
+                            {
+                                ChatPacket.SendBroadcastMessageToGMs(
+                                    $"{@event.Name} started. Portals enabled, and outsiders can no longer join the event.");
+                                @event.Start();
+                            }
+                            return true;
+                        }
+                    case "eventstop":
+                    case "stopevent":
+                    case "endevent":
+                    case "eventend":
+                        {
+                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
+                            ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} stopped early. Kicking everyone if event was in progress...");
+                            @event.End();
+                            return true;
+                        }
+                    #endregion
 
-#endregion
+                    #region Find The Jewel
 
-#region Find The Jewel
-
-                        case "ftjhelp":
+                    case "ftjhelp":
                             {
                                 List<string> HelpMessages = new List<string>()
                             {
@@ -1641,43 +1688,6 @@ namespace WvsBeta.Game.Handlers
                             };
 
                                 HelpMessages.ForEach(m => character.Message(m));
-                                return true;
-                            }
-                        case "ftjenable":
-                            {
-                                var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
-                                if (jewelEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("FTJ already in progress. Did not enable entry!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Enabled joining FTJ. Portals Disabled until start.");
-                                    jewelEvent.Prepare();
-                                }
-                                return true;
-                            }
-                        case "ftjstart":
-                            {
-                                var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
-                                if (jewelEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("FTJ already in progress. Did not start a new one!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Started FTJ. Portals enabled, and outsiders can no longer join the event.");
-                                    jewelEvent.Start();
-                                }
-                                return true;
-                            }
-                        case "ftjstop":
-                            {
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    "Stopped FTJ early. Kicking everyone if event was in progress...");
-                                var jewelEvent = EventManager.Instance.EventInstances[EventType.Jewel];
-                                jewelEvent.Stop();
                                 return true;
                             }
                         //case "ftjreactorhere":
@@ -1758,46 +1768,6 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                        case "snowballenable":
-                            {
-                                var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
-                                if (snowballEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Snowball already in progress. Did not enable entry!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Enabled joining Snowball. Portals Disabled until start.");
-                                    snowballEvent.Prepare();
-                                }
-                                return true;
-                            }
-                        case "snowballstart":
-                            {
-                                var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
-                                if (snowballEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Snowball already in progress. Did not start a new one!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Started Snowball. Portals enabled, and outsiders can no longer join the event.");
-                                    snowballEvent.Start();
-                                }
-                                return true;
-                            }
-                        case "snowballstop":
-                            {
-                                var snowballEvent = EventManager.Instance.EventInstances[EventType.Snowball];
-                                snowballEvent.Stop();
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    "Stopped Snowball early. Kicking everyone if event was in progress, and determining winner.");
-                                return true;
-                            }
-
 #endregion
 
 #region Fitness
@@ -1817,49 +1787,6 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                        case "fitnessenable":
-                        case "fitenable":
-                            {
-                                var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
-                                if (fitnessEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Fitness already in progress. Did not enable entry!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Enabled joining Fitness. Portals Disabled until start.");
-                                    fitnessEvent.Prepare();
-                                }
-                                return true;
-                            }
-                        case "fitnessstart":
-                        case "fitstart":
-                            {
-                                var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
-                                if (fitnessEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Fitness already in progress. Did not start a new one!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Started Fitness. Portals enabled, and outsiders can no longer join the event.");
-                                    fitnessEvent.Start();
-                                }
-                                return true;
-                            }
-                        case "fitnessstop":
-                        case "fitstop":
-                            {
-                                var fitnessEvent = EventManager.Instance.EventInstances[EventType.Fitness];
-                                fitnessEvent.Stop();
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    "Stopped Fitness early. Kicking everyone if event was in progress.");
-                                return true;
-                            }
-
 #endregion
 
 #region Quiz
@@ -1877,44 +1804,6 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                        case "quizenable":
-                            {
-                                var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
-                                if (quizEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Quiz already in progress. Did not enable joining!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Enabled joining for Quiz.");
-                                    quizEvent.Prepare();
-                                }
-                                return true;
-                            }
-                        case "quizstart":
-                            {
-                                var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
-                                if (quizEvent.InProgress)
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs("Quiz already in progress. Did not start a new one!");
-                                }
-                                else
-                                {
-                                    ChatPacket.SendBroadcastMessageToGMs(
-                                        "Started Quiz. Portals enabled, and outsiders can no longer join the event.");
-                                    quizEvent.Start();
-                                }
-                                return true;
-                            }
-                        case "quizstop":
-                            {
-                                var quizEvent = EventManager.Instance.EventInstances[EventType.Quiz];
-                                ((MapleQuizEvent)quizEvent).StopEarly();
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    "Stopped Quiz early. Kicking everyone if event was in progress.");
-                                return true;
-                            }
-
 #endregion
                     }
                 #if !DEBUG

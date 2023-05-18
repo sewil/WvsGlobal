@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Scripts\cny.cs" />
     <Compile Include="Scripts\contimove.cs" />
+    <Compile Include="Scripts\event.cs" />
     <Compile Include="Scripts\face.cs" />
     <Compile Include="Scripts\guildquest1.cs" />
     <Compile Include="Scripts\hair.cs" />

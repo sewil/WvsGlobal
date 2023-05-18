@@ -2,6 +2,7 @@
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
+using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -14,6 +15,14 @@ namespace WvsBeta.Scripts.Scripts
         {
             ScriptNameMap = new Dictionary<string, string>
             {
+                { "Event00", "event" },
+                { "Event02", "event" },
+                { "Event03", "event" },
+                { "Event03_1", "event" },
+                { "Event04", "event" },
+                { "Event05", "event" },
+                { "Event06", "event" },
+                { "Event09", "event" },
                 { "cny", "cny" },
                 { "taxi1", "taxi" },
                 { "taxi2", "taxi" },

@@ -11,6 +11,7 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
+using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Handlers.GuildQuest;

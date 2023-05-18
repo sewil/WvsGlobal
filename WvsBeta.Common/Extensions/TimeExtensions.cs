@@ -33,5 +33,16 @@ namespace WvsBeta.Common.Extensions
         {
             return new DateTime(ctime * TimeSpan.TicksPerMillisecond).ToFileTimeUtc();
         }
+
+        public static string ChineseZodiac(this DateTime date)
+        {
+            EastAsianLunisolarCalendar cc = new ChineseLunisolarCalendar();
+            int sexagenaryYear = cc.GetSexagenaryYear(date);
+            int terrestrialBranch = cc.GetTerrestrialBranch(sexagenaryYear);
+
+            string[] years = new string[] { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
+
+            return years[terrestrialBranch - 1];
+        }
     }
 }

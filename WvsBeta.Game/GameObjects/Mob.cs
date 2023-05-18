@@ -9,6 +9,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Game.Packets;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Game
 {

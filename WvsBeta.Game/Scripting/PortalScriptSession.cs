@@ -7,25 +7,29 @@ namespace WvsBeta.Game.Scripting
         private IPortalScript _compiledScript = null;
 
         private GameCharacter mCharacter { get; set; }
+
+        public Map Field { get; }
+
+        public int GetPortalID { get; }
+
         private string scriptName;
 
-        public PortalScriptSession(GameCharacter chr, IPortalScript script, string scriptName)
+        public PortalScriptSession(GameCharacter chr, Portal portal, IPortalScript script)
         {
+            Field = chr.Field;
             mCharacter = chr;
             _compiledScript = script;
-            this.scriptName = scriptName;
+            scriptName = portal.Script;
+            GetPortalID = portal.ID;
         }
 
-        public static void Run(string script, GameCharacter chr, Action<string> errorHandlerFnc)
+        public static void Run(Portal portal, GameCharacter chr, Action<string> errorHandlerFnc)
         {
-            Run((IPortalScript)ScriptAccessor.GetScript(Server.Instance, script, errorHandlerFnc), chr, script);
-        }
-
-        public static void Run(IPortalScript script, GameCharacter chr, string scriptName)
-        {
+            if (portal == null || portal.Script == null) return;
+            IPortalScript script = (IPortalScript)ScriptAccessor.GetScript(Server.Instance, portal.Script, errorHandlerFnc);
             if (script == null) return;
 
-            var session = new PortalScriptSession(chr, script, scriptName);
+            var session = new PortalScriptSession(chr, portal, script);
             session.RunScript();
         }
 

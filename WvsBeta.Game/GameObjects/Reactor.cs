@@ -6,6 +6,7 @@ using WvsBeta.Common;
 using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Scripting;
 using static WvsBeta.MasterThread;
+using WvsBeta.Common.Extensions;
 
 namespace WvsBeta.Game
 {

@@ -126,7 +126,7 @@
         __PADDING_103,
         __PADDING_104,
         FIELD_SNOWBALL_ATTACK,
-        FIELD_COCONUT_ATTACK,
+        FIELD_COCONUT_ATTACK = 0x75,
         __PADDING_107,
         __PADDING_108,
         FIELD_TOURNAMENT_MATCHTABLE, // '/matchtable 1' sends this

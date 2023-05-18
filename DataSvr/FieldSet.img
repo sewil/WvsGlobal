@@ -223,3 +223,122 @@ Ludi023 = {
     resetReactors = 1
     shuffleReactors = 1
 }
+EventOla1 = {
+    0 = 109030001
+    1 = 109030002
+    2 = 109030003
+    capacity = 80
+    returnMap = 109050001
+    type = 1
+}
+EventOla2 = {
+    0 = 109030101
+    1 = 109030102
+    2 = 109030103
+    capacity = 80
+    returnMap = 109050001
+    type = 1
+}
+EventOla3 = {
+    0 = 109030201
+    1 = 109030202
+    2 = 109030203
+    capacity = 80
+    returnMap = 109050001
+    type = 1
+}
+EventOla4 = {
+    0 = 109030301
+    1 = 109030302
+    2 = 109030303
+    capacity = 80
+    returnMap = 109050001
+    type = 1
+}
+EventOla5 = {
+    0 = 109030401
+    1 = 109030402
+    2 = 109030403
+    capacity = 80
+    returnMap = 109050001
+    type = 1
+}
+
+EventFitness = {
+    0 = 109040000
+    1 = 109040001
+    2 = 109040002
+    3 = 109040003
+    4 = 109040004
+    capacity = 70
+    returnMap = 109050001
+    timeOut = 900
+    type = 2
+}
+
+EventOX = {
+    0 = 109020001
+    capacity = 90
+    returnMap = 109050001
+    type = 3
+}
+
+EventCoconut1 = {
+    0 = 109080000
+    capacity = 60
+    returnMap = 109050001
+    type = 4
+}
+EventCoconut2 = {
+    0 = 109080001
+    capacity = 60
+    returnMap = 109050001
+    type = 4
+}
+EventCoconut3 = {
+    0 = 109080002
+    capacity = 60
+    returnMap = 109050001
+    type = 4
+    resetReactors = 1
+}
+
+EventSnowball = {
+    0 = 109060001
+    1 = 109060000
+    event = 2
+    capacity = 80
+    returnMap = 109050001
+    type = 5
+    timeOut = 600
+    autoWarp = 1
+}
+
+EventJewel = {
+    0 = 109010000
+    1 = 109010100
+    2 = 109010101
+    3 = 109010102
+    4 = 109010103
+    5 = 109010104
+    6 = 109010105
+    7 = 109010106
+    8 = 109010107
+    9 = 109010108
+    10 = 109010109
+    11 = 109010110
+    12 = 109010200
+    13 = 109010201
+    14 = 109010202
+    15 = 109010203
+    16 = 109010204
+    17 = 109010205
+    18 = 109010206
+    capacity = 60
+    returnMap = 109050001
+    type = 6
+    resetReactors = 1
+    shuffleReactors = 1
+    cleanupDrops = 1
+    cleanupMobs = 1
+}

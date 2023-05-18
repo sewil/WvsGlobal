@@ -3,6 +3,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Common;
+using WvsBeta.Game.Events.Packets;
 
 namespace WvsBeta.Game.GameObjects
 {
@@ -36,7 +37,7 @@ namespace WvsBeta.Game.GameObjects
         }
         /**********************/
 
-        public MapleSnowballEvent Event { get => (MapleSnowballEvent)EventManager.Instance.EventInstances[EventType.Snowball]; }
+        public MapleSnowballEvent Event => (MapleSnowballEvent)FieldSet.Instances["EventSnowball"];
         public Portal Top { get => Portals["st01"]; }
         public Portal Bottom { get => Portals["st00"]; }
         public readonly SnowballObject MapleSnowball;
@@ -71,7 +72,7 @@ namespace WvsBeta.Game.GameObjects
         public override void RemovePlayer(GameCharacter chr, bool gmhide = false)
         {
             Program.MainForm.LogDebug("Player Removed: " + chr.Name);
-            if (Event.InProgress)
+            if (Event.Started)
                 Event.PlayerLeft(chr);
             base.RemovePlayer(chr, gmhide);
         }
@@ -83,7 +84,7 @@ namespace WvsBeta.Game.GameObjects
             {
                 _snowballState = value;
                 SendSnowballState();
-                if (_snowballState == SnowballEventState.MAPLE_WIN || _snowballState == SnowballEventState.STORY_WIN) Event.Stop();
+                if (_snowballState == SnowballEventState.MAPLE_WIN || _snowballState == SnowballEventState.STORY_WIN) Event.End();
             }
         }
 

@@ -8,4 +8,8 @@ public class NPCData
     public short Speed { get; set; }
     public byte SpeakLineCount { get; set; }
     public List<ShopItemData> Shop { get; set; }
+    /// <summary>
+    /// Whether this NPC exists in a map.
+    /// </summary>
+    public bool IsAccessible { get; set; }
 }

@@ -244,7 +244,7 @@ namespace WvsBeta.Game
             string portalName = packet.ReadString();
             if (chr.Field.Portals.TryGetValue(portalName, out Portal portal))
             {
-                PortalScriptSession.Run(portal.Script, chr, script => {
+                PortalScriptSession.Run(portal, chr, script => {
                     chr.Notice("Error compiling script: " + script);
                 });
             }
@@ -422,11 +422,11 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void ShowMapTimerForCharacter(GameCharacter chr, int time)
+        public static void ShowMapTimerForCharacter(GameCharacter chr, int seconds)
         {
             Packet pw = new Packet(ServerMessages.CLOCK);
             pw.WriteByte(0x02);
-            pw.WriteInt(time);
+            pw.WriteInt(seconds);
             chr.SendPacket(pw);
         }
 
@@ -527,15 +527,12 @@ namespace WvsBeta.Game
             pw.WriteString(text);
             chr.SendPacket(pw);
         }
-
-        public static void SendCharacterEnterPacket(GameCharacter player, GameCharacter victim)
+        public static Packet CharacterEnterPacket(GameCharacter player)
         {
             Packet pw = new Packet(ServerMessages.USER_ENTER_FIELD);
             pw.WriteInt(player.ID);
-
             player.EncodeForRemote(pw);
-
-            victim.SendPacket(pw);
+            return pw;
         }
 
         public static void SendPlayerInfo(GameCharacter chr, Packet packet)
