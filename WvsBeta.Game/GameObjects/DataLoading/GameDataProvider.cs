@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common;
@@ -195,6 +196,39 @@ namespace WvsBeta.Game
                 //        Program.MainForm.LogAppend($"Failed to find NPC script {npc.Quest} for NPC {npc.ID}!");
                 //    });
                 //}
+
+                // Read reactors info maps
+                foreach (var reactor in Reactors.Values)
+                {
+                    var mapIds = Regex.Match(reactor.Info, @"^\d+((,\d+)*|\.+\d+)$"); // Map ids
+                    if (mapIds.Success)
+                    {
+                        var mapRange = Regex.Match(reactor.Info, @"^(\d+)\.+(\d+)$"); // Range n..o
+                        if (mapRange.Success)
+                        {
+                            int from = int.Parse(mapRange.Groups[1].Value);
+                            int to = int.Parse(mapRange.Groups[2].Value);
+                            for (int mapID = from; mapID <= to; mapID++)
+                            {
+                                var map = Maps[mapID];
+                                reactor.InfoMaps.Add(map);
+                            }
+                        }
+                        else // Set n[,o,p,q]
+                        {
+                            var match = Regex.Match(reactor.Info, @"\d+");
+                            do
+                            {
+                                int mapID = int.Parse(match.Value);
+                                if (Maps.TryGetValue(mapID, out var map))
+                                {
+                                    reactor.InfoMaps.Add(map);
+                                }
+                                match = match.NextMatch();
+                            } while (match.Success);
+                        }
+                    }
+                }
             }
 
             Console.WriteLine($"Maps: {Maps.Count}");

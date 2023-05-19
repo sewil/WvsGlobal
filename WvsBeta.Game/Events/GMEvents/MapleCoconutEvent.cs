@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Extensions;
@@ -60,7 +61,7 @@ namespace WvsBeta.Game.Events.GMEvents
         public override void Start()
         {
             base.Start();
-            StartRound(1, CoconutMap.TimeDefault);
+            StartRound();
             BroadcastTimeMsg(StringPool.Instance[2460]); // 2460;"Coconut Season has started!"
         }
 
@@ -92,16 +93,28 @@ namespace WvsBeta.Game.Events.GMEvents
             }
         }
 
-        public void StartRound(int round, int durationSeconds)
+        private int round = 0;
+        public void StartRound()
         {
+            round++;
+            int durationSeconds;
+            if (round == 1)
+            {
+                durationSeconds = CoconutMap.TimeDefault;
+            }
+            else
+            {
+                durationSeconds = CoconutMap.TimeExpand;
+            }
+
             ResetCoconuts();
             MapleScore = 0;
             StoryScore = 0;
             CoconutPackets.SendScore(CoconutMap, MapleScore, StoryScore);
-            ShowTimerAll(durationSeconds, () => EndRound(round)); // TimeMessage?
+            ShowTimerAll(durationSeconds, () => EndRound()); // TimeMessage?
         }
 
-        public void EndRound(int round)
+        public void EndRound()
         {
             Coconuts.ForEach(c => c.Value.Hittable = false);
             bool extend = false;
@@ -151,7 +164,7 @@ namespace WvsBeta.Game.Events.GMEvents
             {
                 if (extend)
                 {
-                    StartRound(round + 1, CoconutMap.TimeExpand);
+                    StartRound();
                 }
                 else
                 {
@@ -173,7 +186,7 @@ namespace WvsBeta.Game.Events.GMEvents
             }
             if (chr != null)
             {
-                BroadcastTimeMsg(BroadcastMessageType.RedText, $"{chr.Name} of Team Maple knocks down a coconut.");
+                BroadcastTimeMsg($"{chr.Name} of Team Maple knocks down a coconut.");
                 CoconutPackets.SendScore(Lobby, MapleScore, StoryScore);
             }
         }

@@ -124,7 +124,7 @@ namespace WvsBeta.Game.Events.GMEvents
             var status = EnterCheck(chr, mapIdx, out var partyMembers);
             if (status != EnterStatus.Success) return status;
 
-            FinishEnter(chr, mapIdx, partyMembers, portalName, false);
+            FinishEnter(chr, mapIdx, partyMembers, portalName);
             return status;
         }
 

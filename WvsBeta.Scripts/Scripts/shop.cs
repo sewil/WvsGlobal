@@ -1758,4 +1758,18 @@ namespace WvsBeta.Scripts.Scripts
             }.Concat(Rechargables));
         }
     }
+    // Tamis
+    [Script("9000015")]
+    class tamis : Shop, INpcScript
+    {
+        public void Run(INpcHost self, GameCharacter target)
+        {
+            self.AskShop(new ShopItemData[] {
+                new ShopItemData(1302000, 50),
+                new ShopItemData(1312004, 50),
+                new ShopItemData(1322005, 50),
+                new ShopItemData(1332005, 500),
+            });
+        }
+    }
 }

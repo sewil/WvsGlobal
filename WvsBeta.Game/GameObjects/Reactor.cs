@@ -7,6 +7,7 @@ using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Scripting;
 using static WvsBeta.MasterThread;
 using WvsBeta.Common.Extensions;
+using System.Text.RegularExpressions;
 
 namespace WvsBeta.Game
 {
@@ -248,6 +249,17 @@ namespace WvsBeta.Game
                 delay += 120;
             }
         }
+        public void Warp()
+        {
+            var maps = Reactor.InfoMaps;
+            if (maps.Count == 0 || Owner == null) return;
+            else
+            {
+                int idx = Rand32.NextBetween(0, Reactor.InfoMaps.Count - 1);
+                Map map = maps[idx];
+                Owner.ChangeMap(map);
+            }
+        }
     }
     public class ReactorState
     {
@@ -277,6 +289,7 @@ namespace WvsBeta.Game
     {
         public int ID { get; }
         public string Info { get; }
+        public IList<Map> InfoMaps { get; } = new List<Map>();
         public string Action { get; }
         public int Link { get; }
         public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();

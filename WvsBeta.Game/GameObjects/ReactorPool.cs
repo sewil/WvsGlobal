@@ -92,10 +92,8 @@ namespace WvsBeta.Game.GameObjects
                     FieldReactor valueRight = reactors[idxRight];
                     Pos leftPos = valueLeft.Position;
                     Pos rightPos = valueRight.Position;
-                    reactors[idxLeft] = valueRight;
-                    reactors[idxLeft].Position = leftPos;
-                    reactors[idxRight] = valueLeft;
-                    reactors[idxRight].Position = rightPos;
+                    valueLeft.Position = rightPos;
+                    valueRight.Position = leftPos;
                 }
                 reactors.ForEach(r => AddReactor(r, false));
             }

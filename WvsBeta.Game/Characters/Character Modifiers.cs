@@ -646,7 +646,11 @@ namespace WvsBeta.Game
         // Change map, but take random spawn
         public void ChangeMap(int mapid)
         {
-            ChangeMap(mapid, GameDataProvider.Maps[mapid].GetRandomStartPoint());
+            ChangeMap(GameDataProvider.Maps[mapid]);
+        }
+        public void ChangeMap(Map map)
+        {
+            ChangeMap(map, map.GetRandomStartPoint());
         }
 
         // Change map, but go to a specific portal

@@ -16,6 +16,13 @@ namespace WvsBeta.Game.Events.GMEvents
             return Enter(chr, mapIdx, portalName);
         }
 
+        public override void Start()
+        {
+            base.Start();
+            EnablePortals();
+            RunTimer();
+        }
+
         public override void End()
         {
             foreach (var chr in Characters)

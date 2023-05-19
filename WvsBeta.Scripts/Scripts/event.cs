@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Threading;
 using System.Timers;
@@ -17,6 +18,40 @@ namespace WvsBeta.Scripts.Scripts
     {
         static INpcHost self;
         static GameCharacter target;
+
+        public static void GMEventControls<TEvent>(string prompt, params (string text, Action<TEvent> cb)[] customOptions) where TEvent : EventFieldSet
+        {
+            if (!(EventFieldSet.CurrentEvent is TEvent e) || !e.IsEnabled)
+            {
+                self.Say("No event running!");
+                return;
+            }
+            var options = new string[]
+            {
+                "Show instructions",
+                "Start event",
+                "End event",
+            }.Concat(customOptions.Select(o => o.text)).ToArray();
+            
+            int opt = self.AskMenu(prompt, options);
+            if (opt == 0)
+            {
+                e.SendInstructions();
+            }
+            else if (opt == 1)
+            {
+                e.Start();
+            }
+            else if (opt == 2)
+            {
+                e.End();
+            }
+            else
+            {
+                customOptions[opt].cb(e);
+            }
+        }
+
         // Paul : 9000000 
         [Script("Event00")]
         class Event00 : INpcScript
@@ -326,7 +361,13 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                Viking(self, target);
+                @event.self = self;
+                @event.target = target;
+                if (target.IsAdmin)
+                {
+                    GMEventControls<MapleJewelEvent>("Hey, Hey!!! GM! What'd you like to do, eh?");
+                }
+                else Viking(self, target);
             }
         }
         // Chun Ji : 9000007 
@@ -616,6 +657,18 @@ namespace WvsBeta.Scripts.Scripts
         [Script("Event09")]
         class Event09 : INpcScript
         {
+            void BuyWeapon()
+            {
+                int nRet = self.AskYesNo("#t1322005# for beginners is 1 meso. What do you think? You want it?");
+                if (nRet == 0) self.Say("Weapons with attack speed are more important than high-damage weapons. If you ever need one, please come back.");
+                else
+                {
+                    var inventory = target.Inventory;
+                    var ret = inventory.Exchange(-1, 1322005, 1);
+                    if (ret == 0) self.Say("Are you sure you have an empty slot? Or do you not have 1 meso? Please check again.");
+                    else self.Say("Did you get #t1322005#? I wish you good luck!");
+                }
+            }
             public void Run(INpcHost self, GameCharacter target)
             {
                 @event.self = self;
@@ -623,14 +676,13 @@ namespace WvsBeta.Scripts.Scripts
                 int v1;
                 if (target.IsAdmin)
                 {
-                    v1 = self.AskMenu("Man... It's hot!!! How can I help you?",
-                        "Exit game event",
-                        "Buy the weapon.(#t1322005# 1 meso)",
-                        "Send instructions",
-                        "Start game",
-                        "End game",
-                        "Debug"
-                    );
+                    GMEventControls("Man... It's hot!!! Hey, GM! What's up?", new (string text, Action<MapleCoconutEvent> cb)[]
+                    {
+                        ("Start round", e => e.StartRound()),
+                        ("End round", e => e.EndRound()),
+                        ("Reset coconuts", e => e.ResetCoconuts()),
+                    });
+                    return;
                 }
                 else v1 = self.AskMenu("Man... It's hot!!! How can I help you?",
                     "Exit game event",
@@ -644,63 +696,60 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else if (v1 == 1)
                 {
-                    int nRet = self.AskYesNo("#t1322005# for beginners is 1 meso. What do you think? You want it?");
-                    if (nRet == 0) self.Say("Weapons with attack speed are more important than high-damage weapons. If you ever need one, please come back.");
-                    else
-                    {
-                        var inventory = target.Inventory;
-                        var ret = inventory.Exchange(-1, 1322005, 1);
-                        if (ret == 0) self.Say("Are you sure you have an empty slot? Or do you not have 1 meso? Please check again.");
-                        else self.Say("Did you get #t1322005#? I wish you good luck!");
-                    }
-                }
-                else
-                {
-                    if (!(EventFieldSet.CurrentEvent is MapleCoconutEvent e) || !e.IsEnabled)
-                    {
-                        self.Say("No event running, man!");
-                    }
-                    else if (v1 == 2)
-                    {
-                        e.SendInstructions();
-                    }
-                    else if (v1 == 3)
-                    {
-                        e.Start();
-                        e.ResetCoconuts();
-                    }
-                    else if (v1 == 4)
-                    {
-                        if (!e.Started)
-                        {
-                            self.Say("No game running!");
-                            return;
-                        }
-                        e.EndRound(2);
-                        e.StartRound(1, 60);
-                    }
-                    else if (v1 == 5)
-                    {
-                        var v2 = self.AskMenu("Hunting for bugs are we? What would you like test?",
-                            "Reset coconuts",
-                            "Start round (60 seconds)",
-                            "End round"
-                        );
-                        if (v2 == 0)
-                        {
-                            e.ResetCoconuts();
-                        }
-                        else if (v2 == 1)
-                        {
-                            e.StartRound(1, 60);
-                        }
-                        else if (v2 == 2)
-                        {
-                            e.EndRound(1);
-                        }
-                    }
+                    BuyWeapon();
                 }
             }
         }
     }
+    #region Reactors
+    // Jewel
+    [Script("eventItem0")]
+    class EventItem0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    [Script("eventItem1")]
+    class EventItem1 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    [Script("eventItem2")]
+    class EventItem2 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Drop();
+        }
+    }
+    [Script("eventMap0")]
+    class EventMap0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Warp();
+        }
+    }
+    [Script("eventMap1")]
+    class EventMap1 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Warp();
+        }
+    }
+    [Script("eventMap2")]
+    class EventMap2 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            target.Warp();
+        }
+    }
+    #endregion
 }
