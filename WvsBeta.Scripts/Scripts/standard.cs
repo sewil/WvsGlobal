@@ -29,6 +29,7 @@ namespace WvsBeta.Scripts.Scripts
                 { "eventMap0", "event" },
                 { "eventMap1", "event" },
                 { "eventMap2", "event" },
+                { "eventMob0", "event" },
                 { "cny", "cny" },
                 { "taxi1", "taxi" },
                 { "taxi2", "taxi" },

@@ -122,11 +122,12 @@ namespace WvsBeta.Game
             {
                 ReactorPacket.ReactorChangedState(this);
             }
-            stateChangeAction = MasterThread.RepeatingAction.Start(() =>
+            stateChangeAction = RepeatingAction.Start(() =>
             {
                 changingState = false;
                 if (isLast)
                 {
+                    Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
                     RunScript();
                     if (ReactorTime > 0)
                     {
@@ -134,7 +135,10 @@ namespace WvsBeta.Game
                         RepeatingAction.Start(() =>
                         {
                             if (sendPacket) ReactorPacket.DestroyReactor(this);
-                            resetAction = MasterThread.RepeatingAction.Start("rrts-" + Field.ID + "-" + ID, time => Reset(), ReactorTime * 1000, 0);
+                            resetAction = RepeatingAction.Start(() => {
+                                Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
+                                Reset();
+                            }, ReactorTime * 1000, 0);
                         }, 500, 0);
                     }
                 }

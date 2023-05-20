@@ -30,7 +30,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 "Show instructions",
                 "Start event",
-                "End event",
+                "End event"
             }.Concat(customOptions.Select(o => o.text)).ToArray();
             
             int opt = self.AskMenu(prompt, options);
@@ -48,7 +48,7 @@ namespace WvsBeta.Scripts.Scripts
             }
             else
             {
-                customOptions[opt].cb(e);
+                customOptions[opt-3].cb(e);
             }
         }
 
@@ -365,7 +365,10 @@ namespace WvsBeta.Scripts.Scripts
                 @event.target = target;
                 if (target.IsAdmin)
                 {
-                    GMEventControls<MapleJewelEvent>("Hey, Hey!!! GM! What'd you like to do, eh?");
+                    GMEventControls<MapleJewelEvent>(
+                        "Hey, Hey!!! GM! What'd you like to do, eh?",
+                        ("Imitate user", (e) => Viking(self, target))
+                    );
                 }
                 else Viking(self, target);
             }
@@ -749,6 +752,15 @@ namespace WvsBeta.Scripts.Scripts
         public void Run(IReactorHost host, FieldReactor target)
         {
             target.Warp();
+        }
+    }
+    [Script("eventMob0")]
+    class EventMob0 : IReactorScript
+    {
+        public void Run(IReactorHost host, FieldReactor target)
+        {
+            //슈퍼 주니어 네키 한마리 출현
+            target.SpawnMob(new Pos(0, 0), (9100001, 1, SummonType.Poof, null));
         }
     }
     #endregion
