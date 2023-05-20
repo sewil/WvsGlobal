@@ -30,7 +30,7 @@ namespace WvsBeta.Game.Events.GMEvents
         public static EventFieldSet CurrentEvent { get; private set; }
 
         public bool IsEnabled { get; protected set; }
-        protected static readonly Map WinMap = GameDataProvider.Maps[109050001];
+        protected static readonly Map WinMap = GameDataProvider.Maps[109050000];
         public Map Lobby => Maps[0];
         protected int LoseMapId => ReturnMap;
 

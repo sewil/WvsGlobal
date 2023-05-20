@@ -1,12 +1,24 @@
 ﻿using System;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
-using WvsBeta.Game.Events.GMEvents;
-using WvsBeta.Common;
 using WvsBeta.Game.Events.Packets;
 
 namespace WvsBeta.Game.GameObjects
 {
+    public enum SnowballTeam
+    {
+        TEAM_MAPLE = 0,
+        TEAM_STORY = 1
+    }
+
+    public enum SnowballEventState
+    {
+        NOT_STARTED = 0,
+        IN_PROGRESS = 1,
+        MAPLE_WIN = 2,
+        STORY_WIN = 3
+    }
     class Map_Snowball : Map
     {
         /* SNOWBALL CONSTANTS */
@@ -22,19 +34,6 @@ namespace WvsBeta.Game.GameObjects
         public static readonly short DamageSnowMan0 = 15;
         public static readonly short DamageSnowMan1 = 45;
 
-        public enum SnowballTeam
-        {
-            TEAM_MAPLE = 0,
-            TEAM_STORY = 1
-        }
-
-        public enum SnowballEventState
-        {
-            NOT_STARTED = 0,
-            IN_PROGRESS = 1,
-            MAPLE_WIN = 2,
-            STORY_WIN  = 3
-        }
         /**********************/
 
         public MapleSnowballEvent Event => (MapleSnowballEvent)FieldSet.Instances["EventSnowball"];
@@ -91,9 +90,7 @@ namespace WvsBeta.Game.GameObjects
         public void SendSnowballState(GameCharacter chr = null)
         {
             var packet = SnowballPackets.SnowballState(
-                (byte)SnowballState,
-                StorySnowman.CurHP * 100 / SnowManMaxHp, //not used in v12, used later
-                MapleSnowman.CurHP * 100 / SnowManMaxHp, //not used in v12, used later
+                SnowballState,
                 StorySnowball.XPos,
                 (byte)(StorySnowball.HP / 1000),
                 MapleSnowball.XPos,
@@ -124,6 +121,14 @@ namespace WvsBeta.Game.GameObjects
         public void OnSnowballHit(byte type, GameCharacter chr, short damage, short delay)
         {
             Program.MainForm.LogDebug("Type: " + type);
+            if (MasterThread.IsDebug && chr.IsAdmin)
+            {
+                var weapon = chr.Inventory.Equipped[EquippedType.Normal][Common.Constants.EquipSlots.Slots.Weapon];
+                if (weapon?.ItemID == EquipIds.OldGladius)
+                {
+                    damage = 100;
+                }
+            }
             switch(type)
             {
                 case 0:

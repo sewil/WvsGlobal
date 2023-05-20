@@ -9,7 +9,7 @@ namespace WvsBeta.Game.Events.GMEvents
         }
         public override EnterStatus Enter(GameCharacter chr, int mapIdx)
         {
-            string portalName = chr.IsAdmin ? "t001" : "join00";
+            string portalName = chr.IsAdmin ? "t002" : "join00";
             return Enter(chr, mapIdx, portalName);
         }
 

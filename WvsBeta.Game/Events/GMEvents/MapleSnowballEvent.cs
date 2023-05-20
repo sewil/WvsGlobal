@@ -53,7 +53,8 @@ namespace WvsBeta.Game.Events
 
         public override void End()
         {
-            Program.MainForm.LogDebug("Stopping." + Environment.StackTrace);
+            Started = false;
+            Program.MainForm.LogDebug("Stopping.");
 
             List<GameCharacter> Winners;
             List<GameCharacter> Losers;

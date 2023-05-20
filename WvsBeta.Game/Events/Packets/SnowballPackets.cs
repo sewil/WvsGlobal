@@ -1,15 +1,14 @@
 ﻿using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects;
 
 namespace WvsBeta.Game.Events.Packets
 {
     public static class SnowballPackets
     {
-        public static Packet SnowballState(byte State, int snowmanhp1, int snowmanhp2, short x1, byte hp1, short x2, byte hp2, short DamageSnowBall, short SnowmanDmg1, short SnowmanDmg2)
+        public static Packet SnowballState(SnowballEventState state, short x1, byte hp1, short x2, byte hp2, short DamageSnowBall, short SnowmanDmg1, short SnowmanDmg2)
         {
             Packet pw = new Packet(ServerMessages.SNOWBALL_STATE);
-            pw.WriteByte(State);
-            pw.WriteInt(snowmanhp1); // Not used in v12, used later
-            pw.WriteInt(snowmanhp2); // Not used in v12, used later
+            pw.WriteByte((byte)state);
             pw.WriteShort(x1);
             pw.WriteByte(hp1);
             pw.WriteShort(x2);
