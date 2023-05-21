@@ -77,11 +77,6 @@ namespace WvsBeta.Login
             return null;
         }
 
-        public bool HasPlayerWithIP(string ip)
-        {
-            return PlayerList.Values.Any(i => i.Socket.IP == ip);
-        }
-
         public bool GetWorld(byte worldId, out Center world, bool onlyConnected = true)
         {
             if (!Worlds.TryGetValue(worldId, out Center tmp) || (onlyConnected && !tmp.IsConnected))

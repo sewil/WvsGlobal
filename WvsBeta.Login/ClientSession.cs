@@ -86,7 +86,7 @@ namespace WvsBeta.Login
                         Player.Characters.Clear();
 
                         if (!IsCCing)
-                            RedisBackend.Instance.RemovePlayerOnline(Player.ID);
+                            RedisBackend.Instance.RemovePlayerOnline(Player.ID, Player.Socket.IP);
 
                         Player.Socket = null;
                         Player = null;
@@ -182,7 +182,7 @@ namespace WvsBeta.Login
                             OnCharDeletion(packet);
                             break;
                         case ClientMessages.PONG:
-                            RedisBackend.Instance.SetPlayerOnline(Player.ID, 1);
+                            RedisBackend.Instance.SetPlayerOnline(Player.ID, 1, Player.Socket.IP);
                             break;
                         case ClientMessages.CLIENT_HASH: break;
                         default:
@@ -496,7 +496,7 @@ namespace WvsBeta.Login
 
             Loaded = false;
             Player.LoggedOn = false;
-            RedisBackend.Instance.RemovePlayerOnline(Player.ID);
+            RedisBackend.Instance.RemovePlayerOnline(Player.ID, Player.Socket.IP);
         }
 
         public override void SendPacket(Packet pPacket)

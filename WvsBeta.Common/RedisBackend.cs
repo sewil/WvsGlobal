@@ -43,7 +43,7 @@ namespace WvsBeta.Common
         private static string GetUndercoverKeyName(int characterId) => "undercover-" + characterId;
         private static string GetImitateKeyName(int characterId) => "imitate-" + characterId;
         private static string GetCCProcessingKeyName(int characterId) => "processing-cc-" + characterId;
-
+        private static string GetUserIPKeyName(string userIP) => "online-ip-" + userIP;
         private static string GetNonGameHackDetectedKeyName(int userId) => "hack-detected-" + userId;
 
         public static int GetOnlineId(int world, int channel)
@@ -51,13 +51,20 @@ namespace WvsBeta.Common
             return 20000 + (world * 100) + channel;
         }
 
-        public void SetPlayerOnline(int userId, int onlineId)
+        public void SetPlayerOnline(int userId, int onlineId, string ip)
         {
             if (_db == null) return;
             var key = GetUserIDKeyName(userId);
 
             _db.StringSet(
                 key,
+                "" + onlineId,
+                _onlineTimeout,
+                When.Always,
+                CommandFlags.FireAndForget
+            );
+            _db.StringSet(
+                GetUserIPKeyName(ip),
                 "" + onlineId,
                 _onlineTimeout,
                 When.Always,
@@ -104,10 +111,11 @@ namespace WvsBeta.Common
             return _db.KeyExists(GetCCProcessingKeyName(characterId));
         }
 
-        public void RemovePlayerOnline(int userId)
+        public void RemovePlayerOnline(int userId, string ip)
         {
             if (_db == null) return;
             _db.KeyDelete(GetUserIDKeyName(userId), CommandFlags.FireAndForget);
+            _db.KeyDelete(GetUserIPKeyName(ip), CommandFlags.FireAndForget);
         }
 
         public bool IsPlayerOnline(int userId)
@@ -115,6 +123,13 @@ namespace WvsBeta.Common
             if (_db == null) return false;
 
             return _db.KeyExists(GetUserIDKeyName(userId));
+        }
+
+        public bool IsPlayerOnline(string ip)
+        {
+            if (_db == null) return false;
+
+            return _db.KeyExists(GetUserIPKeyName(ip));
         }
 
         public void SetMigratingPlayer(int characterId)

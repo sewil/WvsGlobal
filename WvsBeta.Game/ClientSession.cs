@@ -133,7 +133,7 @@ namespace WvsBeta.Game
 
                     if (!cc)
                     {
-                        RedisBackend.Instance.RemovePlayerOnline(chr.UserID);
+                        RedisBackend.Instance.RemovePlayerOnline(chr.UserID, chr.Player.Socket.IP);
                     }
                     RedisBackend.Instance.RemovePlayerCCIsBeingProcessed(chr.ID);
                     Player.Character = null;
@@ -402,7 +402,8 @@ namespace WvsBeta.Game
                             // Make sure we update the player online thing
                             RedisBackend.Instance.SetPlayerOnline(
                                 character.UserID,
-                                Server.Instance.GetOnlineId()
+                                Server.Instance.GetOnlineId(),
+                                character.Player.Socket.IP
                             );
 
                             // Cleanup expired items

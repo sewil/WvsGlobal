@@ -72,7 +72,7 @@ namespace WvsBeta.Shop
 
                         if (!cc)
                         {
-                            RedisBackend.Instance.RemovePlayerOnline(chr.UserID);
+                            RedisBackend.Instance.RemovePlayerOnline(chr.UserID, chr.Player.Socket.IP);
                         }
 
                         RedisBackend.Instance.RemovePlayerCCIsBeingProcessed(chr.ID);
@@ -151,7 +151,8 @@ namespace WvsBeta.Shop
                             // Make sure we update the player online thing
                             RedisBackend.Instance.SetPlayerOnline(
                                 Player.Character.UserID,
-                                Server.Instance.GetOnlineId()
+                                Server.Instance.GetOnlineId(),
+                                Player.Socket.IP
                             );
                             break;
                         default:

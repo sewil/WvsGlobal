@@ -1,5 +1,4 @@
 ﻿using System.Net.Sockets;
-using System.Net;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Login
@@ -13,11 +12,6 @@ namespace WvsBeta.Login
 
         public override void OnAccept(Socket pSocket)
         {
-            if (Server.Instance.DisableMultiIP)
-            {
-                var ip = (pSocket.RemoteEndPoint as IPEndPoint).Address.ToString();
-                if (Server.Instance.HasPlayerWithIP(ip)) return;
-            }
             new ClientSession(pSocket);
         }
     }

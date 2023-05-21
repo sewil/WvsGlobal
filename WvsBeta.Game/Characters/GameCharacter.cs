@@ -556,7 +556,8 @@ namespace WvsBeta.Game
 
             RedisBackend.Instance.SetPlayerOnline(
                 UserID,
-                Server.Instance.GetOnlineId()
+                Server.Instance.GetOnlineId(),
+                IP
             );
 
             _characterLog.Debug("Loaded!");

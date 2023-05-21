@@ -100,6 +100,11 @@ namespace WvsBeta.Login.PacketHandlers
                         log.AssertWarning(true, $"[{username}][{userId}] already online");
                         loginState = LoginState.ALREADY_ONLINE;
                     }
+                    else if (Server.Instance.DisableMultiIP && RedisBackend.Instance.IsPlayerOnline(session.IP))
+                    {
+                        loginState = LoginState.SYSTEM_ERROR;
+                        log.AssertWarning(true, $"[{username}][{userId}] tried logging in on the same IP ({session.IP})");
+                    }
                     else if (banExpire > MasterThread.CurrentDate.ToUniversalTime().ToFileTimeUtc())
                     {
                         log.AssertWarning(true, $"[{username}][{userId}] banned until " + data.GetDateTime("ban_expire"));
@@ -245,7 +250,7 @@ namespace WvsBeta.Login.PacketHandlers
 
             // Player logged in
             session.TryRegisterHackDetection();
-            RedisBackend.Instance.SetPlayerOnline(session.Player.ID, 1);
+            RedisBackend.Instance.SetPlayerOnline(session.Player.ID, 1, session.IP);
 
             if (crashLogTmp != null)
             {
