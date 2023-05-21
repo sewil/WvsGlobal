@@ -26,6 +26,7 @@ namespace WvsBeta.Login
         public IPAddress PrivateIP { get; set; }
         public bool RequiresEULA { get; set; }
         public bool RequiresPIN { get; set; }
+        public bool DisableMultiIP { get; set; }
         public Dictionary<byte, Center> Worlds = new Dictionary<byte, Center>();
         public string Name { get; set; }
         public bool InMigration { get; set; }
@@ -74,6 +75,11 @@ namespace WvsBeta.Login
         {
             if (PlayerList.TryGetValue(hash, out Objects.Player player)) return player;
             return null;
+        }
+
+        public bool HasPlayerWithIP(string ip)
+        {
+            return PlayerList.Values.Any(i => i.Socket.IP == ip);
         }
 
         public bool GetWorld(byte worldId, out Center world, bool onlyConnected = true)
@@ -231,6 +237,7 @@ namespace WvsBeta.Login
             RequiresEULA = reader["requiresEULA"]?.GetBool() ?? false;
             RequiresPIN = reader["requiresPIN"]?.GetBool() ?? false;
             Tespia = reader["tespia"]?.GetBool() ?? false;
+            DisableMultiIP = reader["disableMultiIP"]?.GetBool() ?? false;
 
             foreach (var worldConfig in reader["center"])
             {
