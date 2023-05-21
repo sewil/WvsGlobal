@@ -355,15 +355,7 @@ namespace WvsBeta.Center
 
                                             if (Party.Parties.TryGetValue(character.PartyID, out Party party))
                                             {
-                                                if (party.leader.id == charid)
-                                                {
-                                                    // Disband the party
-                                                    party.Leave(character);
-                                                }
-                                                else
-                                                {
-                                                    party.SilentUpdate(character.ID);
-                                                }
+                                                party.SilentUpdate(character.ID);
                                             }
 
                                             character.FriendsList?.OnOnlineCC(true, true);
