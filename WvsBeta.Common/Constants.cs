@@ -302,6 +302,7 @@ namespace WvsBeta.Common
                 Stun = 123,
                 Curse = 124,
                 Poison = 125,
+                Slow = 126,
                 PoisonMist = 131,
                 WeaponImmunity = 140,
                 MagicImmunity = 141,

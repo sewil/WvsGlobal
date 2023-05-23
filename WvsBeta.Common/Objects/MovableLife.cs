@@ -1,4 +1,7 @@
-﻿namespace WvsBeta.Common.Objects
+﻿using System.Collections.Generic;
+using System.Linq;
+
+namespace WvsBeta.Common.Objects
 {
     public class MovableLife
     {
@@ -36,6 +39,20 @@
         public bool IsFacingRight()
         {
             return Stance % 2 == 0;
+        }
+
+        public static bool MovableInRange(MovableLife mob, Pos pAround, Pos pLeftTop, Pos pRightBottom)
+        {
+            return (
+                (mob.Position.Y >= pAround.Y + pLeftTop.Y) && (mob.Position.Y <= pAround.Y + pRightBottom.Y) &&
+                (mob.Position.X >= pAround.X + pLeftTop.X) && (mob.Position.X <= pAround.X + pRightBottom.X)
+            );
+        }
+
+        public static IEnumerable<T> InRange<T>(IEnumerable<T> elements, Pos pAround, Pos pLeftTop, Pos pRightBottom)
+            where T : MovableLife
+        {
+            return elements.Where(mob => MovableInRange(mob, pAround, pLeftTop, pRightBottom));
         }
     }
 }

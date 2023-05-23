@@ -526,22 +526,8 @@ namespace WvsBeta.Game
             Seats.Add(ST.ID, ST);
         }
 
-        private static IEnumerable<T> InRange<T>(IEnumerable<T> elements, Pos pAround, Pos pLeftTop, Pos pRightBottom)
-            where T : MovableLife
-        {
-            return elements.Where(mob => MovableInRange(mob, pAround, pLeftTop, pRightBottom));
-        }
-
-        private static bool MovableInRange(MovableLife mob, Pos pAround, Pos pLeftTop, Pos pRightBottom)
-        {
-            return (
-                (mob.Position.Y >= pAround.Y + pLeftTop.Y) && (mob.Position.Y <= pAround.Y + pRightBottom.Y) &&
-                (mob.Position.X >= pAround.X + pLeftTop.X) && (mob.Position.X <= pAround.X + pRightBottom.X)
-            );
-        }
-
-        public IEnumerable<Mob> GetMobsInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => InRange(Mobs.Values, pAround, pLeftTop, pRightBottom);
-        public IEnumerable<GameCharacter> GetCharactersInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => InRange(Characters, pAround, pLeftTop, pRightBottom);
+        public IEnumerable<Mob> GetMobsInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => MovableLife.InRange(Mobs.Values, pAround, pLeftTop, pRightBottom);
+        public IEnumerable<GameCharacter> GetCharactersInRange(Pos pAround, Pos pLeftTop, Pos pRightBottom) => MovableLife.InRange(Characters, pAround, pLeftTop, pRightBottom);
 
         public void CreateMist(MovableLife pLife, int pSpawnID, int pSkillID, byte pSkillLevel, int pTime, int pX1, int pY1, int pX2, int pY2, short delay)
         {

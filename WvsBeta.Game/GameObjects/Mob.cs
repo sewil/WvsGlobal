@@ -922,6 +922,31 @@ namespace WvsBeta.Game
             }
             return 0;
         }
+        public IEnumerable<T> GetMovablesInRange<T>(IEnumerable<T> movables, MobSkillLevelData skill) where T :MovableLife
+        {
+            int left = skill.LTX;
+            int right = skill.RBX;
+
+            var chance = skill.Prop;
+            if (chance == 0) chance = 100;
+
+            if (!IsFacingRight())
+            {
+                left = -skill.RBX;
+                right = -skill.LTX;
+            }
+            var charactersInRange = InRange(movables,
+                Position,
+                new Pos((short)left, skill.LTY),
+                new Pos((short)right, skill.RBY)
+            ).Where(c => Rand32.Next() % 100 < chance);
+            return charactersInRange;
+        }
+
+        public IEnumerable<GameCharacter> GetCharactersInRange(MobSkillLevelData skill)
+        {
+            return GetMovablesInRange(Field.Characters, skill).Where(c => !c.GMHideEnabled);
+        }
 
         public bool DoSkill(byte skillId, byte level, short delay)
         {
@@ -1022,29 +1047,9 @@ namespace WvsBeta.Game
                 case Constants.MobSkills.Skills.Weakness:
                 case Constants.MobSkills.Skills.Stun:
                 case Constants.MobSkills.Skills.Curse:
-                    int left = actualSkill.LTX;
-                    int right = actualSkill.RBX;
-
-                    if (!IsFacingRight())
+                case Constants.MobSkills.Skills.Slow:
+                    GetCharactersInRange(actualSkill).ForEach(character =>
                     {
-                        left = -actualSkill.RBX;
-                        right = -actualSkill.LTX;
-                    }
-
-                    var chance = actualSkill.Prop;
-                    if (chance == 0) chance = 100;
-
-                    Field.GetCharactersInRange(
-                        Position,
-                        new Pos((short)left, actualSkill.LTY),
-                        new Pos((short)right, actualSkill.RBY)
-                    ).ForEach(character =>
-                    {
-                        if (character.GMHideEnabled) return;
-                        if (Rand32.Next() % 100 >= chance)
-                            // Lucky bastard
-                            return;
-
                         if (character.PrimaryStats.BuffHolySymbol.IsSet()) return;
 
                         BuffStat bs = null;
@@ -1055,6 +1060,7 @@ namespace WvsBeta.Game
                             case Constants.MobSkills.Skills.Weakness: bs = character.PrimaryStats.BuffWeakness; break;
                             case Constants.MobSkills.Skills.Stun: bs = character.PrimaryStats.BuffStun; break;
                             case Constants.MobSkills.Skills.Curse: bs = character.PrimaryStats.BuffCurse; break;
+                            case Constants.MobSkills.Skills.Slow: bs = character.PrimaryStats.BuffSlow; break;
                         }
 
                         if (bs != null)
