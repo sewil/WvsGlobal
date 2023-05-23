@@ -1048,6 +1048,7 @@ namespace WvsBeta.Game
                 case Constants.MobSkills.Skills.Stun:
                 case Constants.MobSkills.Skills.Curse:
                 case Constants.MobSkills.Skills.Slow:
+                case Constants.MobSkills.Skills.CancelBuffs:
                     GetCharactersInRange(actualSkill).ForEach(character =>
                     {
                         if (character.PrimaryStats.BuffHolySymbol.IsSet()) return;
@@ -1061,6 +1062,11 @@ namespace WvsBeta.Game
                             case Constants.MobSkills.Skills.Stun: bs = character.PrimaryStats.BuffStun; break;
                             case Constants.MobSkills.Skills.Curse: bs = character.PrimaryStats.BuffCurse; break;
                             case Constants.MobSkills.Skills.Slow: bs = character.PrimaryStats.BuffSlow; break;
+                            case Constants.MobSkills.Skills.CancelBuffs:
+                                {
+                                    BuffPacket.RemoveBuffs(character, BuffValueTypes.ALL_BUFFS);
+                                    return;
+                                }
                         }
 
                         if (bs != null)

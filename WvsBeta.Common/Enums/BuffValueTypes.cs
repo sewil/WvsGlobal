@@ -53,5 +53,7 @@ namespace WvsBeta.Common.Enums
 
         ALL = 0xFFFFFFFF,
         MOVEMENT_INFO_INDEX = Speed | Jump | Stun | Weakness | Slow, // flags & 0x40020180 or BYTE4(flags) & 1
+        MOB_SKILL = Weakness|Curse|Slow,
+        ALL_BUFFS = ~MOB_SKILL
     }
 }
