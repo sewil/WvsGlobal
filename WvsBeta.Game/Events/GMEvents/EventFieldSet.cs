@@ -35,11 +35,9 @@ namespace WvsBeta.Game.Events.GMEvents
         protected int LoseMapId => ReturnMap;
 
 
-        public int Capacity { get; }
         public EventType Type { get; }
         protected EventFieldSet(ConfigReader.Node fsNode) : base(fsNode)
         {
-            Capacity = fsNode["capacity"].GetInt();
             Type = (EventType)fsNode["type"].GetInt();
         }
 
@@ -96,7 +94,6 @@ namespace WvsBeta.Game.Events.GMEvents
         {
             partyMembers = new List<GameCharacter>();
             if (!IsEnabled) return EnterStatus.Invalid;
-            if (UserCount >= Capacity) return EnterStatus.Full;
 
             var qr = chr.QuestRecord;
             var inventory = chr.Inventory;

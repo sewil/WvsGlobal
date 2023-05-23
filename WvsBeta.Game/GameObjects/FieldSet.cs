@@ -37,6 +37,7 @@ namespace WvsBeta.Game
         public int[] CleanupNpcs { get; private set; }
         public bool ResetReactors { get; }
         public bool ShuffleReactors { get; }
+        public int Capacity { get; }
         public int UserCount { get; private set; }
         public IEnumerable<GameCharacter> Characters => Maps.SelectMany(i => i.Characters);
         public event EventHandler OnEnd;
@@ -95,6 +96,9 @@ namespace WvsBeta.Game
                             break;
                         case "reqQuest":
                             ReqQuest = subNode.GetShort();
+                            break;
+                        case "capacity":
+                            Capacity = subNode.GetInt();
                             break;
                     }
             }
@@ -199,7 +203,7 @@ namespace WvsBeta.Game
         {
             partyMembers = new List<GameCharacter>();
             if (mapIdx < 0 || mapIdx > Maps.Length - 1) return EnterStatus.Invalid;
-            if (Started) return EnterStatus.Full;
+            if ((Capacity > 0 && UserCount >= Capacity) || Started) return EnterStatus.Full;
 
             bool checkPt = (EnterAsParty || !string.IsNullOrWhiteSpace(PartyParams));
             if (checkPt)

@@ -223,6 +223,16 @@ Ludi023 = {
     resetReactors = 1
     shuffleReactors = 1
 }
+
+Populatus = {
+    0 = 220080001
+    returnMap = 220080000
+    resetReactors = 1
+    cleanupDrops = 1
+    cleanupMobs = 1
+    capacity = 12
+}
+
 EventOla1 = {
     0 = 109030001
     1 = 109030002
