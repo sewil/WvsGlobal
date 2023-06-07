@@ -729,6 +729,7 @@ namespace WvsBeta.Common
             {
                 public const int MortalBlow = 3110001;
                 public const int Puppet = 3111002;
+                public const int Inferno = 3111003;
                 public const int SilverHawk = 3111005;
             }
         }

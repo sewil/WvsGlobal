@@ -4,6 +4,7 @@ namespace WvsBeta.Common.Objects
 {
     public class SkillLevelData
     {
+        public byte Level { get; set; }
         public byte MobCount { get; set; }
         public byte HitCount { get; set; }
 

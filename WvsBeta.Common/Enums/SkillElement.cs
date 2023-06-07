@@ -5,8 +5,8 @@ namespace WvsBeta.Common.Enums
         Normal,
         Ice,
         Fire,
-        Poison,
         Lightning,
+        Poison,
         Holy,
     }
 }

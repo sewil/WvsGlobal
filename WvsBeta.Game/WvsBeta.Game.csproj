@@ -102,6 +102,7 @@
     <Compile Include="BuffDataProvider.cs" />
     <Compile Include="CenterSocket Packets.cs" />
     <Compile Include="CenterSession.cs" />
+    <Compile Include="Characters\CalcTargetDamage.cs" />
     <Compile Include="Characters\Character Hack Logic.cs" />
     <Compile Include="Characters\Character log structs.cs" />
     <Compile Include="Characters\Character Modifiers.cs" />

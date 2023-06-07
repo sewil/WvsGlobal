@@ -1028,6 +1028,7 @@ namespace WvsBeta.Game
                 foreach (var iNode in mNode["level"])
                 {
                     var sld = new SkillLevelData();
+                    sld.Level = byte.Parse(iNode.Name);
 
                     foreach (var nxNode in iNode)
                     {
@@ -1144,7 +1145,7 @@ namespace WvsBeta.Game
                         sld.XValue = 1; // Eh. Otherwise there's no buff
                     }
 
-                    skillData.Levels[byte.Parse(iNode.Name)] = sld;
+                    skillData.Levels[sld.Level] = sld;
                 }
                 skillData.MaxLevel = (byte)(skillData.Levels.Length - 1); // As we skip 0
 
