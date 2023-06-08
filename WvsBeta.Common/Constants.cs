@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
@@ -526,6 +525,7 @@ namespace WvsBeta.Common
                 public const int ImprovedMaxHpIncrease = 1000001;
                 public const int Endure = 1000002;
                 public const int IronBody = 1001003;
+                public const int SlashBlast = 1001005;
             }
         }
         public static class Fighter
@@ -742,6 +742,7 @@ namespace WvsBeta.Common
                 public const int CrossbowBooster = 3201002;
                 public const int CrossbowMastery = 3200000;
                 public const int SoulArrow = 3201004;
+                public const int IronArrow = 3201005;
             }
         }
         public static class Sniper
