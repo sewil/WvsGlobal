@@ -312,7 +312,7 @@ namespace WvsBeta.Game
         {
             var MeleeSkill = chr.Skills.GetSkillLevelData(SkillID, out byte MeleeSkillLevel);
             string WeaponType;
-            double WeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(false);
+            double WeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips();
 
             try // FAILSAFE
             {
@@ -472,12 +472,12 @@ namespace WvsBeta.Game
         // Including the mob weapon defense resistance calculation, level difference amplification/reduction formulas, and critical strike formula...
         // My formula looks like...
         // ((LUK * 5.0) * Weapon Attack / 100) * Lucky Seven Damage (55% ~ 150%, based on level of Lucky Seven) * Level Difference - (Mob Weapon Defense * 0.5)
-        public static double MaximumLuckySevenDamage(GameCharacter chr, Mob mob, int ClientTotalDamage)
+        public static double MaximumLuckySevenDamage(GameCharacter chr, Mob mob, int ClientTotalDamage, int StarID)
         {
             if (chr.CharacterStat.Job / 100 == 4 || chr.CharacterStat.Job / 100 == 5)
             {
                 double chrLUK = chr.PrimaryStats.GetLukAddition();
-                double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
+                double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(StarID);
                 var chrLuckySevenData = chr.Skills.GetSkillLevelData(4001344, out byte LuckySevenLevel);
 
                 if (chrLuckySevenData != null)
@@ -520,7 +520,7 @@ namespace WvsBeta.Game
             {
                 double chrSTR = chr.PrimaryStats.GetStrAddition();
                 double chrDEX = chr.PrimaryStats.GetDexAddition();
-                double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(false);
+                double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips();
                 var chrPowerKnockbackData = chr.CharacterStat.Job == 310 ? chr.Skills.GetSkillLevelData(3101003, out byte PowerKnockbackLevel1) : chr.Skills.GetSkillLevelData(3201003, out byte PowerKnockbackLevel2);
 
                 if (chrPowerKnockbackData != null)
@@ -567,7 +567,7 @@ namespace WvsBeta.Game
                     {
                         double chrSTR = chr.PrimaryStats.GetStrAddition();
                         double chrDEX = chr.PrimaryStats.GetDexAddition();
-                        double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
+                        double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(ArrowID);
                         var chrArrowBombData = chr.Skills.GetSkillLevelData(3101005, out byte ArrowBombLevel);
 
                         if (chrArrowBombData != null)
@@ -617,7 +617,7 @@ namespace WvsBeta.Game
                 {
                     double chrSTR = chr.PrimaryStats.GetStrAddition();
                     double chrDEX = chr.PrimaryStats.GetDexAddition();
-                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
+                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(StarID);
                     double MaxDamageWithoutCrit = ((chrDEX * 3.4 + chrSTR) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5);
                     double MaxDamageWithCrit = ((chrDEX * 3.4 + chrSTR) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5) * CriticalStrikeModifier(chr);
 
@@ -663,7 +663,7 @@ namespace WvsBeta.Game
                 {
                     double chrSTR = chr.PrimaryStats.GetStrAddition();
                     double chrDEX = chr.PrimaryStats.GetDexAddition();
-                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
+                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(StarID);
                     double MaxDamageWithoutCrit = ((chrDEX * 3.6 + chrSTR) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5);
                     double MaxDamageWithCrit = ((chrDEX * 3.6 + chrSTR) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5) * CriticalStrikeModifier(chr);
 
@@ -716,7 +716,7 @@ namespace WvsBeta.Game
                     double chrSTR = chr.PrimaryStats.GetStrAddition();
                     double chrDEX = chr.PrimaryStats.GetDexAddition();
                     double chrLUK = chr.PrimaryStats.GetLukAddition();
-                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(true);
+                    double chrWeaponAttack = chr.PrimaryStats.BuffWeaponAttack.N + chr.Inventory.GetTotalWAttackInEquips(StarID);
                     double MaxDamageWithoutCrit = ((chrLUK * 3.6 + (chrSTR + chrDEX)) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5);
                     double MaxDamageWithCrit = ((chrLUK * 3.6 + (chrSTR + chrDEX)) * chrWeaponAttack / 100.0) * LevelDisadvantageModifierDmg(chr.PrimaryStats.Level, mob.Data.Level) - (mob.Data.PDD * 0.5) * CriticalStrikeModifier(chr);
 

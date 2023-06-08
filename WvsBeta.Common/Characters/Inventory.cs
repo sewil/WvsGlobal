@@ -44,7 +44,6 @@ namespace WvsBeta.Common.Characters
             _cashItems = new CharacterCashItems(UserID, CharacterID);
         }
         public virtual Item TakeItemAmountFromSlot(InventoryType inventory, short slot, short amount, bool takeStars) { throw new NotImplementedException(); }
-        public virtual int GetTotalWAttackInEquips(bool star) { throw new NotImplementedException(); }
         public int GetTotalMAttInEquips()
         {
             return Equipped[EquippedType.Normal].Sum(i => i.Value.Matk);

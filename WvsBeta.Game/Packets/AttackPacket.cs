@@ -565,7 +565,7 @@ namespace WvsBeta.Game
                                             DamageFormula.MaximumArrowBombDamage(chr, mob, ad.StarID, TotalDamage);
                                         break;
                                     case Constants.Rogue.Skills.LuckySeven:
-                                        MaxPossibleDamage = DamageFormula.MaximumLuckySevenDamage(chr, mob, TotalDamage);
+                                        MaxPossibleDamage = DamageFormula.MaximumLuckySevenDamage(chr, mob, TotalDamage, ad.StarID);
                                         break;
                                     case Constants.Assassin.Skills.Drain:
                                         MaxPossibleDamage = 99999; //Hotfix a bug that caused legit players to get autobanned. TODO check this properly!

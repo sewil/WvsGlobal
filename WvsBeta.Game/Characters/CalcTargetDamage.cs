@@ -270,7 +270,7 @@ namespace WvsBeta.Game.Characters
             str = stats.TotalStr;
             dex = stats.TotalDex;
             intl = stats.TotalInt;
-            //watk = stats.TotalWatk; // TODO:
+            watk = stats.GetTotalWatk(data.StarID);
 
             if (GetIsMiss()) return;
             ApplyBaseDamage();
@@ -526,9 +526,6 @@ namespace WvsBeta.Game.Characters
 
             int skillID = buff.R;
             if (skillID < WhiteKnight.Skills.SwordFireCharge || skillID > WhiteKnight.Skills.BwLitCharge) return;
-
-            var skill = chr.Skills.GetSkillLevelData(skillID);
-            if (skill == null) return; // Hax?
 
             var element = skill.ElementFlags;
             double specialModifier = (skill.Level * 3 + 10) * 0.01;

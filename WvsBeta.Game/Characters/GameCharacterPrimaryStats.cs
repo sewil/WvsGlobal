@@ -252,6 +252,11 @@ namespace WvsBeta.Game
             }
             return CharacterStat.Luk;
         }
+        
+        public int GetTotalWatk(int bulletID)
+        {
+            return BuffWeaponAttack.N + Char.Inventory.GetTotalWAttackInEquips(bulletID);
+        }
 
         public override void Reset(bool sendPacket)
         {

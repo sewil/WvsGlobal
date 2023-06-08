@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
@@ -501,52 +502,13 @@ namespace WvsBeta.Game
             return shown;
         }
 
-        public override int GetTotalWAttackInEquips(bool star)
+        public int GetTotalWAttackInEquips(int bulletID = 0)
         {
             int totalWat = Equipped[EquippedType.Normal].Sum(i => i.Value.Watk);
 
-            if (star == true)
+            if (bulletID > 0 && DataProvider.Items.TryGetValue(bulletID, out var bullet))
             {
-                foreach (Item item in Items[Common.Enums.InventoryType.Use])
-                {
-                    if (item != null)
-                    {
-                        if (Constants.isStar(item.ItemID))
-                        {
-                            switch (item.ItemID)
-                            {
-                                case 2070000: totalWat += 15; break; // Subi Throwing Star +15
-                                case 2070001:                        // Wolbi Throwing Star +17
-                                case 2070008: totalWat += 17; break; // Snowball +17
-                                case 2070002:                        // Mokbi Throwing Star +19
-                                case 2070009: totalWat += 19; break; // Top +19
-                                case 2070012: totalWat += 20; break; // Paper Airplane +20
-                                case 2070003:                        // Kumbi Throwing Star +21
-                                case 2070010:                        // Icicle +21
-                                case 2070011: totalWat += 21; break; // Maple Throwing Star +21
-                                case 2070004: totalWat += 23; break; // Tobi Throwing Star +23
-                                case 2070005: totalWat += 25; break; // Steely Throwing Star +25
-                                case 2070006:                        // Ilbi Throwing Star +27
-                                case 2070007: totalWat += 27; break; // Hwabi Throwing Star +27
-                            }
-
-                            break;
-                        }
-
-                        else if (Constants.isArrow(item.ItemID))
-                        {
-                            switch (item.ItemID)
-                            {
-                                case 2060000:                       // Arrow For Bow
-                                case 2061000: break;                // Arrow for Crossbow
-                                case 2060001:                       // Bronze Arrow for Bow
-                                case 2061001:                       // Bronze Arrow for Crossbow
-                                case 2060002:                       // Steel Arrow for Bow
-                                case 2061002: totalWat += 1; break; // Steel Arrow for Crossbow
-                            }
-                        }
-                    }
-                }
+                totalWat += bullet.IncWAtk;
             }
 
             return totalWat;
