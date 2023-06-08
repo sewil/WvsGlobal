@@ -1,4 +1,5 @@
 ﻿using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -8,7 +9,7 @@ namespace WvsBeta.Game
         public static void EncodeForRemote(GameCharacter chr, Packet pw, BuffValueTypes pBuffFlags = BuffValueTypes.ALL)
         {
             GameCharacterPrimaryStats ps = (GameCharacterPrimaryStats)chr.PrimaryStats;
-            long currentTime = MasterThread.CurrentTime;
+            long currentTime = BuffStat.GetTimeForBuff();
             BuffValueTypes added = 0;
 
             int tmp = pw.Position;
