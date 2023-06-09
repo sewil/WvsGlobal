@@ -136,60 +136,90 @@ namespace WvsBeta.Game.Characters
             return rollValue;
         }
     }
-    public class CalcTargetDamage
+    public class CalcTargetAttack
     {
+        public CalcHit[] Hits { get; }
+        public Mob Mob { get; }
         public double TotalDamage => Hits.Sum(h => h.Damage);
+        public AttackInfo Info { get; }
+
+        public CalcTargetAttack(
+            GameCharacter chr,
+            AttackInfo info,
+            Mob mob,
+            SkillLevelData critSkill,
+            byte critLevel,
+            double masteryModifier,
+            WeaponType weaponType,
+            AttackAction attackAction,
+            SkillLevelData skill,
+            int skillID,
+            bool isRanged,
+            int watk
+        )
+        {
+            Mob = mob;
+            Info = info;
+            Hits = new CalcHit[info.Damages.Count];
+            Roller roller = new Roller(chr.CalcDamageRandomizer, 7);
+
+            int levelDiff = Math.Max(0, mob.Level - chr.Level);
+            double targetAccuracy = chr.PrimaryStats.TotalACC * 100 / (levelDiff * 10.0 + 255.0);
+
+            for (int hitIdx = 0; hitIdx < Hits.Length; hitIdx++)
+            {
+                Hits[hitIdx] = new CalcHit(chr, Hits, info, mob.Data, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, attackAction, skill, skillID, isRanged, hitIdx, watk);
+            }
+        }
+    }
+    public class CalcDamage
+    {
         SkillLevelData skill;
-        AttackData data;
+        public AttackData Data { get; }
         WeaponType weaponType;
         bool isRanged;
         GameCharacter chr;
         AttackOption attackOption;
         public AttackAction AttackAction { get; }
-        public CalcHit[] Hits { get; }
-        public CalcTargetDamage(GameCharacter chr, AttackData data)
+        public CalcTargetAttack[] TargetAttacks { get; }
+        public CalcDamage(GameCharacter chr, AttackData data, AttackTypes attackType)
         {
             this.chr = chr;
-            this.data = data;
-            Hits = new CalcHit[CalcConstants.MAX_HITS];
-            isRanged = (AttackTypes)data.AttackType == AttackTypes.Ranged;
+            Data = data;
+            TargetAttacks = new CalcTargetAttack[data.Attacks.Count];
+            isRanged = attackType == AttackTypes.Ranged;
             AttackAction = (AttackAction)data.Action;
             int weaponID = chr.Inventory.Equipped[Common.Enums.EquippedType.Normal][EquipSlots.Slots.Weapon]?.ItemID ?? 0;
             weaponType = GetWeaponType(weaponID);
             double weaponMastery = GetWeaponMastery();
-            double masteryModifier = weaponMastery * 5.0 + 10 * 0.009000000000000001;
+            double masteryModifier = (weaponMastery * 5.0 + 10) * 0.009000000000000001;
             var critLevel = GetCritSkill(out var critSkill);
             attackOption = (AttackOption)data.Option;
+            int watk = chr.PrimaryStats.GetTotalWatk(data.StarID);
+            int skillID = data.SkillID;
 
-            if (data.SkillID > 0)
+            if (skillID > 0)
             {
-                skill = chr.Skills.GetSkillLevelData(data.SkillID);
-                if (attackOption == AttackOption.MortalBlow)
-                {
-                    chr.CalcDamageRandomizer.Random();
-                }
+                skill = chr.Skills.GetSkillLevelData(skillID);
             }
 
-            for (int targetIdx = 0; targetIdx < data.Attacks.Count; targetIdx++)
+            if ((attackOption & AttackOption.MortalBlow) != 0)
+            {
+                chr.CalcDamageRandomizer.Random();
+            }
+
+            for (int targetIdx = 0; targetIdx < TargetAttacks.Length; targetIdx++)
             {
                 var info = data.Attacks[targetIdx];
                 var mob = chr.Field.GetMob(info.MobMapId);
                 if (mob == null) continue;
-                Roller roller = new Roller(chr.CalcDamageRandomizer, 7);
-
-                int levelDiff = Math.Max(0, mob.Level - chr.Level);
-                double targetAccuracy = chr.PrimaryStats.TotalACC * 100 / (levelDiff * 10.0 + 255.0);
-
-                for (int hitIdx = 0; hitIdx < info.Damages.Count; hitIdx++)
-                {
-                    Hits[hitIdx] = new CalcHit(this, chr, data, info, mob.Data, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, skill, isRanged, hitIdx);
-                }
-
-                if (ApplyAfterModifiers(targetIdx)) break;
+                var targetDmg = new CalcTargetAttack(chr, info, mob, critSkill, critLevel, masteryModifier, weaponType, AttackAction, skill, skillID, isRanged, watk);
+                TargetAttacks[targetIdx] = targetDmg;
+                if (ApplyAfterModifiers(targetDmg, targetIdx)) break;
             }
         }
 
-        private bool ApplyAfterModifiers(int targetIdx)
+        private bool ApplyAfterModifiers(CalcTargetAttack targetDmg, int targetIdx)
         {
             if (skill == null) return false;
             double modifier;
@@ -198,24 +228,24 @@ namespace WvsBeta.Game.Characters
             {
                 modifier = CalcConstants.SLASH_BLAST_FA_MODIFIERS[targetIdx];
             }
-            else if (data.SkillID == Hunter.Skills.ArrowBomb)
+            else if (Data.SkillID == Hunter.Skills.ArrowBomb)
             {
                 if (targetIdx > 0)
                 {
-                    modifier = skill.Damage * 0.01;
+                    modifier = skill.XValue * 0.01;
                 }
                 else
                 {
                     modifier = 0.5;
-                    if (TotalDamage == 0) brk = true;
+                    if (targetDmg.TotalDamage == 0) brk = true;
                 }
             }
-            else if (data.SkillID == Crossbowman.Skills.IronArrow)
+            else if (Data.SkillID == Crossbowman.Skills.IronArrow)
             {
                 modifier = CalcConstants.IRON_ARROW_MODIFIERS[targetIdx];
             }
             else return false;
-            foreach (CalcHit hit in Hits)
+            foreach (CalcHit hit in targetDmg.Hits)
             {
                 hit.Damage *= modifier;
             }
@@ -226,7 +256,7 @@ namespace WvsBeta.Game.Characters
             if (weaponID / 1000000 != 1) return WeaponType.None;
             int weaponType = weaponID / 10000 % 100;
             if (weaponType < 30) return WeaponType.None;
-            if (weaponType < 33 && (weaponType <= 36 || weaponType > 38 && (weaponType <= 39 || weaponType > 47))) return WeaponType.None;
+            if (weaponType > 33 && (weaponType <= 36 || weaponType > 38 && (weaponType <= 39 || weaponType > 47))) return WeaponType.None;
             return (WeaponType)weaponType;
         }
 
@@ -249,7 +279,7 @@ namespace WvsBeta.Game.Characters
 
         private double GetWeaponMastery()
         {
-            double accuracy = 0;
+            double mastery = 0;
             int skillID = 0;
             switch (weaponType)
             {
@@ -299,9 +329,9 @@ namespace WvsBeta.Game.Characters
             if (skillID != 0)
             {
                 var skill = chr.Skills.GetSkillLevelData(skillID);
-                accuracy = skill?.Mastery ?? 0;
+                mastery = skill?.Mastery ?? 0;
             }
-            return accuracy;
+            return mastery;
         }
     }
     public class CalcHit
@@ -309,9 +339,7 @@ namespace WvsBeta.Game.Characters
         public bool IsCrit { get; private set; }
         public bool IsMiss { get; private set; }
         public double Damage { get; set; }
-        CalcTargetDamage calcTargetDamage;
         Roller roller;
-        AttackData data;
         AttackInfo info;
         SkillLevelData critSkill;
         byte critLevel;
@@ -319,19 +347,21 @@ namespace WvsBeta.Game.Characters
         double targetAccuracy;
         MobData mob;
         WeaponType weaponType;
+        AttackAction attackAction;
         GameCharacter chr;
         SkillLevelData skill;
         bool isRanged;
         int hitIdx;
+        int skillID;
+        CalcHit[] hits;
         readonly int str;
         readonly int dex;
         readonly int intl;
         readonly int luk;
         readonly int watk;
         public CalcHit(
-            CalcTargetDamage calcTargetDamage,
             GameCharacter chr,
-            AttackData data,
+            CalcHit[] hits,
             AttackInfo info,
             MobData mob,
             Roller roller,
@@ -340,14 +370,17 @@ namespace WvsBeta.Game.Characters
             double masteryModifier,
             double targetAccuracy,
             WeaponType weaponType,
+            AttackAction attackAction,
             SkillLevelData skill,
+            int skillID,
             bool isRanged,
-            int hitIdx
+            int hitIdx,
+            int watk
         )
         {
-            this.calcTargetDamage = calcTargetDamage;
+            this.attackAction = attackAction;
             this.chr = chr;
-            this.data = data;
+            this.hits = hits;
             this.info = info;
             this.mob = mob;
             this.roller = roller;
@@ -359,11 +392,13 @@ namespace WvsBeta.Game.Characters
             this.skill = skill;
             this.isRanged = isRanged;
             this.hitIdx = hitIdx;
+            this.skillID = skillID;
             var stats = chr.PrimaryStats;
             str = stats.TotalStr;
             dex = stats.TotalDex;
             intl = stats.TotalInt;
-            watk = stats.GetTotalWatk(data.StarID);
+            luk = stats.TotalLuk;
+            this.watk = watk;
 
             if (GetIsMiss()) return;
             ApplyBaseDamage();
@@ -371,14 +406,14 @@ namespace WvsBeta.Game.Characters
             ApplySpecialElementModifiers();
             ApplyChargeElementModifiers();
             ApplyMobDefReduction();
-            double baseDmg = Damage;
+            int baseDmg = (int)Damage;
 
             ApplySkillDamage();
             ApplyComboAttack();
             ApplyCrit(baseDmg);
             ApplyShadowPartner();
 
-            Damage = Math.Min(99999, Math.Max(1, Damage));
+            Damage = (int)Math.Min(99999, Math.Max(1, Damage));
         }
 
         private void ApplyBaseDamage()
@@ -388,8 +423,6 @@ namespace WvsBeta.Game.Characters
                 || ProneBaseDmg()
             ) return;
             double statModifier;
-            int skillID = data.SkillID;
-            var attackAction = calcTargetDamage.AttackAction;
             bool isSwing = attackAction >= AttackAction.Swing_1H_1 && attackAction <= AttackAction.Swing_2H_7;
             switch (weaponType)
             {
@@ -539,14 +572,12 @@ namespace WvsBeta.Game.Characters
         private bool BowMeleeBaseDmg()
         {
             if (weaponType != WeaponType.Bow && weaponType != WeaponType.Crossbow) return false;
-            var action = calcTargetDamage.AttackAction;
-            if (AttackAction.Bullet_1 <= action && action <= AttackAction.Bullet_6 || action == AttackAction.Unk35) return false;
+            if (AttackAction.Bullet_1 <= attackAction && attackAction <= AttackAction.Bullet_6 || attackAction == AttackAction.Unk35) return false;
 
-            int skillID = data.SkillID;
             double dex = RollStat(this.dex);
             if (skillID != Crossbowman.Skills.PowerKnockback && skillID != Hunter.Skills.PowerKnockback)
             {
-                Damage = (str + dex) * watk * 0.05;
+                Damage = (str + dex) * watk * 0.005;
             }
             else
             {
@@ -557,8 +588,7 @@ namespace WvsBeta.Game.Characters
 
         private bool ClawMeleeBaseDmg()
         {
-            var action = calcTargetDamage.AttackAction;
-            if (weaponType != WeaponType.Claw || (AttackAction.Bullet_1 <= action && action <= AttackAction.Bullet_6) || action == AttackAction.Unk35) return false;
+            if (weaponType != WeaponType.Claw || (AttackAction.Bullet_1 <= attackAction && attackAction <= AttackAction.Bullet_6) || attackAction == AttackAction.Unk35) return false;
 
             double luk = RollStat(this.luk);
 
@@ -568,7 +598,7 @@ namespace WvsBeta.Game.Characters
 
         private bool ProneBaseDmg()
         {
-            if (calcTargetDamage.AttackAction != AttackAction.Prone) return false;
+            if (attackAction != AttackAction.Prone) return false;
             double str = RollStat(this.str);
             Damage = (dex + str) * watk * 0.005;
             return true;
@@ -584,7 +614,6 @@ namespace WvsBeta.Game.Characters
 
         void ApplySpecialElementModifiers()
         {
-            var skillID = data.SkillID;
             if (skillID == 0) return;
             if (skillID == FPMage.Skills.ElementComposition)
             {
@@ -659,7 +688,6 @@ namespace WvsBeta.Game.Characters
 
         private void ApplyMobDefReduction()
         {
-            int skillID = data.SkillID;
             if (skillID == DragonKnight.Skills.Sacrifice
                 || skillID == Hermit.Skills.ShadowMeso
                 || skillID == ChiefBandit.Skills.Assaulter
@@ -686,7 +714,6 @@ namespace WvsBeta.Game.Characters
             var orbs = chr.Buffs.mComboCount;
             if (comboSkill == null || orbs <= 0) return;
             var comboDmg = comboSkill.Damage;
-            int skillID = data.SkillID;
             double modifier;
 
             if (orbs == 1) modifier = comboDmg;
@@ -733,9 +760,8 @@ namespace WvsBeta.Game.Characters
             Damage *= modifier * 0.01;
         }
 
-        private void ApplyCrit(double baseDmg)
+        private void ApplyCrit(int baseDmg)
         {
-            int skillID = data.SkillID;
             if (skillID == Sniper.Skills.Blizzard
                 || skillID == Hermit.Skills.ShadowMeso
                 || critSkill == null
@@ -746,10 +772,10 @@ namespace WvsBeta.Game.Characters
             var roll = roller.Roll(Roller.PROP_MODIFIER);
 
             if (roll < critSkill.Property)
-            {
+            { // DMG off by one, shidword/hidword
                 IsCrit = true;
-                var critBonus = critSkill.Damage - 100;
-                Damage += critBonus * 0.01 * baseDmg;
+                int critBonus = critSkill.Damage - 100;
+                Damage += (double)critBonus * 0.01 * (double)baseDmg;
             }
         }
 
@@ -773,7 +799,7 @@ namespace WvsBeta.Game.Characters
                 dmgModifier = spSkill.XValue;
             }
 
-            var clonedDmg = calcTargetDamage.Hits[hitIdx - spHits];
+            var clonedDmg = hits[hitIdx - spHits];
             Damage = (dmgModifier * clonedDmg.Damage) / 100;
             IsCrit = clonedDmg.IsCrit;
         }
@@ -783,13 +809,12 @@ namespace WvsBeta.Game.Characters
             if (!modifier.HasValue) modifier = masteryModifier;
             var statRoll = roller.Roll(Roller.STAT_MODIFIER);
             double modifiedStat = stat * modifier.Value;
-            if (stat > modifiedStat)
+            if (stat == modifiedStat) return stat;
+            else
             {
-                stat = modifiedStat;
-            }
-            if (stat != modifiedStat)
-            {
-                stat += (modifiedStat - stat) * statRoll;
+                double least = Math.Min(stat, modifiedStat);
+                double diff = Math.Abs(stat - modifiedStat);
+                stat = least + diff * statRoll;
             }
             return stat;
         }

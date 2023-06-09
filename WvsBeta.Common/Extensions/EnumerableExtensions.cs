@@ -39,6 +39,23 @@ namespace WvsBeta.Common.Extensions
             }
             return found;
         }
+
+        public static bool TryGetValue<TValue>(this TValue[] array, int index, out TValue value)
+        {
+            value = default;
+            if (index < 0 || index > array.Length - 1) return false;
+            value = array[index];
+            return true;
+        }
+
+        public static bool TryGetValue<TValue>(this IList<TValue> list, int index, out TValue value)
+        {
+            value = default;
+            if (index < 0 || index > list.Count - 1) return false;
+            value = list[index];
+            return true;
+        }
+
         public static IList<int> Fill(this IList<int> list, int from, int to)
         {
             for (int val = from; val <= to; val++)

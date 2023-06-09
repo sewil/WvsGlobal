@@ -76,10 +76,12 @@ namespace WvsBeta.Common
                             session.pings++;
                             //Trace.WriteLine($"[{session}] Ping failed, retrying ({session.pings}/8)");
 
+                            #if !DEBUG
                             if (session.pings > 8)
                             {
                                 throw new SessionDisconnectException("Too many retries, killing connection.");
                             }
+                            #endif
                         }
                         //Trace.WriteLine($"[{sessionInfo}] Send ping");
                         session.SendPing();

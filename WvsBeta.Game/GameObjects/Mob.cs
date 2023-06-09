@@ -645,7 +645,7 @@ namespace WvsBeta.Game
 
         private int DistributeExp(out DropType OwnType, out int OwnPartyID)
         {
-            Trace.WriteLine($"Distributing EXP. EXP: {Data.EXP}");
+            //Trace.WriteLine($"Distributing EXP. EXP: {Data.EXP}");
 
             OwnType = 0;
             OwnPartyID = 0;
@@ -681,7 +681,7 @@ namespace WvsBeta.Game
             if (MaxDamageCharacterID != 0)
             {
                 Chr = CharactersTmp[MaxDamageCharacterID];
-                Trace.WriteLine($"{Chr.Name} did most damage with {MostDamage}");
+                //Trace.WriteLine($"{Chr.Name} did most damage with {MostDamage}");
             }
 
             if (DamageSum >= DamageLog.InitHP)
@@ -715,47 +715,47 @@ namespace WvsBeta.Game
                         double lastDamageBuff = 0.0;
                         if (bLast) lastDamageBuff = Data.EXP * 0.2;
 
-                        Trace.WriteLine("Last damage buff: " + lastDamageBuff);
+                        //Trace.WriteLine("Last damage buff: " + lastDamageBuff);
                         double expByDamage = Data.EXP * (double)Log.Damage;
 
-                        Trace.WriteLine("expByDamage: " + expByDamage);
+                        //Trace.WriteLine("expByDamage: " + expByDamage);
                         double IncEXP = (expByDamage * 0.8 / (double)DamageSum + lastDamageBuff);
 
 
-                        Trace.WriteLine("IncEXP: " + IncEXP);
+                        //Trace.WriteLine("IncEXP: " + IncEXP);
 
                         if (User.PrimaryStats.BuffHolySymbol.IsSet())
                         {
                             var hsBuff = (User.PrimaryStats.BuffHolySymbol.N * 0.2 + 100.0) * 0.01;
-                            Trace.WriteLine("Holy Symbol buffed: " + hsBuff);
+                            //Trace.WriteLine("Holy Symbol buffed: " + hsBuff);
                             IncEXP *= hsBuff;
                         }
 
                         IncEXP = User.m_dIncExpRate * AlterEXPbyLevel(User.Level, IncEXP) * Rate;
 
-                        Trace.WriteLine("IncEXP: " + IncEXP);
+                        //Trace.WriteLine("IncEXP: " + IncEXP);
 
                         if (!(currentHour < 13 && currentHour >= 19))
                         {
                             // Note: this is an int, set to 100 for 1.0x
                             IncEXP = ((double)GameCharacter.ms_nIncExpRate_WSE * IncEXP * 0.01);
 
-                            Trace.WriteLine("WS event: " + IncEXP);
+                            //Trace.WriteLine("WS event: " + IncEXP);
                         }
 
                         IncEXP *= Field.m_dIncRate_Exp;
-                        Trace.WriteLine("Field EXP rate IncEXP: " + IncEXP);
+                        //Trace.WriteLine("Field EXP rate IncEXP: " + IncEXP);
 
                         if (User.PrimaryStats.BuffCurse.IsSet())
                         {
                             IncEXP *= 0.5;
-                            Trace.WriteLine("Curse debuffed IncEXP: " + IncEXP);
+                            //Trace.WriteLine("Curse debuffed IncEXP: " + IncEXP);
                         }
 
-                        Trace.WriteLine("IncEXP before Max(_, 1.0) " + IncEXP);
+                        //Trace.WriteLine("IncEXP before Max(_, 1.0) " + IncEXP);
                         IncEXP = Math.Max(IncEXP, 1.0);
 
-                        Trace.WriteLine($"{User.Name} gets {IncEXP} EXP for {Log.Damage} damage");
+                        //Trace.WriteLine($"{User.Name} gets {IncEXP} EXP for {Log.Damage} damage");
 
                         User.SetupLogging();
                         User.AddEXP(IncEXP, MessageAppearType.SideWhite);

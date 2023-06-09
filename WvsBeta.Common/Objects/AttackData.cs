@@ -4,7 +4,7 @@ namespace WvsBeta.Common.Objects
 {
     public class AttackData
     {
-        public struct AttackInfo
+        public class AttackInfo
         {
             public int MobMapId { get; set; }
             public byte HitAction { get; set; }
@@ -17,6 +17,7 @@ namespace WvsBeta.Common.Objects
             public Pos PreviousMobPosition { get; set; }
             public short HitDelay { get; set; } // Effect from Meso Explosion (no instant hits)
             public List<int> Damages { get; set; }
+            public List<bool> Crits { get; set; }
         }
 
         public int SkillID { get; set; }

@@ -215,6 +215,27 @@ namespace WvsBeta.Game
                 }
             }
 
+            var calc = new CalcDamage(chr, data, type);
+            for (int attackIdx = 0; attackIdx < calc.TargetAttacks.Length; attackIdx++)
+            {
+                var info = data.Attacks[attackIdx];
+                info.Crits = new List<bool>();
+                var attack = calc.TargetAttacks[attackIdx];
+                if (attack == null) continue; // Mob dead probably
+
+                for (int hitIdx = 0; hitIdx < attack.Hits.Length; hitIdx++)
+                {
+                    var hit = attack.Hits[hitIdx];
+                    var calcDmg = Math.Floor(hit.Damage);
+                    var clientDmg = attack.Info.Damages[hitIdx];
+                    info.Crits.Add(hit.IsCrit);
+                    if (calcDmg != clientDmg)
+                    {
+                        Program.MainForm.LogAppend($"Mismatching client damage for character {chr.ID}! Expected {calcDmg}, received {clientDmg} (mob {attack.Mob.SpawnID}, hit {hitIdx}, isCrit: {hit.IsCrit})");
+                    }
+                }
+            }
+
             return true;
         }
 
@@ -775,23 +796,8 @@ namespace WvsBeta.Game
             chr.Field.SendPacket(pw, chr);
         }
 
-        private static int? GetFixedDamage(GameCharacter chr)
-        {
-            int? fixedDamage = null;
-
-            /*switch (chr.Name)
-            {
-                case "Exile": fixedDamage = 2147483647; break;
-                case "Diamondo25": fixedDamage = 25252525; break;
-                case "wackyracer": fixedDamage = 13371337; break;
-            }*/
-
-            return fixedDamage;
-        }
-
         public static void SendMeleeAttack(GameCharacter chr, AttackData data)
         {
-            var fixedDamage = GetFixedDamage(chr);
             byte tbyte = (byte)((data.Targets * 0x10) + data.Hits);
 
             Packet pw = new Packet(ServerMessages.CLOSE_RANGE_ATTACK);
@@ -822,9 +828,14 @@ namespace WvsBeta.Game
                     pw.WriteByte((byte)ai.Damages.Count);
                 }
 
-                foreach (var dmg in ai.Damages)
+                for (int dmgIdx = 0; dmgIdx < ai.Damages.Count; dmgIdx++)
                 {
-                    pw.WriteInt(fixedDamage.GetValueOrDefault(dmg));
+                    var dmg = ai.Damages[dmgIdx];
+                    if (ai.Crits.TryGetValue(dmgIdx, out bool isCrit) && isCrit)
+                    {
+                        dmg = -int.MaxValue + dmg - 1;
+                    }
+                    pw.WriteInt(dmg);
                 }
             }
 
@@ -833,8 +844,6 @@ namespace WvsBeta.Game
 
         public static void SendRangedAttack(GameCharacter chr, AttackData data)
         {
-            var fixedDamage = GetFixedDamage(chr);
-
             byte tbyte = (byte)((data.Targets * 0x10) + data.Hits);
 
             Packet pw = new Packet(ServerMessages.RANGED_ATTACK);
@@ -859,9 +868,14 @@ namespace WvsBeta.Game
                 pw.WriteInt(ai.MobMapId);
                 pw.WriteByte(ai.HitAction);
 
-                foreach (var dmg in ai.Damages)
+                for (int dmgIdx = 0; dmgIdx < ai.Damages.Count; dmgIdx++)
                 {
-                    pw.WriteInt(fixedDamage.GetValueOrDefault(dmg));
+                    var dmg = ai.Damages[dmgIdx];
+                    if (ai.Crits.TryGetValue(dmgIdx, out bool isCrit) && isCrit)
+                    {
+                        dmg = -int.MaxValue + dmg - 1;
+                    }
+                    pw.WriteInt(dmg);
                 }
             }
 
@@ -870,7 +884,6 @@ namespace WvsBeta.Game
 
         public static void SendMagicAttack(GameCharacter chr, AttackData data)
         {
-            var fixedDamage = GetFixedDamage(chr);
             byte tbyte = (byte)((data.Targets * 0x10) + data.Hits);
 
             Packet pw = new Packet(ServerMessages.MAGIC_ATTACK);
@@ -898,7 +911,7 @@ namespace WvsBeta.Game
 
                 foreach (var dmg in ai.Damages)
                 {
-                    pw.WriteInt(fixedDamage.GetValueOrDefault(dmg));
+                    pw.WriteInt(dmg);
                 }
             }
 
