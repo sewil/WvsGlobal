@@ -2,6 +2,14 @@
 
 namespace WvsBeta.Common.Objects
 {
+    public enum AttackTypes
+    {
+        Melee,
+        Ranged,
+        Magic,
+        Summon,
+    }
+
     public class AttackData
     {
         public class AttackInfo
@@ -18,6 +26,7 @@ namespace WvsBeta.Common.Objects
             public short HitDelay { get; set; } // Effect from Meso Explosion (no instant hits)
             public List<int> Damages { get; set; }
             public List<bool> Crits { get; set; }
+            public AttackData Data { get; set; }
         }
 
         public int SkillID { get; set; }
@@ -46,9 +55,12 @@ namespace WvsBeta.Common.Objects
 
         public uint RandomNumber { get; set; }
 
-        public AttackData()
+        public AttackTypes AttackTypes { get; }
+
+        public AttackData(AttackTypes attackTypes)
         {
             IsMesoExplosion = false;
+            AttackTypes = attackTypes;
         }
     }
 }

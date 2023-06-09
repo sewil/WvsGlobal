@@ -174,7 +174,6 @@ namespace WvsBeta.Common.Sessions
                         if (mode == 1)
                         {
                             uint clientCRC = pPacket.ReadUInt();
-                            Trace.WriteLine($"[{GetType()}] Received CRC {clientCRC} previousDecryptIV: {previousDecryptIV.ToContentsString()}");
                             if (ValidateCRC(previousDecryptIV, clientCRC, out uint expectedCRC))
                             {
                                 disconnect = false;

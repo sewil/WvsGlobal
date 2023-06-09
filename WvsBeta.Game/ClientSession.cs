@@ -160,7 +160,8 @@ namespace WvsBeta.Game
             ClientMessages.CHARACTER_IS_DEBUFFED,
             ClientMessages.PET_MOVE,
             ClientMessages.REACTOR_HIT,
-            ClientMessages.CLOSE_RANGE_ATTACK
+            ClientMessages.CLOSE_RANGE_ATTACK,
+            ClientMessages.SUMMON_MOVE
         };
 
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>

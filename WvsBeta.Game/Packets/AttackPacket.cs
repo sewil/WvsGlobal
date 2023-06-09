@@ -5,9 +5,10 @@ using System.Diagnostics;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
-using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Characters;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 
@@ -16,14 +17,6 @@ namespace WvsBeta.Game
     public static class AttackPacket
     {
         public static byte IncrementFromStage = 0;
-
-        public enum AttackTypes
-        {
-            Melee,
-            Ranged,
-            Magic,
-            Summon
-        }
 
         public static bool ParseAttackData(GameCharacter chr, Packet packet, out AttackData data, AttackTypes type)
         {
@@ -48,7 +41,7 @@ namespace WvsBeta.Game
             chr.LastAttackPacket = packet.PacketCreationTime;
 
 
-            AttackData ad = new AttackData();
+            AttackData ad = new AttackData(type);
             byte hits;
             byte targets;
             int skillid = 0;
@@ -92,7 +85,9 @@ namespace WvsBeta.Game
             else
             {
                 ad.SummonID = packet.ReadInt();
-                ad.AttackType = packet.ReadByte();
+                byte b = packet.ReadByte();
+                ad.Action = (byte)(b & 0x7F);
+                ad.FacesLeft = (b >> 7) == 1;
                 targets = 1;
                 hits = 1;
             }
@@ -140,20 +135,19 @@ namespace WvsBeta.Game
                 var ai = new AttackData.AttackInfo()
                 {
                     MobMapId = packet.ReadInt(),
-                    HitAction = packet.ReadByte()
+                    HitAction = packet.ReadByte(),
+                    Data = ad
                 };
                 var b = packet.ReadByte();
                 ai.ForeAction = (byte)(b & 0x7F);
                 ai.FacesLeft = b >> 7 == 1;
                 ai.FrameIndex = packet.ReadByte();
-                ai.CalcDamageStatIndex = packet.ReadByte();
+                if (type != AttackTypes.Summon)
+                {
+                    ai.CalcDamageStatIndex = packet.ReadByte();
+                }
                 ai.HitPosition = new Pos(packet);
                 ai.PreviousMobPosition = new Pos(packet);
-
-                if (type == AttackTypes.Summon)
-                {
-                    packet.Skip(1);
-                }
 
                 if (ad.IsMesoExplosion)
                 {
@@ -177,10 +171,7 @@ namespace WvsBeta.Game
                 }
                 else
                 {
-                    if (type != AttackTypes.Summon)
-                    {
-                        ai.HitDelay = packet.ReadShort();
-                    }
+                    ai.HitDelay = packet.ReadShort();
 
                     for (byte j = 0; j < hits; j++)
                     {
@@ -857,7 +848,7 @@ namespace WvsBeta.Game
             }
 
             pw.WriteByte((byte)(data.Action | (data.FacesLeft ? 1 << 7 : 0)));
-            pw.WriteByte(data.AttackType);
+            pw.WriteByte(data.Option);
 
             int mastery = chr.Skills.GetMastery();
             pw.WriteByte((byte)(mastery > 0 ? Constants.getMasteryDisplay(chr.Skills.GetSkillLevel(mastery)) : 0));

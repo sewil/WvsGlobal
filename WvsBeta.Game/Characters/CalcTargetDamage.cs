@@ -400,6 +400,12 @@ namespace WvsBeta.Game.Characters
             luk = stats.TotalLuk;
             this.watk = watk;
 
+            if (info.Data.AttackTypes == AttackTypes.Summon)
+            {
+                CalcSummonDamage();
+                return;
+            }
+
             if (GetIsMiss()) return;
             ApplyBaseDamage();
             ApplyMobLevelModifier();
@@ -414,6 +420,14 @@ namespace WvsBeta.Game.Characters
             ApplyShadowPartner();
 
             Damage = (int)Math.Min(99999, Math.Max(1, Damage));
+        }
+
+        void CalcSummonDamage()
+        {
+            var summonSkill = chr.Skills.GetSkillLevelData(info.Data.SummonID);
+            if (summonSkill == null) return;
+            double roll = roller.Roll(0.00000003000000300000031);
+            Damage = (dex * (roll + 0.7) * 2.5 + str) * summonSkill.WeaponAttack * 0.01;
         }
 
         private void ApplyBaseDamage()
