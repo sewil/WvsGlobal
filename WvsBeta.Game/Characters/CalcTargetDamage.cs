@@ -402,7 +402,10 @@ namespace WvsBeta.Game.Characters
 
             if (info.Data.AttackTypes == AttackTypes.Summon)
             {
-                CalcSummonDamage();
+                if (info.Data.SummonID == Priest.Skills.SummonDragon)
+                    CalcDragonDamage();
+                else 
+                    CalcSummonDamage();
                 return;
             }
 
@@ -428,6 +431,19 @@ namespace WvsBeta.Game.Characters
             if (summonSkill == null) return;
             double roll = roller.Roll(0.00000003000000300000031);
             Damage = (dex * (roll + 0.7) * 2.5 + str) * summonSkill.WeaponAttack * 0.01;
+        }
+
+        void CalcDragonDamage()
+        {
+            var skill = chr.Skills.GetSkillLevelData(Priest.Skills.SummonDragon);
+            if (skill == null) return;
+
+            var magic = chr.PrimaryStats.TotalMAD;
+            var totalInt = chr.PrimaryStats.TotalInt;
+            var statModifier = (mob.FS * 5.0 + 10.0) * 0.009000000000000001;
+            var rolledStat = RollStat(magic, statModifier);
+
+            Damage = (magic * 0.058 * (magic * 0.058) + totalInt * 0.5 + rolledStat * 3.3) * skill.MagicAttack * 0.01;
         }
 
         private void ApplyBaseDamage()
