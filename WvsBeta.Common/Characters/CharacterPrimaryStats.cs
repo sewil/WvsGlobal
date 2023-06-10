@@ -54,9 +54,8 @@ namespace WvsBeta.Common.Characters
         public int TotalMaxMP => CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP;
         public virtual int EVA { get { throw new NotImplementedException(); } }
         public virtual int ACC { get { throw new NotImplementedException(); } }
-        public short MAD => CharacterStat.Int;
         public short MDD => CharacterStat.Int;
-        public short TotalMAD => (short)Math.Max(0, Math.Min(MAD + EquipBonuses.MAD + BuffBonuses.MAD, 1999));
+        public short TotalMAD => (short)Math.Max(0, Math.Min(TotalInt + EquipBonuses.MAD + BuffBonuses.MAD, 1999));
         public short TotalMDD => (short)Math.Max(0, Math.Min(MDD + EquipBonuses.MDD + BuffBonuses.MDD, 1999));
         public short TotalPAD => (short)Math.Max(0, Math.Min(EquipBonuses.PAD + BuffBonuses.PAD, 1999));
         public short TotalPDD => (short)Math.Max(0, Math.Min(EquipBonuses.PDD + BuffBonuses.PDD, 1999));
@@ -167,6 +166,21 @@ namespace WvsBeta.Common.Characters
         public virtual bool HasBuff(int skillOrItemID)
         {
             throw new NotImplementedException();
+        }
+
+        public void UpdateBuffBonuses()
+        {
+            BuffBonuses.ACC = BuffAccurancy.N;
+            BuffBonuses.Craft = BuffHands.N;
+            BuffBonuses.EVA = BuffAvoidability.N;
+            BuffBonuses.Jump = BuffJump.N;
+            BuffBonuses.MAD = BuffMagicAttack.N;
+            BuffBonuses.MaxHP = (short)(CharacterStat.MaxHP * (BuffMaxHP.N * 0.01));
+            BuffBonuses.MaxMP = (short)(CharacterStat.MaxMP * (BuffMaxMP.N * 0.01));
+            BuffBonuses.MDD = BuffMagicDefense.N;
+            BuffBonuses.PAD = BuffWeaponAttack.N;
+            BuffBonuses.PDD = BuffWeaponDefense.N;
+            BuffBonuses.Speed = BuffSpeed.N;
         }
     }
 }

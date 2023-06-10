@@ -181,6 +181,7 @@ namespace WvsBeta.Game
             Trace.WriteLine($"Added buffs {added}");
 
             Character.FlushDamageLog();
+            Character.PrimaryStats.UpdateBuffBonuses();
 
             if (!sendPacket) return;
             BuffPacket.AddBuffs(Character, added, delay);
@@ -193,6 +194,7 @@ namespace WvsBeta.Game
             Trace.WriteLine($"Removed buffs {removed}");
 
             Character.FlushDamageLog();
+            Character.PrimaryStats.UpdateBuffBonuses();
 
             if (!sendPacket) return;
             BuffPacket.RemoveBuffs(Character, removed);
