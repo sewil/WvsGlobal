@@ -161,7 +161,7 @@ namespace WvsBeta.Game
             ClientMessages.PET_MOVE,
             ClientMessages.REACTOR_HIT,
             ClientMessages.CLOSE_RANGE_ATTACK,
-            ClientMessages.SUMMON_MOVE
+            ClientMessages.SUMMON_MOVE, ClientMessages.MAGIC_ATTACK
         };
 
         private static readonly HashSet<ServerMessages> ignoreServerPackets = new HashSet<ServerMessages>

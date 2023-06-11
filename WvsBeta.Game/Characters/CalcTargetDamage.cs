@@ -6,7 +6,6 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using static WvsBeta.Common.Constants;
 using static WvsBeta.Common.Objects.AttackData;
-using static WvsBeta.Game.AttackPacket;
 
 namespace WvsBeta.Game.Characters
 {
@@ -136,12 +135,18 @@ namespace WvsBeta.Game.Characters
             return rollValue;
         }
     }
+    public class ElementAmpData
+    {
+        public int Magic;
+        public int Mana;
+    }
     public class CalcTargetAttack
     {
         public CalcHit[] Hits { get; }
         public Mob Mob { get; }
         public double TotalDamage => Hits.Sum(h => h.Damage);
         public AttackInfo Info { get; }
+        public GameCharacter Character { get; }
 
         public CalcTargetAttack(
             GameCharacter chr,
@@ -158,18 +163,82 @@ namespace WvsBeta.Game.Characters
             int watk
         )
         {
+            Character = chr;
             Mob = mob;
             Info = info;
             Hits = new CalcHit[info.Damages.Count];
             Roller roller = new Roller(chr.CalcDamageRandomizer, 7);
 
-            int levelDiff = Math.Max(0, mob.Level - chr.Level);
-            double targetAccuracy = chr.PrimaryStats.TotalACC * 100 / (levelDiff * 10.0 + 255.0);
+            ElementAmpData ampData = GetElementAmplification();
+
+            double targetAccuracy = GetTargetAccuracy();
 
             for (int hitIdx = 0; hitIdx < Hits.Length; hitIdx++)
             {
-                Hits[hitIdx] = new CalcHit(chr, Hits, info, mob.Data, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, attackAction, skill, skillID, isRanged, hitIdx, watk);
+                Hits[hitIdx] = new CalcHit(chr, Hits, info, mob.Data, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, attackAction, skill, skillID, isRanged, hitIdx, watk, ampData);
             }
+        }
+
+        public static bool IsJob(short charJobID, short jobID)
+        {
+            if (jobID % 100 != 0)
+                return jobID / 10 == charJobID / 10 && charJobID % 10 >= jobID % 10;
+            else
+                return jobID / 100 == charJobID / 100;
+        }
+
+        public ElementAmpData GetElementAmplification()
+        {
+            short jobID = Character.Job;
+            int ampSkillID = 0;
+            int skillID = Info.Data.SkillID;
+            if (IsJob(jobID, FPMage.ID))
+            {
+                ampSkillID = FPMage.Skills.ElementAmplification;
+            }
+            else if (IsJob(jobID, ILMage.ID))
+            {
+                ampSkillID = ILMage.Skills.ElementAmplification;
+            }
+            var ampData = new ElementAmpData { Magic = 100, Mana = 100 };
+            if (ampSkillID > 0)
+            {
+                var ampSkill = Character.Skills.GetSkillLevelData(ampSkillID);
+                bool skipMP = false;
+                // Basically only draw extra mp if its an attack skill, taken from client
+                if (skillID > FPMage.Skills.ElementComposition && (
+                    skillID < ILWizard.Skills.ColdBeam || skillID > ILWizard.Skills.ThunderBolt && (
+                        skillID <= 2211001 || skillID > ILMage.Skills.Lightening && skillID != ILMage.Skills.ElementComposition
+                    )
+                )) skipMP = true;
+                else if (skillID != FPMage.Skills.ElementComposition
+                    && (skillID < Magician.Skills.EnergyBolt
+                    || skillID > Magician.Skills.MagicClaw
+                    && (skillID <= FPWizard.Skills.Slow || skillID > FPWizard.Skills.PoisonBreath && (skillID <= FPMage.Skills.ElementAmplification || skillID > FPMage.Skills.PoisonMyst))
+                )) skipMP = true;
+                if (!skipMP)
+                {
+                    ampData.Mana = ampSkill.XValue;
+                }
+                ampData.Magic = ampSkill.YValue;
+            }
+            return ampData;
+        }
+
+        public double GetTargetAccuracy()
+        {
+            int levelDiff = Math.Max(0, Mob.Level - Character.Level);
+            var stats = Character.PrimaryStats;
+            int accuracy;
+            if (Info.Data.AttackTypes == AttackTypes.Magic)
+            {
+                accuracy = 5 * (stats.TotalInt / 10 + stats.TotalLuk / 10);
+            }
+            else
+            {
+                accuracy = stats.TotalACC;
+            }
+            return accuracy * 100 / (levelDiff * 10.0 + 255.0);
         }
     }
     public class CalcDamage
@@ -191,17 +260,14 @@ namespace WvsBeta.Game.Characters
             AttackAction = (AttackAction)data.Action;
             int weaponID = chr.Inventory.Equipped[Common.Enums.EquippedType.Normal][EquipSlots.Slots.Weapon]?.ItemID ?? 0;
             weaponType = GetWeaponType(weaponID);
-            double weaponMastery = GetWeaponMastery();
-            double masteryModifier = (weaponMastery * 5.0 + 10) * 0.009000000000000001;
+            
+            int skillID = data.SkillID;
+            if (skillID > 0) skill = chr.Skills.GetSkillLevelData(skillID);
+
+            double masteryModifier = GetMasteryModifier();
             var critLevel = GetCritSkill(out var critSkill);
             attackOption = (AttackOption)data.Option;
             int watk = chr.PrimaryStats.GetTotalWatk(data.StarID);
-            int skillID = data.SkillID;
-
-            if (skillID > 0)
-            {
-                skill = chr.Skills.GetSkillLevelData(skillID);
-            }
 
             if ((attackOption & AttackOption.MortalBlow) != 0)
             {
@@ -217,6 +283,20 @@ namespace WvsBeta.Game.Characters
                 TargetAttacks[targetIdx] = targetDmg;
                 if (ApplyAfterModifiers(targetDmg, targetIdx)) break;
             }
+        }
+
+        private double GetMasteryModifier()
+        {
+            double mastery;
+            if (Data.AttackTypes == AttackTypes.Magic)
+            {
+                mastery = skill.Mastery;
+            }
+            else
+            {
+                mastery = GetWeaponMastery();
+            }
+            return (mastery * 5.0 + 10) * 0.009000000000000001;
         }
 
         private bool ApplyAfterModifiers(CalcTargetAttack targetDmg, int targetIdx)
@@ -354,6 +434,7 @@ namespace WvsBeta.Game.Characters
         int hitIdx;
         int skillID;
         CalcHit[] hits;
+        AttackTypes attackType;
         readonly int str;
         readonly int dex;
         readonly int intl;
@@ -375,7 +456,8 @@ namespace WvsBeta.Game.Characters
             int skillID,
             bool isRanged,
             int hitIdx,
-            int watk
+            int watk,
+            ElementAmpData ampData
         )
         {
             this.attackAction = attackAction;
@@ -399,8 +481,9 @@ namespace WvsBeta.Game.Characters
             intl = stats.TotalInt;
             luk = stats.TotalLuk;
             this.watk = watk;
+            attackType = info.Data.AttackTypes;
 
-            if (info.Data.AttackTypes == AttackTypes.Summon)
+            if (attackType == AttackTypes.Summon)
             {
                 if (info.Data.SummonID == Priest.Skills.SummonDragon)
                     CalcDragonDamage();
@@ -411,20 +494,56 @@ namespace WvsBeta.Game.Characters
 
             if (GetIsMiss()) return;
             ApplyBaseDamage();
-            ApplyMobLevelModifier();
-            ApplySpecialElementModifiers();
-            ApplyChargeElementModifiers();
+            if (attackType != AttackTypes.Magic)
+                ApplyMobLevelModifier();
+            ApplySpecialElementModifiers(Damage * ampData.Magic * 0.01);
+            if (attackType != AttackTypes.Magic) ApplyChargeElementModifiers();
             ApplyMobDefReduction();
-            int baseDmg = (int)Damage;
 
-            ApplySkillDamage();
-            ApplyComboAttack();
-            ApplyCrit(baseDmg);
-            ApplyShadowPartner();
+            if (attackType != AttackTypes.Magic)
+            {
+                int baseDmg = (int)Damage;
+                ApplySkillDamage();
+                ApplyComboAttack();
+                ApplyCrit(baseDmg);
+                ApplyShadowPartner();
+            }
+            else
+            {
+                // Check mob+248
+                int mob248 = 0;
+                if (mob248 > 0)
+                {
+                    Damage *= mob248 * 0.01;
+                }
+            }
 
             Damage = (int)Math.Min(99999, Math.Max(1, Damage));
         }
 
+        void CalcMagicBaseDamage()
+        {
+            var totalMAD = chr.PrimaryStats.TotalMAD;
+            if (skillID == Cleric.Skills.Heal)
+            {
+                int targets = info.Data.Attacks.Count + 1; // Targets including self
+                double rolledStat = RollStat(intl, 0.8, 0.2);
+                Damage = (rolledStat * 1.5 + luk)
+                    * (targets * 0.3 + 1.0)
+                    * (skill.HPProperty
+                     * 0.01)
+                    * totalMAD
+                    * 0.005
+                    / targets;
+            }
+            else
+            {
+                double rolledStat = RollStat(totalMAD);
+                Damage = (intl * 0.5 + totalMAD * 0.058 * (totalMAD * 0.058) + rolledStat * 3.3)
+                    * skill.MagicAttack
+                    * 0.01;
+            }
+        }
         void CalcSummonDamage()
         {
             var summonSkill = chr.Skills.GetSkillLevelData(info.Data.SummonID);
@@ -452,6 +571,11 @@ namespace WvsBeta.Game.Characters
                 || ClawMeleeBaseDmg()
                 || ProneBaseDmg()
             ) return;
+            if (attackType == AttackTypes.Magic)
+            {
+                CalcMagicBaseDamage();
+                return;
+            }
             double statModifier;
             bool isSwing = attackAction >= AttackAction.Swing_1H_1 && attackAction <= AttackAction.Swing_2H_7;
             switch (weaponType)
@@ -582,18 +706,26 @@ namespace WvsBeta.Game.Characters
         private bool GetIsMiss()
         {
             double roll = roller.Roll(Roller.STAT_MODIFIER);
-            var v31 = 0;
-            var v32 = 0;
 
-            var minTACC = targetAccuracy * 0.7;
-            var randTACC = targetAccuracy * 1.3;
-            var maxTACC = targetAccuracy * 1.3;
-            if (v31 == 0 && v32 == 0)
+            double minModifier;
+            double maxModifier;
+            if (info.Data.AttackTypes == AttackTypes.Magic)
             {
-                randTACC = minTACC;
+                minModifier = 0.5;
+                maxModifier = 1.2;
             }
-            randTACC += (minTACC - randTACC) * roll;
-            var mobAvoid = Math.Min(999, mob.Eva);
+            else
+            {
+                minModifier = 0.7;
+                maxModifier = 1.3;
+            }
+
+            double minTACC = targetAccuracy * minModifier;
+            double randTACC = minTACC;
+            double maxTACC = targetAccuracy * maxModifier;
+            
+            randTACC += (maxTACC - randTACC) * roll;
+            int mobAvoid = Math.Min(999, mob.Eva);
 
             IsMiss = randTACC < mobAvoid;
             return IsMiss;
@@ -642,22 +774,23 @@ namespace WvsBeta.Game.Characters
             }
         }
 
-        void ApplySpecialElementModifiers()
+        void ApplySpecialElementModifiers(double dmg)
         {
-            if (skillID == 0) return;
-            if (skillID == FPMage.Skills.ElementComposition)
+            double newDmg;
+            if (skillID == FPMage.Skills.ElementComposition || skillID == ILMage.Skills.ElementComposition)
             {
-                var dmg = Damage * 0.5;
-                var total = ApplyMobElemModifier(dmg, (ElementModifier)mob.elemModifiers[SkillElement.Fire]);
-                total += ApplyMobElemModifier(dmg, (ElementModifier)mob.elemModifiers[SkillElement.Poison]);
-                Damage = total;
-            }
-            else if (skillID == ILMage.Skills.ElementComposition)
-            {
-                var dmg = Damage * 0.5;
-                var total = ApplyMobElemModifier(dmg, (ElementModifier)mob.elemModifiers[SkillElement.Ice]);
-                total += ApplyMobElemModifier(dmg, (ElementModifier)mob.elemModifiers[SkillElement.Lightning]);
-                Damage = total;
+                double halfDmg = dmg * 0.5;
+                SkillElement[] elements;
+                if (skillID == FPMage.Skills.ElementComposition) elements = new SkillElement[] { SkillElement.Fire, SkillElement.Poison };
+                else elements = new SkillElement[] { SkillElement.Ice, SkillElement.Lightning };
+
+                double total = 0.0;
+                foreach (SkillElement element in elements)
+                {
+                    var mobifier = (ElementModifier)mob.elemModifiers.GetValue(element);
+                    total += ApplyMobElemModifier(halfDmg, mobifier);
+                }
+                newDmg = total;
             }
             else
             {
@@ -667,8 +800,9 @@ namespace WvsBeta.Game.Characters
                     modifier = (20 + skill.Level) * 0.0099999998;
                 }
                 var elemModifier = (ElementModifier)mob.elemModifiers.GetValue(skill.ElementFlags);
-                Damage = ApplyMobElemModifier(Damage, elemModifier, modifier);
+                newDmg = ApplyMobElemModifier(dmg, elemModifier, modifier);
             }
+            Damage = newDmg;
         }
         void ApplyChargeElementModifiers()
         {
@@ -723,9 +857,11 @@ namespace WvsBeta.Game.Characters
                 || skillID == ChiefBandit.Skills.Assaulter
             ) return;
 
-            double mobPDD = Math.Min(999, mob.PDD);
-            double redMin = mobPDD * 0.5;
-            double redMax = mobPDD * 0.6;
+            double mobDef = attackType == AttackTypes.Magic ? mob.MDD : mob.PDD;
+            mobDef = Math.Min(999, mobDef);
+
+            double redMin = mobDef * 0.5;
+            double redMax = mobDef * 0.6;
             double reduction = redMin;
             double statRoll = roller.Roll(Roller.STAT_MODIFIER);
             reduction += (redMax - reduction) * statRoll;
@@ -834,19 +970,20 @@ namespace WvsBeta.Game.Characters
             IsCrit = clonedDmg.IsCrit;
         }
 
-        private double RollStat(double stat, double? modifier = null)
+        private double RollStat(double stat, double? masteryModifier = null, double statModifier = 1.0)
         {
-            if (!modifier.HasValue) modifier = masteryModifier;
+            if (!masteryModifier.HasValue) masteryModifier = this.masteryModifier;
             var statRoll = roller.Roll(Roller.STAT_MODIFIER);
-            double modifiedStat = stat * modifier.Value;
-            if (stat == modifiedStat) return stat;
+            double modifiedStat = stat * statModifier;
+            double masteryStat = stat * masteryModifier.Value;
+            if (modifiedStat == masteryStat) return modifiedStat;
             else
             {
-                double least = Math.Min(stat, modifiedStat);
-                double diff = Math.Abs(stat - modifiedStat);
-                stat = least + diff * statRoll;
+                double least = Math.Min(modifiedStat, masteryStat);
+                double diff = Math.Abs(modifiedStat - masteryStat);
+                modifiedStat = least + diff * statRoll;
             }
-            return stat;
+            return modifiedStat;
         }
     }
 }
