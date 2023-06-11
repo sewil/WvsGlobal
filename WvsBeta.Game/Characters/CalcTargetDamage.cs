@@ -776,6 +776,7 @@ namespace WvsBeta.Game.Characters
 
         void ApplySpecialElementModifiers(double dmg)
         {
+            if (skill == null) return;
             double newDmg;
             if (skillID == FPMage.Skills.ElementComposition || skillID == ILMage.Skills.ElementComposition)
             {
