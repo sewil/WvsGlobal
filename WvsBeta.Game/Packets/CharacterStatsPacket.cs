@@ -384,7 +384,7 @@ namespace WvsBeta.Game
                 mobSkillLevel = pr.ReadByte();
                 mobSkillId = pr.ReadByte(); // (short >> 8)
 
-                Trace.WriteLine($"Got a hit with {attack} attack, mobSkillLevel {mobSkillLevel}, mobSkillId {mobSkillId}");
+                //Trace.WriteLine($"Got a hit with {attack} attack, mobSkillLevel {mobSkillLevel}, mobSkillId {mobSkillId}");
 
             }
             else
@@ -435,7 +435,7 @@ namespace WvsBeta.Game
                     // MagicGuard doesn't show reduced damage.
 
 
-                    Trace.WriteLine($"Reducing damage by MG. Reflected {damageEaten}");
+                    //Trace.WriteLine($"Reducing damage by MG. Reflected {damageEaten}");
 
                     //Program.MainForm.LogAppend("MG Damage before change: " + actualHPEffect);
                     actualHPEffect += damageEaten;
@@ -465,7 +465,7 @@ namespace WvsBeta.Game
 
                     mob.CheckDead(mob.Position);
 
-                    Trace.WriteLine($"Reducing damage by PG. Reflected {damageReflectedBack}");
+                    //Trace.WriteLine($"Reducing damage by PG. Reflected {damageReflectedBack}");
                     actualHPEffect += damageReflectedBack; // Buff 'damaged' hp, so its less
                     healSkillId = skillId;
                 }
@@ -504,7 +504,7 @@ namespace WvsBeta.Game
 
                                 chr.Inventory.AddMesos(-(mesoLoss), false);
 
-                                Trace.WriteLine($"Reducing damage by mesos. Mesos: {mesoLoss}, maxMesos {maxMesosUsable}, reduction {damageReduction}");
+                                //Trace.WriteLine($"Reducing damage by mesos. Mesos: {mesoLoss}, maxMesos {maxMesosUsable}, reduction {damageReduction}");
                                 actualHPEffect += damageReduction;
                                 reducedDamage -= reducedDamage;
                             }
@@ -535,8 +535,8 @@ namespace WvsBeta.Game
 
             }
 
-            Trace.WriteLine($"Showing damage: {reducedDamage}, {damage}");
-            Trace.WriteLine($"Applying damage: HP {actualHPEffect}, MP: {actualMPEffect}");
+            //Trace.WriteLine($"Showing damage: {reducedDamage}, {damage}");
+            //Trace.WriteLine($"Applying damage: HP {actualHPEffect}, MP: {actualMPEffect}");
 
             if (actualHPEffect < 0) chr.ModifyHP((short)actualHPEffect);
             if (actualMPEffect < 0) chr.ModifyMP((short)actualMPEffect);

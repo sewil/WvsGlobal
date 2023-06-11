@@ -389,6 +389,9 @@ namespace WvsBeta.Game.Characters
                 case WeaponType.BW2H:
                     skillID = Page.Skills.BwMastery;
                     break;
+                case WeaponType.Dagger:
+                    skillID = Bandit.Skills.DaggerMastery;
+                    break;
                 case WeaponType.Spear:
                     skillID = Spearman.Skills.SpearMastery;
                     break;
