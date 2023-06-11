@@ -26,6 +26,7 @@ namespace WvsBeta.Common.Objects
 
         public short XValue { get; set; }
         public short YValue { get; set; }
+        public short ZValue { get; set; }
 
         public short Speed { get; set; }
         public short Jump { get; set; }

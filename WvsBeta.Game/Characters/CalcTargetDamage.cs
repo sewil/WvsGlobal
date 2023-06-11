@@ -810,12 +810,14 @@ namespace WvsBeta.Game.Characters
             var buff = chr.PrimaryStats.BuffCharges;
             if (!buff.IsSet()) return;
 
-            int skillID = buff.R;
-            if (skillID < WhiteKnight.Skills.SwordFireCharge || skillID > WhiteKnight.Skills.BwLitCharge) return;
+            int buffSkillID = buff.R;
+            if (buffSkillID < WhiteKnight.Skills.SwordFireCharge || buffSkillID > WhiteKnight.Skills.BwLitCharge) return;
+            var chargeSkill = chr.Skills.GetSkillLevelData(buffSkillID);
+            if (chargeSkill == null) return;
 
-            var element = skill.ElementFlags;
-            double specialModifier = (skill.Level * 3 + 10) * 0.01;
-            double damageModifier = skill.Damage * 0.01;
+            var element = chargeSkill.ElementFlags;
+            double specialModifier = chargeSkill.ZValue * 0.0099999998;
+            double damageModifier = chargeSkill.Damage * 0.0099999998;
             var elemModifier = (ElementModifier)mob.elemModifiers.GetValue(element);
             double dmg = damageModifier * Damage;
             Damage = ApplyMobElemModifier(dmg, elemModifier, specialModifier);

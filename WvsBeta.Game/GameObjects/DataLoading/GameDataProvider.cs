@@ -1038,14 +1038,16 @@ namespace WvsBeta.Game
                             case "action": // Stance
                             case "ball":
                             case "hit":
-                            case "bulletConsume": // Avenger uses like 3 stars
-                            case "z": break;
+                            case "bulletConsume": break; // Avenger uses like 3 stars
 
                             case "x":
                                 sld.XValue = nxNode.ValueInt16();
                                 break;
                             case "y":
                                 sld.YValue = nxNode.ValueInt16();
+                                break;
+                            case "z":
+                                sld.ZValue = nxNode.ValueInt16();
                                 break;
                             case "attackCount":
                                 sld.HitCount = nxNode.ValueByte();
