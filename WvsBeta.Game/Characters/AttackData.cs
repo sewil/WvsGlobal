@@ -55,6 +55,7 @@ namespace WvsBeta.Game.Characters
 
         public bool IsMesoExplosion { get; set; }
         public short MesoExplosionKillDelay { get; set; }
+        public List<Drop> MesoExplosionDrops { get; } = new List<Drop>();
         public uint RandomNumber { get; set; }
 
         public AttackTypes AttackTypes { get; }

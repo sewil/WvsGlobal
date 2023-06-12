@@ -194,6 +194,7 @@ namespace WvsBeta.Game
                     byte targetByte = packet.ReadByte();
 
                     if (!chr.Field.DropPool.Drops.TryGetValue(objectID, out var drop) || !drop.Reward.Mesos) continue;
+                    ad.MesoExplosionDrops.Add(drop);
 
                     for (byte targetIdx = 0; targetIdx < ad.Attacks.Count; targetIdx++)
                     {
@@ -445,7 +446,7 @@ namespace WvsBeta.Game
                 case Constants.ChiefBandit.Skills.MesoExplosion:
                     {
                         byte i = 0;
-                        foreach (var drop in ad.Attacks.SelectMany(a => a.MesoExplosionDrops))
+                        foreach (var drop in ad.MesoExplosionDrops)
                         {
                             var delay = (short)Math.Min(1000, ad.MesoExplosionKillDelay + (100 * (i % 5)));
                             chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.Explode, delay);
