@@ -185,7 +185,6 @@
     <Compile Include="MemoryRegions.cs" />
     <Compile Include="Characters\Pos.cs" />
     <Compile Include="DataProviders\DataProvider.cs" />
-    <Compile Include="Objects\AttackData.cs" />
     <Compile Include="Objects\Item.cs" />
     <Compile Include="Objects\BonusSet.cs" />
     <Compile Include="Objects\BuffStats\BuffStat_DragonBlood.cs" />

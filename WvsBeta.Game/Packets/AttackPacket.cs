@@ -185,8 +185,27 @@ namespace WvsBeta.Game
 
             ad.PlayerPosition = new Pos(packet);
 
-            data = ad;
+            if (ad.SkillID == Constants.ChiefBandit.Skills.MesoExplosion)
+            {
+                byte items = packet.ReadByte();
+                for (byte i = 0; i < items; i++)
+                {
+                    int objectID = packet.ReadInt();
+                    byte targetByte = packet.ReadByte();
 
+                    if (!chr.Field.DropPool.Drops.TryGetValue(objectID, out var drop) || !drop.Reward.Mesos) continue;
+
+                    for (byte targetIdx = 0; targetIdx < ad.Attacks.Count; targetIdx++)
+                    {
+                        if ((targetByte & (byte)Math.Pow(2, targetIdx)) == 0) continue;
+                        ad.Attacks[targetIdx].MesoExplosionDrops.Add(drop);
+                    }
+                }
+
+                ad.MesoExplosionKillDelay = packet.ReadShort();
+            }
+
+            data = ad;
 
             if (ad.Hits != 0)
             {
@@ -253,30 +272,6 @@ namespace WvsBeta.Game
             int StolenMP = 0;
             int MpStealSkillID = chr.Skills.GetMpStealSkillData(2, out int MpStealProp, out int MpStealPercent, out byte MpStealLevel);
 
-            List<Drop> dropsToPop = null;
-            short delayForMesoExplosionKill = 0;
-            if (ad.SkillID == Constants.ChiefBandit.Skills.MesoExplosion)
-            {
-                byte items = packet.ReadByte();
-                dropsToPop = new List<Drop>(items);
-                byte i;
-                for (i = 0; i < items; i++)
-                {
-                    int objectID = packet.ReadInt();
-                    packet.Skip(1);
-
-                    if (chr.Field.DropPool.Drops.TryGetValue(objectID, out var drop) &&
-                        drop.Reward.Mesos)
-                    {
-                        dropsToPop.Add(drop);
-                    }
-                }
-
-                delayForMesoExplosionKill = packet.ReadShort();
-
-            }
-
-
             var sld = ad.SkillID == 0 ? null : GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
             long buffTime = sld?.BuffTime * 1000 ?? 0;
             long buffExpireTime = MasterThread.CurrentTime + buffTime;
@@ -314,7 +309,7 @@ namespace WvsBeta.Game
                             return;
                     }
 
-                    died = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? delayForMesoExplosionKill : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
+                    died = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? ad.MesoExplosionKillDelay : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
 
                     //TODO sometimes when attacking without using a skill this gets triggered and throws a exception?
                     if (died || ad.SkillID <= 0) continue;
@@ -450,9 +445,9 @@ namespace WvsBeta.Game
                 case Constants.ChiefBandit.Skills.MesoExplosion:
                     {
                         byte i = 0;
-                        foreach (var drop in dropsToPop)
+                        foreach (var drop in ad.Attacks.SelectMany(a => a.MesoExplosionDrops))
                         {
-                            var delay = (short)Math.Min(1000, delayForMesoExplosionKill + (100 * (i % 5)));
+                            var delay = (short)Math.Min(1000, ad.MesoExplosionKillDelay + (100 * (i % 5)));
                             chr.Field.DropPool.RemoveDrop(drop, RewardLeaveType.Explode, delay);
                             i++;
                         }

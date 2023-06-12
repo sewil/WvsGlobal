@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
+using WvsBeta.Common;
 
-namespace WvsBeta.Common.Objects
+namespace WvsBeta.Game.Characters
 {
     public enum AttackTypes
     {
@@ -27,6 +28,7 @@ namespace WvsBeta.Common.Objects
             public List<int> Damages { get; set; }
             public List<bool> Crits { get; set; }
             public AttackData Data { get; set; }
+            public List<Drop> MesoExplosionDrops { get; } = new List<Drop>();
         }
 
         public int SkillID { get; set; }
@@ -52,7 +54,7 @@ namespace WvsBeta.Common.Objects
         public List<AttackInfo> Attacks { get; set; } = new List<AttackInfo>();
 
         public bool IsMesoExplosion { get; set; }
-
+        public short MesoExplosionKillDelay { get; set; }
         public uint RandomNumber { get; set; }
 
         public AttackTypes AttackTypes { get; }

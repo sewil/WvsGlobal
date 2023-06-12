@@ -5,6 +5,7 @@ using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Tracking;
+using WvsBeta.Game.Characters;
 
 namespace WvsBeta.Game
 {
@@ -165,7 +166,7 @@ namespace WvsBeta.Game
             return mp;
         }
 
-        public override void UseMeleeAttack(int skillid, AttackData attackData)
+        public void UseMeleeAttack(int skillid, AttackData attackData)
         {
             if (!GameDataProvider.Skills.TryGetValue(skillid, out var skillData)) return;
 

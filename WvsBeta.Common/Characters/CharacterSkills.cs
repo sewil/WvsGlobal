@@ -60,11 +60,6 @@ namespace WvsBeta.Common.Characters
             throw new NotImplementedException();
         }
 
-        public virtual void UseMeleeAttack(int skillid, AttackData attackData)
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual void UseRangedAttack(int skillid, short pos)
         {
             throw new NotImplementedException();

@@ -5,7 +5,7 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using static WvsBeta.Common.Constants;
-using static WvsBeta.Common.Objects.AttackData;
+using static WvsBeta.Game.Characters.AttackData;
 
 namespace WvsBeta.Game.Characters
 {
@@ -494,6 +494,11 @@ namespace WvsBeta.Game.Characters
                     CalcSummonDamage();
                 return;
             }
+            else if (skillID == Constants.ChiefBandit.Skills.MesoExplosion)
+            {
+                CalcMesoExplosion();
+                return;
+            }
 
             if (GetIsMiss()) return;
             ApplyBaseDamage();
@@ -523,7 +528,24 @@ namespace WvsBeta.Game.Characters
 
             Damage = (int)Math.Min(99999, Math.Max(1, Damage));
         }
-
+        void CalcMesoExplosion()
+        {
+            double mesosUsed = info.MesoExplosionDrops[hitIdx].Reward.Drop;
+            double mesoModifier;
+            if (mesosUsed <= 1000)
+            {
+                mesoModifier = (mesosUsed * 0.82 + 28.0) * 0.0001886792452830189;
+            }
+            else
+            {
+                mesoModifier = mesosUsed / (mesosUsed + 5250);
+            }
+            double skillDmgX = skill.XValue;
+            var roll = roller.Roll(0.0000000500000050000005);
+            Damage = (50 * skill.XValue)
+                * (roll + 0.5)
+                * mesoModifier;
+        }
         void CalcMagicBaseDamage()
         {
             var totalMAD = chr.PrimaryStats.TotalMAD;

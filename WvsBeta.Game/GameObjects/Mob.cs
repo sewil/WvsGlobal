@@ -10,6 +10,7 @@ using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 using WvsBeta.Game.Packets;
 using WvsBeta.Common.Extensions;
+using WvsBeta.Game.Characters;
 
 namespace WvsBeta.Game
 {
