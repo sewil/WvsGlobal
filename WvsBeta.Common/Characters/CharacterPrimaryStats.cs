@@ -53,14 +53,12 @@ namespace WvsBeta.Common.Characters
         public int TotalMaxHP => CharacterStat.MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP;
         public int TotalMaxMP => CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP;
         public virtual int EVA { get { throw new NotImplementedException(); } }
-        public virtual int ACC { get { throw new NotImplementedException(); } }
         public short MDD => CharacterStat.Int;
         public short TotalMAD => (short)Math.Max(0, Math.Min(TotalInt + EquipBonuses.MAD + BuffBonuses.MAD, 1999));
         public short TotalMDD => (short)Math.Max(0, Math.Min(MDD + EquipBonuses.MDD + BuffBonuses.MDD, 1999));
         public short TotalPAD => (short)Math.Max(0, Math.Min(EquipBonuses.PAD + BuffBonuses.PAD, 1999));
         public short TotalPDD => (short)Math.Max(0, Math.Min(EquipBonuses.PDD + BuffBonuses.PDD, 1999));
 
-        public short TotalACC => (short)Math.Max(0, Math.Min(ACC + EquipBonuses.ACC + BuffBonuses.ACC, 999));
         public short TotalEVA => (short)Math.Max(0, Math.Min(EVA + EquipBonuses.EVA + BuffBonuses.EVA, 999));
         public short TotalCraft => (short)Math.Max(0, Math.Min(Craft + EquipBonuses.Craft + BuffBonuses.Craft, 999));
         public short TotalJump => (short)Math.Max(100, Math.Min(EquipBonuses.Jump + BuffBonuses.Jump, 123));

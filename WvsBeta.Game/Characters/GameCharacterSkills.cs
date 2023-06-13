@@ -247,24 +247,17 @@ namespace WvsBeta.Game
             return bonus;
         }
 
-        public override int GetMastery()
+        public int GetMastery()
         {
             var masteryid = 0;
             switch (Constants.getItemType(Character.Inventory.GetEquippedItemId(Constants.EquipSlots.Slots.Weapon, EquippedType.Normal)))
             {
                 case (int)Constants.Items.Types.ItemTypes.Weapon1hSword:
                 case (int)Constants.Items.Types.ItemTypes.Weapon2hSword:
-                    switch (Character.CharacterStat.Job)
-                    {
-                        case Constants.Fighter.ID:
-                        case Constants.Crusader.ID:
-                            masteryid = Constants.Fighter.Skills.SwordMastery;
-                            break;
-                        case Constants.Page.ID:
-                        case Constants.WhiteKnight.ID:
-                            masteryid = Constants.Page.Skills.SwordMastery;
-                            break;
-                    }
+                    if (Character.Job / 10 == 11) // Fighter
+                        masteryid = Constants.Fighter.Skills.SwordMastery;
+                    else
+                        masteryid = Constants.Page.Skills.SwordMastery;
                     break;
                 case (int)Constants.Items.Types.ItemTypes.Weapon1hAxe:
                 case (int)Constants.Items.Types.ItemTypes.Weapon2hAxe:

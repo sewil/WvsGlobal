@@ -49,7 +49,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public override int ACC
+        public int ACC
         {
             get
             {
@@ -72,18 +72,17 @@ namespace WvsBeta.Game
                     acc += buff.XValue;
                 }
 
-                // TODO: Weapon mastery buff
-                /*
                 buff = Char.Skills.GetSkillLevelData(Char.Skills.GetMastery(), out byte lvl3);
                 if (buff != null)
                 {
-                    acc += buff.Accurancy;
+                    acc += buff.XValue;
                 }
-                */
 
                 return Math.Max(0, Math.Min(acc, 999));
             }
         }
+        public short TotalACC => (short)Math.Max(0, Math.Min(ACC + EquipBonuses.ACC + BuffBonuses.ACC, 999));
+
         private Dictionary<byte, EquipBonus> EquipStats { get; } = new Dictionary<byte, EquipBonus>();
 
         public GameCharacterPrimaryStats(GameCharacter chr) : base(chr.CharacterStat)

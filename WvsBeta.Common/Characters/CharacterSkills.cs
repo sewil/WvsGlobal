@@ -90,11 +90,6 @@ namespace WvsBeta.Common.Characters
             throw new NotImplementedException();
         }
 
-        public virtual int GetMastery()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual int GetMpStealSkillData(int attackType, out int prop, out int precent, out byte level)
         {
             throw new NotImplementedException();
