@@ -150,6 +150,7 @@ namespace WvsBeta.Game.Characters
 
         public CalcTargetAttack(
             GameCharacter chr,
+            Roller roller,
             AttackInfo info,
             Mob mob,
             SkillLevelData critSkill,
@@ -167,7 +168,6 @@ namespace WvsBeta.Game.Characters
             Mob = mob;
             Info = info;
             Hits = new CalcHit[info.Damages.Count];
-            Roller roller = new Roller(chr.CalcDamageRandomizer, 7);
 
             ElementAmpData ampData = GetElementAmplification();
 
@@ -278,8 +278,10 @@ namespace WvsBeta.Game.Characters
             {
                 var info = data.Attacks[targetIdx];
                 var mob = chr.Field.GetMob(info.MobMapId);
+                Roller roller = new Roller(chr.CalcDamageRandomizer, 7);
                 if (mob == null) continue;
-                var targetDmg = new CalcTargetAttack(chr, info, mob, critSkill, critLevel, masteryModifier, weaponType, AttackAction, skill, skillID, isRanged, watk);
+
+                var targetDmg = new CalcTargetAttack(chr, roller, info, mob, critSkill, critLevel, masteryModifier, weaponType, AttackAction, skill, skillID, isRanged, watk);
                 TargetAttacks[targetIdx] = targetDmg;
                 if (ApplyAfterModifiers(targetDmg, targetIdx)) break;
             }
@@ -966,7 +968,7 @@ namespace WvsBeta.Game.Characters
             var roll = roller.Roll(Roller.PROP_MODIFIER);
 
             if (roll < critSkill.Property)
-            { // DMG off by one, shidword/hidword
+            {
                 IsCrit = true;
                 int critBonus = critSkill.Damage - 100;
                 Damage += (double)critBonus * 0.01 * (double)baseDmg;
