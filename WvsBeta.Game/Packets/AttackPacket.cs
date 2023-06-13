@@ -198,7 +198,7 @@ namespace WvsBeta.Game
 
                     for (byte targetIdx = 0; targetIdx < ad.Attacks.Count; targetIdx++)
                     {
-                        if ((targetByte & (byte)Math.Pow(2, targetIdx)) == 0) continue;
+                        if ((targetByte & 1 << targetIdx) == 0) continue;
                         ad.Attacks[targetIdx].MesoExplosionDrops.Add(drop);
                     }
                 }
