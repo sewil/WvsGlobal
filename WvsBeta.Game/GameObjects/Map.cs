@@ -1071,33 +1071,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             MapPacket.SendWeatherEffect(this);
         }
 
-        public void Reset(bool shuffleReactors)
-        {
-            // Reset portals
-            foreach (var keyValuePair in Portals)
-            {
-                var portalType = keyValuePair.Value.Type;
-                keyValuePair.Value.Enabled = !(portalType == 4 || portalType == 5);
-            }
-
-            // Remove mobs
-            foreach (var mob in Mobs.Values.ToArray())
-                mob.ForceDead();
-
-            initialSpawnDone = false;
-            // Create mobs
-            SummonAllLife();
-
-            // Remove drops
-            DropPool.Clear();
-
-            // Shuffle reactors
-            if (shuffleReactors)
-            {
-                ReactorPool.Shuffle();
-            }
-        }
-
         public int DamageAllMobs(GameCharacter chr, int damage)
         {
             int amount = 0;

@@ -133,7 +133,18 @@ namespace WvsBeta.Game
 
             foreach (var map in Maps)
             {
-                map.Reset(ShuffleReactors); // bool Should be option from config
+                // Reset portals
+                foreach (var keyValuePair in map.Portals)
+                {
+                    var portalType = keyValuePair.Value.Type;
+                    keyValuePair.Value.Enabled = !(portalType == 4 || portalType == 5);
+                }
+
+                // Shuffle reactors
+                if (ShuffleReactors)
+                {
+                    map.ReactorPool.Shuffle();
+                }
                 map.OnEnter = RunTimer;
             }
             Program.MainForm.LogAppend("Started fieldset '{0}'", Name);

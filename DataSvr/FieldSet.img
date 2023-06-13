@@ -143,6 +143,7 @@ Guild1 = {
     cleanupMobs = 1
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
     cleanupNpcs = 9040003
     guildParams = 6,100,10,200
     cleanupEffectObjects = 1
@@ -154,6 +155,7 @@ Guild1Bonus = {
     timeOut = 40
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
 }
 
 Pianus = {
@@ -201,6 +203,7 @@ Party4 = {
     enterAsParty = 1
     cleanupDrops = 1
     resetReactors = 1
+    shuffleReactors = 1
 }
 
 # Cheng Toy Factory JQ
@@ -311,6 +314,7 @@ EventCoconut3 = {
     returnMap = 109050001
     type = 4
     resetReactors = 1
+    shuffleReactors = 1
 }
 
 EventSnowball = {
