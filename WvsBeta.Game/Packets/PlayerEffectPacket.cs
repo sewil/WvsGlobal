@@ -104,7 +104,7 @@ namespace WvsBeta.Game.Packets
         }
         public static void SendInventoryChanged(GameCharacter chr, params (int itemid, short amount)[] items)
         {
-            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0)).ToList();
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount)).ToList();
             SendInventoryChanged(chr, itemsList);
         }
         /// <summary>

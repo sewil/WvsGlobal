@@ -49,14 +49,18 @@ namespace WvsBeta.Common
             {
                 switch (jobid)
                 {
+                    case JobIds.Warrior: return "Warrior";
                     case JobIds.Crusader: return "Crusader";
                     case JobIds.Knight: return "Knight";
                     case JobIds.DragonKnight: return "Dragon Knight";
+                    case JobIds.Magician: return "Magician";
                     case JobIds.FPMage: return "Mage of Fire and Poison";
                     case JobIds.ILMage: return "Mage of Ice and Lightning";
                     case JobIds.Priest: return "Priest";
+                    case JobIds.Bowman: return "Bowman";
                     case JobIds.Ranger: return "Ranger";
                     case JobIds.Sniper: return "Sniper";
+                    case JobIds.Thief: return "Thief";
                     case JobIds.Hermit: return "Hermit";
                     case JobIds.ChiefBandit: return "Chief Bandit";
                     default: return null;

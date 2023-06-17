@@ -132,25 +132,25 @@ namespace WvsBeta.Scripts.Scripts
                 int nRetNum = 0;
                 if (nRet == 0)
                 {
-                    nRetNum = self.AskNumber("Do you want #b#t2000002##k? #t2000002# allows you to restore 300 HP. How many do you want to buy?", 0, 0, 100);
+                    nRetNum = self.AskNumber("Do you want #b#t2000002##k? #t2000002# allows you to restore 300 HP. How many do you want to buy?", 1, 1, 100);
                     itemId = 200002;
                     itemPrice = 310;
                 }
                 else if (nRet == 1)
                 {
-                    nRetNum = self.AskNumber("Do you want #b#t2022003##k? #t2022003# allows you to restore 1,000 HP. How many do you want to buy?", 0, 0, 100);
+                    nRetNum = self.AskNumber("Do you want #b#t2022003##k? #t2022003# allows you to restore 1,000 HP. How many do you want to buy?", 1, 1, 100);
                     itemId = 2022003;
                     itemPrice = 1060;
                 }
                 else if (nRet == 2)
                 {
-                    nRetNum = self.AskNumber("Do you want #b#t2022000##k? #t2022000# allows you to restore 800 HP. How many do you want to buy?", 0, 0, 100);
+                    nRetNum = self.AskNumber("Do you want #b#t2022000##k? #t2022000# allows you to restore 800 HP. How many do you want to buy?", 1, 1, 100);
                     itemId = 2022000;
                     itemPrice = 1600;
                 }
                 else if (nRet == 3)
                 {
-                    nRetNum = self.AskNumber("Do you want #b#t2001000##k? #t2001000# allows you to restore 1,000 HP and MP. How many do you want to buy?", 0, 0, 100);
+                    nRetNum = self.AskNumber("Do you want #b#t2001000##k? #t2001000# allows you to restore 1,000 HP and MP. How many do you want to buy?", 1, 1, 100);
                     itemId = 2001000;
                     itemPrice = 3120;
                 }

@@ -63,14 +63,21 @@ namespace WvsBeta.Common.Objects
             dupe.Amount = secondPairAmount;
             return dupe;
         }
-        public static Item CreateFromItemID(int itemId, short amount = 1, int periodMinutes = 0)
+        public static Item CreateFromItemID(int itemId, short amount = 1, int periodMinutes = 0, ItemVariation variation = ItemVariation.None)
         {
             if (itemId == 0) throw new Exception("Invalid ItemID in CreateFromItemID");
 
             var slotType = Constants.getItemSlotType(itemId);
 
             Item ret;
-            if (slotType == ItemSlotType.Equip) ret = new EquipItem(itemId);
+            if (slotType == ItemSlotType.Equip)
+            {
+                ret = new EquipItem(itemId);
+                if (variation != ItemVariation.None)
+                {
+                    (ret as EquipItem).GiveStats(variation);
+                }
+            }
             else if (slotType == ItemSlotType.Pet) ret = new PetItem(itemId); // TODO: Non-pet cash items, effects etc
             else ret = new BundleItem(itemId);
 

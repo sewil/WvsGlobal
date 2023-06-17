@@ -122,7 +122,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             inventory = target.Inventory;
 
-            nRetNum = self.AskNumber("To make " + makeItem + ", I need the following items... How many would you like to make?\r\n\r\n#b" + needItemIcon + " 10 " + needItemString + "\r\n" + unitPrice.Culture() + " mesos#k", 0, 0, 100);
+            nRetNum = self.AskNumber("To make " + makeItem + ", I need the following items... How many would you like to make?\r\n\r\n#b" + needItemIcon + " 10 " + needItemString + "\r\n" + unitPrice.Culture() + " mesos#k", 1, 1, 100);
             nPrice = unitPrice * nRetNum;
             nAllNum = nRetNum * 10;
             nRetBuy = self.AskYesNo("To make #b" + nRetNum + " " + makeItem + "#k, I need the following materials. What do you think? Would you like to create one?\r\n\r\n#b" + needItemIcon + " " + nAllNum + " " + needItemString + "\r\n" + nPrice.Culture() + " mesos#k");
@@ -156,7 +156,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             inventory = target.Inventory;
 
-            nRetNum = self.AskNumber("To make " + makeItem + ", I need the following items... How many would you like to make?\r\n\r\n#b" + needItem + " \r\n#v4031138# " + unitPrice.Culture() + " mesos#k", 0, 0, 100);
+            nRetNum = self.AskNumber("To make " + makeItem + ", I need the following items... How many would you like to make?\r\n\r\n#b" + needItem + " \r\n#v4031138# " + unitPrice.Culture() + " mesos#k", 1, 1, 100);
             nPrice = unitPrice * nRetNum;
             nAllNum = nRetNum * 10;
             nRetBuy = self.AskYesNo("To make #b" + nRetNum + " " + makeItem + "#k, I need the following materials. What do you think? Want to make\r\n\r\n#b" + nAllNum + " " + needItem + "\r\n#v4031138# " + nPrice.Culture() + " mesos#k");
@@ -209,7 +209,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             inventory = target.Inventory;
 
-            nRetNum = self.AskNumber("With #b" + needNumber + " " + needItem + "#k, I can create " + itemNumber + " " + makeItem + "(s). Bring me the materials and I can make them for you for free. Now... how many would you like me to make?", 0, 0, 100);
+            nRetNum = self.AskNumber("With #b" + needNumber + " " + needItem + "#k, I can create " + itemNumber + " " + makeItem + "(s). Bring me the materials and I can make them for you for free. Now... how many would you like me to make?", 1, 1, 100);
             nNeedNum = nRetNum * needNumber;
             nAllNum = nRetNum * itemNumber;
             nRetBuy = self.AskYesNo("Do you want to make #b" + makeItem + "#k " + nRetNum + "times? I need #r" + nNeedNum + " " + needItem + "#k.");

@@ -10,7 +10,7 @@ namespace WvsBeta.Scripts.Scripts
         static GameCharacter target;
         public static void sellItem(int itemCode, int unitPrice, string desc)
         {
-            var nRetNum = self.AskNumber("So the item you need is #b#t" + itemCode + "##k, right? That's " + desc + " It's not an easy item to get, but for you, I'll sell it for cheap. It'll cost you #b" + unitPrice + " mesos #k per. How many would you like to buy?", 0, 0, 100);
+            var nRetNum = self.AskNumber("So the item you need is #b#t" + itemCode + "##k, right? That's " + desc + " It's not an easy item to get, but for you, I'll sell it for cheap. It'll cost you #b" + unitPrice + " mesos #k per. How many would you like to buy?", 1, 1, 100);
             var nPrice = unitPrice * nRetNum;
             var nRetBuy = self.AskYesNo("Do you really want to buy #r" + nRetNum + " #t" + itemCode + "#(s)#k? It'll cost you " + unitPrice + " mesos per #t" + itemCode + "#, which is #r" + nPrice + "#k mesos in total.");
             if (nRetBuy == 0) self.Say("I understand. You see, I have many different items here. Take a look. I am selling these items just for you. So I won't rob you at all.");

@@ -40,7 +40,7 @@ namespace WvsBeta.Game
         }
         public IList<OperationOut> AddItem(ExchangeItem exchangeItem, bool sendOperations = true)
         {
-            var item = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes);
+            var item = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes, exchangeItem.variation);
             return AddItem(item, out short _, sendOperations);
         }
         public override void AddItem(Common.Enums.InventoryType inventory, short slot, Item item, bool isLoading)
@@ -682,7 +682,7 @@ namespace WvsBeta.Game
         }
         public bool CanExchange(int mesos, params (int itemid, short amount)[] items)
         {
-            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0));
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount));
             return CanExchange(mesos, itemsList);
         }
         public bool CanExchange(int mesos, IEnumerable<ExchangeItem> items)
@@ -735,7 +735,7 @@ namespace WvsBeta.Game
         }
         public bool MassExchange(int mesos, params (int itemid, short amount)[] items)
         {
-            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount, 0)).ToList();
+            var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount)).ToList();
             return MassExchange(mesos, itemsList);
         }
         public bool MassExchange(int mesos, IList<ExchangeItem> items)
@@ -766,16 +766,17 @@ namespace WvsBeta.Game
             return true;
         }
 
-        public struct ExchangeItem
+        public class ExchangeItem
         {
-            public readonly int itemID;
-            public readonly short amount;
-            public readonly int periodMinutes;
-            public ExchangeItem(int itemID, short amount, int periodMinutes)
+            public int itemID;
+            public short amount;
+            public int periodMinutes;
+            public ItemVariation variation;
+            public ExchangeItem() { }
+            public ExchangeItem(int itemID, short amount)
             {
                 this.itemID = itemID;
                 this.amount = amount;
-                this.periodMinutes = periodMinutes;
             }
         }
         /// <summary>
@@ -794,7 +795,10 @@ namespace WvsBeta.Game
 
                 string[] queries = query.Split(',');
                 int itemid = int.Parse(queries[0]);
-                int periodMinutes = 0;
+                var exchangeItem = new ExchangeItem
+                {
+                    itemID = itemid
+                };
 
                 for (int queryIdx = 1; queryIdx < queries.Length; queryIdx++)
                 {
@@ -803,13 +807,19 @@ namespace WvsBeta.Game
                     int value = int.Parse(kv[1]);
                     if (key == "Period")
                     {
-                        periodMinutes = value;
+                        exchangeItem.periodMinutes = value;
+                        break;
+                    }
+                    else if (key == "Variation")
+                    {
+                        exchangeItem.variation = (ItemVariation)value;
                         break;
                     }
                 }
 
                 short amount = Convert.ToInt16(items[i + 1]);
-                exchangeItems.Add(new ExchangeItem(itemid, amount, periodMinutes));
+                exchangeItem.amount = amount;
+                exchangeItems.Add(exchangeItem);
             }
             return MassExchange(mesos, exchangeItems) ? 1 : 0;
         }

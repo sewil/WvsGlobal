@@ -53,7 +53,14 @@
     <Compile Include="Scripts\job2.cs" />
     <Compile Include="Scripts\job3.cs" />
     <Compile Include="Scripts\ludibrium0.cs" />
+    <Compile Include="Scripts\make0.cs" />
     <Compile Include="Scripts\make1.cs" />
+    <Compile Include="Scripts\make2.cs" />
+    <Compile Include="Scripts\make3.cs" />
+    <Compile Include="Scripts\make4.cs" />
+    <Compile Include="Scripts\make5.cs" />
+    <Compile Include="Scripts\make6.cs" />
+    <Compile Include="Scripts\make7.cs" />
     <Compile Include="Scripts\mapleIsland.cs" />
     <Compile Include="Scripts\minigame.cs" />
     <Compile Include="Scripts\ossyria0.cs" />
