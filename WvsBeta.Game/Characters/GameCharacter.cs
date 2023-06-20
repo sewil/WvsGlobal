@@ -655,6 +655,14 @@ namespace WvsBeta.Game
         {
             AddFame(inc);
         }
+
+        public int IncFriendMax(byte inc, int mesos)
+        {
+            if (!Inventory.CanExchange(mesos) || !IncreaseBuddySlots(inc)) return 0;
+            Inventory.Exchange(mesos);
+            return 1;
+        }
+
         public void LearnSkill(int skillid)
         {
             this.Skills.AddSkillPoint(skillid);

@@ -925,7 +925,9 @@ namespace WvsBeta.Center
                     }
                 case ISClientMessages.BuddyListExpand:
                     {
-                        CenterServer.Instance.FindCharacter(packet.ReadInt()).FriendsList.IncreaseCapacity();
+                        int cid = packet.ReadInt();
+                        byte inc = packet.ReadByte();
+                        CenterServer.Instance.FindCharacter(cid).FriendsList.IncreaseCapacity(inc);
                         break;
                     }
                 case ISClientMessages.BuddyDecline:

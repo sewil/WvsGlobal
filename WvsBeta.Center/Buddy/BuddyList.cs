@@ -169,10 +169,10 @@ namespace WvsBeta.Center
             }
         }
 
-        public void IncreaseCapacity()
+        public void IncreaseCapacity(byte inc)
         {
-            Capacity += 5;
-            log.Warn($"[{Owner.charName}] Increasing buddylist capacity from to {Capacity}");
+            Capacity += inc;
+            log.Warn($"[{Owner.charName}] Increasing buddylist capacity by {inc} to {Capacity}");
             SendCapacityChange();
             CenterServer.Instance.CharacterDatabase.RunQuery("UPDATE characters SET buddylist_size = " + Capacity + " WHERE ID = " + Owner.charId);
         }
@@ -248,6 +248,7 @@ namespace WvsBeta.Center
             Owner.SendPacket(pw);
         }
 
+        // Currently not supported
         private void SendCapacityChange()
         {
             Packet pw = new Packet(ServerMessages.FRIEND_RESULT);

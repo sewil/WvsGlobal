@@ -40,6 +40,7 @@ namespace WvsBeta.Common
         public const double PartyPerUserBonus = 0.05;
         public const double PartyTotalBonus = 1.0;
         public const int MaxPartyMembers = 6;
+        public const byte MaxBuddySlots = 50;
 
         public const byte PlayerLevels = 200;
         public const byte PetLevels = 30;

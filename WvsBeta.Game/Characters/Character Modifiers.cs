@@ -395,9 +395,12 @@ namespace WvsBeta.Game
             CharacterStatsPacket.SendStatChanged(this, StatFlags.Exp, isSelf);
         }
 
-        public void IncreaseBuddySlots()
+        public bool IncreaseBuddySlots(byte inc)
         {
-            Server.Instance.CenterConnection.BuddyListExpand(this);
+            if (BuddyListCapacity >= Constants.MaxBuddySlots) return false;
+            BuddyListCapacity += inc;
+            Server.Instance.CenterConnection.BuddyListExpand(this, inc);
+            return true;
         }
 
         public void AddMaplePoints(int value, GameCharacter chr)

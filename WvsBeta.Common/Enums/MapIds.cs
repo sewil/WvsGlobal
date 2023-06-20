@@ -24,6 +24,7 @@ namespace WvsBeta.Common.Enums
             ThiefConstructionSite = 108000400,
             FlorinaBeach = 110000000,
 
+            Orbis = 200000000,
             OrbisStationEntrance = 200000100,
             Orbis2ElliniaStation = 200000111,
             Orbis2ElliniaWaitingRoom = 200000112,
@@ -33,6 +34,7 @@ namespace WvsBeta.Common.Enums
             ElNath = 211000000,
             TheDoorToZakum = 211042300,
 
+            Ludibrium = 220000000,
             LudiTicketingPlace = 220000100,
             LudiStation = 220000110,
             LudiWaitingRoom = 220000111,

@@ -202,10 +202,11 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BuddyListExpand(GameCharacter chr)
+        public void BuddyListExpand(GameCharacter chr, byte inc)
         {
             Packet packet = new Packet(ISClientMessages.BuddyListExpand);
             packet.WriteInt(chr.ID);
+            packet.WriteByte(inc);
             SendPacket(packet);
         }
 
