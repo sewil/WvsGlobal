@@ -47,6 +47,7 @@
     <Compile Include="Scripts\contimove.cs" />
     <Compile Include="Scripts\event.cs" />
     <Compile Include="Scripts\face.cs" />
+    <Compile Include="Scripts\florina0.cs" />
     <Compile Include="Scripts\friend.cs" />
     <Compile Include="Scripts\guildquest1.cs" />
     <Compile Include="Scripts\hair.cs" />
