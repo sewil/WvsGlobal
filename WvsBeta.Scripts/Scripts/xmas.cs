@@ -102,7 +102,7 @@ namespace WvsBeta.Scripts.Scripts
                 if (nRet == 0) self.Say("You must have some business to take care of here, right? It's not a bad idea to rest a bit in this area and regain all your strength before heading back there again.");
                 else
                 {
-                    target.ChangeMap(mapId, "xmas00");
+                    target.ChangeMap(mapId, "h003");
                 }
             }
         }
