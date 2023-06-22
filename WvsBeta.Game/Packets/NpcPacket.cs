@@ -410,10 +410,9 @@ namespace WvsBeta.Game
                 pw.WriteInt(item.ItemID);
                 pw.WriteInt(item.Price);
 
-                float unitPrice = 0;
+                double unitPrice = item.UnitPrice;
                 if (GameDataProvider.Items.TryGetValue(item.ItemID, out ItemData id))
                 {
-                    unitPrice = id.UnitPrice;
                     maxSlots = id.MaxSlot;
                     if (maxSlots == 0)
                     {
@@ -423,7 +422,7 @@ namespace WvsBeta.Game
                 }
                 if (Constants.isRechargeable(item.ItemID))
                 {
-                    pw.WriteLong(BitConverter.DoubleToInt64Bits(unitPrice * maxSlots));
+                    pw.WriteLong(BitConverter.DoubleToInt64Bits(unitPrice));
                     maxSlots += chr.Skills.GetRechargeableBonus();
                 }
 
