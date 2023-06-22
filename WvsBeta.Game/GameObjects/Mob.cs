@@ -1063,11 +1063,7 @@ namespace WvsBeta.Game
                             case Constants.MobSkills.Skills.Stun: bs = character.PrimaryStats.BuffStun; break;
                             case Constants.MobSkills.Skills.Curse: bs = character.PrimaryStats.BuffCurse; break;
                             case Constants.MobSkills.Skills.Slow: bs = character.PrimaryStats.BuffSlow; break;
-                            case Constants.MobSkills.Skills.CancelBuffs:
-                                {
-                                    BuffPacket.RemoveBuffs(character, BuffValueTypes.ALL_BUFFS);
-                                    return;
-                                }
+                            case Constants.MobSkills.Skills.CancelBuffs: character.PrimaryStats.Reset(true); return;
                         }
 
                         if (bs != null)

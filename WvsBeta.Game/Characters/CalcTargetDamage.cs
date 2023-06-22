@@ -175,7 +175,7 @@ namespace WvsBeta.Game.Characters
 
             for (int hitIdx = 0; hitIdx < Hits.Length; hitIdx++)
             {
-                Hits[hitIdx] = new CalcHit(chr, Hits, info, mob.Data, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, attackAction, skill, skillID, isRanged, hitIdx, watk, ampData);
+                Hits[hitIdx] = new CalcHit(chr, Hits, info, mob, roller, critSkill, critLevel, masteryModifier, targetAccuracy, weaponType, attackAction, skill, skillID, isRanged, hitIdx, watk, ampData);
             }
         }
 
@@ -430,7 +430,7 @@ namespace WvsBeta.Game.Characters
         byte critLevel;
         double masteryModifier;
         double targetAccuracy;
-        MobData mob;
+        Mob mob;
         WeaponType weaponType;
         AttackAction attackAction;
         GameCharacter chr;
@@ -449,7 +449,7 @@ namespace WvsBeta.Game.Characters
             GameCharacter chr,
             CalcHit[] hits,
             AttackInfo info,
-            MobData mob,
+            Mob mob,
             Roller roller,
             SkillLevelData critSkill,
             byte critLevel,
@@ -488,9 +488,20 @@ namespace WvsBeta.Game.Characters
             this.watk = watk;
             attackType = info.Data.AttackTypes;
 
+            bool isDragon = info.Data.SummonID == Priest.Skills.SummonDragon;
+
+            if (
+                ((attackType == AttackTypes.Magic || isDragon) && mob.Status.BuffMagicImmune.IsSet()) ||
+                (attackType != AttackTypes.Magic && mob.Status.BuffPhysicalImmune.IsSet())
+            )
+            {
+                Damage = 1;
+                return;
+            }
+
             if (attackType == AttackTypes.Summon)
             {
-                if (info.Data.SummonID == Priest.Skills.SummonDragon)
+                if (isDragon)
                     CalcDragonDamage();
                 else 
                     CalcSummonDamage();
@@ -550,7 +561,7 @@ namespace WvsBeta.Game.Characters
         }
         void CalcMagicBaseDamage()
         {
-            var totalMAD = chr.PrimaryStats.TotalMAD;
+            short totalMAD = Math.Min((short)999, chr.PrimaryStats.TotalMAD);
             if (skillID == Cleric.Skills.Heal)
             {
                 int targets = info.Data.Attacks.Count + 1; // Targets including self
@@ -586,7 +597,7 @@ namespace WvsBeta.Game.Characters
 
             var magic = chr.PrimaryStats.TotalMAD;
             var totalInt = chr.PrimaryStats.TotalInt;
-            var statModifier = (mob.FS * 5.0 + 10.0) * 0.009000000000000001;
+            var statModifier = (mob.Data.FS * 5.0 + 10.0) * 0.009000000000000001;
             var rolledStat = RollStat(magic, statModifier);
 
             Damage = (magic * 0.058 * (magic * 0.058) + totalInt * 0.5 + rolledStat * 3.3) * skill.MagicAttack * 0.01;
@@ -752,7 +763,7 @@ namespace WvsBeta.Game.Characters
             double maxTACC = targetAccuracy * maxModifier;
             
             randTACC += (maxTACC - randTACC) * roll;
-            int mobAvoid = Math.Min(999, mob.Eva);
+            int mobAvoid = Math.Min(999, mob.Status.TotalEVA);
 
             IsMiss = randTACC < mobAvoid;
             return IsMiss;
@@ -815,7 +826,7 @@ namespace WvsBeta.Game.Characters
                 double total = 0.0;
                 foreach (SkillElement element in elements)
                 {
-                    var mobifier = (ElementModifier)mob.elemModifiers.GetValue(element);
+                    var mobifier = (ElementModifier)mob.Data.elemModifiers.GetValue(element);
                     total += ApplyMobElemModifier(halfDmg, mobifier);
                 }
                 newDmg = total;
@@ -827,7 +838,7 @@ namespace WvsBeta.Game.Characters
                 {
                     modifier = (20 + skill.Level) * 0.0099999998;
                 }
-                var elemModifier = (ElementModifier)mob.elemModifiers.GetValue(skill.ElementFlags);
+                var elemModifier = (ElementModifier)mob.Data.elemModifiers.GetValue(skill.ElementFlags);
                 newDmg = ApplyMobElemModifier(dmg, elemModifier, modifier);
             }
             Damage = newDmg;
@@ -846,7 +857,7 @@ namespace WvsBeta.Game.Characters
             var element = chargeSkill.ElementFlags;
             double specialModifier = chargeSkill.ZValue * 0.0099999998;
             double damageModifier = chargeSkill.Damage * 0.0099999998;
-            var elemModifier = (ElementModifier)mob.elemModifiers.GetValue(element);
+            var elemModifier = (ElementModifier)mob.Data.elemModifiers.GetValue(element);
             double dmg = damageModifier * Damage;
             Damage = ApplyMobElemModifier(dmg, elemModifier, specialModifier);
         }
@@ -887,7 +898,7 @@ namespace WvsBeta.Game.Characters
                 || skillID == ChiefBandit.Skills.Assaulter
             ) return;
 
-            double mobDef = attackType == AttackTypes.Magic ? mob.MDD : mob.PDD;
+            double mobDef = attackType == AttackTypes.Magic ? mob.Status.TotalMDD : mob.Status.TotalPDD;
             mobDef = Math.Min(999, mobDef);
 
             double redMin = mobDef * 0.5;

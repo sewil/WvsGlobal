@@ -1,4 +1,5 @@
 using System;
+using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game
@@ -118,6 +119,11 @@ namespace WvsBeta.Game
         public MobBuffStat BuffBlind { get; } = new MobBuffStat(MobStatValue.Blind);
         public MobBuffStat BuffSealSkill { get; } = new MobBuffStat(MobStatValue.SealSkill);
 
+        #region Stats
+        public int TotalEVA => Math.Max(0, Math.Min(999, Mob.Data.Eva + BuffEvasion.N));
+        public int TotalPDD => Math.Max(0, Math.Min(999, Mob.Data.PDD + BuffPhysicalDefense.N));
+        public int TotalMDD => Math.Max(0, Math.Min(999, Mob.Data.MDD + BuffMagicDefense.N));
+        #endregion
 
         [Flags]
         public enum MobStatValue : uint
