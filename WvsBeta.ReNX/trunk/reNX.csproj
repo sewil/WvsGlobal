@@ -36,6 +36,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assembine\BytePointerObject.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="NXFile.cs" />
     <Compile Include="NXProperties\NXNode.cs" />
     <Compile Include="NXProperties\NXNodes.cs" />
