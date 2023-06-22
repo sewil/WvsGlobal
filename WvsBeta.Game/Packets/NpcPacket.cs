@@ -353,8 +353,9 @@ namespace WvsBeta.Game
                             return;
                         }
 
+                        double unitPrice = sid.UnitPrice;
                         ItemData data = GameDataProvider.Items[item.ItemID];
-                        if (data.UnitPrice <= 0.0)
+                        if (unitPrice <= 0.0)
                         {
                             SendShopResult(chr, ShopRes.RechargeIncorrectRequest);
                             return;
@@ -363,18 +364,18 @@ namespace WvsBeta.Game
                         short maxslot = (short)(data.MaxSlot + chr.Skills.GetRechargeableBonus());
                         short toFill = (short)(maxslot - item.Amount);
 
-                        int sellPrice = (int)Math.Ceiling(-1.0 * data.UnitPrice * toFill);
-                        sellPrice = Math.Max(sellPrice, 1);
-                        if (chr.Inventory.Mesos > -sellPrice)
+                        int cost = (int)Math.Ceiling(unitPrice * toFill);
+
+                        if (chr.Inventory.Mesos > cost)
                         {
-                            Common.Tracking.MesosTransfer.PlayerBuysFromShop(chr.ID, chr.ShopNPCID, -sellPrice,
+                            Common.Tracking.MesosTransfer.PlayerBuysFromShop(chr.ID, chr.ShopNPCID, cost,
                                 transferId);
                             Common.Tracking.ItemTransfer.PlayerBuysFromShop(chr.ID, chr.ShopNPCID, item.ItemID,
                                 (short)(maxslot - item.Amount), transferId, item);
 
                             item.Amount = maxslot;
 
-                            chr.Inventory.AddMesos(sellPrice);
+                            chr.Inventory.AddMesos(-cost);
                             InventoryOperationPacket.ChangeAmount(chr, item);
                             SendShopResult(chr, ShopRes.RechargeSuccess);
                         }
