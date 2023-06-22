@@ -20,12 +20,12 @@ namespace WvsBeta.Common.DataProviders
         public static IDictionary<short, WZQuestData> Quests { get; protected set; }
 
         protected static List<NXFile> pOverride;
-        protected static NXFile pFile;
+        protected static NXFile pClientFile;
         private static DateTime startTime;
 
         public static KeyValuePair<NXFile, List<NXFile>> GetMergedDatafiles()
         {
-            var mainFile = new NXFile(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Data.nx"));
+            var mainFile = new NXFile(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "ClientData.nx"));
             var overrideFolder = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "data");
             var otherFiles = new List<NXFile>();
             if (Directory.Exists(overrideFolder))
@@ -50,7 +50,7 @@ namespace WvsBeta.Common.DataProviders
         {
             startTime = DateTime.Now;
             var x = GetMergedDatafiles();
-            pFile = x.Key;
+            pClientFile = x.Key;
             pOverride = new List<NXFile>();
             pOverride.AddRange(x.Value);
         }
@@ -61,8 +61,8 @@ namespace WvsBeta.Common.DataProviders
             pOverride.ForEach(x => x.Dispose());
             pOverride.Clear();
             pOverride = null;
-            pFile.Dispose();
-            pFile = null;
+            pClientFile.Dispose();
+            pClientFile = null;
 
             // do some cleanup
             GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true, true);
@@ -136,7 +136,7 @@ namespace WvsBeta.Common.DataProviders
         protected static void ReadEquips()
         {
             var equips =
-                from category in pFile.BaseNode["Character"]
+                from category in pClientFile.BaseNode["Character"]
                 where category.Name.EndsWith(".img") == false && category.Name != "Afterimage"
                 from item in category
                 select new { category.Name, item };
@@ -232,7 +232,7 @@ namespace WvsBeta.Common.DataProviders
         protected static void ReadItems()
         {
             var items =
-                from category in pFile.BaseNode["Item"]
+                from category in pClientFile.BaseNode["Item"]
                 where category.Name != "Pet"
                 from itemType in category
                 from item in itemType
@@ -523,7 +523,7 @@ namespace WvsBeta.Common.DataProviders
 
         protected static void ReadPets()
         {
-            Pets = IterateAllToDict(pFile.BaseNode["Item"]["Pet"], pNode =>
+            Pets = IterateAllToDict(pClientFile.BaseNode["Item"]["Pet"], pNode =>
             {
                 var pd = new PetData(pNode);
                 return pd;
@@ -557,7 +557,7 @@ namespace WvsBeta.Common.DataProviders
         public static void ReadItemNames()
         {
 
-            foreach (var node in pFile.BaseNode["String"]["Item.img"])
+            foreach (var node in pClientFile.BaseNode["String"]["Item.img"])
             {
                 if (node.Name == "Eqp")
                 {

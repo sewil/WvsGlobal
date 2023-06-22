@@ -1,7 +1,6 @@
 *
 !.gitignore
 !FieldSet.img
-!Data.zip
-!DropData.nx
+!*.zip
 !*.bat
 !Contimove.img

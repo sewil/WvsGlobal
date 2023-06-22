@@ -34,14 +34,15 @@ namespace WvsBeta.Game
         public static IDictionary<string, DropData[]> Drops { get; private set; }
         public static Dictionary<byte, List<QuizData>> QuizQuestions { get; } = new Dictionary<byte, List<QuizData>>();
         public static IDictionary<int, HashSet<short>> QuestItems { get; } = new Dictionary<int, HashSet<short>>();
-        private static NXFile pDropFile;
+        private static NXFile pServerFile;
 
 
         public static void Load()
         {
             StartInit();
 
-            using (pDropFile = new NXFile(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "DropData.nx"), NXReadSelection.None))
+            var dataPath = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr");
+            using (pServerFile = new NXFile(Path.Combine(dataPath, "ServerData.nx"), NXReadSelection.None))
             {
                 var funcs = new Action[] {
                     LoadBase,
@@ -153,15 +154,15 @@ namespace WvsBeta.Game
                     if (mob.HPTagBgColor > 0 || mob.HPTagColor > 0)
                     {
                         string bPath = "UI/UIWindow.img/MobGage/";
-                        if (!pFile.ContainsPath($"{bPath}Mob/{mob.ID}"))
+                        if (!pClientFile.ContainsPath($"{bPath}Mob/{mob.ID}"))
                         {
                             Program.MainForm.LogAppend("Mob {0} is missing hp gauge icon! Removing...", mob.ID);
                         }
-                        else if (!pFile.ContainsPath($"{bPath}backgrnd{(mob.HPTagColor == 1 ? "" : mob.HPTagColor.ToString())}"))
+                        else if (!pClientFile.ContainsPath($"{bPath}backgrnd{(mob.HPTagColor == 1 ? "" : mob.HPTagColor.ToString())}"))
                         {
                             Program.MainForm.LogAppend("Mob {0} is missing hp gauge background {1}! Removing...", mob.ID, mob.HPTagColor);
                         }
-                        else if (!pFile.ContainsPath($"{bPath}Gage/{mob.HPTagBgColor}"))
+                        else if (!pClientFile.ContainsPath($"{bPath}Gage/{mob.HPTagBgColor}"))
                         {
                             Program.MainForm.LogAppend("Mob {0} is missing hp gauge tag color {1}! Removing...", mob.ID, mob.HPTagBgColor);
                         }
@@ -249,7 +250,7 @@ namespace WvsBeta.Game
         }
         static void ReadMobData()
         {
-            var mobs = pFile.BaseNode["Mob"].ToList();
+            var mobs = pClientFile.BaseNode["Mob"].ToList();
 
 
             byte GetGroupIdx(string str) => (byte)(str[str.Length - 1] - '1');
@@ -260,7 +261,7 @@ namespace WvsBeta.Game
 
                 data.ID = (int)Utils.ConvertNameToID(pNode.Name);
 
-                if (!pFile.ContainsPath("String/Mob.img/" + data.ID))
+                if (!pClientFile.ContainsPath("String/Mob.img/" + data.ID))
                     Program.MainForm.LogAppend("Missing string for mob " + data.ID);
 
                 var infoNode = pNode["info"];
@@ -400,7 +401,7 @@ namespace WvsBeta.Game
         static void ReadMapData()
         {
             var maps =
-                from region in pFile.BaseNode["Map"]["Map"]
+                from region in pClientFile.BaseNode["Map"]["Map"]
                 where region.Name.StartsWith("Map")
                 from map in region
                 where map.Name != "AreaCode.img" && map.Name.EndsWith(".img")
@@ -422,7 +423,7 @@ namespace WvsBeta.Game
                 else if (mapNode.Name.StartsWith("6")) stringConti = "weddingGL";
                 else if (mapNode.Name.StartsWith("9")) stringConti = "etc";
                 
-                if (stringConti != null && pFile.BaseNode["String"]["Map.img"][stringConti].TryGetValue(ID.ToString(), out NXNode stringNode))
+                if (stringConti != null && pClientFile.BaseNode["String"]["Map.img"][stringConti].TryGetValue(ID.ToString(), out NXNode stringNode))
                 {
                     mapName = stringNode["mapName"].ValueString();
                 }
@@ -482,7 +483,7 @@ namespace WvsBeta.Game
                             string[] bgmPath = node.ValueString().Split('/');
                             string imgPath = bgmPath[0] + ".img";
                             string bgmName = bgmPath[1];
-                            var sound = pFile.BaseNode["Sound"];
+                            var sound = pClientFile.BaseNode["Sound"];
                             if (!sound.ContainsChild(imgPath) || !sound[imgPath].ContainsChild(bgmName))
                             {
                                 Program.MainForm.LogAppend("Bgm {0} not found for map {1}", node.ValueString(), ID);
@@ -608,7 +609,7 @@ namespace WvsBeta.Game
 
         static void ValidateMapLayers(NXNode mapNode, Map map)
         {
-            var bNode = pFile.BaseNode["Map"];
+            var bNode = pClientFile.BaseNode["Map"];
             for (int layer = 0; layer <= 7; layer++)
             {
                 NXNode layerNode = mapNode[layer.ToString()];
@@ -636,7 +637,7 @@ namespace WvsBeta.Game
                                 string tilePath = "Map/Tile/" + tS + ".img/" + tileName + "/" + tileNo;
                                 try
                                 {
-                                    pFile.ResolvePath(tilePath);
+                                    pClientFile.ResolvePath(tilePath);
                                 }
                                 catch (NullReferenceException)
                                 {
@@ -651,7 +652,7 @@ namespace WvsBeta.Game
                                 string objectImgName = objNode["oS"].ValueString() + ".img";
                                 string imgSubPath = string.Join("/", objNode.Where(n => n.Name.StartsWith("l")).Select(n => n.ValueString()));
                                 string fullPath = "Map/Obj/" + objectImgName + "/" + imgSubPath;
-                                if (!pFile.ContainsPath(fullPath))
+                                if (!pClientFile.ContainsPath(fullPath))
                                 {
                                     Program.MainForm.LogAppend("Map obj not found at \"{0}\", for map {1} at layer {2}, obj idx {3}", fullPath, map.ID, layer, objIdx);
                                 }
@@ -673,7 +674,7 @@ namespace WvsBeta.Game
                 string backPath = "Map/Back/" + img + "/back/" + no;
                 try
                 {
-                    pFile.ResolvePath(backPath);
+                    pClientFile.ResolvePath(backPath);
                 }
                 catch (NullReferenceException)
                 {
@@ -746,7 +747,7 @@ namespace WvsBeta.Game
         }
         static void ReadReactors()
         {
-            var reactorNodes = pFile.BaseNode["Reactor"];
+            var reactorNodes = pClientFile.BaseNode["Reactor"];
             Reactors = new Dictionary<int, Reactor>();
             foreach (var rNode in reactorNodes)
             {
@@ -791,16 +792,16 @@ namespace WvsBeta.Game
         static void ReadQuestData()
         {
             Quests = new Dictionary<short, WZQuestData>();
-            foreach (var cQuest in pFile.ResolvePath("Quest/Check.img"))
+            foreach (var cQuest in pClientFile.ResolvePath("Quest/Check.img"))
             {
-                WZQuestData qd = new WZQuestData(pFile, cQuest);
+                WZQuestData qd = new WZQuestData(pClientFile, cQuest);
                 Quests.Add(qd.QuestID, qd);
             }
         }
 
         static void ReadNpcs()
         {
-            var npcs = pFile.BaseNode["Npc"].ToList();
+            var npcs = pClientFile.BaseNode["Npc"].ToList();
 
             NPCs = IterateAllToDict(npcs, pNode =>
             {
@@ -811,7 +812,7 @@ namespace WvsBeta.Game
                 npc.ID = ID;
                 npc.Shop = new List<ShopItemData>();
 
-                if (!pFile.ContainsPath($"String/Npc.img/{ID}"))
+                if (!pClientFile.ContainsPath($"String/Npc.img/{ID}"))
                     Program.MainForm.LogAppend("String not found for NPC " + ID);
                 
                 var nonInfoNodes = pNode;
@@ -899,7 +900,7 @@ namespace WvsBeta.Game
 
         static void ReadSkills()
         {
-            var allJobs = pFile.BaseNode["Skill"].Where(x => x.Name != "MobSkill.img").ToList();
+            var allJobs = pClientFile.BaseNode["Skill"].Where(x => x.Name != "MobSkill.img").ToList();
 
             Jobs = IterateAllToDict(allJobs, pNode => int.Parse(pNode.Name.Replace(".img", "")), x => x).Values.ToList();
 
@@ -1154,7 +1155,7 @@ namespace WvsBeta.Game
                 return skillData;
             }, x => x.ID);
 
-            MobSkills = IterateAllToDict(pFile.BaseNode["Skill"]["MobSkill.img"], eNode =>
+            MobSkills = IterateAllToDict(pClientFile.BaseNode["Skill"]["MobSkill.img"], eNode =>
             {
                 var dict = new Dictionary<byte, MobSkillLevelData>();
                 byte SkillID = (byte)int.Parse(eNode.Name);
@@ -1248,7 +1249,7 @@ namespace WvsBeta.Game
 
         static void ReadQuiz()
         {
-            var questions = from page in pFile.BaseNode["Etc"]["OXQuiz.img"]
+            var questions = from page in pClientFile.BaseNode["Etc"]["OXQuiz.img"]
                        from question in page
                        select new QuizData(byte.Parse(page.Name), byte.Parse(question.Name), question["a"].ValueByte() == 0 ? 'x' : 'o');
 
@@ -1276,7 +1277,7 @@ namespace WvsBeta.Game
 
         static void ReadDrops()
         {
-            Drops = IterateAllToDict(pDropFile.BaseNode["Reward_ori.img"], pNode =>
+            Drops = IterateAllToDict(pServerFile.BaseNode["Reward_ori.img"], pNode =>
             {
                 string dropper = pNode.Name;
 
