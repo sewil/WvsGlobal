@@ -527,16 +527,15 @@ namespace WvsBeta.Game.Characters
                 ApplySkillDamage();
                 ApplyComboAttack();
                 ApplyCrit(baseDmg);
+                if (mob.Status.BuffPowerGuardUp.IsSet())
+                {
+                    Damage *= mob.Status.BuffPowerGuardUp.N * 0.01;
+                }
                 ApplyShadowPartner();
             }
-            else
+            else if (mob.Status.BuffMagicGuardUp.IsSet())
             {
-                // Check mob+248
-                int mob248 = 0;
-                if (mob248 > 0)
-                {
-                    Damage *= mob248 * 0.01;
-                }
+                Damage *= mob.Status.BuffMagicGuardUp.N * 0.01;
             }
 
             Damage = (int)Math.Min(99999, Math.Max(1, Damage));
