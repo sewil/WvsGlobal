@@ -23,7 +23,7 @@ namespace WvsBeta.Shop
         public static void Reload()
         {
             bool unload = false;
-            if (pFile == null)
+            if (pClientFile == null)
             {
                 StartInit();
                 unload = true;
@@ -31,7 +31,7 @@ namespace WvsBeta.Shop
 
             Commodity.Clear();
 
-            foreach (var node in pFile.BaseNode["Etc"]["Commodity.img"])
+            foreach (var node in pClientFile.BaseNode["Etc"]["Commodity.img"])
             {
                 var ci = new CommodityInfo(node);
                 Commodity[ci.SerialNumber] = ci;
@@ -42,7 +42,7 @@ namespace WvsBeta.Shop
             Packages.Clear();
 
 
-            foreach (var node in pFile.BaseNode["Etc"]["CashPackage.img"])
+            foreach (var node in pClientFile.BaseNode["Etc"]["CashPackage.img"])
             {
                 var sn = int.Parse(node.Name);
                 var contents = node["SN"].Select(x => x.ValueInt32()).ToArray();

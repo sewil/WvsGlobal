@@ -72,7 +72,6 @@
     <Compile Include="Scripts\party2.cs" />
     <Compile Include="Scripts\populatus.cs" />
     <Compile Include="Scripts\zakum.cs" />
-    <Compile Include="Scripts\shop.cs" />
     <Compile Include="Scripts\etc.cs" />
     <Compile Include="Scripts\easter.cs" />
     <Compile Include="Program.cs" />

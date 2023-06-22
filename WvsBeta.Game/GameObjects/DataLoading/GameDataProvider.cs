@@ -50,6 +50,7 @@ namespace WvsBeta.Game
                     ReadMobData,
                     ReadReactors,
                     ReadNpcs,
+                    ReadNpcShops,
                     ReadMapData,
                     ReadDrops,
                     ReadQuiz,
@@ -860,34 +861,6 @@ namespace WvsBeta.Game
                         case "speak":
                             npc.SpeakLineCount = (byte)node.ChildCount;
                             break;
-                        case "shop":
-                            {
-                                foreach (var iNode in node)
-                                {
-                                    ShopItemData item = new ShopItemData((int)Utils.ConvertNameToID(iNode.Name));
-                                    foreach (var subNode in iNode)
-                                    {
-                                        switch (subNode.Name)
-                                        {
-                                            case "period":
-                                                item.Period = subNode.ValueByte();
-                                                break;
-                                            case "price":
-                                                item.Price = subNode.ValueInt32();
-                                                break;
-                                            case "stock":
-                                                item.Stock = subNode.ValueInt32();
-                                                break;
-                                            default:
-                                                Console.WriteLine($"Unhandled node {subNode.Name} in shop of NPC {npc.ID}");
-                                                break;
-                                        }
-                                    }
-
-                                    npc.Shop.Add(item);
-                                }
-                                break;
-                            }
                         default:
                             Console.WriteLine($"Unhandled node {node.Name} for NPC {npc.ID}");
                             break;
@@ -896,6 +869,21 @@ namespace WvsBeta.Game
 
                 return npc;
             }, x => x.ID);
+        }
+
+        static void ReadNpcShops()
+        {
+            foreach (var shopNode in pServerFile.BaseNode["NpcShop.img"])
+            {
+                int npcID = int.Parse(shopNode.Name);
+                if (!NPCs.TryGetValue(npcID, out var npcData)) continue;
+                foreach (var itemNode in shopNode)
+                {
+                    var shopItem = new ShopItemData(itemNode);
+                    if (!Items.ContainsKey(shopItem.ItemID) && !Equips.ContainsKey(shopItem.ItemID)) continue;
+                    npcData.Shop.Add(shopItem);
+                }
+            }
         }
 
         static void ReadSkills()
