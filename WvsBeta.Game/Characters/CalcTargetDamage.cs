@@ -712,7 +712,7 @@ namespace WvsBeta.Game.Characters
                         {
                             double moneyCon = skill.MesosUsage * 0.5;
                             double stat = RollStat(moneyCon, 3.0);
-                            Damage = 10.0 * stat;
+                            Damage = 10.0 * (int)stat;
 
                             var propRoll = roller.Roll(Roller.PROP_MODIFIER);
                             if (skill.Property > propRoll) // Crit
