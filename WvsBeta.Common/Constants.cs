@@ -63,7 +63,7 @@ namespace WvsBeta.Common
         public const byte MaxFullness = 100;
         public const byte MinFullness = 0;
         public const byte PetFeedFullness = 30;
-        public const int MaxDamage = 99999;
+        public const int MaxDamage = int.MaxValue;
         public const int InvalidMap = 999999999;
 
         public static short[] PetExp = new short[PetLevels - 1] {
