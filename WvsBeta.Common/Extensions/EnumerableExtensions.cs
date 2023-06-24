@@ -18,9 +18,17 @@ namespace WvsBeta.Common.Extensions
         }
         public static TValue GetValue<TKey, TValue>(this IDictionary<TKey, TValue> dictionary, TKey key)
         {
+            if (key == null) return default;
             dictionary.TryGetValue(key, out TValue value);
             return value;
         }
+
+        public static TValue GetValue<TValue>(this IList<TValue> list, int index)
+        {
+            TryGetValue(list, index, out TValue value);
+            return value;
+        }
+
         public static List<TValue> AddRange<TValue>(this List<TValue> list, params TValue[] values)
         {
             foreach (var value in values)
