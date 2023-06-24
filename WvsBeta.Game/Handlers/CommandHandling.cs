@@ -1199,7 +1199,29 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 return true;
                             }
-
+                    case "summonpos":
+                    case "summonxy":
+                    case "spawnpos":
+                    case "spawnxy":
+                        {
+                            if (Args.Count < 3) character.Notice("Usage: /spawnxy <mobid> <x> <y> [fh] [summonType] [summonOption]");
+                            else if (!int.TryParse(Args[0], out int mobID) || !GameDataProvider.Mobs.ContainsKey(mobID))
+                                character.Notice("Invalid mob id " + Args[0]);
+                            else if (!short.TryParse(Args[1], out short x) || !short.TryParse(Args[2], out short y))
+                                character.Notice("Invalid pos " + Args[1] + "," + Args[2]);
+                            else
+                            {
+                                var pos = new Pos(x, y);
+                                short fh;
+                                int summonOption;
+                                SummonType st = SummonType.Instant;
+                                if (Args.Count < 4 || !short.TryParse(Args[3], out fh)) fh = (short)(character.Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY)?.ID ?? 0);
+                                if (Args.Count >= 5 && sbyte.TryParse(Args[4], out sbyte _st)) st = (SummonType)_st;
+                                if (Args.Count < 6 || !int.TryParse(Args[5], out summonOption)) summonOption = 0;
+                                character.Field.SpawnMobWithoutRespawning(mobID, pos, fh, summonType: st, summonOption: summonOption);
+                            }
+                            return true;
+                        }
 #endregion
 
                     #region FieldSet
