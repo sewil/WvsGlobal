@@ -126,6 +126,7 @@
     <Compile Include="Events\GMEvents\MapleCoconutEvent.cs" />
     <Compile Include="Events\GMEvents\MapleOlaEvent.cs" />
     <Compile Include="GameObjects\CharacterData.cs" />
+    <Compile Include="GameObjects\DataLoading\FieldSetData.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
     <Compile Include="GameObjects\Map_Coconut.cs" />
     <Compile Include="Handlers\MemoHandler.cs" />

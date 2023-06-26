@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.ConstrainedExecution;
+using System.Threading;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
@@ -148,6 +149,13 @@ namespace WvsBeta.Game
                 map.OnEnter = RunTimer;
             }
             Program.MainForm.LogAppend("Started fieldset '{0}'", Name);
+        }
+
+        public void SetTimer(int timeOut)
+        {
+            Timeout = timeOut;
+            EndTime = MasterThread.CurrentTime + (timeOut * 1000);
+            Maps.ForEach(m => m.Characters.ForEach(c => RunTimer(c, m)));
         }
 
         public virtual void End()
