@@ -11,6 +11,8 @@ using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Events;
+using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRooms;
 using WvsBeta.Game.Handlers;
@@ -86,6 +88,7 @@ namespace WvsBeta.Game
         public CharacterGameStats GameStats { get; private set; }
         public long PetLastInteraction { get; set; }
         public long PetLastHunger { get; set; }
+        public EventTeam Team { get; set; }
 
         public PartyData Party
         {

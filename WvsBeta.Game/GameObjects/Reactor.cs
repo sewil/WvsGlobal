@@ -8,6 +8,8 @@ using WvsBeta.Game.Scripting;
 using static WvsBeta.MasterThread;
 using WvsBeta.Common.Extensions;
 using System.Text.RegularExpressions;
+using static WvsBeta.Common.Strings;
+using log4net;
 
 namespace WvsBeta.Game
 {
@@ -21,7 +23,7 @@ namespace WvsBeta.Game
         public ReactorEventType Type { get; }
         public Rectangle? Rectangle { get; }
         public int DropID { get; }
-        public short DropAmount { get;}
+        public short DropAmount { get; }
         public ReactorEvent(NXNode eNode)
         {
             if (eNode.ContainsChild("lt"))
@@ -71,6 +73,7 @@ namespace WvsBeta.Game
         public string Name { get; }
         public GameCharacter Owner { get; private set; }
         public bool Shown { get; private set; } = true;
+        public Mob OwnerMob { get; private set; }
         public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
         {
             ID = id;
@@ -80,7 +83,7 @@ namespace WvsBeta.Game
             FacesLeft = facesLeft;
             _state = state;
             ReactorTime = -1;
-            SetState(null, _state, false);
+            SetState(_state);
         }
         public FieldReactor(Map map, NXNode node)
         {
@@ -91,7 +94,7 @@ namespace WvsBeta.Game
             Position = new Pos(node["x"].ValueInt16(), node["y"].ValueInt16());
             FacesLeft = node["f"].ValueBool();
             ReactorTime = node["reactorTime"].ValueInt32();
-            SetState(null, _state, false);
+            SetState(_state);
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -104,38 +107,43 @@ namespace WvsBeta.Game
                 }
             }
         }
-        public void SetState(GameCharacter chr, byte state, bool sendPacket = true)
+        private void SetState(byte state)
         {
-            if (changingState) return;
-            changingState = true;
-            Owner = chr;
-            var animationTime = State.Hit?.AnimationTime ?? 0;
             _state = (byte)(state % Reactor.States.Count);
-            bool isLast = _state == Reactor.States.Count - 1;
             if (State.Event?.Rectangle != null)
             {
                 var rect = State.Event.Rectangle.Value;
                 rect.Offset(Position);
                 EventRectangle = rect;
             }
+        }
+        public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true)
+        {
+            if (changingState) return;
+            changingState = true;
+            Owner = chr;
+            var animationTime = State.Hit?.AnimationTime ?? 0;
+            SetState(state);
             if (sendPacket)
             {
                 ReactorPacket.ReactorChangedState(this);
             }
+            bool isLast = _state == Reactor.States.Count - 1;
             stateChangeAction = RepeatingAction.Start(() =>
             {
                 changingState = false;
                 if (isLast)
                 {
                     Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
-                    RunScript();
+                    RunAction();
                     if (ReactorTime > 0)
                     {
                         Shown = false;
                         RepeatingAction.Start(() =>
                         {
                             if (sendPacket) ReactorPacket.DestroyReactor(this);
-                            resetAction = RepeatingAction.Start(() => {
+                            resetAction = RepeatingAction.Start(() =>
+                            {
                                 Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
                                 Reset();
                             }, ReactorTime * 1000, 0);
@@ -158,6 +166,7 @@ namespace WvsBeta.Game
             changingState = false;
             _state = 0;
             Owner = null;
+            OwnerMob = null;
             if (Shown)
             {
                 if (sendPacket) ReactorPacket.ReactorChangedState(this);
@@ -172,22 +181,43 @@ namespace WvsBeta.Game
         private MasterThread.RepeatingAction resetAction;
         private MasterThread.RepeatingAction stateChangeAction;
         private bool changingState;
-        private void RunScript()
+        private void RunAction()
         {
-            ReactorScriptSession.Run(this, script => {
+            RunFieldSetActions();
+            if (GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
+            {
+                rAction.Actions.ForEach(a => a.RunAction(this));
+            }
+            else
+            {
+                RunScript();
+            }
+        }
+        private void RunFieldSetActions()
+        {
+            var fs = Field.FieldSet;
+            if (fs != null && fs.Data.Actions.TryGetValue(Name, out var fsMapActions) && fsMapActions.TryGetValue(Field.ID, out var fsActions))
+            {
+                fsActions.ForEach(v => v.RunAction(fs));
+            }
+        }
+        public void RunScript(string scriptName = null)
+        {
+            ReactorScriptSession.Run(this, script =>
+            {
 #if !DEBUG
                 if (Owner != null && Owner.IsGM)
                 {
 #endif
-                    ChatPacket.SendBroadcastMessageToMap(Field.ID, "Error compiling script: " + script, BroadcastMessageType.Notice);
+                ChatPacket.SendBroadcastMessageToMap(Field.ID, "Error compiling script: " + script, BroadcastMessageType.Notice);
 #if !DEBUG
                 }
 #endif
-            });
+            }, scriptName);
         }
         public void Trigger(GameCharacter owner = null, bool sendPacket = true)
         {
-            SetState(owner, (byte)(_state + 1), sendPacket);
+            ChangeState(owner, (byte)(_state + 1), sendPacket);
         }
         public bool TriggerDrop(Drop drop, int ownerId)
         {
@@ -207,35 +237,24 @@ namespace WvsBeta.Game
             }
             return trigger;
         }
-        public IList<NpcLife> SpawnNpc(Pos offset, params int[] npcs)
+        public NpcLife SpawnNpc(int npcID, Pos pos)
         {
-            var pos = new Pos(Position);
-            pos.Offset(offset);
+            if (pos == null) pos = Position;
             var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int _);
             var npcLives = new List<NpcLife>();
-            foreach (int npc in npcs)
-            {
-                NpcLife npcLife = Field.SpawnNpc(npc, pos, fh);
-                if (npcLife != null)
-                {
-                    npcLives.Add(npcLife);
-                }
-            }
-            return npcLives;
+            NpcLife npcLife = Field.SpawnTempNpc(npcID, pos, fh);
+            return npcLife;
         }
-        public IList<Mob> SpawnMob(Pos offset, params (int mobid, short amount, SummonType summonType, Mob ownerMob)[] mobs)
+        public IList<Mob> SpawnMob(Pos pos, int mobID, short amount, SummonType summonType, byte mobMeta)
         {
-            var pos = new Pos(Position);
-            pos.Offset(offset);
+            if (pos == null) pos = Position;
             var spawned = new List<Mob>();
-            var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY);
-            foreach (var mob in mobs)
+            var fh = Field.GetFootholdUnderneath(pos.X, pos.Y, out int _);
+            for (int i = 0; i < amount; i++)
             {
-                for (int i = 0; i < mob.amount; i++)
-                {
-                    Field.SpawnMobWithoutRespawning(mob.mobid, pos, (short)(fh?.ID ?? 0), mob.ownerMob, mob.summonType, 0, false, out Mob outMob);
-                    spawned.Add(outMob);
-                }
+                Field.SpawnMobWithoutRespawning(mobID, pos, (short)(fh?.ID ?? 0), OwnerMob, summonType, 0, false, out Mob outMob);
+                spawned.Add(outMob);
+                if (mobMeta == 2 && OwnerMob == null) OwnerMob = outMob;
             }
             return spawned;
         }

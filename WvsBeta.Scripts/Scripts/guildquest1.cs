@@ -287,34 +287,6 @@ namespace WvsBeta.Scripts.Scripts
 
                     var result = set.Enter(target, 0);
                     set.SetVar("guild", target.GuildID.ToString());
-                    set.OnEnd += (obj, args) =>
-                    {
-                        int guildId = int.Parse(set.GetVar("guild"));
-                        GuildQuestHandler.Unregister(guildId, true);
-                    };
-                    set.OnTimerUpdate += (obj, timeRemaining) =>
-                    {
-                        var s = (timeRemaining / 1000) - (90 * 60);
-                        var _set = (FieldSet)obj;
-                        //if (MasterThread.IsDebug)
-                        //    _set.BroadcastMsg(BroadcastMessageType.Notice, s + " " + timeRemaining);
-                        if (s <= 60 && _set.GetVar("an60") != "true")
-                        {
-                            _set.SetVar("an60", "true");
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian will open in 1 minute. Be prepare to enter the instance.");
-                        }
-                        else if (s <= 30 && _set.GetVar("an30") != "true")
-                        {
-                            _set.SetVar("an30", "true");
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian will open in 30 seconds. Be prepare to enter the instance.");
-                        }
-                        else if (s <= 0)
-                        {
-                            _set.ResetOnTimerUpdate();
-                            _set.Maps[0].Portals["join00"].Enabled = true;
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian has opened!");
-                        }
-                    };
                     if (result != 0) self.Say("The Guild Quest is currently not ready, and therefore closed. Please try again later.");
                     return;
                 }

@@ -17,6 +17,7 @@ using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Handlers.MiniRooms;
 using WvsBeta.Game.Packets;
 using WvsBeta.Common.Extensions;
+using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game
 {
@@ -46,7 +47,7 @@ namespace WvsBeta.Game
             set => DropPool.DropEverlasting = value;
         }
 
-        public FieldSet ParentFieldSet { get; set; } = null;
+        public FieldSet FieldSet { get; private set; }
 
         public short DecreaseHP { get; set; }
         public int ProtectItem { get; set; }
@@ -66,6 +67,7 @@ namespace WvsBeta.Game
 
         public List<Foothold> Footholds { get; private set; }
         public List<NpcLife> NPC { get; } = new List<NpcLife>();
+        private readonly List<NpcLife> tmpNPCs = new List<NpcLife>();
         public Dictionary<string, Portal> Portals { get; } = new Dictionary<string, Portal>();
         public List<Portal> SpawnPoints { get; } = new List<Portal>();
         public List<Portal> DoorPoints { get; } = new List<Portal>();
@@ -235,7 +237,7 @@ namespace WvsBeta.Game
                 }
             }
 
-            if (MasterThread.CurrentTime >= TimerEndTime)
+            if (TimerEndTime > 0 && MasterThread.CurrentTime >= TimerEndTime)
             {
                 OnTimerEnd?.Invoke(this);
             }
@@ -628,17 +630,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 });
             }
         }
-        public void RemoveNpcLife(int id)
-        {
-            var idx = NPC.FindIndex(i => i.ID == id);
-            if (idx > -1)
-            {
-                var life = NPC[idx];
-                SendPacket(MapPacket.NpcLeaveField(life.SpawnID));
-                NPC.RemoveAt(idx);
-            }
-        }
-        public NpcLife SpawnNpc(int npcid, Pos position, Foothold? fh)
+        public NpcLife SpawnTempNpc(int npcid, Pos position, Foothold? fh)
         {
             if (GameDataProvider.NPCs.TryGetValue(npcid, out NPCData npc))
             {
@@ -648,8 +640,9 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 life.X = position.X;
                 life.Y = position.Y;
                 life.Type = 'n';
-                AddLife(life); // Can only do gpq 4 billion times :(
+                AddLife(life);
                 NpcLife npcLife = NPC.Last();
+                tmpNPCs.Add(npcLife);
                 SendPacket(MapPacket.NpcEnterField(npcLife));
                 return npcLife;
             }
@@ -1504,6 +1497,30 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         public bool IsCharacterInArea(GameCharacter chr, MapArea area)
         {
             return area.Contains(chr);
+        }
+
+        public virtual void Reset()
+        {
+            ReactorPool.Reset(false);
+
+            // Reset portals
+            foreach (var keyValuePair in Portals)
+            {
+                var portalType = keyValuePair.Value.Type;
+                keyValuePair.Value.Enabled = !(portalType == 4 || portalType == 5);
+            }
+
+            // Remove temp NPCs
+            foreach (var tmpLife in tmpNPCs)
+            {
+                NPC.Remove(tmpLife);
+            }
+            tmpNPCs.Clear();
+        }
+
+        public virtual void SetFieldSet(FieldSet fs)
+        {
+            FieldSet = fs;
         }
 
         #region Script helpers

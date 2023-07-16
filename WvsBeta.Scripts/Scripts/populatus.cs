@@ -60,25 +60,4 @@ namespace WvsBeta.Scripts.Scripts
             if (nRet == 1) target.ChangeMap(220080000, "st00");
         }
     }
-    #region Reactors
-    [Script("boss2")]
-    class Boss2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var instance = FieldSet.Instances["Populatus"];
-            instance.OnEnd += (obj, _) => TriggerGate();
-            instance.Start();
-            TriggerGate();
-            target.Field.Message("The crack of dimension was filled by the <Piece of Cracked Dimension>.");
-            target.Field.EffectMusic("Bgm09/TimeAttack");
-            var offset = new Pos((short)(-410 - target.Position.X), (short)(-400 - target.Position.Y));
-            target.SpawnMob(offset, (8500000, 1, SummonType.Poof, null));
-        }
-        void TriggerGate()
-        {
-            GameDataProvider.Maps[MapIds.DeepInsideClocktower].ReactorPool.TriggerReactor("ludigate1");
-        }
-    }
-    #endregion
 }

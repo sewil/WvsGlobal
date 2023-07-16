@@ -58,10 +58,10 @@ namespace WvsBeta.Game.Events.Packets
             chr.SendPacket(pw);
         }
 
-        public static void ForcedEquip(GameCharacter chr, EventTeam team)
+        public static void ForcedEquip(GameCharacter chr)
         {
             Packet pw = new Packet(ServerMessages.FIELD_SPECIFIC_DATA);
-            pw.WriteByte((byte)team);
+            pw.WriteByte((byte)chr.Team);
             chr.SendPacket(pw);
         }
     }

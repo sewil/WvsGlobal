@@ -13,11 +13,9 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.WzObjects;
+using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
-using WvsBeta.Game.Scripting;
-using static WvsBeta.Common.ConfigReader;
-using static WvsBeta.Common.Strings;
 
 // if \(.*Node.ContainsChild\((.*)\)\)[\s\r\n]+\{[\s\r\n]+(.*)\r\n[\s\r\n]+\}
 // case $1: $2 break;
@@ -27,6 +25,7 @@ namespace WvsBeta.Game
     {
         public static IDictionary<int, Map> Maps { get; private set; }
         public static IDictionary<int, Reactor> Reactors { get; private set; }
+        public static IDictionary<string, ReactorActionData> ReactorActions { get; private set; }
         public static IDictionary<int, NPCData> NPCs { get; private set; }
         public static IDictionary<int, MobData> Mobs { get; private set; }
         public static List<int> Jobs { get; private set; }
@@ -52,6 +51,7 @@ namespace WvsBeta.Game
                     ReadNpcs,
                     ReadNpcShops,
                     ReadMapData,
+                    ReadFieldSetData,
                     ReadDrops,
                     ReadQuiz,
                     ReadQuestData
@@ -438,10 +438,12 @@ namespace WvsBeta.Game
                 {
                     case 8: // Ergoth boss map 990000900
                     case 7: // Snowball entry map 109060001
-                    case 5: // OX Quiz 109020001
                     case 2: // Contimove 101000300
                     case 0:
                         map = new Map(ID);
+                        break;
+                    case 5: // OX Quiz 109020001
+                        map = new Map_OXQuiz(ID);
                         break;
                     case 4: // Coconut harvest 109080000
                         map = new Map_Coconut(ID, p);
@@ -683,6 +685,23 @@ namespace WvsBeta.Game
                 }
             }
         }
+        
+        static void ReadFieldSetData()
+        {
+            foreach (var pNode in pServerFile.BaseNode["FieldSet.img"])
+            {
+                try
+                {
+                    var fsData = new FieldSetData(pNode);
+                    FieldSet.Instances[fsData.Name] = new FieldSet(fsData);
+                }
+                catch (ControlledException e)
+                {
+                    
+                }
+            }
+        }
+        
         static void ReadLife(NXNode mapNode, Map map)
         {
             if (!mapNode.ContainsChild("life")) return;
@@ -758,6 +777,15 @@ namespace WvsBeta.Game
             foreach (var r in Reactors.Where(r => r.Value.Link > 0).Select(r => r.Value))
             {
                 r.States = Reactors[r.Link].States;
+            }
+        }
+
+        static void ReadReactorActions()
+        {
+            foreach (var node in pServerFile.BaseNode["ReactorAction.img"])
+            {
+                var rAction = new ReactorActionData(node);
+                ReactorActions.Add(rAction.Name, rAction);
             }
         }
 

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
@@ -9,7 +11,9 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
+using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
@@ -163,24 +167,6 @@ namespace WvsBeta.Game.Handlers
 
                 default: return GameCharacter.BanReasons.Hack;
             }
-        }
-
-        private static bool TryGetEvent(CommandArgs Args, GameCharacter character, out EventFieldSet @event)
-        {
-            @event = null;
-            if (Args.Count == 0)
-            {
-                character.Notice("Missing event name!");
-                return false;
-            }
-            string name = Args[0];
-            if (!FieldSet.Instances.TryGetValue(name, out FieldSet fs) || !(fs is EventFieldSet e))
-            {
-                character.Notice("Invalid event name \"" + name + "\"");
-                return false;
-            }
-            @event = e;
-            return true;
         }
 
         enum UserIdFetchResult
@@ -1638,43 +1624,56 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                        case "eventdesc":
-                            MapPacket.SendGMEventInstructions(character.Field);
-                            character.Message("Sent event description to everybody");
-                            return true;
-                    case "eventenable":
-                    case "enableevent":
+                    case "eventdesc":
+                        MapPacket.SendGMEventInstructions(character.Field);
+                        character.Message("Sent event description to everybody");
+                        return true;
+                    case "openevent":
+                    case "eventopen":
                         {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            if (@event.Started)
+                            if (character.Field is EventMap eventMap)
                             {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not enable entry!");
+
                             }
-                            else
+                            else if (character.Field.FieldSet != null)
                             {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} enabled. Portals disabled until start.");
-                                @event.Enable();
+
                             }
+                            else character.Notice("Not an event map!");
                             return true;
                         }
                     case "eventstart":
                     case "startevent":
                         {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            if (!@event.IsEnabled)
+                            if (character.Field is EventMap eventMap)
                             {
-                                character.Notice("Event not enabled, please run /eventenable first to start the event.");
+                                if (eventMap.Started)
+                                {
+                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                    return true;
+                                }
+                                else eventMap.Start();
                             }
-                            else if (@event.Started)
+                            else if (character.Field.FieldSet != null)
                             {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not start a new one!");
+                                var fs = character.Field.FieldSet;
+                                if (fs.Started)
+                                {
+                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                    return true;
+                                }
+                                else
+                                {
+                                    character.Field.FieldSet?.Start(character);
+                                    character.Field.FieldSet?.Maps.ForEach(m => m.Portals.ForEach(p => p.Value.Enabled = true));
+                                }
                             }
                             else
                             {
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    $"{@event.Name} started. Portals enabled, and outsiders can no longer join the event.");
-                                @event.Start();
+                                character.Notice("No event found in this map!", BroadcastMessageType.Notice);
+                                return true;
                             }
+                            ChatPacket.SendBroadcastMessageToGMs($"Event started. Portals enabled, and outsiders can no longer join the event.");
                             return true;
                         }
                     case "eventstop":
@@ -1682,9 +1681,15 @@ namespace WvsBeta.Game.Handlers
                     case "endevent":
                     case "eventend":
                         {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} stopped early. Kicking everyone if event was in progress...");
-                            @event.End();
+                            ChatPacket.SendBroadcastMessageToGMs($"Event stopped early. Kicking everyone if event was in progress...");
+                            if (character.Field is EventMap eventMap) eventMap.End();
+                            else character.Field.FieldSet?.End();
+                            return true;
+                        }
+                    case "resetcoconuts":
+                        {
+                            if (character.Field is Map_Coconut map) map.ResetCoconuts();
+                            else character.Message("Invalid map!");
                             return true;
                         }
                     #endregion
@@ -2415,7 +2420,7 @@ namespace WvsBeta.Game.Handlers
                             }
                             else
                             {
-                                reactor.SetState(character, state);
+                                reactor.ChangeState(character, state);
                             }
                             return true;
                         }

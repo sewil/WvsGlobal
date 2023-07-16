@@ -120,11 +120,10 @@
     <Compile Include="Characters\DamageFormula.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />
-    <Compile Include="Events\GMEvents\TeamEvent.cs" />
-    <Compile Include="Events\Packets\OXPackets.cs" />
-    <Compile Include="Events\Packets\SnowballPackets.cs" />
-    <Compile Include="Events\GMEvents\MapleCoconutEvent.cs" />
-    <Compile Include="Events\GMEvents\MapleOlaEvent.cs" />
+    <Compile Include="GameObjects\DataLoading\ReactorActionData.cs" />
+    <Compile Include="GameObjects\EventMap.cs" />
+    <Compile Include="Packets\OXPackets.cs" />
+    <Compile Include="Packets\SnowballPackets.cs" />
     <Compile Include="GameObjects\CharacterData.cs" />
     <Compile Include="GameObjects\DataLoading\FieldSetData.cs" />
     <Compile Include="GameObjects\MapArea.cs" />
@@ -136,11 +135,7 @@
     <Compile Include="GameObjects\QuestData.cs" />
     <Compile Include="GameObjects\ReactorPool.cs" />
     <Compile Include="Handlers\CommandHandling.cs" />
-    <Compile Include="Events\GMEvents\EventFieldSet.cs" />
-    <Compile Include="Events\GMEvents\MapleFitnessEvent.cs" />
-    <Compile Include="Events\GMEvents\MapleJewelEvent.cs" />
-    <Compile Include="Events\GMEvents\MapleOXEvent.cs" />
-    <Compile Include="Events\GMEvents\MapleSnowballEvent.cs" />
+    <Compile Include="GameObjects\Map_OXQuiz.cs" />
     <Compile Include="GameObjects\PartyData.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
@@ -176,6 +171,7 @@
     <Compile Include="Packets\PlayerEffectPacket.cs" />
     <Compile Include="Packets\RemotePacket.cs" />
     <Compile Include="Packets\WhisperPacket.cs" />
+    <Compile Include="Scripting\FieldSetScript.cs" />
     <Compile Include="Scripting\IFieldScript.cs" />
     <Compile Include="Scripting\IGameScript.cs" />
     <Compile Include="GameObjects\Kite.cs" />
@@ -226,7 +222,7 @@
     <Compile Include="Packets\BuffPacket.cs" />
     <Compile Include="Packets\CashPacket.cs" />
     <Compile Include="Packets\CharacterStatsPacket.cs" />
-    <Compile Include="Events\Packets\CoconutPackets.cs" />
+    <Compile Include="Packets\CoconutPackets.cs" />
     <Compile Include="Packets\DropPacket.cs" />
     <Compile Include="Packets\FamePacket.cs" />
     <Compile Include="Packets\InventoryPacket.cs" />

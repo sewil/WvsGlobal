@@ -754,30 +754,5 @@ namespace WvsBeta.Scripts.Scripts
             target.Owner.SendPacket(MessagePacket.RedText("You will go back to the first place by an unknown force."));
         }
     }
-    [Script("boss")]
-    class boss : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var instance = FieldSet.Instances["ZakumBoss"];
-            instance.Start();
-            TriggerGate();
-            instance.OnEnd += (obj, _) =>
-            {
-                TriggerGate();
-            };
-            target.Field.SendPacket(FieldEffectPacket.EffectMusic("Bgm06/FinalFight"));
-            var mobOwner = target.SpawnMob(new Pos(0, -11), (8800000, 1, SummonType.Fake, null))[0];
-            for (var i = 8800003; i <= 8800010; i++)
-            {
-                target.SpawnMob(new Pos(0, -11), (i, 1, SummonType.Regen, mobOwner));
-            }
-            target.Field.Message("Zakum is summoned by the force of Eye of Fire.", BroadcastMessageType.RedText);
-        }
-        void TriggerGate()
-        {
-            GameDataProvider.Maps[MapIds.TheDoorToZakum].ReactorPool.TriggerReactor("gate");
-        }
-    }
     #endregion
 }

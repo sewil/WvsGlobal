@@ -1,15 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Threading;
-using System.Timers;
 using WvsBeta.Common;
-using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
-using WvsBeta.Game.Events.GMEvents;
-using WvsBeta.Game.Events.Packets;
-using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
@@ -18,39 +11,6 @@ namespace WvsBeta.Scripts.Scripts
     {
         static INpcHost self;
         static GameCharacter target;
-
-        public static void GMEventControls<TEvent>(string prompt, params (string text, Action<TEvent> cb)[] customOptions) where TEvent : EventFieldSet
-        {
-            if (!(EventFieldSet.CurrentEvent is TEvent e) || !e.IsEnabled)
-            {
-                self.Say("No event running!");
-                return;
-            }
-            var options = new string[]
-            {
-                "Show instructions",
-                "Start event",
-                "End event"
-            }.Concat(customOptions.Select(o => o.text)).ToArray();
-            
-            int opt = self.AskMenu(prompt, options);
-            if (opt == 0)
-            {
-                e.SendInstructions();
-            }
-            else if (opt == 1)
-            {
-                e.Start();
-            }
-            else if (opt == 2)
-            {
-                e.End();
-            }
-            else
-            {
-                customOptions[opt-3].cb(e);
-            }
-        }
 
         // Paul : 9000000 
         [Script("Event00")]
@@ -62,7 +22,7 @@ namespace WvsBeta.Scripts.Scripts
                 int idx = self.AskMenu("Select the event.", eventMenu);
                 return events[idx];
             }
-            private void EnterEvent(EventFieldSet fsEvent)
+            private void GoEvent(EventFieldSet fsEvent)
             {
                 var enterStatus = fsEvent?.Enter(target, 0);
 
@@ -109,7 +69,7 @@ namespace WvsBeta.Scripts.Scripts
                         }
                         else if (v1 == 2)
                         {
-                            EnterEvent(currentEvent);
+                            GoEvent(currentEvent);
                         }
                         else if (v1 == 3)
                         {
@@ -175,7 +135,7 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else if (v1 == 2)
                     {
-                        EnterEvent(EventFieldSet.CurrentEvent);
+                        GoEvent(EventFieldSet.CurrentEvent);
                     }
                 }
             }
@@ -363,14 +323,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 @event.self = self;
                 @event.target = target;
-                if (target.IsAdmin)
-                {
-                    GMEventControls<MapleJewelEvent>(
-                        "Hey, Hey!!! GM! What'd you like to do, eh?",
-                        ("Imitate user", (e) => Viking(self, target))
-                    );
-                }
-                else Viking(self, target);
+                Viking(self, target);
             }
         }
         // Chun Ji : 9000007 
@@ -676,92 +629,43 @@ namespace WvsBeta.Scripts.Scripts
             {
                 @event.self = self;
                 @event.target = target;
-                int v1;
-                if (target.IsAdmin)
-                {
-                    GMEventControls("Man... It's hot!!! Hey, GM! What's up?", new (string text, Action<MapleCoconutEvent> cb)[]
-                    {
-                        ("Start round", e => e.StartRound()),
-                        ("End round", e => e.EndRound()),
-                        ("Reset coconuts", e => e.ResetCoconuts()),
-                    });
-                    return;
-                }
-                else v1 = self.AskMenu("Man... It's hot!!! How can I help you?",
+                int option = self.AskMenu("Man... It's hot!!! How can I help you?",
                     "Exit game event",
                     "Buy the weapon.(#t1322005# 1 meso)"
                 );
-                if (v1 == 0)
+                if (option == 0)
                 {
                     var nRet = self.AskYesNo("If you leave now, you will not be able to participate in this event for the next 24 hours. Do you really want to go out?");
                     if (nRet == 0) self.Say("Good. Don't give up and try your best. If you try really hard, you'll get a reward!");
                     else target.ChangeMap(109050001, "");
                 }
-                else if (v1 == 1)
+                else if (option == 1)
                 {
                     BuyWeapon();
                 }
             }
         }
-    }
-    #region Reactors
-    // Jewel
-    [Script("eventItem0")]
-    class EventItem0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
+        [Script("event_master")]
+        class EventMaster : IFieldSetScript
         {
-            target.Drop();
+            public void Run(IFieldSetScriptHost host, GameCharacter target)
+            {
+                var @event = host.FieldSet;
+                var answer1 = Tools.Shuffle(1, "01234");
+                var answer2 = Tools.Shuffle(1, "01234567");
+                var answer3 = Tools.Shuffle(1, "0123456789abcdef");
+                @event.SetVar( "ola_ans1", answer1 ); 
+                @event.SetVar( "ola_ans2", answer2 ); 
+                @event.SetVar( "ola_ans3", answer3 ); 
+                @event.SetVar( "decide_ans", "1" ); 
+
+                var say1 = " " + answer1 + ": 01-Answer  23-Starting Point  4-Not Active"; 
+                var say2 = " " + answer2 + ": 01-Answer  34-Starting Point  5-Bottom  67-Not Active"; 
+                var say3 = " " + answer3 + ": 01-Answer  23456-Starting Point  789-Different Portal  abcdef-Not Active"; 
+                target.Message(say1);
+                target.Message(say2);
+                target.Message(say3);
+            }
         }
     }
-    [Script("eventItem1")]
-    class EventItem1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("eventItem2")]
-    class EventItem2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("eventMap0")]
-    class EventMap0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMap1")]
-    class EventMap1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMap2")]
-    class EventMap2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMob0")]
-    class EventMob0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            //슈퍼 주니어 네키 한마리 출현
-            target.SpawnMob(new Pos(0, 0), (9100001, 1, SummonType.Poof, null));
-        }
-    }
-    #endregion
 }
