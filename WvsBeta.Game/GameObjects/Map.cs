@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
@@ -17,7 +16,6 @@ using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Handlers.MiniRooms;
 using WvsBeta.Game.Packets;
 using WvsBeta.Common.Extensions;
-using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game
 {
@@ -102,15 +100,13 @@ namespace WvsBeta.Game
 
         public const double MAP_PREMIUM_EXP = 1.0;
         public bool PortalsOpen { get; set; } = true;
-        public Action<GameCharacter, Map> OnEnter { get; set; }
-        public Action<GameCharacter, Map> OnExit { get; set; }
 
         public Action<Map> OnTimerEnd { get; set; }
         public long TimerEndTime { get; set; }
 
         public bool ChatEnabled { get; set; }
 
-        public void StartTimer(long seconds)
+        public void StartTimer(int seconds)
         {
             TimerEndTime = MasterThread.CurrentTime + (seconds * 1000);
             SendMapTimer(null);
@@ -777,7 +773,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             {
                 Characters.Remove(chr);
                 PetsPacket.RemovePet(chr, PetRemoveReason.None, false);
-                OnExit?.Invoke(chr, this);
             }
 
             if (chr.MapChair != -1)
@@ -866,8 +861,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             if (chr.GMHideEnabled)
                 AdminPacket.Hide(chr, true);
-
-            OnEnter?.Invoke(chr, this);
 
             var shownPlayers = Characters.Where(x => !x.IsGM).ToArray();
             if (chr.IsGM && shownPlayers.Length != 0)
@@ -1505,6 +1498,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             DropPool.Clear();
             EffectObjects.Clear();
             ReactorPool.Reset(false);
+            TimerEndTime = 0;
 
             // Reset portals
             foreach (var portal in Portals.Values)

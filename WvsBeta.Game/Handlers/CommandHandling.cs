@@ -1216,6 +1216,7 @@ namespace WvsBeta.Game.Handlers
                             if (Args.Count < 3)
                             {
                                 character.Message("Usage: /fieldsetvar <fieldsetname> <key> <value>");
+                                return true;
                             }
                             var set = FieldSet.Instances[Args[0]];
                             string key = Args[1];
@@ -1223,6 +1224,18 @@ namespace WvsBeta.Game.Handlers
                             set.SetVar(key, value);
                             return true;
                     }
+                    case "removefieldsetvar":
+                        {
+                            if (Args.Count < 2)
+                            {
+                                character.Message("Usage: /fieldsetvar <fieldsetname> <key>");
+                                return true;
+                            }
+                            var set = FieldSet.Instances[Args[0]];
+                            string key = Args[1];
+                            set.SetVar(key, "");
+                            return true;
+                        }
                     #endregion
 
                     #region GetID
@@ -2398,7 +2411,7 @@ namespace WvsBeta.Game.Handlers
                             {
                                 character.Message($"Reactor {rid} not found!");
                             }
-                            else if (!sbyte.TryParse(Args[1], out sbyte state))
+                            else if (!byte.TryParse(Args[1], out byte state))
                             {
                                 character.Message($"Invalid state {Args[1]}!");
                             }
@@ -2425,6 +2438,23 @@ namespace WvsBeta.Game.Handlers
                             }
                             return true;
                         }
+                    case "triggerreactorbyname":
+                        {
+                            if (!character.Field.ReactorPool.Reactors.Values.TryFind(i => i.Name == Args[0], out FieldReactor reactor))
+                            {
+                                character.Message($"Reactor {Args[0]} not found.");
+                                return true;
+                            }
+                            else if (!reactor.Shown)
+                            {
+                                character.Message("This reactor is not shown!");
+                            }
+                            else
+                            {
+                                reactor.Trigger();
+                            }
+                            return true;
+                        }
                     case "reactor":
                         {
                             if (Args.Count < 3)
@@ -2439,7 +2469,7 @@ namespace WvsBeta.Game.Handlers
                             }
                             var pos = character.Position;
                             byte id = (byte)character.Field.ReactorPool.Reactors.Count;
-                            var mr = new FieldReactor(id, character.Field, reactor, sbyte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
+                            var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
                             character.Field.ReactorPool.AddReactor(mr, true);
                             Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
                             return true;

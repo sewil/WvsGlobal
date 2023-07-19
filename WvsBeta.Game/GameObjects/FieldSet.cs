@@ -55,9 +55,12 @@ namespace WvsBeta.Game
             Started = true;
             OnStart?.Invoke(this, null);
             StartTime = MasterThread.CurrentTime;
-            EndTime = StartTime + (TimeOut * 1000);
             pendingEvents = Data.Events;
             Owner = owner;
+            if (TimeOut > 0)
+            {
+                SetTimer(TimeOut);
+            }
 
             foreach (var map in ActiveMaps)
             {
@@ -66,7 +69,6 @@ namespace WvsBeta.Game
                 {
                     map.ReactorPool.Shuffle();
                 }
-                map.OnEnter = RunTimer;
             }
 
             if (!string.IsNullOrWhiteSpace(Data.Script))
@@ -94,17 +96,13 @@ namespace WvsBeta.Game
             OnEnd?.Invoke(this);
             foreach (var map in ActiveMaps)
             {
-                map.OnEnter = null;
                 foreach (var character in map.Characters.ToList())
                 {
                     character.ChangeMap(map.ReturnMap);
                 }
                 map.Reset();
             }
-            if (Owner.GPQRegistration != null)
-            {
-                GuildQuestHandler.Unregister(Owner.GuildID, true);
-            }
+            GuildQuestHandler.Unregister(Owner.GPQRegistration, true);
             Started = false;
             Owner = null;
             Party = null;

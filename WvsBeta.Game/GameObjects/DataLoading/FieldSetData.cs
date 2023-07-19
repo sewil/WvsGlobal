@@ -1,6 +1,7 @@
 ﻿using reNX.NXProperties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
@@ -176,7 +177,7 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                         int mapIdx = int.Parse(args[0]);
                         string reactorName = args[1];
                         sbyte newState = sbyte.Parse(args[2]);
-                        ReactorFirstSet = !ReactorSecondSet;
+                        ReactorFirstSet = newState >= 0 && !ReactorSecondSet;
                         action += fs =>
                         {
                             if (ReactorSecondSet)
@@ -210,7 +211,8 @@ namespace WvsBeta.Game.GameObjects.DataLoading
         {
             var reactorPool = fs.Maps[mapIdx].ReactorPool;
             var reactor = reactorPool.Reactors.Values.FirstOrDefault(i => i.Name == reactorName);
-            reactor?.ChangeState(null, newState);
+            if (newState == -1) reactor?.Trigger();
+            else reactor?.ChangeState(null, (byte)newState);
         }
     }
     public enum FieldSetEventActionType : byte

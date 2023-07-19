@@ -10,6 +10,8 @@ using WvsBeta.Common.Extensions;
 using System.Text.RegularExpressions;
 using static WvsBeta.Common.Strings;
 using log4net;
+using System.Collections;
+using System.Linq;
 
 namespace WvsBeta.Game
 {
@@ -62,7 +64,7 @@ namespace WvsBeta.Game
         public int ID { get; }
         public Map Field { get; }
         public Reactor Reactor { get; }
-        private sbyte _state;
+        private byte _state;
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
@@ -74,7 +76,7 @@ namespace WvsBeta.Game
         public GameCharacter Owner { get; private set; }
         public bool Shown { get; private set; } = true;
         public Mob OwnerMob { get; private set; }
-        public FieldReactor(byte id, Map map, Reactor reactor, sbyte state, short x, short y, bool facesLeft)
+        public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
         {
             ID = id;
             Field = map;
@@ -107,9 +109,9 @@ namespace WvsBeta.Game
                 }
             }
         }
-        private void SetState(sbyte state)
+        private void SetState(byte state)
         {
-            _state = (sbyte)(state % Reactor.States.Count);
+            _state = (byte)(state % Reactor.States.Count);
             if (State.Event?.Rectangle != null)
             {
                 var rect = State.Event.Rectangle.Value;
@@ -117,41 +119,60 @@ namespace WvsBeta.Game
                 EventRectangle = rect;
             }
         }
-        public void ChangeState(GameCharacter chr, sbyte state, bool sendPacket = true)
+        public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true)
         {
-            if (changingState) return;
-            changingState = true;
             Owner = chr;
-            var animationTime = State.Hit?.AnimationTime ?? 0;
             SetState(state);
             if (sendPacket)
             {
                 ReactorPacket.ReactorChangedState(this);
             }
-            bool isLast = _state == Reactor.States.Count - 1;
-            stateChangeAction = RepeatingAction.Start(() =>
-            {
-                changingState = false;
-                if (isLast)
-                {
-                    Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
-                    RunAction();
-                    if (ReactorTime > 0)
-                    {
-                        Shown = false;
-                        RepeatingAction.Start(() =>
-                        {
-                            if (sendPacket) ReactorPacket.DestroyReactor(this);
-                            resetAction = RepeatingAction.Start(() =>
-                            {
-                                Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
-                                Reset();
-                            }, ReactorTime * 1000, 0);
-                        }, 500, 0);
-                    }
-                }
-            }, animationTime, 0);
+            QueueStateChange(Guid.NewGuid(), state, sendPacket);
         }
+
+        class StateChange
+        {
+            public Guid Guid { get; }
+            public int Delay { get; }
+            public RepeatingAction RepeatingAction { get; set; }
+            public StateChange(Guid guid, int delay)
+            {
+                Guid = guid;
+                Delay = delay;
+            }
+        }
+        private void QueueStateChange(Guid guid, byte state, bool sendPacket = true)
+        {
+            bool isLast = state == Reactor.States.Count - 1;
+            var animationTime = Reactor.States[state].Hit?.AnimationTime ?? 0;
+            var stateChange = new StateChange(guid, animationTime);
+            stateChanges.Add(stateChange.Guid, stateChange);
+
+            var totalDelay = stateChanges.Values.Sum(i => i.Delay);
+            stateChange.RepeatingAction = RepeatingAction.Start(() =>
+            {
+                stateChanges.Remove(guid);
+                if (!isLast) return;
+
+                Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
+                RunAction();
+
+                if (ReactorTime > 0)
+                {
+                    Shown = false;
+                    RepeatingAction.Start(() =>
+                    {
+                        if (sendPacket) ReactorPacket.DestroyReactor(this);
+                        resetAction = RepeatingAction.Start(() =>
+                        {
+                            Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
+                            Reset();
+                        }, ReactorTime * 1000, 0);
+                    }, 500, 0);
+                }
+            }, totalDelay, 0);
+        }
+
         public void Show(GameCharacter toChar = null)
         {
             if (!Shown) return;
@@ -162,8 +183,8 @@ namespace WvsBeta.Game
         {
             dropAction?.Stop();
             resetAction?.Stop();
-            stateChangeAction?.Stop();
-            changingState = false;
+            stateChanges.Values.ForEach(q => q.RepeatingAction.Stop());
+            stateChanges.Clear();
             _state = 0;
             Owner = null;
             OwnerMob = null;
@@ -179,8 +200,7 @@ namespace WvsBeta.Game
         }
         private MasterThread.RepeatingAction dropAction;
         private MasterThread.RepeatingAction resetAction;
-        private MasterThread.RepeatingAction stateChangeAction;
-        private bool changingState;
+        private readonly IDictionary<Guid, StateChange> stateChanges = new Dictionary<Guid, StateChange>();
         private void RunAction()
         {
             RunFieldSetActions();
@@ -218,7 +238,7 @@ namespace WvsBeta.Game
         }
         public void Trigger(GameCharacter owner = null, bool sendPacket = true)
         {
-            ChangeState(owner, (sbyte)(_state + 1), sendPacket);
+            ChangeState(owner, (byte)(_state + 1), sendPacket);
         }
         public bool TriggerDrop(Drop drop, int ownerId)
         {
@@ -316,7 +336,7 @@ namespace WvsBeta.Game
         public IList<Map> InfoMaps { get; } = new List<Map>();
         public string Action { get; }
         public int Link { get; }
-        public IDictionary<sbyte, ReactorState> States = new Dictionary<sbyte, ReactorState>();
+        public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();
 
         public Reactor(NXNode rNode)
         {
@@ -324,7 +344,7 @@ namespace WvsBeta.Game
 
             foreach (var subNode in rNode)
             {
-                if (sbyte.TryParse(subNode.Name, out sbyte n))
+                if (byte.TryParse(subNode.Name, out byte n))
                 {
                     States.Add(n, new ReactorState(subNode));
                     continue;

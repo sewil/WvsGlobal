@@ -720,12 +720,12 @@ namespace WvsBeta.Scripts.Scripts
 
                     for (int i = 1; i <= statuenum; i++)
                     {
-                        int reactorIdx = question.IndexOf(i.ToString());
+                        int reactorID = question.IndexOf(i.ToString()) + 1;
                         int delay = 3000 * i;
                         MasterThread.RepeatingAction.Start(() =>
                         {
 
-                            set.TriggerReactor(3, (reactorIdx + 1).ToString());
+                            set.TriggerReactor(3, reactorID.ToString());
                         }, delay, 0);
                     }
                 }
@@ -1096,36 +1096,39 @@ namespace WvsBeta.Scripts.Scripts
                     {
                         answer += Rand32.NextBetween(1, 4).ToString();
                     }
+                    if (MasterThread.IsDebug) target.Notice("Baseball answer " + answer);
                     quest.SetVar("baseball", answer);
                 }
                 else
                 {
                     var result = "";
 
-                    for (var i = 1; i <= 4; i++)
+                    for (var areaId = 1; areaId <= 4; areaId++)
                     {
                         var itemidindex = 0;
-                        for (var j = 1; j <= 4; j++)
+                        for (var itemIdx = 1; itemIdx <= 4; itemIdx++)
                         {
-                            var itemid = getitemid(j);
+                            var itemid = getitemid(itemIdx);
                             var field = target.Field;
-                            var ret = field.IsItemInArea(i.ToString(), itemid);
+                            var ret = field.IsItemInArea(areaId.ToString(), itemid);
                             if (ret == -1)
                             {
                                 self.Say("Only one offering per statue.");
                                 return;
                             }
-                            else if (ret == 1) itemidindex = j;
+                            else if (ret == 1) itemidindex = itemIdx;
                         }
                         if (itemidindex == 0)
                         {
                             self.Say("Either you have not dropped the offering, or this item is bestowed by the king.");
                             return;
                         }
-                        result = result + itemidindex.ToString();
+                        result += itemidindex.ToString();
                     }
 
-                    quest.SetVar("baseballTry", (btry.ToIntSafe() + 1).ToString());
+                    var baseballTry = (btry.ToIntSafe() + 1).ToString();
+                    if (MasterThread.IsDebug) target.Notice("Baseball try " + baseballTry);
+                    quest.SetVar("baseballTry", baseballTry);
                     var strike = 0;
                     var ball = 0;
                     for (int i = 1; i <= 4; i++)
@@ -1355,19 +1358,23 @@ namespace WvsBeta.Scripts.Scripts
         {
             if (target.Owner == null)
             {
-                if (MasterThread.IsDebug)
-                    target.Field.Message($"reactor {target.ID} lit up without owner", BroadcastMessageType.Notice);
+                if (MasterThread.IsDebug) target.Field.Message($"Statue {target.Name} lit up without owner", BroadcastMessageType.Notice);
                 return;
             }
+            
             var set = FieldSet.Instances["Guild1"];
             if (!set.Started) return;
-            int id = target.ID; // FieldReactor idx
+            
             var answer = set.GetVar("statueAnswer"); // "00000000000000000000"
+            if (string.IsNullOrWhiteSpace(answer)) return;
+            if (!int.TryParse(target.Name, out int reactorID)) return;
+            int reactorIdx = reactorID - 1;
+            
             int phase = answer.ToString().Replace("0", "").Length + 1;
-            answer = answer.Remove(id, 1).Insert(id, phase.ToString());
+            answer = answer.Remove(reactorIdx, 1).Insert(reactorIdx, phase.ToString());
             set.SetVar("statueAnswer", answer);
             if (MasterThread.IsDebug)
-                target.Field.Message($"reactor {id} lit up; phase {phase}; answer {answer}", BroadcastMessageType.Notice);
+                target.Owner.Notice($"Statue {reactorID} lit up; phase={phase}; answer={answer}", BroadcastMessageType.Notice);
         }
     }
     [Script("9208000")]

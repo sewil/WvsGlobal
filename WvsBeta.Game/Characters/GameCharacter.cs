@@ -798,7 +798,7 @@ namespace WvsBeta.Game
             }
             else if (action == 2)
             {
-                return GuildQuestHandler.Unregister(GuildID, false);
+                return GuildQuestHandler.Unregister(GPQRegistration, false);
             }
             else if (action == 3)
             {

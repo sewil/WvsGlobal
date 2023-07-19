@@ -447,7 +447,7 @@ namespace WvsBeta.Game
 
         public static void SendNPCChatTextSimple(GameCharacter chr, int NpcID, string Text, bool back, bool next)
         {
-            chr.NpcSession.mLastSentType = 0;
+            if (chr.NpcSession != null) chr.NpcSession.mLastSentType = 0;
             Packet pw = new Packet(ServerMessages.SCRIPT_MESSAGE);
             pw.WriteByte(0x04);
             pw.WriteInt(NpcID);

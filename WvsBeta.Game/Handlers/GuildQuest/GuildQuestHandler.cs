@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using WvsBeta.Common;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers.Guild;
@@ -40,37 +41,41 @@ namespace WvsBeta.Game.Handlers.GuildQuest
             }
             list[registration.channelId].Add(registration);
         }
-        public static int Unregister(int guildId, bool force)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="registration"></param>
+        /// <returns>1 = cancelled, 0 = its your turn so you cant cancel</returns>
+        public static int Unregister(GuildQuestRegistration registration, bool force)
         {
-            if (guildId == 0) return 0;
-            var registrations = Server.Instance.GuildQuestRegistrations;
-            GuildQuestRegistration registration = null;
-            foreach (var item in registrations.Select(i => i.Value))
-            {
-                registration = item.FirstOrDefault(i => i.guildId == guildId);
-                if (registration != null) break;
-            }
-            if (registration == null) return 0;
-            else if (!force && registrations[registration.channelId].FindIndex(i => i.guildId == registration.guildId) == 0) return 0;
+            if (registration == null) return 1;
+            int guildId = registration.guildId;
+            byte channelId = registration.channelId;
+            var idx = Server.Instance.GuildQuestRegistrations[channelId].FindIndex(i => i.guildId == guildId);
+            if (!force && idx == 0) return 0; // First in queue, can't cancel
 
             var pw = new Packet(ISServerMessages.GuildQuestUnregister);
-            registration.Encode(pw);
+            pw.WriteInt(guildId);
+            pw.WriteByte(channelId);
             Server.Instance.BroadcastPacket(pw, HandleUnregister);
             return 1;
         }
         public static void HandleUnregister(Packet pr)
         {
-            var registration = GuildQuestRegistration.Decode(pr);
+            int guildId = pr.ReadInt();
+            byte channelId = pr.ReadByte();
+            if (!Server.Instance.GuildQuestRegistrations.TryGetValue(channelId, out var registrations)) return;
+            int idx = registrations.FindIndex(i => i.guildId == guildId);
+            if (idx == -1) return;
+            var registration = registrations[idx];
+
             var master = Server.Instance.GetCharacter(registration.master);
-            if (master != null)
-            {
-                master.GPQRegistration = null;
-            }
-            foreach (var member in registration.members.Select(i => Server.Instance.GetCharacter(i)).Where(i => i != null))
+            if (master != null) master.GPQRegistration = null;
+            foreach (var member in registration.members.Select(item => Server.Instance.GetCharacter(item)).Where(item => item != null))
             {
                 member.GPQRegistration = null;
             }
-            Server.Instance.GuildQuestRegistrations[registration.channelId].Remove(registration);
+            registrations.RemoveAt(idx);
         }
     }
 }
