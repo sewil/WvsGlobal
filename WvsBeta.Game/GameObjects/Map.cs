@@ -1501,13 +1501,15 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
         public virtual void Reset()
         {
+            KillAllMobs(0);
+            DropPool.Clear();
+            EffectObjects.Clear();
             ReactorPool.Reset(false);
 
             // Reset portals
-            foreach (var keyValuePair in Portals)
+            foreach (var portal in Portals.Values)
             {
-                var portalType = keyValuePair.Value.Type;
-                keyValuePair.Value.Enabled = !(portalType == 4 || portalType == 5);
+                portal.Reset();
             }
 
             // Remove temp NPCs

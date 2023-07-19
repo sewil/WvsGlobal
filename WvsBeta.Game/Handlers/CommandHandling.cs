@@ -1628,20 +1628,6 @@ namespace WvsBeta.Game.Handlers
                         MapPacket.SendGMEventInstructions(character.Field);
                         character.Message("Sent event description to everybody");
                         return true;
-                    case "openevent":
-                    case "eventopen":
-                        {
-                            if (character.Field is EventMap eventMap)
-                            {
-
-                            }
-                            else if (character.Field.FieldSet != null)
-                            {
-
-                            }
-                            else character.Notice("Not an event map!");
-                            return true;
-                        }
                     case "eventstart":
                     case "startevent":
                         {
@@ -1665,7 +1651,6 @@ namespace WvsBeta.Game.Handlers
                                 else
                                 {
                                     character.Field.FieldSet?.Start(character);
-                                    character.Field.FieldSet?.Maps.ForEach(m => m.Portals.ForEach(p => p.Value.Enabled = true));
                                 }
                             }
                             else
@@ -1673,7 +1658,6 @@ namespace WvsBeta.Game.Handlers
                                 character.Notice("No event found in this map!", BroadcastMessageType.Notice);
                                 return true;
                             }
-                            ChatPacket.SendBroadcastMessageToGMs($"Event started. Portals enabled, and outsiders can no longer join the event.");
                             return true;
                         }
                     case "eventstop":
@@ -2414,7 +2398,7 @@ namespace WvsBeta.Game.Handlers
                             {
                                 character.Message($"Reactor {rid} not found!");
                             }
-                            else if (!byte.TryParse(Args[1], out byte state))
+                            else if (!sbyte.TryParse(Args[1], out sbyte state))
                             {
                                 character.Message($"Invalid state {Args[1]}!");
                             }
@@ -2455,7 +2439,7 @@ namespace WvsBeta.Game.Handlers
                             }
                             var pos = character.Position;
                             byte id = (byte)character.Field.ReactorPool.Reactors.Count;
-                            var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
+                            var mr = new FieldReactor(id, character.Field, reactor, sbyte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
                             character.Field.ReactorPool.AddReactor(mr, true);
                             Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
                             return true;

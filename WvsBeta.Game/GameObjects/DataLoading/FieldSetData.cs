@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Game.GameObjects.DataLoading
 {
@@ -15,6 +16,7 @@ namespace WvsBeta.Game.GameObjects.DataLoading
         public short MaxLevel { get; }
         public short Quest { get; }
         public Map[] Maps { get; }
+        public IDictionary<Map, bool> Unaffected { get; }
         public int TimeOut { get; }
         /// <summary>
         /// Reactor name as key, containing a mapid as key with field set actions
@@ -30,6 +32,8 @@ namespace WvsBeta.Game.GameObjects.DataLoading
             var maps = new Dictionary<int, Map>();
             Actions = new Dictionary<string, IDictionary<int, IList<FieldSetActionData>>>();
             Events = new List<FieldSetEventData>();
+            Unaffected = new Dictionary<Map, bool>();
+            var unaffected = new Dictionary<int, bool>();
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -43,9 +47,12 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                             {
                                 int mapIdx = int.Parse(actionsNode.Name);
                                 int mapID = maps[mapIdx].ID;
+                                bool reactorSecondSet = false;
                                 foreach (var actionNode in actionsNode)
                                 {
-                                    var action = new FieldSetActionData(actionNode, mapIdx);
+                                    var action = new FieldSetActionData(actionNode, reactorSecondSet);
+                                    reactorSecondSet = action.ReactorFirstSet && !action.ReactorSecondSet;
+
                                     if (!Actions.ContainsKey(action.Name))
                                         Actions.Add(action.Name, new Dictionary<int, IList<FieldSetActionData>>());
                                     if (!Actions[action.Name].ContainsKey(mapID))
@@ -82,6 +89,16 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                     case "quest":
                         Quest = subNode.ValueInt16();
                         break;
+                    case "unaffected":
+                        {
+                            foreach (var uNode in subNode)
+                            {
+                                int mapIdx = int.Parse(uNode.Name);
+                                bool isUnaffected = uNode.ValueBool();
+                                unaffected.Add(mapIdx, isUnaffected);
+                            }
+                        }
+                        break;
                     default:
                         {
                             if (int.TryParse(subNode.Name, out int mapIdx))
@@ -96,6 +113,7 @@ namespace WvsBeta.Game.GameObjects.DataLoading
             }
             Maps = new Map[maps.Count];
             maps.ForEach(m => Maps[m.Key] = m.Value);
+            Unaffected = unaffected.ToDictionary(i => Maps[i.Key], i => i.Value);
         }
     }
     public enum FieldSetActionType : byte
@@ -103,15 +121,17 @@ namespace WvsBeta.Game.GameObjects.DataLoading
         SetReactorState = 3,
         SetVar = 4,
         FieldMusic = 5,
+        PartyClear = 7
     }
     public class FieldSetActionData
     {
         public string Name { get; }
-        private Action<FieldSet> action;
-        private int mapIdx;
-        public FieldSetActionData(NXNode node, int mapIdx)
+        public bool ReactorFirstSet { get; private set; }
+        public bool ReactorSecondSet { get; }
+        private readonly Action<FieldSet> action;
+        public FieldSetActionData(NXNode node, bool reactorSecondSet)
         {
-            this.mapIdx = mapIdx;
+            ReactorSecondSet = reactorSecondSet;
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -138,37 +158,65 @@ namespace WvsBeta.Game.GameObjects.DataLoading
         }
         private Action<FieldSet> ParseAction(FieldSetActionType type, IList<string> args)
         {
+            Action<FieldSet> action = null;
             switch (type)
             {
                 case FieldSetActionType.SetVar:
-                    return fs => fs.SetVar(args[0], args[1]);
+                    action += fs => fs.SetVar(args[0], args[1]);
+                    break;
                 case FieldSetActionType.FieldMusic:
                     {
                         int mapIdx = int.Parse(args[0]);
                         string music = args[1];
-                        return fs => fs.Maps[mapIdx].EffectMusic(music);
+                        action += fs => fs.Maps[mapIdx].EffectMusic(music);
                     }
+                    break;
                 case FieldSetActionType.SetReactorState:
                     {
                         int mapIdx = int.Parse(args[0]);
                         string reactorName = args[1];
-                        int stateInc = int.Parse(args[2]);
-                        return fs =>
+                        sbyte newState = sbyte.Parse(args[2]);
+                        ReactorFirstSet = !ReactorSecondSet;
+                        action += fs =>
                         {
-                            var reactorPool = fs.Maps[mapIdx].ReactorPool;
-                            var reactor = reactorPool.Reactors.Values.FirstOrDefault(i => i.Name == reactorName);
-                            byte newState = (byte)((reactor.State.State + stateInc) % reactor.Reactor.States.Count);
-                            reactor?.ChangeState(null, newState);
+                            if (ReactorSecondSet)
+                            {
+                                fs.OnEnd.SubscribeOnce(fieldSet => SetReactorState(fieldSet, mapIdx, reactorName, newState));
+                            }
+                            else
+                            {
+                                SetReactorState(fs, mapIdx, reactorName, newState);
+                            }
                         };
                     }
-                default: return null;
+                    break;
+                case FieldSetActionType.PartyClear:
+                    {
+                        int something = int.Parse(args[0]);
+                        int exp = int.Parse(args[1]);
+                        var mapIdxs = new int[args.Count - 2];
+                        for (int i = 0; i < mapIdxs.Length; i++)
+                        {
+                            int mapIdx = int.Parse(args[i+2]);
+                            mapIdxs[i] = mapIdx;
+                        }
+                        action += fs => fs.PartyClear(mapIdxs, exp);
+                    }
+                    break;
             }
+            return action;
+        }
+        private void SetReactorState(FieldSet fs, int mapIdx, string reactorName, sbyte newState)
+        {
+            var reactorPool = fs.Maps[mapIdx].ReactorPool;
+            var reactor = reactorPool.Reactors.Values.FirstOrDefault(i => i.Name == reactorName);
+            reactor?.ChangeState(null, newState);
         }
     }
     public enum FieldSetEventActionType : byte
     {
         SetTimer = 1,
-        ChangeMapAll = 2,
+        SetPortalEnabled = 2,
         BroadcastAll = 3
     }
     public class FieldSetEventData
@@ -212,13 +260,14 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                     {
                         fs.SetTimer(timeOut);
                     };
-                case FieldSetEventActionType.ChangeMapAll:
-                    int mapIdxFrom = int.Parse(args[0]);
-                    string portalTo = args[1];
-                    int mapIdxTo = int.Parse(args[2]);
+                case FieldSetEventActionType.SetPortalEnabled:
+                    int mapIdx = int.Parse(args[0]);
+                    string portalName = args[1];
+                    bool isEnabled = args[2] == "1";
                     return fs =>
                     {
-                        fs.Maps[mapIdxFrom].Characters.ForEach(c => c.ChangeMap(fs.Maps[mapIdxTo].ID, portalTo));
+                        var map = fs.Maps[mapIdx];
+                        map.Portals[portalName].Enabled = isEnabled;
                     };
                 case FieldSetEventActionType.BroadcastAll:
                     {

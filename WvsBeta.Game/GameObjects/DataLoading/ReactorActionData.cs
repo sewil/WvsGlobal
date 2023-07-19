@@ -61,7 +61,7 @@ namespace WvsBeta.Game.GameObjects.DataLoading
             {
                 case ReactorActionType.GoMap:
                     {
-                        bool moveAll = bool.Parse(args[0]);
+                        bool moveAll = args[0] == "1";
                         if (!moveAll) messageField = false;
                         var mapIDs = new List<(int, string)>();
                         for (int i = 1; i + 1 < args.Count; i += 2)
@@ -88,13 +88,13 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                         short amount = short.Parse(args[2]);
                         Pos pos = null;
                         byte mobMeta = 0;
-                        if (args.Count >= 4) mobMeta = byte.Parse(args[3]);
                         if (args.Count >= 6)
                         {
-                            short x = short.Parse(args[4]);
-                            short y = short.Parse(args[5]);
-                            pos = new Pos(x, y);
+                            mobMeta = byte.Parse(args[3]);
                         }
+                        short x = short.Parse(args[args.Count - 2]);
+                        short y = short.Parse(args[args.Count - 1]);
+                        pos = new Pos(x, y);
                         action += (r) => r.SpawnMob(pos, mobID, amount, summonType, mobMeta);
                     }
                     break;

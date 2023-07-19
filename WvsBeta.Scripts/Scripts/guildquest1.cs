@@ -4,6 +4,7 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
 using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Scripting;
+using static WvsBeta.Game.GameCharacter;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -286,7 +287,6 @@ namespace WvsBeta.Scripts.Scripts
                     //------------
 
                     var result = set.Enter(target, 0);
-                    set.SetVar("guild", target.GuildID.ToString());
                     if (result != 0) self.Say("The Guild Quest is currently not ready, and therefore closed. Please try again later.");
                     return;
                 }
@@ -1349,7 +1349,6 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
-    #region Reactors
     class SyarenStatue
     {
         public static void Run(IReactorHost host, FieldReactor target)
@@ -1395,218 +1394,4 @@ namespace WvsBeta.Scripts.Scripts
             SyarenStatue.Run(host, target);
         }
     }
-    [Script("9208004")]
-    class SpearGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("speargateopen", "yes");
-            foreach (var map in set.Maps.Where(i => i.ID % 9900004 < 100))
-            {
-                map.EffectPartyClear();
-            }
-        }
-    }
-    [Script("9208005")]
-    class MetalGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("metalgateopen", "yes");
-        }
-    }
-    [Script("9208006")]
-    class StoneGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("stonegateopen", "yes");
-        }
-    }
-    [Script("9208007")]
-    class SyarenSpear : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            FieldSet.Instances["Guild1"].TriggerReactor(5, "speargate");
-        }
-    }
-    [Script("9208009")]
-    class KingGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("kinggateopen", "yes");
-        }
-    }
-    [Script("9208010")]
-    class SecretGate1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate1open", "yes");
-        }
-    }
-    [Script("9208011")]
-    class SecretGate2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate2open", "yes");
-        }
-    }
-    [Script("9208012")]
-    class SecretGate3 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate3open", "yes");
-        }
-    }
-    [Script("syarenMob0")]
-    class syarenMob0 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            target.SpawnMob(new Pos(-100, 50), (9300033, 8, SummonType.Poof, null));
-        }
-    }
-
-    [Script("syarenNPC0")]
-    class syarenNPC0 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            FieldSet.Instances["Guild1"].BroadcastMsg(BroadcastMessageType.RedText, "Everything went out of focus for a second, and then a faint presence appeared from afar.");
-            target.SpawnNpc(null, 9040003);
-        }
-    }
-
-    // Eregos crystal
-    [Script("syarenMob1")]
-    class syarenMob1 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            target.Field.EffectMusic("Bgm10/Eregos");
-            target.Field.Message("As Rubian disappears, in comes Ergoth!");
-            target.SpawnMob(new Pos(0, 0), (9300028, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(-200, 138), (9300029, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(75, 138), (9300030, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(-160, 78), (9300031, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(147, 78), (9300032, 1, SummonType.Poof, null));
-        }
-    }
-    [Script("syarenItem0")]
-    class syarenItem0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem1")]
-    class syarenItem1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem2")]
-    class syarenItem2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem3")]
-    class syarenItem3 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem4")]
-    class syarenItem4 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem5")]
-    class syarenItem5 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem6")]
-    class syarenItem6 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem7")]
-    class syarenItem7 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem8")]
-    class syarenItem8 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem9")]
-    class syarenItem9 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem10")]
-    class syarenItem10 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem11")]
-    class syarenItem11 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem12")]
-    class syarenItem12 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    #endregion
 }

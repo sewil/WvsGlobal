@@ -102,7 +102,7 @@ namespace WvsBeta.Game.GameObjects
         {
             base.SetFieldSet(fs);
             FieldSet.OnStart += HandleFieldSetStart;
-            FieldSet.OnEnd += HandleFieldSetEnd;
+            FieldSet.OnEnd.Subscribe(HandleFieldSetEnd);
         }
 
         private void HandleFieldSetStart(object obj, EventArgs args)
@@ -110,7 +110,7 @@ namespace WvsBeta.Game.GameObjects
             Start();
         }
 
-        private void HandleFieldSetEnd(object obj, EventArgs args)
+        private void HandleFieldSetEnd(FieldSet fs)
         {
             End();
         }

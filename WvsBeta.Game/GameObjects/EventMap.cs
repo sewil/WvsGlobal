@@ -11,23 +11,11 @@ namespace WvsBeta.Game.Events
     public abstract class EventMap : Map
     {
         public static Map WinMap => GameDataProvider.Maps[109050000];
-        public static IDictionary<int, EventMap> OpenEventMaps { get; } = new Dictionary<int, EventMap>();
         public bool Started { get; private set; }
         protected EventMap(int id) : base(id)
         {
         }
 
-        /// <summary>
-        /// Open event map for players to be able to join via Event NPC.
-        /// </summary>
-        public void Open()
-        {
-            OpenEventMaps.Add(ID, this);
-        }
-
-        /// <summary>
-        /// Start the event map, closing access via the Event NPC.
-        /// </summary>
         public virtual void Start()
         {
             Started = true;
@@ -37,7 +25,6 @@ namespace WvsBeta.Game.Events
             Started = false;
             Characters.ForEach(c => c.ChangeMap(ReturnMap));
             Reset();
-            OpenEventMaps.Remove(ID);
         }
 
         public void SendEffectVictory(GameCharacter chr)

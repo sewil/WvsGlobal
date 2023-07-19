@@ -1,63 +1,82 @@
-﻿using WvsBeta.Common;
-using WvsBeta.Common.Enums;
+﻿using System;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
 {
-    // The portal that leads to the Boss Map
-    [Script("Populatus00")]
-    class Populatus00 : IPortalScript
+    public static class populatus
     {
-        public void Run(IPortalHost self, GameCharacter target)
+        // The portal that leads to the Boss Map
+        [Script("Populatus00")]
+        class Populatus00 : IPortalScript
         {
-            var inven = target.Inventory;
-            var instance = FieldSet.Instances["Populatus"];
-            var qr = target.QuestRecord;
-            var lTime = qr.Get(7200);
-            int.TryParse(qr.Get(7201), out int enterCount);
+            public void Run(IPortalHost self, GameCharacter target)
+            {
+                var inven = target.Inventory;
+                var quest = FieldSet.Instances["Populatus"];
+                var result = quest.GetVar("ludiboss");
+                var users = quest.UserCount;
+                var qr = target.QuestRecord;
+                var lTime = qr.Get(7200);
+                var count = qr.Get(7201);
 
-            if (inven.ItemCount(4031172) < 1) return;
-            var cTime = MasterThread.CurrentTimeStr;
-            var aTime = MasterThread.CompareTime(cTime, lTime);
-            if (aTime >= 1440) enterCount = 0;
-            if (!target.IsAdmin && aTime < 1440 && enterCount >= 2)
-            {
-                target.Message("You can only enter The Origin of Clocktower twice a day.");
-                return;
-            }
-            else if (instance.Started)
-            {
-                target.Message("The battle against Papulatus has already begun, so you may not enter this place.");
-            }
-            else
-            {
-                var status = instance.Enter(target, 0, "st00", false);
-                if (status == FieldSet.EnterStatus.Full)
+                if (inven.ItemCount(4031172) >= 1)
                 {
-                    target.Message("The room is already in full capacity with people battling against Papulatus.");
-                }
-                else if (status != FieldSet.EnterStatus.Success)
-                {
-                    target.Message("There are mysterious forces are at work, so you may not enter at this time.");
-                }
-                else
-                {
-                    qr.Set(7200, cTime);
-                    qr.Set(7201, (++enterCount).ToString());
-                    target.PlayPortalSE();
+                    var cTime = MasterThread.CurrentTimeStr;
+                    var aTime = MasterThread.CompareTime(cTime, lTime);
+                    // After one day
+                    if (aTime >= 1440 || target.IsAdmin || MasterThread.IsDebug)
+                    {
+                        if (result == "yes") target.Message("The battle against Papulatus has already begun, so you may not enter this place.");
+                        else
+                        {
+                            if (users < 12)
+                            {
+                                qr.Set(7200, cTime);
+                                qr.Set(7201, "1");
+                                target.PlayPortalSE();
+                                target.ChangeMap(220080001, "st00");
+                            }
+                            else target.Message("The room is already in full capacity with people battling against Papulatus.");
+                        }
+                    }
+                    else
+                    {
+                        if (result == "yes") target.Message("The battle against Papulatus has already begun, so you may not enter this place.");
+                        else
+                        {
+                            if (users < 12)
+                            {
+                                if (count == "")
+                                {
+                                    qr.Set(7200, cTime);
+                                    qr.Set(7201, "1");
+                                    target.PlayPortalSE();
+                                    target.ChangeMap(220080001, "st00");
+                                }
+                                else if (count == "1")
+                                {
+                                    qr.Set(7201, "2");
+                                    target.PlayPortalSE();
+                                    target.ChangeMap(220080001, "st00");
+                                }
+                                else target.Message("You can only enter The Origin of Clocktower twice a day.");
+                            }
+                            else target.Message("The room is already in full capacity with people battling against Papulatus.");
+                        }
+                    }
                 }
             }
         }
-    }
-    // �����ġ NPC : ��������...
-    [Script("Populatus01")]
-    class Populatus01 : INpcScript
-    {
-        public void Run(INpcHost self, GameCharacter target)
+        // ±â°èÀåÄ¡ NPC : Žë±âžÊÀž·Î...
+        [Script("Populatus01")]
+        class Populatus01 : INpcScript
         {
-            var nRet = self.AskYesNo("Beep... beep... you can make your escape to a safer place through me. Beep ... beep ... would you like to leave this place?");
-            if (nRet == 1) target.ChangeMap(220080000, "st00");
+            public void Run(INpcHost self, GameCharacter target)
+            {
+                var nRet = self.AskYesNo("Beep... beep... you can make your escape to a safer place through me. Beep ... beep ... would you like to leave this place?");
+                if (nRet == 1) target.ChangeMap(220080000, "st00");
+            }
         }
     }
 }

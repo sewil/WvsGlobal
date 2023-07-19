@@ -62,7 +62,7 @@ namespace WvsBeta.Game
         public int ID { get; }
         public Map Field { get; }
         public Reactor Reactor { get; }
-        private byte _state;
+        private sbyte _state;
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
@@ -74,7 +74,7 @@ namespace WvsBeta.Game
         public GameCharacter Owner { get; private set; }
         public bool Shown { get; private set; } = true;
         public Mob OwnerMob { get; private set; }
-        public FieldReactor(byte id, Map map, Reactor reactor, byte state, short x, short y, bool facesLeft)
+        public FieldReactor(byte id, Map map, Reactor reactor, sbyte state, short x, short y, bool facesLeft)
         {
             ID = id;
             Field = map;
@@ -107,9 +107,9 @@ namespace WvsBeta.Game
                 }
             }
         }
-        private void SetState(byte state)
+        private void SetState(sbyte state)
         {
-            _state = (byte)(state % Reactor.States.Count);
+            _state = (sbyte)(state % Reactor.States.Count);
             if (State.Event?.Rectangle != null)
             {
                 var rect = State.Event.Rectangle.Value;
@@ -117,7 +117,7 @@ namespace WvsBeta.Game
                 EventRectangle = rect;
             }
         }
-        public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true)
+        public void ChangeState(GameCharacter chr, sbyte state, bool sendPacket = true)
         {
             if (changingState) return;
             changingState = true;
@@ -184,7 +184,7 @@ namespace WvsBeta.Game
         private void RunAction()
         {
             RunFieldSetActions();
-            if (GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
+            if (Reactor.Action != null && GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
             {
                 rAction.Actions.ForEach(a => a.RunAction(this));
             }
@@ -196,8 +196,9 @@ namespace WvsBeta.Game
         private void RunFieldSetActions()
         {
             var fs = Field.FieldSet;
-            if (fs != null && fs.Data.Actions.TryGetValue(Name, out var fsMapActions) && fsMapActions.TryGetValue(Field.ID, out var fsActions))
+            if (fs != null && Name != null && fs.Data.Actions.TryGetValue(Name, out var fsMapActions) && fsMapActions.TryGetValue(Field.ID, out var fsActions))
             {
+                if (!fs.Started) fs.Start(Owner);
                 fsActions.ForEach(v => v.RunAction(fs));
             }
         }
@@ -217,7 +218,7 @@ namespace WvsBeta.Game
         }
         public void Trigger(GameCharacter owner = null, bool sendPacket = true)
         {
-            ChangeState(owner, (byte)(_state + 1), sendPacket);
+            ChangeState(owner, (sbyte)(_state + 1), sendPacket);
         }
         public bool TriggerDrop(Drop drop, int ownerId)
         {
@@ -286,12 +287,12 @@ namespace WvsBeta.Game
     }
     public class ReactorState
     {
-        public byte State { get; }
+        public sbyte State { get; }
         public ReactorEvent Event { get; }
         public WzAnimation Hit { get; }
         public ReactorState(NXNode node)
         {
-            State = byte.Parse(node.Name);
+            State = sbyte.Parse(node.Name);
             foreach (var subNode in node)
             {
                 switch (subNode.Name)
@@ -315,7 +316,7 @@ namespace WvsBeta.Game
         public IList<Map> InfoMaps { get; } = new List<Map>();
         public string Action { get; }
         public int Link { get; }
-        public IDictionary<byte, ReactorState> States = new Dictionary<byte, ReactorState>();
+        public IDictionary<sbyte, ReactorState> States = new Dictionary<sbyte, ReactorState>();
 
         public Reactor(NXNode rNode)
         {
@@ -323,7 +324,7 @@ namespace WvsBeta.Game
 
             foreach (var subNode in rNode)
             {
-                if (byte.TryParse(subNode.Name, out byte n))
+                if (sbyte.TryParse(subNode.Name, out sbyte n))
                 {
                     States.Add(n, new ReactorState(subNode));
                     continue;

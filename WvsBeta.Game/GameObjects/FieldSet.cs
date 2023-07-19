@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.DataProviders;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
+using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
@@ -17,8 +19,10 @@ namespace WvsBeta.Game
         private readonly Dictionary<string, string> _savedVars = new Dictionary<string, string>();
         public int TimeOut { get; private set; }
         public Map[] Maps => Data.Maps;
-        public bool Started { get; set; }
+        public IList<Map> ActiveMaps { get; }
+        public bool Started { get; private set; }
         public bool Shuffle => Data.Shuffle;
+        public long StartTime { get; private set; }
         public long EndTime { get; private set; }
         public long TimeRemaining => EndTime - MasterThread.CurrentTime;
         public int MinPartyMembers => Data.MinPartyMembers;
@@ -27,28 +31,36 @@ namespace WvsBeta.Game
         public int MaxLevel => Data.MaxLevel;
         public short Quest => Data.Quest;
         public PartyData Party { get; private set; }
-        public GameCharacter Leader { get; private set; }
-        public int UserCount { get; private set; }
-        public IEnumerable<GameCharacter> Characters => Data.Maps.SelectMany(i => i.Characters);
+        public GameCharacter Owner { get; private set; }
+        public int UserCount => Characters.Count();
+        public IEnumerable<GameCharacter> Characters => ActiveMaps.SelectMany(i => i.Characters);
         public event EventHandler OnStart;
-        public event EventHandler OnEnd;
+        public EventSubscriber<FieldSet> OnEnd { get; }
         public FieldSetData Data { get; }
+        private IList<FieldSetEventData> pendingEvents;
         public FieldSet(FieldSetData fsData)
         {
+            OnEnd = new EventSubscriber<FieldSet>();
             Data = fsData;
             TimeOut = fsData.TimeOut;
+            foreach (var map in Maps)
+            {
+                map.SetFieldSet(this);
+            }
+            ActiveMaps = Maps.Where(i => !fsData.Unaffected.GetValue(i)).ToList();
         }
 
-        public virtual void Start(GameCharacter starter)
+        public virtual void Start(GameCharacter owner)
         {
             Started = true;
             OnStart?.Invoke(this, null);
-            EndTime = MasterThread.CurrentTime + (TimeOut * 1000);
+            StartTime = MasterThread.CurrentTime;
+            EndTime = StartTime + (TimeOut * 1000);
+            pendingEvents = Data.Events;
+            Owner = owner;
 
-            foreach (var map in Maps)
+            foreach (var map in ActiveMaps)
             {
-                map.Reset();
-
                 // Shuffle reactors
                 if (Shuffle)
                 {
@@ -59,10 +71,10 @@ namespace WvsBeta.Game
 
             if (!string.IsNullOrWhiteSpace(Data.Script))
             {
-                FieldSetScriptHost.RunScript(this, starter, Data.Script, (err) =>
+                FieldSetScriptHost.RunScript(this, owner, Data.Script, (err) =>
                 {
 #if DEBUG
-                    starter.Notice("Error running fieldset script + " + err);
+                    owner.Notice("Error running fieldset script + " + err);
 #else
                     Program.MainForm.LogAppend("Error running fieldset script " + err);
 #endif
@@ -74,27 +86,28 @@ namespace WvsBeta.Game
         {
             TimeOut = timeOut;
             EndTime = MasterThread.CurrentTime + (timeOut * 1000);
-            Maps.ForEach(m => m.StartTimer(timeOut));
+            ActiveMaps.ForEach(m => m.StartTimer(timeOut));
         }
 
         public virtual void End()
         {
-            foreach (var map in Maps)
+            OnEnd?.Invoke(this);
+            foreach (var map in ActiveMaps)
             {
                 map.OnEnter = null;
                 foreach (var character in map.Characters.ToList())
                 {
                     character.ChangeMap(map.ReturnMap);
                 }
-                map.KillAllMobs(0);
-                map.DropPool.Clear();
-                map.EffectObjects.Clear();
                 map.Reset();
             }
+            if (Owner.GPQRegistration != null)
+            {
+                GuildQuestHandler.Unregister(Owner.GuildID, true);
+            }
             Started = false;
-            UserCount = 0;
+            Owner = null;
             Party = null;
-            OnEnd?.Invoke(this, null);
             _savedVars.Clear();
         }
 
@@ -118,19 +131,18 @@ namespace WvsBeta.Game
             return EnterStatus.Success;
         }
 
-        public EnterStatus Enter(GameCharacter chr, int mapIdx, string portalName = null)
+        public EnterStatus Enter(GameCharacter owner, int mapIdx, string portalName = null)
         {
             var toEnter = new List<GameCharacter>();
             if (mapIdx < 0 || mapIdx > Maps.Length - 1) return EnterStatus.Invalid;
             if (Started) return EnterStatus.Full;
-            toEnter.Add(chr);
+            toEnter.Add(owner);
             if (MinPartyMembers > 0)
             {
-                if (!PartyData.Parties.TryGetValue(chr.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
-                if (pt.Leader != chr.ID) return EnterStatus.Invalid;
+                if (!PartyData.Parties.TryGetValue(owner.PartyID, out PartyData pt)) return EnterStatus.NotInParty;
+                if (pt.Leader != owner.ID) return EnterStatus.Invalid;
                 Party = pt;
-                toEnter = pt.Characters.Where(c => c.Field.ID == chr.Field.ID).ToList(); // needs to be in same map on enter
-                Leader = chr;
+                toEnter = pt.Characters.Where(c => c.Field.ID == owner.Field.ID).ToList(); // needs to be in same map on enter
 
                 if (toEnter.Count != pt.MemberCount || (MaxPartyMembers > 0 && pt.MemberCount > MaxPartyMembers) || pt.MemberCount < MinPartyMembers) return EnterStatus.WrongMemberCount;
             }
@@ -141,11 +153,10 @@ namespace WvsBeta.Game
                 if (status != EnterStatus.Success) return status;
             }
 
-            Start(chr);
-
             var mapID = Maps[mapIdx].ID;
             toEnter.ForEach(c => c.ChangeMap(mapID, portalName));
-            UserCount = toEnter.Count;
+
+            Start(owner);
             return EnterStatus.Success;
         }
 
@@ -160,11 +171,21 @@ namespace WvsBeta.Game
             if (!Started) return;
 
             var timesUp = TimeOut > 0 && EndTime < currentTime;
-            var noMorePlayers = Maps.Sum(x => x.Characters.Count) == 0;
+            var noMorePlayers = ActiveMaps.Sum(x => x.Characters.Count) == 0;
 
             if (timesUp || noMorePlayers)
             {
                 End();
+            }
+            else
+            {
+                double secondsElapsed = (currentTime - StartTime) / 1000;
+                var events = pendingEvents.Where(i => i.TimeAfter <= secondsElapsed);
+                foreach (var fsEvent in events.ToList())
+                {
+                    fsEvent.RunAction(this);
+                    pendingEvents.Remove(fsEvent);
+                }
             }
         }
 
@@ -209,14 +230,14 @@ namespace WvsBeta.Game
         public void BroadcastMsg(BroadcastMessageType type, string text)
         {
             var packet = ChatPacket.BroadcastMessage(text, type);
-            foreach (var map in Maps)
+            foreach (var map in ActiveMaps)
             {
                 map.SendPacket(packet);
             }
         }
         public void TransferFieldAll(int mapid, string portalname)
         {
-            foreach (var map in Maps)
+            foreach (var map in ActiveMaps)
             {
                 foreach (var c in map.Characters)
                 {
@@ -227,6 +248,15 @@ namespace WvsBeta.Game
         public void TriggerReactor(int mapIdx, string reactorName)
         {
             Maps[mapIdx].ReactorPool.TriggerReactor(reactorName);
+        }
+        public void PartyClear(int[] mapIdxs, int exp)
+        {
+            foreach (int mapIdx in mapIdxs)
+            {
+                Map map = Maps[mapIdx];
+                map.EffectPartyClear();
+                map.Characters.ForEach(i => i.AddEXP(exp, MessageAppearType.ChatGrey));
+            }
         }
         public void IncExpAll(int exp)
         {
@@ -239,7 +269,7 @@ namespace WvsBeta.Game
         /// <param name="quest">QuestID required to have data set to "1" to increase the exp</param>
         public void IncExpAll(int exp, short quest)
         {
-            if (Leader == null || (quest > 0 && Leader.QuestRecord.GetQuestData(quest) != "1")) return;
+            if (Party == null || (quest > 0 && Owner.QuestRecord.GetQuestData(quest) != "1")) return;
             Party.Characters.ForEach(m => m.AddEXP(exp, MessageAppearType.ChatGrey));
         }
         #endregion

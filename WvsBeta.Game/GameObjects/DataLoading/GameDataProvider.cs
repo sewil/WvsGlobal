@@ -48,6 +48,7 @@ namespace WvsBeta.Game
                     ReadSkills,
                     ReadMobData,
                     ReadReactors,
+                    ReadReactorActions,
                     ReadNpcs,
                     ReadNpcShops,
                     ReadMapData,
@@ -782,6 +783,7 @@ namespace WvsBeta.Game
 
         static void ReadReactorActions()
         {
+            ReactorActions = new Dictionary<string, ReactorActionData>();
             foreach (var node in pServerFile.BaseNode["ReactorAction.img"])
             {
                 var rAction = new ReactorActionData(node);

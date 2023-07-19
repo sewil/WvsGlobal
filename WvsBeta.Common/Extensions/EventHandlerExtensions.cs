@@ -26,5 +26,10 @@ namespace WvsBeta.Common.Extensions
                 }
             }
         }
+
+        public static void SubscribeOnce(this EventHandler e, Action action)
+        {
+
+        }
     }
 }

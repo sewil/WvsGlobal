@@ -1,4 +1,5 @@
 using reNX.NXProperties;
+using System.Collections.Generic;
 
 namespace WvsBeta.Game
 {
@@ -28,7 +29,7 @@ namespace WvsBeta.Game
             {
                 Y -= 40;
             }
-            Enabled = true;
+            Reset();
         }
 
         public byte ID;
@@ -40,5 +41,10 @@ namespace WvsBeta.Game
         public readonly string ToName;
         public readonly string Script;
         public bool Enabled;
+
+        public void Reset()
+        {
+            Enabled = !(Type == 4 || Type == 5);
+        }
     }
 }
