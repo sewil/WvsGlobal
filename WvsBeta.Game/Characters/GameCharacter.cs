@@ -2,20 +2,15 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
-using WvsBeta.Common.Enums;
-using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
-using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.MiniRooms;
-using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Packets;
@@ -89,6 +84,8 @@ namespace WvsBeta.Game
         public long PetLastInteraction { get; set; }
         public long PetLastHunger { get; set; }
         public EventTeam Team { get; set; }
+        public EventSubscriber<GameCharacter> OnLeaveParty { get; } = new EventSubscriber<GameCharacter>();
+        public EventSubscriber<GameCharacter> OnLeaveGuild { get; } = new EventSubscriber<GameCharacter>();
 
         public PartyData Party
         {
@@ -204,19 +201,6 @@ namespace WvsBeta.Game
             if (coupleRing != null)
             {
                 coupleRing.EncodeRing(packet);
-            }
-        }
-
-        public void EncodeForCC(Packet pw)
-        {
-            pw.WriteBool(GPQRegistration != null);
-            GPQRegistration?.Encode(pw);
-        }
-        public void DecodeForCC(Packet pr)
-        {
-            if (pr.ReadBool())
-            {
-                GPQRegistration = GuildQuestRegistration.Decode(pr);
             }
         }
 
@@ -534,7 +518,6 @@ namespace WvsBeta.Game
             GameStats.Load();
 
             if (GuildID > 0 && Guild == null) GuildHandler.SendLoadGuild(this, GuildID);
-            else if (GuildID > 0) GuildHandler.SendMemberIsOnline(this, true);
 
             Wishlist = new List<int>();
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery("SELECT serial FROM character_wishlist WHERE charid = " + CharacterStat.ID))
@@ -755,20 +738,18 @@ namespace WvsBeta.Game
         {
             return GuildHandler.HandleDisbandGuild(this, mesos, GuildID);
         }
-        public bool IsGuildQuestRegistered => GPQRegistration != null && GPQRegistration.master == ID;
-        public GuildQuestRegistration GPQRegistration { get; set; }
+        public bool IsGuildQuestLeader => GPQRegistration?.Leader == ID;
+        public GuildQuestRegistration GPQRegistration => Guild?.GPQRegistration;
         public int CanEnterGuildQuest
         {
             get
             {
-                if (GPQRegistration != null && Server.Instance.ID == GPQRegistration.channelId && Server.Instance.GuildQuestRegistrations[GPQRegistration.channelId].FindIndex(i => i.guildId == GPQRegistration.guildId) == 0)
-                {
-                    return IsGuildQuestRegistered ? 1 : 2;
-                }
-                else
-                {
-                    return 0;
-                }
+                if (GPQRegistration == null) return 0;
+                else if (GPQRegistration.ChannelID != Server.Instance.ID) return 0;
+                else if (!GPQRegistration.Members.Contains(ID)) return 0;
+                else if (GPQRegistration.QueueIndex != 0) return 0;
+                else if (!FieldSet.Instances["Guild1"].Started && !IsGuildQuestLeader) return 0;
+                else return IsGuildQuestLeader ? 1 : 2;
             }
         }
         /// <summary>
@@ -784,7 +765,7 @@ namespace WvsBeta.Game
             {
                 if (GPQRegistration != null)
                 {
-                    return -(GPQRegistration.channelId + 1);
+                    return -(GPQRegistration.ChannelID + 1);
                 }
                 else
                 {
@@ -793,8 +774,7 @@ namespace WvsBeta.Game
             }
             else if (action == 1)
             {
-                GuildQuestHandler.Register(this);
-                return 1;
+                return GuildQuestHandler.Register(this);
             }
             else if (action == 2)
             {
@@ -802,17 +782,11 @@ namespace WvsBeta.Game
             }
             else if (action == 3)
             {
-                if (GPQRegistration == null)
-                {
-                    return 0;
-                }
-                else if (GPQRegistration.master != ID && !GPQRegistration.members.Contains(ID))
-                {
-                    return -1;
-                }
+                if (GPQRegistration == null) return 0;
+                else if (!GPQRegistration.Members.Contains(ID)) return -1;
                 else
                 {
-                    return registrations[GPQRegistration.channelId].FindIndex(i => i.guildId == GuildID) + 1;
+                    return registrations[GPQRegistration.ChannelID].FindIndex(i => i.GuildID == GuildID) + 1;
                 }
             }
             return 0;

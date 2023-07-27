@@ -174,18 +174,11 @@ namespace WvsBeta.Common.Sessions
                         if (mode == 1)
                         {
                             uint clientCRC = pPacket.ReadUInt();
-                            if (ValidateCRC(previousDecryptIV, clientCRC, out uint expectedCRC))
+                            bool validCRC = ValidateCRC(previousDecryptIV, clientCRC, out uint expectedCRC);
+                            if (validCRC)
                             {
                                 disconnect = false;
                             }
-                            else
-                            {
-                                Trace.WriteLine($"[{GetType()}] Disconnecting client, CRC {clientCRC} didnt match expected CRC {expectedCRC}");
-                            }
-                        }
-                        else
-                        {
-                            Trace.WriteLine($"Disconnecting client because unexpected mode: {mode}");
                         }
 
                         if (disconnect)

@@ -321,7 +321,7 @@ namespace WvsBeta.Scripts.Scripts
             }
 
             // checking the number of passes 
-            var users = quest.Party.Characters.Count() - 1; // exclude the leader of the party 
+            var users = quest.UserCount - 1; // exclude the leader of the party 
 
             var inven = target.Inventory;
             if (inven.ItemCount(4001008) < users) self.Say("Sorry, but you don't have enough passes. You need to give me the correct number of passes; it must be the same number as the number of members in your party, excluding the leader, #b" + users + " " + users.Pluralis("passes", "pass") + "#k to complete this stage. Tell your party members to answer the questions, collect the passes and give them to you.");
@@ -368,7 +368,7 @@ namespace WvsBeta.Scripts.Scripts
             }
 
             var field = target.Field;
-            if (checkall == 1 && quest.Party.Characters.Count() != field.Characters.Count)
+            if (checkall == 1 && quest.UserCount != field.Characters.Count)
             {
                 self.Say("It seems that not all members of the group are together. Everyone in your party needs to come from the previous stage to participate in the quest. Please have all members ready here...");
                 return 0;

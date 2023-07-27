@@ -1208,9 +1208,16 @@ namespace WvsBeta.Game.Handlers
                             }
                             return true;
                         }
-#endregion
+                    #endregion
 
                     #region FieldSet
+                    case "fieldset":
+                        {
+                            var fs = FieldSet.Instances[Args[0]];
+                            if (Args[1] == "minmembers") fs.Data.MinMembers = int.Parse(Args[2]);
+                            else if (Args[1] == "maxmembers") fs.Data.MaxMembers = int.Parse(Args[2]);
+                            return true;
+                        }
                     case "fieldsetvar":
                         {
                             if (Args.Count < 3)
@@ -1656,7 +1663,7 @@ namespace WvsBeta.Game.Handlers
                             else if (character.Field.FieldSet != null)
                             {
                                 var fs = character.Field.FieldSet;
-                                if (fs.Started)
+                                if (fs.Opened)
                                 {
                                     character.Notice("Event already started!", BroadcastMessageType.Notice);
                                     return true;

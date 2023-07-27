@@ -60,7 +60,7 @@ namespace WvsBeta.Game.GameObjects
 
         ~Map_Snowball()
         {
-            FieldSet.OnStart -= HandleFieldSetStart;
+            FieldSet.OnOpen -= HandleFieldSetStart;
             OnTimerEnd -= HandleOnTimerEnd;
         }
 
@@ -101,7 +101,7 @@ namespace WvsBeta.Game.GameObjects
         public override void SetFieldSet(FieldSet fs)
         {
             base.SetFieldSet(fs);
-            FieldSet.OnStart += HandleFieldSetStart;
+            FieldSet.OnOpen += HandleFieldSetStart;
             FieldSet.OnEnd.Subscribe(HandleFieldSetEnd);
         }
 

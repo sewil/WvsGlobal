@@ -109,7 +109,7 @@ namespace WvsBeta.Game
 
                     try
                     {
-                        if (chr.GuildID > 0)
+                        if (chr.GuildID > 0 && chr.Player?.IsCC != true)
                         {
                             GuildHandler.SendMemberIsOnline(chr, false);
                         }
@@ -623,6 +623,7 @@ namespace WvsBeta.Game
 
             if (character.Guild != null)
             {
+                if (ccPacket == null) GuildHandler.SendMemberIsOnline(character, true);
                 GuildHandler.SendGuild(character, character.Guild);
             }
 
@@ -642,7 +643,6 @@ namespace WvsBeta.Game
             if (ccPacket != null)
             {
                 character.Summons.DecodeForCC(ccPacket);
-                character.DecodeForCC(ccPacket);
             }
 
             if (!string.IsNullOrWhiteSpace(Server.Instance.ScrollingHeader))

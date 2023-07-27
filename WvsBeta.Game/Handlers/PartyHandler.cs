@@ -24,6 +24,7 @@ namespace WvsBeta.Game
                     Server.Instance.CenterConnection.CreateParty(chr);
                     break;
                 case PartyRecvops.WITHDRAW: // LEAVE PARTY
+                    chr.OnLeaveParty.Invoke(chr);
                     Server.Instance.CenterConnection.LeaveParty(chr.ID);
                     break;
                 case PartyRecvops.JOIN: // ACCEPT PARTY

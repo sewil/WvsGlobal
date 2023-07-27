@@ -122,6 +122,7 @@
     <Compile Include="CheatInspector.cs" />
     <Compile Include="GameObjects\DataLoading\ReactorActionData.cs" />
     <Compile Include="GameObjects\EventMap.cs" />
+    <Compile Include="Packets\MessagePacket.cs" />
     <Compile Include="Packets\OXPackets.cs" />
     <Compile Include="Packets\SnowballPackets.cs" />
     <Compile Include="GameObjects\CharacterData.cs" />
@@ -228,7 +229,6 @@
     <Compile Include="Packets\InventoryPacket.cs" />
     <Compile Include="Packets\MapPacket.cs" />
     <Compile Include="Packets\ChatPacket.cs" />
-    <Compile Include="Packets\MessagePacket.cs" />
     <Compile Include="Handlers\MiniRooms\MiniGamePacket.cs" />
     <Compile Include="Packets\MiscPacket.cs" />
     <Compile Include="Packets\MistPacket.cs" />

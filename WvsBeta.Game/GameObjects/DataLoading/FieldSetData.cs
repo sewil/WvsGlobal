@@ -1,24 +1,26 @@
 ﻿using reNX.NXProperties;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
+using System.Text.RegularExpressions;
 using WvsBeta.Common;
-using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Game.GameObjects.DataLoading
 {
     public class FieldSetData
     {
         public string Name { get; }
-        public int MinPartyMembers { get; }
-        public int MaxPartyMembers { get; }
+        public int MinMembers { get; set; }
+        public int MaxMembers { get; set; }
         public short MinLevel { get; }
         public short MaxLevel { get; }
         public short Quest { get; }
+        public bool Party { get; }
+        public bool Guild { get; }
         public Map[] Maps { get; }
         public IDictionary<Map, bool> Unaffected { get; }
         public int TimeOut { get; }
+        public int OpenDelay { get; }
         /// <summary>
         /// Reactor name as key, containing a mapid as key with field set actions
         /// Fast lookup, supports duplicate reactor names for different reactors in different maps
@@ -75,17 +77,13 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                     case "script":
                         Script = subNode.ValueString();
                         break;
-                    case "minPartyMembers":
-                        MinPartyMembers = subNode.ValueInt32();
+                    case "members":
+                        (MinMembers, MaxMembers) = Tools.ParseRange(subNode.ValueString());
                         break;
-                    case "maxPartyMembers":
-                        MaxPartyMembers = subNode.ValueInt32();
-                        break;
-                    case "minLevel":
-                        MinLevel = subNode.ValueInt16();
-                        break;
-                    case "maxLevel":
-                        MaxLevel = subNode.ValueInt16();
+                    case "level":
+                        var (min, max) = Tools.ParseRange(subNode.ValueString());
+                        MinLevel = (short)min;
+                        MaxLevel = (short)max;
                         break;
                     case "quest":
                         Quest = subNode.ValueInt16();
@@ -99,6 +97,15 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                                 unaffected.Add(mapIdx, isUnaffected);
                             }
                         }
+                        break;
+                    case "startDelay":
+                        OpenDelay = subNode.ValueInt32();
+                        break;
+                    case "guild":
+                        Guild = subNode.ValueBool();
+                        break;
+                    case "party":
+                        Party = subNode.ValueBool();
                         break;
                     default:
                         {

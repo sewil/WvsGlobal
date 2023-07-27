@@ -3,6 +3,7 @@ using System.Linq;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Handlers;
 using WvsBeta.Game.Packets;
@@ -286,12 +287,20 @@ namespace WvsBeta.Game
             pw.WriteString(text);
             return pw;
         }
-        public static void SendBroadcastMessageToChannel(string text, BroadcastMessageType type)
+        public static void SendBroadcastMessageToChannel(string text, BroadcastMessageType type, int[] recipients = null)
         {
             var pw = BroadcastMessage(text, type);
-            foreach (var kvp in GameDataProvider.Maps)
+            if (recipients != null)
             {
-                kvp.Value.SendPacket(pw);
+                var chars = recipients.Select(i => Server.Instance.GetCharacter(i)).Where(i => i != null);
+                chars.ForEach(i => i.SendPacket(pw));
+            }
+            else
+            {
+                foreach (var kvp in GameDataProvider.Maps)
+                {
+                    kvp.Value.SendPacket(pw);
+                }
             }
         }
         public static void SendBroadcastMessageToPlayer(GameCharacter chr, string text, BroadcastMessageType type = BroadcastMessageType.Notice)
@@ -309,9 +318,10 @@ namespace WvsBeta.Game
             var pw = BroadcastMessage(text, type);
             map.SendPacket(pw);
         }
-        public static void SendBroadcastMessageToAllPlayers(string text, BroadcastMessageType type)
+        public static void SendBroadcastMessageToPlayers(string text, BroadcastMessageType type, int[] recipients = null)
         {
-            Server.Instance.CenterConnection.BroadcastMessage(text, type);
+            if (recipients?.Length == 0) return;
+            Server.Instance.CenterConnection.BroadcastMessage(text, type, recipients);
         }
     }
 }

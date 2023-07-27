@@ -412,6 +412,7 @@ namespace WvsBeta.Game.Handlers.Guild
             if (victim != null)
             {
                 victim.GuildID = 0;
+                victim.OnLeaveGuild.Invoke(victim);
                 RemotePacket.SendCharacterGuildInfo(victim);
             }
         }

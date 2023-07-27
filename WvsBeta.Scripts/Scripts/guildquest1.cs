@@ -272,7 +272,7 @@ namespace WvsBeta.Scripts.Scripts
                 // entering available
                 var set = FieldSet.Instances["Guild1"];
                 var nRet = target.CanEnterGuildQuest;
-                if (nRet == 1) // Master, starts expedition
+                if (nRet == 1) // Master, sets registration in fieldset when entering
                 {
                     self.Say("You are on your way to entering Sharenian. The door to Sharenian will open 3 minutes after entering.");
                     takeawayitem();
@@ -290,7 +290,7 @@ namespace WvsBeta.Scripts.Scripts
                     if (result != 0) self.Say("The Guild Quest is currently not ready, and therefore closed. Please try again later.");
                     return;
                 }
-                else if (nRet == 2) // Party member, enters expedition alone
+                else if (nRet == 2) // Party member
                 {
                     if (set.UserCount >= 30)
                     {
@@ -351,7 +351,7 @@ namespace WvsBeta.Scripts.Scripts
                                 say = "There's currently 1 Guild participating in the quest, and, " + (guildCount - 1) + " other Guild(s) are waiting in line. Would you like to register and wait?";
                             }
                             nRet = self.AskYesNo(say);
-                            if (nRet == 0) self.Say("I'm ridiculously busy here, so please make a decision immediately and then talk to me.");
+                            if (nRet == 0) self.Say("I'm very busy here, so please make a decision immediately and then talk to me.");
                             else
                             {
                                 nRet = target.DealWithGuildQuest(1);
@@ -485,7 +485,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 guildquest1.self = self;
                 guildquest1.target = target;
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("I need the leader that possesses #t4001024# to talk to me.");
                     return;
@@ -692,7 +692,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("To the fearless ones that dare enter Sharenian, I'm the gateskeeper that protects this castle. I shall put you all through tests to see if you're worthy of entering the premise.");
                     self.Say("These statues are all my other selves. I'll be teleporting from one statue to another. Follow my path closely, and remember the order.");
@@ -1024,7 +1024,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("After what I thought would be an eternal sleep, I have finally found someone that will save Sharenian.");
                     self.Say("The leader of your Guild should talk to me.");
@@ -1077,7 +1077,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("The four statues you see in front of the fountain are the old vassals of the Sharenian. These vassals possessed priceless treasures bestowed by the king while they were alive. If you put those royal gifts as offerings, then they'll open the secret door that'll reveal the path to the inside of the castle..");
                     self.Say("These are the items you'll need as offerings:\r #v4001027# #t4001027#\r #v4001028# #t4001028#\r #v4001029# #t4001029#\r #v4001030# #t4001030#\r. However, there's no way to find out who wants what, and some of the items may be downright foreign, so discard the unnecessary ones.");
