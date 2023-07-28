@@ -749,6 +749,7 @@ namespace WvsBeta.Game
                 else if (!GPQRegistration.Members.Contains(ID)) return 0;
                 else if (GPQRegistration.QueueIndex != 0) return 0;
                 else if (!FieldSet.Instances["Guild1"].Started && !IsGuildQuestLeader) return 0;
+                else if (FieldSet.Instances["Guild1"].Opened) return 0;
                 else return IsGuildQuestLeader ? 1 : 2;
             }
         }
