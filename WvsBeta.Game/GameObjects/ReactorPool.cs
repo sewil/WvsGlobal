@@ -98,5 +98,20 @@ namespace WvsBeta.Game.GameObjects
                 reactors.ForEach(r => AddReactor(r, false));
             }
         }
+
+        public bool CheckDropTriggers(long pNow, Drop drop)
+        {
+            if (pNow - drop.CreateTime < 5000 || !Server.Instance.CharacterList.TryGetValue(drop.OwnerID, out GameCharacter owner)) return false;
+
+            var reactors = Reactors.Values.Where(r =>
+                r.State.Event?.Type == ReactorEventType.Drop
+                && r.State.Event.DropID == drop.Reward.ItemID
+                && r.State.Event.DropAmount == drop.Reward.Amount
+                && r.EventRectangle?.Contains(drop.AreaPos) == true
+            );
+            int c = reactors.Count();
+            reactors.ForEach(i => i.Trigger(owner));
+            return c > 0;
+        }
     }
 }

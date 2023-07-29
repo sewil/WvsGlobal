@@ -49,10 +49,6 @@ namespace WvsBeta.Game
             {
                 Drops.Add(drop.DropID, drop);
                 DropPacket.SendMakeEnterFieldPacket(drop, RewardEnterType.DropAnimation, delay);
-                foreach (var reactor in Field.ReactorPool.Reactors.Select(i => i.Value))
-                {
-                    reactor.TriggerDrop(drop, ownerId);
-                }
             }
             return false;
         }
@@ -62,10 +58,12 @@ namespace WvsBeta.Game
         {
             if (DropEverlasting) return;
 
-            foreach (var Drop in new List<Drop>(Drops.Values))
+            foreach (var Drop in Drops.Values.ToList())
             {
-                if (!Drop.Everlasting && (tCur - Drop.CreateTime) > DropExpireTime)
+                if ((!Drop.Everlasting && (tCur - Drop.CreateTime) > DropExpireTime) || Drop.Field.ReactorPool.CheckDropTriggers(tCur, Drop))
+                {
                     RemoveDrop(Drop);
+                }
             }
         }
         #endregion

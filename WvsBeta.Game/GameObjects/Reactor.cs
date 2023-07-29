@@ -240,24 +240,6 @@ namespace WvsBeta.Game
         {
             ChangeState(owner, (byte)(_state + 1), sendPacket);
         }
-        public bool TriggerDrop(Drop drop, int ownerId)
-        {
-            var e = State.Event;
-            bool trigger = e?.Type == ReactorEventType.Drop && e?.DropID == drop.Reward.ItemID && e.DropAmount == drop.Reward.Amount && EventRectangle?.Contains(drop.AreaPos) == true;
-            if (trigger)
-            {
-                if (!Server.Instance.CharacterList.TryGetValue(ownerId, out GameCharacter owner)) return false;
-                dropAction = MasterThread.RepeatingAction.Start("rdtr-" + Field.ID + "-" + ID, time =>
-                {
-                    if (Field.DropPool.Drops.ContainsKey(drop.DropID)) // Check drop still exists
-                    {
-                        Field.DropPool.RemoveDrop(drop);
-                        Trigger(owner);
-                    }
-                }, 5000, 0);
-            }
-            return trigger;
-        }
         public NpcLife SpawnNpc(int npcID, Pos pos)
         {
             if (pos == null) pos = Position;

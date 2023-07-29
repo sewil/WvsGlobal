@@ -104,6 +104,16 @@ namespace WvsBeta.Game.Handlers
             { "oxquiz", 109020001 }
         };
 
+        public static IDictionary<string, int[]> ItemPacks = new Dictionary<string, int[]>
+        {
+            { "gpq", new int[] {
+                1032033,
+                4001025, 4001025, 4001025, 4001025,
+                4001024,
+                4001031, 4001032, 4001033, 4001034
+            }},
+        };
+
         public static int GetMapidFromName(string name)
         {
             if (MapNameList.ContainsKey(name)) return MapNameList[name];
@@ -1143,7 +1153,14 @@ namespace WvsBeta.Game.Handlers
                                     return true;
                                 }
                             }
-
+                    case "itempack":
+                        {
+                            if (ItemPacks.TryGetValue(Args[0], out var itemIDs))
+                            {
+                                character.Inventory.MassExchange(0, itemIDs.Select(i => (i, (short)1)).ToArray());
+                            } else character.Message("Unknown item pack \"" + Args[0] + "\"");
+                            return true;
+                        }
 #endregion
 
 #region Summon / Spawn
