@@ -1494,11 +1494,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
         public virtual void Reset()
         {
-            KillAllMobs(0);
             DropPool.Clear();
             EffectObjects.Clear();
             ReactorPool.Reset(false);
             TimerEndTime = 0;
+            initialSpawnDone = false;
 
             // Reset portals
             foreach (var portal in Portals.Values)
@@ -1512,6 +1512,9 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 NPC.Remove(tmpLife);
             }
             tmpNPCs.Clear();
+
+            // Reset mobs
+            Mobs.Clear();
         }
 
         public virtual void SetFieldSet(FieldSet fs)
