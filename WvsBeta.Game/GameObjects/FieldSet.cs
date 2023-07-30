@@ -191,8 +191,8 @@ namespace WvsBeta.Game
             {
                 if (!PartyData.Parties.TryGetValue(owner.PartyID, out pt)) return EnterStatus.NotInParty;
                 else if (pt.Leader != owner.ID) return EnterStatus.Invalid;
-                else if (!Tools.CheckRange(members.Count, MinMembers, MaxMembers) || members.Count != pt.MemberCount) return EnterStatus.WrongMemberCount;
                 members = pt.Characters.Where(i => i.MapID == owner.MapID).ToList();
+                if (!Tools.CheckRange(members.Count, MinMembers, MaxMembers) || members.Count != pt.MemberCount) return EnterStatus.WrongMemberCount;
             }
             else if (Data.Guild)
             {
