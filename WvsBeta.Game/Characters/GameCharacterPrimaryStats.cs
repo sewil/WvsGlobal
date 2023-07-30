@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Characters;
 
 namespace WvsBeta.Game
 {
@@ -205,11 +207,11 @@ namespace WvsBeta.Game
             }
         }
         
-        public override void CheckBoosters()
+        public void CheckBoosters()
         {
-            if (!Char.Inventory.Equipped[EquippedType.Normal].ContainsKey(Constants.EquipSlots.Slots.Weapon)) return;
+            if (Char.Inventory.Equipped[EquippedType.Normal].ContainsKey(Constants.EquipSlots.Slots.Weapon)) return;
 
-            Common.Enums.BuffValueTypes removed = 0;
+            BuffValueTypes removed = 0;
             var currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
             if (BuffBooster.IsSet(currentTime)) removed |= RemoveByReference(BuffBooster.R, true);
             if (BuffCharges.IsSet(currentTime)) removed |= RemoveByReference(BuffCharges.R, true);

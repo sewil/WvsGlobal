@@ -109,6 +109,15 @@ namespace WvsBeta.Game.Characters
             0.054976,
             0.04398
         };
+
+        public static WeaponType GetWeaponType(int weaponID)
+        {
+            if (weaponID / 1000000 != 1) return WeaponType.None;
+            int weaponType = weaponID / 10000 % 100;
+            if (weaponType < 30) return WeaponType.None;
+            if (weaponType > 33 && (weaponType <= 36 || weaponType > 38 && (weaponType <= 39 || weaponType > 47))) return WeaponType.None;
+            return (WeaponType)weaponType;
+        }
     }
     public class Roller
     {
@@ -259,7 +268,7 @@ namespace WvsBeta.Game.Characters
             isRanged = attackType == AttackTypes.Ranged;
             AttackAction = (AttackAction)data.Action;
             int weaponID = chr.Inventory.Equipped[Common.Enums.EquippedType.Normal][EquipSlots.Slots.Weapon]?.ItemID ?? 0;
-            weaponType = GetWeaponType(weaponID);
+            weaponType = CalcConstants.GetWeaponType(weaponID);
             
             int skillID = data.SkillID;
             if (skillID > 0) skill = chr.Skills.GetSkillLevelData(skillID);
@@ -332,14 +341,6 @@ namespace WvsBeta.Game.Characters
                 hit.Damage *= modifier;
             }
             return brk;
-        }
-        private static WeaponType GetWeaponType(int weaponID)
-        {
-            if (weaponID / 1000000 != 1) return WeaponType.None;
-            int weaponType = weaponID / 10000 % 100;
-            if (weaponType < 30) return WeaponType.None;
-            if (weaponType > 33 && (weaponType <= 36 || weaponType > 38 && (weaponType <= 39 || weaponType > 47))) return WeaponType.None;
-            return (WeaponType)weaponType;
         }
 
         private byte GetCritSkill(out SkillLevelData skill)

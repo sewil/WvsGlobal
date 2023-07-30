@@ -132,6 +132,7 @@
     <Compile Include="Enums\QuestIds.cs" />
     <Compile Include="Enums\QuestState.cs" />
     <Compile Include="Enums\TransactionType.cs" />
+    <Compile Include="EventSubscriber.cs" />
     <Compile Include="Extensions\BitExtensions.cs" />
     <Compile Include="Extensions\CrossThreadExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />

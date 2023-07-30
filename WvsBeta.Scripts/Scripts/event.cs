@@ -1,126 +1,135 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
+using System.IO;
 using System.Linq;
-using System.Threading;
-using System.Timers;
+using System.Runtime.Remoting.Lifetime;
+using WvsBeta;
 using WvsBeta.Common;
-using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
-using WvsBeta.Game.Events.GMEvents;
-using WvsBeta.Game.Events.Packets;
 using WvsBeta.Game.Handlers.Contimove;
 using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Scripts.Scripts
 {
-    public static class @event
+    public static class EventScript
     {
-        static INpcHost self;
-        static GameCharacter target;
-
-        public static void GMEventControls<TEvent>(string prompt, params (string text, Action<TEvent> cb)[] customOptions) where TEvent : EventFieldSet
+        public static int check_kawi(GameCharacter target)
         {
-            if (!(EventFieldSet.CurrentEvent is TEvent e) || !e.IsEnabled)
+            var inven = target.Inventory;
+            var iCode = 4031332;
+            var result = 0;
+            for (int i = 0; i <= 9; i++)
             {
-                self.Say("No event running!");
-                return;
+                var code = iCode + i;
+                if (inven.ItemCount(code) > 0)
+                {
+                    result = 1;
+                    break;
+                }
+                else
+                {
+                    result = 0;
+                }
             }
-            var options = new string[]
+            return result;
+        }
+
+        struct EventData
+        {
+            public Map Map { get; }
+            public string Name { get; }
+            public int Capacity { get; }
+            public EventData(int mapID, int capacity, string name = null)
             {
-                "Show instructions",
-                "Start event",
-                "End event"
-            }.Concat(customOptions.Select(o => o.text)).ToArray();
-            
-            int opt = self.AskMenu(prompt, options);
-            if (opt == 0)
-            {
-                e.SendInstructions();
-            }
-            else if (opt == 1)
-            {
-                e.Start();
-            }
-            else if (opt == 2)
-            {
-                e.End();
-            }
-            else
-            {
-                customOptions[opt-3].cb(e);
+                Map = GameDataProvider.Maps[mapID];
+                Name = name ?? Map.Name;
+                Capacity = capacity;
             }
         }
+
+        private readonly static IList<EventData> Events = new List<EventData>()
+        {
+            new EventData(109030001, 80),
+            new EventData(109030101, 80),
+            new EventData(109030201, 80),
+            new EventData(109030301, 80),
+            new EventData(109030401, 80),
+
+            new EventData(109040000, 70),
+            new EventData(109020001, 90),
+
+            new EventData(109080000, 60),
+            new EventData(109080001, 60),
+            new EventData(109080002, 60),
+
+            new EventData(109060001, 80),
+            new EventData(109010000, 60),
+        };
 
         // Paul : 9000000 
         [Script("Event00")]
         class Event00 : INpcScript
         {
-            private EventFieldSet AskEventMenu(IList<EventFieldSet> events)
+            private readonly static string[] eventMenu;
+            private readonly static string[] eventMenuWithClose;
+            private readonly static string userEventMenu;
+            static Event00()
             {
-                string[] eventMenu = events.Select((eventFs) => $"{eventFs.Name} ({eventFs.Lobby.Name})").ToArray();
-                int idx = self.AskMenu("Select the event.", eventMenu);
-                return events[idx];
-            }
-            private void EnterEvent(EventFieldSet fsEvent)
-            {
-                var enterStatus = fsEvent?.Enter(target, 0);
+                eventMenu = new string[Events.Count];
+                eventMenu = Events.Select(e => e.Name + " (" + e.Map.ID + ")").ToArray();
 
-                if (enterStatus == FieldSet.EnterStatus.InventoryFull)
-                {
-                    self.Say("Do you have an empty slot in your etc. inventory? Please check again!");
-                }
-                else if (enterStatus != FieldSet.EnterStatus.Success)
-                {
-                    self.Say("Either the event hasn't started yet, or you already have #t4031019#, or you've already participated in this event within the last 24 hours. Please try again later!");
-                }
+                eventMenuWithClose = new string[Events.Count + 1];
+                eventMenuWithClose = eventMenuWithClose.ToArray();
+                eventMenuWithClose[Events.Count] = "Close Event Map Entry";
+
+                userEventMenu = @"\r\n#L0##e1. #n#bWhat kind of event is this?#k#l\r\n#L1##e2. #n#bExplain the game event to me.#k#l\r\n#L2##e3. #n#bThat's right, let's go!#k#l";
             }
+
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
-                int cmap = self.Field.ID;
+                var field = self.Field;
+                var cmap = field.ID;
 
                 if (target.IsAdmin)
                 {
-                    var v1 = self.AskMenu("Please select the action of your choice.", "Select Event Map", "Check number of users in Event Map", "Enter Event Map", "Close Event Map");
-                    var currentEvent = EventFieldSet.CurrentEvent;
+                    var v1 = self.AskMenu("Please select the action of your choice.", "Select Event Map", "Check number of users in Event Map");
                     if (v1 == 0)
                     {
-                        if (currentEvent != null)
+                        var v2 = self.AskMenu("Please select an event to open.", eventMenuWithClose);
+                        if (v2 < Events.Count)
                         {
-                            self.Say("An event is already running. Please close the event before opening another one.");
-                            return;
+                            var selEvent = Events[v2];
+                            self.SetIntReg("map", selEvent.Map.ID);
+                            self.SetIntReg("count", selEvent.Capacity);
+                            field.Notice(0, "The event is now open. Please click the Event NPC to enter the Event Map.");
                         }
-                        var events = EventFieldSet.Events.ToList();
-                        var selEvent = AskEventMenu(events);
-                        selEvent.Enable();
+                        else
+                        {
+                            self.SetIntReg("map", -1);
+                            self.SetIntReg("count", 0);
+                        }
                     }
-                    else
+                    else if (v1 == 1)
                     {
-                        if (currentEvent == null)
-                        {
-                            self.Say("No event available at this time.");
-                            return;
-                        }
-                        if (v1 == 1)
-                        {
-                            self.Say($"A total of {currentEvent.Capacity} users can join {currentEvent.Lobby.Name} ({currentEvent.Lobby.ID}). #r{currentEvent.UserCount}#k users have entered the event map.");
-                        }
-                        else if (v1 == 2)
-                        {
-                            EnterEvent(currentEvent);
-                        }
-                        else if (v1 == 3)
-                        {
-                            currentEvent.End();
-                            self.Field.Notice(0, "The event is now closed.");
-                        }
+                        int v2 = self.AskMenu("Please select an event.", eventMenu);
+                        int uMap = self.GetIntReg("map");
+                        var selEvent = Events[v2];
+                        var selMap = selEvent.Map;
+                        if (uMap == selMap.ID) self.Say($"A total of {selEvent.Capacity} can enter {selEvent.Name} ({selMap.ID}). #r" + selMap.Characters.Count + "#k users have currently entered the event map.");
+                        else self.Say($"{selEvent.Name} ({selMap.ID}) This event is currently not open.");
                     }
                 }
                 else
                 { // if user click 
-                    int v1 = -1;
+                    var qr = target.QuestRecord;
+                    var val = qr.Get(9000);
+                    var val2 = qr.Get(9001);
+                    var proof = check_kawi(target);
+                    int v1 = 0;
+                    string strMap = null;
+                    string preMapNum = null;
+
                     string[] menu = new string[]
                     {
                         "#k#e1. #n#bWhat kind of event is this?",
@@ -175,8 +184,327 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else if (v1 == 2)
                     {
-                        EnterEvent(EventFieldSet.CurrentEvent);
+                        var inventory = target.Inventory;
+                        // Test sever 
+                        if (Server.Tespia)
+                        {
+                            var map = self.GetIntReg("map");
+                            var count = self.IncIntReg("count", -1);
+
+                            if (map >= 0)
+                            {
+                                strMap = map.ToString();
+                                preMapNum = strMap.Substring(0, 3);
+                            }
+                            else preMapNum = "";
+
+                            if (inventory.ItemCount(4031019) < 1 && count >= 0 && preMapNum == "109")
+                            {
+                                var ret = inventory.Exchange(0, 4000038, 1);
+                                if (ret != 0)
+                                {
+                                    if (cmap == 60000) qr.Set(9000, "maple");
+                                    else if (cmap == 104000000) qr.Set(9000, "victoria");
+                                    else if (cmap == 200000000) qr.Set(9000, "ossyria");
+                                    else if (cmap == 220000000) qr.Set(9000, "ludi");
+                                    target.ChangeMap(map, "");
+                                }
+                                else
+                                {
+                                    self.IncIntReg("count", 1);
+                                    self.Say("Do you have an empty slot in your etc. inventory? Please check again!");
+                                }
+                            }
+                            else
+                            {
+                                self.IncIntReg("count", 1);
+                                self.Say("Either the event hasn't started yet, or you already have #t4031019#, or you've already participated in this event within the last 24 hours. Please try again later!");
+                            }
+                        }
+                        // Real GL sever 
+                        else
+                        {
+                            int map = self.GetIntReg("map");
+                            int count = self.IncIntReg("count", -1);
+                            int goEvent;
+
+                            if (map >= 0)
+                            {
+                                strMap = map.ToString();
+                                preMapNum = strMap.Substring(0, 3);
+                            }
+                            else preMapNum = "";
+
+                            var cTime = MasterThread.CurrentTimeStr;
+                            if (val2 == "") goEvent = 1;
+                            else
+                            {
+                                var aTime = MasterThread.CompareTime(cTime, val2);
+                                if (aTime >= 1440) goEvent = 1;
+                                else goEvent = 0;
+                            }
+
+                            if (goEvent == 1 && inventory.ItemCount(4031019) < 1 && count >= 0 && preMapNum == "109")
+                            {
+                                var ret = inventory.Exchange(0, 4000038, 1);
+                                if (ret != 0)
+                                {
+                                    if (cmap == 60000) qr.Set(9000, "maple");
+                                    else if (cmap == 104000000) qr.Set(9000, "victoria");
+                                    else if (cmap == 200000000) qr.Set(9000, "ossyria");
+                                    else if (cmap == 220000000) qr.Set(9000, "ludi");
+                                    qr.Set(9001, cTime);
+                                    target.ChangeMap(map, "");
+                                }
+                                else
+                                {
+                                    self.IncIntReg("count", 1);
+                                    self.Say("Do you have an empty slot in your etc. inventory? Please check again!");
+                                }
+                            }
+                            else
+                            {
+                                self.IncIntReg("count", 1);
+                                self.Say("Either the event hasn't started yet, or you already have #t4031019#, or you've already participated in this event within the last 24 hours. Please try again later!");
+                            }
+                        }
                     }
+                    else if (v1 == 3)
+                    {
+                        // not ready...
+                    }
+                }
+            }
+        }
+        public static void ola_answer3(GameCharacter target, int num)
+        {
+            var @event = FieldSet.Instances["Event1"];
+            var answer3 = @event.GetVar("ola_ans3");
+
+            if (answer3.Substring(num, 1) == "0" || answer3.Substring(num, 1) == "1")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(109050000, "start00");
+            }
+            else if (answer3.Substring(num, 1) == "2" || answer3.Substring(num, 1) == "3" || answer3.Substring(num, 1) == "4" || answer3.Substring(num, 1) == "5" || answer3.Substring(num, 1) == "6")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np03");
+            }
+            else if (answer3.Substring(num, 1) == "7")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np04");
+            }
+            else if (answer3.Substring(num, 1) == "8")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np05");
+            }
+            else if (answer3.Substring(num, 1) == "9")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np06");
+            }
+            else if (answer3.Substring(num, 1) == "a" || answer3.Substring(num, 1) == "b" || answer3.Substring(num, 1) == "c" || answer3.Substring(num, 1) == "d" || answer3.Substring(num, 1) == "e" || answer3.Substring(num, 1) == "f")
+            {
+            }
+            return;
+        }
+        public static void ola_answer2(GameCharacter target, int num)
+        {
+            var @event = FieldSet.Instances["Event1"];
+            var answer2 = @event.GetVar("ola_ans2");
+
+            if (answer2.Substring(num, 1) == "0" || answer2.Substring(num, 1) == "1" || answer2.Substring(num, 1) == "2")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(109030003, "start00");
+            }
+            else if (answer2.Substring(num, 1) == "3" || answer2.Substring(num, 1) == "4")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np01");
+            }
+            else if (answer2.Substring(num, 1) == "5")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np02");
+            }
+            else if (answer2.Substring(num, 1) == "6" || answer2.Substring(num, 1) == "7")
+            {
+            }
+            return;
+        }
+        public static void ola_answer1(GameCharacter target, int num)
+        {
+            var @event = FieldSet.Instances["Event1"];
+            var answer1 = @event.GetVar("ola_ans1");
+
+            if (answer1.Substring(num, 1) == "0" || answer1.Substring(num, 1) == "1")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(109030002, "start00");
+            }
+            else if (answer1.Substring(num, 1) == "2" || answer1.Substring(num, 1) == "3")
+            {
+                target.PlayPortalSE();
+                target.ChangeMap(-1, "np00");
+            }
+            else if (answer1.Substring(num, 1) == "4")
+            {
+            }
+            return;
+        }
+        //¿Ã¶ó¿Ã¶ó ·£ŽýÈ­ _ Æ÷Å» 
+        [Script("rand_ola")]
+        class rand_ola : IPortalScript
+        {
+            public void Run(IPortalHost self, GameCharacter target)
+            {
+                var field = self.Field;
+                var @event = field.FieldSet;
+                /* 
+                    if ( @event.GetVar( "decide_num" ) != "1" ) { 
+                        if ( @event.GetVar( "decide_ans" ) != "1" ) { 
+                            var answer1 = "14302"; 
+                            var answer2 = "74302561"; 
+                            var answer3 = "f49e60a2d7c8b351"; 
+
+                            @event.SetVar( "ola_ans1", answer1 ); 
+                            @event.SetVar( "ola_ans2", answer2 ); 
+                            @event.SetVar( "ola_ans3", answer3 );         
+                        } 
+                        @event.SetVar( "decide_num", "1" ); 
+                    } 
+                */
+                if (field.ID == 109030001)
+                {
+                    if (self.GetPortalID == 19)
+                    {
+                        ola_answer1(target, 0);
+                    }
+                    else if (self.GetPortalID == 20)
+                    {
+                        ola_answer1(target, 1);
+                    }
+                    else if (self.GetPortalID == 21)
+                    {
+                        ola_answer1(target, 2);
+                    }
+                    else if (self.GetPortalID == 22)
+                    {
+                        ola_answer1(target, 3);
+                    }
+                    else if (self.GetPortalID == 23)
+                    {
+                        ola_answer1(target, 4);
+                    }
+                    return;
+                }
+                else if (field.ID == 109030002)
+                {
+                    if (self.GetPortalID == 9)
+                    {
+                        ola_answer2(target, 0);
+                    }
+                    else if (self.GetPortalID == 10)
+                    {
+                        ola_answer2(target, 1);
+                    }
+                    else if (self.GetPortalID == 11)
+                    {
+                        ola_answer2(target, 2);
+                    }
+                    else if (self.GetPortalID == 12)
+                    {
+                        ola_answer2(target, 3);
+                    }
+                    else if (self.GetPortalID == 13)
+                    {
+                        ola_answer2(target, 4);
+                    }
+                    else if (self.GetPortalID == 14)
+                    {
+                        ola_answer2(target, 5);
+                    }
+                    else if (self.GetPortalID == 15)
+                    {
+                        ola_answer2(target, 6);
+                    }
+                    else if (self.GetPortalID == 16)
+                    {
+                        ola_answer2(target, 7);
+                    }
+                    return;
+                }
+                else if (field.ID == 109030003)
+                {
+                    if (self.GetPortalID == 11)
+                    {
+                        ola_answer3(target, 0);
+                    }
+                    else if (self.GetPortalID == 12)
+                    {
+                        ola_answer3(target, 1);
+                    }
+                    else if (self.GetPortalID == 13)
+                    {
+                        ola_answer3(target, 2);
+                    }
+                    else if (self.GetPortalID == 14)
+                    {
+                        ola_answer3(target, 3);
+                    }
+                    else if (self.GetPortalID == 15)
+                    {
+                        ola_answer3(target, 4);
+                    }
+                    else if (self.GetPortalID == 16)
+                    {
+                        ola_answer3(target, 5);
+                    }
+                    else if (self.GetPortalID == 17)
+                    {
+                        ola_answer3(target, 6);
+                    }
+                    else if (self.GetPortalID == 18)
+                    {
+                        ola_answer3(target, 7);
+                    }
+                    else if (self.GetPortalID == 19)
+                    {
+                        ola_answer3(target, 8);
+                    }
+                    else if (self.GetPortalID == 20)
+                    {
+                        ola_answer3(target, 9);
+                    }
+                    else if (self.GetPortalID == 21)
+                    {
+                        ola_answer3(target, 10);
+                    }
+                    else if (self.GetPortalID == 22)
+                    {
+                        ola_answer3(target, 11);
+                    }
+                    else if (self.GetPortalID == 23)
+                    {
+                        ola_answer3(target, 12);
+                    }
+                    else if (self.GetPortalID == 24)
+                    {
+                        ola_answer3(target, 13);
+                    }
+                    else if (self.GetPortalID == 25)
+                    {
+                        ola_answer3(target, 14);
+                    }
+                    else if (self.GetPortalID == 26)
+                    {
+                        ola_answer3(target, 15);
+                    }
+                    return;
                 }
             }
         }
@@ -186,8 +514,6 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
                 var qr = target.QuestRecord;
                 var val = qr.Get(9000);
                 var inventory = target.Inventory;
@@ -260,8 +586,6 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
                 var qr = target.QuestRecord;
                 var val = qr.Get(9000);
                 var inventory = target.Inventory;
@@ -361,16 +685,7 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
-                if (target.IsAdmin)
-                {
-                    GMEventControls<MapleJewelEvent>(
-                        "Hey, Hey!!! GM! What'd you like to do, eh?",
-                        ("Imitate user", (e) => Viking(self, target))
-                    );
-                }
-                else Viking(self, target);
+                Viking(self, target);
             }
         }
         // Chun Ji : 9000007 
@@ -379,8 +694,6 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
                 var inventory = target.Inventory;
 
                 if (inventory.ItemCount(4031019) >= 1)
@@ -405,8 +718,6 @@ namespace WvsBeta.Scripts.Scripts
         {
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
                 self.Say("Welcome. hah! I pick everything in the world that can be picked! Hah! If you don't have a key to open something that's locked, bring it to me. Ha!");
                 var inventory = target.Inventory;
                 int nNewItemNum = 0;
@@ -660,108 +971,53 @@ namespace WvsBeta.Scripts.Scripts
         [Script("Event09")]
         class Event09 : INpcScript
         {
-            void BuyWeapon()
-            {
-                int nRet = self.AskYesNo("#t1322005# for beginners is 1 meso. What do you think? You want it?");
-                if (nRet == 0) self.Say("Weapons with attack speed are more important than high-damage weapons. If you ever need one, please come back.");
-                else
-                {
-                    var inventory = target.Inventory;
-                    var ret = inventory.Exchange(-1, 1322005, 1);
-                    if (ret == 0) self.Say("Are you sure you have an empty slot? Or do you not have 1 meso? Please check again.");
-                    else self.Say("Did you get #t1322005#? I wish you good luck!");
-                }
-            }
             public void Run(INpcHost self, GameCharacter target)
             {
-                @event.self = self;
-                @event.target = target;
-                int v1;
-                if (target.IsAdmin)
-                {
-                    GMEventControls("Man... It's hot!!! Hey, GM! What's up?", new (string text, Action<MapleCoconutEvent> cb)[]
-                    {
-                        ("Start round", e => e.StartRound()),
-                        ("End round", e => e.EndRound()),
-                        ("Reset coconuts", e => e.ResetCoconuts()),
-                    });
-                    return;
-                }
-                else v1 = self.AskMenu("Man... It's hot!!! How can I help you?",
+                int option = self.AskMenu("Man... It's hot!!! How can I help you?",
                     "Exit game event",
                     "Buy the weapon.(#t1322005# 1 meso)"
                 );
-                if (v1 == 0)
+                if (option == 0)
                 {
                     var nRet = self.AskYesNo("If you leave now, you will not be able to participate in this event for the next 24 hours. Do you really want to go out?");
                     if (nRet == 0) self.Say("Good. Don't give up and try your best. If you try really hard, you'll get a reward!");
                     else target.ChangeMap(109050001, "");
                 }
-                else if (v1 == 1)
+                else if (option == 1)
                 {
-                    BuyWeapon();
+                    int nRet = self.AskYesNo("#t1322005# for beginners is 1 meso. What do you think? You want it?");
+                    if (nRet == 0) self.Say("Weapons with attack speed are more important than high-damage weapons. If you ever need one, please come back.");
+                    else
+                    {
+                        var inventory = target.Inventory;
+                        var ret = inventory.Exchange(-1, 1322005, 1);
+                        if (ret == 0) self.Say("Are you sure you have an empty slot? Or do you not have 1 meso? Please check again.");
+                        else self.Say("Did you get #t1322005#? I wish you good luck!");
+                    }
                 }
             }
         }
-    }
-    #region Reactors
-    // Jewel
-    [Script("eventItem0")]
-    class EventItem0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
+        [Script("event_master")]
+        class EventMaster : IFieldSetScript
         {
-            target.Drop();
+            public void Run(IFieldSetScriptHost host, GameCharacter target)
+            {
+                var @event = host.FieldSet;
+                var answer1 = Tools.Shuffle(1, "01234");
+                var answer2 = Tools.Shuffle(1, "01234567");
+                var answer3 = Tools.Shuffle(1, "0123456789abcdef");
+                @event.SetVar("ola_ans1", answer1);
+                @event.SetVar("ola_ans2", answer2);
+                @event.SetVar("ola_ans3", answer3);
+                @event.SetVar("decide_ans", "1");
+
+                var say1 = " " + answer1 + ": 01-Answer  23-Starting Point  4-Not Active";
+                var say2 = " " + answer2 + ": 01-Answer  34-Starting Point  5-Bottom  67-Not Active";
+                var say3 = " " + answer3 + ": 01-Answer  23456-Starting Point  789-Different Portal  abcdef-Not Active";
+                target.Message(say1);
+                target.Message(say2);
+                target.Message(say3);
+            }
         }
     }
-    [Script("eventItem1")]
-    class EventItem1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("eventItem2")]
-    class EventItem2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("eventMap0")]
-    class EventMap0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMap1")]
-    class EventMap1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMap2")]
-    class EventMap2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Warp();
-        }
-    }
-    [Script("eventMob0")]
-    class EventMob0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            //슈퍼 주니어 네키 한마리 출현
-            target.SpawnMob(new Pos(0, 0), (9100001, 1, SummonType.Poof, null));
-        }
-    }
-    #endregion
 }

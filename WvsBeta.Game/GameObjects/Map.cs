@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Runtime.ConstrainedExecution;
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
@@ -46,7 +45,7 @@ namespace WvsBeta.Game
             set => DropPool.DropEverlasting = value;
         }
 
-        public FieldSet ParentFieldSet { get; set; } = null;
+        public FieldSet FieldSet { get; private set; }
 
         public short DecreaseHP { get; set; }
         public int ProtectItem { get; set; }
@@ -66,6 +65,7 @@ namespace WvsBeta.Game
 
         public List<Foothold> Footholds { get; private set; }
         public List<NpcLife> NPC { get; } = new List<NpcLife>();
+        private readonly List<NpcLife> tmpNPCs = new List<NpcLife>();
         public Dictionary<string, Portal> Portals { get; } = new Dictionary<string, Portal>();
         public List<Portal> SpawnPoints { get; } = new List<Portal>();
         public List<Portal> DoorPoints { get; } = new List<Portal>();
@@ -100,15 +100,13 @@ namespace WvsBeta.Game
 
         public const double MAP_PREMIUM_EXP = 1.0;
         public bool PortalsOpen { get; set; } = true;
-        public Action<GameCharacter, Map> OnEnter { get; set; }
-        public Action<GameCharacter, Map> OnExit { get; set; }
 
         public Action<Map> OnTimerEnd { get; set; }
         public long TimerEndTime { get; set; }
 
         public bool ChatEnabled { get; set; }
 
-        public void StartTimer(long seconds)
+        public void StartTimer(int seconds)
         {
             TimerEndTime = MasterThread.CurrentTime + (seconds * 1000);
             SendMapTimer(null);
@@ -235,7 +233,7 @@ namespace WvsBeta.Game
                 }
             }
 
-            if (MasterThread.CurrentTime >= TimerEndTime)
+            if (TimerEndTime > 0 && MasterThread.CurrentTime >= TimerEndTime)
             {
                 OnTimerEnd?.Invoke(this);
             }
@@ -628,17 +626,7 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 });
             }
         }
-        public void RemoveNpcLife(int id)
-        {
-            var idx = NPC.FindIndex(i => i.ID == id);
-            if (idx > -1)
-            {
-                var life = NPC[idx];
-                SendPacket(MapPacket.NpcLeaveField(life.SpawnID));
-                NPC.RemoveAt(idx);
-            }
-        }
-        public NpcLife SpawnNpc(int npcid, Pos position, Foothold? fh)
+        public NpcLife SpawnTempNpc(int npcid, Pos position, Foothold? fh)
         {
             if (GameDataProvider.NPCs.TryGetValue(npcid, out NPCData npc))
             {
@@ -648,8 +636,9 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
                 life.X = position.X;
                 life.Y = position.Y;
                 life.Type = 'n';
-                AddLife(life); // Can only do gpq 4 billion times :(
+                AddLife(life);
                 NpcLife npcLife = NPC.Last();
+                tmpNPCs.Add(npcLife);
                 SendPacket(MapPacket.NpcEnterField(npcLife));
                 return npcLife;
             }
@@ -784,7 +773,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             {
                 Characters.Remove(chr);
                 PetsPacket.RemovePet(chr, PetRemoveReason.None, false);
-                OnExit?.Invoke(chr, this);
             }
 
             if (chr.MapChair != -1)
@@ -873,8 +861,6 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             if (chr.GMHideEnabled)
                 AdminPacket.Hide(chr, true);
-
-            OnEnter?.Invoke(chr, this);
 
             var shownPlayers = Characters.Where(x => !x.IsGM).ToArray();
             if (chr.IsGM && shownPlayers.Length != 0)
@@ -1504,6 +1490,33 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
         public bool IsCharacterInArea(GameCharacter chr, MapArea area)
         {
             return area.Contains(chr);
+        }
+
+        public virtual void Reset()
+        {
+            KillAllMobs(0);
+            DropPool.Clear();
+            EffectObjects.Clear();
+            ReactorPool.Reset(false);
+            TimerEndTime = 0;
+
+            // Reset portals
+            foreach (var portal in Portals.Values)
+            {
+                portal.Reset();
+            }
+
+            // Remove temp NPCs
+            foreach (var tmpLife in tmpNPCs)
+            {
+                NPC.Remove(tmpLife);
+            }
+            tmpNPCs.Clear();
+        }
+
+        public virtual void SetFieldSet(FieldSet fs)
+        {
+            FieldSet = fs;
         }
 
         #region Script helpers

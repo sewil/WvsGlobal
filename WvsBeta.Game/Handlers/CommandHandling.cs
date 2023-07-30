@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.IO;
 using System.Linq;
+using System.Management.Instrumentation;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
@@ -9,7 +11,9 @@ using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
+using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
@@ -100,6 +104,16 @@ namespace WvsBeta.Game.Handlers
             { "oxquiz", 109020001 }
         };
 
+        public static IDictionary<string, int[]> ItemPacks = new Dictionary<string, int[]>
+        {
+            { "gpq", new int[] {
+                1032033,
+                4001025, 4001025, 4001025, 4001025,
+                4001024,
+                4001031, 4001032, 4001033, 4001034
+            }},
+        };
+
         public static int GetMapidFromName(string name)
         {
             if (MapNameList.ContainsKey(name)) return MapNameList[name];
@@ -163,24 +177,6 @@ namespace WvsBeta.Game.Handlers
 
                 default: return GameCharacter.BanReasons.Hack;
             }
-        }
-
-        private static bool TryGetEvent(CommandArgs Args, GameCharacter character, out EventFieldSet @event)
-        {
-            @event = null;
-            if (Args.Count == 0)
-            {
-                character.Notice("Missing event name!");
-                return false;
-            }
-            string name = Args[0];
-            if (!FieldSet.Instances.TryGetValue(name, out FieldSet fs) || !(fs is EventFieldSet e))
-            {
-                character.Notice("Invalid event name \"" + name + "\"");
-                return false;
-            }
-            @event = e;
-            return true;
         }
 
         enum UserIdFetchResult
@@ -1157,7 +1153,14 @@ namespace WvsBeta.Game.Handlers
                                     return true;
                                 }
                             }
-
+                    case "itempack":
+                        {
+                            if (ItemPacks.TryGetValue(Args[0], out var itemIDs))
+                            {
+                                character.Inventory.MassExchange(0, itemIDs.Select(i => (i, (short)1)).ToArray());
+                            } else character.Message("Unknown item pack \"" + Args[0] + "\"");
+                            return true;
+                        }
 #endregion
 
 #region Summon / Spawn
@@ -1222,14 +1225,22 @@ namespace WvsBeta.Game.Handlers
                             }
                             return true;
                         }
-#endregion
+                    #endregion
 
                     #region FieldSet
+                    case "fieldset":
+                        {
+                            var fs = FieldSet.Instances[Args[0]];
+                            if (Args[1] == "minmembers") fs.Data.MinMembers = int.Parse(Args[2]);
+                            else if (Args[1] == "maxmembers") fs.Data.MaxMembers = int.Parse(Args[2]);
+                            return true;
+                        }
                     case "fieldsetvar":
                         {
                             if (Args.Count < 3)
                             {
                                 character.Message("Usage: /fieldsetvar <fieldsetname> <key> <value>");
+                                return true;
                             }
                             var set = FieldSet.Instances[Args[0]];
                             string key = Args[1];
@@ -1237,6 +1248,18 @@ namespace WvsBeta.Game.Handlers
                             set.SetVar(key, value);
                             return true;
                     }
+                    case "removefieldsetvar":
+                        {
+                            if (Args.Count < 2)
+                            {
+                                character.Message("Usage: /fieldsetvar <fieldsetname> <key>");
+                                return true;
+                            }
+                            var set = FieldSet.Instances[Args[0]];
+                            string key = Args[1];
+                            set.SetVar(key, "");
+                            return true;
+                        }
                     #endregion
 
                     #region GetID
@@ -1512,6 +1535,17 @@ namespace WvsBeta.Game.Handlers
                                 // CharacterStatsPacket.SendCharacterDamage(character, 0, -hpHealed, 0, 0, 0, 0, null);
                                 return true;
                             }
+                    case "resurrect":
+                    case "revive":
+                        {
+                            if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
+                            {
+                                PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, onOther: true);
+                                victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                            }
+                            else character.Message($"Dead player \"{Args[0]}\" not found.");
+                            return true;
+                        }
 
 #endregion
 
@@ -1638,42 +1672,39 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                        case "eventdesc":
-                            MapPacket.SendGMEventInstructions(character.Field);
-                            character.Message("Sent event description to everybody");
-                            return true;
-                    case "eventenable":
-                    case "enableevent":
-                        {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            if (@event.Started)
-                            {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not enable entry!");
-                            }
-                            else
-                            {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} enabled. Portals disabled until start.");
-                                @event.Enable();
-                            }
-                            return true;
-                        }
+                    case "eventdesc":
+                        MapPacket.SendGMEventInstructions(character.Field);
+                        character.Message("Sent event description to everybody");
+                        return true;
                     case "eventstart":
                     case "startevent":
                         {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            if (!@event.IsEnabled)
+                            if (character.Field is EventMap eventMap)
                             {
-                                character.Notice("Event not enabled, please run /eventenable first to start the event.");
+                                if (eventMap.Started)
+                                {
+                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                    return true;
+                                }
+                                else eventMap.Start();
                             }
-                            else if (@event.Started)
+                            else if (character.Field.FieldSet != null)
                             {
-                                ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} already in progress. Did not start a new one!");
+                                var fs = character.Field.FieldSet;
+                                if (fs.Opened)
+                                {
+                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                    return true;
+                                }
+                                else
+                                {
+                                    character.Field.FieldSet?.Start(character);
+                                }
                             }
                             else
                             {
-                                ChatPacket.SendBroadcastMessageToGMs(
-                                    $"{@event.Name} started. Portals enabled, and outsiders can no longer join the event.");
-                                @event.Start();
+                                character.Notice("No event found in this map!", BroadcastMessageType.Notice);
+                                return true;
                             }
                             return true;
                         }
@@ -1682,9 +1713,15 @@ namespace WvsBeta.Game.Handlers
                     case "endevent":
                     case "eventend":
                         {
-                            if (!TryGetEvent(Args, character, out EventFieldSet @event)) return true;
-                            ChatPacket.SendBroadcastMessageToGMs($"{@event.Name} stopped early. Kicking everyone if event was in progress...");
-                            @event.End();
+                            ChatPacket.SendBroadcastMessageToGMs($"Event stopped early. Kicking everyone if event was in progress...");
+                            if (character.Field is EventMap eventMap) eventMap.End();
+                            else character.Field.FieldSet?.End();
+                            return true;
+                        }
+                    case "resetcoconuts":
+                        {
+                            if (character.Field is Map_Coconut map) map.ResetCoconuts();
+                            else character.Message("Invalid map!");
                             return true;
                         }
                     #endregion
@@ -2415,7 +2452,7 @@ namespace WvsBeta.Game.Handlers
                             }
                             else
                             {
-                                reactor.SetState(character, state);
+                                reactor.ChangeState(character, state);
                             }
                             return true;
                         }
@@ -2424,6 +2461,23 @@ namespace WvsBeta.Game.Handlers
                             if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
                             {
                                 character.Message($"Reactor {rid} not found.");
+                                return true;
+                            }
+                            else if (!reactor.Shown)
+                            {
+                                character.Message("This reactor is not shown!");
+                            }
+                            else
+                            {
+                                reactor.Trigger();
+                            }
+                            return true;
+                        }
+                    case "triggerreactorbyname":
+                        {
+                            if (!character.Field.ReactorPool.Reactors.Values.TryFind(i => i.Name == Args[0], out FieldReactor reactor))
+                            {
+                                character.Message($"Reactor {Args[0]} not found.");
                                 return true;
                             }
                             else if (!reactor.Shown)

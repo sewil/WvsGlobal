@@ -61,6 +61,7 @@ namespace WvsBeta.Game
         public Dictionary<int, GameCharacter> CharacterList { get; } = new Dictionary<int, GameCharacter>();
         public Dictionary<int, GuildData> Guilds { get; } = new Dictionary<int, GuildData>();
         public IDictionary<byte, List<GuildQuestRegistration>> GuildQuestRegistrations = new Dictionary<byte,List<GuildQuestRegistration>>();
+        public List<GuildQuestRegistration> GuildQuestChannelRegistrations => GuildQuestRegistrations.GetValue(ID);
         public HashSet<GameCharacter> StaffCharacters { get; } = new HashSet<GameCharacter>();
         public IDictionary<int, PetItem> SpawnedPets = new Dictionary<int, PetItem>();
 

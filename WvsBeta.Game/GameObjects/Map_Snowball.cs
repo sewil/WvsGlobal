@@ -1,8 +1,13 @@
-﻿using System;
+﻿using log4net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.Packets;
+using WvsBeta.Game.Packets;
+using static WvsBeta.MasterThread;
 
 namespace WvsBeta.Game.GameObjects
 {
@@ -19,7 +24,7 @@ namespace WvsBeta.Game.GameObjects
         MAPLE_WIN = 2,
         STORY_WIN = 3
     }
-    class Map_Snowball : Map
+    class Map_Snowball : TeamEventMap
     {
         /* SNOWBALL CONSTANTS */
         public static readonly int xMin = 0;
@@ -36,7 +41,6 @@ namespace WvsBeta.Game.GameObjects
 
         /**********************/
 
-        public MapleSnowballEvent Event => (MapleSnowballEvent)FieldSet.Instances["EventSnowball"];
         public Portal Top { get => Portals["st01"]; }
         public Portal Bottom { get => Portals["st00"]; }
         public readonly SnowballObject MapleSnowball;
@@ -51,29 +55,70 @@ namespace WvsBeta.Game.GameObjects
             StorySnowman = new SnowmanObject(this, SnowballTeam.TEAM_STORY);
             MapleSnowball = new SnowballObject(this, SnowballTeam.TEAM_MAPLE);
             StorySnowball = new SnowballObject(this, SnowballTeam.TEAM_STORY);
+            OnTimerEnd += HandleOnTimerEnd;
         }
 
-        public void Reset()
+        ~Map_Snowball()
         {
+            FieldSet.OnOpen -= HandleFieldSetStart;
+            OnTimerEnd -= HandleOnTimerEnd;
+        }
+
+        public override void Reset()
+        {
+            base.Reset();
             MapleSnowball.Reset();
             StorySnowball.Reset();
             MapleSnowman.Reset();
             StorySnowman.Reset();
-            SnowballState = 0;
+            SnowballState = SnowballEventState.NOT_STARTED;
+        }
+
+        private void HandleOnTimerEnd(Map map)
+        {
+            List<GameCharacter> winners;
+            List<GameCharacter> losers;
+            if (GetWinner() == SnowballEventState.MAPLE_WIN)
+            {
+                winners = TeamMaple.ToList();
+                losers = TeamStory.ToList();
+            }
+            else
+            {
+                winners = TeamStory.ToList();
+                losers = TeamMaple.ToList();
+            }
+
+            winners.ForEach(c => SendEffectVictory(c));
+            losers.ForEach(c => SendEffectLose(c));
+
+            RepeatingAction.Start("snowball warper", e =>
+            {
+                winners.ForEach(c => c.ChangeMap(WinMap.ID));
+            }, 10 * 1000, 0);
+        }
+
+        public override void SetFieldSet(FieldSet fs)
+        {
+            base.SetFieldSet(fs);
+            FieldSet.OnOpen += HandleFieldSetStart;
+            FieldSet.OnEnd.Subscribe(HandleFieldSetEnd);
+        }
+
+        private void HandleFieldSetStart(object obj, EventArgs args)
+        {
+            Start();
+        }
+
+        private void HandleFieldSetEnd(FieldSet fs)
+        {
+            End();
         }
 
         public override void AddPlayer(GameCharacter chr)
         {
             base.AddPlayer(chr);
             SendSnowballState(chr);
-        }
-
-        public override void RemovePlayer(GameCharacter chr, bool gmhide = false)
-        {
-            Program.MainForm.LogDebug("Player Removed: " + chr.Name);
-            if (Event.Started)
-                Event.PlayerLeft(chr);
-            base.RemovePlayer(chr, gmhide);
         }
 
         public SnowballEventState SnowballState
@@ -83,7 +128,6 @@ namespace WvsBeta.Game.GameObjects
             {
                 _snowballState = value;
                 SendSnowballState();
-                if (_snowballState == SnowballEventState.MAPLE_WIN || _snowballState == SnowballEventState.STORY_WIN) Event.End();
             }
         }
 

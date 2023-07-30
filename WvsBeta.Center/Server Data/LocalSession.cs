@@ -1058,6 +1058,10 @@ namespace WvsBeta.Center
                         Packet pw = new Packet(ISServerMessages.BroadcastMessage);
                         pw.WriteString(packet.ReadString());
                         pw.WriteByte(packet.ReadByte());
+                        pw.WriteBool(packet.ReadBool());
+                        var len = packet.ReadInt();
+                        pw.WriteInt(len);
+                        for (int i = 0; i < len; i++) pw.WriteInt(packet.ReadInt());
                         World.SendPacketToEveryGameserver(pw);
                         break;
                     }

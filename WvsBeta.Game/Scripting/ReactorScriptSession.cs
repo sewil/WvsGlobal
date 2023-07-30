@@ -14,19 +14,15 @@ namespace WvsBeta.Game.Scripting
             this.reactor = reactor;
         }
 
-        public static void Run(FieldReactor reactor, Action<string> errorHandlerFnc)
+        public static void Run(FieldReactor reactor, Action<string> errorHandlerFnc, string scriptName = null)
         {
-            IReactorScript script = GetScript(reactor, errorHandlerFnc);
+            if (scriptName == null) scriptName = reactor.Reactor.Action ?? reactor.Reactor.ID.ToString();
+            var script = (IReactorScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
             if (script == null) return;
 
             var session = new ReactorScriptSession(reactor);
             session.Script = (IReactorScript)script.GetType().GetMethod("MemberwiseClone", BindingFlags.NonPublic | BindingFlags.Instance).Invoke(script, null);
             session.RunScript();
-        }
-        public static IReactorScript GetScript(FieldReactor reactor, Action<string> errorHandlerFnc)
-        {
-            string scriptName = reactor.Reactor.Action ?? reactor.Reactor.ID.ToString();
-            return (IReactorScript)ScriptAccessor.GetScript(Server.Instance, scriptName, errorHandlerFnc);
         }
 
         public void RunScript()

@@ -23,6 +23,7 @@ namespace WvsBeta.Game
         void Say(string message);
         int AskYesNo(string Message);
         int AskMenu(string Message);
+        int AskMenu(string message, IEnumerable<string> options);
         int AskMenu(string message, params string[] options);
         int AskNumber(string Message, int Default, int MinValue, int MaxValue);
         /// <summary>
@@ -218,10 +219,16 @@ namespace WvsBeta.Game
         }
         public int AskMenu(string message, params string[] options)
         {
+            return AskMenu(message, options);
+        }
+        public int AskMenu(string message, IEnumerable<string> options)
+        {
             string menu = "";
-            for (int i = 0; i < options.Length; i++)
+            int i = 0;
+            foreach (var option in options)
             {
-                menu += $"\r\n#b#L{i}#{options[i]}#l#k";
+                menu += $"\r\n#b#L{i}#{option}#l#k";
+                i++;
             }
             return AskMenu(message + menu);
         }

@@ -4,6 +4,7 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Game;
 using WvsBeta.Game.Handlers.GuildQuest;
 using WvsBeta.Game.Scripting;
+using static WvsBeta.Game.GameCharacter;
 
 namespace WvsBeta.Scripts.Scripts
 {
@@ -271,7 +272,7 @@ namespace WvsBeta.Scripts.Scripts
                 // entering available
                 var set = FieldSet.Instances["Guild1"];
                 var nRet = target.CanEnterGuildQuest;
-                if (nRet == 1) // Master, starts expedition
+                if (nRet == 1) // Master, sets registration in fieldset when entering
                 {
                     self.Say("You are on your way to entering Sharenian. The door to Sharenian will open 3 minutes after entering.");
                     takeawayitem();
@@ -286,39 +287,10 @@ namespace WvsBeta.Scripts.Scripts
                     //------------
 
                     var result = set.Enter(target, 0);
-                    set.SetVar("guild", target.GuildID.ToString());
-                    set.OnEnd += (obj, args) =>
-                    {
-                        int guildId = int.Parse(set.GetVar("guild"));
-                        GuildQuestHandler.Unregister(guildId, true);
-                    };
-                    set.OnTimerUpdate += (obj, timeRemaining) =>
-                    {
-                        var s = (timeRemaining / 1000) - (90 * 60);
-                        var _set = (FieldSet)obj;
-                        //if (MasterThread.IsDebug)
-                        //    _set.BroadcastMsg(BroadcastMessageType.Notice, s + " " + timeRemaining);
-                        if (s <= 60 && _set.GetVar("an60") != "true")
-                        {
-                            _set.SetVar("an60", "true");
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian will open in 1 minute. Be prepare to enter the instance.");
-                        }
-                        else if (s <= 30 && _set.GetVar("an30") != "true")
-                        {
-                            _set.SetVar("an30", "true");
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian will open in 30 seconds. Be prepare to enter the instance.");
-                        }
-                        else if (s <= 0)
-                        {
-                            _set.ResetOnTimerUpdate();
-                            _set.Maps[0].Portals["join00"].Enabled = true;
-                            _set.BroadcastMsg(BroadcastMessageType.Notice, "The door to Sharenian has opened!");
-                        }
-                    };
                     if (result != 0) self.Say("The Guild Quest is currently not ready, and therefore closed. Please try again later.");
                     return;
                 }
-                else if (nRet == 2) // Party member, enters expedition alone
+                else if (nRet == 2) // Party member
                 {
                     if (set.UserCount >= 30)
                     {
@@ -379,7 +351,7 @@ namespace WvsBeta.Scripts.Scripts
                                 say = "There's currently 1 Guild participating in the quest, and, " + (guildCount - 1) + " other Guild(s) are waiting in line. Would you like to register and wait?";
                             }
                             nRet = self.AskYesNo(say);
-                            if (nRet == 0) self.Say("I'm ridiculously busy here, so please make a decision immediately and then talk to me.");
+                            if (nRet == 0) self.Say("I'm very busy here, so please make a decision immediately and then talk to me.");
                             else
                             {
                                 nRet = target.DealWithGuildQuest(1);
@@ -513,7 +485,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 guildquest1.self = self;
                 guildquest1.target = target;
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("I need the leader that possesses #t4001024# to talk to me.");
                     return;
@@ -720,7 +692,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("To the fearless ones that dare enter Sharenian, I'm the gateskeeper that protects this castle. I shall put you all through tests to see if you're worthy of entering the premise.");
                     self.Say("These statues are all my other selves. I'll be teleporting from one statue to another. Follow my path closely, and remember the order.");
@@ -748,12 +720,12 @@ namespace WvsBeta.Scripts.Scripts
 
                     for (int i = 1; i <= statuenum; i++)
                     {
-                        int reactorIdx = question.IndexOf(i.ToString());
+                        int reactorID = question.IndexOf(i.ToString()) + 1;
                         int delay = 3000 * i;
                         MasterThread.RepeatingAction.Start(() =>
                         {
 
-                            set.TriggerReactor(3, (reactorIdx + 1).ToString());
+                            set.TriggerReactor(3, reactorID.ToString());
                         }, delay, 0);
                     }
                 }
@@ -1052,7 +1024,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("After what I thought would be an eternal sleep, I have finally found someone that will save Sharenian.");
                     self.Say("The leader of your Guild should talk to me.");
@@ -1105,7 +1077,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                if (!target.IsGuildQuestRegistered)
+                if (!target.IsGuildQuestLeader)
                 {
                     self.Say("The four statues you see in front of the fountain are the old vassals of the Sharenian. These vassals possessed priceless treasures bestowed by the king while they were alive. If you put those royal gifts as offerings, then they'll open the secret door that'll reveal the path to the inside of the castle..");
                     self.Say("These are the items you'll need as offerings:\r #v4001027# #t4001027#\r #v4001028# #t4001028#\r #v4001029# #t4001029#\r #v4001030# #t4001030#\r. However, there's no way to find out who wants what, and some of the items may be downright foreign, so discard the unnecessary ones.");
@@ -1124,36 +1096,39 @@ namespace WvsBeta.Scripts.Scripts
                     {
                         answer += Rand32.NextBetween(1, 4).ToString();
                     }
+                    if (MasterThread.IsDebug) target.Notice("Baseball answer " + answer);
                     quest.SetVar("baseball", answer);
                 }
                 else
                 {
                     var result = "";
 
-                    for (var i = 1; i <= 4; i++)
+                    for (var areaId = 1; areaId <= 4; areaId++)
                     {
                         var itemidindex = 0;
-                        for (var j = 1; j <= 4; j++)
+                        for (var itemIdx = 1; itemIdx <= 4; itemIdx++)
                         {
-                            var itemid = getitemid(j);
+                            var itemid = getitemid(itemIdx);
                             var field = target.Field;
-                            var ret = field.IsItemInArea(i.ToString(), itemid);
+                            var ret = field.IsItemInArea(areaId.ToString(), itemid);
                             if (ret == -1)
                             {
                                 self.Say("Only one offering per statue.");
                                 return;
                             }
-                            else if (ret == 1) itemidindex = j;
+                            else if (ret == 1) itemidindex = itemIdx;
                         }
                         if (itemidindex == 0)
                         {
                             self.Say("Either you have not dropped the offering, or this item is bestowed by the king.");
                             return;
                         }
-                        result = result + itemidindex.ToString();
+                        result += itemidindex.ToString();
                     }
 
-                    quest.SetVar("baseballTry", (btry.ToIntSafe() + 1).ToString());
+                    var baseballTry = (btry.ToIntSafe() + 1).ToString();
+                    if (MasterThread.IsDebug) target.Notice("Baseball try " + baseballTry);
+                    quest.SetVar("baseballTry", baseballTry);
                     var strike = 0;
                     var ball = 0;
                     for (int i = 1; i <= 4; i++)
@@ -1377,26 +1352,29 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
-    #region Reactors
     class SyarenStatue
     {
         public static void Run(IReactorHost host, FieldReactor target)
         {
             if (target.Owner == null)
             {
-                if (MasterThread.IsDebug)
-                    target.Field.Message($"reactor {target.ID} lit up without owner", BroadcastMessageType.Notice);
+                if (MasterThread.IsDebug) target.Field.Message($"Statue {target.Name} lit up without owner", BroadcastMessageType.Notice);
                 return;
             }
+            
             var set = FieldSet.Instances["Guild1"];
             if (!set.Started) return;
-            int id = target.ID; // FieldReactor idx
+            
             var answer = set.GetVar("statueAnswer"); // "00000000000000000000"
+            if (string.IsNullOrWhiteSpace(answer)) return;
+            if (!int.TryParse(target.Name, out int reactorID)) return;
+            int reactorIdx = reactorID - 1;
+            
             int phase = answer.ToString().Replace("0", "").Length + 1;
-            answer = answer.Remove(id, 1).Insert(id, phase.ToString());
+            answer = answer.Remove(reactorIdx, 1).Insert(reactorIdx, phase.ToString());
             set.SetVar("statueAnswer", answer);
             if (MasterThread.IsDebug)
-                target.Field.Message($"reactor {id} lit up; phase {phase}; answer {answer}", BroadcastMessageType.Notice);
+                target.Owner.Notice($"Statue {reactorID} lit up; phase={phase}; answer={answer}", BroadcastMessageType.Notice);
         }
     }
     [Script("9208000")]
@@ -1423,218 +1401,4 @@ namespace WvsBeta.Scripts.Scripts
             SyarenStatue.Run(host, target);
         }
     }
-    [Script("9208004")]
-    class SpearGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("speargateopen", "yes");
-            foreach (var map in set.Maps.Where(i => i.ID % 9900004 < 100))
-            {
-                map.EffectPartyClear();
-            }
-        }
-    }
-    [Script("9208005")]
-    class MetalGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("metalgateopen", "yes");
-        }
-    }
-    [Script("9208006")]
-    class StoneGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("stonegateopen", "yes");
-        }
-    }
-    [Script("9208007")]
-    class SyarenSpear : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            FieldSet.Instances["Guild1"].TriggerReactor(5, "speargate");
-        }
-    }
-    [Script("9208009")]
-    class KingGate : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("kinggateopen", "yes");
-        }
-    }
-    [Script("9208010")]
-    class SecretGate1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate1open", "yes");
-        }
-    }
-    [Script("9208011")]
-    class SecretGate2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate2open", "yes");
-        }
-    }
-    [Script("9208012")]
-    class SecretGate3 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            var set = FieldSet.Instances["Guild1"];
-            set.SetVar("secretgate3open", "yes");
-        }
-    }
-    [Script("syarenMob0")]
-    class syarenMob0 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            target.SpawnMob(new Pos(-100, 50), (9300033, 8, SummonType.Poof, null));
-        }
-    }
-
-    [Script("syarenNPC0")]
-    class syarenNPC0 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            FieldSet.Instances["Guild1"].BroadcastMsg(BroadcastMessageType.RedText, "Everything went out of focus for a second, and then a faint presence appeared from afar.");
-            target.SpawnNpc(null, 9040003);
-        }
-    }
-
-    // Eregos crystal
-    [Script("syarenMob1")]
-    class syarenMob1 : IReactorScript
-    {
-        public void Run(IReactorHost self, FieldReactor target)
-        {
-            target.Field.EffectMusic("Bgm10/Eregos");
-            target.Field.Message("As Rubian disappears, in comes Ergoth!");
-            target.SpawnMob(new Pos(0, 0), (9300028, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(-200, 138), (9300029, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(75, 138), (9300030, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(-160, 78), (9300031, 1, SummonType.Poof, null));
-            target.SpawnMob(new Pos(147, 78), (9300032, 1, SummonType.Poof, null));
-        }
-    }
-    [Script("syarenItem0")]
-    class syarenItem0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem1")]
-    class syarenItem1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem2")]
-    class syarenItem2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem3")]
-    class syarenItem3 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem4")]
-    class syarenItem4 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem5")]
-    class syarenItem5 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem6")]
-    class syarenItem6 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem7")]
-    class syarenItem7 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem8")]
-    class syarenItem8 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem9")]
-    class syarenItem9 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem10")]
-    class syarenItem10 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem11")]
-    class syarenItem11 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    [Script("syarenItem12")]
-    class syarenItem12 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            target.Drop();
-        }
-    }
-    #endregion
 }

@@ -9,7 +9,7 @@ namespace WvsBeta.Game
             Packet packet = new Packet(ServerMessages.REACTOR_ENTER_FIELD);
             packet.WriteInt(reactor.ID);
             packet.WriteInt(reactor.Reactor.ID);
-            packet.WriteByte(reactor.State.State);
+            packet.WriteSByte(reactor.State.State);
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             packet.WriteBool(reactor.FacesLeft);
@@ -24,7 +24,7 @@ namespace WvsBeta.Game
         {
             Packet packet = new Packet(ServerMessages.REACTOR_CHANGE_STATE);
             packet.WriteInt(reactor.ID); // Confirmed
-            packet.WriteByte(reactor.State.State); // Confirmed
+            packet.WriteSByte(reactor.State.State); // Confirmed
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             packet.WriteShort(reactor.FrameDelay); // Frame delay, confirmed
@@ -37,7 +37,7 @@ namespace WvsBeta.Game
         {
             Packet packet = new Packet(ServerMessages.REACTOR_LEAVE_FIELD);
             packet.WriteInt(reactor.ID); // Confirmed
-            packet.WriteByte(reactor.State.State); // Confirmed
+            packet.WriteSByte(reactor.State.State); // Confirmed
             packet.WriteShort(reactor.Position.X);
             packet.WriteShort(reactor.Position.Y);
             reactor.Field.SendPacket(packet);

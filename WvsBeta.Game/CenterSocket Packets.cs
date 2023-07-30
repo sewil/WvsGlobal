@@ -124,7 +124,6 @@ namespace WvsBeta.Game
             character.PrimaryStats.EncodeForCC(packet);
             // Add the summons
             character.Summons.EncodeForCC(packet);
-            character.EncodeForCC(packet);
 
             SendPacket(packet);
         }
@@ -210,11 +209,14 @@ namespace WvsBeta.Game
             SendPacket(packet);
         }
 
-        public void BroadcastMessage(string text, BroadcastMessageType type)
+        public void BroadcastMessage(string text, BroadcastMessageType type, int[] recipients = null)
         {
             Packet packet = new Packet(ISClientMessages.BroadcastMessage);
             packet.WriteString(text);
             packet.WriteByte((byte)type);
+            packet.WriteBool(recipients != null);
+            packet.WriteInt(recipients?.Length ?? 0);
+            recipients?.ForEach(i => packet.WriteInt(i));
             SendPacket(packet);
         }
         public void PlayerFind(int charid, string name)

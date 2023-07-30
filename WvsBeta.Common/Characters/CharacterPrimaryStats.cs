@@ -102,11 +102,6 @@ namespace WvsBeta.Common.Characters
             throw new NotImplementedException();
         }
 
-        public virtual void CheckBoosters()
-        {
-            throw new NotImplementedException();
-        }
-
         public virtual short getTotalStr() { return (short)(CharacterStat.Str + EquipBonuses.Str); }
         public virtual short getTotalDex() { return (short)(CharacterStat.Dex + EquipBonuses.Dex); }
         public virtual short getTotalInt() { return (short)(CharacterStat.Int + EquipBonuses.Int); }

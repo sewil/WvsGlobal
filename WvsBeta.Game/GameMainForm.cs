@@ -45,7 +45,6 @@ namespace WvsBeta.Game
                 Environment.Exit(1);
             }
 
-            FieldSet.Load();
             MasterThread.RepeatingAction.Start("Map Checker", Server.Instance.CheckMaps, 0, 1000);
             MasterThread.RepeatingAction.Start("FieldSet Checker", FieldSet.Update, 0, 1000);
             MasterThread.RepeatingAction.Start("Pet Checker", Server.Instance.CheckPets, 0, 10000);

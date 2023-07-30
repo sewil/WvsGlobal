@@ -326,7 +326,7 @@ namespace WvsBeta.Game
                         break;
                     #endregion
                     case ISServerMessages.GuildQuestRegister:
-                        GuildQuestHandler.HandlerRegister(packet);
+                        GuildQuestHandler.HandleRegister(packet);
                         break;
                     case ISServerMessages.GuildQuestUnregister:
                         GuildQuestHandler.HandleUnregister(packet);
@@ -439,7 +439,10 @@ namespace WvsBeta.Game
                     {
                         string text = packet.ReadString();
                         BroadcastMessageType type = (BroadcastMessageType)packet.ReadByte();
-                        ChatPacket.SendBroadcastMessageToChannel(text, type);
+                        bool sendToRecipients = packet.ReadBool();
+                        int[] recipients = new int[packet.ReadInt()];
+                        for (int i = 0; i < recipients.Length; i++) recipients[i] = packet.ReadInt();
+                        ChatPacket.SendBroadcastMessageToChannel(text, type, sendToRecipients ? recipients : null);
                         break;
                     }
 

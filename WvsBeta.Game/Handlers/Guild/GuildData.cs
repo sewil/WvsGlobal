@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.Handlers.GuildQuest;
 
 namespace WvsBeta.Game.Handlers.Guild
 {
@@ -131,6 +132,8 @@ namespace WvsBeta.Game.Handlers.Guild
         public string[] RankNames { get; protected set; } = INITIAL_RANKS;
         public Dictionary<int, GuildMember> Members = new Dictionary<int, GuildMember>();
         public IEnumerable<GameCharacter> Characters => Members.Where(m => m.Value.IsOnline).Select(m => Server.Instance.GetCharacter(m.Key)).Where(c => c != null);
+        public GuildQuestRegistration GPQRegistration { get; set; }
+
         public GuildEmblem Emblem { get; set; }
         protected GuildData()
         {
