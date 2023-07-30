@@ -1,6 +1,7 @@
 ﻿using reNX.NXProperties;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 
@@ -56,13 +57,13 @@ namespace WvsBeta.Game.GameObjects.DataLoading
         public Action<FieldReactor> ParseAction(ReactorActionType type, string message, IList<string> args)
         {
             Action<FieldReactor> action = null;
-            bool messageField = true;
+            bool onlyOwner = false;
+            Action<FieldReactor> moveAction = null;
             switch (type)
             {
                 case ReactorActionType.GoMap:
                     {
-                        bool moveAll = args[0] == "1";
-                        if (!moveAll) messageField = false;
+                        onlyOwner = args[0] == "1";
                         var mapIDs = new List<(int, string)>();
                         for (int i = 1; i + 1 < args.Count; i += 2)
                         {
@@ -70,13 +71,13 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                             string portalName = args[i + 1];
                             mapIDs.Add((mapID, portalName));
                         }
-                        action += reactor =>
+                        moveAction = reactor =>
                         {
                             int idx = Rand32.NextBetween(0, mapIDs.Count);
                             var (mapID, portalName) = mapIDs[idx];
                             var toMove = new List<GameCharacter>();
-                            if (moveAll) toMove = reactor.Field.Characters;
-                            else toMove.Add(reactor.Owner);
+                            if (onlyOwner) toMove.Add(reactor.Owner);
+                            else toMove = reactor.Field.Characters.ToList();
                             toMove.ForEach(c => c?.ChangeMap(mapID, portalName));
                         };
                     }
@@ -125,10 +126,11 @@ namespace WvsBeta.Game.GameObjects.DataLoading
             {
                 action += reactor =>
                 {
-                    if (messageField) reactor.Field.Message(message);
-                    else reactor.Owner?.Message(message);
+                    if (onlyOwner) reactor.Owner?.Message(message);
+                    else reactor.Field.Message(message);
                 };
             }
+            if (moveAction != null) action += moveAction;
             return action;
         }
         public void RunAction(FieldReactor reactor)

@@ -369,7 +369,7 @@ namespace WvsBeta.Scripts.Scripts
                 var res = setParty.Enter(target, 0);
                 if (res == FieldSet.EnterStatus.Invalid) self.Say("I have reasons for not letting you in. Please try again later.");
                 else if (res == FieldSet.EnterStatus.NotInParty) self.Say("You are not in a party. You can only participate in this quest if you are in a party.");
-                else if (res == FieldSet.EnterStatus.WrongMemberCount) self.Say("Your party cannot participate in the quest because it does not have 6 members. Please gather 6 people in your party.");
+                else if (res == FieldSet.EnterStatus.WrongMemberCount) self.Say($"Your party cannot participate in the quest because it does not have {setParty.MinMembers} members. Please gather {setParty.MinMembers} people in your party.");
                 else if (res == FieldSet.EnterStatus.TooWeak) self.Say("Someone in your party is not between levels 35~50. Please check again.");
                 else if (res == FieldSet.EnterStatus.Full) self.Say("Another party is inside participating in the quest. Please try again after the party opens the vacancy.");
                 else

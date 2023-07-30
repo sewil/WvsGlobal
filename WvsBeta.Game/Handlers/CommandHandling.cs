@@ -81,6 +81,7 @@ namespace WvsBeta.Game.Handlers
             { "kpq2", 103000801 },
             { "kpq1", 103000800 },
             { "gpq", 101030104 },
+            { "lpq", 221024500 },
             { "sharenia", 101030104 },
             // Boss maps
             { "zakum", 280030000 },
