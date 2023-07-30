@@ -81,8 +81,8 @@ namespace WvsBeta.Game.Handlers
             { "kpq2", 103000801 },
             { "kpq1", 103000800 },
             { "gpq", 101030104 },
-            { "lpq", 221024500 },
             { "sharenia", 101030104 },
+            { "lpq", 221024500 },
             // Boss maps
             { "zakum", 280030000 },
             // Contimove
@@ -105,14 +105,18 @@ namespace WvsBeta.Game.Handlers
             { "oxquiz", 109020001 }
         };
 
-        public static IDictionary<string, int[]> ItemPacks = new Dictionary<string, int[]>
+        public static IDictionary<string, (int itemid, short amount)[]> ItemPacks = new Dictionary<string, (int itemid, short amount)[]>
         {
-            { "gpq", new int[] {
-                1032033,
-                4001025, 4001025, 4001025, 4001025,
-                4001024,
-                4001031, 4001032, 4001033, 4001034
+            { "gpq", new (int itemid, short amount)[] {
+                (1032033, 1),
+                (4001025, 4),
+                (4001024, 1),
+                (4001031, 1), (4001032, 1), (4001033, 1), (4001034, 1)
             }},
+            { "lpq", new (int itemid, short amount)[] {
+                (4001022, 500),
+                (4001023, 10)
+            }}
         };
 
         public static int GetMapidFromName(string name)
@@ -335,7 +339,19 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 return true;
                             }
-
+                        case "fieldsetmap":
+                        case "mapfieldset":
+                        case "mapfs":
+                        case "fsmap":
+                        case "mfs":
+                        case "fsm":
+                        {
+                            if (Args.Count < 2) character.Message("Usage: /mapfs <fieldset> <map index>");
+                            else if (!FieldSet.Instances.TryGetValue(Args[0], out FieldSet fs)) character.Message("Unknown fieldset.");
+                            else if (!int.TryParse(Args[1], out int mapIdx) || fs.Maps.Length - 1 < mapIdx || mapIdx < 0) character.Message("Invalid map index.");
+                            else character.ChangeMap(fs.Maps[mapIdx]);
+                            return true;
+                        }
 #endregion
 
 #region Chase / Warp
@@ -1156,9 +1172,9 @@ namespace WvsBeta.Game.Handlers
                             }
                     case "itempack":
                         {
-                            if (ItemPacks.TryGetValue(Args[0], out var itemIDs))
+                            if (ItemPacks.TryGetValue(Args[0], out var items))
                             {
-                                character.Inventory.MassExchange(0, itemIDs.Select(i => (i, (short)1)).ToArray());
+                                character.Inventory.MassExchange(0, items);
                             } else character.Message("Unknown item pack \"" + Args[0] + "\"");
                             return true;
                         }

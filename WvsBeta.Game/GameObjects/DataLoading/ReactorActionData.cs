@@ -92,10 +92,10 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                         if (args.Count >= 6)
                         {
                             mobMeta = byte.Parse(args[3]);
+                            short x = short.Parse(args[args.Count - 2]);
+                            short y = short.Parse(args[args.Count - 1]);
+                            pos = new Pos(x, y);
                         }
-                        short x = short.Parse(args[args.Count - 2]);
-                        short y = short.Parse(args[args.Count - 1]);
-                        pos = new Pos(x, y);
                         action += (r) => r.SpawnMob(pos, mobID, amount, summonType, mobMeta);
                     }
                     break;
