@@ -219,7 +219,7 @@ namespace WvsBeta.Game
         }
         public int AskMenu(string message, params string[] options)
         {
-            return AskMenu(message, options);
+            return AskMenu(message, (IEnumerable<string>)options);
         }
         public int AskMenu(string message, IEnumerable<string> options)
         {

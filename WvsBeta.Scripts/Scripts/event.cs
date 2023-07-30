@@ -80,7 +80,7 @@ namespace WvsBeta.Scripts.Scripts
                 eventMenu = Events.Select(e => e.Name + " (" + e.Map.ID + ")").ToArray();
 
                 eventMenuWithClose = new string[Events.Count + 1];
-                eventMenuWithClose = eventMenuWithClose.ToArray();
+                for (int i = 0; i < eventMenu.Length; i++) eventMenuWithClose[i] = eventMenu[i];
                 eventMenuWithClose[Events.Count] = "Close Event Map Entry";
 
                 userEventMenu = @"\r\n#L0##e1. #n#bWhat kind of event is this?#k#l\r\n#L1##e2. #n#bExplain the game event to me.#k#l\r\n#L2##e3. #n#bThat's right, let's go!#k#l";
@@ -93,7 +93,8 @@ namespace WvsBeta.Scripts.Scripts
 
                 if (target.IsAdmin)
                 {
-                    var v1 = self.AskMenu("Please select the action of your choice.", "Select Event Map", "Check number of users in Event Map");
+                    var v1 = self.AskMenu("Please select the action of your choice.", "Select Event Map", "Check number of users in Event Map", "Go event");
+                    int uMap = self.GetIntReg("map");
                     if (v1 == 0)
                     {
                         var v2 = self.AskMenu("Please select an event to open.", eventMenuWithClose);
@@ -113,11 +114,15 @@ namespace WvsBeta.Scripts.Scripts
                     else if (v1 == 1)
                     {
                         int v2 = self.AskMenu("Please select an event.", eventMenu);
-                        int uMap = self.GetIntReg("map");
                         var selEvent = Events[v2];
                         var selMap = selEvent.Map;
                         if (uMap == selMap.ID) self.Say($"A total of {selEvent.Capacity} can enter {selEvent.Name} ({selMap.ID}). #r" + selMap.Characters.Count + "#k users have currently entered the event map.");
                         else self.Say($"{selEvent.Name} ({selMap.ID}) This event is currently not open.");
+                    }
+                    else if (v1 == 2)
+                    {
+                        if (uMap == -1) self.Say("There is currently no event running.");
+                        else target.ChangeMap(uMap);
                     }
                 }
                 else
