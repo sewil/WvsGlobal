@@ -1535,6 +1535,17 @@ namespace WvsBeta.Game.Handlers
                                 // CharacterStatsPacket.SendCharacterDamage(character, 0, -hpHealed, 0, 0, 0, 0, null);
                                 return true;
                             }
+                    case "resurrect":
+                    case "revive":
+                        {
+                            if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
+                            {
+                                PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, onOther: true);
+                                victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                            }
+                            else character.Message($"Dead player \"{Args[0]}\" not found.");
+                            return true;
+                        }
 
 #endregion
 

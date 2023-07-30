@@ -87,18 +87,18 @@ namespace WvsBeta.Game
             return false;
         }
 
-        public bool IsShownTo(IFieldObj Object)
+        public bool IsShownTo(IFieldObj obj)
         {
-            var Result = false;
+            bool isShown = false;
 
-            if (Object is GameCharacter User && User.HP > 0 && User.MapID == Field.ID)
+            if (obj is GameCharacter user && user.MapID == Field.ID)
             {
                 if (ShowMax > 0)
                 {
-                    var Count = User.Inventory.GetItemAmount(Reward.ItemID);
+                    var Count = user.Inventory.GetItemAmount(Reward.ItemID);
 
                     //TODO If quests give out cash items this needs to be changed
-                    if (User.Inventory.GetEquippedItemId(Constants.getEquipSlot(Reward.ItemID), EquippedType.Normal) == Reward.ItemID)
+                    if (user.Inventory.GetEquippedItemId(Constants.getEquipSlot(Reward.ItemID), EquippedType.Normal) == Reward.ItemID)
                         Count++;
 
                     if (Count > ShowMax)
@@ -108,23 +108,23 @@ namespace WvsBeta.Game
 
                 if (!Reward.Mesos && GameDataProvider.QuestItems.TryGetValue(Reward.ItemID, out HashSet<short> questIDs))
                 {
-                    bool hasQuest = questIDs.Any(questID => User.Quests.Quests.TryGetValue(questID, out QuestData questData) && questData.State == QuestState.InProgress);
+                    bool hasQuest = questIDs.Any(questID => user.Quests.Quests.TryGetValue(questID, out QuestData questData) && questData.State == QuestState.InProgress);
                     if (hasQuest)
                     {
-                        if (DropType == DropType.Normal && User.ID == OwnerID ||
-                            DropType == DropType.Party && User.PartyID == OwnPartyID ||
+                        if (DropType == DropType.Normal && user.ID == OwnerID ||
+                            DropType == DropType.Party && user.PartyID == OwnPartyID ||
                             DropType == DropType.FreeForAll ||
                             DropType == DropType.Explosive)
                         {
-                            Result = true;
+                            isShown = true;
                         }
                     }
                 }
                 else
-                    Result = true;
+                    isShown = true;
             }
 
-            return Result;
+            return isShown;
         }
 
         public void EncodeForMigration(Packet pw)
