@@ -227,6 +227,8 @@ namespace WvsBeta.Game
             }
 
             var calc = new CalcDamage(chr, data, type);
+            int actualDamage = 0;
+            int expectedDamage = 0;
             for (int attackIdx = 0; attackIdx < calc.TargetAttacks.Length; attackIdx++)
             {
                 var info = data.Attacks[attackIdx];
@@ -244,7 +246,14 @@ namespace WvsBeta.Game
                     {
                         Program.MainForm.LogAppend($"Mismatching client damage for character {chr.ID}! Expected {calcDmg}, received {clientDmg} (mob {attack.Mob.SpawnID}, hit {hitIdx}, isCrit: {hit.IsCrit})");
                     }
+                    actualDamage += clientDmg;
+                    expectedDamage += (int)calcDmg;
                 }
+            }
+            if (actualDamage != expectedDamage)
+            {
+                ReportDamageHack(chr, ad, actualDamage, expectedDamage);
+                return false;
             }
 
             return true;
@@ -259,7 +268,6 @@ namespace WvsBeta.Game
             Mob mob;
             bool died;
             int TotalDamage = 0;
-            double MaxPossibleDamage;
 
             if (ad.SkillID != 0)
             {
@@ -377,20 +385,6 @@ namespace WvsBeta.Game
                         chr.ModifyMP((short)StolenMP);
                         PlayerEffectPacket.SendSkill(chr, MpStealSkillID, MpStealLevel);
                     }
-
-                    if (ad.SkillID != 0)
-                    {
-                        MaxPossibleDamage = DamageFormula.MaximumMeleeDamage(chr, mob, ad.Targets, ad.SkillID);
-                    }
-                    else
-                    {
-                        MaxPossibleDamage = DamageFormula.MaximumMeleeDamage(chr, mob, ad.Targets);
-                    }
-
-                    if (TotalDamage > MaxPossibleDamage)
-                    {
-                        if (ReportDamagehack(chr, ad, TotalDamage, (int)MaxPossibleDamage)) return;
-                    }
                 }
 
                 catch (Exception ex)
@@ -505,7 +499,6 @@ namespace WvsBeta.Game
 
             int TotalDamage;
             bool died;
-            double MaxPossibleDamage = 0;
             Mob mob;
 
             SendRangedAttack(chr, ad);
@@ -561,33 +554,6 @@ namespace WvsBeta.Game
                                     hp = Math.Min(hp, chr.CharacterStat.MaxHP / 2);
                                     chr.ModifyHP((short)(hp));
                                 }
-
-                                switch (ad.SkillID)
-                                {
-                                    case Constants.Hunter.Skills.PowerKnockback:
-                                    case Constants.Crossbowman.Skills.PowerKnockback:
-                                        MaxPossibleDamage = DamageFormula.MaximumPowerKnockbackDamage(chr, mob, TotalDamage);
-                                        break;
-                                    case Constants.Hunter.Skills.ArrowBomb:
-                                        MaxPossibleDamage =
-                                            DamageFormula.MaximumArrowBombDamage(chr, mob, ad.StarID, TotalDamage);
-                                        break;
-                                    case Constants.Rogue.Skills.LuckySeven:
-                                        MaxPossibleDamage = DamageFormula.MaximumLuckySevenDamage(chr, mob, TotalDamage, ad.StarID);
-                                        break;
-                                    case Constants.Assassin.Skills.Drain:
-                                        MaxPossibleDamage = 99999; //Hotfix a bug that caused legit players to get autobanned. TODO check this properly!
-                                        break;
-                                    default:
-                                        MaxPossibleDamage = DamageFormula.MaximumRangedDamage(chr, mob, ad.SkillID, ad.StarID,
-                                            ad.Targets, TotalDamage);
-                                        break;
-                                }
-
-                                if (TotalDamage > MaxPossibleDamage)
-                                {
-                                    if (ReportDamagehack(chr, ad, TotalDamage, (int)MaxPossibleDamage)) return;
-                                }
                             }
                         }
                     }
@@ -606,7 +572,6 @@ namespace WvsBeta.Game
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Magic)) return;
 
             int TotalDamage;
-            double MaxSpellDamage;
             bool died;
             Mob mob;
 
@@ -676,29 +641,6 @@ namespace WvsBeta.Game
                             chr.ModifyMP((short)StolenMP);
                             PlayerEffectPacket.SendSkill(chr, MpStealSkillID, MpStealLevel);
                         }
-                    }
-
-                    switch (ad.SkillID)
-                    {
-                        case Constants.Magician.Skills.MagicClaw: // If the Spell is Magic Claw (since it registers two hits)
-                            MaxSpellDamage = DamageFormula.MaximumSpellDamage(chr, mob, ad.SkillID) * 2;
-                            break;
-                        case Constants.Cleric.Skills.Heal: // If the Spell is Heal (since it has a special snowflake calculation for it)
-                            if (mob.Data.Undead == false)
-                            {
-                                chr.PermaBan("Heal damaging regular mobs exploit");
-                                return;
-                            }
-                            MaxSpellDamage = DamageFormula.MaximumHealDamage(chr, mob, ad.Targets);
-                            break;
-                        default:
-                            MaxSpellDamage = DamageFormula.MaximumSpellDamage(chr, mob, ad.SkillID);
-                            break;
-                    }
-
-                    if (TotalDamage > MaxSpellDamage)
-                    {
-                        if (ReportDamagehack(chr, ad, TotalDamage, (int)MaxSpellDamage)) return;
                     }
                 }
 
@@ -909,48 +851,29 @@ namespace WvsBeta.Game
 
         public struct DamageHackLog
         {
-            public int skillId { get; set; }
-            public byte skillLevel { get; set; }
-            public int damage { get; set; }
-            public int maxDamage { get; set; }
-            public float percentage { get; set; }
-            public short posX { get; set; }
-            public short posY { get; set; }
+            public int SkillId { get; set; }
+            public byte SkillLevel { get; set; }
+            public int ActualDamage { get; set; }
+            public int ExpectedDamage { get; set; }
+            public short PosX { get; set; }
+            public short PosY { get; set; }
         }
 
-        private static bool ReportDamagehack(GameCharacter chr, AttackData ad, int TotalDamage, int MaxDamage)
+        private static void ReportDamageHack(GameCharacter chr, AttackData ad, int actualDamage, int expectedDamage)
         {
-            // Broken. don't care.
-            return false;
-
-
-            float percentage = (TotalDamage * 100.0f / MaxDamage);
             _hackLog.Info(new DamageHackLog
             {
-                damage = TotalDamage,
-                maxDamage = MaxDamage,
-                skillId = ad.SkillID,
-                skillLevel = ad.SkillLevel,
-                percentage = percentage,
-                posX = chr.Position.X,
-                posY = chr.Position.Y,
+                ActualDamage = actualDamage,
+                ExpectedDamage = expectedDamage,
+                SkillId = ad.SkillID,
+                SkillLevel = ad.SkillLevel,
+                PosX = chr.Position.X,
+                PosY = chr.Position.Y,
             });
 
-            // Ignore broken damage
-            if (percentage < 1.0 || TotalDamage < 100 || MaxDamage == 0) return false;
+            if (chr.HacklogMuted >= MasterThread.CurrentDate) return;
 
-            if (chr.HacklogMuted >= MasterThread.CurrentDate) return false;
-
-            //var msgType = DamageFormula.GetGMNoticeType(TotalDamage, MaxDamage);
-            //MessagePacket.SendNoticeGMs("Name: '" + chr.Name + "', dmg: " + TotalDamage + " (" + percentage.ToString("0.00") + "% of max). " + "Skill: " + ad.SkillID + ", lvl " + ad.SkillLevel + ", damage " + TotalDamage + " > " + MaxDamage, msgType);
-
-            if (percentage > 400.0)
-            {
-                chr.PermaBan($"Automatically banned for damage hacks ({percentage:0.00}%) skill {ad.SkillID}", GameCharacter.BanReasons.Hack);
-                return true;
-            }
-
-            return false;
+            ChatPacket.SendBroadcastMessageToGMs($"Potential damage hack by {chr.Name}. Expected damage: {expectedDamage}, actual damage: {actualDamage}. Skill used: {ad.SkillID} (Lv. {ad.SkillLevel}).", BroadcastMessageType.Notice);
         }
     }
 }
