@@ -188,7 +188,7 @@ namespace WvsBeta.Scripts.Scripts
             var val = qr.GetState(2073);
             if (val == 1)
             {
-                var quest = FieldSet.Instances["Utah"];
+                var quest = FieldSet.Instances["Yoota"];
                 if (quest.Enter(target, 0) != FieldSet.EnterStatus.Success)
                 {
                     target.SendPacket(MessagePacket.RedText("Looks like someone is already visiting Utah's Farm."));
