@@ -538,8 +538,8 @@ namespace WvsBeta.Game
             if (time - lastCheck < 45000) return;
             lastCheck = time;
 
-            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.Expiration < time).Select(i => i.Value as Item)
-                .Concat(Items.SelectMany(i => i.Value).Where(i => i != null).Where(i => i.Expiration < time || ((i is PetItem pi) && pi.DeadDate < time)))
+            var expiredItems = Equipped.SelectMany(i => i.Value).Where(x => x.Value.HasExpired(time)).Select(i => i.Value as Item)
+                .Concat(Items.SelectMany(i => i.Value).Where(i => i != null).Where(i => i.HasExpired(time)))
                 .ToList();
 
             if (expiredItems.Count == 0) return;

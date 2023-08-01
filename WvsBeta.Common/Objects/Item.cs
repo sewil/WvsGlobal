@@ -237,6 +237,11 @@ namespace WvsBeta.Common.Objects
         public abstract string GetFullSaveColumns();
 
         public abstract string GetFullUpdateColumns();
+
+        public virtual bool HasExpired(long pNow)
+        {
+            return Expiration < pNow;
+        }
     }
 
     public class BundleItem : Item
@@ -654,6 +659,11 @@ namespace WvsBeta.Common.Objects
                 "fullness = " + Fullness + "," +
                 "expiration = " + Expiration + "," +
                 "deaddate = " + DeadDate + "";
+        }
+
+        public override bool HasExpired(long pNow)
+        {
+            return DeadDate == NoItemExpiration || DeadDate < pNow;
         }
     }
 }
