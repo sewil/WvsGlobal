@@ -532,6 +532,9 @@ namespace WvsBeta.Game
                         case "town":
                             map.Town = node.ValueBool();
                             break;
+                        case "swim":
+                            map.Swim = node.ValueBool();
+                            break;
                         case "personalShop":
                             map.AcceptPersonalShop = node.ValueBool();
                             break;

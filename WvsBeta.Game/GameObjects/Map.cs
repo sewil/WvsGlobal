@@ -30,6 +30,7 @@ namespace WvsBeta.Game
         public int ForcedReturn { get; set; }
         public int ReturnMap { get; set; }
         public bool Town { get; set; }
+        public bool Swim { get; set; }
         public FieldLimit Limitations { get; set; }
         public double MobRate { get; set; }
         public bool HasClock { get; set; }
@@ -210,12 +211,14 @@ namespace WvsBeta.Game
                         // Damage
                         foreach (var character in Characters)
                         {
-                            var actualDamage = DecreaseHP;
-                            if (character.PrimaryStats.BuffThaw.IsSet(pNow))
-                                actualDamage -= character.PrimaryStats.BuffThaw.N;
-                            if (ProtectItem > 0 && character.Inventory.GetEquippedItem(ProtectItem, out EquippedType __) != null)
-                                actualDamage = 0;
-                            // TODO: If swim, negative multiple N value (Freeze damage?)
+                            short actualDamage = DecreaseHP;
+                            if (ProtectItem > 0 && character.Inventory.GetEquippedItem(ProtectItem, out EquippedType __) != null) continue;
+                            else if (character.PrimaryStats.BuffThaw.IsSet(pNow))
+                            {
+                                short thaw = character.PrimaryStats.BuffThaw.N;
+                                if (Swim && thaw < 0) actualDamage += thaw;
+                                else if (!Swim && thaw > 0) actualDamage -= thaw;
+                            }
 
                             // TODO: If we've got snowboots, do no damage
                             if (actualDamage > 0)

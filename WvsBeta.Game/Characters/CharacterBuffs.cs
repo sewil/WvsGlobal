@@ -49,7 +49,7 @@ namespace WvsBeta.Game
             if (data.WeaponDefense > 0)
                 added |= ps.BuffWeaponDefense.Set(value, data.WeaponDefense, expireTime);
 
-            if (data.Thaw > 0)
+            if (data.Thaw != 0)
                 added |= ps.BuffThaw.Set(value, data.Thaw, expireTime);
 
             if (added != 0)
