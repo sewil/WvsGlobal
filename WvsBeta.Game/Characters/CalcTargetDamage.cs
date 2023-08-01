@@ -276,7 +276,7 @@ namespace WvsBeta.Game.Characters
             double masteryModifier = GetMasteryModifier();
             var critLevel = GetCritSkill(out var critSkill);
             attackOption = (AttackOption)data.Option;
-            int watk = chr.PrimaryStats.GetTotalWatk(data.StarID);
+            int watk = Math.Min(MaxPAD, chr.PrimaryStats.GetTotalWatk(data.StarID));
 
             if ((attackOption & AttackOption.MortalBlow) != 0)
             {
