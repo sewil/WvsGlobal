@@ -1,4 +1,5 @@
-﻿using WvsBeta.Common.Sessions;
+﻿using WvsBeta.Common.Extensions;
+using WvsBeta.Common.Sessions;
 using WvsBeta.Login.Objects;
 
 namespace WvsBeta.Login.Packets
@@ -60,7 +61,7 @@ namespace WvsBeta.Login.Packets
             else if (loginState == LoginState.BANNED)
             {
                 WriteByte((byte)banReason);
-                WriteLong(banExpire);
+                WriteFileTime(banExpire); // If banned expiry >= 3 years, then it will say it's a permaban
             }
         }
     }

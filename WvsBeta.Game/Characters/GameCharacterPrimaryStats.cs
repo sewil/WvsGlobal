@@ -212,7 +212,7 @@ namespace WvsBeta.Game
             if (Char.Inventory.Equipped[EquippedType.Normal].ContainsKey(Constants.EquipSlots.Slots.Weapon)) return;
 
             BuffValueTypes removed = 0;
-            var currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            var currentTime = MasterThread.CurrentTime;
             if (BuffBooster.IsSet(currentTime)) removed |= RemoveByReference(BuffBooster.R, true);
             if (BuffCharges.IsSet(currentTime)) removed |= RemoveByReference(BuffCharges.R, true);
             if (BuffComboAttack.IsSet(currentTime)) removed |= RemoveByReference(BuffComboAttack.R, true);
@@ -367,7 +367,7 @@ namespace WvsBeta.Game
 
         public override void EncodeForCC(Packet packet)
         {
-            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            long currentTime = MasterThread.CurrentTime;
             int offset = packet.Position;
             packet.WriteUInt(0);
             Common.Enums.BuffValueTypes flags = 0;
@@ -453,7 +453,7 @@ namespace WvsBeta.Game
 
         public override Common.Enums.BuffValueTypes AllActiveBuffs()
         {
-            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            long currentTime = MasterThread.CurrentTime;
             Common.Enums.BuffValueTypes flags = 0;
             flags |= BuffWeaponAttack.GetState(currentTime);
             flags |= BuffWeaponDefense.GetState(currentTime);
@@ -542,7 +542,7 @@ namespace WvsBeta.Game
 
         public override void EncodeForLocal(Packet pPacket, Common.Enums.BuffValueTypes pSpecificFlag = Common.Enums.BuffValueTypes.ALL)
         {
-            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            long currentTime = MasterThread.CurrentTime;
             int tmpBuffPos = pPacket.Position;
             Common.Enums.BuffValueTypes endFlag = Common.Enums.BuffValueTypes.None;
             pPacket.WriteULong((ulong)endFlag);
@@ -590,7 +590,7 @@ namespace WvsBeta.Game
 
         public override bool HasBuff(int referenceId)
         {
-            long currentTime = Common.Objects.Stats.BuffStat.GetTimeForBuff();
+            long currentTime = MasterThread.CurrentTime;
             return
                 BuffWeaponAttack.HasReferenceId(referenceId, currentTime) ||
                 BuffWeaponDefense.HasReferenceId(referenceId, currentTime) ||

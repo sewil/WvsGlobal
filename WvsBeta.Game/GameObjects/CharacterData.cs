@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Game.GameObjects
@@ -35,7 +36,7 @@ namespace WvsBeta.Game.GameObjects
                     foreach (var completedQuest in completedQuests)
                     {
                         packet.WriteShort(completedQuest.Key);
-                        packet.WriteLong(completedQuest.Value.FileTime);
+                        packet.WriteFileTime(completedQuest.Value.EndTime);
                     }
                 }
             }

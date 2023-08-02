@@ -8,7 +8,7 @@ namespace WvsBeta.Common.Objects
         public byte MobCount { get; set; }
         public byte HitCount { get; set; }
 
-        public int BuffTime { get; set; }
+        public int BuffSeconds { get; set; }
         public short Damage { get; set; }
         public short AttackRange { get; set; }
         public byte Mastery { get; set; }

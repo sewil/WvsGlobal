@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
+using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
 
 namespace WvsBeta.Game
@@ -30,10 +32,10 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
-        public static void SendCompleteQuest(GameCharacter chr, short questID, long filetime)
+        public static void SendCompleteQuest(GameCharacter chr, QuestData quest)
         {
-            var pw = new QuestPacket(questID, QuestState.Completed);
-            pw.WriteLong(filetime);
+            var pw = new QuestPacket(quest.QuestID, QuestState.Completed);
+            pw.WriteFileTime(quest.EndTime);
             chr.SendPacket(pw);
         }
 

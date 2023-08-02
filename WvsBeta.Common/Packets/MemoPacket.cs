@@ -125,7 +125,7 @@ namespace WvsBeta.Common.Packets
             pw.WriteInt(ID);
             pw.WriteString(FromName);
             pw.WriteString(Message);
-            pw.WriteLong(Sent);
+            pw.WriteFileTime(Sent);
         }
     }
 }

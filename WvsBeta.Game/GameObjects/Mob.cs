@@ -1068,7 +1068,7 @@ namespace WvsBeta.Game
 
                         if (bs != null)
                         {
-                            var stat = bs.Set(rValue, 1, BuffStat.GetTimeForBuff(tValue + delay));
+                            var stat = bs.Set(rValue, 1, MasterThread.CurrentTime + tValue + delay);
                             character.Buffs.FinalizeBuff(stat, delay);
                         }
                     });

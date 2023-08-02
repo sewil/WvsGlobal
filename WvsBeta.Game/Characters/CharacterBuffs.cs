@@ -24,9 +24,8 @@ namespace WvsBeta.Game
         public void AddItemBuff(int itemid)
         {
             var data = GameDataProvider.Items[itemid];
-            long buffTime = data.BuffTime;
 
-            var expireTime = Common.Objects.Stats.BuffStat.GetTimeForBuff(buffTime);
+            var expireTime = MasterThread.CurrentTime + data.BuffTime;
             var ps = Character.PrimaryStats;
             var value = -itemid;
             Common.Enums.BuffValueTypes added = 0;
@@ -129,15 +128,14 @@ namespace WvsBeta.Game
             var data = GameDataProvider.Skills[SkillID].Levels[level];
 
 
-            long time = data.BuffTime * 1000;
-            time += delay;
+            long buffTime = data.BuffSeconds * 1000 + delay;
 
             // Fix for MesoGuard expiring... hurr
             if (SkillID == Constants.ChiefBandit.Skills.MesoGuard)
-                time += 1000 * 1000;
-            Trace.WriteLine($"Adding buff from skill {SkillID} lvl {level}: {time}. Flags {flags}");
+                buffTime += 1000 * 1000;
+            Trace.WriteLine($"Adding buff from skill {SkillID} lvl {level}: {buffTime}. Flags {flags}");
 
-            var expireTime = Common.Objects.Stats.BuffStat.GetTimeForBuff(time);
+            var expireTime = MasterThread.CurrentTime + buffTime;
             var ps = Character.PrimaryStats;
             Common.Enums.BuffValueTypes added = 0;
 

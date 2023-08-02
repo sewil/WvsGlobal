@@ -289,7 +289,7 @@ namespace WvsBeta.Game
                         }
 
                         chr.DoorMapId = chr.MapID;
-                        field.DoorPool.CreateDoor(chr, x, y, MasterThread.CurrentTime + sld.BuffTime * 1000);
+                        field.DoorPool.CreateDoor(chr, x, y, MasterThread.CurrentTime + sld.BuffSeconds * 1000);
                         chr.tLastDoor = MasterThread.CurrentTime;
                         break;
                     }
@@ -335,7 +335,7 @@ namespace WvsBeta.Game
                 // MOB SKILLS
                 case Constants.Page.Skills.Threaten:
                     {
-                        var buffTime = MasterThread.CurrentTime + (sld.BuffTime * 1000);
+                        var buffTime = MasterThread.CurrentTime + (sld.BuffSeconds * 1000);
                         handleMobStatEffects(false, (mob, delay) =>
                         {
                             var stat = mob.Status.BuffPhysicalDamage.Set(
@@ -358,7 +358,7 @@ namespace WvsBeta.Game
                 case Constants.ILWizard.Skills.Slow:
                     {
                         var buffNValue = sld.XValue;
-                        var buffTime = MasterThread.CurrentTime + (sld.BuffTime * 1000);
+                        var buffTime = MasterThread.CurrentTime + (sld.BuffSeconds * 1000);
 
                         handleMobStatEffects(false, (mob, delay) =>
                         {
@@ -399,7 +399,7 @@ namespace WvsBeta.Game
                 case Constants.ILMage.Skills.Seal:
                 case Constants.FPMage.Skills.Seal:
                     {
-                        var buffTime = MasterThread.CurrentTime + (sld.BuffTime * 1000);
+                        var buffTime = MasterThread.CurrentTime + (sld.BuffSeconds * 1000);
                         handleMobStatEffects(false, (mob, delay) =>
                         {
                             MobPacket.SendMobStatsTempSet(mob, delay, mob.Status.BuffSeal.Set(SkillID, 1, buffTime + delay));
@@ -409,7 +409,7 @@ namespace WvsBeta.Game
                     }
                 case Constants.Hermit.Skills.ShadowWeb:
                     {
-                        var buffTime = MasterThread.CurrentTime + (sld.BuffTime * 1000);
+                        var buffTime = MasterThread.CurrentTime + (sld.BuffSeconds * 1000);
 
                         handleMobStatEffects(false, (mob, delay) =>
                         {
@@ -424,7 +424,7 @@ namespace WvsBeta.Game
                     }
                 case Constants.Priest.Skills.Doom:
                     {
-                        var buffTime = MasterThread.CurrentTime + (sld.BuffTime * 1000);
+                        var buffTime = MasterThread.CurrentTime + (sld.BuffSeconds * 1000);
 
                         handleMobStatEffects(false, (mob, delay) =>
                         {
@@ -443,7 +443,7 @@ namespace WvsBeta.Game
                         var fh = field.GetFootholdUnderneath(X, Y, out var MaxY);
                         ushort fhid = 0;
                         fhid = fh?.ID ?? (ushort)chr.Foothold;
-                        var bird = new Summon(chr, SkillID, SkillLevel, X, Y, true, fhid, MasterThread.CurrentTime + sld.BuffTime * 1000);
+                        var bird = new Summon(chr, SkillID, SkillLevel, X, Y, true, fhid, MasterThread.CurrentTime + sld.BuffSeconds * 1000);
                         chr.Summons.SetSummon(bird);
 
                         break;
@@ -458,7 +458,7 @@ namespace WvsBeta.Game
                         var floor = field.FindFloor(new Pos(X, Y));
                         ushort fhid = 0;
                         fhid = fh?.ID ?? (ushort)chr.Foothold;
-                        var puppet = new Puppet(chr, SkillID, SkillLevel, floor.X, floor.Y, false, fhid, MasterThread.CurrentTime + sld.BuffTime * 1000, sld.XValue);
+                        var puppet = new Puppet(chr, SkillID, SkillLevel, floor.X, floor.Y, false, fhid, MasterThread.CurrentTime + sld.BuffSeconds * 1000, sld.XValue);
                         chr.Summons.SetSummon(puppet);
                         break;
                     }

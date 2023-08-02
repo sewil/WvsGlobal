@@ -600,7 +600,7 @@ namespace WvsBeta.Game
             if (setStat != null && !setStat.IsSet())
             {
                 var buffTime = msld.Time * 1000;
-                var stat = setStat.Set(rValue, (short)nValue, BuffStat.GetTimeForBuff(buffTime + delay));
+                var stat = setStat.Set(rValue, (short)nValue, MasterThread.CurrentTime + buffTime + delay);
 
                 if (stat != 0)
                 {

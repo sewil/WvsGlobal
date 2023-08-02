@@ -1078,7 +1078,7 @@ namespace WvsBeta.Game
                                 sld.MobCount = nxNode.ValueByte();
                                 break;
                             case "time":
-                                sld.BuffTime = nxNode.ValueInt32();
+                                sld.BuffSeconds = nxNode.ValueInt32();
                                 break;
                             case "damage":
                                 sld.Damage = nxNode.ValueInt16();
@@ -1165,7 +1165,7 @@ namespace WvsBeta.Game
                     if (SkillID == Constants.Gm.Skills.Hide)
                     {
                         // Give hide some time... like lots of hours
-                        sld.BuffTime = 24 * 60 * 60;
+                        sld.BuffSeconds = 24 * 60 * 60;
                         sld.XValue = 1; // Eh. Otherwise there's no buff
                     }
 
@@ -1305,7 +1305,7 @@ namespace WvsBeta.Game
                 var drops = pNode.Select(iNode =>
                     {
                         var dropdata = new DropData();
-                        dropdata.DateExpire = DateTime.MaxValue;
+                        dropdata.Expiration = Item.NoItemExpiration;
 
                         foreach (var node in iNode)
                         {
@@ -1320,8 +1320,10 @@ namespace WvsBeta.Game
                                     int month = val / 10000 % 100;
                                     int day = val / 100 % 100;
                                     int hour = val % 100;
+                                    var dt = new DateTime(year, month, day, hour, 0, 0);
+                                    var time = dt.ToFileTimeUtc() / TimeSpan.TicksPerMillisecond;
 
-                                    dropdata.DateExpire = new DateTime(year, month, day, hour, 0, 0);
+                                    dropdata.Expiration = time;
                                     break;
 
                                 case "money":

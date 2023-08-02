@@ -240,7 +240,7 @@ namespace WvsBeta.Scripts.Scripts
                             }
                             else preMapNum = "";
 
-                            var cTime = MasterThread.CurrentTimeStr;
+                            var cTime = MasterThread.CurrentDateStr;
                             if (val2 == "") goEvent = 1;
                             else
                             {

@@ -17,17 +17,7 @@ namespace WvsBeta.Game.GameObjects
         public bool ClearedItems { get; set; }
         public bool ClearedMobs { get; private set; }
         public WZQuestCheck Check { get; private set; }
-        long _endTime;
-        public long EndTime
-        {
-            get => _endTime;
-            set
-            {
-                _endTime = value;
-                FileTime = MasterThread.GetFileTime(value);
-            }
-        }
-        public long FileTime { get; private set; }
+        public long EndTime { get; set; }
         private WZQuestData wzQuest;
         private void SetWzQuestData()
         {
@@ -73,15 +63,14 @@ namespace WvsBeta.Game.GameObjects
 
         public bool CanRepeat()
         {
-            if (wzQuest == null || State != QuestState.Completed || FileTime == 0) return false;
+            if (wzQuest == null || State != QuestState.Completed || EndTime == 0) return false;
             
-            int interval = wzQuest.Stages[QuestStage.Start].Check.Interval;
-            if (interval <= 0) return false;
+            int intervalMins = wzQuest.Stages[QuestStage.Start].Check.IntervalMins;
+            if (intervalMins <= 0) return false;
 
-            long tInterval = interval * TimeSpan.TicksPerMinute;
-            long cFileTime = MasterThread.FileTime;
-            long eFileTime = FileTime + tInterval;
-            return eFileTime <= cFileTime;
+            long cTime = MasterThread.CurrentTime;
+            long eTime = EndTime + intervalMins*60000;
+            return eTime <= cTime;
         }
         public bool HasExpired()
         {

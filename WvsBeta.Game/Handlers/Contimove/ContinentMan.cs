@@ -42,7 +42,8 @@ namespace WvsBeta.Game.Handlers.Contimove
 
             // Normalizing the info
             long currentTime = MasterThread.CurrentTime;
-            int currentMinute = currentTime.DateFromMillis().Minute;
+            var cDate = MasterThread.CurrentDate;
+            int currentMinute = cDate.Minute;
             foreach (var contimove in Contimoves.Select(i => i.Value))
             {
                 int boardingInterval = contimove.TermMin;

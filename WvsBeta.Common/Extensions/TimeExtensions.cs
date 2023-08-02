@@ -5,33 +5,25 @@ namespace WvsBeta.Common.Extensions
 {
     public static class TimeExtensions
     {
-        public const long TicksPerNanosecond = 100;
-        public const int DaysPerYear = 365;
-        public static long GetFileTimeWithAddition(this TimeSpan span)
-        {
-            return (MasterThread.CurrentDate + span).ToFileTimeUtc();
-        }
+        public const long DayMillis = 24*3600*1000;
 
-        public static long GetTimeAsMilliseconds(this DateTime pNow)
-        {
-            return pNow.ToFileTimeUtc() / 10000;
-        }
         public static DateTime DateFromMillis(this long millis)
         {
             return new DateTime(TimeSpan.TicksPerMillisecond * millis);
         }
-        public static DateTime DateFromDoB(this int dob)
+
+        /// <summary>
+        /// Converts DateTime to utc file time in milliseconds.
+        /// </summary>
+        public static long ToFileTimeMillis(this DateTime dateTime)
         {
-            return DateTime.ParseExact(dob.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
-        }
-        public static double GetYears(this TimeSpan timeSpan)
-        {
-            return timeSpan.TotalDays / DaysPerYear;
+            return dateTime.ToFileTimeUtc() / TimeSpan.TicksPerMillisecond;
         }
 
-        public static long GetFileTimeFromCurrentTime(long ctime)
+        public static double GetAge(int dob)
         {
-            return new DateTime(ctime * TimeSpan.TicksPerMillisecond).ToFileTimeUtc();
+            var dt = MasterThread.CurrentDate - DateTime.ParseExact(dob.ToString(), "yyyyMMdd", CultureInfo.InvariantCulture);
+            return dt.TotalDays / 365;
         }
 
         public static string ChineseZodiac(this DateTime date)

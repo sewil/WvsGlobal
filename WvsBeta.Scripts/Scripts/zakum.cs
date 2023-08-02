@@ -18,7 +18,7 @@ namespace WvsBeta.Scripts.Scripts
             qr = target.QuestRecord;
             cName = self.GetStrReg("name");
             sTime = self.GetStrReg("time");
-            cTime = MasterThread.CurrentTimeStr;
+            cTime = MasterThread.CurrentDateStr;
 
             if (target.Name == cName)
             {
@@ -93,7 +93,7 @@ namespace WvsBeta.Scripts.Scripts
             {
                 cName = self.AskText("Please enter the neme of the character you wish to set the clearance.", "", 0, 16);
                 self.SetStrReg("name", cName);
-                self.SetStrReg("time", MasterThread.CurrentTimeStr);
+                self.SetStrReg("time", MasterThread.CurrentDateStr);
                 self.Say("#b" + cName + "#k has 5 minutes to set the clear of the quests.");
             }
             else if (v0 == 6)
@@ -163,7 +163,7 @@ namespace WvsBeta.Scripts.Scripts
                     {
                         if (qr.Get(7006) != "")
                         {
-                            string today = MasterThread.CurrentTimeStr.Substring(0, 8);
+                            string today = MasterThread.CurrentDateStr.Substring(0, 8);
                             int cNum = int.Parse(qr.Get(7006).Substring(0, 1));
                             string cDate = qr.Get(7006).Substring(1, 8);
                             if (cDate == today)
@@ -190,7 +190,7 @@ namespace WvsBeta.Scripts.Scripts
                         else
                         {
                             zakum_takeawayitem();
-                            setParty.SetVar("ctime", MasterThread.CurrentTimeStr);
+                            setParty.SetVar("ctime", MasterThread.CurrentDateStr);
                         }
                     }
                 }
@@ -210,7 +210,7 @@ namespace WvsBeta.Scripts.Scripts
                             //하루3회
                             if (qr.Get(7007) != "")
                             {
-                                string today = MasterThread.CurrentTimeStr.Substring(0, 8);
+                                string today = MasterThread.CurrentDateStr.Substring(0, 8);
                                 int cNum = int.Parse(qr.Get(7007).Substring(0, 1));
                                 string cDate = qr.Get(7007).Substring(1, 8);
                                 if (cDate == today)
@@ -231,7 +231,7 @@ namespace WvsBeta.Scripts.Scripts
                             if (val2 != "end") qr.Set(7001, "s");
 
                             //로그남기기
-                            cTime = MasterThread.CurrentTimeStr;
+                            cTime = MasterThread.CurrentDateStr;
                             qr.Set(7005, cTime);
                             target.ChangeMap(280020000, "");
                         }
@@ -372,7 +372,7 @@ namespace WvsBeta.Scripts.Scripts
 
                 inven = target.Inventory;
                 eTime = qr.Get(7005); //입장시간
-                rTime = MasterThread.CurrentTimeStr; //현재시간
+                rTime = MasterThread.CurrentDateStr; //현재시간
                 int result = MasterThread.CompareTime(rTime, eTime);
 
                 if (result > 2)
@@ -383,7 +383,7 @@ namespace WvsBeta.Scripts.Scripts
                     {
                         //하루 세번
                         val = qr.Get(7007);
-                        today = MasterThread.CurrentTimeStr.Substring(0, 8);
+                        today = MasterThread.CurrentDateStr.Substring(0, 8);
                         if (val == "")
                         {
                             qr.Set(7007, "1" + today);
@@ -431,7 +431,7 @@ namespace WvsBeta.Scripts.Scripts
                 {
                     if (quest.GetVar("tcheck") != "1")
                     {
-                        int atime = MasterThread.CompareTime(MasterThread.CurrentTimeStr, quest.GetVar("ctime"));
+                        int atime = MasterThread.CompareTime(MasterThread.CurrentDateStr, quest.GetVar("ctime"));
                         if (atime > 2)
                         {
                             quest.SetVar("tresult", "1");
@@ -452,7 +452,7 @@ namespace WvsBeta.Scripts.Scripts
                             if (target.IsPartyBoss)
                             {
                                 val = qr.Get(7006);
-                                today = MasterThread.CurrentTimeStr.Substring(0, 8);
+                                today = MasterThread.CurrentDateStr.Substring(0, 8);
                                 if (val == "")
                                 {
                                     qr.Set(7006, "1" + today);
@@ -484,7 +484,7 @@ namespace WvsBeta.Scripts.Scripts
                             if (target.IsPartyBoss)
                             {
                                 val = qr.Get(7006);
-                                today = MasterThread.CurrentTimeStr.Substring(0, 8);
+                                today = MasterThread.CurrentDateStr.Substring(0, 8);
                                 if (val == "")
                                 {
                                     qr.Set(7006, "1" + today);
@@ -578,7 +578,7 @@ namespace WvsBeta.Scripts.Scripts
 
                     if ((val == "end" || val == "s2") && inven.ItemCount(4001017) >= 1)
                     {
-                        cTime = MasterThread.CurrentTimeStr;
+                        cTime = MasterThread.CurrentDateStr;
                         aTime = MasterThread.CompareTime(cTime, val2);
                         // after 24 hrs
                         if (aTime >= 1440)

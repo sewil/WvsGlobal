@@ -55,7 +55,7 @@ namespace WvsBeta.Shop
                 pi.Closeness = 0;
                 pi.Fullness = 100;
                 pi.Level = 1;
-                pi.DeadDate = new TimeSpan(90, 0, 0, 0).GetFileTimeWithAddition();
+                pi.DeadDate = MasterThread.CurrentTime + 90 * TimeExtensions.DayMillis;
             }
 
             return item;

@@ -148,8 +148,8 @@ namespace WvsBeta.Game
 
             var quest = Quests[questID];
             quest.State = QuestState.Completed;
-            quest.EndTime = MasterThread.UnixTime;
-            if (pSendPacket) QuestPacket.SendCompleteQuest(Character, questID, quest.FileTime);
+            quest.EndTime = MasterThread.CurrentTime;
+            if (pSendPacket) QuestPacket.SendCompleteQuest(Character, quest);
         }
 
         public void RemoveQuest(short qid, bool sendPacket = true)

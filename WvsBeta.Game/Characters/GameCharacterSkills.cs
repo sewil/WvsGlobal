@@ -183,7 +183,7 @@ namespace WvsBeta.Game
                 if (attackData.Attacks.Count > 0)
                     delay = attackData.Attacks[0].HitDelay;
 
-                Character.Field.CreateMist(Character, Character.ID, skillid, level, sld.BuffTime, sld.LTX, sld.LTY, sld.RBX, sld.RBY, delay);
+                Character.Field.CreateMist(Character, Character.ID, skillid, level, sld.BuffSeconds, sld.LTX, sld.LTY, sld.RBX, sld.RBY, delay);
             }
         }
 

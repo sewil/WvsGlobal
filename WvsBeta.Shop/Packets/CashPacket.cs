@@ -336,8 +336,8 @@ namespace WvsBeta.Shop
             }
 
             // check age
-            TimeSpan age = (MasterThread.CurrentDate - chr.DoB.DateFromDoB());
-            if (age.GetYears() < 14)
+            double age = TimeExtensions.GetAge(chr.DoB);
+            if (age < 14)
             {
                 _log.Warn("Gifting failed: too young");
                 SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CantGiftUnder14Year);

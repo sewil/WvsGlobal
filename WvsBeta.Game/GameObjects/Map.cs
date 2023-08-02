@@ -186,7 +186,7 @@ namespace WvsBeta.Game
 
                 TryCreateMobs(pNow, false);
 
-                var ft = BuffStat.GetTimeForBuff();
+                var ft = MasterThread.CurrentTime;
                 Characters.ForEach(x => x.PrimaryStats.CheckExpired(ft));
                 Characters.ForEach(x => x.Summons.Update(pNow));
                 CheckForMobVac();
@@ -405,7 +405,7 @@ namespace WvsBeta.Game
                     var sld = GameDataProvider.Skills[fart.SkillID].Levels[fart.SkillLevel];
                     if (Rand32.NextBetween(0, 100) < sld.Property)
                     {
-                        long buffTimeInMilliseconds = sld.BuffTime * 1000;
+                        long buffTimeInMilliseconds = sld.BuffSeconds * 1000;
                         mob.DoPoison(fart.OwnerID, fart.SkillLevel, buffTimeInMilliseconds, fart.SkillID, sld.MagicAttack, 0);
                     }
                 }

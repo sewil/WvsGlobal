@@ -188,7 +188,7 @@ namespace WvsBeta.Scripts.Scripts
                     return;
                 }
 
-                var cTime = MasterThread.CurrentTimeStr;
+                var cTime = MasterThread.CurrentDateStr;
                 var qr = target.QuestRecord;
                 var val1 = qr.Get(8845);
                 var val2 = qr.Get(8846);

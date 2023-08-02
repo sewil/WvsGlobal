@@ -549,7 +549,7 @@ namespace WvsBeta.Game
 
         public void CheckExpired()
         {
-            var currentTime = MasterThread.CurrentDate.ToFileTimeUtc();
+            var currentTime = MasterThread.CurrentTime;
             _cashItems.GetExpiredItems(currentTime, expiredItems =>
             {
                 var dict = new Dictionary<Common.Enums.InventoryType, List<short>>();
@@ -651,7 +651,7 @@ namespace WvsBeta.Game
             if (!TryGetPet(petCashID, out PetItem petItem)) return false;
             if (!MassExchange(0, exchangeItems)) return false;
 
-            petItem.DeadDate = new TimeSpan(90, 0, 0, 0).GetFileTimeWithAddition();
+            petItem.DeadDate = MasterThread.CurrentTime + 90 * TimeExtensions.DayMillis;
             petItem.Fullness = 100;
             Pet.UpdatePet(Character, petItem);
 

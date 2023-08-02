@@ -8,14 +8,6 @@ namespace WvsBeta.Common.Objects.Stats
     public class BuffStat
     {
         /// <summary>
-        /// Return the amount of milliseconds for the buff.
-        /// </summary>
-        /// <param name="additionalMillis">Additional milliseconds.</param>
-        /// <returns></returns>
-        public static long GetTimeForBuff(long additionalMillis = 0) =>
-            MasterThread.CurrentDate.AddMilliseconds(additionalMillis).ToFileTimeUtc() / 10000;
-
-        /// <summary>
         /// Number. Most of the time, this is the X or Y value of the skill/buff
         /// </summary>
         public short N { get; set; }
@@ -32,7 +24,7 @@ namespace WvsBeta.Common.Objects.Stats
         public bool IsSet(long? time = null)
         {
             if (N == 0) return false;
-            if (time == null) time = GetTimeForBuff();
+            if (time == null) time = MasterThread.CurrentTime;
             return TM > time;
         }
 

@@ -14,13 +14,10 @@ namespace WvsBeta.Common.Objects
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
-        /// <summary>
-        /// FileTime
-        /// </summary>
         public long Expiration { get; set; } = NoItemExpiration;
         public bool AlreadyInDatabase { get; set; } = false;
 
-        public const long NoItemExpiration = 150842304000000000L;
+        public const long NoItemExpiration = 150842304000000000L / TimeSpan.TicksPerMillisecond; // January 1st, 2079
         public bool IsOnly { get; set; }
         public bool IsQuest { get; set; }
         public bool IsTradeBlock { get; set; }
@@ -84,7 +81,7 @@ namespace WvsBeta.Common.Objects
             ret.Amount = amount;
             if (periodMinutes > 0)
             {
-                ret.Expiration = new TimeSpan(0, 0, periodMinutes, 0).GetFileTimeWithAddition();
+                ret.Expiration = MasterThread.CurrentTime + periodMinutes * 60000;
             }
             return ret;
         }
@@ -227,7 +224,7 @@ namespace WvsBeta.Common.Objects
             if (CashId != 0)
                 packet.WriteLong(CashId);
 
-            packet.WriteLong(Expiration);
+            packet.WriteFileTime(Expiration);
         }
 
         /// <summary>
@@ -621,7 +618,7 @@ namespace WvsBeta.Common.Objects
             packet.WriteByte(Level);
             packet.WriteShort(Closeness);
             packet.WriteByte(Fullness);
-            packet.WriteLong(DeadDate);
+            packet.WriteFileTime(DeadDate);
         }
 
         public void EncodeForRemote(Packet pw)

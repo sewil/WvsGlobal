@@ -185,6 +185,17 @@ namespace WvsBeta.Common.Sessions
 
         }
 
+        /// <param name="time">Time in milliseconds.</param>
+        public void WriteFileTime(long time)
+        {
+            WriteLong(time * TimeSpan.TicksPerMillisecond);
+        }
+
+        public void WriteFileTime(DateTime dateTime)
+        {
+            WriteLong(dateTime.ToFileTimeUtc());
+        }
+
         public byte[] ReadBytes(int pLen) { return _binReader.ReadBytes(pLen); }
         public bool ReadBool() { return _binReader.ReadByte() != 0; }
         public byte ReadByte() { return _binReader.ReadByte(); }

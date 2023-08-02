@@ -14,7 +14,7 @@ namespace WvsBeta.Scripts.Scripts
             //self.Say( "Você teve um bom Ano-Novo Lunar? Eu me diverti muito comemorando com meus amigos aqui em MapleStory! Estou aqui te desejando toda sorte, por todo este ano!" );
 
             DateTime cDate = MasterThread.CurrentDate;
-            string cTime = MasterThread.CurrentTimeStr;
+            string cTime = MasterThread.CurrentDateStr;
             string cYear = cDate.ToString("yy");
             string zodiac = cDate.ChineseZodiac();
 

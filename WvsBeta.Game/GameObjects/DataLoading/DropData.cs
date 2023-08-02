@@ -12,5 +12,5 @@ public struct DropData
     // Expires after X days
     public ushort Period { get; set; }
 
-    public DateTime DateExpire { get; set; }
+    public long Expiration { get; set; }
 }

@@ -87,7 +87,7 @@ namespace WvsBeta.Common.Objects
         public int LvMin { get; private set; }
         public int LvMax { get; private set; }
         public string End { get; private set; }
-        public int Interval { get; private set; }
+        public int IntervalMins { get; private set; }
         public WZQuestCheck(WZQuestStage stage, NXNode node)
         {
             Stage = stage;
@@ -135,7 +135,7 @@ namespace WvsBeta.Common.Objects
                         End = subNode.ValueString();
                         break;
                     case "interval":
-                        Interval = subNode.ValueInt32();
+                        IntervalMins = subNode.ValueInt32();
                         break;
                     default:
                         break;

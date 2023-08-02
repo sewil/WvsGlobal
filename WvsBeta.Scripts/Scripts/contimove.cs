@@ -158,7 +158,7 @@ namespace WvsBeta.Scripts.Scripts
     {
         public void Run(IPortalHost self, GameCharacter target)
         {
-            var cTime = MasterThread.CurrentTimeStr;
+            var cTime = MasterThread.CurrentDateStr;
             var field = target.Field;
 
             var tMinute = int.Parse(cTime.Substring(12, 2)) % 4;

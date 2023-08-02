@@ -59,7 +59,7 @@ namespace WvsBeta.DataExporter
                         sw.WriteLine(
                             $"{dropperAndData.Key}\t{isMesos}\t{(isMesos ? drop.Mesos : drop.ItemID)}\t" +
                             $"{drop.Min}\t{drop.Max}\t{drop.Chance}\t" +
-                            $"{drop.DateExpire}\t{drop.Period}\t{drop.Premium}");
+                            $"{drop.Expiration}\t{drop.Period}\t{drop.Premium}");
                     }
                 }
 

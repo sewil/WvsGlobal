@@ -282,7 +282,7 @@ namespace WvsBeta.Game
             int MpStealSkillID = chr.Skills.GetMpStealSkillData(2, out int MpStealProp, out int MpStealPercent, out byte MpStealLevel);
 
             var sld = ad.SkillID == 0 ? null : GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
-            long buffTime = sld?.BuffTime * 1000 ?? 0;
+            long buffTime = sld?.BuffSeconds * 1000 ?? 0;
             long buffExpireTime = MasterThread.CurrentTime + buffTime;
             bool IsSuccessRoll() => sld != null && (Rand32.Next() % 100) < sld.Property;
 
@@ -357,7 +357,7 @@ namespace WvsBeta.Game
                             case Constants.Crusader.Skills.Shout:
                                 if (!boss && IsSuccessRoll())
                                 {
-                                    addedStats = mob.Status.BuffStun.Set(ad.SkillID, (short)-sld.BuffTime, buffExpireTime);
+                                    addedStats = mob.Status.BuffStun.Set(ad.SkillID, (short)-sld.BuffSeconds, buffExpireTime);
                                 }
                                 //is charge blow supposed to end the elemental charge buff?
                                 break;
@@ -469,7 +469,7 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffCharges.Set(
                             ad.SkillID,
                             sld.XValue,
-                            Common.Objects.Stats.BuffStat.GetTimeForBuff(1000 * sld.BuffTime)
+                            MasterThread.CurrentTime + 1000*sld.BuffSeconds
                         );
                         BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
@@ -482,7 +482,7 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffStun.Set(
                             ad.SkillID,
                             1,
-                            Common.Objects.Stats.BuffStat.GetTimeForBuff(1000 * sld.YValue)
+                            MasterThread.CurrentTime + 1000*sld.YValue
                         );
                         BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
@@ -531,7 +531,7 @@ namespace WvsBeta.Game
                             var sld = chr.Skills.GetSkillLevelData(ad.SkillID, out byte derp);
                             if (sld != null && derp == ad.SkillLevel)
                             {
-                                long buffTime = sld.BuffTime * 1000;
+                                long buffTime = sld.BuffSeconds * 1000;
 
                                 if (!died)
                                 {
@@ -611,7 +611,7 @@ namespace WvsBeta.Game
                     if (!died)
                     {
                         var sld = GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
-                        long buffTime = sld.BuffTime * 1000;
+                        long buffTime = sld.BuffSeconds * 1000;
 
                         //TODO refactor element code when we get the proper element loading with calcdamage branch
                         if ((sld.ElementFlags == SkillElement.Ice || ad.SkillID == Constants.ILMage.Skills.ElementComposition) && !mob.IsBoss)

@@ -92,7 +92,7 @@ namespace WvsBeta.Login.PacketHandlers
                     userId = data.GetInt32("ID");
                     dbpass = data.GetString("password");
                     banReason = (BanReason)data.GetByte("ban_reason");
-                    banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeUtc();
+                    banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeMillis();
                     string pin = data.IsDBNull(5) ? null : data.GetString("pin");
 
                     if (RedisBackend.Instance.IsPlayerOnline(userId))
@@ -105,7 +105,7 @@ namespace WvsBeta.Login.PacketHandlers
                         loginState = LoginState.SYSTEM_ERROR;
                         log.AssertWarning(true, $"[{username}][{userId}] tried logging in on the same IP ({session.IP})");
                     }
-                    else if (banExpire > MasterThread.CurrentDate.ToUniversalTime().ToFileTimeUtc())
+                    else if (banExpire > MasterThread.CurrentTime)
                     {
                         log.AssertWarning(true, $"[{username}][{userId}] banned until " + data.GetDateTime("ban_expire"));
                         loginState = LoginState.BANNED;

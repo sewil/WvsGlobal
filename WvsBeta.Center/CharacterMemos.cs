@@ -94,7 +94,7 @@ namespace WvsBeta.Center
         }
         public static void HandleAddMemo(CenterCharacter from, int toId, string message, bool onlyOffline, long? giftCashId)
         {
-            long ctime = MasterThread.FileTime;
+            long ctime = MasterThread.CurrentTime;
             CenterCharacter to = S.FindCharacter(toId, true);
 
             if (onlyOffline && to != null)
@@ -114,7 +114,7 @@ namespace WvsBeta.Center
         }
         public void HandleMemoRead(int[] memos)
         {
-            long ctime = MasterThread.FileTime;
+            long ctime = MasterThread.CurrentTime;
             foreach (int memo in memos)
             {
                 Memo cmemo = Memos.FirstOrDefault(m => m.ID == memo);

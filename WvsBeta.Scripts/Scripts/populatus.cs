@@ -22,7 +22,7 @@ namespace WvsBeta.Scripts.Scripts
 
                 if (inven.ItemCount(4031172) >= 1)
                 {
-                    var cTime = MasterThread.CurrentTimeStr;
+                    var cTime = MasterThread.CurrentDateStr;
                     var aTime = MasterThread.CompareTime(cTime, lTime);
                     // After one day
                     if (aTime >= 1440 || target.IsAdmin || MasterThread.IsDebug)

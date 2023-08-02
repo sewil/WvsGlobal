@@ -14,27 +14,11 @@ namespace WvsBeta
         private static ILog _log = LogManager.GetLogger("MasterThread");
 
         public static MasterThread Instance { get; private set; }
-
-        private static DateTime _currentDate;
-        public static DateTime CurrentDate
-        {
-            get => _currentDate;
-            private set
-            {
-                _currentDate = value;
-                CurrentTimeStr = value.ToString(DATESTR_FORMAT, CultureInfo.InvariantCulture);
-            }
-        }
-
-        public static long CurrentTime => DateTime.UtcNow.Ticks / TimeSpan.TicksPerMillisecond;
-        public static long UnixTime => DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-        public static long FileTime => GetFileTime(UnixTime);
-        public static long GetFileTime(long unix, int tzOffset = 0)
-        {
-            long offset = tzOffset * TimeSpan.TicksPerHour;
-            DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds(unix);
-            return dateTimeOffset.ToFileTime() + offset;
-        }
+        public static DateTime CurrentDate => DateTime.UtcNow;
+        /// <summary>
+        /// Current utc file time in milliseconds.
+        /// </summary>
+        public static long CurrentTime => CurrentDate.ToFileTimeUtc() / TimeSpan.TicksPerMillisecond;
         public bool Stop { get; set; }
         public string ServerName { get; private set; }
 
@@ -94,16 +78,6 @@ namespace WvsBeta
 
         private void RunMasterThread()
         {
-            Task.Factory.StartNew(() =>
-            {
-                while (!Stop)
-                {
-                    CurrentDate = DateTime.UtcNow;
-                    Thread.Sleep(5);
-                }
-            }, TaskCreationOptions.LongRunning);
-
-
             Thread.BeginThreadAffinity();
             Stopwatch sw = new Stopwatch();
             do
@@ -135,7 +109,7 @@ namespace WvsBeta
             Thread.EndThreadAffinity();
         }
         #region Script helpers
-        public static string CurrentTimeStr { get; private set; }
+        public static string CurrentDateStr => CurrentDate.ToString(DATESTR_FORMAT, CultureInfo.InvariantCulture);
         public const string DATESTR_FORMAT = "yy/MM/dd/HH/mm";
         public static int CompareTime(string date1, string date2, string format = DATESTR_FORMAT)
         {

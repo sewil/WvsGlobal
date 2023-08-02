@@ -39,6 +39,7 @@ namespace WvsBeta.Game
         {
             double HourDropRateIncrease = 1.0;
             var curDate = MasterThread.CurrentDate;
+            long cTime = MasterThread.CurrentTime;
             if (curDate.Hour >= 13 && curDate.Hour < 19)
             {
                 HourDropRateIncrease = ms_fIncDropRate_WSE;
@@ -76,7 +77,7 @@ namespace WvsBeta.Game
                 if (luckyNumber >= Drop.Chance) continue;
 
                 // Don't care about items that are 'expired'
-                if (Drop.Mesos != 0 && Drop.DateExpire <= curDate) continue;
+                if (Drop.Mesos != 0 && Drop.Expiration <= cTime) continue;
 
                 var Reward = new Reward()
                 {
@@ -92,11 +93,11 @@ namespace WvsBeta.Game
                     //if (drop.Quest > 0 && reward.Data.IsOnly && owner.Inventory.ItemCount(drop.ItemID) > 0) continue;
                     if (Drop.Period > 0)
                     {
-                        Reward.Data.Expiration = new TimeSpan(Drop.Period, 0, 0, 0).GetFileTimeWithAddition();
+                        Reward.Data.Expiration = cTime + Drop.Period * TimeExtensions.DayMillis;
                     }
-                    else if (Drop.DateExpire != DateTime.MaxValue)
+                    else if (Drop.Expiration != Item.NoItemExpiration)
                     {
-                        Reward.Data.Expiration = Drop.DateExpire.ToFileTimeUtc();
+                        Reward.Data.Expiration = Drop.Expiration;
                     }
                 }
 

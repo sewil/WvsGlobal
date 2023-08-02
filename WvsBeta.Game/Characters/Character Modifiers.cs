@@ -2,6 +2,7 @@
 using log4net;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game.Handlers.Guild;
 using WvsBeta.Game.Packets;
@@ -569,7 +570,7 @@ namespace WvsBeta.Game
                 Inventory.TakeItemAmountFromSlot(Common.Enums.InventoryType.Etc, charm.InventorySlot, 1, false);
                 if (isSafetyCharm)
                 {
-                    daysLeft = (byte)Math.Max(0, (charm.Expiration - MasterThread.FileTime) / TimeSpan.TicksPerDay);
+                    daysLeft = (byte)Math.Max(0, (charm.Expiration - MasterThread.CurrentTime) / TimeExtensions.DayMillis);
                     timesLeft = (byte)Inventory.GetItemAmount(ItemEtcIds.SafetyCharm);
                 }
                 PlayerEffectPacket.SendUseEXPCharm(this, isSafetyCharm, charm.ItemID, daysLeft, timesLeft);
