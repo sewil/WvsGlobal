@@ -130,9 +130,6 @@ namespace WvsBeta.Game
 
             long buffTime = data.BuffSeconds * 1000 + delay;
 
-            // Fix for MesoGuard expiring... hurr
-            if (SkillID == Constants.ChiefBandit.Skills.MesoGuard)
-                buffTime += 1000 * 1000;
             Trace.WriteLine($"Adding buff from skill {SkillID} lvl {level}: {buffTime}. Flags {flags}");
 
             var expireTime = MasterThread.CurrentTime + buffTime;
