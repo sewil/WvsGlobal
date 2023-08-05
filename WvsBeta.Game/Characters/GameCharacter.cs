@@ -417,15 +417,25 @@ namespace WvsBeta.Game
 
         public LoadFailReasons Load(string IP)
         {
-            _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
+            int? imitateID = RedisBackend.Instance.GetImitateID(ID);
+            int originalID = ID;
+            bool isImitating = imitateID.HasValue;
+            if (isImitating)
+            {
+                ID = imitateID.Value;
+                _characterLog.Debug($"Loading character {ID} from IP {IP}... (IMITATION from ID {originalID})");
+            }
+            else _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
 
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
-                SELECT c.*, users.admin, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
-                FROM characters c
-                LEFT JOIN users ON users.id = c.userid
-                LEFT JOIN guild_members g ON c.id = g.character_id
-                WHERE c.id = @id",
-                "@id", CharacterStat.ID
+                SELECT
+                    characters.*,
+                    users.admin, users.last_ip, users.online
+                FROM characters
+                LEFT JOIN users ON users.id = characters.userid
+                WHERE characters.id = @id
+                ",
+                "@id", originalID
             ))
             {
                 if (!data.Read())
@@ -434,12 +444,51 @@ namespace WvsBeta.Game
                     return LoadFailReasons.UnknownCharacter;
                 }
 
+                if (data.GetString("last_ip") != IP && !isImitating)
+                {
+#if DEBUG
+                    Program.MainForm.LogAppend("Allowed player " + this.ID +
+                                               " to log in from different IP because source is running in debug mode!");
+#else
+                    _characterLog.Debug("Loading failed: not from previous IP.");
+                    return LoadFailReasons.NotFromPreviousIP;
+#endif
+                }
+                UserID = data.GetInt32("userid"); // For cashitem loading
+                Name = data.GetString("name");
+                GMLevel = data.GetByte("admin");
+
+                if (isImitating) ImitatorName = Name;
+                else ImitatorName = null;
+            }
+
+            int tmpUserID = UserID;
+
+            using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
+                SELECT c.*, users.admin, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
+                FROM characters c
+                LEFT JOIN users ON users.id = c.userid
+                LEFT JOIN guild_members g ON c.id = g.character_id
+                WHERE c.id = @id",
+                "@id", ID
+            ))
+            {
+                if (!data.Read())
+                {
+                    _characterLog.Debug("Loading failed: unknown character.");
+                    if (isImitating)
+                    {
+                        // Reset!
+                        RedisBackend.Instance.SetImitateID(originalID, 0);
+                    }
+                    return LoadFailReasons.UnknownCharacter;
+                }
+
                 UserID = data.GetInt32("userid"); // For cashitem loading
                 MutedUntil = data.GetDateTime("quiet_ban_expire");
                 MuteReason = data.GetByte("quiet_ban_reason");
                 LastSavepoint = data.GetDateTime("last_savepoint");
                 GuildID = data.GetInt32("guild_id");
-                GMLevel = data.GetByte("admin");
                 LastPlayTimeSave = MasterThread.CurrentTime;
 
                 var _mapId = data.GetInt32("map");
@@ -501,6 +550,8 @@ namespace WvsBeta.Game
             base.Inventory = new GameInventory(this);
             Inventory.LoadInventory();
 
+            UserID = tmpUserID;
+
             base.Skills = new GameCharacterSkills(this);
             Skills.LoadSkills();
 
@@ -527,6 +578,9 @@ namespace WvsBeta.Game
                     Wishlist.Add(data.GetInt32(0));
                 }
             }
+
+            // Loading done, switch back ID
+            ID = originalID;
 
             InitDamageLog();
 
