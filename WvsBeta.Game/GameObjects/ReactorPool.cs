@@ -49,31 +49,31 @@ namespace WvsBeta.Game.GameObjects
         {
             Reactors.Values.ForEach(r => r.Show(chr));
         }
-        public void TriggerReactor(string reactorName, GameCharacter owner = null)
+        public void TriggerReactor(string reactorName, GameCharacter owner = null, short delay = 0)
         {
             if (Reactors.Select(i => i.Value).TryFind(i => i.Name == reactorName, out FieldReactor reactor))
             {
-                TriggerReactor(reactor, owner);
+                TriggerReactor(reactor, owner, delay);
             }
             else
             {
                 Program.MainForm.LogAppend("Reactor \"" + reactorName + "\" not found!");
             }
         }
-        public void TriggerReactor(int reactorId, GameCharacter owner = null)
+        public void TriggerReactor(int reactorId, GameCharacter owner = null, short delay = 0)
         {
             if (Reactors.TryGetValue(reactorId, out FieldReactor reactor))
             {
-                TriggerReactor(reactor, owner);
+                TriggerReactor(reactor, owner, delay);
             }
             else
             {
                 Program.MainForm.LogAppend("Reactor " + reactorId + " not found!");
             }
         }
-        public void TriggerReactor(FieldReactor reactor, GameCharacter owner = null)
+        public void TriggerReactor(FieldReactor reactor, GameCharacter owner = null, short delay = 0)
         {
-            reactor.Trigger(owner);
+            reactor.Trigger(owner, delay: delay);
         }
 
         public void Shuffle()

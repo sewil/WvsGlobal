@@ -47,8 +47,8 @@ namespace WvsBeta.Game
         {
             int reactorId = packet.ReadInt();
             int stance = packet.ReadInt();
-            short xOffset = packet.ReadShort();
-            chr.Field.ReactorPool.TriggerReactor(reactorId, chr);
+            short delay = packet.ReadShort(); // Milliseconds
+            chr.Field.ReactorPool.TriggerReactor(reactorId, chr, delay);
         }
     }
 }

@@ -119,58 +119,58 @@ namespace WvsBeta.Game
                 EventRectangle = rect;
             }
         }
-        public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true)
+        public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true, short delay = 0)
         {
             Owner = chr;
             SetState(state);
+            bool isLast = state == Reactor.States.Count - 1;
             if (sendPacket)
             {
-                ReactorPacket.ReactorChangedState(this);
+                if (isLast) ReactorPacket.DestroyReactor(this);
+                else ReactorPacket.ReactorChangedState(this);
             }
-            QueueStateChange(Guid.NewGuid(), state, sendPacket);
+            QueueStateChange(Guid.NewGuid(), state, delay);
         }
 
         class StateChange
         {
             public Guid Guid { get; }
-            public int Delay { get; }
+            public short Delay { get; }
             public RepeatingAction RepeatingAction { get; set; }
-            public StateChange(Guid guid, int delay)
+            public StateChange(Guid guid, short delay)
             {
                 Guid = guid;
                 Delay = delay;
             }
         }
-        private void QueueStateChange(Guid guid, byte state, bool sendPacket = true)
+        private void QueueStateChange(Guid guid, byte state, short delay)
         {
             bool isLast = state == Reactor.States.Count - 1;
-            var animationTime = Reactor.States[state].Hit?.AnimationTime ?? 0;
-            var stateChange = new StateChange(guid, animationTime);
+            var stateChange = new StateChange(guid, delay);
             stateChanges.Add(stateChange.Guid, stateChange);
 
-            var totalDelay = stateChanges.Values.Sum(i => i.Delay);
+            short totalDelay = (short)stateChanges.Values.Sum(i => i.Delay);
             stateChange.RepeatingAction = RepeatingAction.Start(() =>
             {
                 stateChanges.Remove(guid);
-                if (!isLast) return;
-
-                Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
-                RunAction();
-
-                if (ReactorTime > 0)
-                {
-                    Shown = false;
-                    RepeatingAction.Start(() =>
-                    {
-                        if (sendPacket) ReactorPacket.DestroyReactor(this);
-                        resetAction = RepeatingAction.Start(() =>
-                        {
-                            Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
-                            Reset();
-                        }, ReactorTime * 1000, 0);
-                    }, 500, 0);
-                }
+                if (isLast) DestroyReactor();
             }, totalDelay, 0);
+        }
+
+        private void DestroyReactor()
+        {
+            Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
+            RunAction();
+
+            if (ReactorTime > 0)
+            {
+                Shown = false;
+                resetAction = RepeatingAction.Start(() =>
+                {
+                    Program.MainForm.LogDebug("Reactor " + ID + " (" + Reactor.ID + ") respawned at " + Position.ToString() + " in map " + Field.ID);
+                    Reset();
+                }, ReactorTime * 1000, 0);
+            }
         }
 
         public void Show(GameCharacter toChar = null)
@@ -236,9 +236,9 @@ namespace WvsBeta.Game
 #endif
             }, scriptName);
         }
-        public void Trigger(GameCharacter owner = null, bool sendPacket = true)
+        public void Trigger(GameCharacter owner = null, bool sendPacket = true, short delay = 0)
         {
-            ChangeState(owner, (byte)(_state + 1), sendPacket);
+            ChangeState(owner, (byte)(_state + 1), sendPacket, delay);
         }
         public NpcLife SpawnNpc(int npcID, Pos pos)
         {
