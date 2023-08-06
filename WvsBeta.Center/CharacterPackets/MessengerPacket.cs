@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Runtime.ConstrainedExecution;
-using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Center.CharacterPackets
@@ -32,12 +29,13 @@ namespace WvsBeta.Center.CharacterPackets
         }
 
         // Used for visually displaying Characters in messenger
-        public static Packet Enter(CenterCharacter chr)
+        public static Packet Enter(MessengerMember member)
         {
+            var chr = member.Character;
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerAction.Enter);
             packet.WriteByte(chr.MessengerSlot);
-            new AvatarLook(chr, true).Encode(packet);
+            member.Avatar.Encode(packet);
             packet.WriteString(chr.Name);
             packet.WriteByte(chr.ChannelID);
             packet.WriteBool(true); //Announce in chat
@@ -89,12 +87,12 @@ namespace WvsBeta.Center.CharacterPackets
             return packet;
         }
 
-        public static Packet Avatar(CenterCharacter chr)
+        public static Packet Avatar(MessengerMember member)
         {
             Packet packet = new Packet(ServerMessages.MESSENGER);
             packet.WriteByte((byte)MessengerFunction.Avatar);
-            packet.WriteByte(chr.MessengerSlot);
-            new AvatarLook(chr, true).Encode(packet);
+            packet.WriteByte(member.Character.MessengerSlot);
+            member.Avatar.Encode(packet);
             return packet;
         }
     }

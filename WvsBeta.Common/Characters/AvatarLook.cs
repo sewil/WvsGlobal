@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
@@ -16,8 +17,9 @@ namespace WvsBeta.Common.Characters
         public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
         public bool Messenger { get; set; }
 
-        public readonly Dictionary<Slots, int> CashEquips = new Dictionary<Slots, int>();
-        public readonly Dictionary<Slots, int> NormalEquips = new Dictionary<Slots, int>();
+        private readonly Dictionary<Slots, int> visibleEquips = new Dictionary<Slots, int>();
+        private readonly Dictionary<Slots, int> hiddenEquips = new Dictionary<Slots, int>();
+        private readonly int cashWeapon;
 
         public AvatarLook(Character character, bool messenger) : this(
             character.CharacterStat,
@@ -28,9 +30,24 @@ namespace WvsBeta.Common.Characters
         public AvatarLook(GW_CharacterStat cs, Dictionary<Slots, int> cashEquips, Dictionary<Slots, int> normalEquips, bool messenger)
         {
             CharacterStat = cs;
-            CashEquips = cashEquips;
-            NormalEquips = normalEquips;
             Messenger = messenger;
+
+            for (Slots slot = 0; slot < Slots._END; slot++)
+            {
+                int cashID = cashEquips.GetValue(slot);
+                int normalID = normalEquips.GetValue(slot);
+                if (slot != Slots.Weapon && cashID > 0)
+                {
+                    visibleEquips.Add(slot, cashID);
+                    hiddenEquips.Add(slot, normalID);
+                }
+                else if (normalID > 0)
+                {
+                    visibleEquips.Add(slot, normalID);
+                    hiddenEquips.Add(slot, cashID);
+                }
+                if (slot == Slots.Weapon) cashWeapon = cashID;
+            }
         }
 
         public void Encode(Packet packet)
@@ -41,31 +58,24 @@ namespace WvsBeta.Common.Characters
             packet.WriteBool(Messenger);
             packet.WriteInt(Hair);
 
-            foreach (var item in NormalEquips)
+            foreach (var equip in visibleEquips)
             {
-                packet.WriteByte((byte)item.Key);
-                packet.WriteInt(item.Value);
-            }
-
-            foreach (var item in CashEquips.Where(i => i.Key >= Slots.Ring1))
-            {
-                packet.WriteByte((byte)item.Key);
-                packet.WriteInt(item.Value);
+                packet.WriteByte((byte)equip.Key);
+                packet.WriteInt(equip.Value);
             }
 
             packet.WriteSByte(-1);
 
-            foreach (var item in CashEquips.Where(i => i.Key < Slots.Ring1))
+            foreach (var equip in hiddenEquips)
             {
-                if (item.Key == Slots.Weapon) continue;
-                packet.WriteByte((byte)item.Key);
-                packet.WriteInt(item.Value);
+                packet.WriteByte((byte)equip.Key);
+                packet.WriteInt(equip.Value);
             }
 
             packet.WriteSByte(-1);
 
-            packet.WriteInt(CashEquips.GetValue(Slots.Weapon));
-            packet.WriteInt(CashEquips.GetValue(Slots.PetAccessory));
+            packet.WriteInt(cashWeapon);
+            packet.WriteInt(visibleEquips.GetValue(Slots.PetAccessory));
         }
 
         public AvatarLook(Packet packet)
@@ -80,24 +90,17 @@ namespace WvsBeta.Common.Characters
             while ((slot = packet.ReadByte()) != 0xFF)
             {
                 var eqSlot = Constants.getEquipSlot(slot, out EquippedType _);
-                if (eqSlot >= Slots.Ring1)
-                {
-                    CashEquips[eqSlot] = packet.ReadInt();
-                }
-                else
-                {
-                    NormalEquips[eqSlot] = packet.ReadInt();
-                }
+                visibleEquips.Add(eqSlot, packet.ReadInt());
             }
 
             while ((slot = packet.ReadByte()) != 0xFF)
             {
                 var eqSlot = Constants.getEquipSlot(slot, out EquippedType _);
-                CashEquips[eqSlot] = packet.ReadInt();
+                hiddenEquips.Add(eqSlot, packet.ReadInt());
             }
 
-            CashEquips[Slots.Weapon] = packet.ReadInt();
-            CashEquips[Slots.PetAccessory] = packet.ReadInt();
+            cashWeapon = packet.ReadInt();
+            visibleEquips[Slots.PetAccessory] = packet.ReadInt();
         }
     }
 }

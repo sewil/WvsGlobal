@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using WvsBeta.Center.CharacterPackets;
 using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
@@ -20,23 +22,43 @@ namespace WvsBeta.Center
         Migrated = 0x08,
     }
 
+    public class MessengerMember
+    {
+        public CenterCharacter Character { get; }
+        public AvatarLook Avatar { get; }
+        public MessengerMember(CenterCharacter character, AvatarLook avatar)
+        {
+            Character = character;
+            Avatar = avatar;
+        }
+        public void Encode(Packet pw)
+        {
+            pw.WriteInt(Character.ID);
+            Avatar.Encode(pw);
+        }
+        public static MessengerMember Decode(Packet pr)
+        {
+            int cid = pr.ReadInt();
+            var avatar = new AvatarLook(pr);
+            var character = CenterServer.Instance.FindCharacter(cid);
+            return new MessengerMember(character, avatar);
+        }
+    }
     public class Messenger
     {
         public static List<Messenger> Messengers = new List<Messenger>();
 
         public int ID { get; set; }
-        public CenterCharacter Owner { get; set; }
-        public CenterCharacter[] Members { get; set; }
+        public MessengerMember Owner { get; set; }
+        public IList<MessengerMember> Members { get; } = new List<MessengerMember>(MAX_MEMBERS);
         public const int MAX_MEMBERS = 3;
 
-        public Messenger(CenterCharacter pOwner)
+        public Messenger(MessengerMember pOwner)
         {
-            Members = new CenterCharacter[MAX_MEMBERS];
             Owner = pOwner;
-            ID = pOwner.ID;
+            ID = pOwner.Character.ID;
             AddMember(pOwner);
             Messengers.Add(this);
-            pOwner.Messenger = this;
         }
 
         public static void EncodeForMigration(Packet pw)
@@ -44,10 +66,11 @@ namespace WvsBeta.Center
             pw.WriteInt(Messengers.Count);
             foreach (var messenger in Messengers)
             {
-                pw.WriteInt(messenger.ID);
-                for (var i = 0; i < MAX_MEMBERS; i++)
+                messenger.Owner.Encode(pw);
+                pw.WriteByte((byte)messenger.Members.Count);
+                foreach (var member in messenger.Members)
                 {
-                    pw.WriteInt(messenger.Members[i]?.ID ?? -1);
+                    member.Encode(pw);
                 }
             }
         }
@@ -56,29 +79,17 @@ namespace WvsBeta.Center
         {
             var amount = pr.ReadInt();
 
-            var charids = new int[MAX_MEMBERS];
             for (var i = 0; i < amount; i++)
             {
-                var ownerId = pr.ReadInt();
-                for (var j = 0; j < MAX_MEMBERS; j++)
-                {
-                    charids[j] = pr.ReadInt();
-                }
+                var owner = MessengerMember.Decode(pr);
+                if (owner.Character == null) continue;
+                var messenger = new Messenger(owner);
 
-                var owner = CenterServer.Instance.FindCharacter(ownerId);
-                if (owner != null)
+                for (int j = 0; j < pr.ReadByte(); j++)
                 {
-                    var messenger = new Messenger(owner);
-                    for (byte j = 0; j < MAX_MEMBERS; j++)
-                    {
-                        var character = messenger.Members[j] = CenterServer.Instance.FindCharacter(charids[j]);
-                        // Re-assign user
-                        if (character != null)
-                        {
-                            character.Messenger = messenger;
-                            character.MessengerSlot = j;
-                        }
-                    }
+                    var member = MessengerMember.Decode(pr);
+                    if (member.Character == null) continue;
+                    messenger.AddMember(member);
                 }
             }
         }
@@ -86,26 +97,25 @@ namespace WvsBeta.Center
         public static void JoinMessenger(Packet packet)
         {
             int messengerID = packet.ReadInt();
-            CenterCharacter chr = ParseMessengerCharacter(packet);
+            var member = DecodeMember(packet);
 
             if (messengerID > 0 && Messengers.Exists(m => m.ID == messengerID))
             {
-                JoinExistingMessenger(messengerID, chr);
+                JoinExistingMessenger(messengerID, member);
             }
             else
             {
-                CreateMessenger(chr);
+                CreateMessenger(member);
             }
         }
 
-
-        private static void CreateMessenger(CenterCharacter pOwner)
+        private static void CreateMessenger(MessengerMember pOwner)
         {
             new Messenger(pOwner);
-            pOwner.SendPacket(MessengerPacket.SelfEnter(pOwner.MessengerSlot));
+            pOwner.Character.SendPacket(MessengerPacket.SelfEnter(pOwner.Character.MessengerSlot));
         }
 
-        private static void JoinExistingMessenger(int messengerID, CenterCharacter joining)
+        private static void JoinExistingMessenger(int messengerID, MessengerMember joining)
         {
             Messenger messenger = Messengers.First(m => m.ID == messengerID);
             if (messenger == null) // This should already be confirmed when joining, but just to make sure.
@@ -114,20 +124,18 @@ namespace WvsBeta.Center
             }
             if (messenger.AddMember(joining)) // No action if messenger is full afaik.
             {
-                joining.Messenger = messenger;
-                foreach (CenterCharacter mMember in messenger.Members)
+                foreach (var mMember in messenger.Members)
                 {
-
                     if (mMember == null) continue;
 
-                    if (mMember.ID == joining.ID)
+                    if (mMember.Character.ID == joining.Character.ID)
                     {
-                        joining.SendPacket(MessengerPacket.SelfEnter(joining.MessengerSlot));
+                        joining.Character.SendPacket(MessengerPacket.SelfEnter(joining.Character.MessengerSlot));
                     }
                     else
                     {
-                        joining.SendPacket(MessengerPacket.Enter(mMember));
-                        mMember.SendPacket(MessengerPacket.Enter(joining));
+                        joining.Character.SendPacket(MessengerPacket.Enter(mMember));
+                        mMember.Character.SendPacket(MessengerPacket.Enter(joining));
                     }
                 }
             }
@@ -138,24 +146,15 @@ namespace WvsBeta.Center
             CenterCharacter chr = CenterServer.Instance.FindCharacter(cid);
             Messenger messenger = chr.Messenger;
 
-            if (messenger == null)
-            {
-                return;
-            }
+            if (messenger == null) return;
 
             byte slot = chr.MessengerSlot;
             bool empty = true;
 
-            foreach (CenterCharacter mChr in messenger.Members)
+            foreach (var member in messenger.Members)
             {
-                if (mChr != null)
-                {
-                    if (mChr.ID != chr.ID)
-                    {
-                        empty = false;
-                    }
-                    mChr.SendPacket(MessengerPacket.Leave(slot));
-                }
+                if (member.Character.ID != chr.ID) empty = false;
+                member.Character.SendPacket(MessengerPacket.Leave(slot));
             }
 
             messenger.Members[slot] = null;
@@ -191,7 +190,7 @@ namespace WvsBeta.Center
             sender.SendPacket(MessengerPacket.InviteResult(recipientName, recipient != null));
         }
 
-        public static void Chat(int cid, String message)
+        public static void Chat(int cid, string message)
         {
             CenterCharacter chr = CenterServer.Instance.FindCharacter(cid);
 
@@ -200,31 +199,30 @@ namespace WvsBeta.Center
                 return;
             }
 
-            foreach (CenterCharacter mChr in chr.Messenger.Members)
+            foreach (var member in chr.Messenger.Members.Where(i => i != null && i.Character.ID != cid))
             {
-                if (mChr != null && mChr.ID != cid)
-                {
-                    mChr.SendPacket(MessengerPacket.Chat(message));
-                }
+                member.Character.SendPacket(MessengerPacket.Chat(message));
             }
         }
 
-        private static CenterCharacter ParseMessengerCharacter(Packet packet)
+        private static MessengerMember DecodeMember(Packet packet)
         {
             CenterCharacter pCharacter = CenterServer.Instance.FindCharacter(packet.ReadInt());
 
             pCharacter.Name = packet.ReadString();
-            pCharacter.SetFromAvatarLook(new AvatarLook(packet));
-            return pCharacter;
+            var avatar = new AvatarLook(packet);
+            pCharacter.SetFromAvatarLook(avatar);
+            var member = new MessengerMember(pCharacter, avatar);
+            return member;
         }
 
-        public bool AddMember(CenterCharacter pCharacter)
+        public bool AddMember(MessengerMember member)
         {
-            byte slot = (byte)Array.IndexOf(Members, null);
-            if (slot < MAX_MEMBERS)
+            if (Members.Count < MAX_MEMBERS)
             {
-                pCharacter.MessengerSlot = slot;
-                Members[slot] = pCharacter;
+                member.Character.Messenger = this;
+                Members.Add(member);
+                member.Character.MessengerSlot = (byte)(Members.Count - 1);
                 return true;
             }
             return false;
@@ -237,16 +235,13 @@ namespace WvsBeta.Center
 
         public static void OnAvatar(Packet packet)
         {
-            CenterCharacter chr = ParseMessengerCharacter(packet); //, chr, false);
-            if (chr == null || chr.Messenger == null)
-            {
-                return;
-            }
-            Messenger messenger = chr.Messenger;
+            var member = DecodeMember(packet); //, chr, false);
+            Messenger messenger = member?.Character?.Messenger;
+            if (messenger == null) return;
 
-            foreach (var c in messenger.Members.Where(u => u != null && u != chr))
+            foreach (var c in messenger.Members.Where(u => u != null && u != member))
             {
-                c?.SendPacket(MessengerPacket.Avatar(chr));
+                c.Character.SendPacket(MessengerPacket.Avatar(member));
             }
         }
     }

@@ -64,9 +64,6 @@ namespace WvsBeta.Center
 
         public void SetFromAvatarLook(AvatarLook avatar)
         {
-            Inventory.Equipped[EquippedType.Cash] = avatar.CashEquips.Select(i => new KeyValuePair<Slots, EquipItem>(i.Key, new EquipItem(i.Value))).ToDictionary(i => i.Key, i => i.Value);
-            Inventory.Equipped[EquippedType.Normal] = avatar.NormalEquips.Select(i => new KeyValuePair<Slots, EquipItem>(i.Key, new EquipItem(i.Value))).ToDictionary(i => i.Key, i => i.Value);
-
             Gender = avatar.Gender;
             Skin = avatar.Skin;
             Face = avatar.Face;
