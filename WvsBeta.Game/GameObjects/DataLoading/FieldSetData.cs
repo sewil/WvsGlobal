@@ -226,7 +226,8 @@ namespace WvsBeta.Game.GameObjects.DataLoading
     {
         SetTimer = 1,
         SetPortalEnabled = 2,
-        BroadcastAll = 3
+        BroadcastAll = 3,
+        EndFieldSet = 4
     }
     public class FieldSetEventData
     {
@@ -301,6 +302,10 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                                 }
                             }
                         };
+                    }
+                case FieldSetEventActionType.EndFieldSet:
+                    {
+                        return fs => fs.End();
                     }
                 default: return null;
             }
