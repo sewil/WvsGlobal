@@ -58,7 +58,7 @@ namespace WvsBeta.Game
             if (Started) return;
             Started = true;
             StartTime = MasterThread.CurrentTime;
-            pendingEvents = Data.Events;
+            pendingEvents = Data.Events.ToList();
 
             if (TimeOut > 0)
             {
