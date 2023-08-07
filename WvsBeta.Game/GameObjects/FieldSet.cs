@@ -16,7 +16,7 @@ namespace WvsBeta.Game
     {
         public static Dictionary<string, FieldSet> Instances { get; } = new Dictionary<string, FieldSet>();
         private readonly Dictionary<string, string> _savedVars = new Dictionary<string, string>();
-        public int TimeOut { get; private set; }
+        public int TimeOut => Data.TimeOut;
         public Map[] Maps => Data.Maps;
         public IList<Map> ActiveMaps { get; }
         public bool Opened { get; private set; }
@@ -45,7 +45,6 @@ namespace WvsBeta.Game
         {
             OnEnd = new EventSubscriber<FieldSet>();
             Data = fsData;
-            TimeOut = fsData.TimeOut;
             foreach (var map in Maps)
             {
                 map.SetFieldSet(this);
@@ -150,7 +149,6 @@ namespace WvsBeta.Game
         }
         public void SetTimer(int timeOut)
         {
-            TimeOut = timeOut;
             EndTime = MasterThread.CurrentTime + (timeOut * 1000);
             ActiveMaps.ForEach(m => m.StartTimer(timeOut));
         }
