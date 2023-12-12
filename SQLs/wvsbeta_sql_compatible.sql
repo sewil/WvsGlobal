@@ -873,8 +873,8 @@ CREATE TABLE `memos` (
 	PRIMARY KEY (`id`) USING BTREE,
 	INDEX `fromcid_fk` (`from`) USING BTREE,
 	INDEX `tocid_fk` (`to`) USING BTREE,
-	CONSTRAINT `fromcid_fk` FOREIGN KEY (`from`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE NO ACTION,
-	CONSTRAINT `tocid_fk` FOREIGN KEY (`to`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE NO ACTION
+	CONSTRAINT `fromcid_fk` FOREIGN KEY (`from`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE CASCADE,
+	CONSTRAINT `tocid_fk` FOREIGN KEY (`to`) REFERENCES `wvsbeta`.`characters` (`ID`) ON UPDATE NO ACTION ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
