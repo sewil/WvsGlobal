@@ -53,7 +53,7 @@ namespace WvsBeta.Common.Objects
             GiftMessage = data.GetFieldValue<string>("memo_message") ?? "";
             CoupleCashId = data.GetInt64("couplecashid");
             CoupleCharId = data.GetInt32("couple_charid");
-            CoupleCharName = data.GetFieldValue<string>("couple_charname");
+            CoupleCharName = data.GetFieldValue<string>("couple_charname") ?? "";
         }
 
         public string GetFullUpdateColumns()
