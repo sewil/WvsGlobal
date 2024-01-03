@@ -20,6 +20,7 @@ namespace WvsBeta.Login
         public int[] UserNo { get; set; }
         public int UserLimit { get; set; }
         public int UserWarning { get; set; }
+        public bool Tespia { get; set; }
 
         public CenterSession Connection { get; private set; }
 

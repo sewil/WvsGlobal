@@ -246,6 +246,7 @@ namespace WvsBeta.Login
                     BlockCharacterCreation = worldConfig["BlockCharCreation"]?.GetBool() ?? false,
                     State = worldConfig["worldState"]?.GetByte() ?? 0,
                     Name = worldConfig.Name,
+                    Tespia = worldConfig["tespia"]?.GetBool() ?? false,
                     Ribbon = (WorldRibbon)(worldConfig["worldRibbon"]?.GetByte() ?? 0),
                     Message = worldConfig["worldMessage"]?.GetString() ?? "",
                     UserWarning = worldConfig["userWarning"]?.GetInt() ?? 400,

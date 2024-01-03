@@ -15,6 +15,7 @@ namespace WvsBeta.Login.PacketHandlers
             foreach (var kvp in Server.Instance.Worlds)
             {
                 var world = kvp.Value;
+                if (world.Tespia && !session.Player.IsTester) continue;
 
                 Packet worldInfo = new Packet(ServerMessages.WORLD_INFORMATION);
                 worldInfo.WriteByte(world.ID);
