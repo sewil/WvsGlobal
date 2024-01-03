@@ -6,7 +6,7 @@ namespace WvsBeta.PatchCreator
 {
     static class SharedBuffer
     {
-        public const int BUFFER_SIZE = 0x00500000; // 0x00050000 is default in MapleStory
+        public const int BUFFER_SIZE = 0x10000; // 0x00050000 is default in MapleStory
 
         public static ThreadLocal<byte[]> Buffer = new ThreadLocal<byte[]>(() =>
         {
