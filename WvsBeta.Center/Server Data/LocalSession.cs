@@ -317,7 +317,7 @@ namespace WvsBeta.Center
                                     string charname = packet.ReadString();
                                     short job = packet.ReadShort();
                                     byte level = packet.ReadByte();
-                                    byte admin = packet.ReadByte();
+                                    var admin = (GMLevel)packet.ReadByte();
                                     var character = CenterServer.Instance.AddCharacter(charname, charid, Server.ChannelID, job, level, admin);
 
                                     if (Party.Parties.TryGetValue(character.PartyID, out Party party))
@@ -852,13 +852,13 @@ namespace WvsBeta.Center
                             //How to get id from name? O.o
                             try
                             {
-                                var namedata = CenterServer.Instance.CharacterDatabase.RunQuery("SELECT c.`ID`, u.admin, c.buddylist_size, (SELECT COUNT(*) FROM buddylist WHERE charid = c.ID) AS `current_buddylist_size` FROM characters c JOIN users u ON u.id = c.userid WHERE c.name = @name", "@name", toInviteName) as MySqlDataReader;
+                                var namedata = CenterServer.Instance.CharacterDatabase.RunQuery("SELECT c.`ID`, u.gm, c.buddylist_size, (SELECT COUNT(*) FROM buddylist WHERE charid = c.ID) AS `current_buddylist_size` FROM characters c JOIN users u ON u.id = c.userid WHERE c.name = @name", "@name", toInviteName) as MySqlDataReader;
                                 if (namedata.Read())
                                 {
                                     int invitedid = namedata.GetInt32("ID");
                                     int maxBuddyListSize = namedata.GetInt32("buddylist_size");
                                     int buddyListSize = namedata.GetInt32("current_buddylist_size");
-                                    bool isGM = namedata.GetByte("admin") > 0;
+                                    bool isGM = namedata.GetByte("gm") > (byte)GMLevel.None;
                                     namedata.Close();
 
                                     if (isGM && inviter.IsGM == false)

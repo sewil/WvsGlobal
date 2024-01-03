@@ -1,5 +1,6 @@
 ﻿using log4net;
 using System;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -23,9 +24,10 @@ namespace WvsBeta.Common.Characters
 
         public bool IsOnline { get; set; }
 
-        public byte GMLevel { get; set; }
-        public bool IsGM { get => GMLevel > 0; }
-        public bool IsAdmin { get => GMLevel >= 3; }
+        public GMLevel GMLevel { get; set; }
+        public bool IsTester { get => GMLevel > GMLevel.None; }
+        public bool IsGM { get => GMLevel > GMLevel.Tester; }
+        public bool IsAdmin { get => GMLevel >= GMLevel.Admin; }
         public Inventory Inventory { get; set; }
         public CharacterSkills Skills { get; protected set; }
         public virtual CharacterPrimaryStats PrimaryStats { get; protected set; }
@@ -47,7 +49,7 @@ namespace WvsBeta.Common.Characters
             pw.WriteInt(CharacterStat.MapID);
             pw.WriteInt(PartyID);
             pw.WriteBool(IsOnline);
-            pw.WriteByte(GMLevel);
+            pw.WriteByte((byte)GMLevel);
         }
 
         public void DecodeForTransfer(Packet pr)
@@ -65,7 +67,7 @@ namespace WvsBeta.Common.Characters
             CharacterStat.MapID = pr.ReadInt();
             PartyID = pr.ReadInt();
             IsOnline = pr.ReadBool();
-            GMLevel = pr.ReadByte();
+            GMLevel = (GMLevel)pr.ReadByte();
         }
 
         public PetItem GetSpawnedPet()

@@ -143,7 +143,7 @@ namespace WvsBeta.Login.PacketHandlers
                         else
                         {
                             session.Player.PIN = pin;
-                            session.Player.GMLevel = data.GetByte("admin");
+                            session.Player.GMLevel = (GMLevel)data.GetByte("gm");
                             session.Player.Gender = (PlayerGender)data.GetByte("gender");
                             session.Player.DateOfBirth = data.GetInt32("char_delete_password");
                             session.Player.Username = username;

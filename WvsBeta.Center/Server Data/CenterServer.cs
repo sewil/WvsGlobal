@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using WvsBeta.Center.DBAccessor;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -56,7 +57,7 @@ namespace WvsBeta.Center
         public bool IsOnline(Character pCharacter) => pCharacter?.IsOnline ?? false;
         public bool IsOnline(int CharacterID) => IsOnline(FindCharacter(CharacterID));
 
-        public CenterCharacter AddCharacter(string name, int id, byte channel, short job, byte level, byte gm)
+        public CenterCharacter AddCharacter(string name, int id, byte channel, short job, byte level, GMLevel gm)
         {
             var chr = FindCharacter(id, false);
             if (chr == null)

@@ -42,7 +42,7 @@ namespace WvsBeta.Center
             }
         }
 
-        public CenterCharacter(string name, int id, bool isCCing, byte gmLevel, bool isOnline)
+        public CenterCharacter(string name, int id, bool isCCing, GMLevel gmLevel, bool isOnline)
         {
             Name = name;
             ID = id;

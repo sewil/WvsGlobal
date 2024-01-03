@@ -7,6 +7,7 @@ using log4net;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.GameObjects;
@@ -430,7 +431,7 @@ namespace WvsBeta.Game
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
                 SELECT
                     characters.*,
-                    users.admin, users.last_ip, users.online
+                    users.gm, users.last_ip, users.online
                 FROM characters
                 LEFT JOIN users ON users.id = characters.userid
                 WHERE characters.id = @id
@@ -456,7 +457,7 @@ namespace WvsBeta.Game
                 }
                 UserID = data.GetInt32("userid"); // For cashitem loading
                 Name = data.GetString("name");
-                GMLevel = data.GetByte("admin");
+                GMLevel = (GMLevel)data.GetByte("gm");
 
                 if (isImitating) ImitatorName = Name;
                 else ImitatorName = null;
@@ -465,7 +466,7 @@ namespace WvsBeta.Game
             int tmpUserID = UserID;
 
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(@"
-                SELECT c.*, users.admin, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
+                SELECT c.*, users.gm, users.last_ip, users.online, users.quiet_ban_expire, users.quiet_ban_reason, coalesce(g.guild_id, 0) AS guild_id
                 FROM characters c
                 LEFT JOIN users ON users.id = c.userid
                 LEFT JOIN guild_members g ON c.id = g.character_id

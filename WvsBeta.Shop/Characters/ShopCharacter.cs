@@ -77,7 +77,7 @@ namespace WvsBeta.Shop
             _characterLog.Debug($"Loading character {CharacterStat.ID} from IP {IP}...");
 
             using (var data = (MySqlDataReader)Server.Instance.CharacterDatabase.RunQuery(
-                    "SELECT characters.*, users.char_delete_password, users.admin, users.username AS uname FROM characters LEFT JOIN users ON users.id = characters.userid WHERE characters.id = " +
+                    "SELECT characters.*, users.char_delete_password, users.gm, users.username AS uname FROM characters LEFT JOIN users ON users.id = characters.userid WHERE characters.id = " +
                     CharacterStat.ID))
             {
                 if (!data.Read())
@@ -88,7 +88,7 @@ namespace WvsBeta.Shop
 
 
                 UserID = data.GetInt32("userid");
-                GMLevel = data.GetByte("admin");
+                GMLevel = (GMLevel)data.GetByte("gm");
                 UserName = data.GetString("uname");
                 PetCashId = data.GetInt64("pet_cash_id");
                 DoB = data.GetInt32("char_delete_password");

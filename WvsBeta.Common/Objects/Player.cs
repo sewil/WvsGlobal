@@ -12,9 +12,10 @@ namespace WvsBeta.Common.Objects
         public string Username { get; set; }
         public int ID { get; set; }
         public PlayerGender Gender { get; set; }
-        public byte GMLevel { get; set; }
-        public bool IsGM { get => GMLevel > 0; }
-        public bool IsAdmin { get => GMLevel >= 3; }
+        public GMLevel GMLevel { get; set; }
+        public bool IsTester { get => GMLevel > GMLevel.None; }
+        public bool IsGM { get => GMLevel > GMLevel.Tester; }
+        public bool IsAdmin { get => GMLevel >= GMLevel.Admin; }
         public bool LoggedOn { get; set; } = false;
         public int DateOfBirth { get; set; }
         public GameState State { get; set; } = GameState.LoginScreen;

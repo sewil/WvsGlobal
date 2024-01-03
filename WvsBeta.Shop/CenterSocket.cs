@@ -2,6 +2,7 @@
 using System.Net;
 using System.Windows.Forms;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Shop
@@ -151,7 +152,7 @@ namespace WvsBeta.Shop
             SendPacket(packet);
         }
 
-        public void RegisterCharacter(int charid, string name, short job, byte level, byte gm)
+        public void RegisterCharacter(int charid, string name, short job, byte level, GMLevel gm)
         {
             Packet packet = new Packet(ISClientMessages.ServerRegisterRegisterCharacter);
             packet.WriteInt(charid);
@@ -159,7 +160,7 @@ namespace WvsBeta.Shop
             packet.WriteString(name);
             packet.WriteShort(job);
             packet.WriteByte(level);
-            packet.WriteByte(gm);
+            packet.WriteByte((byte)gm);
             SendPacket(packet);
         }
 

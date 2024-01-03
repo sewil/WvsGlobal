@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Sockets;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Packets;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects.MiniRooms;
@@ -629,7 +630,7 @@ namespace WvsBeta.Game
 
             if (character.IsGM)
             {
-                string glevel = character.GMLevel == 1 ? "(GM Intern)" : character.GMLevel == 2 ? "(GM)" : "(Admin)";
+                string glevel = character.GMLevel == GMLevel.GMIntern ? "(GM Intern)" : character.GMLevel == GMLevel.GM ? "(GM)" : "(Admin)";
                 character.Notice("Your GM Level: " + character.GMLevel + " " + glevel + ". Undercover? " + (character.Undercover ? "Yes" : "No"));
             }
 
