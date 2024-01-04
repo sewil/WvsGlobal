@@ -264,7 +264,7 @@ namespace WvsBeta.Game.Handlers
             File.AppendAllText(Path.Combine("Chatlogs", "Map-" + character.MapID + ".txt"), logtext + Environment.NewLine);
             File.AppendAllText(Path.Combine("Chatlogs", character.Name + ".txt"), logtext + Environment.NewLine);
 
-            if (text[0] != '!' && text[0] != '/') return false;
+            if (text[0] != '/') return false;
 
             try
             {
@@ -280,15 +280,14 @@ namespace WvsBeta.Game.Handlers
                             return true;
                         }
                 }
-                #if !DEBUG
-                if (!character.IsGM)
+
+                if (!character.IsTester)
                 {
                     return true;
                 }
 
-                if (character.GMLevel >= 1) //Intern commands
+                if (character.GMLevel >= GMLevel.GMIntern) //Intern commands
                 {
-                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
 #region Whereami
@@ -1102,12 +1101,10 @@ namespace WvsBeta.Game.Handlers
                             }
 #endregion
                     }
-                #if !DEBUG
                 }
 
-                if (character.GMLevel >= 2) //Full GMs
+                if (character.GMLevel >= GMLevel.GM) //Full GMs
                 {
-                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
 #region Create / Item
@@ -1882,12 +1879,10 @@ namespace WvsBeta.Game.Handlers
                             }
 #endregion
                     }
-                #if !DEBUG
                 }
 
-                if (character.GMLevel >= 3) //Admin
+                if (character.IsAdmin) //Admin
                 {
-                #endif
                     switch (Args.Command.ToLowerInvariant())
                     {
 #region Shutdown
@@ -2528,9 +2523,7 @@ namespace WvsBeta.Game.Handlers
                         }
 #endregion
                 }
-                #if !DEBUG
                 }
-                #endif
 
                 character.Message($"Unknown command: {text}");
                 return true;
