@@ -614,7 +614,7 @@ namespace WvsBeta.Game
             }
             else
             {
-                if (GMLevel == GMLevel.Admin)
+                if (GMLevel == GMLevel.GMIntern)
                 {
                     Message("GM interns cannot leave GM Hide.");
                     AdminPacket.Hide(this, true); //because client unhides you graphically when server rejects it
