@@ -254,6 +254,7 @@ namespace WvsBeta.Game.Handlers
 
         static bool shuttingDown = false;
         static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
+        static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", /*"mob", "quest", "npc", "skill"*/ };
         public static bool HandleChat(GameCharacter character, string text)
         {
             string logtext = string.Format("[{0,-9}] {1,-13}: {2}", character.MapID, character.Name, text);
@@ -281,7 +282,69 @@ namespace WvsBeta.Game.Handlers
                         }
                 }
 
-                if (!character.IsTester)
+                if (character.IsTester)
+                {
+                    switch (Args.Command.ToLowerInvariant())
+                    {
+                        case "lookup":
+                            {
+                                Func<string, string, bool> findItem = (name, query) => name?.ToLowerInvariant().Contains(query.ToLowerInvariant()) ?? false;
+                                if (Args.Count < 2)
+                                {
+                                    character.Notice($"Usage: /lookup <{string.Join("|", lookupTypes)}> <name>");
+                                }
+                                else if (!lookupTypes.Contains(Args[0]))
+                                {
+                                    character.Notice($"Invalid lookup type \"{Args[0]}\". Please select one of: {string.Join(",", lookupTypes)}.");
+                                }
+                                else
+                                {
+                                    string lookupType = Args[0];
+                                    string query = string.Join(" ", Args.Args.Skip(1));
+                                    IList<(int id, string name)> results = new List<(int id, string name)>();
+                                    if (lookupType == "item")
+                                    {
+                                        results = DataProvider.Items.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    }
+                                    else if (lookupType == "equip")
+                                    {
+                                        results = DataProvider.Equips.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    }
+                                    else if (lookupType == "map")
+                                    {
+                                        results = GameDataProvider.Maps.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    }
+                                    //else if (lookupType == "mob")
+                                    //{
+                                    //    results = GameDataProvider.Mobs.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    //}
+                                    //else if (lookupType == "quest")
+                                    //{
+                                    //    results = GameDataProvider.Quests.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.QuestID, i.Value.Name)).ToList();
+                                    //}
+                                    //else if (lookupType == "npc")
+                                    //{
+                                    //    results = GameDataProvider.NPCs.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    //}
+                                    //else if (lookupType == "skill")
+                                    //{
+                                    //    results = GameDataProvider.Skills.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                    //}
+                                    if (results.Count == 0)
+                                    {
+                                        character.Notice("Lookup query returned no results.");
+                                    }
+                                    else
+                                    {
+                                        character.Notice($"Lookup query returned {results.Count} results:");
+                                        results.Select(i => $"({i.id}) {i.name}").ForEach(msg => character.Notice(msg));
+                                    }
+                                }
+                                return true;
+                            }
+                    }
+                }
+                else
                 {
                     return true;
                 }
