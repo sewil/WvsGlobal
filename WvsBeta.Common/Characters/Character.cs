@@ -25,9 +25,9 @@ namespace WvsBeta.Common.Characters
         public bool IsOnline { get; set; }
 
         public GMLevel GMLevel { get; set; }
-        public bool IsTester { get => GMLevel > GMLevel.None; }
-        public bool IsGM { get => GMLevel > GMLevel.Tester; }
-        public bool IsAdmin { get => GMLevel >= GMLevel.Admin; }
+        public bool IsTester => GMLevel.HasFlag(GMLevel.Tester);
+        public bool IsGM => GMLevel >= GMLevel.GMIntern;
+        public bool IsAdmin => GMLevel.HasFlag(GMLevel.Admin);
         public Inventory Inventory { get; set; }
         public CharacterSkills Skills { get; protected set; }
         public virtual CharacterPrimaryStats PrimaryStats { get; protected set; }

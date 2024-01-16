@@ -17,7 +17,7 @@ namespace WvsBeta.Game.GameObjects
         {
             base.AddPlayer(chr);
 
-            if (!chr.IsGM)
+            if (!chr.IsGM || chr.IsTester)
             {
                 _times[chr.ID] = MasterThread.CurrentTime + (TimeLimit * 1000);
                 MapPacket.ShowMapTimerForCharacter(chr, TimeLimit);
