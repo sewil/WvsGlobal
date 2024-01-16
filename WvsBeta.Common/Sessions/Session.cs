@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using WvsBeta.Common.Crypto;
 using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common.Sessions
@@ -73,8 +74,6 @@ namespace WvsBeta.Common.Sessions
 
         #endregion
 
-        private BlockCipher blockCipher;
-
         /// <summary>
         /// Creates a new instance of Session.
         /// </summary>
@@ -120,7 +119,7 @@ namespace WvsBeta.Common.Sessions
             }
             catch (Exception ex)
             {
-                Console.WriteLine(TypeName + " [ERROR] Could not connect to server: {0}", ex.Message);
+                //Console.WriteLine(TypeName + " [ERROR] Could not connect to server: {0}", ex.Message);
                 return;
             }
             if (PreventConnectFromSucceeding)
@@ -443,9 +442,6 @@ namespace WvsBeta.Common.Sessions
 
         private void StartSendAndEncryptLoop()
         {
-            if (Settings.Default.BlockCipherEnabled)
-                blockCipher = new BlockCipher();
-
             _encryptAndSendThread = new Thread(x =>
             {
                 Trace.WriteLine("Starting encryption loop");
@@ -536,14 +532,11 @@ namespace WvsBeta.Common.Sessions
         /// <returns>Encrypted data (with header!)</returns>
         private byte[] Encrypt(byte[] pData, int pLength, byte[] iv)
         {
-            if (Settings.Default.BlockCipherEnabled)
-                blockCipher.Encrypt(pData, pLength, iv);
-
             if (Settings.Default.ShandaEnabled)
                 Shanda.Encrypt(pData, pLength);
 
             if (Settings.Default.AesEnabled)
-                AESCrypt.Process(pData, pLength, iv, false);
+                AesCrypt.Instance.Crypt(pData, iv);
             
             //Trace.WriteLine("Encrypted: " + BitConverter.ToString(cfgEncrypted));
 
@@ -559,13 +552,10 @@ namespace WvsBeta.Common.Sessions
         private byte[] Decrypt(byte[] pData, int pLength, byte[] iv)
         {
             if (Settings.Default.AesEnabled)
-                AESCrypt.Process(pData, pLength, iv, true);
+                AesCrypt.Instance.Crypt(pData, iv);
 
             if (Settings.Default.ShandaEnabled)
                 Shanda.Decrypt(pData, pLength);
-
-            if (Settings.Default.BlockCipherEnabled)
-                blockCipher.Decrypt(pData, pLength, iv);
 
             NextIV(iv);
             return pData;

@@ -146,7 +146,6 @@
     <Compile Include="Interfaces\IInitialize.cs" />
     <Compile Include="Objects\ICommodityInfo.cs" />
     <Compile Include="Objects\MovableLife.cs" />
-    <Compile Include="Crypto\AesCryptographyService.cs" />
     <Compile Include="Crypto\BCrypt.cs" />
     <Compile Include="Enums\BuffValueTypes.cs" />
     <Compile Include="Enums\CureFlag.cs" />
@@ -164,21 +163,6 @@
     <Compile Include="ConfigReader.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Crypto\CRC32.cs" />
-    <Compile Include="Crypto\Cryptography\BufferedBlockCipher.cs" />
-    <Compile Include="Crypto\Cryptography\BufferedCipherBase.cs" />
-    <Compile Include="Crypto\Cryptography\Check.cs" />
-    <Compile Include="Crypto\Cryptography\Engines\NopEngine.cs" />
-    <Compile Include="Crypto\Cryptography\Exceptions\CryptoException.cs" />
-    <Compile Include="Crypto\Cryptography\Exceptions\DataLengthException.cs" />
-    <Compile Include="Crypto\Cryptography\Exceptions\OutputLengthException.cs" />
-    <Compile Include="Crypto\Cryptography\Interfaces\IBlockCipher.cs" />
-    <Compile Include="Crypto\Cryptography\Interfaces\IBufferedCipher.cs" />
-    <Compile Include="Crypto\Cryptography\Interfaces\ICipherParameters.cs" />
-    <Compile Include="Crypto\Cryptography\Modes\CbcBlockCipher.cs" />
-    <Compile Include="Crypto\Cryptography\Modes\CtsBlockCipher.cs" />
-    <Compile Include="Crypto\Cryptography\Parameters\KeyParameter.cs" />
-    <Compile Include="Crypto\Cryptography\Parameters\ParametersWithIV.cs" />
-    <Compile Include="Crypto\Cryptography\Utilities\Platform.cs" />
     <Compile Include="Crypto\Cryptos.cs" />
     <Compile Include="DiscordReporter.cs" />
     <Compile Include="Extensions\LogExtensions.cs" />
@@ -234,10 +218,9 @@
     <Compile Include="RollingTextBox.Designer.cs">
       <DependentUpon>RollingTextBox.cs</DependentUpon>
     </Compile>
-    <Compile Include="Sessions\AESCrypt.cs" />
+    <Compile Include="Crypto\AesCrypt.cs" />
     <Compile Include="Sessions\ConnectionSession.cs" />
     <Compile Include="Sessions\Acceptor.cs" />
-    <Compile Include="Sessions\BlockCipher.cs" />
     <Compile Include="Sessions\ClientMessage.cs" />
     <Compile Include="Sessions\ISMessage.cs" />
     <Compile Include="Sessions\Packet.cs" />
@@ -246,7 +229,7 @@
     <Compile Include="Sessions\Session.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sessions\SessionDisconnectException.cs" />
-    <Compile Include="Sessions\Shanda.cs" />
+    <Compile Include="Crypto\Shanda.cs" />
     <Compile Include="StringPool.cs" />
     <Compile Include="Strings.cs" />
     <Compile Include="Tools.cs" />
