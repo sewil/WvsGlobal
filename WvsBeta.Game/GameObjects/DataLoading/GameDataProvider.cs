@@ -140,7 +140,7 @@ namespace WvsBeta.Game
                 {
                     if (!Drops.ContainsKey("m" + mob.ID))
                     {
-                        Program.MainForm.LogAppend($"Mob {mob.ID} does not have drops!");
+                        Console.WriteLine($"Mob {mob.ID} does not have drops!");
                     }
                     if (mob.Skills != null)
                     {
@@ -633,8 +633,7 @@ namespace WvsBeta.Game
                             }
                             catch (NullReferenceException)
                             {
-                                Program.MainForm.LogAppend("tS not found when trying to parse tiles in map {0} at layer {1}", map.ID, layer);
-                                break;
+                                throw new NullReferenceException(string.Format("Map layer tS not found when trying to parse tiles in map {0} at layer {1}. This will cause a client crash.", map.ID, layer));
                             }
                             foreach (NXNode tileNode in layerSubNode)
                             {
@@ -648,7 +647,7 @@ namespace WvsBeta.Game
                                 }
                                 catch (NullReferenceException)
                                 {
-                                    Program.MainForm.LogAppend("Tile not found at \"{0}\" for map {1} at layer {2}, tile idx {3}", tilePath, map.ID, layer, tileIdx);
+                                    throw new NullReferenceException(string.Format("Map tile not found at \"{0}\" for map {1} at layer {2}, tile idx {3}. This will cause a client crash.", tilePath, map.ID, layer, tileIdx));
                                 }
                             }
                             break;
@@ -661,7 +660,7 @@ namespace WvsBeta.Game
                                 string fullPath = "Map/Obj/" + objectImgName + "/" + imgSubPath;
                                 if (!pClientFile.ContainsPath(fullPath))
                                 {
-                                    Program.MainForm.LogAppend("Map obj not found at \"{0}\", for map {1} at layer {2}, obj idx {3}", fullPath, map.ID, layer, objIdx);
+                                    throw new NullReferenceException(string.Format("Map obj not found at \"{0}\", for map {1} at layer {2}, obj idx {3}. This will cause a client crash.", fullPath, map.ID, layer, objIdx));
                                 }
                             }
                             break;
@@ -685,7 +684,7 @@ namespace WvsBeta.Game
                 }
                 catch (NullReferenceException)
                 {
-                    Program.MainForm.LogAppend("Map background not found at \"{0}\" for map {1}, back idx {2}", backPath, map.ID, backIdx);
+                    throw new NullReferenceException(string.Format("Map background not found at \"{0}\" for map {1}, back idx {2}. This will cause a client crash.", backPath, map.ID, backIdx));
                 }
             }
         }
