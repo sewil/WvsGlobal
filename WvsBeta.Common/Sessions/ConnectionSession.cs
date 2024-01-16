@@ -73,19 +73,19 @@ namespace WvsBeta.Common.Sessions
 
             var isValid = expectedCRC == clientCRC;
 
-            //if (!isValid)
-            //{
-            //    if (_ignoredWrongCRC)
-            //    {
-            //        log.Error($"Disconnecting client because CRC didnt match _again_");
-            //    }
-            //    else
-            //    {
-            //        log.Warn($"Accepting wrong CRC for _once_...");
-            //        _ignoredWrongCRC = true;
-            //        isValid = true;
-            //    }
-            //}
+            if (!isValid)
+            {
+                if (_ignoredWrongCRC)
+                {
+                    log.Error($"Disconnecting client because CRC didnt match _again_");
+                }
+                else
+                {
+                    log.Warn($"Accepting wrong CRC for _once_...");
+                    _ignoredWrongCRC = true;
+                    isValid = true;
+                }
+            }
 
             return isValid;
         }

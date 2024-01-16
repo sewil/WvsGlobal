@@ -9,7 +9,7 @@ using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common
 {
-    public struct MemoryRegion
+    public class MemoryRegion
     {
         public uint Address { get; }
         public byte[] Data { get; }
@@ -20,6 +20,19 @@ namespace WvsBeta.Common
         {
             Address = address;
             Data = data;
+        }
+    }
+
+    public class FileRegion
+    {
+        public string Name { get; }
+        public uint StartAddress { get; }
+        public uint FileOffset { get; }
+        public FileRegion(string name, uint startAddress, uint fileOffset)
+        {
+            Name = name;
+            StartAddress = startAddress;
+            FileOffset = fileOffset;
         }
     }
 
@@ -39,6 +52,7 @@ namespace WvsBeta.Common
             return _instance;
         }
 
+        public List<FileRegion> FileRegions = new List<FileRegion>();
         public List<MemoryRegion> Regions = new List<MemoryRegion>();
 
         public int MaxRandomMemoryOffset { get; private set; } = 0;
@@ -62,63 +76,20 @@ namespace WvsBeta.Common
                 using (var mapleReader = new BinaryReader(mapleFileStream))
                 using (var configReader = new StreamReader(File.OpenRead("MemoryRegions.tsv"), Encoding.ASCII))
                 {
-                    List<Tuple<string, uint, uint>> fileRegions = new List<Tuple<string, uint, uint>>();
-
                     // Skip to the file regions
+                    FileRegions.Clear();
+                    Regions.Clear();
                     while (true)
                     {
-                        var line = ReadNextLine(configReader);
+                        string line = ReadNextLine(configReader);
+                        if (line == null) break;
                         if (line == "START_FILE_REGIONS")
                         {
-                            break;
+                            FileRegions = ParseFileRegions(configReader);
                         }
-                    }
-                    while (true)
-                    {
-                        var line = ReadNextLine(configReader);
-                        if (line == "START_MEMORY_REGIONS")
+                        else if (line == "START_MEMORY_REGIONS")
                         {
-                            break;
-                        }
-                        var parsedLine = ParseFileRegionLine(line);
-                        if (parsedLine != null)
-                            fileRegions.Add(parsedLine);
-                    }
-
-                    Func<Tuple<uint, int>, byte[]> addressToDataFunc = (tuple) =>
-                    {
-                        var address = tuple.Item1;
-                        var size = tuple.Item2;
-
-                        uint lastStartAddress = 0;
-                        uint lastOffset = 0;
-                        foreach (var region in fileRegions)
-                        {
-                            // Find the region this address is in.
-                            if (region.Item2 < address && region.Item2 > lastStartAddress)
-                            {
-                                lastStartAddress = region.Item2;
-                                lastOffset = region.Item3;
-                            }
-                        }
-
-                        mapleFileStream.Seek((address - lastStartAddress) + lastOffset, SeekOrigin.Begin);
-                        return mapleReader.ReadBytes(size);
-                    };
-
-                    Regions.Clear();
-
-                    while (true)
-                    {
-                        var line = ReadNextLine(configReader);
-                        if (line == null)
-                        {
-                            break;
-                        }
-                        var parsedLine = ParseMemoryRegionLine(line);
-                        if (parsedLine != null)
-                        {
-                            Regions.Add(new MemoryRegion(parsedLine.Item1, addressToDataFunc(parsedLine)));
+                            Regions = ParseMemoryRegions(configReader, mapleReader, mapleFileStream);
                         }
                     }
 
@@ -133,18 +104,53 @@ namespace WvsBeta.Common
             }
         }
 
-        private Tuple<string, uint, uint> ParseFileRegionLine(StreamReader reader)
+        private byte[] GetMemoryRegionData(uint address, int length, BinaryReader mapleReader, FileStream mapleFileStream)
         {
-            string line = null;
-            while (!reader.EndOfStream && line == null)
+            uint lastStartAddress = 0;
+            uint lastOffset = 0;
+            foreach (var region in FileRegions)
             {
-                var tmp = ReadNextLine(reader);
-                if (tmp.Count(x => x == '\t') < 2) continue;
-                line = tmp;
+                // Find the region this address is in.
+                if (region.StartAddress < address && region.StartAddress > lastStartAddress)
+                {
+                    lastStartAddress = region.StartAddress;
+                    lastOffset = region.FileOffset;
+                }
             }
-            return ParseFileRegionLine(line);
+
+            mapleFileStream.Seek((address - lastStartAddress) + lastOffset, SeekOrigin.Begin);
+            return mapleReader.ReadBytes(length);
         }
-        private Tuple<string, uint, uint> ParseFileRegionLine(string line)
+
+        private List<FileRegion> ParseFileRegions(StreamReader reader)
+        {
+            var fileRegions = new List<FileRegion>();
+            while (true)
+            {
+                string line = ReadNextLine(reader);
+                if (line == "END_FILE_REGIONS" || line == null) break;
+                var parsedLine = ParseFileRegionLine(line);
+                if (parsedLine != null)
+                    fileRegions.Add(parsedLine);
+            }
+            return fileRegions;
+        }
+
+        private List<MemoryRegion> ParseMemoryRegions(StreamReader reader, BinaryReader mapleReader, FileStream mapleFileStream)
+        {
+            var memoryRegions = new List<MemoryRegion>();
+            while(true)
+            {
+                string line = ReadNextLine(reader);
+                if (line == "END_MEMORY_REGIONS" || line == null) break;
+                var memoryRegion = ParseMemoryRegionLine(line, mapleReader, mapleFileStream);
+                if (memoryRegion != null)
+                    memoryRegions.Add(memoryRegion);
+            }
+            return memoryRegions;
+        }
+
+        private FileRegion ParseFileRegionLine(string line)
         {
             if (line == null) return null;
 
@@ -154,22 +160,10 @@ namespace WvsBeta.Common
             var name = elements[0];
             var startAddress = uint.Parse(elements[1], NumberStyles.HexNumber);
             var fileOffset = uint.Parse(elements[2], NumberStyles.HexNumber);
-            return new Tuple<string, uint, uint>(name, startAddress, fileOffset);
+            return new FileRegion(name, startAddress, fileOffset);
         }
 
-        private Tuple<uint, int> ParseMemoryRegionLine(StreamReader reader)
-        {
-            string line = null;
-            while (!reader.EndOfStream && line == null)
-            {
-                var tmp = ReadNextLine(reader);
-                if (tmp.Count(x => x == '\t') < 2) continue;
-                line = tmp;
-            }
-            return ParseMemoryRegionLine(line);
-        }
-
-        private Tuple<uint, int> ParseMemoryRegionLine(string line)
+        private MemoryRegion ParseMemoryRegionLine(string line, BinaryReader mapleReader, FileStream mapleFileStream)
         {
             if (line == null) return null;
 
@@ -178,7 +172,8 @@ namespace WvsBeta.Common
 
             var address = uint.Parse(elements[0], NumberStyles.HexNumber);
             var length = int.Parse(elements[1], NumberStyles.Integer);
-            return new Tuple<uint, int>(address, length);
+            var data = GetMemoryRegionData(address, length, mapleReader, mapleFileStream);
+            return new MemoryRegion(address, data);
         }
 
         private string ReadNextLine(StreamReader reader)
