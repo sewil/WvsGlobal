@@ -11,7 +11,7 @@ namespace WvsBeta.Shop
     {
         private bool disconnectExpected = false;
         public CenterSocket()
-            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true)
+            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true, "ShopCenterSession")
         {
 
         }

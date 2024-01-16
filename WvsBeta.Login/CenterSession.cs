@@ -12,7 +12,7 @@ namespace WvsBeta.Login
     {
         private Center _center;
 
-        public CenterSession(string ip, ushort port, Center center) : base(ip, port, true)
+        public CenterSession(string ip, ushort port, Center center) : base(ip, port, true, "LoginCenterSession")
         {
             _center = center;
         }

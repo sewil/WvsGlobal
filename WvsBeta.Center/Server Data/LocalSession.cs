@@ -21,7 +21,7 @@ namespace WvsBeta.Center
         public LocalServer Server { get; set; }
         public static List<Messenger> MessengerRooms { get; set; }
 
-        public LocalSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false) { }
+        public LocalSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false, "CenterLocalSession") { }
 
         public void Init()
         {

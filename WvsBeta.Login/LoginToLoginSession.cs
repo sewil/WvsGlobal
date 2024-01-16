@@ -6,12 +6,12 @@ namespace WvsBeta.Login
 {
     class LoginToLoginSession : ConnectionSession
     {
-        public LoginToLoginSession(Socket pSocket) : base(pSocket, false)
+        public LoginToLoginSession(Socket pSocket) : base(pSocket, false, "LoginToLoginSession")
         {
             SendHandshake(9994, "CenterToCenter", 99);
         }
 
-        public LoginToLoginSession(string pIP, ushort pPort) : base(pIP, pPort, true)
+        public LoginToLoginSession(string pIP, ushort pPort) : base(pIP, pPort, true, "LoginToLoginSession")
         {
         }
 

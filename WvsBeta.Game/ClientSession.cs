@@ -19,7 +19,7 @@ namespace WvsBeta.Game
         public bool Loaded { get; set; }
 
 
-        public ClientSession(Socket pSocket) : base(pSocket, false)
+        public ClientSession(Socket pSocket) : base(pSocket, false, "GameClientSession")
         {
             Loaded = false;
 

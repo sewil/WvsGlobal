@@ -14,7 +14,7 @@ namespace WvsBeta.Shop
         public bool Loaded { get; set; }
 
         public ClientSocket(System.Net.Sockets.Socket pSocket)
-            : base(pSocket, false)
+            : base(pSocket, false, "ShopClientSession")
         {
             Loaded = false;
             Init();

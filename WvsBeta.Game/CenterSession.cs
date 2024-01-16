@@ -17,7 +17,7 @@ namespace WvsBeta.Game
     {
         private bool disconnectExpected;
         public CenterSession()
-            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true)
+            : base(Server.Instance.CenterIP.ToString(), (ushort)Server.Instance.CenterPort, true, "GameCenterSession")
         {
 
         }

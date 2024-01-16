@@ -26,15 +26,15 @@ namespace WvsBeta.Common.Sessions
 
         public int pings { get; set; }
 
-        protected ConnectionSession(System.Net.Sockets.Socket pSocket, bool isConnectedAsClient)
-            : base(pSocket, "")
+        protected ConnectionSession(System.Net.Sockets.Socket pSocket, bool isConnectedAsClient, string tn)
+            : base(pSocket, tn)
         {
             pings = 0;
             this.isConnectedAsClient = isConnectedAsClient;
         }
 
-        protected ConnectionSession(string pIP, ushort pPort, bool isConnectedAsClient)
-            : base(pIP, pPort, "")
+        protected ConnectionSession(string pIP, ushort pPort, bool isConnectedAsClient, string tn)
+            : base(pIP, pPort, tn)
         {
             pings = 0;
             this.isConnectedAsClient = isConnectedAsClient;

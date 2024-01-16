@@ -27,7 +27,7 @@ namespace WvsBeta.Login
         public bool Loaded { get; set; }
         public bool IsCCing { get; private set; }
 
-        public ClientSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false)
+        public ClientSession(System.Net.Sockets.Socket pSocket) : base(pSocket, false, "LoginClientSession")
         {
             Player = new Objects.Player()
             {

@@ -19,14 +19,14 @@ namespace WvsBeta.Center
 
         public bool IsNewServer { get; }
 
-        public CenterToCenterSession(Socket pSocket) : base(pSocket, false)
+        public CenterToCenterSession(Socket pSocket) : base(pSocket, false, "CenterToCenterSession")
         {
             IsDone = false;
             IsNewServer = false;
             SendHandshake(CTCMapleVersion, CTCMaplePatchLocation, CTCMapleLocale);
         }
 
-        public CenterToCenterSession(string pIP, ushort pPort) : base(pIP, pPort, true)
+        public CenterToCenterSession(string pIP, ushort pPort) : base(pIP, pPort, true, "CenterToCenterSession")
         {
             IsNewServer = true;
         }
