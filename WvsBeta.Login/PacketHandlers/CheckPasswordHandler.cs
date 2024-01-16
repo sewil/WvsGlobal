@@ -102,7 +102,7 @@ namespace WvsBeta.Login.PacketHandlers
                     }
                     else if (Server.Instance.DisableMultiIP && RedisBackend.Instance.IsPlayerOnline(session.IP))
                     {
-                        loginState = LoginState.SYSTEM_ERROR;
+                        loginState = LoginState.ALREADY_ONLINE;
                         log.AssertWarning(true, $"[{username}][{userId}] tried logging in on the same IP ({session.IP})");
                     }
                     else if (banExpire > MasterThread.CurrentTime)

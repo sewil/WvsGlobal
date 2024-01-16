@@ -603,11 +603,11 @@ namespace WvsBeta.Game
             SetEXP(rExp <= 0 ? 0 : rExp);
         }
 
-        public void SetHide(bool Hidden, bool init)
+        public void SetHide(bool hidden, bool init)
         {
-            AdminPacket.Hide(this, Hidden);
+            AdminPacket.Hide(this, hidden);
 
-            if (Hidden)
+            if (hidden)
             {
                 GMHideEnabled = true;
                 if (!init) Field.RemovePlayer(this, true);

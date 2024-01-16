@@ -177,18 +177,18 @@ namespace WvsBeta.Game
                         fucker.SetMPAndMaxMP(0);
                         fucker.ChangeMap(0); // Back to the start with you.
 
-                        ChatPacket.SendNoticeGMs(
+                        ChatPacket.SendBroadcastMessageToGMs(
                             $"{fucker.Name} : I was just p0wned by the Anti-Hack system. Damage hax ({amount})! :mavi:",
-                            ChatPacket.MessageTypes.Notice
+                            BroadcastMessageType.Notice
                         );
                         return false;
                     }
 
                     if (amount >= 30000)
                     {
-                        ChatPacket.SendNoticeGMs(
+                        ChatPacket.SendBroadcastMessageToGMs(
                             $"{fucker.Name} : Possible damage hack: {amount} damage given!",
-                            ChatPacket.MessageTypes.Notice
+                            BroadcastMessageType.Notice
                         );
                     }
                 }

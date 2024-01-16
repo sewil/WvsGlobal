@@ -16,6 +16,14 @@ namespace WvsBeta.Common
             }
             return str;
         }
+        public static string ToHexString(this ArraySegment<byte> arr)
+        {
+            return arr.ToArray().ToHexString();
+        }
+        public static string ToHexString(this byte[] arr)
+        {
+            return string.Join(" ", arr.Select(i => i.ToString("X2")));
+        }
         public static void ForEach<T>(this IEnumerable<T> enumerable, Action<T> action)
         {
             foreach (T element in enumerable)

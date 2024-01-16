@@ -7,6 +7,7 @@ using System.Management.Instrumentation;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
+using WvsBeta.Common.DataProviders;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
@@ -300,36 +301,22 @@ namespace WvsBeta.Game.Handlers
                                 else
                                 {
                                     string lookupType = Args[0];
-                                    string query = string.Join(" ", Args.Args.Skip(1));
-                                    IList<(int id, string name)> results = new List<(int id, string name)>();
+                                    string searchQuery = string.Join(" ", Args.Args.Skip(1));
+                                    var query = Enumerable.Empty<(int id, string name)>();
                                     if (lookupType == "item")
                                     {
-                                        results = DataProvider.Items.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                        query = DataProvider.Items.Select(i => (i.Value.ID, i.Value.Name));
                                     }
                                     else if (lookupType == "equip")
                                     {
-                                        results = DataProvider.Equips.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                        query = DataProvider.Equips.Select(i => (i.Value.ID, i.Value.Name));
                                     }
                                     else if (lookupType == "map")
                                     {
-                                        results = GameDataProvider.Maps.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
+                                        query = GameDataProvider.Maps.Select(i => (i.Value.ID, i.Value.Name));
                                     }
-                                    //else if (lookupType == "mob")
-                                    //{
-                                    //    results = GameDataProvider.Mobs.Where(i => findItem(i.Value.Name, query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
-                                    //}
-                                    //else if (lookupType == "quest")
-                                    //{
-                                    //    results = GameDataProvider.Quests.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.QuestID, i.Value.Name)).ToList();
-                                    //}
-                                    //else if (lookupType == "npc")
-                                    //{
-                                    //    results = GameDataProvider.NPCs.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
-                                    //}
-                                    //else if (lookupType == "skill")
-                                    //{
-                                    //    results = GameDataProvider.Skills.Where(i => findItem(i.Value., query)).Take(10).Select(i => (i.Value.ID, i.Value.Name)).ToList();
-                                    //}
+
+                                    var results = query.Where(i => findItem(i.name, searchQuery)).Take(10).ToList();
                                     if (results.Count == 0)
                                     {
                                         character.Notice("Lookup query returned no results.");

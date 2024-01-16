@@ -6,7 +6,7 @@ using WvsBeta.Login.Properties;
 
 namespace WvsBeta.Login
 {
-    public partial class frmMain : Form
+    public partial class frmMain : Form, IMainForm
     {
         int load = 0;
 
@@ -118,6 +118,22 @@ namespace WvsBeta.Login
                 copy.ForEach(x => log4net.ThreadContext.Properties.Remove(x.Item1));
 
             }, "LogAppend");
+        }
+
+        public void LogDebug(string pFormat, params object[] pParams)
+        {
+#if DEBUG
+            LogAppend(string.Format(pFormat, pParams));
+#endif
+        }
+
+        public void LogToFile(string what)
+        {
+            Program.LogFile.WriteLine(what);
+        }
+
+        public void Shutdown()
+        {
         }
     }
 }
