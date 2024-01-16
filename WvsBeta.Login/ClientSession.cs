@@ -38,7 +38,7 @@ namespace WvsBeta.Login
             Pinger.Add(this);
             Server.Instance.AddPlayer(Player);
 
-            SendHandshake(Constants.MAPLE_VERSION, Constants.MAPLE_PATCH_LOCATION, Constants.MAPLE_LOCALE);
+            SendHandshake(Config.Instance.MapleVersion, Config.Instance.MaplePatchLocation, Config.Instance.MapleLocale);
             SendMemoryRegions();
         }
 

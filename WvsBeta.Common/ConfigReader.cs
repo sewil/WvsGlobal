@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace WvsBeta.Common
@@ -15,6 +16,7 @@ namespace WvsBeta.Common
             public List<Node> SubNodes { get; set; }
             public string Name { get; set; }
             public string Value { get; set; }
+            public List<string> Values { get; set; } = new List<string>();
 
             private static IFormatProvider NumberFormat = new CultureInfo("en-US");
 
@@ -61,8 +63,9 @@ namespace WvsBeta.Common
         // Parser
 
         private static readonly Regex lineRegex = new Regex(@"^\s*([^ =]+)\s*=\s*([^\r\n$]*)\s*$");
+        private static readonly Regex arrayLineRegex = new Regex(@"\s*([^ ,\[\]]+)\s*,?\s*");
         
-        private Node ReadInnerNode(string nodeName, StreamReader sr, ref int currentLineNumber, int depth)
+        private Node ReadInnerNode(string nodeName, StreamReader sr, ref int currentLineNumber, int depth, bool isArray = false)
         {
             depth++;
             string line = "";
@@ -80,7 +83,7 @@ namespace WvsBeta.Common
                 line = sr.ReadLine().Trim();
                 if (line == "" || line.StartsWith("#") || line.StartsWith("/")) continue;
 
-                if (line == "}")
+                if (line == "}" || line == "]")
                 {
                     // End of block
                     break;
@@ -91,38 +94,45 @@ namespace WvsBeta.Common
                     line = line.Substring(0, line.IndexOf(" # "));
                 }
 
-                var matches = lineRegex.Match(line);
-                if (!matches.Success)
+                if (isArray)
                 {
-                    throw new Exception("Error on line " + currentLineNumber + " in node " + node.Name);
-                }
-
-                var name = matches.Groups[1].Captures[0].Value;
-                var value = matches.Groups[2].Captures[0].Value;
-
-
-                if (value == "{")
-                {
-                    var subNode = ReadInnerNode(name, sr, ref currentLineNumber, depth);
-                    node.SubNodes.Add(subNode);
+                    var matches = arrayLineRegex.Matches(line);
+                    if (matches.Count > 0)
+                    {
+                        var values = matches.Cast<Match>().Select(i => i.Groups[1].Value);
+                        node.Values.AddRange(values);
+                    }
                 }
                 else
                 {
-                    node.SubNodes.Add(new Node
+                    var matches = lineRegex.Match(line);
+                    if (!matches.Success) throw new Exception("Error on line " + currentLineNumber + " in node " + node.Name);
+                    var name = matches.Groups[1].Captures[0].Value;
+                    var value = matches.Groups[2].Captures[0].Value;
+
+                    if (value == "{" || value == "[")
                     {
-                        Name = name,
-                        SubNodes = null,
-                        Value = value,
-                    });
+                        if (isArray && value == "[") throw new Exception("Can't open new array inside array statement!");
+                        var subNode = ReadInnerNode(name, sr, ref currentLineNumber, depth, value == "[");
+                        node.SubNodes.Add(subNode);
+                    }
+                    else
+                    {
+                        node.SubNodes.Add(new Node
+                        {
+                            Name = name,
+                            SubNodes = null,
+                            Value = value,
+                        });
+                    }
                 }
             }
 
-            if (line != "}" && depth > 1)
+            if (depth > 1 && line != "}" && line != "]")
             {
                 throw new Exception("Missing ending brace.");
             }
             return node;
         }
-
     }
 }

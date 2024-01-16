@@ -587,11 +587,11 @@ namespace WvsBeta.Game
                         foreach (PartyDamage damage in PartyDamages.Values)
                         {
                             damage.MinLevel = Math.Min(Data.Level, damage.MinLevel);
-                            damage.MinLevel -= Constants.PartyMinLevelOffset;
+                            damage.MinLevel -= Config.Instance.PartyMinLevelOffset;
 
                             var Party = Field.GetInParty(damage.PartyID);
                             var PartyMapCount = Party.Count();
-                            double PartyBonusEventRate = PartyMapCount * Constants.PartyPerUserBonus + Constants.PartyTotalBonus;
+                            double PartyBonusEventRate = PartyMapCount * Config.Instance.PartyPerUserBonus + Config.Instance.PartyTotalBonus;
 
                             double IncEXP = (Data.EXP * damage.Damage) * 0.8 / DamageSum;
 
@@ -810,7 +810,7 @@ namespace WvsBeta.Game
                             );
 
                         damage.MinLevel = Math.Min(Data.Level, damage.MinLevel);
-                        damage.MinLevel -= Constants.PartyMinLevelOffset;
+                        damage.MinLevel -= Config.Instance.PartyMinLevelOffset;
 
                         var partyMembersHigherThanMinLevel = Party.Where(x => x.Level >= damage.MinLevel).ToArray();
                         var partyMemberCountHigherThanMinLevel = partyMembersHigherThanMinLevel.Length;

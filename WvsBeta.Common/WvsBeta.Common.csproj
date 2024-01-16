@@ -121,6 +121,7 @@
     <Compile Include="Characters\Inventory.cs" />
     <Compile Include="Characters\CharacterPrimaryStats.cs" />
     <Compile Include="Characters\CharacterSkills.cs" />
+    <Compile Include="Config.cs" />
     <Compile Include="ControlledException.cs" />
     <Compile Include="Enums\EquipIds.cs" />
     <Compile Include="Enums\EquippedType.cs" />

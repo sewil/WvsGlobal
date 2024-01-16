@@ -20,8 +20,8 @@ namespace WvsBeta.Game
 
         public static byte GetLevel(PetItem petItem, out bool levelUp)
         {
-            short min = (short)(petItem.Level > 1 ? Constants.PetExp[petItem.Level - 2] : 0);
-            short max = (short)(petItem.Level < Constants.PetLevels ? Constants.PetExp[petItem.Level - 1] - 1 : short.MaxValue);
+            short min = (short)(petItem.Level > 1 ? Config.Instance.PetExp[petItem.Level - 2] : 0);
+            short max = (short)(petItem.Level < Constants.PetLevels ? Config.Instance.PetExp[petItem.Level - 1] - 1 : short.MaxValue);
             levelUp = false;
 
             if (petItem.Closeness < min) return (byte)Math.Max(1, petItem.Level - 1);

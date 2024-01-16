@@ -609,7 +609,7 @@ namespace WvsBeta.Common.Sessions
         /// <returns>Length of buffer</returns>
         private static int GetHeaderLength(byte[] pBuffer, int pBufferLen, byte[] pIV, ushort pVersion, bool pToServer)
         {
-            pVersion = Constants.MAPLE_CRYPTO_VERSION;
+            pVersion = Config.Instance.MapleCryptoVersion;
             ushort a = (ushort)(pBuffer[0] | (pBuffer[1] << 8));
             ushort b = (ushort)(pBuffer[2] | (pBuffer[3] << 8));
             ushort expectedIvPart = (ushort)((pIV[3] << 8) | pIV[2]);
@@ -644,7 +644,7 @@ namespace WvsBeta.Common.Sessions
         /// <param name="pToServer">Is to server?</param>
         private static byte[] GenerateHeader(byte[] pIV, int pLength, ushort pVersion, bool pToServer)
         {
-            pVersion = Constants.MAPLE_CRYPTO_VERSION;
+            pVersion = Config.Instance.MapleCryptoVersion;
             ushort a = (ushort)((pIV[3] << 8) | pIV[2]);
             a ^= (ushort)(pToServer ? pVersion : -(pVersion + 1));
 
