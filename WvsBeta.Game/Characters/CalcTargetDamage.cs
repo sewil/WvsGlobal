@@ -539,7 +539,7 @@ namespace WvsBeta.Game.Characters
                 Damage *= mob.Status.BuffMagicGuardUp.N * 0.01;
             }
 
-            Damage = (int)Math.Min(MaxDamage, Math.Max(1, Damage));
+            Damage = (int)Math.Min(Config.Instance.MaxDamage, Math.Max(1, Damage));
         }
         void CalcMesoExplosion()
         {
@@ -886,7 +886,7 @@ namespace WvsBeta.Game.Characters
             {
                 newDmg = (extraModifier * 0.5 + 1.0) * dmg;
                 if (dmg >= newDmg) newDmg = dmg;
-                newDmg = Math.Min(MaxDamage, newDmg);
+                newDmg = Math.Min(Config.Instance.MaxDamage, newDmg);
             }
             return newDmg;
         }
