@@ -1229,7 +1229,7 @@ namespace WvsBeta.Game
                         if (!Field.DropPool.Create(Drop, OwnerID, OwnPartyID, OwnType, SpawnID, Pos, x2, Delay, false, false))
                         {
                             i++;
-                            Delay += 200;
+                            if (!Data.ExplosiveReward) Delay += 200;
                             x2 += Data.ExplosiveReward ? 40 : 20;
                         }
                     }
