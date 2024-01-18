@@ -160,10 +160,6 @@ namespace WvsBeta.Login.PacketHandlers
 
             if (loginState == LoginState.SUCCESS)
             {
-                session.Loaded = true;
-                session.StartLogging();
-
-                WriteLoginInfo();
 
                 bool macBanned = false;
                 using (var mdr = Server.Instance.UsersDatabase.RunQuery(
@@ -230,56 +226,24 @@ namespace WvsBeta.Login.PacketHandlers
                     }
                 }
             }
-            else
+            else if (loginState == LoginState.EULA)
             {
-                WriteLoginInfo();
+                session.Player.State = GameState.ConfirmEULA;
             }
+
+            WriteLoginInfo();
 
             var pack = new CheckPasswordResultPacket(loginState, session.Player, username, banReason, banExpire);
             session.SendPacket(pack);
 
-            if (loginState != LoginState.SUCCESS)
-            {
-                session.Loaded = false;
-                if (loginState == LoginState.EULA)
-                {
-                    session.Player.State = GameState.ConfirmEULA;
-                }
-                return;
-            }
+            if (loginState != LoginState.SUCCESS) return;
 
-            // Player logged in
-            session.TryRegisterHackDetection();
-            RedisBackend.Instance.SetPlayerOnline(session.Player.ID, 1, session.IP);
-
-            if (crashLogTmp != null)
-            {
-                var crashlogName = session.IP + "-" + username + ".txt";
-                FileWriter.WriteLine(Path.Combine("ClientCrashes", crashlogName), crashLogTmp);
-                crashLogTmp = null;
-                Server.Instance.ServerTraceDiscordReporter.Enqueue($"Saving crashlog to {crashlogName}");
-            }
-
-            session.Player.LoggedOn = true;
             session.Player.State = session.Player.Gender == PlayerGender.Unset ? GameState.SetupGender : GameState.PinCheck;
-
-            Program.MainForm.LogAppend($"Account {username} ({session.Player.ID}) logged on. Machine ID: {machineID}, Unique ID: {uniqueID}, IP: {session.IP}, Ban counts: {machineBanCount}/{uniqueBanCount}/{ipBanCount}");
-            Program.MainForm.ChangeLoad(true);
-
-            // Update database
-            Server.Instance.UsersDatabase.RunQuery(
-                @"
-                    UPDATE users SET 
-                    last_login = NOW(), 
-                    last_ip = @ip, 
-                    last_machine_id = @machineId, 
-                    last_unique_id = @uniqueId 
-                    WHERE ID = @id",
-                "@id", session.Player.ID,
-                "@ip", session.IP,
-                "@machineId", machineID,
-                "@uniqueId", uniqueID
-            );
+            session.Player.MachineID = machineID;
+            session.Player.MachineBanCount = machineBanCount;
+            session.Player.IPBanCount = ipBanCount;
+            session.Player.UniqueBanCount = uniqueBanCount;
+            session.Player.UniqueID = uniqueID;
 
             if (updateDBPass)
             {

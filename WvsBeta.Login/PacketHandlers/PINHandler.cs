@@ -68,6 +68,7 @@ namespace WvsBeta.Login.PacketHandlers
             if (serverOp == PinServerOp.Success)
             {
                 session.Player.State = GameState.WorldSelect;
+                session.HandleLogin();
             }
 
             SendPinOperation(session, serverOp);

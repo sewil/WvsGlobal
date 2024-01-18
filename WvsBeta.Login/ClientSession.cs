@@ -1,16 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using log4net;
-using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
 using WvsBeta.Common.Sessions;
-using System.Text;
-using log4net.Appender;
-using static WvsBeta.Login.Packets.CheckPasswordResultPacket;
 using WvsBeta.Login.Packets;
 using WvsBeta.Login.PacketHandlers;
 using WvsBeta.Common.Objects;
@@ -142,6 +137,15 @@ namespace WvsBeta.Login
                         case ClientMessages.LOGIN_EULA:
                             new ConfirmEULAHandler(this, log, packet);
                             break;
+                        case ClientMessages.LOGIN_SET_GENDER:
+                            new SetGenderHandler(this, log, packet);
+                            break;
+                        case ClientMessages.LOGIN_CHECK_PIN:
+                            PINHandler.HandlePinCheck(this, packet, log);
+                            break;
+                        case ClientMessages.LOGIN_SET_PIN:
+                            PINHandler.HandlePinSet(this, packet);
+                            break;
                     }
                 }
                 else
@@ -165,15 +169,6 @@ namespace WvsBeta.Login
                             break;
                         case ClientMessages.LOGIN_SELECT_CHARACTER:
                             new CharacterSelectHandler(this, log, packet);
-                            break;
-                        case ClientMessages.LOGIN_SET_GENDER:
-                            new SetGenderHandler(this, log, packet);
-                            break;
-                        case ClientMessages.LOGIN_CHECK_PIN:
-                            PINHandler.HandlePinCheck(this, packet, log);
-                            break;
-                        case ClientMessages.LOGIN_SET_PIN:
-                            PINHandler.HandlePinSet(this, packet);
                             break;
                         case ClientMessages.LOGIN_CREATE_CHARACTER:
                             OnCharCreation(packet);
@@ -215,6 +210,43 @@ namespace WvsBeta.Login
         {
             if (!Loaded) return;
             TryRegisterHackDetection(Player.ID);
+        }
+
+        public void HandleLogin()
+        {
+            StartLogging();
+            TryRegisterHackDetection();
+            Loaded = true;
+            RedisBackend.Instance.SetPlayerOnline(Player.ID, 1, IP);
+
+            string username = Player.Username;
+
+            if (crashLogTmp != null)
+            {
+                var crashlogName = IP + "-" + username + ".txt";
+                FileWriter.WriteLine(Path.Combine("ClientCrashes", crashlogName), crashLogTmp);
+                crashLogTmp = null;
+                Server.Instance.ServerTraceDiscordReporter.Enqueue($"Saving crashlog to {crashlogName}");
+            }
+
+            Player.LoggedOn = true;
+            Program.MainForm.LogAppend($"Account {username} ({Player.ID}) logged on. Machine ID: {Player.MachineID}, Unique ID: {Player.UniqueID}, IP: {IP}, Ban counts: {Player.MachineBanCount}/{Player.UniqueBanCount}/{Player.IPBanCount}");
+            Program.MainForm.ChangeLoad(true);
+
+            // Update database
+            Server.Instance.UsersDatabase.RunQuery(
+                @"
+                    UPDATE users SET 
+                    last_login = NOW(), 
+                    last_ip = @ip, 
+                    last_machine_id = @machineId, 
+                    last_unique_id = @uniqueId 
+                    WHERE ID = @id",
+                "@id", Player.ID,
+                "@ip", IP,
+                "@machineId", Player.MachineID,
+                "@uniqueId", Player.UniqueID
+            );
         }
 
         public bool IsValidName(string pName)
