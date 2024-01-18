@@ -244,13 +244,13 @@ namespace WvsBeta.Game
                     info.Crits.Add(hit.IsCrit);
                     if (calcDmg != clientDmg)
                     {
-                        Program.MainForm.LogAppend($"Mismatching client damage for character {chr.ID}! Expected {calcDmg}, received {clientDmg} (mob {attack.Mob.SpawnID}, hit {hitIdx}, isCrit: {hit.IsCrit})");
+                        Program.MainForm.LogDebug($"Mismatching client damage for character {chr.ID}! Expected {calcDmg}, received {clientDmg} (mob {attack.Mob.SpawnID}, hit {hitIdx}, isCrit: {hit.IsCrit})");
                     }
                     actualDamage += clientDmg;
                     expectedDamage += (int)calcDmg;
                 }
             }
-            if (actualDamage != expectedDamage)
+            if ((double)actualDamage / expectedDamage > 1.1)
             {
                 ReportDamageHack(chr, ad, actualDamage, expectedDamage);
                 return false;
