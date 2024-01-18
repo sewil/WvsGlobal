@@ -45,7 +45,7 @@ namespace WvsBeta.Game.Scripting
             var scriptsDir = Path.Combine(Environment.CurrentDirectory, "Scripts");
 
             string scriptPath = Path.Combine(scriptsDir, scriptName + ".cs");
-            if (!File.Exists(scriptPath))
+            if (!File.Exists(scriptPath) && scriptName != "standard")
             {
                 if (!Server.Instance.AvailableScripts.TryGetValue("standard", out IGameScript script))
                 {
