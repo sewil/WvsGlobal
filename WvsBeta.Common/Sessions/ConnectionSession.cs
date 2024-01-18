@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using log4net;
-using WvsBeta.Common.Properties;
 
 namespace WvsBeta.Common.Sessions
 {
@@ -93,7 +92,7 @@ namespace WvsBeta.Common.Sessions
         private static Random rnd = new Random();
         protected void SendMemoryRegions()
         {
-            if (isConnectedAsClient || !Settings.Default.MemoryCRCEnabled) return;
+            if (isConnectedAsClient || !Config.Instance.MemoryCRCEnabled) return;
 
             var packet = new Packet(ServerMessages.SEND_MEMORY_REGIONS);
             packet.WriteByte(0);
@@ -166,7 +165,7 @@ namespace WvsBeta.Common.Sessions
                         ScheduleDisconnect();
                         return;
                     }
-                    else if (!isConnectedAsClient && Settings.Default.MemoryCRCEnabled && header == (byte)ClientMessages.CLIENT_HASH && (BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0)
+                    else if (!isConnectedAsClient && Config.Instance.MemoryCRCEnabled && header == (byte)ClientMessages.CLIENT_HASH && (BitConverter.ToUInt16(previousDecryptIV, 0) % 31) == 0)
                     {
                         // Check for expected CRC packet
                         bool disconnect = true;

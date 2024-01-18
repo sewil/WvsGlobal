@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using WvsBeta.Common.Properties;
 using WvsBeta.Common.Sessions;
 
 namespace WvsBeta.Common
@@ -35,7 +34,7 @@ namespace WvsBeta.Common
         public static void Init(Action<string> dcCallback = null)
         {
             var pAction = new MasterThread.RepeatingAction("Pinger", time => {
-                if (lastPingTime != 0 && (time - lastPingTime) < Settings.Default.PingInterval)
+                if (lastPingTime != 0 && (time - lastPingTime) < Config.Instance.PingInterval)
                 {
                     Trace.WriteLine($"Ignoring ping (too much!): {(time - lastPingTime)}");
                     return;
@@ -71,7 +70,7 @@ namespace WvsBeta.Common
                             session.gotPong = false;
                             session.pings = 0;
                         }
-                        else if ((time - session.pingSentDateTime) > Settings.Default.PingInterval)
+                        else if ((time - session.pingSentDateTime) > Config.Instance.PingInterval)
                         {
                             session.pings++;
                             //Trace.WriteLine($"[{session}] Ping failed, retrying ({session.pings}/8)");
@@ -102,7 +101,7 @@ namespace WvsBeta.Common
                         }
                     }
                 }
-            }, Settings.Default.PingInterval, Settings.Default.PingInterval);
+            }, Config.Instance.PingInterval, Config.Instance.PingInterval);
             pAction.Start();
         }
     }
