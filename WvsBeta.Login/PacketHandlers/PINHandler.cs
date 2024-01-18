@@ -33,9 +33,6 @@ namespace WvsBeta.Login.PacketHandlers
                 "Tried to do a pin check while not in pin check state")) return;
 
             PinClientOp clientOp = (PinClientOp)packet.ReadByte();
-            bool first = packet.ReadBool();
-            int n = packet.ReadInt();
-
             PinServerOp serverOp;
             bool requirePin = Server.Instance.RequiresPIN;
             if (!requirePin)
@@ -47,26 +44,33 @@ namespace WvsBeta.Login.PacketHandlers
                 ResetState(session);
                 return;
             }
-            else if (session.Player.PIN == null)
-            {
-                serverOp = PinServerOp.RegisterNew;
-            }
-            else if (first)
-            {
-                serverOp = PinServerOp.EnterExisting;
-            }
             else
             {
-                bool changePin = clientOp == PinClientOp.Change;
-                string pin = packet.ReadString();
-                bool valid = pin == session.Player.PIN;
-                serverOp = valid ? changePin ? PinServerOp.RegisterNew : PinServerOp.Success : PinServerOp.InvalidPin;
+                bool first = packet.ReadBool();
+                int n = packet.ReadInt();
+                if (session.Player.PIN == null)
+                {
+                    serverOp = PinServerOp.RegisterNew;
+                }
+                else if (first)
+                {
+                    serverOp = PinServerOp.EnterExisting;
+                }
+                else
+                {
+                    bool changePin = clientOp == PinClientOp.Change;
+                    string pin = packet.ReadString();
+                    bool valid = pin == session.Player.PIN;
+                    serverOp = valid ? changePin ? PinServerOp.RegisterNew : PinServerOp.Success : PinServerOp.InvalidPin;
+                }
+            }
+
+            if (serverOp == PinServerOp.Success)
+            {
+                session.Player.State = GameState.WorldSelect;
             }
 
             SendPinOperation(session, serverOp);
-
-            if (serverOp == PinServerOp.Success)
-                session.Player.State = GameState.WorldSelect;
         }
         public static void SendPinOperation(ClientSession session, PinServerOp op)
         {
