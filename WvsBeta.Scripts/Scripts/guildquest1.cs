@@ -1352,53 +1352,30 @@ namespace WvsBeta.Scripts.Scripts
             }
         }
     }
-    class SyarenStatue
+    [Script("syarenStatue")]
+    class SyarenStatue : IReactorScript
     {
-        public static void Run(IReactorHost host, FieldReactor target)
+        public void Run(IReactorHost host, FieldReactor target)
         {
             if (target.Owner == null)
             {
-                if (MasterThread.IsDebug) target.Field.Message($"Statue {target.Name} lit up without owner", BroadcastMessageType.Notice);
+                if (MasterThread.IsDebug) target.Field.Message($"Statue \"{target.Name}\" ({target.ID}) lit up without owner", BroadcastMessageType.Notice);
                 return;
             }
-            
+
             var set = FieldSet.Instances["Guild1"];
             if (!set.Started) return;
-            
+
             var answer = set.GetVar("statueAnswer"); // "00000000000000000000"
             if (string.IsNullOrWhiteSpace(answer)) return;
             if (!int.TryParse(target.Name, out int reactorID)) return;
             int reactorIdx = reactorID - 1;
-            
+
             int phase = answer.ToString().Replace("0", "").Length + 1;
             answer = answer.Remove(reactorIdx, 1).Insert(reactorIdx, phase.ToString());
             set.SetVar("statueAnswer", answer);
             if (MasterThread.IsDebug)
-                target.Owner.Notice($"Statue {reactorID} lit up; phase={phase}; answer={answer}", BroadcastMessageType.Notice);
-        }
-    }
-    [Script("9208000")]
-    class SyarenStatue0 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            SyarenStatue.Run(host, target);
-        }
-    }
-    [Script("9208001")]
-    class SyarenStatue1 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            SyarenStatue.Run(host, target);
-        }
-    }
-    [Script("9208002")]
-    class SyarenStatue2 : IReactorScript
-    {
-        public void Run(IReactorHost host, FieldReactor target)
-        {
-            SyarenStatue.Run(host, target);
+                target.Owner.Notice($"Statue \"{target.Name}\" ({target.ID}) lit up; phase={phase}; answer={answer}", BroadcastMessageType.Notice);
         }
     }
 }

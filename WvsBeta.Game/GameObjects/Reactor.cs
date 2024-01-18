@@ -167,6 +167,7 @@ namespace WvsBeta.Game
             {
                 stateChanges.Remove(guid);
                 if (isLast) DestroyReactor();
+                else if (Reactor.States.Count == 1) RunAction();
             }, totalDelay, 0);
         }
 
@@ -217,13 +218,16 @@ namespace WvsBeta.Game
         private void RunAction()
         {
             RunFieldSetActions();
-            if (Reactor.Action != null && GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
+            if (Reactor.Action != null)
             {
-                rAction.Actions.ForEach(a => a.RunAction(this));
-            }
-            else
-            {
-                RunScript();
+                if (GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
+                {
+                    rAction.Actions.ForEach(a => a.RunAction(this));
+                }
+                else
+                {
+                    RunScript();
+                }
             }
         }
         private void RunFieldSetActions()
@@ -240,13 +244,9 @@ namespace WvsBeta.Game
             ReactorScriptSession.Run(this, script =>
             {
 #if !DEBUG
-                if (Owner != null && Owner.IsGM)
-                {
+                if (Owner?.IsGM == false) return;
 #endif
-                ChatPacket.SendBroadcastMessageToMap(Field.ID, "Error compiling script: " + script, BroadcastMessageType.Notice);
-#if !DEBUG
-                }
-#endif
+                Owner.Notice("Error compiling script: " + script);
             }, scriptName);
         }
         public void Trigger(GameCharacter owner = null, bool sendPacket = true, short delay = 0)

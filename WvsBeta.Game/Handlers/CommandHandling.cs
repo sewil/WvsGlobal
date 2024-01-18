@@ -287,6 +287,7 @@ namespace WvsBeta.Game.Handlers
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
+                        case "lu":
                         case "lookup":
                             {
                                 Func<string, string, bool> findItem = (name, query) => name?.ToLowerInvariant().Contains(query.ToLowerInvariant()) ?? false;
@@ -1231,6 +1232,7 @@ namespace WvsBeta.Game.Handlers
 
                         case "summon":
                         case "spawn":
+                        case "mob":
                             {
                                 if (Args.Count > 0)
                                 {
@@ -2520,7 +2522,8 @@ namespace WvsBeta.Game.Handlers
                         }
                     case "triggerreactor":
                         {
-                            if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
+                            if (Args.Count == 0) character.Message("Usage: /triggerreractor <reactor id>");
+                            else if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
                             {
                                 character.Message($"Reactor {rid} not found.");
                                 return true;
@@ -2531,7 +2534,7 @@ namespace WvsBeta.Game.Handlers
                             }
                             else
                             {
-                                reactor.Trigger();
+                                reactor.Trigger(character);
                             }
                             return true;
                         }
