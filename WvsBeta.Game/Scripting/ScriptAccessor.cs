@@ -42,7 +42,7 @@ namespace WvsBeta.Game.Scripting
         }
         public static string GetScriptPath(string scriptName)
         {
-            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "..", "WvsBeta.Scripts", "Scripts");
+            var scriptsDir = Path.Combine(Environment.CurrentDirectory, "Scripts");
 
             string scriptPath = Path.Combine(scriptsDir, scriptName + ".cs");
             if (!File.Exists(scriptPath))
