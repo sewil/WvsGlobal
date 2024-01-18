@@ -22,6 +22,7 @@ namespace WvsBeta.Game
         public bool Opened { get; private set; }
         public bool Started { get; private set; }
         public bool PendingEnd { get; private set; }
+        public bool PendingEnter { get; private set; }
         public bool Shuffle => Data.Shuffle;
         public long StartTime { get; private set; }
         public long EndTime { get; private set; }
@@ -226,6 +227,10 @@ namespace WvsBeta.Game
             var status = CheckCanEnter(owner, out var members);
             if (status != EnterStatus.Success) return status;
 
+            PendingEnter = true; // Prevents fs from ending before tele
+            // Init maps first before teleporting, shuffle reactors etc.
+            if (!Started) Start(owner);
+
             var mapID = Maps[mapIdx].ID;
             if (Data.Party)
             {
@@ -236,8 +241,8 @@ namespace WvsBeta.Game
                 owner.ChangeMap(mapID, portalName);
             }
 
-            if (!Started) Start(owner);
             if (Owner == null) Owner = owner;
+            PendingEnter = false;
             return EnterStatus.Success;
         }
 
@@ -249,24 +254,22 @@ namespace WvsBeta.Game
 
         public void TryEndingIt(long currentTime)
         {
-            if (!Started) return;
-            else if (!PendingEnd && Opened && !CheckMembers())
+            if (!Started || PendingEnd || PendingEnter) return;
+            
+            if (Opened && !CheckMembers())
             {
                 var timesUp = TimeOut > 0 && EndTime < currentTime;
                 var noMorePlayers = ActiveMaps.Sum(x => x.Characters.Count) == 0;
 
                 if (timesUp || noMorePlayers) End();
             }
-            
-            if (Started && !PendingEnd)
+
+            double secondsElapsed = (currentTime - StartTime) / 1000;
+            var events = pendingEvents.Where(i => i.TimeAfter <= secondsElapsed);
+            foreach (var fsEvent in events.ToList())
             {
-                double secondsElapsed = (currentTime - StartTime) / 1000;
-                var events = pendingEvents.Where(i => i.TimeAfter <= secondsElapsed);
-                foreach (var fsEvent in events.ToList())
-                {
-                    fsEvent.RunAction(this);
-                    pendingEvents.Remove(fsEvent);
-                }
+                fsEvent.RunAction(this);
+                pendingEvents.Remove(fsEvent);
             }
         }
 
