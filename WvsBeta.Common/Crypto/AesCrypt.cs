@@ -3,6 +3,8 @@ using Org.BouncyCastle.Crypto.Engines;
 using Org.BouncyCastle.Crypto.Modes;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
+using System;
+using System.Linq;
 
 namespace WvsBeta.Common.Crypto
 {
@@ -18,41 +20,31 @@ namespace WvsBeta.Common.Crypto
             _cipher.Init(true, ParameterUtilities.CreateKeyParameter("AES", Config.Instance.AesUserKey));
         }
 
-        private static byte[] Iv32(byte[] iv)
+        private static byte[] QuadIV(byte[] iv)
         {
-            byte[] qiv = new byte[32];
-            for (int i = 0; i < 32; i++)
-            {
-                qiv[i] = iv[0];
-            }
-            return qiv;
+            return Enumerable.Repeat(iv[0], 16).ToArray();
         }
 
-        public void Crypt(byte[] data, byte[] iv)
+        public void Crypt(byte[] buffer, byte[] iv)
         {
-            int remaining = data.Length;
-            int blockSize = 0x5B0;
+            int remaining = buffer.Length;
+            int blockSize = Math.Min(0x5B0, remaining);
             int bufferPos = 0;
+            byte[] qiv = QuadIV(iv);
 
             while (remaining > 0)
             {
-                if (remaining < blockSize)
-                {
-                    blockSize = remaining;
-                }
-                ProcessBlock(bufferPos, data, blockSize, iv, remaining == blockSize);
+                ProcessBlock(buffer, bufferPos, blockSize, qiv, remaining == blockSize);
                 bufferPos += blockSize;
                 remaining -= blockSize;
-                blockSize = 0x5B4;
+                blockSize = Math.Min(0x5B4, remaining);
             }
         }
 
-        private void ProcessBlock(int bufferPos, byte[] buffer, int blockSize, byte[] iv, bool isFinal)
+        private void ProcessBlock(byte[] buffer, int bufferPos, int blockSize, byte[] iv, bool isFinal)
         {
-            byte[] qiv = Iv32(iv);
-
             var streamCipher = new BufferedBlockCipher(new OfbBlockCipher(_cipher, _cipher.GetBlockSize() * 8));
-            streamCipher.Init(true, new ParametersWithIV(null, qiv));
+            streamCipher.Init(true, new ParametersWithIV(null, iv));
 
             if (isFinal) streamCipher.DoFinal(buffer, bufferPos, blockSize, buffer, bufferPos);
             else streamCipher.ProcessBytes(buffer, bufferPos, blockSize, buffer, bufferPos);
