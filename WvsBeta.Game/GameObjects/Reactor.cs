@@ -68,7 +68,16 @@ namespace WvsBeta.Game
         public ReactorState State => Reactor.States[_state];
 
         public Rectangle? EventRectangle { get; private set; }
-        public Pos Position { get; set; }
+        private Pos _position;
+        public Pos Position
+        {
+            get => _position;
+            set
+            {
+                _position = value;
+                SetEventRectangle();
+            }
+        }
         public short FrameDelay { get; }
         public bool FacesLeft { get; }
         public int ReactorTime { get; }
@@ -112,6 +121,10 @@ namespace WvsBeta.Game
         private void SetState(byte state)
         {
             _state = (byte)(state % Reactor.States.Count);
+            SetEventRectangle();
+        }
+        private void SetEventRectangle()
+        {
             if (State.Event?.Rectangle != null)
             {
                 var rect = State.Event.Rectangle.Value;
