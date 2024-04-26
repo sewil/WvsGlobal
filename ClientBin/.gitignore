@@ -2,3 +2,5 @@
 !.gitignore
 !*.idb
 !*.csv
+!*.iss.example
+!*.bat
