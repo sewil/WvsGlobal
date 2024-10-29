@@ -283,7 +283,7 @@ namespace WvsBeta.Game.Handlers
                         }
                 }
 
-                if (character.IsTester)
+                if (character.IsTester || character.IsGM)
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
@@ -337,7 +337,7 @@ namespace WvsBeta.Game.Handlers
                     return true;
                 }
 
-                if (character.GMLevel >= GMLevel.GMIntern) //Intern commands
+                if (character.IsGM) //Intern commands
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
