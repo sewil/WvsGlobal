@@ -1,0 +1,93 @@
+#Property
+
+port = 8383
+adminPort = 7070
+PrivateIP = 127.0.0.1
+gameWorldId = 0
+
+userWarning = 400
+userLimit = 600
+
+tespia = 1
+
+#redis = 127.0.0.1:6379
+
+dbCatalogGlobalAccount = GlobalAccount
+dbCatalogGameWorld = GameWorld
+dbCatalogCoupon = Coupon
+dbGameWorldSource = 127.0.0.1,7890
+dbGlobalAccountSource = 127.0.0.1,7890
+dbCouponSource = 127.0.0.1,7890
+
+userLimitITC = 10
+
+login = {
+	Login0 = { 
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8484
+	}
+}
+
+#events = {
+#	DROP_Rate = 2.0
+#	EXP_Rate = 2.0
+#	MESO_Rate = 2.0
+#	start = 2024-01-01T00:00:00.000Z
+#	end = 2024-01-02T00:00:00.000Z
+#	name = Celebration event!
+#	header = Celebration event in progress!
+#}
+
+game = {
+	Game0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8585
+	}
+	Game1 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8586
+	}
+	Game2 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8587
+	}
+	Game3 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8588
+	}
+}
+
+shop = {
+	Shop0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8787
+	}
+}
+
+mapgen = {
+	MapGen0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8989
+	}
+}
+
+claim = {
+	PublicIP = 127.0.0.1
+	PrivateIP = 127.0.0.1
+	port = 8888
+}
+
+itc = {
+	ITC0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8999
+	}
+}

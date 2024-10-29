@@ -1,0 +1,34 @@
+#Property
+
+port = 8484
+adminPort = 7071
+dbCatalogAccounts = wvsbeta
+dbAccountsSource = 127.0.0.1,3306
+requiresEULA = 1
+requiresPIN = 1
+tespia = 1
+disableMultiIP = 0
+
+PublicIP = 127.0.0.1
+PrivateIP = 127.0.0.1
+
+#redis = 127.0.0.1:6379
+
+logaccount = {
+	0 = 13
+	1 = 33
+}
+
+center = {
+	Tespia = {
+		ip = 127.0.0.1
+		port = 8383
+		world = 0
+		channelNo = 4
+		tespia = 1
+		worldRibbon = 0 # Normal = 1, Event = 1, New = 2, Hot = 3
+		worldMessage = Welcome to MapleStory!
+		userWarning = 400
+		userLimit = 600
+	}
+}

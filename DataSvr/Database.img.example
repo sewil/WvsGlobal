@@ -1,0 +1,4 @@
+dbUsername = wvsbeta_admin
+dbPassword = 12345
+dbDatabase = wvsbeta
+dbHost = localhost
