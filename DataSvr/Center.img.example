@@ -44,6 +44,9 @@ game = {
 		PublicIP = 127.0.0.1
 		PrivateIP = 127.0.0.1
 		port = 8585
+		EXP_Rate = 1.0
+		MESO_Rate = 1.0
+		DROP_Rate = 1.0
 	}
 	Game1 = {
 		PublicIP = 127.0.0.1
