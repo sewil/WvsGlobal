@@ -666,8 +666,11 @@ namespace WvsBeta.Game
                 return;
             }
             bool isSP = toPortalName == "sp";
-            var newMap = GameDataProvider.Maps[toMapId];
-            if (
+            if (!GameDataProvider.Maps.TryGetValue(toMapId, out Map newMap))
+            {
+                Program.MainForm.LogAppend("Change map failed for unknown map {0}.", toMapId);
+            }
+            else if (
                 (isSP && newMap.SpawnPoints.TryFind(sp => sp.Name == toPortalName, out Portal portal))
                 ||
                 (!isSP && newMap.Portals.TryGetValue(toPortalName, out portal))
