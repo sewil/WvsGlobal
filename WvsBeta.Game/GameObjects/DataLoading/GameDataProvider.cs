@@ -16,6 +16,9 @@ using WvsBeta.Common.WzObjects;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.GameObjects.DataLoading;
+#if !DEBUG
+using System.Threading.Tasks;
+#endif
 
 // if \(.*Node.ContainsChild\((.*)\)\)[\s\r\n]+\{[\s\r\n]+(.*)\r\n[\s\r\n]+\}
 // case $1: $2 break;
@@ -58,14 +61,10 @@ namespace WvsBeta.Game
                     ReadQuestData
                 };
 
-#if DEBUG
                 foreach (var func in funcs)
                 {
                     func();
                 }
-#else
-                Task.WaitAll(funcs.Select(Task.Run).ToArray());
-#endif
 
                 // Cleanup the drops from nonexistant items and droppers
                 

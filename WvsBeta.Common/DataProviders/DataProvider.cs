@@ -7,6 +7,9 @@ using reNX;
 using reNX.NXProperties;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
+#if !DEBUG
+using System.Threading.Tasks;
+#endif
 
 namespace WvsBeta.Common.DataProviders
 {
