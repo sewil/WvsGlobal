@@ -93,7 +93,7 @@ namespace WvsBeta.Login.PacketHandlers
                     dbpass = data.GetString("password");
                     banReason = (BanReason)data.GetByte("ban_reason");
                     banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeMillis();
-                    string pin = data.IsDBNull(5) ? null : data.GetString("pin");
+                    string pin = data.IsDBNull(6) ? null : data.GetString("pin");
 
                     if (RedisBackend.Instance.IsPlayerOnline(userId))
                     {

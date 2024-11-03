@@ -1271,6 +1271,7 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `ID` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(20) COLLATE latin1_general_ci NOT NULL,
+  `discord_id` VARCHAR(50) NOT NULL COLLATE 'latin1_general_ci',
   `password` char(130) COLLATE latin1_general_ci NOT NULL,
   `salt` char(10) COLLATE latin1_general_ci DEFAULT NULL,
   `email` varchar(255) COLLATE latin1_general_ci NOT NULL,
