@@ -1,0 +1,4 @@
+discord.py
+mysql-connector-python
+python-dotenv
+bcrypt
