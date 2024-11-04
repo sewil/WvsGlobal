@@ -311,13 +311,6 @@ namespace WvsBeta.Game
 
                     if (TotalDamage == 0) continue;
 
-                    var maxDamage = 5 + (chr.Level * 6);
-                    if (ad.SkillID == 0 && chr.Level < 10 && TotalDamage > maxDamage)
-                    {
-                        if (chr.PermaBan("Melee damage hack (low level), hit " + TotalDamage + " (max: " + maxDamage + ")"))
-                            return;
-                    }
-
                     died = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? ad.MesoExplosionKillDelay : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
 
                     //TODO sometimes when attacking without using a skill this gets triggered and throws a exception?
