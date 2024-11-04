@@ -10,7 +10,6 @@ namespace WvsBeta.Common.Objects
     public abstract class Item
     {
         public readonly int ItemID;
-        public int CharacterID { get; set; }
         public short Amount { get; set; }
         public short InventorySlot { get; set; } = 0;
         public long CashId { get; set; }
@@ -39,7 +38,6 @@ namespace WvsBeta.Common.Objects
             IsQuest = itemBase.IsQuest;
             IsTradeBlock = itemBase.IsTradeBlock;
             BigSize = itemBase.BigSize;
-            CharacterID = itemBase.CharacterID;
         }
 
         public Item Duplicate()
@@ -95,7 +93,6 @@ namespace WvsBeta.Common.Objects
             AlreadyInDatabase = true;
             CashId = data.GetInt64("cashid");
             Expiration = data.GetInt64("expiration");
-            CharacterID = data.GetInt32("charid");
         }
 
         public void EncodeForMigration(Packet pw)
@@ -146,7 +143,6 @@ namespace WvsBeta.Common.Objects
                 pw.WriteShort(0);
             }
 
-            pw.WriteInt(CharacterID);
             pw.WriteLong(CashId);
             pw.WriteLong(Expiration);
             pw.WriteBool(IsOnly);
@@ -205,7 +201,6 @@ namespace WvsBeta.Common.Objects
                 pr.ReadShort();
             }
 
-            item.CharacterID = pr.ReadInt();
             item.CashId = pr.ReadLong();
             item.Expiration = pr.ReadLong();
             item.IsOnly = pr.ReadBool();
