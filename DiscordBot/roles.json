@@ -1,0 +1,22 @@
+[
+    {
+        "name": "Tester",
+        "role_id": 1302212616223195166,
+        "gm_level": 16
+    },
+    {
+        "name": "GM Intern",
+        "role_id": 1303378190395506728,
+        "gm_level": 32
+    },
+    {
+        "name": "GM",
+        "role_id": 1297210415339667456,
+        "gm_level": 64
+    },
+    {
+        "name": "Admin",
+        "role_id": 1303378104823320706,
+        "gm_level": 128
+    }
+]

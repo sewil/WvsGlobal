@@ -5,6 +5,15 @@ import re
 import mysql.connector
 from dotenv import load_dotenv
 import bcrypt
+from enum import Enum
+from utils import get_gm_level
+
+# class syntax
+class GMLevel(Enum):
+    Tester = 16
+    GMIntern = 32
+    GM = 64
+    Admin = 128
 
 # Load environment variables from .env file
 load_dotenv()
@@ -26,13 +35,12 @@ class RegisterModal(discord.ui.Modal, title="Register"):
 
     async def on_submit(self, interaction: discord.Interaction):
         message = f'Something went wrong!'
-        user_id = interaction.user.id
         if self.password.value != self.password2.value:
             message = "Mismatching passwords!"
-        elif re.match("^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$", self.dob.value) == None:
+        elif re.match(r"^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$", self.dob.value) == None:
             message = "Invalid date of birth!"
         else:
-            message = db_register(user_id, self)
+            message = db_register(interaction, self)
 
         # Handle the form submission
         await interaction.response.send_message(
@@ -75,11 +83,12 @@ def db_connect():
     cur = cnx.cursor()
     return (cnx, cur)
 
-def db_register(user_id, form):
+def db_register(interaction, form):
     try:
         (cnx, cur) = db_connect()
 
         # Check username/discord_id already exists
+        user_id = interaction.user.id
         check_query = """
             SELECT COUNT(*) FROM users
             WHERE LOWER(username) = LOWER(%s) OR LOWER(discord_id) = LOWER(%s)
@@ -91,8 +100,12 @@ def db_register(user_id, form):
         dob_formatted = int(form.dob.value.replace("-", ""))
         hashed_password = bcrypt.hashpw(form.password.value.encode(), bcrypt.gensalt(10, prefix=b'2a'))
 
+        # Get GM Level
+        member: discord.Member = interaction.user
+        gm_level = get_gm_level(member.roles)
+
         insert_query = "INSERT INTO users (username, discord_id, password, email, gender, gm, char_delete_password) VALUES (%s, %s, %s, %s, %s, %s, %s)"
-        cur.execute(insert_query, (form.username.value, user_id, hashed_password, '', 10, 16, dob_formatted))
+        cur.execute(insert_query, (form.username.value, user_id, hashed_password, '', 10, gm_level, dob_formatted))
         cnx.commit()
 
         return f'Welcome {form.username}!'
