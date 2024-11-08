@@ -57,7 +57,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.DataExporter", "Wvs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.Scripts", "WvsBeta.Scripts\WvsBeta.Scripts.csproj", "{EECBD398-F79D-491E-A5ED-635CC08BFC52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.DropDataWriter", "WvsBeta.DropDataWriter\WvsBeta.DropDataWriter.csproj", "{391E1B5C-4F23-449F-A690-143B5F5415D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.NXWriter", "WvsBeta.NXWriter\WvsBeta.NXWriter.csproj", "{391E1B5C-4F23-449F-A690-143B5F5415D2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reWZ", "reWZ\reWZ.csproj", "{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}"
 EndProject
