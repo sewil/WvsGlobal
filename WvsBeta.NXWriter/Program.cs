@@ -12,22 +12,29 @@ using reNX.NXProperties;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using System.Globalization;
+using System.Reflection;
 
 namespace WvsBeta.NXWriter
 {
     internal class Program
     {
+        static bool orderNodes;
         static void Main(string[] args)
         {
-            if (args.Length == 0) throw new ArgumentException("Missing file name argument!");
-            string fileName = args[0];
-            string basePath = $@"..\ClientBin\exports\{fileName}";
-            NXFile nx = new NXFile($@"..\ClientBin\exports\{fileName}.nx");
+            if (args.Length < 2) throw new ArgumentException("Missing file name argument!");
+            string filein = args[0];
+            if (args.Length >= 3)
+            {
+                orderNodes = args[2] == "true";
+            }
+            string fileName = new FileInfo(filein).Name;
+            string dirout = Path.Combine(args[1], fileName);
+            NXFile nx = new NXFile(filein);
             XmlWriterSettings settings = new XmlWriterSettings();
-            Directory.CreateDirectory(basePath);
+            Directory.CreateDirectory(dirout);
             foreach (var node in nx.BaseNode)
             {
-                WriteNode(basePath, node);
+                WriteNode(dirout, node);
             }
         }
         static void WriteNode(string path, NXNode node)
@@ -46,30 +53,14 @@ namespace WvsBeta.NXWriter
                 }
             }
         }
-        class XMlutf8Encoding : UTF8Encoding
-        {
-            public override string WebName => "UTF-8";
-        }
         static void WriteImg(string path, NXNode node)
         {
-            var encoding = new XMlutf8Encoding();
-            var settings = new XmlWriterSettings() { Indent = true, Encoding = encoding, IndentChars = "" };
-            using (var fileStream = new FileStream($@"{path}\{node.Name}.xml", FileMode.Create))
-            using (var memoryStream = new MemoryStream())
-            using (XmlWriter writer = XmlWriter.Create(memoryStream, settings))
+            var settings = new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 };
+            using (XmlWriter writer = XmlWriter.Create($@"{path}\{node.Name}.xml", settings))
             {
                 writer.WriteStartDocument(true);
                 WriteImgNode(writer, node);
                 writer.WriteEndDocument();
-                writer.Flush();
-                string stringXml = Encoding.UTF8.GetString(memoryStream.ToArray())
-                    .Replace(" />", "/>")
-                    .Replace("'", "&apos;") + "\r\n";
-                byte[] byteArray = Encoding.UTF8.GetBytes(stringXml);
-                MemoryStream formattedStream = new MemoryStream(byteArray);
-                formattedStream.CopyTo(fileStream);
-                fileStream.Flush();
-                formattedStream.Flush();
             }
         }
         static void WriteImgNode(XmlWriter writer, NXNode node)
@@ -120,7 +111,11 @@ namespace WvsBeta.NXWriter
                 writer.WriteStartElement("imgdir");
                 writer.WriteAttributeString("name", node.Name);
             }
-            foreach (var childNode in node)
+            var childNodes = orderNodes ? node
+                .OrderBy(i => i.Name)
+                .OrderBy(i => int.TryParse(i.Name, out int n) ? n : 0)
+                .ToList() : node.ToList();
+            foreach (var childNode in childNodes)
             {
                 WriteImgNode(writer, childNode);
             }
