@@ -1,6 +1,3 @@
-[submodule "reNX"]
-	path = reNX
-	url = https://github.com/sewil/reNX
 [submodule "reWZ"]
 	path = reWZ
 	url = https://github.com/sewil/reWZ
