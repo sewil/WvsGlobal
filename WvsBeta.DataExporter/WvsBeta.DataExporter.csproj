@@ -65,7 +65,7 @@
       <Project>{9aad2566-35dd-481e-b87c-a8cd7d80be9e}</Project>
       <Name>WvsBeta.Game</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WvsBeta.ReNX\trunk\reNX.csproj">
+    <ProjectReference Include="..\reNX\reNX\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
     </ProjectReference>
