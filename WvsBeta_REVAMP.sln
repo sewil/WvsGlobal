@@ -61,7 +61,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.NXWriter", "WvsBeta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reWZ", "reWZ\reWZ.csproj", "{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WZ2NX", "WZ2NX\WZ2NX.csproj", "{33BF1B82-6AC2-4330-BE73-52F61A840E4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WZ2NX", "wz2nx\WZ2NX.csproj", "{33BF1B82-6AC2-4330-BE73-52F61A840E4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

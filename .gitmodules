@@ -5,3 +5,6 @@
 	path = reNX
 	url = https://github.com/sewil/reNX
 	branch = WvsGlobal
+[submodule "wz2nx"]
+	path = wz2nx
+	url = https://github.com/sewil/wz2nx
