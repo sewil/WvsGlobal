@@ -48,10 +48,13 @@ namespace WvsBeta.Game
             // Prevent sending the hide enable/disable packet to others
             if (isGMHideSkill)
             {
-                chr.SetHide(chr.GMHideEnabled == false, false);
-                if (chr.GMHideEnabled == false)
+                if (chr.GMHideEnabled)
                 {
                     StopSkill(chr, SkillID);
+                }
+                else
+                {
+                    chr.SetGMHide(!chr.GMHideEnabled, false);
                 }
             }
             else if (SkillID != Constants.Cleric.Skills.Heal ||
@@ -110,7 +113,7 @@ namespace WvsBeta.Game
                     if (character == chr) continue;
                     if (!computerSaysYes()) continue;
 
-                    PlayerEffectPacket.SendSkill(character, SkillID, SkillLevel, onOther: true);
+                    PlayerEffectPacket.SendSkill(character, SkillID, SkillLevel, skillOnOther: true);
                     additionalEffects?.Invoke(character);
                 }
             }
@@ -301,7 +304,7 @@ namespace WvsBeta.Game
                     {
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
-                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
+                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, skillOnOther: true);
                             victim.Buffs.AddBuff(SkillID, SkillLevel);
                         });
                         break;
@@ -310,7 +313,7 @@ namespace WvsBeta.Game
                     {
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
-                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
+                            PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, skillOnOther: true);
                             victim.ModifyHP(victim.PrimaryStats.GetMaxMP(false), true);
                             victim.ModifyMP(victim.PrimaryStats.GetMaxMP(false), true);
                             victim.Buffs.Dispell();
@@ -326,7 +329,7 @@ namespace WvsBeta.Game
                         {
                             if (victim.HP <= 0)
                             {
-                                PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, onOther: true);
+                                PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, skillOnOther: true);
                                 victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
                             }
                         });
@@ -489,7 +492,16 @@ namespace WvsBeta.Game
         {
             if (chr.PrimaryStats.HasBuff(skillid) == false) return;
 
+            var isGMHideSkill = skillid == Constants.Gm.Skills.Hide;
+
+            // Prevent sending the hide enable/disable packet to others
+            if (isGMHideSkill)
+            {
+                chr.SetGMHide(!chr.GMHideEnabled, false);
+            }
+
             chr.PrimaryStats.RemoveByReference(skillid);
+
             if (skillid == Constants.Rogue.Skills.DarkSight)
             {
                 // Are we debuffing twice here?

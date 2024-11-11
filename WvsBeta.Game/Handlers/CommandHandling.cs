@@ -1606,7 +1606,7 @@ namespace WvsBeta.Game.Handlers
                         {
                             if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
                             {
-                                PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, onOther: true);
+                                PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, skillOnOther: true);
                                 victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
                             }
                             else character.Message($"Dead player \"{Args[0]}\" not found.");
@@ -2701,7 +2701,7 @@ namespace WvsBeta.Game.Handlers
                         // /hide 0/1
                         bool doHide = packet.ReadBool();
                         //if (doHide == chr.GMHideEnabled) return;
-                        chr.SetHide(doHide, false);
+                        chr.SetGMHide(doHide, false);
 
                         //FileWriter.WriteLine(@"Logs\Admin Command Log.txt", string.Format("[{0}] Character {1} ({2}, UID: {3}) used admin command: /hide {4}", DateTime.Now.ToString(), chr.ID, chr.Name, chr.UserID, doHide));
                         break;

@@ -603,11 +603,19 @@ namespace WvsBeta.Game
             SetEXP(rExp <= 0 ? 0 : rExp);
         }
 
-        public void SetHide(bool hidden, bool init)
+        /// <summary>
+        /// Update GM hide state.
+        /// </summary>
+        /// <param name="enabled">Whether to enable GM hide.</param>
+        /// <param name="init">
+        /// Whether this is sent on player load (Change map or login).
+        /// If this is false it will send a Field.RemovePlayer packet to the other players in the map.
+        /// </param>
+        public void SetGMHide(bool enabled, bool init)
         {
-            AdminPacket.Hide(this, hidden);
+            AdminPacket.Hide(this, enabled);
 
-            if (hidden)
+            if (enabled)
             {
                 GMHideEnabled = true;
                 if (!init) Field.RemovePlayer(this, true);

@@ -690,6 +690,11 @@ namespace WvsBeta.Game
             chr.SendPacket(pw);
         }
 
+        /// <summary>
+        /// Send the cancel skill effect to the players in the map (except the player whose skill was cancelled).
+        /// </summary>
+        /// <param name="chr">The player whose skill was cancelled.</param>
+        /// <param name="skillid">The skill ID.</param>
         public static void CancelSkillEffect(GameCharacter chr, int skillid)
         {
             Packet pw = new Packet(ServerMessages.SKILL_CANCEL);
