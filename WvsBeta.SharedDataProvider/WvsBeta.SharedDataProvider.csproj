@@ -93,7 +93,7 @@
       <Project>{7e353d6f-0493-4fb9-982c-358acc42b418}</Project>
       <Name>WvsBeta.Database</Name>
     </ProjectReference>
-    <ProjectReference Include="..\reNX\reNX\reNX.csproj">
+    <ProjectReference Include="..\reNX\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
     </ProjectReference>

@@ -167,7 +167,7 @@
       <Project>{84164D2F-36B3-4D56-AF4A-BD12C37F71F5}</Project>
       <Name>WvsBeta.MasterThread</Name>
     </ProjectReference>
-    <ProjectReference Include="..\reNX\reNX\reNX.csproj">
+    <ProjectReference Include="..\reNX\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
     </ProjectReference>

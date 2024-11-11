@@ -1,3 +1,10 @@
 [submodule "reWZ"]
 	path = reWZ
 	url = https://github.com/sewil/reWZ
+[submodule "reNX"]
+	path = reNX
+	url = https://github.com/sewil/reNX
+	branch = WvsGlobal
+[submodule "wz2nx"]
+	path = wz2nx
+	url = https://github.com/sewil/wz2nx

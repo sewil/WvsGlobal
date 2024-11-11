@@ -1,6 +1,6 @@
 *
 !.gitignore
-!*.zip
 !*.bat
 !Contimove.img
 !*.img.example
+!ServerData.wz

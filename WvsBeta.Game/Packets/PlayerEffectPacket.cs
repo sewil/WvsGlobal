@@ -26,14 +26,17 @@ namespace WvsBeta.Game.Packets
     }
     public class PlayerEffectPacket : Packet
     {
-        private Packet foreignpw;
+        /// <summary>
+        /// The write packet for showing player effects to other players.
+        /// </summary>
+        private Packet foreignPW;
         private GameCharacter chr;
         private PlayerEffectPacket(GameCharacter chr, PlayerEffectType type) : base(ServerMessages.PLAYER_EFFECT)
         {
             this.chr = chr;
-            foreignpw = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
-            foreignpw.WriteInt(chr.ID);
-            foreignpw.WriteByte((byte)type);
+            foreignPW = new Packet(ServerMessages.SHOW_FOREIGN_EFFECT);
+            foreignPW.WriteInt(chr.ID);
+            foreignPW.WriteByte((byte)type);
 
             WriteByte((byte)type);
         }
@@ -41,7 +44,7 @@ namespace WvsBeta.Game.Packets
         {
             if (!localOnly)
             {
-                chr.Field.SendPacket(chr, foreignpw);
+                chr.Field.SendPacket(chr, foreignPW);
             }
 
             if (!foreignOnly)
@@ -49,13 +52,22 @@ namespace WvsBeta.Game.Packets
                 chr.SendPacket(this);
             }
         }
-        public static void SendSkill(GameCharacter chr, int skillId, byte skillLevel, bool foreignOnly = false, bool localOnly = false, bool onOther = false)
+        /// <summary>
+        /// Send skill player effect packet.
+        /// </summary>
+        /// <param name="chr"></param>
+        /// <param name="skillId"></param>
+        /// <param name="skillLevel"></param>
+        /// <param name="foreignOnly">Only show foreign effect.</param>
+        /// <param name="localOnly">Only show local effect.</param>
+        /// <param name="skillOnOther">Whether to show the skill effect on other or self.</param>
+        public static void SendSkill(GameCharacter chr, int skillId, byte skillLevel, bool foreignOnly = false, bool localOnly = false, bool skillOnOther = false)
         {
-            var p = new PlayerEffectPacket(chr, onOther ? PlayerEffectType.SkillOnOther : PlayerEffectType.SkillOnSelf);
+            var p = new PlayerEffectPacket(chr, skillOnOther ? PlayerEffectType.SkillOnOther : PlayerEffectType.SkillOnSelf);
             if (!localOnly)
             {
-                p.foreignpw.WriteInt(skillId);
-                p.foreignpw.WriteByte(skillLevel);
+                p.foreignPW.WriteInt(skillId);
+                p.foreignPW.WriteByte(skillLevel);
             }
             if (!foreignOnly)
             {
@@ -70,7 +82,7 @@ namespace WvsBeta.Game.Packets
             var p = new PlayerEffectPacket(chr, PlayerEffectType.Pet);
             if (!localOnly)
             {
-                p.foreignpw.WriteByte((byte)type);
+                p.foreignPW.WriteByte((byte)type);
             }
             if (!foreignOnly)
             {

@@ -47,7 +47,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.Logger", "WvsBeta.L
 		{22964CB0-8A39-41EA-807D-B5216D27DF70} = {22964CB0-8A39-41EA-807D-B5216D27DF70}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reNX", "reNX\reNX\reNX.csproj", "{0F5C5F44-238A-45F2-95AF-A1936949AEF2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reNX", "reNX\reNX.csproj", "{0F5C5F44-238A-45F2-95AF-A1936949AEF2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "log4net.ElasticSearch", "log4net.ElasticSearch\src\log4net.ElasticSearch\log4net.ElasticSearch.csproj", "{22964CB0-8A39-41EA-807D-B5216D27DF70}"
 EndProject
@@ -61,7 +61,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WvsBeta.NXWriter", "WvsBeta
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "reWZ", "reWZ\reWZ.csproj", "{85F7FE6D-63AC-44A1-83D2-CE5204E7535E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WZ2NX", "WZ2NX\WZ2NX.csproj", "{33BF1B82-6AC2-4330-BE73-52F61A840E4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WZ2NX", "wz2nx\WZ2NX.csproj", "{33BF1B82-6AC2-4330-BE73-52F61A840E4B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

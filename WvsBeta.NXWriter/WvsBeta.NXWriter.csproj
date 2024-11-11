@@ -18,7 +18,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\BinSvr\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -51,7 +51,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\reNX\reNX\reNX.csproj">
+    <ProjectReference Include="..\reNX\reNX.csproj">
       <Project>{0f5c5f44-238a-45f2-95af-a1936949aef2}</Project>
       <Name>reNX</Name>
     </ProjectReference>

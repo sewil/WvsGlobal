@@ -308,7 +308,7 @@ namespace WvsBeta.Game
             if (!Undercover)
             {
                 Buffs.AddBuff(hideSkill, 1);
-                SetHide(true, true);
+                SetGMHide(true, true);
             }
         }
 
