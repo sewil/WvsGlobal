@@ -14,3 +14,5 @@ deploy:
 	make build
 	make tag
 	make push
+redeploy:
+	aws ecs update-service --cluster $(AWS_CLUSTER_NAME) --service $(AWS_SERVICE) --force-new-deployment --region $(AWS_REGION)

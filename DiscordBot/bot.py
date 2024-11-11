@@ -20,6 +20,7 @@ load_dotenv()
 
 TOKEN = os.getenv("DISCORD_TOKEN")
 SERVER_ID = os.getenv("DISCORD_SERVER_ID")
+MIN_GM_LEVEL = int(os.getenv("MIN_GM_LEVEL") or 0)
 
 DB_HOST = os.getenv("DB_HOST")
 DB_NAME = os.getenv("DB_NAME")
@@ -40,7 +41,10 @@ class RegisterModal(discord.ui.Modal, title="Register"):
         elif re.match(r"^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$", self.dob.value) == None:
             message = "Invalid date of birth!"
         else:
-            message = db_register(interaction, self)
+            # Get GM Level
+            member: discord.Member = interaction.user
+            gm_level = get_gm_level(member.roles)
+            message = db_register(interaction, self, gm_level)
 
         # Handle the form submission
         await interaction.response.send_message(
@@ -83,7 +87,7 @@ def db_connect():
     cur = cnx.cursor()
     return (cnx, cur)
 
-def db_register(interaction, form):
+def db_register(interaction, form, gm_level):
     try:
         (cnx, cur) = db_connect()
 
@@ -99,10 +103,6 @@ def db_register(interaction, form):
 
         dob_formatted = int(form.dob.value.replace("-", ""))
         hashed_password = bcrypt.hashpw(form.password.value.encode(), bcrypt.gensalt(10, prefix=b'2a'))
-
-        # Get GM Level
-        member: discord.Member = interaction.user
-        gm_level = get_gm_level(member.roles)
 
         insert_query = "INSERT INTO users (username, discord_id, password, email, gender, gm, char_delete_password) VALUES (%s, %s, %s, %s, %s, %s, %s)"
         cur.execute(insert_query, (form.username.value, user_id, hashed_password, '', 10, gm_level, dob_formatted))
@@ -159,8 +159,17 @@ guild = discord.Object(id=SERVER_ID)
 async def register(interaction: discord.Interaction):
     # Instantiate the modal
     modal = RegisterModal()
-    # Show the modal to the user
-    await interaction.response.send_modal(modal)
+    # Get GM Level
+    member: discord.Member = interaction.user
+    gm_level = get_gm_level(member.roles)
+    if gm_level < MIN_GM_LEVEL:
+        await interaction.response.send_message(
+            'Missing required role(s) to do this!',
+            ephemeral=True
+        )
+    else:
+        # Show the modal to the user
+        await interaction.response.send_modal(modal)
 
 @tree.command(name="change_password", description="Opens a change password modal.", guild=guild)
 async def changePassword(interaction: discord.Interaction):
