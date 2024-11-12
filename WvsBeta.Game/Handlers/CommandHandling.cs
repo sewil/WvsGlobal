@@ -256,6 +256,148 @@ namespace WvsBeta.Game.Handlers
         static bool shuttingDown = false;
         static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
         static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", /*"mob", "quest", "npc", "skill"*/ };
+
+        readonly struct CommandData
+        {
+            /// <summary>
+            /// Command usage description.
+            /// </summary>
+            public readonly string usage;
+            /// <summary>
+            /// Command description.
+            /// </summary>
+            public readonly string description;
+
+            public CommandData(string usage, string description)
+            {
+                this.usage = usage;
+                this.description = description;
+            }
+
+            public override string ToString()
+            {
+                return $"{usage} : {description}";
+            }
+        }
+
+        static Dictionary<string, CommandData> regularCommands = new Dictionary<string, CommandData>
+        {
+            { "help", new CommandData("/help [page]", "Display this text.") },
+            { "roll", new CommandData("/roll", "Roll a random number between 1-100.") }
+        };
+        static Dictionary<string, CommandData> testerCommands = new Dictionary<string, CommandData>
+        {
+            { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, or maps.") },
+        };
+        static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
+        {
+            { "whereami", new CommandData($"/whereami", "Gives you your current map ID.") },
+            { "map", new CommandData($"/map <id/here/town>", "Teleport to the given map id, or return to the nearest town.") },
+            { "mapfs", new CommandData($"/mapfs <fieldset> <map index>", "Teleport to a field set map index.") },
+            { "chase", new CommandData($"/chase <player>", "Teleport to a player.") },
+            { "warphere", new CommandData($"/warphere <player>", "Teleport a player to you.") },
+            { "online", new CommandData($"/online", "See which players are online.") },
+            { "kick", new CommandData($"/kick", "Kick a player off the server.") },
+            { "permaban", new CommandData("/permaban <userid/charname/charid> <value> [reason]", "Ban a player permanently.") },
+            { "suspend", new CommandData("/suspend <userid/charname/charid> <value> <days to suspend> [reason]", "Ban a player temporarily.") },
+            { "unban", new CommandData("/unban <userid/charname/charid> <value>", "Unban a player.") },
+            { "mute", new CommandData("/mute <userid/charname/charid> <value> <hours> [reason]", "Mute a player.") },
+            { "unmute", new CommandData("/unmute <userid/charname/charid> <value>", "Unmute a player.") },
+            { "hackmute", new CommandData("/hackmute <charname> <hours>", "Mute the hack log for a given player.") },
+            { "hackunmute", new CommandData("/hackunmute <charname>", "Unmute the hack log for a given player.") },
+            { "movetracepet", new CommandData("/movetrace(pet|player|mob|summon) <userid/charname/charid> <value> <amount>", "Tracing a given trace type for a given amount.") },
+            { "warn", new CommandData("/warn <charname> <text>", "Send a warning to a player.") },
+            { "warnmap", new CommandData("/warnmap <text>", "Send a warning to all players in the current map.") },
+            { "maxskills", new CommandData("/maxskills", "Max all skills.") },
+            { "job", new CommandData("/job <job id>", "Set your job.") },
+            { "mp", new CommandData("/mp <value>", "Set your MP.") },
+            { "maxmp", new CommandData("/maxmp <value>", "Set your Max MP.") },
+            { "hp", new CommandData("/hp <value>", "Set your HP.") },
+            { "str", new CommandData("/str <value>", "Set your STR.") },
+            { "dex", new CommandData("/dex <value>", "Set your DEX.") },
+            { "luk", new CommandData("/luk <value>", "Set your LUK.") },
+            { "int", new CommandData("/int <value>", "Set your INT.") },
+            { "ap", new CommandData("/ap <value>", "Set your AP.") },
+            { "sp", new CommandData("/sp <value>", "Set your SP.") },
+            { "addsp", new CommandData("/addsp <value>", "Add SP.") },
+            { "level", new CommandData("/level <value>", "Set your level.") },
+            { "fame", new CommandData("/fame <value>", "Set your fame.") },
+            { "maxslots", new CommandData("/maxslots", "Max all your inventory slots.") },
+            { "maxstats", new CommandData("/maxstats", "Max all your stats.") },
+            { "pos", new CommandData("/pos", "Get current position info.") },
+            { "undercover", new CommandData("/undercover <true/false>", "Set undercover status.") },
+            { "reports", new CommandData("/reports", "Get the latest abuse reports.") },
+            { "whowashere", new CommandData("/whowashere", "Get the last 10 players who were previously in the current map.") },
+            { "givecash", new CommandData("/givecash <player> <amount>", "Give nexon cash to a player.") }
+        };
+        static Dictionary<string, CommandData> gmCommands = new Dictionary<string, CommandData>
+        {
+            { "item", new CommandData($"/item <itemid> [amount]", "Give yourself an item.") },
+            { "itempack", new CommandData($"/itempack <itemid>", "Give yourself an item pack.") },
+            { "spawn", new CommandData($"/spawn <mobid> [amount] [summonType] [summonOption]", "Spawn a mob.") },
+            { "spawnpos", new CommandData("/spawnpos <mobid> <x> <y> [fh] [summonType] [summonOption]", "Spawn a mob at a given position.") },
+            { "fieldset", new CommandData("/fieldset <minmembers/maxmembers> [amount]", "Configure field set properties.") },
+            { "fieldsetvar", new CommandData("/fieldsetvar <fieldsetname> <key> <value>", "Set a value to a field set variable.") },
+            { "removefieldsetvar", new CommandData("/removefieldsetvar <fieldsetname> <key>", "Unset a field set variable.") },
+            { "getid", new CommandData("/getid <charname>", "Get the character id from a player.") },
+            { "delete", new CommandData("/delete <inventory, 1=equip, 2=use, etc>", "Delete the first item from your inventory.") },
+            { "cleardrops", new CommandData("/cleardrops", "Clear all drops in the current map.") },
+            { "killall", new CommandData("/killall [how]", "Kill all mobs in the current map.") },
+            { "killalldmg", new CommandData("/killalldmg [damage]", "Kill all mobs in the current map with a given damage.") },
+            { "dmgall", new CommandData("/dmgall [damage]", "Damage all mobs in the current map with a given damage.") },
+            { "damage", new CommandData("/dmgmob <mobid> <dmg>", "Damage a mob.") },
+            { "hpbar", new CommandData("/hpbar <mobid> <hp> <maxhp> <colorBottom> <colorTop>", "Add a Boss HP bar to the current map.") },
+            { "mapnotice", new CommandData("/mapnotice <text>", "Send a notice to the current map.") },
+            { "ditto", new CommandData("/ditto <charname or charid>", "Imitate a character.") },
+            { "datto", new CommandData("/datto", "Stop imitating a character.") },
+            { "notice", new CommandData("/notice <text>", "Send a notice to the entire channel.") },
+            { "setsp", new CommandData("/setsp <skillid> [level/max]", "Set a skill to a given SP level.") },
+            { "heal", new CommandData("/heal", "Recover all your HP/MP.") },
+            { "resurrect", new CommandData("/resurrect <charname>", "Resurrect a player.") },
+            { "exp", new CommandData("/exp <value>", "Give yourself EXP.") },
+            { "mesos", new CommandData("/mesos <value>", "Give yourself mesos.") },
+            { "pton", new CommandData("/pton <portal id>", "Enable a portal in your map.") },
+            { "ptoff", new CommandData("/ptoff <portal id>", "Disable a portal in your map.") },
+            { "portals", new CommandData("/portals", "List nearby portals.") },
+            { "eventhelp", new CommandData("/eventhelp", "Display the GM event help menu.") },
+            { "eventdesc", new CommandData("/eventdesc", "Show the GM event instructions to everyone in the map.") },
+            { "startevent", new CommandData("/startevent", "Start the GM event.") },
+            { "stopevent", new CommandData("/stopevent", "Stop the GM event.") },
+            { "resetcoconuts", new CommandData("/resetcoconuts", "Reset the coconuts in your map. (Note: Only works in the coconuts map!)") },
+            { "ftjhelp", new CommandData("/ftjhelp", "Display the Find the Jewel event help menu.") },
+            { "snowballhelp", new CommandData("/snowballhelp", "Display the Snowball event help menu.") },
+            { "fitnesshelp", new CommandData("/fitnesshelp", "Display the Fitness event help menu.") },
+            { "quizhelp", new CommandData("/quizhelp", "Display the Quiz event help menu.") },
+        };
+        static Dictionary<string, CommandData> adminCommands = new Dictionary<string, CommandData>
+        {
+            { "shutdown", new CommandData("/shutdown <seconds>", "Shut down the server in <seconds>.") },
+            { "clock", new CommandData("/clock <seconds>", "Show a map timer.") },
+            { "header", new CommandData("/header <msg>", "Show a scrolling header.") },
+            { "headernotice", new CommandData("/headernotice <msg>", "Show a scrolling header and a notice.") },
+            { "packet", new CommandData("/packet <hex string>", "Send a packet using a hex string.") },
+            { "typedpacket", new CommandData("/typedpacket <type> <value> <type> <value> ... where type is int, short, long, string, byte", "Send a packet using specific types for easy conversion.") },
+            { "beginpacket", new CommandData("/beginpacket", "Initiate a pending packet. Used when you need to send a lot of data.") },
+            { "endpacket", new CommandData("/endpacket", "Send your pending packet.") },
+            { "drop", new CommandData("/drop [itemid] {amount}", "Drop item(s).") },
+            { "droptext", new CommandData("/droptext [0=red, 1=green] <your text>", "Drop red/green letters and numbers.") },
+            { "toggleportals", new CommandData("/toggleportals", "Toggle portals on/off.") },
+            { "makedonator", new CommandData("/makedonator <charname>", "Set a player as a donator.") },
+            { "getid2", new CommandData("/getid2 <charname>", "Get character ID.") },
+            { "save", new CommandData("/save", "Save your character to the database.") },
+            { "saveall", new CommandData("/saveall", "Save all characters in the current channel to the database.") },
+            { "petname", new CommandData("/petname", "Change the pet name.") },
+            { "vac", new CommandData("/vac [pet/mob]", "Loot all items in the map, provide pet/mob and they will loot it.") },
+            { "mobinfo", new CommandData("/mobinfo", "Get current map mob info.") },
+            { "mobchase", new CommandData("/mobchase <charname>", "Make all mobs in the map chase provided character.") },
+            { "reloadscript", new CommandData("/reloadscript <script name or id> [1 here for all channels]", "Reload a given NPC script.") },
+            { "reloadcashshop", new CommandData("/reloadcashshop", "Reload the Cash Shop data.") },
+            { "reloadevents", new CommandData("/reloadevents", "Reload world events.") },
+            { "setreactorstate", new CommandData("/setreactorstate <field reactor id> <byte state>", "Set the state of a field reactor.") },
+            { "triggerreactor", new CommandData("/triggerreractor <field reactor id>", "Trigger a field reactor.") },
+            { "triggerreactorbyname", new CommandData("/triggerreactorbyname <reactor name>", "Trigger a field reactor by name.") },
+            { "reactor", new CommandData("/reactor <int reactorId> <byte state> <bool facesLeft>", "Add a new reactor at your position.") }
+        };
         public static bool HandleChat(GameCharacter character, string text)
         {
             string logtext = string.Format("[{0,-9}] {1,-13}: {2}", character.MapID, character.Name, text);
@@ -275,6 +417,40 @@ namespace WvsBeta.Game.Handlers
                 // Pleb commands
                 switch (Args.Command.ToLowerInvariant())
                 {
+                    case "help":
+                        {
+                            int page = 1;
+                            if (Args.Count > 0)
+                            {
+                                page = Math.Max(1, Args[0].GetInt32());
+                            }
+                            var commands = regularCommands.ToList();
+                            if (character.IsTester)
+                            {
+                                commands.AddRange(testerCommands);
+                            }
+                            if (character.IsGM)
+                            {
+                                commands.AddRange(gmCommands);
+                            }
+                            if (character.IsAdmin)
+                            {
+                                commands.AddRange(adminCommands);
+                            }
+                            int pageSize = 10;
+                            int pages = (int)Math.Ceiling((double)commands.Count / pageSize);
+                            var messages = new List<string>
+                            {
+                                $"----------------- HELP{(pages > 1 ? $" ({page}/{pages})" : "")} -----------------"
+                            };
+                            messages.AddRange(commands
+                                .Skip((page - 1) * pageSize)
+                                .Take(pageSize)
+                                .Select(i => i.Value.ToString()));
+                            foreach (var message in messages)
+                                character.Message(message);
+                            return true;
+                        }
                     case "roll":
                         {
                             int roll = Rand32.NextBetween(1, 100);
@@ -1318,7 +1494,7 @@ namespace WvsBeta.Game.Handlers
                         {
                             if (Args.Count < 2)
                             {
-                                character.Message("Usage: /fieldsetvar <fieldsetname> <key>");
+                                character.Message("Usage: /removefieldsetvar <fieldsetname> <key>");
                                 return true;
                             }
                             var set = FieldSet.Instances[Args[0]];
@@ -1580,17 +1756,6 @@ namespace WvsBeta.Game.Handlers
 
 #endregion
 
-#region Job
-
-                        case "job":
-                            {
-                                if (Args.Count > 0 && Args[0].IsNumber())
-                                    character.SetJob(Args[0].GetInt16());
-                                return true;
-                            }
-
-#endregion
-
 #region Heal
 
                         case "heal":
@@ -1729,10 +1894,10 @@ namespace WvsBeta.Game.Handlers
                                 "In any event lobby map, use !eventdesc to display an event description message to all players.",
                                 " ",
                                 "AVAILABLE EVENTS:",
-                                "Find the Jewel. Help: !ftjhelp Map: /map jewel",
-                                "Snowball. Help: !snowballhelp Map: /map snowball for event map, !map 109060001 for lobby",
-                                "Fitness. Help: !fitnesshelp Map: /map fitness",
-                                "Quiz. Help: !quizhelp Map: /map quiz"
+                                "Find the Jewel. Help: /ftjhelp Map: /map jewel",
+                                "Snowball. Help: /snowballhelp Map: /map snowball for event map, /map 109060001 for lobby",
+                                "Fitness. Help: /fitnesshelp Map: /map fitness",
+                                "Quiz. Help: /quizhelp Map: /map quiz"
                             };
 
                                 HelpMessages.ForEach(m => character.Message(m));
@@ -1800,12 +1965,12 @@ namespace WvsBeta.Game.Handlers
                             {
                                 "============= Find The Jewel GM Help Guide =============",
                                 "Treasure scroll item ID: 4031018. Devil Scroll: 4031019. Entry map is 109010000. Other maps are 109010100-3, 109010200-3, 109010300-3, 109010400-3.",
-                                "Use '!spawn <mobid>' to create mobs at your location. Mob IDs: Super slime - 9100000, Super Jr. Necki - 9100001, Super Stirge - 9100002.",
-                                "Spawn reactors by moving and using '!ftjreactorhere <id> <jewel>', where <id> is the reactor id, and <jewel> indicates if it contains the treasure: 1 for treasure, 0 for nothing",
-                                "Make sure id does not exceed map limit, or client will crash. Example: !ftjreactorhere 1 1 places a reactor with id 1 and contains the treasure",
+                                "Use '/spawn <mobid>' to create mobs at your location. Mob IDs: Super slime - 9100000, Super Jr. Necki - 9100001, Super Stirge - 9100002.",
+                                "Spawn reactors by moving and using '/ftjreactorhere <id> <jewel>', where <id> is the reactor id, and <jewel> indicates if it contains the treasure: 1 for treasure, 0 for nothing",
+                                "Make sure id does not exceed map limit, or client will crash. Example: /ftjreactorhere 1 1 places a reactor with id 1 and contains the treasure",
                                 "Big maps will have 20 reactors (rid's 0 - 19) and small maps have 2 (rid's 0 - 1). Going past these limits will crash everything and require a server reboot",
-                                "Use !ftjenable to allow players to enter the entry map (via NPC Billy) before the event starts.",
-                                "Use !ftjstart to enable the portals, disably entry, and start the event. It will stop automatically when the timer runs out. Stop early with !ftjstop.",
+                                "Use /ftjenable to allow players to enter the entry map (via NPC Billy) before the event starts.",
+                                "Use /ftjstart to enable the portals, disably entry, and start the event. It will stop automatically when the timer runs out. Stop early with /ftjstop.",
                                 "Tip: From here, the viking NPCs will take care of the rest. It may be worth going into hide and going into maps in case some try to cheat/hack.",
                                 "Tip: Use AdminFly to get to platforms for mob and reactor placement, BUT, make sure to turn it off and land on the platform before placing things.",
                                 "Tip: For the most authentic experience, stirges only go in the kerning map, while slimes and necki go in the others. Stirge in hene maps looks weird.",
@@ -1882,8 +2047,8 @@ namespace WvsBeta.Game.Handlers
                                 List<string> HelpMessages = new List<string>()
                             {
                                 "============= Snowball Event GM Help Guide =============",
-                                "1. Use !snowballenable to allow entry to the hub map via event NPCs.",
-                                "2. Use !snowballstart to begin the event. Teams are automatically assigned and warped to the right spots",
+                                "1. Use /snowballenable to allow entry to the hub map via event NPCs.",
+                                "2. Use /snowballstart to begin the event. Teams are automatically assigned and warped to the right spots",
                                 "3. To stop early, use !snowballstop. Otherwise, the event will stop and determine a winner",
                                 "if the timer runs out or if a team reaches the finish line.",
                                 "4. After the event ends, there will be a 10 second delay for players to be warped to win/lose maps before",
@@ -1903,9 +2068,9 @@ namespace WvsBeta.Game.Handlers
                                 List<string> HelpMessages = new List<string>()
                             {
                                 "============= Fitness Event GM Help Guide =============",
-                                "1. Use !fitenable or !fitnessenable to allow entry to the hub map via event NPCs.",
-                                "2. Use !fitstart or !fitnessstart to begin the event. Characters are warped to the starting spot automatically",
-                                "3. To stop early, use !fitstop or !fitnessstop. Otherwise, the event will run until",
+                                "1. Use /fitenable or /fitnessenable to allow entry to the hub map via event NPCs.",
+                                "2. Use /fitstart or /fitnessstart to begin the event. Characters are warped to the starting spot automatically",
+                                "3. To stop early, use /fitstop or /fitnessstop. Otherwise, the event will run until",
                                 "the timer runs out. All who make it past stage 4 are automatically taken to the victory map by the portal."
                             };
 
@@ -1921,9 +2086,9 @@ namespace WvsBeta.Game.Handlers
                                 List<string> HelpMessages = new List<string>()
                             {
                                 "============= Quiz Event GM Help Guide =============",
-                                "1. Use !quizenable to allow entry to the hub map via event NPCs.",
-                                "2. Use !quizstart to begin the event. Characters are warped to the starting spot automatically, and 10 questions are asked automatically.",
-                                "3. To stop early, use !quizstop. Otherwise, the event will run until all questions have been asked."
+                                "1. Use /quizenable to allow entry to the hub map via event NPCs.",
+                                "2. Use /quizstart to begin the event. Characters are warped to the starting spot automatically, and 10 questions are asked automatically.",
+                                "3. To stop early, use /quizstop. Otherwise, the event will run until all questions have been asked."
                             };
 
                                 HelpMessages.ForEach(m => character.Message(m));
@@ -2037,7 +2202,7 @@ namespace WvsBeta.Game.Handlers
                             {
                                 if (Args.Count % 2 != 0 || Args.Count == 0)
                                 {
-                                    character.Message("Usage: !packet <type> <value> <type> <value> ... where type is int, short, long, string, byte");
+                                    character.Message("Usage: /packet <type> <value> <type> <value> ... where type is int, short, long, string, byte");
                                     return true;
                                 }
 
@@ -2086,7 +2251,7 @@ namespace WvsBeta.Game.Handlers
                                     {
                                         if (!Args[0].IsNumber())
                                         {
-                                            character.Message("Command syntax: !drop [itemid] {amount}");
+                                            character.Message("Command syntax: /drop [itemid] {amount}");
                                             return true;
                                         }
 
@@ -2124,7 +2289,7 @@ namespace WvsBeta.Game.Handlers
                             {
                                 if (Args.Count < 2 || !Args[0].IsNumber())
                                 {
-                                    character.Message("Command syntax: !droptext [0=red, 1=green] your text");
+                                    character.Message("Command syntax: /droptext [0=red, 1=green] your text");
                                     return true;
                                 }
 
@@ -2156,7 +2321,7 @@ namespace WvsBeta.Game.Handlers
                                                           "";
                                         break;
                                     default:
-                                        character.Message("Command syntax: !droptext [0=red, 1=green] your text");
+                                        character.Message("Command syntax: /droptext [0=red, 1=green] your text");
                                         return true;
                                 }
 
@@ -2196,18 +2361,10 @@ namespace WvsBeta.Game.Handlers
 
 #region TogglePortal
 
-                        case "toggleportal":
+                        case "toggleportals":
                             {
-                                if (character.Field.PortalsOpen == false)
-                                {
-                                    character.Notice("You have toggled the portal on.");
-                                    character.Field.PortalsOpen = true;
-                                }
-                                else
-                                {
-                                    character.Notice("You have toggled the portal off.");
-                                    character.Field.PortalsOpen = false;
-                                }
+                                character.Field.PortalsOpen = !character.Field.PortalsOpen;
+                                character.Notice($"You have toggled the portals {(character.Field.PortalsOpen ? "on" : "off")}.");
                                 return true;
                             }
 
@@ -2309,13 +2466,21 @@ namespace WvsBeta.Game.Handlers
                                 if (Args.Count > 0)
                                 {
                                     string newname = Args[0].Value;
-                                    if (newname.Length < 14)
+                                    if (newname.Length > 13)
                                     {
-                                        //character.Pets.ChangePetname(newname);
-                                        character.Message("Changed name lol");
+                                        character.Message("Cannot change the name! It's too long :(");
+                                        return true;
+                                    }
+                                    var pet = character.GetSpawnedPet();
+                                    if (pet == null)
+                                    {
+                                        character.Message("Pet not found!");
                                     }
                                     else
-                                        character.Message("Cannot change the name! It's too long :(");
+                                    {
+                                        pet.Name = newname;
+                                        character.Message("Changed name");
+                                    }
                                 }
                                 return true;
                             }
@@ -2456,7 +2621,7 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 else
                                 {
-                                    character.Notice($"Usage: !{Args.Command} <script name or id> (1 here for all channels)");
+                                    character.Notice($"Usage: /{Args.Command} <script name or id> (1 here for all channels)");
                                 }
                                 return true;
                             }
