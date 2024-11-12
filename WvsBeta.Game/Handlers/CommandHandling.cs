@@ -381,7 +381,22 @@ namespace WvsBeta.Game.Handlers
             { "endpacket", new CommandData("/endpacket", "Send your pending packet.") },
             { "drop", new CommandData("/drop [itemid] {amount}", "Drop item(s).") },
             { "droptext", new CommandData("/droptext [0=red, 1=green] <your text>", "Drop red/green letters and numbers.") },
-            { "toggleportals", new CommandData("/toggleportals", "Toggle portals on/off.") }
+            { "toggleportals", new CommandData("/toggleportals", "Toggle portals on/off.") },
+            { "makedonator", new CommandData("/makedonator <charname>", "Set a player as a donator.") },
+            { "getid2", new CommandData("/getid2 <charname>", "Get character ID.") },
+            { "save", new CommandData("/save", "Save your character to the database.") },
+            { "saveall", new CommandData("/saveall", "Save all characters in the current channel to the database.") },
+            { "petname", new CommandData("/petname", "Change the pet name.") },
+            { "vac", new CommandData("/vac [pet/mob]", "Loot all items in the map, provide pet/mob and they will loot it.") },
+            { "mobinfo", new CommandData("/mobinfo", "Get current map mob info.") },
+            { "mobchase", new CommandData("/mobchase <charname>", "Make all mobs in the map chase provided character.") },
+            { "reloadscript", new CommandData("/reloadscript <script name or id> [1 here for all channels]", "Reload a given NPC script.") },
+            { "reloadcashshop", new CommandData("/reloadcashshop", "Reload the Cash Shop data.") },
+            { "reloadevents", new CommandData("/reloadevents", "Reload world events.") },
+            { "setreactorstate", new CommandData("/setreactorstate <field reactor id> <byte state>", "Set the state of a field reactor.") },
+            { "triggerreactor", new CommandData("/triggerreractor <field reactor id>", "Trigger a field reactor.") },
+            { "triggerreactorbyname", new CommandData("/triggerreactorbyname <reactor name>", "Trigger a field reactor by name.") },
+            { "reactor", new CommandData("/reactor <int reactorId> <byte state> <bool facesLeft>", "Add a new reactor at your position.") }
         };
         public static bool HandleChat(GameCharacter character, string text)
         {
@@ -424,11 +439,16 @@ namespace WvsBeta.Game.Handlers
                             }
                             int pageSize = 10;
                             int pages = (int)Math.Ceiling((double)commands.Count / pageSize);
-                            string message = $"----------------- HELP{(pages > 1 ? $" ({page}/{pages})" : "")} -----------------";
-                            message += string.Join("\n", commands
+                            var messages = new List<string>
+                            {
+                                $"----------------- HELP{(pages > 1 ? $" ({page}/{pages})" : "")} -----------------"
+                            };
+                            messages.AddRange(commands
                                 .Skip((page - 1) * pageSize)
                                 .Take(pageSize)
                                 .Select(i => i.Value.ToString()));
+                            foreach (var message in messages)
+                                character.Message(message);
                             return true;
                         }
                     case "roll":
@@ -2446,13 +2466,21 @@ namespace WvsBeta.Game.Handlers
                                 if (Args.Count > 0)
                                 {
                                     string newname = Args[0].Value;
-                                    if (newname.Length < 14)
+                                    if (newname.Length > 13)
                                     {
-                                        //character.Pets.ChangePetname(newname);
-                                        character.Message("Changed name lol");
+                                        character.Message("Cannot change the name! It's too long :(");
+                                        return true;
+                                    }
+                                    var pet = character.GetSpawnedPet();
+                                    if (pet == null)
+                                    {
+                                        character.Message("Pet not found!");
                                     }
                                     else
-                                        character.Message("Cannot change the name! It's too long :(");
+                                    {
+                                        pet.Name = newname;
+                                        character.Message("Changed name");
+                                    }
                                 }
                                 return true;
                             }
@@ -2593,7 +2621,7 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 else
                                 {
-                                    character.Notice($"Usage: !{Args.Command} <script name or id> (1 here for all channels)");
+                                    character.Notice($"Usage: /{Args.Command} <script name or id> (1 here for all channels)");
                                 }
                                 return true;
                             }
