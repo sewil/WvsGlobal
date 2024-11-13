@@ -173,7 +173,6 @@ namespace WvsBeta.Common
                     ItemTeleportRock = 217,
                     ItemAPSPReset = 218,
 
-                    Pet = 500,
                     SetupEventItem = 399,
                     EtcMetal = 401,
                     EtcMineral = 402,
@@ -187,6 +186,9 @@ namespace WvsBeta.Common
                     EtcGachaponTicket = 411,
                     EtcSafetyCharm = 412,
                     EtcForging = 413,
+
+                    Pet = 500,
+                    CashBullet = 502,
                 }
             }
 
@@ -313,6 +315,7 @@ namespace WvsBeta.Common
         public static ItemSlotType getItemSlotType(int itemid)
         {
             if (Constants.isPet(itemid)) return ItemSlotType.Pet;
+            if (Constants.isCashBullet(itemid)) return ItemSlotType.Bundle;
             var inv = Constants.getInventory(itemid);
             switch (inv)
             {
@@ -349,6 +352,7 @@ namespace WvsBeta.Common
         public static bool isCoupleRing(int itemid) { return itemid == EquipIds.CrushRing; }
         public static bool isCash(int itemid) { return (getInventory(itemid) == InventoryType.Cash); }
         public static bool isPet(int itemid) { return getItemType(itemid) == (int)Items.Types.ItemTypes.Pet; }
+        public static bool isCashBullet(int itemid) { return getItemType(itemid) == (int)Items.Types.ItemTypes.CashBullet; }
         public static bool isStackable(int itemid) { return !(isRechargeable(itemid) || isEquip(itemid) || isCash(itemid)); }
         public static bool isOverall(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorOverall); }
         public static bool isTop(int itemid) { return (getItemType(itemid) == (int)Items.Types.ItemTypes.ArmorTop); }
