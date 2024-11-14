@@ -94,13 +94,14 @@ namespace WvsBeta.Login.PacketHandlers
                     banReason = (BanReason)data.GetByte("ban_reason");
                     banExpire = data.GetMySqlDateTime("ban_expire").Value.ToFileTimeMillis();
                     string pin = data.IsDBNull(6) ? null : data.GetString("pin");
+                    GMLevel gmLevel = (GMLevel)data.GetByte("gm");
 
                     if (RedisBackend.Instance.IsPlayerOnline(userId))
                     {
                         log.AssertWarning(true, $"[{username}][{userId}] already online");
                         loginState = LoginState.ALREADY_ONLINE;
                     }
-                    else if (Server.Instance.DisableMultiIP && RedisBackend.Instance.IsPlayerOnline(session.IP))
+                    else if (Server.Instance.DisableMultiIP && RedisBackend.Instance.IsPlayerOnline(session.IP) && !gmLevel.HasFlag(GMLevel.Tester))
                     {
                         loginState = LoginState.ALREADY_ONLINE;
                         log.AssertWarning(true, $"[{username}][{userId}] tried logging in on the same IP ({session.IP})");
@@ -143,7 +144,7 @@ namespace WvsBeta.Login.PacketHandlers
                         else
                         {
                             session.Player.PIN = pin;
-                            session.Player.GMLevel = (GMLevel)data.GetByte("gm");
+                            session.Player.GMLevel = gmLevel;
                             session.Player.Gender = (PlayerGender)data.GetByte("gender");
                             session.Player.DateOfBirth = data.GetInt32("char_delete_password");
                             session.Player.Username = username;
