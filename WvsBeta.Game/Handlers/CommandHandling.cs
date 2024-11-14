@@ -398,6 +398,21 @@ namespace WvsBeta.Game.Handlers
             { "triggerreactorbyname", new CommandData("/triggerreactorbyname <reactor name>", "Trigger a field reactor by name.") },
             { "reactor", new CommandData("/reactor <int reactorId> <byte state> <bool facesLeft>", "Add a new reactor at your position.") }
         };
+        public static string GetUsage(CommandArgs args)
+        {
+            var key = args.Command.ToLowerInvariant();
+            if (
+                !regularCommands.TryGetValue(key, out CommandData value) &&
+                !testerCommands.TryGetValue(key, out value) &&
+                !internCommands.TryGetValue(key, out value) &&
+                !gmCommands.TryGetValue(key, out value) &&
+                !adminCommands.TryGetValue(key, out value)
+            )
+            {
+                return "Unknown command!";
+            }
+            return "Usage: " + value.usage;
+        }
         public static bool HandleChat(GameCharacter character, string text)
         {
             string logtext = string.Format("[{0,-9}] {1,-13}: {2}", character.MapID, character.Name, text);
@@ -1060,8 +1075,18 @@ namespace WvsBeta.Game.Handlers
 
                         case "job":
                             {
-                                if (Args.Count > 0 && Args[0].IsNumber())
-                                    character.SetJob(Args[0].GetInt16());
+                                if (Args.Count < 1 || !short.TryParse(Args[0], out short jobID))
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (jobID != 0 && !GameDataProvider.HasJob(jobID))
+                                {
+                                    character.Message("Invalid job!");
+                                }
+                                else
+                                {
+                                    character.SetJob(jobID);
+                                }
                                 return true;
                             }
 
