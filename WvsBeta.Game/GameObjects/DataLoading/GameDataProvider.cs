@@ -1282,7 +1282,7 @@ namespace WvsBeta.Game
             }
         }
 
-        static int CalculateDropChance(double x)
+        public static int CalculateDropChance(double x)
         {
             if (x > 1.0 || x < 0.0)
                 throw new Exception("Invalid dropchance");
@@ -1302,54 +1302,7 @@ namespace WvsBeta.Game
 
                 var drops = pNode.Select(iNode =>
                     {
-                        var dropdata = new DropData();
-                        dropdata.Expiration = Item.NoItemExpiration;
-
-                        foreach (var node in iNode)
-                        {
-                            switch (node.Name)
-                            {
-                                case "period":
-                                    dropdata.Period = node.ValueUInt16();
-                                    break;
-                                case "dateExpire":
-                                    int val = node.ValueInt32();
-                                    int year = val / 1000000;
-                                    int month = val / 10000 % 100;
-                                    int day = val / 100 % 100;
-                                    int hour = val % 100;
-                                    var dt = new DateTime(year, month, day, hour, 0, 0);
-                                    var time = dt.ToFileTimeUtc() / TimeSpan.TicksPerMillisecond;
-
-                                    dropdata.Expiration = time;
-                                    break;
-
-                                case "money":
-                                    dropdata.Mesos = node.ValueInt32();
-                                    break;
-                                case "item":
-                                    dropdata.ItemID = node.ValueInt32();
-                                    break;
-                                case "min":
-                                    dropdata.Min = node.ValueInt16();
-                                    break;
-                                case "max":
-                                    dropdata.Max = node.ValueInt16();
-                                    break;
-                                case "premium":
-                                    dropdata.Premium = node.ValueBool();
-                                    break;
-                                case "prob":
-                                    dropdata.Chance = CalculateDropChance(node.ValueDouble());
-                                    break;
-                                case "quest":
-                                    dropdata.Quest = node.ValueInt16();
-                                    break;
-                                default:
-                                    Console.WriteLine($"Unhandled node {node.Name} in drop {dropper}");
-                                    break;
-                            }
-                        }
+                        var dropdata = new DropData(iNode, dropper);
                         return dropdata;
 
                     }
