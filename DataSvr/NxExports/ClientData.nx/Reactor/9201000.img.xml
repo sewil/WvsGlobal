@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9201000.img">
+  <imgdir name="0">
+    <canvas name="0">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <string name="0" value="4001036" />
+        <vector name="lt" x="-80" y="-30" />
+        <vector name="rb" x="80" y="30" />
+        <int name="state" value="1" />
+        <int name="type" value="100" />
+        <int name="1" value="1" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <vector name="origin" x="0" y="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <string name="action" value="syarenMob0" />
+  <imgdir name="info">
+    <string name="info" value="투명리엑터:서브몬스터 소환" />
+  </imgdir>
+  <imgdir name="1">
+    <canvas name="0">
+      <vector name="origin" x="0" y="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,390 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Skill.img">
+  <imgdir name="1001003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1001004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1001005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1101004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1101005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1101006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1101007">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111004">
+    <sound name="use" />
+  </imgdir>
+  <imgdir name="1111005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111007">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1111008">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1201004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1201005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1201006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211007">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211008">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1211009">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1301004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1301005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1301006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1301007">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311007">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="1311008">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2001002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2001003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2001004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2001005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2101001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2101002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2101003">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2101004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2101005">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2111002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2111003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2111004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2111005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2111006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2201001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2201002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2201003">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2201004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2201005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2211002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2211003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2211004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2211005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2211006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2301001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2301002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2301003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2301004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2301005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="2311006">
+    <sound name="Summon" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3001003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3001004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3101002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3101003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3101004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3101005">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3110001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3111002">
+    <sound name="Summon" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3111003">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3111004">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3111005">
+    <sound name="Summon" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3111006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3201002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3201003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3201004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3201005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3210001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3211002">
+    <sound name="Summon" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3211003">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3211004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3211005">
+    <sound name="Summon" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="3211006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4001002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4001003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4001334">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4001344">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4101003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4101004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4101005">
+    <sound name="use" />
+  </imgdir>
+  <imgdir name="4111001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4111002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4111003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4111004">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4111005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4111006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4201002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4201003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4201004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4201005">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="4211006">
+    <sound name="Hit" />
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001000">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001001">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001002">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001003">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001004">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001005">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001006">
+    <sound name="Use" />
+  </imgdir>
+  <imgdir name="5001007">
+    <sound name="Use" />
+  </imgdir>
+</imgdir>

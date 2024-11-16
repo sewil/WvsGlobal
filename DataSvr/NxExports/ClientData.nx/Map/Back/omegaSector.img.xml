@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="omegaSector.img">
+  <imgdir name="back">
+    <canvas name="0">
+      <vector name="origin" x="47" y="42" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="47" y="258" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="396" y="44" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="430" y="55" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <vector name="origin" x="28" y="32" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <vector name="origin" x="430" y="128" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6">
+      <vector name="origin" x="327" y="23" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="7">
+      <vector name="origin" x="191" y="66" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="8">
+      <vector name="origin" x="44" y="115" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="9">
+      <vector name="origin" x="113" y="45" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="10">
+      <vector name="origin" x="212" y="11" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="11">
+      <vector name="origin" x="140" y="30" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="12">
+      <vector name="origin" x="116" y="81" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="13">
+      <vector name="origin" x="174" y="95" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="14">
+      <vector name="origin" x="-24" y="-13" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="15">
+      <vector name="origin" x="199" y="39" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="16">
+      <vector name="origin" x="181" y="104" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="17">
+      <vector name="origin" x="79" y="89" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="18">
+      <vector name="origin" x="107" y="105" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="19">
+      <vector name="origin" x="154" y="145" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="20">
+      <vector name="origin" x="153" y="88" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="21">
+      <vector name="origin" x="153" y="88" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="22">
+      <vector name="origin" x="153" y="88" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="23">
+      <vector name="origin" x="365" y="163" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="24">
+      <vector name="origin" x="244" y="75" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="25">
+      <vector name="origin" x="153" y="88" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="26">
+      <vector name="origin" x="153" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="27">
+      <vector name="origin" x="153" y="88" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="28">
+      <vector name="origin" x="104" y="95" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="29">
+      <vector name="origin" x="124" y="166" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="30">
+      <vector name="origin" x="176" y="153" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="31">
+      <vector name="origin" x="20" y="20" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="32">
+      <vector name="origin" x="77" y="62" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="33">
+      <vector name="origin" x="80" y="63" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="34">
+      <vector name="origin" x="64" y="62" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <canvas name="18">
+    <vector name="origin" x="107" y="106" />
+    <int name="z" value="0" />
+  </canvas>
+</imgdir>

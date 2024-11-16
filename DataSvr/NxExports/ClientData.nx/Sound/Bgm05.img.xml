@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm05.img">
+  <sound name="AbandonedMine" />
+  <sound name="DownToTheCave" />
+  <sound name="HellGate" />
+  <sound name="MineQuest" />
+  <sound name="WolfWood" />
+</imgdir>

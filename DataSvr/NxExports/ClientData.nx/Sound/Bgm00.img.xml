@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm00.img">
+  <sound name="FloralLife" />
+  <sound name="GoPicnic" />
+  <sound name="Nightmare" />
+  <sound name="RestNPeace" />
+  <sound name="SleepyWood" />
+</imgdir>

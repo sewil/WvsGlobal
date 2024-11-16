@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1002006.img">
+  <imgdir name="finger">
+    <canvas name="0">
+      <int name="delay" value="5000" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="heart">
+    <canvas name="0">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6">
+      <int name="delay" value="200" />
+      <vector name="origin" x="26" y="71" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="7">
+      <int name="delay" value="150" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="8">
+      <int name="delay" value="3750" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <string name="quest" value="bookPrize" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="5000" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="wink">
+    <canvas name="0">
+      <int name="delay" value="200" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="4800" />
+      <vector name="origin" x="26" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

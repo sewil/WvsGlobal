@@ -22,13 +22,14 @@ namespace WvsBeta.NXWriter
         static void Main(string[] args)
         {
             if (args.Length < 2) throw new ArgumentException("Missing file name argument!");
-            string filein = args[0];
+            string filein = Path.GetFullPath(args[0]);
             if (args.Length >= 3)
             {
                 orderNodes = args[2] == "true";
             }
             string fileName = new FileInfo(filein).Name;
-            string dirout = Path.Combine(args[1], fileName);
+            string dirout = Path.GetFullPath(Path.Combine(args[1], fileName));
+            Console.WriteLine($"Reading from {filein}. Writing to {dirout}. Node ordering {orderNodes}.");
             NXFile nx = new NXFile(filein);
             XmlWriterSettings settings = new XmlWriterSettings();
             Directory.CreateDirectory(dirout);
@@ -56,7 +57,9 @@ namespace WvsBeta.NXWriter
         static void WriteImg(string path, NXNode node)
         {
             var settings = new XmlWriterSettings() { Indent = true, Encoding = Encoding.UTF8 };
-            using (XmlWriter writer = XmlWriter.Create($@"{path}\{node.Name}.xml", settings))
+            var xmlPath = $@"{path}\{node.Name}.xml";
+            Console.WriteLine(xmlPath);
+            using (XmlWriter writer = XmlWriter.Create(xmlPath, settings))
             {
                 writer.WriteStartDocument(true);
                 WriteImgNode(writer, node);

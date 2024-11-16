@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="HackingAutoBlock.img">
+  <imgdir name="hackingAutoBlock">
+    <imgdir name="0">
+      <int name="count" value="4" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="1">
+      <int name="count" value="4" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="2">
+      <int name="count" value="2" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="3">
+      <int name="count" value="4" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="4">
+      <int name="count" value="2" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="5">
+      <int name="count" value="4" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="6">
+      <int name="count" value="10" />
+      <int name="duration" value="30" />
+    </imgdir>
+    <imgdir name="7">
+      <int name="count" value="4" />
+      <int name="duration" value="30" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="2040024.img">
+  <imgdir name="info">
+    <int name="dcBottom" value="-20" />
+    <int name="dcLeft" value="-25" />
+    <int name="dcRight" value="25" />
+    <int name="dcTop" value="-116" />
+    <int name="float" value="1" />
+    <string name="quest" value="ludi014" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="30" y="120" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

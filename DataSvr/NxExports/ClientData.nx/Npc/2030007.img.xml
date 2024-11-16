@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="2030007.img">
+  <imgdir name="info">
+    <int name="dcBottom" value="5" />
+    <int name="dcLeft" value="-41" />
+    <int name="dcRight" value="42" />
+    <int name="dcTop" value="-50" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="42" y="53" />
+    </canvas>
+  </imgdir>
+</imgdir>

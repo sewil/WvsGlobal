@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="UI.img">
+  <sound name="BtMouseClick" />
+  <sound name="BtMouseOver" />
+  <sound name="BuyShopItem" />
+  <sound name="CharSelect" />
+  <sound name="DlgNotice" />
+  <sound name="DragEnd" />
+  <sound name="DragStart" />
+  <sound name="Invite" />
+  <sound name="MBtMouseClick" />
+  <sound name="MenuDown" />
+  <sound name="MenuUp" />
+  <sound name="RollDown" />
+  <sound name="RollUp" />
+  <sound name="ScrollUp" />
+  <sound name="Tab" />
+  <sound name="WorldSelect" />
+</imgdir>

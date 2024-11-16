@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9500201.img">
+  <imgdir name="die1">
+    <canvas name="0">
+      <int name="delay" value="120" />
+      <vector name="origin" x="44" y="107" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="120" />
+      <vector name="origin" x="55" y="93" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="200" />
+      <vector name="origin" x="67" y="93" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="120" />
+      <vector name="origin" x="132" y="63" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="120" />
+      <vector name="origin" x="130" y="63" />
+    </canvas>
+    <canvas name="5">
+      <int name="delay" value="120" />
+      <vector name="origin" x="128" y="63" />
+    </canvas>
+    <canvas name="6">
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+      <int name="delay" value="300" />
+      <vector name="origin" x="128" y="63" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0">
+      <int name="delay" value="300" />
+      <vector name="origin" x="44" y="117" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="300" />
+      <vector name="origin" x="44" y="117" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <int name="acc" value="110" />
+    <int name="bodyAttack" value="0" />
+    <int name="boss" value="1" />
+    <string name="elemAttr" value="I2F3" />
+    <int name="eva" value="24" />
+    <int name="exp" value="10" />
+    <float name="fs" value="10.0" />
+    <int name="hpRecovery" value="50" />
+    <int name="level" value="65" />
+    <int name="MADamage" value="0" />
+    <int name="maxHP" value="11000" />
+    <int name="maxMP" value="80" />
+    <int name="MDDamage" value="245" />
+    <int name="mpRecovery" value="2" />
+    <int name="PADamage" value="0" />
+    <int name="PDDamage" value="170" />
+    <int name="pushed" value="2000" />
+    <int name="speed" value="-50" />
+    <int name="summonType" value="1" />
+    <int name="undead" value="0" />
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0">
+      <int name="delay" value="250" />
+      <vector name="origin" x="52" y="111" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="250" />
+      <vector name="origin" x="52" y="104" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="250" />
+      <vector name="origin" x="52" y="107" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="250" />
+      <vector name="origin" x="52" y="104" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="1000" />
+      <vector name="origin" x="44" y="107" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="150" />
+      <vector name="origin" x="44" y="107" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="80" />
+      <vector name="origin" x="44" y="107" />
+    </canvas>
+  </imgdir>
+</imgdir>

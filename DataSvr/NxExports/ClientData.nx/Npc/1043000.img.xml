@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1043000.img">
+  <imgdir name="info">
+    <string name="quest" value="bush1" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="41" y="59" />
+    </canvas>
+  </imgdir>
+</imgdir>

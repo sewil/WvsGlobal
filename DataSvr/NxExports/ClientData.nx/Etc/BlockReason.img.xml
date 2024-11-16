@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="BlockReason.img">
+  <imgdir name="1">
+    <string name="msg" value="Your account has been blocked for hacking or illegal use of third-party programs." />
+    <string name="type" value="HACK" />
+  </imgdir>
+  <imgdir name="2">
+    <string name="msg" value="Your account has been blocked for using macro / auto-keyboard." />
+    <string name="type" value="BOT" />
+  </imgdir>
+  <imgdir name="3">
+    <string name="msg" value="Your account has been blocked for illicit promotion and advertising." />
+    <string name="type" value="AD" />
+  </imgdir>
+  <imgdir name="4">
+    <string name="msg" value="Your account has been blocked for for harassment." />
+    <string name="type" value="HARASS" />
+  </imgdir>
+  <imgdir name="5">
+    <string name="msg" value="Your account has been blocked for using profane language." />
+    <string name="type" value="CURSE" />
+  </imgdir>
+  <imgdir name="6">
+    <string name="msg" value="Your account has been blocked for scamming." />
+    <string name="type" value="SCAM" />
+  </imgdir>
+  <imgdir name="7">
+    <string name="msg" value="Your account has been blocked for misconduct." />
+    <string name="type" value="MISCONDUCT" />
+  </imgdir>
+  <imgdir name="8">
+    <string name="msg" value="Your account has been blocked for illegal cash transaction" />
+    <string name="type" value="SELL" />
+  </imgdir>
+  <imgdir name="9">
+    <string name="msg" value="Your account has been blocked for illegal charging/funding. Please contact customer support for further details." />
+    <string name="type" value="ICASH" />
+  </imgdir>
+</imgdir>

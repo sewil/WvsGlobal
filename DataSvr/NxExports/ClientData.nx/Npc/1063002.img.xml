@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1063002.img">
+  <imgdir name="info">
+    <int name="dcLeft" value="-14" />
+    <int name="dcRight" value="14" />
+    <int name="dcTop" value="-32" />
+    <string name="quest" value="viola_white" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="14" y="32" />
+    </canvas>
+  </imgdir>
+</imgdir>

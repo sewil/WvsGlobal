@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1052106.img">
+  <imgdir name="eye">
+    <canvas name="0">
+      <int name="delay" value="2000" />
+      <vector name="origin" x="27" y="54" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="100" />
+      <vector name="origin" x="27" y="54" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="100" />
+      <vector name="origin" x="27" y="54" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="3000" />
+      <vector name="origin" x="27" y="54" />
+    </canvas>
+  </imgdir>
+</imgdir>

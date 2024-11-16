@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm03.img">
+  <sound name="Beachway" />
+  <sound name="BlueSky" />
+  <sound name="Elfwood" />
+  <sound name="SnowyVillage" />
+  <sound name="Subway" />
+</imgdir>

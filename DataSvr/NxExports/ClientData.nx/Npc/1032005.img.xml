@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1032005.img">
+  <imgdir name="info">
+    <int name="dcBottom" value="0" />
+    <int name="dcLeft" value="-75" />
+    <int name="dcRight" value="85" />
+    <int name="dcTop" value="-92" />
+    <string name="quest" value="mTaxi" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="83" y="93" />
+    </canvas>
+  </imgdir>
+</imgdir>

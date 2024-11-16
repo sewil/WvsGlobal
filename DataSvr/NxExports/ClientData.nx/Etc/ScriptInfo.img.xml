@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="ScriptInfo.img">
+  <string name="bowman" value="I'd like to know more about the bowman" />
+  <string name="carlie" value="I would like to exchange..." />
+  <string name="easter" value="Easter : Golden Egg" />
+  <string name="Event01" value="Opening the Magic Box" />
+  <string name="fighter" value="I'd like to know more about the warrior" />
+  <string name="florina2" value="Trip to Florina Beach" />
+  <string name="jane" value="Purchase Potion" />
+  <string name="ludi020" value="The Missing Mechanical Parts : Toy Factory &lt;Sector 4&gt;" />
+  <string name="ludi023" value="The Dollhouse" />
+  <string name="magician" value="I'd like to know more about the magician" />
+  <string name="mike" value="Old Gladius" />
+  <string name="oldBook1" value="I'd like to purchase a special item" />
+  <string name="oldBook2" value="Finding the Ancient Book..." />
+  <string name="oldBook5" value="Dark Crystal" />
+  <string name="owen" value="I heard that you can make a special item..." />
+  <string name="refine_sleepy" value="I heard that you can make some items..." />
+  <string name="rogue" value="I'd like to know more about the thief" />
+</imgdir>

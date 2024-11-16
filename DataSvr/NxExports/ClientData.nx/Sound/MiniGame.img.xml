@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="MiniGame.img">
+  <sound name="Draw" />
+  <sound name="Enter" />
+  <sound name="Loose" />
+  <sound name="Match" />
+  <sound name="Mushroom" />
+  <sound name="NoMatch" />
+  <sound name="Open" />
+  <sound name="Ready" />
+  <sound name="Slime" />
+  <sound name="Timer" />
+  <sound name="Win" />
+</imgdir>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm12.img">
+  <sound name="AcientRemain" />
+  <sound name="AquaCave" />
+  <sound name="DeepSee" />
+  <sound name="RuinCastle" />
+  <sound name="WaterWay" />
+</imgdir>

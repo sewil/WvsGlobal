@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="2060001.img">
+  <imgdir name="hand">
+    <canvas name="０">
+      <int name="dealy" value="2000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="１">
+      <int name="delat" value="100" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="２">
+      <int name="dealy" value="500" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="3">
+      <int name="delat" value="100" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info" />
+  <imgdir name="say">
+    <canvas name="０">
+      <int name="dealy" value="1000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="１">
+      <int name="dealy" value="150" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <imgdir name="speak">
+      <string name="0" value="s0" />
+      <string name="1" value="s1" />
+    </imgdir>
+    <canvas name="2">
+      <int name="dealy" value="1000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="3">
+      <int name="dealy" value="150" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="4">
+      <int name="dealy" value="1000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="5">
+      <int name="dealy" value="150" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="6">
+      <int name="dealy" value="1000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="7">
+      <int name="dealy" value="200" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="8">
+      <int name="dealy" value="200" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="9">
+      <int name="dealy" value="1000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="10">
+      <int name="dealy" value="150" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="2000" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="80" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="80" />
+      <vector name="origin" x="31" y="71" />
+    </canvas>
+  </imgdir>
+</imgdir>

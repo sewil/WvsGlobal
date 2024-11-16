@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="1061007.img">
+  <imgdir name="info">
+    <string name="quest" value="flower_out" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="43" y="66" />
+    </canvas>
+  </imgdir>
+</imgdir>

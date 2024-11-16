@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="01462006.img">
+  <imgdir name="alert">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="20" y="8" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="20" y="6" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="20" y="4" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="fly">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-6" y="28" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-6" y="28" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="info">
+    <string name="afterImage" value="crossBow" />
+    <int name="attack" value="4" />
+    <int name="attackSpeed" value="6" />
+    <int name="cash" value="0" />
+    <canvas name="icon">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+    <canvas name="iconRaw">
+      <vector name="origin" x="-1" y="33" />
+    </canvas>
+    <int name="incPAD" value="59" />
+    <string name="islot" value="WpSi" />
+    <int name="knockback" value="37" />
+    <int name="price" value="130000" />
+    <int name="reqDEX" value="130" />
+    <int name="reqINT" value="0" />
+    <int name="reqJob" value="4" />
+    <int name="reqLevel" value="42" />
+    <int name="reqLUK" value="0" />
+    <int name="reqSTR" value="42" />
+    <string name="sfx" value="cBow" />
+    <int name="stand" value="2" />
+    <int name="tuc" value="7" />
+    <string name="vslot" value="WpSi" />
+    <int name="walk" value="2" />
+  </imgdir>
+  <imgdir name="jump">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-11" y="26" />
+        </imgdir>
+        <vector name="origin" x="17" y="6" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="prone">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="47" y="9" />
+        </imgdir>
+        <vector name="origin" x="5" y="3" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="proneStab">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="47" y="9" />
+        </imgdir>
+        <vector name="origin" x="5" y="3" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="62" y="9" />
+        </imgdir>
+        <vector name="origin" x="5" y="3" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="shoot2">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="22" y="12" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="22" y="12" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="22" y="12" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="22" y="12" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="4">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="20" y="12" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stabT1">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="13" y="6" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="16" y="5" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="36" y="12" />
+        </imgdir>
+        <vector name="origin" x="12" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand2">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-3" y="20" />
+        </imgdir>
+        <vector name="origin" x="10" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-3" y="21" />
+        </imgdir>
+        <vector name="origin" x="10" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-3" y="20" />
+        </imgdir>
+        <vector name="origin" x="10" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="swingT1">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-20" y="34" />
+        </imgdir>
+        <vector name="origin" x="11" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="13" y="52" />
+        </imgdir>
+        <vector name="origin" x="11" y="5" />
+        <string name="z" value="weaponBelowArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="38" y="-7" />
+        </imgdir>
+        <vector name="origin" x="11" y="5" />
+        <string name="z" value="weapon" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="walk2">
+    <imgdir name="0">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="2" y="21" />
+        </imgdir>
+        <vector name="origin" x="5" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="1">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-4" y="21" />
+        </imgdir>
+        <vector name="origin" x="13" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="2">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="2" y="21" />
+        </imgdir>
+        <vector name="origin" x="5" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+    <imgdir name="3">
+      <canvas name="weapon">
+        <imgdir name="map">
+          <vector name="navel" x="-5" y="23" />
+        </imgdir>
+        <vector name="origin" x="11" y="5" />
+        <string name="z" value="weaponOverArm" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

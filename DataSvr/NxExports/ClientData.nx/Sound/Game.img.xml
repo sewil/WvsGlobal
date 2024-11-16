@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Game.img">
+  <sound name="Bird" />
+  <sound name="DropItem" />
+  <sound name="ElectrickDam" />
+  <sound name="GameIn" />
+  <sound name="JobChanged" />
+  <sound name="Jump" />
+  <sound name="LevelUp" />
+  <sound name="PickUpItem" />
+  <sound name="Portal" />
+  <sound name="Portal2" />
+  <sound name="Tombstone" />
+  <sound name="UseShopItem" />
+</imgdir>

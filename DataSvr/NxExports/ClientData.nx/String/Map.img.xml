@@ -1,0 +1,3112 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Map.img">
+  <imgdir name="etc">
+    <imgdir name="900000000">
+      <string name="mapName" value="Utah's Pig Farm" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000000">
+      <string name="mapName" value="Free Market Entrance" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000001">
+      <string name="mapName" value="Free Market&lt;1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000002">
+      <string name="mapName" value="Free Market&lt;2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000003">
+      <string name="mapName" value="Free Market&lt;3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000004">
+      <string name="mapName" value="Free Market&lt;4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000005">
+      <string name="mapName" value="Free Market&lt;5&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000006">
+      <string name="mapName" value="Free Market&lt;6&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000007">
+      <string name="mapName" value="Free Market&lt;7&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000008">
+      <string name="mapName" value="Free Market&lt;8&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000009">
+      <string name="mapName" value="Free Market&lt;9&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000010">
+      <string name="mapName" value="Free Market&lt;10&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000011">
+      <string name="mapName" value="Free Market&lt;11&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000012">
+      <string name="mapName" value="Free Market&lt;12&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000013">
+      <string name="mapName" value="Free Market&lt;13&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000014">
+      <string name="mapName" value="Free Market&lt;14&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000015">
+      <string name="mapName" value="Free Market&lt;15&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000016">
+      <string name="mapName" value="Free Market&lt;16&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000017">
+      <string name="mapName" value="Free Market&lt;17&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000018">
+      <string name="mapName" value="Free Market&lt;18&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000019">
+      <string name="mapName" value="Free Market&lt;19&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000020">
+      <string name="mapName" value="Free Market&lt;20&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000021">
+      <string name="mapName" value="Free Market&lt;21&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="910000022">
+      <string name="mapName" value="Free Market&lt;22&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922000000">
+      <string name="mapName" value="Toy Factory&lt;Sector 4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922000009">
+      <string name="mapName" value="Secret Passage" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922000010">
+      <string name="mapName" value="Doll's House" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922000020">
+      <string name="mapName" value="Secret Factory" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922000021">
+      <string name="mapName" value="Secret Factory" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010000">
+      <string name="mapName" value="Abandoned Tower&lt;End of Journey&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010100">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010200">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010201">
+      <string name="mapName" value="Tower's Trap" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010300">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010400">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010401">
+      <string name="mapName" value="Darkness in the Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010402">
+      <string name="mapName" value="Darkness in the Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010403">
+      <string name="mapName" value="Darkness in the Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010404">
+      <string name="mapName" value="Darkness in the Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010405">
+      <string name="mapName" value="Darkness in the Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010500">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 5&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010501">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010502">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010503">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010504">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010505">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010506">
+      <string name="mapName" value="Tower's Maze" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010600">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 6&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010700">
+      <string name="mapName" value="Abandoned Toewr&lt;Stage 7&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010800">
+      <string name="mapName" value="Abandoned Tower&lt;Stage 8&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922010900">
+      <string name="mapName" value="A Crack on the Wall" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922011000">
+      <string name="mapName" value="Abandoned Tower&lt;Bonus&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="922011100">
+      <string name="mapName" value="Abandoned Tower&lt;Determine to adventure&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="990000000">
+      <string name="mapName" value="Excavation Site" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000100">
+      <string name="mapName" value="Valley of the Guard" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000200">
+      <string name="mapName" value="Entrance to the Remains" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000300">
+      <string name="mapName" value="Door to the Sharenian Castle" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000301">
+      <string name="mapName" value="Road to the Fortress" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000400">
+      <string name="mapName" value="Hall of the Knight" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000410">
+      <string name="mapName" value="Room of Glory" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000420">
+      <string name="mapName" value="Room of Courage" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000430">
+      <string name="mapName" value="Room of Faith" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000431">
+      <string name="mapName" value="Room of Pledge" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000440">
+      <string name="mapName" value="Room of Justice" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000500">
+      <string name="mapName" value="Fountain of the Wiseman" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000501">
+      <string name="mapName" value="Center Banquet" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000502">
+      <string name="mapName" value="Wine Cellar" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000600">
+      <string name="mapName" value="Underground Waterway" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000610">
+      <string name="mapName" value="Waterway Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000611">
+      <string name="mapName" value="End of the Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000620">
+      <string name="mapName" value="Waterway Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000630">
+      <string name="mapName" value="Waterway Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000631">
+      <string name="mapName" value="End of the Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000640">
+      <string name="mapName" value="Waterway Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000641">
+      <string name="mapName" value="End of the Maze" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000700">
+      <string name="mapName" value="Sharen III's Grave" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000800">
+      <string name="mapName" value="King's Corridor" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990000900">
+      <string name="mapName" value="Ergoth's Throne" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990001000">
+      <string name="mapName" value="Sharen III's Treasure Wearhouse" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990001100">
+      <string name="mapName" value="Returning Path" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+    <imgdir name="990001101">
+      <string name="mapName" value="Guild Union Camp" />
+      <string name="streetName" value="Sharenian" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="maple">
+    <imgdir name="0">
+      <string name="mapName" value="West Entrance to Mushroom Town" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="10000">
+      <string name="mapDesc" value="The town for beginners. Playing the game through simple quests\r\nYou'll learn how to move around here." />
+      <string name="mapName" value="Mushroom Town" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="20000">
+      <string name="mapName" value="Mushroom Town" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="20001">
+      <string name="mapName" value="Mushroom Town Townstreet" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="30000">
+      <string name="mapName" value="East Entrance to Mushroom Town" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="40000">
+      <string name="mapName" value="Snail Hunting Ground I" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="40001">
+      <string name="mapName" value="Snail Hunting Ground II" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="40002">
+      <string name="mapName" value="Snail Hunting Ground III" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="50000">
+      <string name="mapName" value="A Split Road" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="60000">
+      <string name="help" value="#e[To Enter the Event]#n\n\n  If there's a notice posted in #b#ein blue#n#k saying that we're accepting participants for an event, click on #e[Paul]#n and choose #e[Yeah, let's go!]#n to enter.\n  If you have already clicked on [Paul] when the event starts, then just click on [Yeah, let's go!] to enter.\n\n  Please read the event notice before entering.\n  Once the event starts, participants will be accepted as #efirst come, first serve#n until the event is full.\n\n#eYou can't enter an event more than once within 24 hours.#n\n\n  You won't be able to enter the event if you don't have any free slots available on your etc. inventory to receive an 'Event Trophy,' so make sure to leave a slot available.\n If you already have a #bSecret Scroll#k, please discard it before entering the event..\n\n#r  If you change channels or enter the #bCash Shop#k during the event, you'll automatically be disqualified from the event." />
+      <string name="mapDesc" value="An harbor down south. It's the place where you can travel to a much bigger island." />
+      <string name="mapName" value="Southperry" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="60001">
+      <string name="mapName" value="Southperry Armor Store" />
+      <string name="streetName" value="Maple Road" />
+    </imgdir>
+    <imgdir name="1000000">
+      <string name="mapName" value="The Field West of Amherst" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000001">
+      <string name="mapName" value="In a Small Forest" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000002">
+      <string name="mapName" value="Dangerous Forest" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000003">
+      <string name="mapName" value="Mushroom Garden" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000004">
+      <string name="mapName" value="Snail Garden" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000005">
+      <string name="mapName" value="Hunting Ground Middle of the Forest I" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1000006">
+      <string name="mapName" value="Hunting Ground Middle of the Forest II" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1010000">
+      <string name="mapDesc" value="It's an island located at the east of Maple Island, and it has various stores like weapon store, armor store, and department stores." />
+      <string name="mapName" value="Amherst" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1010001">
+      <string name="mapName" value="Amherst Weapon Store" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1010002">
+      <string name="mapName" value="Amherst Townstreet" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1010003">
+      <string name="mapName" value="Amherst Department Store" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1010004">
+      <string name="mapName" value="Snail Field of Flowers" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1020000">
+      <string name="mapName" value="The Field East of Amherst" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+    <imgdir name="1020001">
+      <string name="mapName" value="Tomato Field" />
+      <string name="streetName" value="Rainbow Street" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="ossyria">
+    <imgdir name="200000000">
+      <string name="help" value="#e[To Enter the Event]#n\n\n  If there's a notice posted in #b#ein blue#n#k saying that we're accepting participants for an event, click on #e[Martin]#n and choose #e[Yeah, let's go!]#n to enter.\n  If you have already clicked on [Martin] when the event starts, then just click on [Yeah, let's go!] to enter.\n\n  Please read the event notice before entering.\n  Once the event starts, participants will be accepted as #efirst come, first serve#n until the event is full.\n\n#eYou can't enter an event more than once within 24 hours.#n\n\n  You won't be able to enter the event if you don't have any free slots available on your etc. inventory to receive an 'Event Trophy,' so make sure to leave a slot available.\n If you already have a #bSecret Scroll#k, please discard it before entering the event..\n\n#r  If you change channels or enter the #bCash Shop#k during the event, you'll automatically be disqualified from the event." />
+      <string name="mapName" value="Orbis" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000001">
+      <string name="mapName" value="Orbis Weapon Store" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000002">
+      <string name="mapName" value="Orbis Department Store" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000100">
+      <string name="mapName" value="Orbis Ticketing Booth" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000110">
+      <string name="mapName" value="Station Tunnel &lt;To Ellinia&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000111">
+      <string name="mapName" value="Station&lt;To Ellinia&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000112">
+      <string name="mapName" value="Before Takeoff &lt;To Ellinia&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000120">
+      <string name="mapName" value="Station Pathway&lt;Ludibrium&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000121">
+      <string name="mapName" value="Station&lt;Ludibrium&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000122">
+      <string name="mapName" value="Before the Departure &lt;Ludibrium&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000200">
+      <string name="mapName" value="Orbis Park" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000201">
+      <string name="mapName" value="Orbis Plastic Surgery" />
+      <string name="streetName" value="Orbis Park" />
+    </imgdir>
+    <imgdir name="200000202">
+      <string name="mapName" value="Orbis Hair Salon" />
+      <string name="streetName" value="Orbis Park" />
+    </imgdir>
+    <imgdir name="200000203">
+      <string name="mapName" value="Orbis Skin-Care" />
+      <string name="streetName" value="Orbis Park" />
+    </imgdir>
+    <imgdir name="200000300">
+      <string name="mapName" value="Top of the Hill" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200000301">
+      <string name="mapName" value="Guild Head Quater&lt;Hall of Fame&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010000">
+      <string name="mapName" value="Cloud Park I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010100">
+      <string name="mapName" value="The Road to Garden of 3 Colors" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010110">
+      <string name="mapName" value="Garden of Red I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010111">
+      <string name="mapName" value="Garden of Red II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010120">
+      <string name="mapName" value="Garden of Yellow I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010121">
+      <string name="mapName" value="Garden of Yellow II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010130">
+      <string name="mapName" value="Garden of Green I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010131">
+      <string name="mapName" value="Garden of Green II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010200">
+      <string name="mapName" value="Stairway to the Sky I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010300">
+      <string name="mapName" value="Stairway to the Sky II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010301">
+      <string name="mapName" value="Garden of Darkness I" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200010302">
+      <string name="mapName" value="Garden of Darkness II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200020000">
+      <string name="mapName" value="Cloud Park II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200030000">
+      <string name="mapName" value="Strolling Path" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200040000">
+      <string name="mapName" value="Cloud Park III" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200040001">
+      <string name="mapName" value="Disposed Flower Garden" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200050000">
+      <string name="mapName" value="Cloud Park IV" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200050001">
+      <string name="mapName" value="Old Man's House" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200060000">
+      <string name="mapName" value="Strolling Path II" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200070000">
+      <string name="mapName" value="Cloud Park V" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080000">
+      <string name="mapName" value="Cloud Park VI" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080100">
+      <string name="mapName" value="Entrance to Orbis Tower" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080200">
+      <string name="mapName" value="Orbis Tower &lt;20th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080300">
+      <string name="mapName" value="Orbis Tower &lt;19th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080400">
+      <string name="mapName" value="Orbis Tower &lt;18th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080500">
+      <string name="mapName" value="Orbis Tower &lt;17th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080600">
+      <string name="mapName" value="Orbis Tower &lt;16th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080700">
+      <string name="mapName" value="Orbis Tower &lt;15th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080800">
+      <string name="mapName" value="Orbis Tower &lt;14th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200080900">
+      <string name="mapName" value="Orbis Tower &lt;13th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081000">
+      <string name="mapName" value="Orbis Tower &lt;12th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081100">
+      <string name="mapName" value="Orbis Tower &lt;11th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081200">
+      <string name="mapName" value="Orbis Tower &lt;10th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081201">
+      <string name="mapName" value="Orbis Tower &lt;Hidden Room&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081300">
+      <string name="mapName" value="Orbis Tower &lt;9th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081400">
+      <string name="mapName" value="Orbis Tower &lt;8th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081500">
+      <string name="mapName" value="Orbis Tower &lt;7th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081600">
+      <string name="mapName" value="Orbis Tower &lt;6th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081700">
+      <string name="mapName" value="Orbis Tower &lt;5th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081800">
+      <string name="mapName" value="Orbis Tower &lt;4th Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200081900">
+      <string name="mapName" value="Orbis Tower &lt;3rd Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200082000">
+      <string name="mapName" value="Orbis Tower &lt;2nd Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200082100">
+      <string name="mapName" value="Orbis Tower &lt;1st Floor&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200082200">
+      <string name="mapName" value="Orbis Tower&lt;B1&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200082300">
+      <string name="mapName" value="Orbis Tower&lt;B2&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200082301">
+      <string name="mapName" value="Orbis Tower&lt;Hugh's Laboratory&gt;" />
+      <string name="streetName" value="Orbis" />
+    </imgdir>
+    <imgdir name="200090000">
+      <string name="mapName" value="To Ellinia" />
+      <string name="streetName" value="During the Ride" />
+    </imgdir>
+    <imgdir name="200090001">
+      <string name="mapName" value="Cabin &lt;To Ellinia&gt;" />
+      <string name="streetName" value="During the Ride" />
+    </imgdir>
+    <imgdir name="200090010">
+      <string name="mapName" value="To Orbis" />
+      <string name="streetName" value="During the Ride" />
+    </imgdir>
+    <imgdir name="200090011">
+      <string name="mapName" value="Cabin &lt;To Orbis&gt;" />
+      <string name="streetName" value="During the Ride" />
+    </imgdir>
+    <imgdir name="200090100">
+      <string name="mapName" value="Ludibrium" />
+      <string name="streetName" value="On a Voyage" />
+    </imgdir>
+    <imgdir name="200090110">
+      <string name="mapName" value="Orbis" />
+      <string name="streetName" value="On a Voyage" />
+    </imgdir>
+    <imgdir name="209000000">
+      <string name="mapName" value="Happyville" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000001">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000002">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000003">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000004">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000005">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000006">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000007">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000008">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000009">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000010">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000011">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000012">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000013">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000014">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="209000015">
+      <string name="mapName" value="The Hill of Christmas" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="211000000">
+      <string name="mapName" value="El Nath" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211000001">
+      <string name="mapName" value="Chief's Residence" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211000100">
+      <string name="mapName" value="El Nath Market" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211000101">
+      <string name="mapName" value="El Nath Weapon Store" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211000102">
+      <string name="mapName" value="El Nath Department Store" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211000200">
+      <string name="mapName" value="Snowy Hill" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211010000">
+      <string name="mapName" value="Watch Out for Icy Path I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211020000">
+      <string name="mapName" value="Watch Out for Icy Path II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211030000">
+      <string name="mapName" value="Cold Field I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040000">
+      <string name="mapName" value="Cold Field II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040001">
+      <string name="mapName" value="The Crown-Flyer" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="211040100">
+      <string name="mapName" value="Ice Valley I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040200">
+      <string name="mapName" value="Ice Valley II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040300">
+      <string name="mapName" value="Sharp Cliff I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040400">
+      <string name="mapName" value="Sharp Cliff II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040401">
+      <string name="mapName" value="Holy Ground at the Snowfield" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="211040500">
+      <string name="mapName" value="Wolf Territory I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040600">
+      <string name="mapName" value="Wolf Territory II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040700">
+      <string name="mapName" value="Dangerous Cliff" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040800">
+      <string name="mapName" value="Wolf Territory III" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211040900">
+      <string name="mapName" value="Wolf Territory IV" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041000">
+      <string name="mapName" value="Wolf Territory V" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041100">
+      <string name="mapName" value="Forest of Dead Trees I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041200">
+      <string name="mapName" value="Forest of Dead Trees II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041300">
+      <string name="mapName" value="Forest of Dead Trees III" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041400">
+      <string name="mapName" value="Forest of Dead Trees IV" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041500">
+      <string name="mapName" value="Dead Mine I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041600">
+      <string name="mapName" value="Dead Mine II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041700">
+      <string name="mapName" value="Dead Mine III" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041800">
+      <string name="mapName" value="Dead Mine IV" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211041900">
+      <string name="mapName" value="The Passage" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211042000">
+      <string name="mapName" value="The Cave of Trial I" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211042100">
+      <string name="mapName" value="The Cave of Trial II" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211042101">
+      <string name="mapName" value="Cave Within the Cave" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="211042200">
+      <string name="mapName" value="The Cave of Trial III" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211042300">
+      <string name="mapName" value="The Door to Zakum" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="211050000">
+      <string name="mapName" value="Icy Cold Field" />
+      <string name="streetName" value="El Nath" />
+    </imgdir>
+    <imgdir name="220000000">
+      <string name="help" value="#e[Event Help]#n\n\n Help" />
+      <string name="mapName" value="Ludibrium" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000001">
+      <string name="mapName" value="Ludibrium Weapon Store" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000002">
+      <string name="mapName" value="Ludibrium Pharmacy" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000003">
+      <string name="mapName" value="Ludibrium Plastic Sergery" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000004">
+      <string name="mapName" value="Ludibrium Hair Salon" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000005">
+      <string name="mapName" value="Ludibrium Skin Care" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000006">
+      <string name="mapName" value="Ludibrium Pet Walkway" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000100">
+      <string name="mapName" value="Ludibrium Ticketting Place" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000110">
+      <string name="mapName" value="Station&lt;Orbis&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000111">
+      <string name="mapName" value="Before the Departure &lt;Orbis&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000300">
+      <string name="mapName" value="Ludibrium Village" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000301">
+      <string name="mapName" value="Korin's House" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000302">
+      <string name="mapName" value="Manager Karl's House" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000303">
+      <string name="mapName" value="Tara and Sarah's House" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000304">
+      <string name="mapName" value="Chloe's House" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000305">
+      <string name="mapName" value="Empty House I" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000306">
+      <string name="mapName" value="Empty House II" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000307">
+      <string name="mapName" value="Mason's House" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220000400">
+      <string name="mapName" value="Eos Tower Entrance" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010000">
+      <string name="mapName" value="Cloud Terrace&lt;5&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010001">
+      <string name="mapName" value="Cloud Balcony" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010100">
+      <string name="mapName" value="Cloud Terrace&lt;4&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010200">
+      <string name="mapName" value="Cloud Terrace&lt;3&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010300">
+      <string name="mapName" value="Cloud Terrace&lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010400">
+      <string name="mapName" value="Cloud Terrace&lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010500">
+      <string name="mapName" value="Terrace Hall" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010600">
+      <string name="mapName" value="Sky Terrace&lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010700">
+      <string name="mapName" value="Sky Terrace&lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010800">
+      <string name="mapName" value="Sky Terrace&lt;3&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220010900">
+      <string name="mapName" value="Sky Terrace&lt;4&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220011000">
+      <string name="mapName" value="Sky Terrace&lt;5&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220011001">
+      <string name="mapName" value="Sky Terrace" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020000">
+      <string name="mapName" value="Toy Factory &lt;Process 1&gt; Zone 1" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020100">
+      <string name="mapName" value="Toy Factory &lt;Process 1&gt; Zone 2" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020200">
+      <string name="mapName" value="Toy Factory &lt;Process 1&gt; Zone 3" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020300">
+      <string name="mapName" value="Toy Factory &lt;Main Process 1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020400">
+      <string name="mapName" value="Toy Factory &lt;Process 1&gt; Zone 5" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020500">
+      <string name="mapName" value="Toy Factory &lt;Process 1&gt; Zone 6" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220020600">
+      <string name="mapName" value="Toy Factory &lt;Aparatus Room&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220030000">
+      <string name="mapName" value="Toy Factory &lt;Process 2&gt; Zone 1" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220030100">
+      <string name="mapName" value="Toy Factory &lt;Process 2&gt; Zone 2" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220030200">
+      <string name="mapName" value="Toy Factory &lt;Main Process 2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220030300">
+      <string name="mapName" value="Toy Factory &lt;Process 2&gt; Zone 4" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220030400">
+      <string name="mapName" value="Toy Factory &lt;Process 2&gt; Zone 5" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220040000">
+      <string name="mapName" value="The Path of Time &lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220040100">
+      <string name="mapName" value="The Path of Time &lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220040200">
+      <string name="mapName" value="Crossroad of Time" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220040300">
+      <string name="mapName" value="The Path of Time &lt;3&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220040400">
+      <string name="mapName" value="The Path of Time &lt;4&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220050000">
+      <string name="mapName" value="Lost Time &lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220050100">
+      <string name="mapName" value="Whirlpool of Time" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220050200">
+      <string name="mapName" value="Lost Time &lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220050300">
+      <string name="mapName" value="Path of Time" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220060000">
+      <string name="mapName" value="Warped Path of Time&lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220060100">
+      <string name="mapName" value="Warped Path of Time&lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220060200">
+      <string name="mapName" value="Warped Path of Time&lt;3&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220060201">
+      <string name="mapName" value="Unbalanced Time" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="220060300">
+      <string name="mapName" value="Warped Path of Time&lt;4&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220060301">
+      <string name="mapName" value="Twisted Time" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="220060400">
+      <string name="mapName" value="Warped Passage" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220070000">
+      <string name="mapName" value="Forgotten Path of Time&lt;1&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220070100">
+      <string name="mapName" value="Forgotten Path of Time&lt;2&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220070200">
+      <string name="mapName" value="Forgotten Path of Time&lt;3&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220070201">
+      <string name="mapName" value="Lost Time" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="220070300">
+      <string name="mapName" value="Forgotten Path of Time&lt;4&gt;" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220070301">
+      <string name="mapName" value="Forbidden Time" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="220070400">
+      <string name="mapName" value="Forgotten Passage" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220080000">
+      <string name="mapName" value="Deep Inside the Clocktower" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="220080001">
+      <string name="mapName" value="Origin of Clocktower" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221000000">
+      <string name="mapName" value="Omega Sector" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221000001">
+      <string name="mapName" value="Path" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221000100">
+      <string name="mapName" value="Headquarters" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221000200">
+      <string name="mapName" value="Hangar" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221000300">
+      <string name="mapName" value="The Commander's Room" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221000400">
+      <string name="mapName" value="Safety Zone" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221020000">
+      <string name="mapName" value="Eos Tower 1st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020100">
+      <string name="mapName" value="Eos Tower 2nd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020200">
+      <string name="mapName" value="Eos Tower 3rd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020300">
+      <string name="mapName" value="Eos Tower 4th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020400">
+      <string name="mapName" value="Eos Tower 5th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020500">
+      <string name="mapName" value="Eos Tower 6th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020600">
+      <string name="mapName" value="Eos Tower 7th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020700">
+      <string name="mapName" value="Eos Tower 8th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020701">
+      <string name="mapName" value="Hidden Tower" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221020800">
+      <string name="mapName" value="Eos Tower 9th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221020900">
+      <string name="mapName" value="Eos Tower 10th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021000">
+      <string name="mapName" value="Eos Tower 11th ~ 20th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021100">
+      <string name="mapName" value="Eos Tower 21st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021200">
+      <string name="mapName" value="Eos Tower 22nd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021300">
+      <string name="mapName" value="Eos Tower 23rd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021400">
+      <string name="mapName" value="Eos Tower 24th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021500">
+      <string name="mapName" value="Eos Tower 25th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021600">
+      <string name="mapName" value="Eos Tower 26th ~ 40th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021700">
+      <string name="mapName" value="Eos Tower 41st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021800">
+      <string name="mapName" value="Eos Tower 42nd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221021900">
+      <string name="mapName" value="Eos Tower 43rd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022000">
+      <string name="mapName" value="Eos Tower 44th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022100">
+      <string name="mapName" value="Eos Tower 45th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022200">
+      <string name="mapName" value="Eos Tower 46th ~ 55th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022300">
+      <string name="mapName" value="Eos Tower 56th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022400">
+      <string name="mapName" value="Eos Tower 57th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022500">
+      <string name="mapName" value="Eos Tower 58th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022600">
+      <string name="mapName" value="Eos Tower 59th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022700">
+      <string name="mapName" value="Eos Tower 60th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022800">
+      <string name="mapName" value="Eos Tower 61st ~ 70th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221022900">
+      <string name="mapName" value="Eos Tower 71st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023000">
+      <string name="mapName" value="Eos Tower 72nd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023100">
+      <string name="mapName" value="Eos Tower 73rd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023200">
+      <string name="mapName" value="Eos Tower 74th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023300">
+      <string name="mapName" value="Eos Tower 75th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023400">
+      <string name="mapName" value="Eos Tower 76th ~ 90th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023500">
+      <string name="mapName" value="Eos Tower 91st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023600">
+      <string name="mapName" value="Eos Tower 92nd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023700">
+      <string name="mapName" value="Eos Tower 93rd Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023800">
+      <string name="mapName" value="Eos Tower 94th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221023900">
+      <string name="mapName" value="Eos Tower 95th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024000">
+      <string name="mapName" value="Eos Tower 96th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024100">
+      <string name="mapName" value="Eos Tower 97th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024200">
+      <string name="mapName" value="Eos Tower 98th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024300">
+      <string name="mapName" value="Eos Tower 99th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024400">
+      <string name="mapName" value="Eos Tower 100th Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221024500">
+      <string name="mapName" value="Eos Tower 101st Floor" />
+      <string name="streetName" value="Ludibrium" />
+    </imgdir>
+    <imgdir name="221030000">
+      <string name="mapName" value="Off-Limits" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030100">
+      <string name="mapName" value="Roswell FieldⅠ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030200">
+      <string name="mapName" value="Roswell Field Ⅱ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030300">
+      <string name="mapName" value="Roswell Field Ⅲ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030301">
+      <string name="mapName" value="Matian Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221030400">
+      <string name="mapName" value="Roswell Field Ⅳ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030401">
+      <string name="mapName" value="Platian Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221030500">
+      <string name="mapName" value="Roswell FieldⅤ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030501">
+      <string name="mapName" value="Mecatian Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221030600">
+      <string name="mapName" value="Roswell Field VI" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221030601">
+      <string name="mapName" value="Kill Monsters" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221040000">
+      <string name="mapName" value="Coolan FieldⅠ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221040100">
+      <string name="mapName" value="Coolan Field Ⅱ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221040200">
+      <string name="mapName" value="Coolan Field Ⅲ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221040201">
+      <string name="mapName" value="Barnard Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221040300">
+      <string name="mapName" value="Coolan Field Ⅳ" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221040400">
+      <string name="mapName" value="Coolan Field V" />
+      <string name="streetName" value="Omega Sector" />
+    </imgdir>
+    <imgdir name="221040401">
+      <string name="mapName" value="Dogons Base Entrance" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="221040402">
+      <string name="mapName" value="Dogons Base" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="230000000">
+      <string name="mapName" value="Aquarium" />
+      <string name="streetName" value="Aquarium" />
+    </imgdir>
+    <imgdir name="230000001">
+      <string name="mapName" value="The Center Hall" />
+      <string name="streetName" value="Aquarium" />
+    </imgdir>
+    <imgdir name="230000002">
+      <string name="mapName" value="Department Store" />
+      <string name="streetName" value="Aquarium" />
+    </imgdir>
+    <imgdir name="230000003">
+      <string name="mapName" value="Zoo" />
+      <string name="streetName" value="Aquarium" />
+    </imgdir>
+    <imgdir name="230010000">
+      <string name="mapName" value="Ocean I.C" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230010001">
+      <string name="mapName" value="Penguin's Playground" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="230010100">
+      <string name="mapName" value="Crystal Gorge" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230010200">
+      <string name="mapName" value="Red Coral Forest" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230010201">
+      <string name="mapName" value="Snowy Whale's Island" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230010300">
+      <string name="mapName" value="Turban Shell Hill" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230010400">
+      <string name="mapName" value="Forked Road : West Sea" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230020000">
+      <string name="mapName" value="Forked Road : East Sea" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230020100">
+      <string name="mapName" value="The Seaweed Tower" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230020101">
+      <string name="mapName" value="The Hidden Town" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="230020200">
+      <string name="mapName" value="Sand Castle Playground" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230020201">
+      <string name="mapName" value="Two Palm Trees" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230020300">
+      <string name="mapName" value="Big Fish Valley" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230030000">
+      <string name="mapName" value="Blue Seaweed Road" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230030001">
+      <string name="mapName" value="Fish Resting Spot" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="230030100">
+      <string name="mapName" value="Mushroom Coral Hill" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230030101">
+      <string name="mapName" value="Tae Gong's Ferry" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230030200">
+      <string name="mapName" value="The Sharp Unknown" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040000">
+      <string name="mapName" value="Deep Sea Gorge I" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040001">
+      <string name="mapName" value="Carta's Cave" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040100">
+      <string name="mapName" value="Deep Sea Gorge II" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040200">
+      <string name="mapName" value="Dangerous Sea Gorge I" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040300">
+      <string name="mapName" value="Dangerous Sea Gorge II" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040301">
+      <string name="mapName" value="A Small Cave" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040400">
+      <string name="mapName" value="The Grave of a Wrecked Ship" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040401">
+      <string name="mapName" value="A Small Wrecked Ship" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040410">
+      <string name="mapName" value="The Dangerous Cave" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="230040420">
+      <string name="mapName" value="The Cave of Pianus" />
+      <string name="streetName" value="Aqua Road" />
+    </imgdir>
+    <imgdir name="280010000">
+      <string name="mapName" value="Unknown Dead Mine" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010010">
+      <string name="mapName" value="Area 1-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010011">
+      <string name="mapName" value="Area 1-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010020">
+      <string name="mapName" value="Area 2-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010030">
+      <string name="mapName" value="Area 3-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010031">
+      <string name="mapName" value="Area 3-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010040">
+      <string name="mapName" value="Area 4-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010041">
+      <string name="mapName" value="Area 4-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010050">
+      <string name="mapName" value="Area 5-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010060">
+      <string name="mapName" value="Area 6-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010070">
+      <string name="mapName" value="Area 7-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010071">
+      <string name="mapName" value="Area 7-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010080">
+      <string name="mapName" value="Area 8-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010081">
+      <string name="mapName" value="Area 8-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010090">
+      <string name="mapName" value="Area 9-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010091">
+      <string name="mapName" value="Area 9-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010100">
+      <string name="mapName" value="Area 10-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010101">
+      <string name="mapName" value="Area 10-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010110">
+      <string name="mapName" value="Area 11-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010120">
+      <string name="mapName" value="Area 12-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010130">
+      <string name="mapName" value="Area 13-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010140">
+      <string name="mapName" value="Area 14-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280010150">
+      <string name="mapName" value="Area 15-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011000">
+      <string name="mapName" value="Area 16 &lt;A Dead Mine Somewhere&gt;" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011001">
+      <string name="mapName" value="Area 16-1" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011002">
+      <string name="mapName" value="Area 16-2" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011003">
+      <string name="mapName" value="Area 16-3" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011004">
+      <string name="mapName" value="Area 16-4" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011005">
+      <string name="mapName" value="Area 16-5" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280011006">
+      <string name="mapName" value="Area 16-6" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280020000">
+      <string name="mapName" value="Breath of Lava &lt;Level 1&gt;" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280020001">
+      <string name="mapName" value="Breath of Lava &lt;Level 2&gt;" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+    <imgdir name="280030000">
+      <string name="mapName" value="Zakum's Altar" />
+      <string name="streetName" value="Last Mission" />
+    </imgdir>
+    <imgdir name="280090000">
+      <string name="mapName" value="The Room of Tragedy" />
+      <string name="streetName" value="Adobis's Mission I" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="victoria">
+    <imgdir name="100000000">
+      <string name="mapDesc" value="It's a bowman town on a wide prairie, and you can choose to become a bowman here." />
+      <string name="mapName" value="Henesys" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000001">
+      <string name="mapName" value="Henesys Townstreet" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000002">
+      <string name="mapName" value="An Empty House" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100000003">
+      <string name="mapName" value="Pig Park" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100000004">
+      <string name="mapName" value="Pig Park II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100000005">
+      <string name="mapName" value="Someone Else's House" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100000006">
+      <string name="mapName" value="The Resting Spot, Pig Park" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100000100">
+      <string name="mapName" value="Henesys Market" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000101">
+      <string name="mapName" value="Henesys Weapon Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000102">
+      <string name="mapName" value="Henesys Department Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000103">
+      <string name="mapName" value="Henesys Plastic Surgery" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000104">
+      <string name="mapName" value="Henesys Hair Salon" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000105">
+      <string name="mapName" value="Henesys Skin-Care" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000200">
+      <string name="mapName" value="Henesys Park" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000201">
+      <string name="mapName" value="Bowman Instructional School" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000202">
+      <string name="mapName" value="Pet-Walking Road" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100000203">
+      <string name="mapName" value="Henesys Game Park" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100010000">
+      <string name="mapName" value="The Hill East of Henesys" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100020000">
+      <string name="mapName" value="The Rain-Forest East of Henesys" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100030000">
+      <string name="mapName" value="The Forest East of Henesys" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100030001">
+      <string name="mapName" value="The Blue Mushroom Forest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100040000">
+      <string name="mapName" value="The Forest South of Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040001">
+      <string name="mapName" value="Dungeon, Southern Forest I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040002">
+      <string name="mapName" value="Dungeon, Southern Forest II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040003">
+      <string name="mapName" value="Dungeon, Southern Forest III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040004">
+      <string name="mapName" value="Dungeon, Southern Forest IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040100">
+      <string name="mapName" value="The Forest of Wisdom" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040101">
+      <string name="mapName" value="Monkey Forest I" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100040102">
+      <string name="mapName" value="Tree Dungeon, Monkey Forest I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040103">
+      <string name="mapName" value="Monkey Forest II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="100040104">
+      <string name="mapName" value="Tree Dungeon, Monkey Forest II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100040105">
+      <string name="mapName" value="The Forest of Evil I" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100040106">
+      <string name="mapName" value="The Forest of Evil II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100040110">
+      <string name="mapName" value="Downstairs at the Forest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="100050000">
+      <string name="mapName" value="The Field South of Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000000">
+      <string name="mapDesc" value="It's a magician town surrounded by the forest, and you can choose to become a magician here." />
+      <string name="mapName" value="Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000001">
+      <string name="mapName" value="Ellinia Weapon Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000002">
+      <string name="mapName" value="Ellinia Department Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000003">
+      <string name="mapName" value="Magic Library" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000100">
+      <string name="mapName" value="The Forest of Patience &lt;Step 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000101">
+      <string name="mapName" value="The Forest of Patience &lt;Step 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000102">
+      <string name="mapName" value="The Forest of Patience &lt;Step 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000103">
+      <string name="mapName" value="The Forest of Patience &lt;Step 4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000104">
+      <string name="mapName" value="The Forest of Patience &lt;Step 5&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000200">
+      <string name="mapName" value="Marr's Forest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101000300">
+      <string name="mapName" value="Ellinia Station" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101000301">
+      <string name="mapName" value="Before Takeoff &lt;To Orbis&gt;" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101010000">
+      <string name="mapName" value="The Field Up North of Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101010100">
+      <string name="mapName" value="The Tree That Grew I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101010101">
+      <string name="mapName" value="The Tree That Grew II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101010102">
+      <string name="mapName" value="The Tree That Grew III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020000">
+      <string name="mapName" value="The Forest North of Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020001">
+      <string name="mapName" value="The Tree Tunnel At the Forest Up North" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020002">
+      <string name="mapName" value="Tree Dungeon, Forest Up North I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020003">
+      <string name="mapName" value="Tree Dungeon, Forest Up North II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020004">
+      <string name="mapName" value="Tree Dungeon, Forest Up North III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020005">
+      <string name="mapName" value="Tree Dungeon, Forest Up North IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020006">
+      <string name="mapName" value="Tree Dungeon, Forest Up North V" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020007">
+      <string name="mapName" value="Tree Dungeon, Forest Up North VI" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020008">
+      <string name="mapName" value="Tree Dungeon, Forest Up North VII" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020009">
+      <string name="mapName" value="Tree Dungeon, Forest Up North" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101020010">
+      <string name="mapName" value="Tree Dungeon, Forest Up North IX" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030000">
+      <string name="mapName" value="East Domain of Perion" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030001">
+      <string name="mapName" value="The Land of Wild Boar II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101030100">
+      <string name="mapName" value="Rocky Road III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030101">
+      <string name="mapName" value="Excavation Site I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030102">
+      <string name="mapName" value="Excavation Site II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030103">
+      <string name="mapName" value="Excavation Site III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030104">
+      <string name="mapName" value="Excavation Site &lt;Camp&gt;" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030105">
+      <string name="mapName" value="Remains &lt;Tomb&gt; I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030106">
+      <string name="mapName" value="Remains &lt;Tomb&gt; II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030107">
+      <string name="mapName" value="Remains &lt;Tomb&gt; III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030108">
+      <string name="mapName" value="Remains &lt;Tomb&gt; IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030109">
+      <string name="mapName" value="Remains &lt;Cliff&gt;" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030110">
+      <string name="mapName" value="Camp 1" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030111">
+      <string name="mapName" value="Camp 2" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030112">
+      <string name="mapName" value="Camp 3" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030200">
+      <string name="mapName" value="Rocky Road II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030300">
+      <string name="mapName" value="Rocky Road I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030400">
+      <string name="mapName" value="East Rocky Mountain I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030401">
+      <string name="mapName" value="East Rocky Mountain II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030402">
+      <string name="mapName" value="East Rocky Mountain III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030403">
+      <string name="mapName" value="East Rocky Mountain IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030404">
+      <string name="mapName" value="East Rocky Mountain V" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030405">
+      <string name="mapName" value="East Rocky Mountain VI" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101030406">
+      <string name="mapName" value="East Rocky Mountain VII" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101040000">
+      <string name="mapName" value="Perion Street Corner" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="101040001">
+      <string name="mapName" value="Land of Wild Boar" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="101040002">
+      <string name="mapName" value="Over the Wall" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="102000000">
+      <string name="mapDesc" value="It's a warrior town located at the high mountainous area, and you can choose to become a warrior here." />
+      <string name="mapName" value="Perion" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102000001">
+      <string name="mapName" value="Perion Weapon Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102000002">
+      <string name="mapName" value="Perion Department Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102000003">
+      <string name="mapName" value="Warriors' Sanctuary" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102010000">
+      <string name="mapName" value="West Street Corner of Perion" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102020000">
+      <string name="mapName" value="West Rocky Mountain I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102020100">
+      <string name="mapName" value="West Rocky Mountain II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102020200">
+      <string name="mapName" value="West Rocky Mountain III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102020300">
+      <string name="mapName" value="West Rocky Mountain IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102030000">
+      <string name="mapName" value="West Domain of Perion" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102040000">
+      <string name="mapName" value="Construction Site North of Kerning City" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="102050000">
+      <string name="mapName" value="Sunset Sky" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000000">
+      <string name="mapDesc" value="It's a thief town in the middle of the city where the sun sets. You can choose to become a thief here." />
+      <string name="mapName" value="Kerning City" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000001">
+      <string name="mapName" value="Kerning City Self-Defence Item Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000002">
+      <string name="mapName" value="Kerning City Pharmacy" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000003">
+      <string name="mapName" value="Thieves' Hideout" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000004">
+      <string name="mapName" value="Niora Hospital" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000005">
+      <string name="mapName" value="Kerning City Hair Salon" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000006">
+      <string name="mapName" value="Kerning City Repair Shop" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000100">
+      <string name="mapName" value="Subway Ticketing Booth" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103000101">
+      <string name="mapName" value="Line 1 &lt;Area 1&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000102">
+      <string name="mapName" value="Transfer Area" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000103">
+      <string name="mapName" value="Line 1 &lt;Area 2&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000104">
+      <string name="mapName" value="Line 1 &lt;Area 3&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000105">
+      <string name="mapName" value="Line 1 &lt;Area 4&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000200">
+      <string name="mapName" value="Line 2 &lt;Area 1&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000201">
+      <string name="mapName" value="Line 2 &lt;Area 2&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000202">
+      <string name="mapName" value="Line 2 &lt;Area 3&gt;" />
+      <string name="streetName" value="Kerning City Subway" />
+    </imgdir>
+    <imgdir name="103000800">
+      <string name="mapName" value="1st Accompaniment &lt;1st Stage&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000801">
+      <string name="mapName" value="1st Accompaniment &lt;2nd Stage&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000802">
+      <string name="mapName" value="1st Accompaniment &lt;3rd Stage&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000803">
+      <string name="mapName" value="1st Accompaniment &lt;4th stage&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000804">
+      <string name="mapName" value="1st Accompaniment &lt;Last Stage&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000805">
+      <string name="mapName" value="1st Accompaniment &lt;Bonus&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000890">
+      <string name="mapName" value="1st Accompaniment &lt;Exit&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="103000900">
+      <string name="mapName" value="B1 &lt;Area 1&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000901">
+      <string name="mapName" value="B1 &lt;Area 2&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000902">
+      <string name="mapName" value="B1 &lt;Subway Depot&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000903">
+      <string name="mapName" value="B2 &lt;Area 1&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000904">
+      <string name="mapName" value="B2 &lt;Area 2&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000905">
+      <string name="mapName" value="B2 &lt;Subway Depot&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000906">
+      <string name="mapName" value="B3 &lt;Area 1&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000907">
+      <string name="mapName" value="B3 &lt;Area 2&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000908">
+      <string name="mapName" value="B3 &lt;Area 3&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103000909">
+      <string name="mapName" value="B3 &lt;Subway Depot&gt;" />
+      <string name="streetName" value="Line 3 Construction Site" />
+    </imgdir>
+    <imgdir name="103010000">
+      <string name="mapName" value="Kerning City Construction Site" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103020000">
+      <string name="mapName" value="L Forest I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103020100">
+      <string name="mapName" value="L Forest II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103020200">
+      <string name="mapName" value="L Forest III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103030000">
+      <string name="mapName" value="Kerning City Middle Forest I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103030100">
+      <string name="mapName" value="Kerning City Middle Forest II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="103030200">
+      <string name="mapName" value="Kerning City Middle Forest III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000000">
+      <string name="help" value="#e[To Enter the Event]#n\n\n  If there's a notice posted in #b#ein blue#n#k saying that we're accepting participants for an event, click on #e[Jean]#n and choose #e[Yeah, let's go!]#n to enter.\n  If you have already clicked on [Jean] when the event starts, then just click on [Yeah, let's go!] to enter.\n\n  Please read the event notice before entering.\n  Once the event starts, participants will be accepted as #efirst come, first serve#n until the event is full.\n\n#eYou can't enter an event more than once within 24 hours.#n\n\n  You won't be able to enter the event if you don't have any free slots available on your etc. inventory to receive an 'Event Trophy,' so make sure to leave a slot available.\n If you already have a #bSecret Scroll#k, please discard it before entering the event..\n\n#r  If you change channels or enter the #bCash Shop#k during the event, you'll automatically be disqualified from the event." />
+      <string name="mapDesc" value="The port city of Victoria Island. You can travel many cities from here." />
+      <string name="mapName" value="Lith Harbor" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000001">
+      <string name="mapName" value="Lith Harbor Weapon Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000002">
+      <string name="mapName" value="Lith Harbor Department Store" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000100">
+      <string name="mapName" value="Right Around Lith Harbor" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000200">
+      <string name="mapName" value="Thicket Around the Beach I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000300">
+      <string name="mapName" value="Thicket Around the Beach II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104000400">
+      <string name="mapName" value="Thicket Around the Beach III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104010000">
+      <string name="mapName" value="3-Way Road-Split" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104010001">
+      <string name="mapName" value="The Pig Beach" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="104010002">
+      <string name="mapName" value="Beach Hunting Ground" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="104020000">
+      <string name="mapName" value="Forest West of Henesys" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104030000">
+      <string name="mapName" value="A Hill West of Henesys " />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104030001">
+      <string name="mapName" value="Mushroom Garden" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="104040000">
+      <string name="mapName" value="Henesys Hunting Ground I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104040001">
+      <string name="mapName" value="Henesys Hunting Ground II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="104040002">
+      <string name="mapName" value="Henesys Hunting Ground III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="105030000">
+      <string name="mapName" value="Deep Forest" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040000">
+      <string name="mapName" value="Swampy Land in a Deep Forest" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040100">
+      <string name="mapName" value="Hunting Ground in the Deep Forest I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040200">
+      <string name="mapName" value="Hunting Ground in the Deep Forest II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040300">
+      <string name="mapName" value="Sleepywood" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040301">
+      <string name="mapName" value="Sleepy Dungeon I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040302">
+      <string name="mapName" value="Sleepy Dungeon II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040303">
+      <string name="mapName" value="Sleepy Dungeon III" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040304">
+      <string name="mapName" value="Sleepy Dungeon IV" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040305">
+      <string name="mapName" value="Sleepy Dungeon V" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040310">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040311">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040312">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040313">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040314">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 5&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040315">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 6&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040316">
+      <string name="mapName" value="The Deep Forest of Patience &lt;Step 7&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="105040400">
+      <string name="mapName" value="Sleepywood Hotel" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040401">
+      <string name="mapName" value="Regular Sauna" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105040402">
+      <string name="mapName" value="VIP Sauna" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105050000">
+      <string name="mapName" value="Ant Tunnel I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105050100">
+      <string name="mapName" value="Ant Tunnel II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105050200">
+      <string name="mapName" value="Ant Tunnel III" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105050300">
+      <string name="mapName" value="Ant Tunnel IV" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105050400">
+      <string name="mapName" value="Dark Cave" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105060000">
+      <string name="mapName" value="Dangerous Steam" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105060100">
+      <string name="mapName" value="Deep Ant Tunnel I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070000">
+      <string name="mapName" value="Deep Ant Tunnel II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070001">
+      <string name="mapName" value="Ant Tunnel Park" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070100">
+      <string name="mapName" value="The Cave of Evil Eye I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070200">
+      <string name="mapName" value="The Cave of Evil Eye II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070300">
+      <string name="mapName" value="The Cave of Evil Eye III" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105070400">
+      <string name="mapName" value="The Cave of Evil Eye IV" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105080000">
+      <string name="mapName" value="Drake Hunting Ground" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090000">
+      <string name="mapName" value="The Tunnel That Lost Light I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090100">
+      <string name="mapName" value="The Tunnel That Lost Light II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090200">
+      <string name="mapName" value="Another Entrance" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090300">
+      <string name="mapName" value="Drake's Meal Table" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090301">
+      <string name="mapName" value="Wild Cargo's Area" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090400">
+      <string name="mapName" value="Another Path" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090500">
+      <string name="mapName" value="Sanctuary Entrance I" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090600">
+      <string name="mapName" value="Sanctuary Entrance II" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090700">
+      <string name="mapName" value="Sanctuary Entrance III" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090800">
+      <string name="mapName" value="Sanctuary Entrance IV" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="105090900">
+      <string name="mapName" value="The Cursed Sanctuary" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="106000000">
+      <string name="mapName" value="Deep Valley I" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000001">
+      <string name="mapName" value="Dangerous Valley" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="106000002">
+      <string name="mapName" value="Dangerous Valley II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="106000100">
+      <string name="mapName" value="Deep Valley II" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000101">
+      <string name="mapName" value="The Burnt Land I" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000110">
+      <string name="mapName" value="The Burnt Land II" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000120">
+      <string name="mapName" value="The Burnt Land III" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000130">
+      <string name="mapName" value="The Burnt Land IV" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000140">
+      <string name="mapName" value="The Burnt Land V" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000200">
+      <string name="mapName" value="Deep Valley III" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106000300">
+      <string name="mapName" value="Perion Dungeon Entrance" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106010000">
+      <string name="mapName" value="The Road to the Dungeon" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106010100">
+      <string name="mapName" value="Henesys Dungeon Entrance" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="106010101">
+      <string name="mapName" value="The Breathing Rock" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="106010102">
+      <string name="mapName" value="The Entrance of Gollem's Temple" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="106010103">
+      <string name="mapName" value="Gollem's Temple I" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="106010104">
+      <string name="mapName" value="Gollem's Temple II" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="106010105">
+      <string name="mapName" value="Gollem's Temple III" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="106010106">
+      <string name="mapName" value="Gollem's Temple IV" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="107000000">
+      <string name="mapName" value="The Swamp of Despair I" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="107000100">
+      <string name="mapName" value="The Swamp of Despair II" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="107000200">
+      <string name="mapName" value="The Swamp of Despair III" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="107000300">
+      <string name="mapName" value="Dangerous Croko I" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="107000400">
+      <string name="mapName" value="Dangerous Croko II" />
+      <string name="streetName" value="Warning Street" />
+    </imgdir>
+    <imgdir name="107000401">
+      <string name="mapName" value="Monkey Swamp I" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="107000402">
+      <string name="mapName" value="Monkey Swamp II" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="107000403">
+      <string name="mapName" value="Monkey Swamp III" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="107000500">
+      <string name="mapName" value="Damp Tree-Forest" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="107000501">
+      <string name="mapName" value="Damp Forest" />
+      <string name="streetName" value="Dungeon" />
+    </imgdir>
+    <imgdir name="108000100">
+      <string name="mapName" value="Ant Tunnel For Bowman" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000101">
+      <string name="mapName" value="Ant Tunnel For Bowman" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000102">
+      <string name="mapName" value="Ant Tunnel For Bowman" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000200">
+      <string name="mapName" value="Magician's Tree Dungeon" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000201">
+      <string name="mapName" value="Magician's Tree Dungeon" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000202">
+      <string name="mapName" value="Magician's Tree Dungeon" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000300">
+      <string name="mapName" value="Warrior's Rocky Mountain" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000301">
+      <string name="mapName" value="Warrior's Rocky Mountain" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000302">
+      <string name="mapName" value="Warrior's Rocky Mountain" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000400">
+      <string name="mapName" value="Thief's Construction Site" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000401">
+      <string name="mapName" value="Thief's Construction Site" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108000402">
+      <string name="mapName" value="Thief's Construction Site" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010100">
+      <string name="mapName" value="The Path of Glittering Crystal" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010101">
+      <string name="mapName" value="The Other Dimension" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010200">
+      <string name="mapName" value="The Path of Glittering Crystal" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010201">
+      <string name="mapName" value="The Other Dimension" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010300">
+      <string name="mapName" value="The Path of Glittering Crystal" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010301">
+      <string name="mapName" value="The Other Dimension" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010400">
+      <string name="mapName" value="The Path of Glittering Crystal" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="108010401">
+      <string name="mapName" value="The Other Dimension" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010000">
+      <string name="help" value="#e[Treasure Hunt]#n\n\nThank you for participating in our surprise event. Here's how to play the game.\n\nThe game is called the #bTreasure Hunt#k, looking for the maps hidden on each field. Look up and you'll see 4 portals, and each room is independent of others.\nEach room contains #b10 Treasury Maps#k. To acquire them, it's the same way as acquiring regular items. Press Z or 0 to pick up the item.\nThis game has #rhidden portal#k, and #rhidden teleport#k. To use them, press #b↑#k at a certain location. #rHidden stairs#k and #rropes#k also exist, so try jumping around, even if you don't see anything around it.\nThe event ends when the time is up for all maps in the field have been claimed.\n#bTeleport#k and #bHeist#k are #bforbidden#k at the game of [Treasure Hunt].\n\nFor more information, try asking questions during the game.\n" />
+      <string name="mapName" value="Find the Jewel" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010100">
+      <string name="mapName" value="Eastern Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010101">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010102">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010103">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010104">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010105">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010106">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010107">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010108">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010109">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010110">
+      <string name="mapName" value="Hidden Place in the East" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010200">
+      <string name="mapName" value="Southern Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010201">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010202">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010203">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010204">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010205">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010206">
+      <string name="mapName" value="Hidden Place in South" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010300">
+      <string name="mapName" value="Northern Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010301">
+      <string name="mapName" value="Hidden Room in North 1" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010302">
+      <string name="mapName" value="Hidden Room in North 2" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010303">
+      <string name="mapName" value="Hidden Room in North 3" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010400">
+      <string name="mapName" value="Western Field" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010401">
+      <string name="mapName" value="Hidden Room in West 1" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010402">
+      <string name="mapName" value="Hidden Room in West 2" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109010403">
+      <string name="mapName" value="Hidden Room in West 3" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109020001">
+      <string name="help" value="#e[OX Quiz]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n Once you join the game, turn on the #rminimap#k by pressing #bM#k to see where the X and O are. A total of #r10 questions#k will be given, and the character that answers them all correctly wins the game.\nOnce the question is given, use the ladder to enter the area where the correct answer may be, be it X or O. If the character does not choose an answer or is hanging on the ladder past the time limit, the character will be eliminated. Please hold your position until [CORRECT] is off the screen before moving on. To prevent cheating of any kind, #ball types of chatting#k will be turned off during the OX quiz.\n" />
+      <string name="mapName" value="OX Quiz" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030001">
+      <string name="help" value="#e[Ola Ola]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Ola Ola] is a game where participants climb ladders to reach the top. Climb your way up and move to the next level by choosing the correct portal out of the numerous portals available.\nThe game consists of three levels, and the time limit is #b6 MINUTES#k. During [Ola Ola], you #bwon't be able to jump, teleport, haste, or boost your speed using potions or items#k.\n There are also trick portals that'll lead you to a strange place, so please be aware of those.\n\nIf you have any other question regarding this event, feel free to ask during the game.\n" />
+      <string name="mapName" value="Ola Ola &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030002">
+      <string name="mapName" value="Ola Ola &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030003">
+      <string name="mapName" value="Ola Ola &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030101">
+      <string name="help" value="#e[Ola Ola]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Ola Ola] is a game where participants climb ladders to reach the top. Climb your way up and move to the next level by choosing the correct portal out of the numerous portals available.\nThe game consists of three levels, and the time limit is #b6 MINUTES#k. During [Ola Ola], you #bwon't be able to jump, teleport, haste, or boost your speed using potions or items#k.\n There are also trick portals that'll lead you to a strange place, so please be aware of those.\n\nIf you have any other question regarding this event, feel free to ask during the game.\n" />
+      <string name="mapName" value="Ola Ola &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030102">
+      <string name="mapName" value="Ola Ola &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030103">
+      <string name="mapName" value="Ola Ola &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030201">
+      <string name="help" value="#e[Ola Ola]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Ola Ola] is a game where participants climb ladders to reach the top. Climb your way up and move to the next level by choosing the correct portal out of the numerous portals available.\nThe game consists of three levels, and the time limit is #b6 MINUTES#k. During [Ola Ola], you #bwon't be able to jump, teleport, haste, or boost your speed using potions or items#k.\n There are also trick portals that'll lead you to a strange place, so please be aware of those.\n\nIf you have any other question regarding this event, feel free to ask during the game.\n" />
+      <string name="mapName" value="Ola Ola &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030202">
+      <string name="mapName" value="Ola Ola &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030203">
+      <string name="mapName" value="Ola Ola &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030301">
+      <string name="help" value="#e[Ola Ola]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Ola Ola] is a game where participants climb ladders to reach the top. Climb your way up and move to the next level by choosing the correct portal out of the numerous portals available.\nThe game consists of three levels, and the time limit is #b6 MINUTES#k. During [Ola Ola], you #bwon't be able to jump, teleport, haste, or boost your speed using potions or items#k.\n There are also trick portals that'll lead you to a strange place, so please be aware of those.\n\nIf you have any other question regarding this event, feel free to ask during the game.\n" />
+      <string name="mapName" value="Ola Ola &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030302">
+      <string name="mapName" value="Ola Ola &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030303">
+      <string name="mapName" value="Ola Ola &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030401">
+      <string name="help" value="#e[Ola Ola]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Ola Ola] is a game where participants climb ladders to reach the top. Climb your way up and move to the next level by choosing the correct portal out of the numerous portals available.\nThe game consists of three levels, and the time limit is #b6 MINUTES#k. During [Ola Ola], you #bwon't be able to jump, teleport, haste, or boost your speed using potions or items#k.\n There are also trick portals that'll lead you to a strange place, so please be aware of those.\n\nIf you have any other question regarding this event, feel free to ask during the game.\n" />
+      <string name="mapName" value="Ola Ola &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030402">
+      <string name="mapName" value="Ola Ola &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109030403">
+      <string name="mapName" value="Ola Ola &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109040000">
+      <string name="help" value="#e[MapleStory Physical Fitness Test]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[MapleStory Physical Fitness Test]is a race through an obstacle course#k much like the Forest of Patience. You can win by overcoming various obstacles and reaching the final destination within the time limit.\nThe game consists of #rfour levels#k, and the time limit is #b15 MINUTES#k. During the [MapleStory Physical Fitness Test], you will not be able to use #bteleport or haste#k.\n\nIf you have any other questions regarding the game, feel free to ask during the game.\n" />
+      <string name="mapName" value="MapleStory Physical Fitness Test &lt;Waiting Room&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109040001">
+      <string name="mapName" value="MapleStory Physical Fitness Challenge &lt;Level 1&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109040002">
+      <string name="mapName" value="MapleStory Physical Fitness Challenge &lt;Level 2&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109040003">
+      <string name="mapName" value="MapleStory Physical Fitness Challenge &lt;Level 3&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109040004">
+      <string name="mapName" value="MapleStory Physical Fitness Challenge &lt;Level 4&gt;" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109050000">
+      <string name="mapName" value="Receiving the Reward For the Event" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109050001">
+      <string name="mapName" value="Leaving the Event" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109060000">
+      <string name="help" value="#e[Snowball]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[Snowball]consists of two teams, Maple Team and Story Team, and the two teams duke it out to see #bwhich team rolled the snowball farther and bigger in a limited time#k. If the game cannot be decided within the time period, then the team that rolled the snowball farther wins.\nTo roll up the snow, attack it by pressing Ctrl. \n#bAll long-range attacks and skill-based attack will not work here; only the close-range attacks will#k.\nIf a character touches the snowball, he/she'll be sent back to the starting point. Attack the snowman in front of the starting point to prevent the opposing team from rolling the snow forward. This is where a well-planned strategy works, as the team will decide whether to attack the snowball or the snowman.\n\nIf you have any other questions regarding the game, feel free to ask during the game.\n" />
+      <string name="mapName" value="Snowball" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109060001">
+      <string name="mapName" value="Event Map Entrance" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109060002">
+      <string name="mapName" value="Event Map Entrance" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109070000">
+      <string name="help" value="#e[MapleStory Minigame Challenge]#n\n\nHi there, thank you for participating in our event game. Here's a little introduction about the game.\n\n[MapleStory Minigame Challenge] is a tournament that determines the best of minigames.\n Up to 32 users can participate in this, and it will go on a head-to-head format, all the way until 1 final winner remains.\n\n#kThe matchup will be randomly selected in a round of 32, and the game will move on to round of sweet 16, great 8, the final 4, then the finals.\n#b If there aren't enough users around, or if a user leaves the tournament in the middle of the game, the opponent will be awarded with the win and will move on.\n#r Also, if there happens to be a tie, then both players will be eliminated from the tournament.\n\n#kAfter each game, there will be a quick resting period before a new game begins, so all players that have ended the game early should wait for a few minutes.\n\n#b After the finals is over, the 1st and 2nd place will be sent to the podium where the winners will be awarded with a reward.#kAfter the finals is over, the portals on the podium and at the very bottom of the map will be open for your exit, and #rall users will be kicked out of the map after 5 minutes. The players that receive the rewards should do so within the 5 minute period.\n\n#k[MapleStory Minigame Challenge] is there for all players to compete, fair and square.\n#bAll users are advised to participate in this game with fair play in mind.\n\n#k All skills will be blocked during this tournament.\n\nFor other questions, feel free to ask during the game.\n" />
+      <string name="mapName" value="Minigame Challenge" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109080000">
+      <string name="help" value="#e[Coconut Harvest]#n\n\n  Hello. Welcome to  #r[Coconut Harvest]#k.\n Here are the instructions. In [Coconut Harvest], there are two teams. One is #bMaple Team#k and the other is  #bStory Team#k. The team that collects more #rCoconuts#k in #r5 minutes#k wins the game. If the game ends in a #b[draw]#k, then #r2 minutes of extra time#k will be given. If the game ends in a draw after 2 minutes of extra time, the game will just end as a draw. In this case, nobody gets the prize.\n#r You will not be able to use long-range attacks or skills.#k If you don't have a close-range weapon, please purchase one from the NPC in the event map. \nThere are many #btraps &amp; obstacles#k all over the map. You will get #rdamaged#k if you are hit by coconuts or obstacles, so please use potions and keep an eye on your HP. If you run out of HP, you are going to be left out of the game.\n\n During the game, players will be affected with the same amount of damage from obstacles regardless of the character's level, weapon, and upgrade. \n\n Some coconuts never fall and some just break. Only the coconuts that fall down will count. \n There are also hidden portals on the wreath shell, so please use them wisely.\n" />
+      <string name="mapName" value="Coconut Harvest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109080001">
+      <string name="help" value="#e[Coconut Harvest]#n\n\n  Hello. Welcome to  #r[Coconut Harvest]#k.\n Here are the instructions. In [Coconut Harvest], there are two teams. One is #bMaple Team#k and the other is  #bStory Team#k. The team that collects more #rCoconuts#k in #r5 minutes#k wins the game. If the game ends in a #b[draw]#k, then #r2 minutes of extra time#k will be given. If the game ends in a draw after 2 minutes of extra time, the game will just end as a draw. In this case, nobody gets the prize.\n#r You will not be able to use long-range attacks or skills.#k If you don't have a close-range weapon, please purchase one from the NPC in the event map. \nThere are many #btraps &amp; obstacles#k all over the map. You will get #rdamaged#k if you are hit by coconuts or obstacles, so please use potions and keep an eye on your HP. If you run out of HP, you are going to be left out of the game.\n\n During the game, players will be affected with the same amount of damage from obstacles regardless of the character's level, weapon, and upgrade. \n\n Some coconuts never fall and some just break. Only the coconuts that fall down will count. \n There are also hidden portals on the wreath shell, so please use them wisely.\n" />
+      <string name="mapName" value="Coconut Harvest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="109080002">
+      <string name="help" value="#e[Coconut Harvest]#n\n\n  Hello. Welcome to  #r[Coconut Harvest]#k.\n Here are the instructions. In [Coconut Harvest], there are two teams. One is #bMaple Team#k and the other is  #bStory Team#k. The team that collects more #rCoconuts#k in #r5 minutes#k wins the game. If the game ends in a #b[draw]#k, then #r2 minutes of extra time#k will be given. If the game ends in a draw after 2 minutes of extra time, the game will just end as a draw. In this case, nobody gets the prize.\n#r You will not be able to use long-range attacks or skills.#k If you don't have a close-range weapon, please purchase one from the NPC in the event map. \nThere are many #btraps &amp; obstacles#k all over the map. You will get #rdamaged#k if you are hit by coconuts or obstacles, so please use potions and keep an eye on your HP. If you run out of HP, you are going to be left out of the game.\n\n During the game, players will be affected with the same amount of damage from obstacles regardless of the character's level, weapon, and upgrade. \n\n Some coconuts never fall and some just break. Only the coconuts that fall down will count. \n There are also hidden portals on the wreath shell, so please use them wisely.\n" />
+      <string name="mapName" value="Coconut Harvest" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="110000000">
+      <string name="mapName" value="Florina Beach" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="110010000">
+      <string name="mapName" value="A Look-Out Shed Around the Beach" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="110020000">
+      <string name="mapName" value="Lorang Lorang" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="110020001">
+      <string name="mapName" value="Lorang Lorang Lorang" />
+      <string name="streetName" value="Hidden Street" />
+    </imgdir>
+    <imgdir name="110030000">
+      <string name="mapName" value="Lorang and Clang" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="110030001">
+      <string name="mapName" value="Clang and Lorang" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="110040000">
+      <string name="mapName" value="Hot Sand" />
+      <string name="streetName" value="Florina Road" />
+    </imgdir>
+    <imgdir name="180000000">
+      <string name="mapName" value="Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="180000001">
+      <string name="mapName" value="Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="180000002">
+      <string name="mapName" value="Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="180000003">
+      <string name="mapName" value="Ellinia" />
+      <string name="streetName" value="Victoria Road" />
+    </imgdir>
+    <imgdir name="190000000">
+      <string name="mapName" value="Another Sanctuary" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="190000001">
+      <string name="mapName" value="Breathing Sanctuary I" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="190000002">
+      <string name="mapName" value="Breathing Sanctuary II" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="191000000">
+      <string name="mapName" value="The Monkey Forest" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="191000001">
+      <string name="mapName" value="Tree Dungeon" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="192000000">
+      <string name="mapName" value="Dry Rocky Mountain" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="192000001">
+      <string name="mapName" value="Dry Rocky Mountain II" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="193000000">
+      <string name="mapName" value="Kerning City Internet Cafe" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="195000000">
+      <string name="mapName" value="Dangerous Ant-Hole" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="195010000">
+      <string name="mapName" value="Evil Eye's Cave" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="195020000">
+      <string name="mapName" value="The Lightless Cave" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="195030000">
+      <string name="mapName" value="Cargo Hunting Ground" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="196000000">
+      <string name="mapName" value="The Chilly Hill" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="196010000">
+      <string name="mapName" value="The Chilly Cliff" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="197000000">
+      <string name="mapName" value="Windy Terrace I" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+    <imgdir name="197010000">
+      <string name="mapName" value="Windy Terrace II" />
+      <string name="streetName" value="Premium Road" />
+    </imgdir>
+  </imgdir>
+</imgdir>

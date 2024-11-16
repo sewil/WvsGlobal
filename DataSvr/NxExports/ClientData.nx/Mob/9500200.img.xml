@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9500200.img">
+  <imgdir name="die1">
+    <canvas name="0">
+      <int name="delay" value="200" />
+      <vector name="origin" x="76" y="158" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="200" />
+      <vector name="origin" x="112" y="156" />
+    </canvas>
+    <canvas name="2">
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+      <int name="delay" value="300" />
+      <vector name="origin" x="120" y="116" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0">
+      <int name="delay" value="600" />
+      <vector name="origin" x="86" y="160" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <int name="acc" value="150" />
+    <int name="bodyAttack" value="0" />
+    <int name="boss" value="1" />
+    <string name="elemAttr" value="S1H3" />
+    <int name="eva" value="30" />
+    <int name="exp" value="0" />
+    <int name="hpRecovery" value="100" />
+    <int name="level" value="80" />
+    <int name="MADamage" value="0" />
+    <int name="maxHP" value="50000" />
+    <int name="maxMP" value="500" />
+    <int name="MDDamage" value="450" />
+    <int name="mpRecovery" value="5" />
+    <int name="PADamage" value="0" />
+    <int name="PDDamage" value="420" />
+    <int name="pushed" value="3000" />
+    <int name="speed" value="-20" />
+    <int name="summonType" value="0" />
+    <int name="undead" value="0" />
+  </imgdir>
+  <imgdir name="move">
+    <canvas name="0">
+      <int name="delay" value="180" />
+      <vector name="origin" x="85" y="162" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="180" />
+      <vector name="origin" x="90" y="156" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="180" />
+      <vector name="origin" x="95" y="166" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="180" />
+      <vector name="origin" x="99" y="158" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="180" />
+      <vector name="origin" x="95" y="170" />
+    </canvas>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="150" />
+      <vector name="origin" x="80" y="156" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="150" />
+      <vector name="origin" x="80" y="156" />
+    </canvas>
+  </imgdir>
+</imgdir>

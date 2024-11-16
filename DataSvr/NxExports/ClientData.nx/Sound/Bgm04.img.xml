@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm04.img">
+  <sound name="ArabPirate" />
+  <sound name="PlayWithMe" />
+  <sound name="Shinin'Harbor" />
+  <sound name="UponTheSky" />
+  <sound name="WarmRegard" />
+  <sound name="WhiteChristmas" />
+</imgdir>

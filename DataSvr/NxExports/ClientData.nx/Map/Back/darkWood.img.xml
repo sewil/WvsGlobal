@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="darkWood.img">
+  <imgdir name="back">
+    <canvas name="0">
+      <vector name="origin" x="421" y="170" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="75" y="238" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="75" y="238" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="62" y="238" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <vector name="origin" x="99" y="238" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <vector name="origin" x="49" y="260" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6">
+      <vector name="origin" x="65" y="260" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="7">
+      <vector name="origin" x="88" y="260" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

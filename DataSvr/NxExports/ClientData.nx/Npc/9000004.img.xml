@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9000004.img">
+  <imgdir name="info">
+    <string name="quest" value="Event03" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="39" y="92" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

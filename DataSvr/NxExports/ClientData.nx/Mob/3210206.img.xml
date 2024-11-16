@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="3210206.img">
+  <imgdir name="die1">
+    <canvas name="0">
+      <int name="delay" value="130" />
+      <vector name="head" x="-12" y="-53" />
+      <vector name="origin" x="27" y="71" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="130" />
+      <vector name="head" x="-14" y="-51" />
+      <vector name="origin" x="30" y="75" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="130" />
+      <vector name="head" x="-20" y="-45" />
+      <vector name="origin" x="36" y="75" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="130" />
+      <vector name="head" x="-26" y="-32" />
+      <vector name="origin" x="44" y="67" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="130" />
+      <vector name="head" x="-38" y="-17" />
+      <vector name="origin" x="56" y="54" />
+    </canvas>
+    <canvas name="5">
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+      <int name="delay" value="300" />
+      <vector name="head" x="-49" y="4" />
+      <vector name="origin" x="67" y="33" />
+    </canvas>
+  </imgdir>
+  <imgdir name="fly">
+    <canvas name="0">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-54" />
+      <vector name="lt" x="-22" y="-69" />
+      <vector name="origin" x="27" y="69" />
+      <vector name="rb" x="28" y="-23" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-52" />
+      <vector name="lt" x="-22" y="-68" />
+      <vector name="origin" x="22" y="68" />
+      <vector name="rb" x="28" y="-22" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-51" />
+      <vector name="lt" x="-22" y="-67" />
+      <vector name="origin" x="22" y="67" />
+      <vector name="rb" x="28" y="-21" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-52" />
+      <vector name="lt" x="-22" y="-68" />
+      <vector name="origin" x="22" y="68" />
+      <vector name="rb" x="28" y="-22" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-53" />
+      <vector name="lt" x="-22" y="-69" />
+      <vector name="origin" x="22" y="69" />
+      <vector name="rb" x="28" y="-23" />
+    </canvas>
+    <canvas name="5">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-54" />
+      <vector name="lt" x="-22" y="-70" />
+      <vector name="origin" x="22" y="70" />
+      <vector name="rb" x="28" y="-24" />
+    </canvas>
+    <canvas name="6">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-55" />
+      <vector name="lt" x="-22" y="-71" />
+      <vector name="origin" x="22" y="71" />
+      <vector name="rb" x="28" y="-25" />
+    </canvas>
+    <canvas name="7">
+      <int name="delay" value="100" />
+      <vector name="head" x="-11" y="-54" />
+      <vector name="lt" x="-22" y="-70" />
+      <vector name="origin" x="27" y="70" />
+      <vector name="rb" x="28" y="-24" />
+    </canvas>
+  </imgdir>
+  <imgdir name="hit1">
+    <canvas name="0">
+      <int name="delay" value="600" />
+      <vector name="head" x="-11" y="-53" />
+      <vector name="lt" x="-22" y="-71" />
+      <vector name="origin" x="27" y="71" />
+      <vector name="rb" x="28" y="-23" />
+    </canvas>
+  </imgdir>
+  <imgdir name="info">
+    <int name="acc" value="130" />
+    <int name="bodyAttack" value="1" />
+    <int name="eva" value="17" />
+    <int name="exp" value="77" />
+    <int name="flySpeed" value="-35" />
+    <float name="fs" value="10.0" />
+    <int name="level" value="36" />
+    <int name="MADamage" value="0" />
+    <int name="maxHP" value="1350" />
+    <int name="maxMP" value="0" />
+    <int name="MDDamage" value="105" />
+    <int name="PADamage" value="115" />
+    <int name="PDDamage" value="85" />
+    <int name="pushed" value="0" />
+    <int name="summonType" value="1" />
+    <int name="undead" value="0" />
+  </imgdir>
+</imgdir>

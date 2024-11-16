@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9040006.img">
+  <imgdir name="info">
+    <string name="quest" value="guildquest1_baseball" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="55" y="103" />
+    </canvas>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="syarenian.img">
+  <imgdir name="back">
+    <canvas name="0">
+      <vector name="origin" x="99" y="244" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="100" y="244" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="99" y="244" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="99" y="244" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <vector name="origin" x="37" y="70" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <vector name="origin" x="37" y="35" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

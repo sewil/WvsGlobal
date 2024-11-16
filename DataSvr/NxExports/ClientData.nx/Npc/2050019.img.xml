@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="2050019.img">
+  <imgdir name="info">
+    <int name="dcBottom" value="0" />
+    <int name="dcLeft" value="-45" />
+    <int name="dcRight" value="46" />
+    <int name="dcTop" value="-57" />
+    <int name="hideName" value="1" />
+    <string name="quest" value="earth014" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="51" y="67" />
+    </canvas>
+  </imgdir>
+</imgdir>

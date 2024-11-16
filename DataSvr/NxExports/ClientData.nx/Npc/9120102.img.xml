@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9120102.img">
+  <imgdir name="info">
+    <string name="quest" value="face_shouwa1" />
+    <imgdir name="speak">
+      <string name="0" value="n0" />
+      <string name="1" value="n1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="800" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="110" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="110" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="110" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="talk">
+    <canvas name="0">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="130" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6">
+      <int name="delay" value="300" />
+      <vector name="origin" x="21" y="73" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

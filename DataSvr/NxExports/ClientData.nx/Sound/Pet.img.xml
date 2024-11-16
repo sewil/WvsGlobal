@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Pet.img">
+  <imgdir name="5000000">
+    <sound name="alert" />
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="levelup" />
+    <sound name="poor" />
+    <sound name="prone" />
+    <sound name="rise" />
+  </imgdir>
+  <imgdir name="5000001">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="levelup" />
+    <sound name="nap" />
+    <sound name="prone" />
+    <sound name="rise" />
+    <sound name="tedious" />
+  </imgdir>
+  <imgdir name="5000002">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="complain" />
+    <sound name="cry" />
+    <sound name="donno" />
+    <sound name="hug" />
+    <sound name="rise" />
+  </imgdir>
+  <imgdir name="5000003">
+    <sound name="alert" />
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eye" />
+    <sound name="no" />
+    <sound name="prone" />
+    <sound name="rise" />
+    <sound name="smile" />
+    <sound name="sneer" />
+    <sound name="yes" />
+  </imgdir>
+  <imgdir name="5000004">
+    <sound name="alert" />
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="levelup" />
+    <sound name="poor" />
+    <sound name="prone" />
+    <sound name="rise" />
+  </imgdir>
+  <imgdir name="5000005">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="complain" />
+    <sound name="cry" />
+    <sound name="donno" />
+    <sound name="hug" />
+    <sound name="rise" />
+  </imgdir>
+  <imgdir name="5000006">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="hand" />
+    <sound name="nap" />
+    <sound name="prone" />
+    <sound name="rise" />
+    <sound name="tedious" />
+  </imgdir>
+  <imgdir name="5000007">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="hand" />
+    <sound name="lonely" />
+    <sound name="love" />
+    <sound name="no" />
+    <sound name="smile" />
+    <sound name="stunned" />
+  </imgdir>
+  <imgdir name="5000008">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="love" />
+    <sound name="melong" />
+    <sound name="play" />
+    <sound name="rise" />
+    <sound name="sleep" />
+    <sound name="sulk" />
+  </imgdir>
+  <imgdir name="5000009">
+    <sound name="angry" />
+    <sound name="belch" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="deride" />
+    <sound name="dung" />
+    <sound name="sleep" />
+    <sound name="smile" />
+    <sound name="stunned" />
+  </imgdir>
+  <imgdir name="5000010">
+    <sound name="angry" />
+    <sound name="belch" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="deride" />
+    <sound name="dung" />
+    <sound name="sleep" />
+    <sound name="smile" />
+    <sound name="stunned" />
+  </imgdir>
+  <imgdir name="5000011">
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="love" />
+    <sound name="melong" />
+    <sound name="play" />
+    <sound name="rise" />
+    <sound name="sit" />
+    <sound name="sleep" />
+    <sound name="sulk" />
+  </imgdir>
+  <imgdir name="5000014">
+    <sound name="alert" />
+    <sound name="angry" />
+    <sound name="chat" />
+    <sound name="christmas" />
+    <sound name="cry" />
+    <sound name="dung" />
+    <sound name="eat" />
+    <sound name="go" />
+    <sound name="lonely" />
+    <sound name="love" />
+    <sound name="rise" />
+  </imgdir>
+</imgdir>

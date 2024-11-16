@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="0502.img">
+  <imgdir name="05021000">
+    <imgdir name="bullet">
+      <canvas name="0">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+      <canvas name="1">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+      <canvas name="2">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <int name="delay" value="90" />
+        <vector name="origin" x="16" y="18" />
+      </canvas>
+      <canvas name="1">
+        <int name="delay" value="90" />
+        <vector name="origin" x="25" y="24" />
+      </canvas>
+      <canvas name="2">
+        <int name="delay" value="90" />
+        <vector name="origin" x="40" y="57" />
+      </canvas>
+      <canvas name="3">
+        <int name="delay" value="90" />
+        <vector name="origin" x="34" y="21" />
+      </canvas>
+      <canvas name="4">
+        <int name="delay" value="90" />
+        <vector name="origin" x="51" y="22" />
+      </canvas>
+    </imgdir>
+    <imgdir name="info">
+      <float name="cash" value="1.0" />
+      <canvas name="icon">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-4" y="29" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05021001">
+    <imgdir name="bullet">
+      <canvas name="0">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+      <canvas name="1">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+      <canvas name="2">
+        <vector name="origin" x="12" y="11" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <int name="delay" value="90" />
+        <vector name="origin" x="29" y="28" />
+      </canvas>
+      <canvas name="1">
+        <int name="delay" value="90" />
+        <vector name="origin" x="33" y="34" />
+      </canvas>
+      <canvas name="2">
+        <int name="delay" value="90" />
+        <vector name="origin" x="36" y="37" />
+      </canvas>
+      <canvas name="3">
+        <int name="delay" value="90" />
+        <vector name="origin" x="42" y="42" />
+      </canvas>
+      <canvas name="4">
+        <int name="delay" value="90" />
+        <vector name="origin" x="49" y="52" />
+      </canvas>
+      <canvas name="5">
+        <vector name="origin" x="49" y="52" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+    <imgdir name="info">
+      <float name="cash" value="1.0" />
+      <canvas name="icon">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05021002">
+    <imgdir name="bullet">
+      <canvas name="0">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+      <canvas name="1">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+      <canvas name="2">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <int name="delay" value="90" />
+        <vector name="origin" x="10" y="14" />
+      </canvas>
+      <canvas name="1">
+        <int name="delay" value="90" />
+        <vector name="origin" x="10" y="18" />
+      </canvas>
+      <canvas name="2">
+        <int name="delay" value="90" />
+        <vector name="origin" x="13" y="24" />
+      </canvas>
+      <canvas name="3">
+        <int name="delay" value="90" />
+        <vector name="origin" x="14" y="26" />
+      </canvas>
+      <canvas name="4">
+        <int name="delay" value="90" />
+        <vector name="origin" x="14" y="30" />
+      </canvas>
+      <canvas name="5">
+        <vector name="origin" x="16" y="29" />
+      </canvas>
+    </imgdir>
+    <imgdir name="info">
+      <float name="cash" value="1.0" />
+      <canvas name="icon">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <imgdir name="05021005">
+    <imgdir name="bullet">
+      <canvas name="0">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+      <canvas name="1">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+      <canvas name="2">
+        <vector name="origin" x="10" y="10" />
+      </canvas>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <int name="delay" value="90" />
+        <vector name="origin" x="40" y="47" />
+      </canvas>
+      <canvas name="1">
+        <int name="delay" value="90" />
+        <vector name="origin" x="40" y="48" />
+      </canvas>
+    </imgdir>
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <canvas name="icon">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-3" y="31" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+</imgdir>

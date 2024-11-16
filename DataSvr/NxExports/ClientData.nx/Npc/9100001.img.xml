@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9100001.img">
+  <imgdir name="info">
+    <string name="quest" value="neko2" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <int name="delay" value="500" />
+      <vector name="origin" x="35" y="64" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="500" />
+      <vector name="origin" x="35" y="64" />
+    </canvas>
+  </imgdir>
+</imgdir>

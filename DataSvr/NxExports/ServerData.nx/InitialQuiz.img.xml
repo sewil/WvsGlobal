@@ -1,0 +1,3531 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="InitialQuiz.img">
+  <imgdir name="Quiz0">
+    <imgdir name="q0_00">
+      <string name="hint" value="몬스터 이름 (태국)" />
+      <string name="question" value="ㄱㄱㄹ" />
+      <string name="solution" value="개구리" />
+    </imgdir>
+    <imgdir name="q0_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㅂㅇ" />
+      <string name="solution" value="게비알" />
+    </imgdir>
+    <imgdir name="q0_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㅍㅍ" />
+      <string name="solution" value="다크페페" />
+    </imgdir>
+    <imgdir name="q0_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅈ" />
+      <string name="solution" value="단지" />
+    </imgdir>
+    <imgdir name="q0_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㄱ" />
+      <string name="solution" value="달곰" />
+    </imgdir>
+    <imgdir name="q0_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅇㄴ" />
+      <string name="solution" value="루이넬" />
+    </imgdir>
+    <imgdir name="q0_06">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄹㅍ" />
+      <string name="solution" value="루팡" />
+    </imgdir>
+    <imgdir name="q0_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㅌ" />
+      <string name="solution" value="비틀" />
+    </imgdir>
+    <imgdir name="q0_08">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅃㄱㄷㅍㅇ" />
+      <string name="solution" value="빨간달팽이" />
+    </imgdir>
+    <imgdir name="q0_09">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅅㅌㅈ" />
+      <string name="solution" value="스티지" />
+    </imgdir>
+    <imgdir name="q0_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅅㄹ" />
+      <string name="solution" value="세라" />
+    </imgdir>
+    <imgdir name="q0_11">
+      <string name="hint" value="리스항구 NPC 이름" />
+      <string name="question" value="ㅊㅍ" />
+      <string name="solution" value="체프" />
+    </imgdir>
+    <imgdir name="q0_12">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅍㅇ" />
+      <string name="solution" value="피아" />
+    </imgdir>
+    <imgdir name="q0_13">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅇㄹㄴㅇㅈㅎㅌㅅ" />
+      <string name="solution" value="엘리니아중형택시" />
+    </imgdir>
+    <imgdir name="q0_14">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅊㄹㅈㅅ" />
+      <string name="solution" value="찰리중사" />
+    </imgdir>
+    <imgdir name="q0_15">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅍㅅㅅㅅ" />
+      <string name="solution" value="폭스상사" />
+    </imgdir>
+    <imgdir name="q0_16">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㄹㅂㅇㄹ" />
+      <string name="solution" value="로베이라" />
+    </imgdir>
+    <imgdir name="q0_17">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄱㅇㅇㅂㅈ" />
+      <string name="solution" value="길잃은병정" />
+    </imgdir>
+    <imgdir name="q0_18">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄱㄱㄱㅁ" />
+      <string name="solution" value="기계공맥" />
+    </imgdir>
+    <imgdir name="q0_19">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅅㄹㅇㅈㄱㄹ" />
+      <string name="solution" value="메소레인저그린" />
+    </imgdir>
+    <imgdir name="q0_20">
+      <string name="hint" value="HP 50 회복" />
+      <string name="question" value="ㅃㄱㅍㅅ" />
+      <string name="solution" value="빨간포션" />
+    </imgdir>
+    <imgdir name="q0_21">
+      <string name="hint" value="MP 2000 회복" />
+      <string name="question" value="ㅍㅂㅅ" />
+      <string name="solution" value="팥빙수" />
+    </imgdir>
+    <imgdir name="q0_22">
+      <string name="hint" value="HP 100 회복" />
+      <string name="question" value="ㅈㅅㅇㄱㄱ" />
+      <string name="solution" value="짐승의고기" />
+    </imgdir>
+    <imgdir name="q0_23">
+      <string name="hint" value="HP 300 회복" />
+      <string name="question" value="ㄱㅉㅇㅎㄷㄱ" />
+      <string name="solution" value="길쭉이핫도그" />
+    </imgdir>
+    <imgdir name="q0_24">
+      <string name="hint" value="공격력 8 증가(리프레)" />
+      <string name="question" value="ㅃㄱㅇㅁ" />
+      <string name="solution" value="빨간열매" />
+    </imgdir>
+    <imgdir name="q0_25">
+      <string name="hint" value="암흑 상태이상 회복" />
+      <string name="question" value="ㅇㅇ" />
+      <string name="solution" value="안약" />
+    </imgdir>
+    <imgdir name="q0_26">
+      <string name="hint" value="불법 프로그램 탐지" />
+      <string name="question" value="ㄱㅈㅁㅌㅈㄱ" />
+      <string name="solution" value="거짓말탐지기" />
+    </imgdir>
+    <imgdir name="q0_27">
+      <string name="hint" value="신비로운 돌" />
+      <string name="question" value="ㅅㅎㅇㄷ" />
+      <string name="solution" value="소환의돌" />
+    </imgdir>
+    <imgdir name="q0_28">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅇㅅㅇ" />
+      <string name="solution" value="원숭이" />
+    </imgdir>
+    <imgdir name="q0_29">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㅁㅇㅍㅁㅈ" />
+      <string name="solution" value="메이플모자" />
+    </imgdir>
+    <imgdir name="q0_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅈㅁㄲㄱㄱㄹ" />
+      <string name="solution" value="장미꽃귀고리" />
+    </imgdir>
+    <imgdir name="q0_31">
+      <string name="hint" value="망토" />
+      <string name="question" value="ㅅㅅㅌ" />
+      <string name="solution" value="산소통" />
+    </imgdir>
+    <imgdir name="q0_32">
+      <string name="hint" value="석궁" />
+      <string name="question" value="ㅁㅇㅍㅋㄹㅇ" />
+      <string name="solution" value="메이플크로우" />
+    </imgdir>
+    <imgdir name="q0_33">
+      <string name="hint" value="전사 3차 스킬" />
+      <string name="question" value="ㅋㅂㅇㅌ" />
+      <string name="solution" value="콤보어택" />
+    </imgdir>
+    <imgdir name="q0_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅅㅇㄴㄹㅇ" />
+      <string name="solution" value="샤이닝레이" />
+    </imgdir>
+    <imgdir name="q0_35">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㄷ" />
+      <string name="solution" value="둠" />
+    </imgdir>
+    <imgdir name="q0_36">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㅅㄴㅇㅍ" />
+      <string name="solution" value="스나이핑" />
+    </imgdir>
+    <imgdir name="q0_37">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅇㅂㅈ" />
+      <string name="solution" value="어벤져" />
+    </imgdir>
+    <imgdir name="q0_38">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅍㄹㅅㅈㅍ" />
+      <string name="solution" value="플래시점프" />
+    </imgdir>
+    <imgdir name="q0_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅍㅇㅈ" />
+      <string name="solution" value="페이지" />
+    </imgdir>
+    <imgdir name="q0_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅂㅅ" />
+      <string name="solution" value="비숍" />
+    </imgdir>
+    <imgdir name="q0_41">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㄷㅇ" />
+      <string name="solution" value="섀도어" />
+    </imgdir>
+    <imgdir name="q0_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅈㄱㅂㅇㅂㅂ" />
+      <string name="solution" value="지구방위본부" />
+    </imgdir>
+    <imgdir name="q0_43">
+      <string name="hint" value="단축키 I" />
+      <string name="question" value="ㅇㅇㅌ" />
+      <string name="solution" value="아이템" />
+    </imgdir>
+    <imgdir name="q0_44">
+      <string name="hint" value="단축키 Ctrl" />
+      <string name="question" value="ㄱㄱ" />
+      <string name="solution" value="공격" />
+    </imgdir>
+    <imgdir name="q0_45">
+      <string name="hint" value="씨클의 전리품" />
+      <string name="question" value="ㅎㅁㅇㄲㄹ" />
+      <string name="solution" value="해마의꼬리" />
+    </imgdir>
+    <imgdir name="q0_46">
+      <string name="hint" value="스쿠버 페페의 전리품" />
+      <string name="question" value="ㅅㄴㅋ" />
+      <string name="solution" value="스노클" />
+    </imgdir>
+    <imgdir name="q0_47">
+      <string name="hint" value="킹 블록골렘의 전리품" />
+      <string name="question" value="ㅍㄹㅅㅈㄴㄱㅂㄹ" />
+      <string name="solution" value="파란색장난감블록" />
+    </imgdir>
+    <imgdir name="q0_48">
+      <string name="hint" value="광석" />
+      <string name="question" value="ㅇㄷㅁㅌㅇ" />
+      <string name="solution" value="아다만티움" />
+    </imgdir>
+    <imgdir name="q0_49">
+      <string name="hint" value="이벤트" />
+      <string name="question" value="ㅋㅋㄴㅅㅈ" />
+      <string name="solution" value="코코넛시즌" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz1">
+    <imgdir name="q1_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㄹㅍ" />
+      <string name="solution" value="그류핀" />
+    </imgdir>
+    <imgdir name="q1_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㄹㅋㄴㅇ" />
+      <string name="solution" value="그린코니언" />
+    </imgdir>
+    <imgdir name="q1_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㄹㅌ" />
+      <string name="solution" value="다크리티" />
+    </imgdir>
+    <imgdir name="q1_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㅋㄴㅇ" />
+      <string name="solution" value="다크코니언" />
+    </imgdir>
+    <imgdir name="q1_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅇㅇㄴ" />
+      <string name="solution" value="라이오너" />
+    </imgdir>
+    <imgdir name="q1_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅇㅋㅅㄹㅍ" />
+      <string name="solution" value="라이칸스로프" />
+    </imgdir>
+    <imgdir name="q1_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅈㅇㄷㄱ" />
+      <string name="solution" value="멋쟁이들개" />
+    </imgdir>
+    <imgdir name="q1_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄴㄷㄱㄹㅇ" />
+      <string name="solution" value="바나드그레이" />
+    </imgdir>
+    <imgdir name="q1_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅇㅌㄴ" />
+      <string name="solution" value="소울테니" />
+    </imgdir>
+    <imgdir name="q1_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅇㄹㄱㄹㅇ" />
+      <string name="solution" value="원로그레이" />
+    </imgdir>
+    <imgdir name="q1_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅎㄴ" />
+      <string name="solution" value="히나" />
+    </imgdir>
+    <imgdir name="q1_11">
+      <string name="hint" value="리스항구 NPC 이름" />
+      <string name="question" value="ㅈㅇ" />
+      <string name="solution" value="제인" />
+    </imgdir>
+    <imgdir name="q1_12">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅎㄴㅅㅅㅈㅎㅌㅅ" />
+      <string name="solution" value="헤네시스중형택시" />
+    </imgdir>
+    <imgdir name="q1_13">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㄷㅈㅇㅎㄲㅊㅇ" />
+      <string name="solution" value="돼지와함께춤을" />
+    </imgdir>
+    <imgdir name="q1_14">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㄷㅋㄹㄷ" />
+      <string name="solution" value="다크로드" />
+    </imgdir>
+    <imgdir name="q1_15">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅇㄹㅂㅅㅁㅂㅅ" />
+      <string name="solution" value="오르비스마법석" />
+    </imgdir>
+    <imgdir name="q1_16">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅇㅋㅅㅌ" />
+      <string name="solution" value="알케스터" />
+    </imgdir>
+    <imgdir name="q1_17">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅁㄹㅅ" />
+      <string name="solution" value="마르셀" />
+    </imgdir>
+    <imgdir name="q1_18">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅇㅁㅂㄹㅇㅅ" />
+      <string name="solution" value="의무병라이스" />
+    </imgdir>
+    <imgdir name="q1_19">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㅌㄱ" />
+      <string name="solution" value="태공" />
+    </imgdir>
+    <imgdir name="q1_20">
+      <string name="hint" value="HP 150 회복" />
+      <string name="question" value="ㅈㅎㅍㅅ" />
+      <string name="solution" value="주황포션" />
+    </imgdir>
+    <imgdir name="q1_21">
+      <string name="hint" value="회피율 5 증가" />
+      <string name="question" value="ㅁㅊㅎㅇㅁㅇ" />
+      <string name="solution" value="민첩함의물약" />
+    </imgdir>
+    <imgdir name="q1_22">
+      <string name="hint" value="HP 50 회복" />
+      <string name="question" value="ㄷㄱ" />
+      <string name="solution" value="달걀" />
+    </imgdir>
+    <imgdir name="q1_23">
+      <string name="hint" value="HP 500 회복" />
+      <string name="question" value="ㄸㄸㅇㅎㄷㄱ" />
+      <string name="solution" value="뚱뚱이핫도그" />
+    </imgdir>
+    <imgdir name="q1_24">
+      <string name="hint" value="방어력 15 증가(리프레)" />
+      <string name="question" value="ㄱㅇㅇㅁ" />
+      <string name="solution" value="검은열매" />
+    </imgdir>
+    <imgdir name="q1_25">
+      <string name="hint" value="허약 상태이상 회복" />
+      <string name="question" value="ㅂㅇ" />
+      <string name="solution" value="보약" />
+    </imgdir>
+    <imgdir name="q1_26">
+      <string name="hint" value="유리로 만든 구두" />
+      <string name="question" value="ㅇㄹㅇㅇㅇㄹㄱㄷ" />
+      <string name="solution" value="아르웬의유리구두" />
+    </imgdir>
+    <imgdir name="q1_27">
+      <string name="hint" value="미니게임" />
+      <string name="question" value="ㅅㄹㅇㅇㅁㅇ" />
+      <string name="solution" value="슬라임오목알" />
+    </imgdir>
+    <imgdir name="q1_28">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅇㄱㅂㅎ" />
+      <string name="solution" value="아기백호" />
+    </imgdir>
+    <imgdir name="q1_29">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㅁㅇㅌㅇㄲ" />
+      <string name="solution" value="무예타이끈" />
+    </imgdir>
+    <imgdir name="q1_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅋㄹㅅㅌㅍㄹㅇㄹ" />
+      <string name="solution" value="크리스탈플라워링" />
+    </imgdir>
+    <imgdir name="q1_31">
+      <string name="hint" value="망토" />
+      <string name="question" value="ㄷㄲㅂㅁㅌ" />
+      <string name="solution" value="도깨비망토" />
+    </imgdir>
+    <imgdir name="q1_32">
+      <string name="hint" value="아대" />
+      <string name="question" value="ㅁㅇㅍㅋㄷㅇ" />
+      <string name="solution" value="메이플칸데오" />
+    </imgdir>
+    <imgdir name="q1_33">
+      <string name="hint" value="전사 3차 스킬" />
+      <string name="question" value="ㅅㅇㅌ" />
+      <string name="solution" value="샤우트" />
+    </imgdir>
+    <imgdir name="q1_34">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅌㄹㅍㅌ" />
+      <string name="solution" value="텔레포트" />
+    </imgdir>
+    <imgdir name="q1_35">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㄷㅅㅍ" />
+      <string name="solution" value="디스펠" />
+    </imgdir>
+    <imgdir name="q1_36">
+      <string name="hint" value="궁수 1차 스킬" />
+      <string name="question" value="ㄷㅂㅅ" />
+      <string name="solution" value="더블샷" />
+    </imgdir>
+    <imgdir name="q1_37">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㅂㄹㅇㄷ" />
+      <string name="solution" value="블라인드" />
+    </imgdir>
+    <imgdir name="q1_38">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅊㅋㄹ" />
+      <string name="solution" value="챠크라" />
+    </imgdir>
+    <imgdir name="q1_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㅍㅇㅁ" />
+      <string name="solution" value="스피어맨" />
+    </imgdir>
+    <imgdir name="q1_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅇㅊ" />
+      <string name="solution" value="아처" />
+    </imgdir>
+    <imgdir name="q1_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㅎㅅㅌ" />
+      <string name="solution" value="암허스트" />
+    </imgdir>
+    <imgdir name="q1_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㄹㅁㅇ" />
+      <string name="solution" value="아랫마을" />
+    </imgdir>
+    <imgdir name="q1_43">
+      <string name="hint" value="단축키 P" />
+      <string name="question" value="ㅍㅌ" />
+      <string name="solution" value="파티" />
+    </imgdir>
+    <imgdir name="q1_44">
+      <string name="hint" value="단축키 Alt" />
+      <string name="question" value="ㅈㅍ" />
+      <string name="solution" value="점프" />
+    </imgdir>
+    <imgdir name="q1_45">
+      <string name="hint" value="씨코의 전리품" />
+      <string name="question" value="ㅎㅁㅇㅃ" />
+      <string name="solution" value="해마의뿔" />
+    </imgdir>
+    <imgdir name="q1_46">
+      <string name="hint" value="루팡의 전리품" />
+      <string name="question" value="ㄹㅍㅇㅂㄴㄴ" />
+      <string name="solution" value="루팡의바나나" />
+    </imgdir>
+    <imgdir name="q1_47">
+      <string name="hint" value="로보토이의 전리품" />
+      <string name="question" value="ㅆㄱㄹㄱㅈㅈ" />
+      <string name="solution" value="싸구려건전지" />
+    </imgdir>
+    <imgdir name="q1_48">
+      <string name="hint" value="광석" />
+      <string name="question" value="ㅇㄹㅎㅋ" />
+      <string name="solution" value="오리할콘" />
+    </imgdir>
+    <imgdir name="q1_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅅㅌㅇㅅ" />
+      <string name="solution" value="스티어스" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz10">
+    <imgdir name="q10_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㄴㅍㄷㅅ" />
+      <string name="solution" value="다크네펜데스" />
+    </imgdir>
+    <imgdir name="q10_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄱ" />
+      <string name="solution" value="비급" />
+    </imgdir>
+    <imgdir name="q10_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄹㄷㄷㄹㅇㅋ" />
+      <string name="solution" value="레드드레이크" />
+    </imgdir>
+    <imgdir name="q10_03">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㅁㄷㄲㅂ" />
+      <string name="solution" value="물도깨비" />
+    </imgdir>
+    <imgdir name="q10_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㅍㅅ" />
+      <string name="solution" value="블록퍼스" />
+    </imgdir>
+    <imgdir name="q10_05">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅅㅌㅁㅅㅋ" />
+      <string name="solution" value="스톤마스크" />
+    </imgdir>
+    <imgdir name="q10_06">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅇㄷㅂㅇ" />
+      <string name="solution" value="와일드보어" />
+    </imgdir>
+    <imgdir name="q10_07">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅈㅂㄹㅍ" />
+      <string name="solution" value="좀비루팡" />
+    </imgdir>
+    <imgdir name="q10_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅋㅌㅇㄹㅅ" />
+      <string name="solution" value="켄타우로스" />
+    </imgdir>
+    <imgdir name="q10_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅋㄹㅈㅂ" />
+      <string name="solution" value="쿨리좀비" />
+    </imgdir>
+    <imgdir name="q10_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㄹㅋㅅ" />
+      <string name="solution" value="루카스" />
+    </imgdir>
+    <imgdir name="q10_11">
+      <string name="hint" value="리스항구 NPC 이름" />
+      <string name="question" value="ㅌㅇ" />
+      <string name="solution" value="테오" />
+    </imgdir>
+    <imgdir name="q10_12">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㅇㅇ" />
+      <string name="solution" value="이얀" />
+    </imgdir>
+    <imgdir name="q10_13">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅇㅅ" />
+      <string name="solution" value="위습" />
+    </imgdir>
+    <imgdir name="q10_14">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅎㅇ" />
+      <string name="solution" value="훈이" />
+    </imgdir>
+    <imgdir name="q10_15">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅍㅌ" />
+      <string name="solution" value="포터" />
+    </imgdir>
+    <imgdir name="q10_16">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㅁㅈ" />
+      <string name="solution" value="뮤즈" />
+    </imgdir>
+    <imgdir name="q10_17">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㄴㅂ" />
+      <string name="solution" value="놀부" />
+    </imgdir>
+    <imgdir name="q10_18">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅇㅍㅍ" />
+      <string name="solution" value="아파폰" />
+    </imgdir>
+    <imgdir name="q10_19">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅍㅇㅇㄹ" />
+      <string name="solution" value="푸야이리" />
+    </imgdir>
+    <imgdir name="q10_20">
+      <string name="hint" value="MP 100 회복" />
+      <string name="question" value="ㅍㄹㅍㅅㅇㅇ" />
+      <string name="solution" value="파란포션알약" />
+    </imgdir>
+    <imgdir name="q10_21">
+      <string name="hint" value="회피율 10 증가" />
+      <string name="question" value="ㅁㅊㅎㅇㅇㅇ" />
+      <string name="solution" value="민첩함의알약" />
+    </imgdir>
+    <imgdir name="q10_22">
+      <string name="hint" value="HP 200 회복" />
+      <string name="question" value="ㅌㄷ" />
+      <string name="solution" value="통닭" />
+    </imgdir>
+    <imgdir name="q10_23">
+      <string name="hint" value="MP 800 회복" />
+      <string name="question" value="ㅁㅇㅁ" />
+      <string name="solution" value="맑은물" />
+    </imgdir>
+    <imgdir name="q10_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅋㄴㅅㅌㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="커닝시티귀환주문서" />
+    </imgdir>
+    <imgdir name="q10_25">
+      <string name="hint" value="자물쇠 따기 달인" />
+      <string name="question" value="ㅁㄸㄸ" />
+      <string name="solution" value="몽땅따" />
+    </imgdir>
+    <imgdir name="q10_26">
+      <string name="hint" value="민첩성의 기운" />
+      <string name="question" value="ㅁㅊㅅㅇㅋㄹㅅㅌ" />
+      <string name="solution" value="민첩성의크리스탈" />
+    </imgdir>
+    <imgdir name="q10_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅎㅅㅋ" />
+      <string name="solution" value="허스키" />
+    </imgdir>
+    <imgdir name="q10_28">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㅂㅎㄹ" />
+      <string name="solution" value="본헬름" />
+    </imgdir>
+    <imgdir name="q10_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅎㄱㄱㄱㄹ" />
+      <string name="solution" value="해골귀고리" />
+    </imgdir>
+    <imgdir name="q10_30">
+      <string name="hint" value="방패" />
+      <string name="question" value="ㅇㅅㅌㅅㄷ" />
+      <string name="solution" value="에스터실드" />
+    </imgdir>
+    <imgdir name="q10_31">
+      <string name="hint" value="스태프" />
+      <string name="question" value="ㅁㅇㅍㅅㅌㅍ" />
+      <string name="solution" value="메이플스태프" />
+    </imgdir>
+    <imgdir name="q10_32">
+      <string name="hint" value="전사 2차 스킬" />
+      <string name="question" value="ㅍㅇㄱㄷ" />
+      <string name="solution" value="파워가드" />
+    </imgdir>
+    <imgdir name="q10_33">
+      <string name="hint" value="전사 4차 스킬" />
+      <string name="question" value="ㅂㅎㄷ" />
+      <string name="solution" value="비홀더" />
+    </imgdir>
+    <imgdir name="q10_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅁㅈㅂㅅㅌ" />
+      <string name="solution" value="매직부스터" />
+    </imgdir>
+    <imgdir name="q10_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㄹㅈㄹㅅ" />
+      <string name="solution" value="리저렉션" />
+    </imgdir>
+    <imgdir name="q10_36">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㅅㅌㄹㅇㅍ" />
+      <string name="solution" value="스트레이프" />
+    </imgdir>
+    <imgdir name="q10_37">
+      <string name="hint" value="도적 2차 스킬" />
+      <string name="question" value="ㅅㅂㅈㅂㄹㅇ" />
+      <string name="solution" value="새비지블로우" />
+    </imgdir>
+    <imgdir name="q10_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅇㅁㅌ" />
+      <string name="solution" value="연막탄" />
+    </imgdir>
+    <imgdir name="q10_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅋㄹㄹ" />
+      <string name="solution" value="클레릭" />
+    </imgdir>
+    <imgdir name="q10_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㅍ" />
+      <string name="solution" value="시프" />
+    </imgdir>
+    <imgdir name="q10_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㄴㅅ" />
+      <string name="solution" value="엘나스" />
+    </imgdir>
+    <imgdir name="q10_42">
+      <string name="hint" value="단축키 Q" />
+      <string name="question" value="ㅋㅅㅌ" />
+      <string name="solution" value="퀘스트" />
+    </imgdir>
+    <imgdir name="q10_43">
+      <string name="hint" value="단축키 Z" />
+      <string name="question" value="ㅈㄱ" />
+      <string name="solution" value="줍기" />
+    </imgdir>
+    <imgdir name="q10_44">
+      <string name="hint" value="버블링의 전리품" />
+      <string name="question" value="ㅂㅂㄹㅇㅋㅂㅇ" />
+      <string name="solution" value="버블링의큰방울" />
+    </imgdir>
+    <imgdir name="q10_45">
+      <string name="hint" value="팬더 테니의 전리품" />
+      <string name="question" value="ㅍㄷㅇㅎ" />
+      <string name="solution" value="팬더인형" />
+    </imgdir>
+    <imgdir name="q10_46">
+      <string name="hint" value="좀비루팡의 전리품" />
+      <string name="question" value="ㅈㅈㅂㅇㅇㅎ" />
+      <string name="solution" value="저주받은인형" />
+    </imgdir>
+    <imgdir name="q10_47">
+      <string name="hint" value="믹스골렘의 전리품" />
+      <string name="question" value="ㅁㅅㅂㄹ" />
+      <string name="solution" value="믹스블록" />
+    </imgdir>
+    <imgdir name="q10_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅎㅅㅈ" />
+      <string name="solution" value="흑수정" />
+    </imgdir>
+    <imgdir name="q10_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅈㄴㅅ" />
+      <string name="solution" value="제니스" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz11">
+    <imgdir name="q11_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄴㅌㅈㄴㅇ" />
+      <string name="solution" value="뉴트주니어" />
+    </imgdir>
+    <imgdir name="q11_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅇㅂㅋ" />
+      <string name="solution" value="듀얼버크" />
+    </imgdir>
+    <imgdir name="q11_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄷㄹㅇㅋ" />
+      <string name="solution" value="드레이크" />
+    </imgdir>
+    <imgdir name="q11_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅅㅅㅋㄷ" />
+      <string name="solution" value="리셀스퀴드" />
+    </imgdir>
+    <imgdir name="q11_04">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅂㅂㄹ" />
+      <string name="solution" value="버블링" />
+    </imgdir>
+    <imgdir name="q11_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㄷㄹㄱㅌㅌ" />
+      <string name="solution" value="블루드래곤터틀" />
+    </imgdir>
+    <imgdir name="q11_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅋㄹㅅ" />
+      <string name="solution" value="스켈로스" />
+    </imgdir>
+    <imgdir name="q11_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㅅㄹㅇ" />
+      <string name="solution" value="주니어샐리온" />
+    </imgdir>
+    <imgdir name="q11_08">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅈㅎㅂㅅ" />
+      <string name="solution" value="주황버섯" />
+    </imgdir>
+    <imgdir name="q11_09">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅌㅇㄹㅅㅍㅇ" />
+      <string name="solution" value="타우로스피어" />
+    </imgdir>
+    <imgdir name="q11_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅁㅇ" />
+      <string name="solution" value="마이" />
+    </imgdir>
+    <imgdir name="q11_11">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㅇㅈㅂㄱㄷㄱㅅㅍ" />
+      <string name="solution" value="유적발굴단게시판" />
+    </imgdir>
+    <imgdir name="q11_12">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅂㅌ" />
+      <string name="solution" value="베티" />
+    </imgdir>
+    <imgdir name="q11_13">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅅㅅㅇㅈ" />
+      <string name="solution" value="사서위즈" />
+    </imgdir>
+    <imgdir name="q11_14">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅈㄱㅊ" />
+      <string name="solution" value="조교챙" />
+    </imgdir>
+    <imgdir name="q11_15">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅂㅈㄱㅌㄱ" />
+      <string name="solution" value="보좌관티군" />
+    </imgdir>
+    <imgdir name="q11_16">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅋㅇ" />
+      <string name="solution" value="케이" />
+    </imgdir>
+    <imgdir name="q11_17">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㄷㄱㄹ" />
+      <string name="solution" value="돌고래" />
+    </imgdir>
+    <imgdir name="q11_18">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅊㅅ" />
+      <string name="solution" value="칠성" />
+    </imgdir>
+    <imgdir name="q11_19">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅅㅅㄹ" />
+      <string name="solution" value="산신령" />
+    </imgdir>
+    <imgdir name="q11_20">
+      <string name="hint" value="MP 300 회복" />
+      <string name="question" value="ㅁㄴㅇㄹㅅㅇㅇ" />
+      <string name="solution" value="마나엘릭서알약" />
+    </imgdir>
+    <imgdir name="q11_21">
+      <string name="hint" value="이동속도 증가" />
+      <string name="question" value="ㅅㄷㅎㅅㅇㅇㅇ" />
+      <string name="solution" value="속도향상의알약" />
+    </imgdir>
+    <imgdir name="q11_22">
+      <string name="hint" value="HP, MP 100 회복" />
+      <string name="question" value="ㅋㅇㅋ" />
+      <string name="solution" value="케이크" />
+    </imgdir>
+    <imgdir name="q11_23">
+      <string name="hint" value="엘나스에서 사용" />
+      <string name="question" value="ㅍㅈ" />
+      <string name="solution" value="팥죽" />
+    </imgdir>
+    <imgdir name="q11_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅅㄹㅍㅇㄷㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="슬리피우드귀환주문서" />
+    </imgdir>
+    <imgdir name="q11_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㄴㄷㅇ" />
+      <string name="solution" value="눈덩이" />
+    </imgdir>
+    <imgdir name="q11_26">
+      <string name="hint" value="행운의 기운" />
+      <string name="question" value="ㅎㅇㅇㅋㄹㅅㅌ" />
+      <string name="solution" value="행운의크리스탈" />
+    </imgdir>
+    <imgdir name="q11_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄱㅇㅅㄷㅈ" />
+      <string name="solution" value="검은색돼지" />
+    </imgdir>
+    <imgdir name="q11_28">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㅈㅋㅇㅌㄱ" />
+      <string name="solution" value="자쿰의투구" />
+    </imgdir>
+    <imgdir name="q11_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅃㄱㅎㅌㄱㄱㄹ" />
+      <string name="solution" value="빨간하트귀고리" />
+    </imgdir>
+    <imgdir name="q11_30">
+      <string name="hint" value="방패" />
+      <string name="question" value="ㅁㅇㅍㅅㄷ" />
+      <string name="solution" value="메이플실드" />
+    </imgdir>
+    <imgdir name="q11_31">
+      <string name="hint" value="폴암" />
+      <string name="question" value="ㅅㅋㅇㅅㄴㅇㅂㄷ" />
+      <string name="solution" value="스카이스노우보드" />
+    </imgdir>
+    <imgdir name="q11_32">
+      <string name="hint" value="전사 2차 스킬" />
+      <string name="question" value="ㅇㅎ" />
+      <string name="solution" value="위협" />
+    </imgdir>
+    <imgdir name="q11_33">
+      <string name="hint" value="마법사 1차 스킬" />
+      <string name="question" value="ㅁㅈㄱㄷ" />
+      <string name="solution" value="매직가드" />
+    </imgdir>
+    <imgdir name="q11_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅆㄷㅅㅍㅇ" />
+      <string name="solution" value="썬더스피어" />
+    </imgdir>
+    <imgdir name="q11_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅈㄴㅅㅅ" />
+      <string name="solution" value="제네시스" />
+    </imgdir>
+    <imgdir name="q11_36">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㄷㄹㄱㅍㅅ" />
+      <string name="solution" value="드래곤펄스" />
+    </imgdir>
+    <imgdir name="q11_37">
+      <string name="hint" value="도적 2차 스킬" />
+      <string name="question" value="ㅅㅌ" />
+      <string name="solution" value="스틸" />
+    </imgdir>
+    <imgdir name="q11_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅂㅁㄹㅅㅌ" />
+      <string name="solution" value="부메랑스텝" />
+    </imgdir>
+    <imgdir name="q11_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅊㅂㅈ" />
+      <string name="solution" value="초보자" />
+    </imgdir>
+    <imgdir name="q11_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅁㅇㅈ" />
+      <string name="solution" value="메이지" />
+    </imgdir>
+    <imgdir name="q11_41">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅎㅁ" />
+      <string name="solution" value="허밋" />
+    </imgdir>
+    <imgdir name="q11_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㅋㅇㄹㄷ" />
+      <string name="solution" value="아쿠아로드" />
+    </imgdir>
+    <imgdir name="q11_43">
+      <string name="hint" value="단축키 W" />
+      <string name="question" value="ㅇㄷㅁ" />
+      <string name="solution" value="월드맵" />
+    </imgdir>
+    <imgdir name="q11_44">
+      <string name="hint" value="단축키 X" />
+      <string name="question" value="ㅇㄱ" />
+      <string name="solution" value="앉기" />
+    </imgdir>
+    <imgdir name="q11_45">
+      <string name="hint" value="이블아이의 전리품" />
+      <string name="question" value="ㅇㅂㅇㅇㅇㄲㄹ" />
+      <string name="solution" value="이블아이의꼬리" />
+    </imgdir>
+    <imgdir name="q11_46">
+      <string name="hint" value="블랙 라츠의 전리품" />
+      <string name="question" value="ㄷㄷㅎㅎㄷ" />
+      <string name="solution" value="단단한호두" />
+    </imgdir>
+    <imgdir name="q11_47">
+      <string name="hint" value="레이스의 전리품" />
+      <string name="question" value="ㅇㅅㅎㄴㄲㅇㅇ" />
+      <string name="solution" value="이상한느낌의약" />
+    </imgdir>
+    <imgdir name="q11_48">
+      <string name="hint" value="광석" />
+      <string name="question" value="ㅊㄷ" />
+      <string name="solution" value="청동" />
+    </imgdir>
+    <imgdir name="q11_49">
+      <string name="hint" value="이벤트" />
+      <string name="question" value="ㅇㄹㅇㄹ" />
+      <string name="solution" value="올라올라" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz12">
+    <imgdir name="q12_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅊ" />
+      <string name="solution" value="레츠" />
+    </imgdir>
+    <imgdir name="q12_01">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄹㄹ" />
+      <string name="solution" value="로랑" />
+    </imgdir>
+    <imgdir name="q12_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅌ" />
+      <string name="solution" value="엄티" />
+    </imgdir>
+    <imgdir name="q12_03">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅅㅌㅍ" />
+      <string name="solution" value="엑스텀프" />
+    </imgdir>
+    <imgdir name="q12_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㅂㄷ" />
+      <string name="solution" value="주니어불독" />
+    </imgdir>
+    <imgdir name="q12_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㅍㅍ" />
+      <string name="solution" value="주니어페페" />
+    </imgdir>
+    <imgdir name="q12_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅋㅂㄹㄱㄹ" />
+      <string name="solution" value="킹블록골렘" />
+    </imgdir>
+    <imgdir name="q12_07">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅌㅇㄹㅁㅅㅅ" />
+      <string name="solution" value="타우로마시스" />
+    </imgdir>
+    <imgdir name="q12_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㄹㅇㄷㄲㅂ" />
+      <string name="solution" value="파란왕도깨비" />
+    </imgdir>
+    <imgdir name="q12_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㄷㅌㄴ" />
+      <string name="solution" value="팬더테니" />
+    </imgdir>
+    <imgdir name="q12_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㄹㅇ" />
+      <string name="solution" value="레인" />
+    </imgdir>
+    <imgdir name="q12_11">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅇㅋㄹㅅ" />
+      <string name="solution" value="이카루스" />
+    </imgdir>
+    <imgdir name="q12_12">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㄱㄷ" />
+      <string name="solution" value="고든" />
+    </imgdir>
+    <imgdir name="q12_13">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄴㅁ" />
+      <string name="solution" value="네미" />
+    </imgdir>
+    <imgdir name="q12_14">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅅㅍㅇㅅ" />
+      <string name="solution" value="스페이슨" />
+    </imgdir>
+    <imgdir name="q12_15">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㄴㄴㅋ" />
+      <string name="solution" value="나누크" />
+    </imgdir>
+    <imgdir name="q12_16">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅈㅂ" />
+      <string name="solution" value="제비" />
+    </imgdir>
+    <imgdir name="q12_17">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅊㅇ" />
+      <string name="solution" value="차이" />
+    </imgdir>
+    <imgdir name="q12_18">
+      <string name="hint" value="중국 NPC 이름" />
+      <string name="question" value="ㅅㅈㄱㅅㅈㅆ" />
+      <string name="solution" value="사진기사조씨" />
+    </imgdir>
+    <imgdir name="q12_19">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㅋㄹㅅㅌ" />
+      <string name="solution" value="크리스틴" />
+    </imgdir>
+    <imgdir name="q12_20">
+      <string name="hint" value="HP, MP 1000 회복" />
+      <string name="question" value="ㅅㅂ" />
+      <string name="solution" value="수박" />
+    </imgdir>
+    <imgdir name="q12_21">
+      <string name="hint" value="물리 방어력 30 증가" />
+      <string name="question" value="ㅌㅈㅇㅎㅈ" />
+      <string name="solution" value="통증완화제" />
+    </imgdir>
+    <imgdir name="q12_22">
+      <string name="hint" value="HP 400 회복" />
+      <string name="question" value="ㅍㅈ" />
+      <string name="solution" value="피자" />
+    </imgdir>
+    <imgdir name="q12_23">
+      <string name="hint" value="HP 1000 회복" />
+      <string name="question" value="ㅈㅇㄱㅇ" />
+      <string name="solution" value="장어구이" />
+    </imgdir>
+    <imgdir name="q12_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅍㄱㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="폐광귀환주문서" />
+    </imgdir>
+    <imgdir name="q12_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㄴㅁㅍㅇ" />
+      <string name="solution" value="나무팽이" />
+    </imgdir>
+    <imgdir name="q12_26">
+      <string name="hint" value="어둠의 기운" />
+      <string name="question" value="ㅇㄷㅇㅋㄹㅅㅌ" />
+      <string name="solution" value="어둠의크리스탈" />
+    </imgdir>
+    <imgdir name="q12_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅍㄷ" />
+      <string name="solution" value="팬더" />
+    </imgdir>
+    <imgdir name="q12_28">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄷㄴㅂㅇ" />
+      <string name="solution" value="디노보이" />
+    </imgdir>
+    <imgdir name="q12_29">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㅈㄹㅅㅌㅇㅁㅈ" />
+      <string name="solution" value="장로스탄의모자" />
+    </imgdir>
+    <imgdir name="q12_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅁㅌㅅㅂㅇㅇㄹ" />
+      <string name="solution" value="메탈실버이어링" />
+    </imgdir>
+    <imgdir name="q12_31">
+      <string name="hint" value="망토" />
+      <string name="question" value="ㅎㄹㅎㅁㅌ" />
+      <string name="solution" value="허름한망토" />
+    </imgdir>
+    <imgdir name="q12_32">
+      <string name="hint" value="폴암" />
+      <string name="question" value="ㅅㅍㅅㄴㅇㅂㄷ" />
+      <string name="solution" value="슈퍼스노우보드" />
+    </imgdir>
+    <imgdir name="q12_33">
+      <string name="hint" value="전사 2차 스킬" />
+      <string name="question" value="ㅇㅇㅇㅇ" />
+      <string name="solution" value="아이언월" />
+    </imgdir>
+    <imgdir name="q12_34">
+      <string name="hint" value="마법사 1차 스킬" />
+      <string name="question" value="ㅁㅈㅋㄹ" />
+      <string name="solution" value="매직클로" />
+    </imgdir>
+    <imgdir name="q12_35">
+      <string name="hint" value="궁수 1차 스킬" />
+      <string name="question" value="ㅋㄹㅌㅋㅅ" />
+      <string name="solution" value="크리티컬샷" />
+    </imgdir>
+    <imgdir name="q12_36">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㅅㅍㅇㅇㅈ" />
+      <string name="solution" value="샤프아이즈" />
+    </imgdir>
+    <imgdir name="q12_37">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅅㄷㅇㅍㅌㄴ" />
+      <string name="solution" value="쉐도우파트너" />
+    </imgdir>
+    <imgdir name="q12_38">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄱㅅ" />
+      <string name="solution" value="검사" />
+    </imgdir>
+    <imgdir name="q12_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅍㄹㅅㅌ" />
+      <string name="solution" value="프리스트" />
+    </imgdir>
+    <imgdir name="q12_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㅍㅁㅅㅌ" />
+      <string name="solution" value="시프마스터" />
+    </imgdir>
+    <imgdir name="q12_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅎㅂㅎㅁㅇ" />
+      <string name="solution" value="행복한마을" />
+    </imgdir>
+    <imgdir name="q12_42">
+      <string name="hint" value="단축키 E" />
+      <string name="question" value="ㅈㅂㅊ" />
+      <string name="solution" value="장비창" />
+    </imgdir>
+    <imgdir name="q12_43">
+      <string name="hint" value="단축키 C" />
+      <string name="question" value="ㅁㅅㅈ" />
+      <string name="solution" value="메신저" />
+    </imgdir>
+    <imgdir name="q12_44">
+      <string name="hint" value="좀비버섯의 전리품" />
+      <string name="question" value="ㅈㅇㅈㅇㅂㅈ" />
+      <string name="solution" value="죽은자의부적" />
+    </imgdir>
+    <imgdir name="q12_45">
+      <string name="hint" value="티키의 전리품" />
+      <string name="question" value="ㅅㄱㅌㅇ" />
+      <string name="solution" value="시계태엽" />
+    </imgdir>
+    <imgdir name="q12_46">
+      <string name="hint" value="클랑의 전리품" />
+      <string name="question" value="ㅋㄹㅇㅈㄱㅂ" />
+      <string name="solution" value="클랑의집게발" />
+    </imgdir>
+    <imgdir name="q12_47">
+      <string name="hint" value="광석" />
+      <string name="question" value="ㄱㅊ" />
+      <string name="solution" value="강철" />
+    </imgdir>
+    <imgdir name="q12_48">
+      <string name="hint" value="이벤트" />
+      <string name="question" value="ㄱㅈㄹㅎㅎㅅ" />
+      <string name="solution" value="고지를향해서" />
+    </imgdir>
+    <imgdir name="q12_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㄷㅁㅌㅅ" />
+      <string name="solution" value="데메토스" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz13">
+    <imgdir name="q13_00">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄹㄱㅇㅌ" />
+      <string name="solution" value="리게이터" />
+    </imgdir>
+    <imgdir name="q13_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅌㅇ" />
+      <string name="solution" value="마티안" />
+    </imgdir>
+    <imgdir name="q13_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㄹㅊ" />
+      <string name="solution" value="블랙라츠" />
+    </imgdir>
+    <imgdir name="q13_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅊㅎㅅ" />
+      <string name="solution" value="청화사" />
+    </imgdir>
+    <imgdir name="q13_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅋㄹㄴㅅ" />
+      <string name="solution" value="크로노스" />
+    </imgdir>
+    <imgdir name="q13_05">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅍㄹㄷㅍㅇ" />
+      <string name="solution" value="파란달팽이" />
+    </imgdir>
+    <imgdir name="q13_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㄹㅈ" />
+      <string name="solution" value="프리져" />
+    </imgdir>
+    <imgdir name="q13_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㅋㅅㅇㅂ" />
+      <string name="solution" value="핑크세이버" />
+    </imgdir>
+    <imgdir name="q13_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅎㅍ" />
+      <string name="solution" value="하프" />
+    </imgdir>
+    <imgdir name="q13_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅎㅌㅇ" />
+      <string name="solution" value="혼테일" />
+    </imgdir>
+    <imgdir name="q13_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅂㅅ" />
+      <string name="solution" value="빅스" />
+    </imgdir>
+    <imgdir name="q13_11">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅅㅈㄱㅁㅇㅅ" />
+      <string name="solution" value="수집광매이션" />
+    </imgdir>
+    <imgdir name="q13_12">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅇㅌ" />
+      <string name="solution" value="마운틴" />
+    </imgdir>
+    <imgdir name="q13_13">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅍㅍ" />
+      <string name="solution" value="페퍼" />
+    </imgdir>
+    <imgdir name="q13_14">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㅁㄹㅇㅅ" />
+      <string name="solution" value="멜리아스" />
+    </imgdir>
+    <imgdir name="q13_15">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅃㄷㅇㅁ" />
+      <string name="solution" value="뺑덕어멈" />
+    </imgdir>
+    <imgdir name="q13_16">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅎㄴㅇ" />
+      <string name="solution" value="햇님이" />
+    </imgdir>
+    <imgdir name="q13_17">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅍㅅ" />
+      <string name="solution" value="푼삭" />
+    </imgdir>
+    <imgdir name="q13_18">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㅈㄱㄱ" />
+      <string name="solution" value="주걸균" />
+    </imgdir>
+    <imgdir name="q13_19">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㄱㅇㄱㄱㅎㅇㅂㅈ" />
+      <string name="solution" value="과일가게할아버지" />
+    </imgdir>
+    <imgdir name="q13_20">
+      <string name="hint" value="HP 2000 회복" />
+      <string name="question" value="ㅉㅉㅂ" />
+      <string name="solution" value="쭈쭈바" />
+    </imgdir>
+    <imgdir name="q13_21">
+      <string name="hint" value="HP 30 회복" />
+      <string name="question" value="ㅅㄱ" />
+      <string name="solution" value="사과" />
+    </imgdir>
+    <imgdir name="q13_22">
+      <string name="hint" value="HP 400 회복" />
+      <string name="question" value="ㅎㅂㄱ" />
+      <string name="solution" value="햄버거" />
+    </imgdir>
+    <imgdir name="q13_23">
+      <string name="hint" value="아쿠아리움에서 사용" />
+      <string name="question" value="ㄱㄱㅂㅇ" />
+      <string name="solution" value="공기방울" />
+    </imgdir>
+    <imgdir name="q13_24">
+      <string name="hint" value="중독 상태이상 회복" />
+      <string name="question" value="ㅎㄷㅈ" />
+      <string name="solution" value="해독제" />
+    </imgdir>
+    <imgdir name="q13_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㄱㄷㄹ" />
+      <string name="solution" value="고드름" />
+    </imgdir>
+    <imgdir name="q13_26">
+      <string name="hint" value="신비로운 돌" />
+      <string name="question" value="ㅁㅂㅇㄷ" />
+      <string name="solution" value="마법의돌" />
+    </imgdir>
+    <imgdir name="q13_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄷㄴㄱ" />
+      <string name="solution" value="디노걸" />
+    </imgdir>
+    <imgdir name="q13_28">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㄹㅂㄷㅈㅁㄹㄸ" />
+      <string name="solution" value="리본돼지머리띠" />
+    </imgdir>
+    <imgdir name="q13_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅁㅌㅎㅌㅇㅇㄹ" />
+      <string name="solution" value="메탈하트이어링" />
+    </imgdir>
+    <imgdir name="q13_30">
+      <string name="hint" value="망토" />
+      <string name="question" value="ㅇㅋㄹㅅㅇㅁㅌ" />
+      <string name="solution" value="이카루스의망토" />
+    </imgdir>
+    <imgdir name="q13_31">
+      <string name="hint" value="활" />
+      <string name="question" value="ㅁㅇㅍㅎㅌㅅ" />
+      <string name="solution" value="메이플헌터스" />
+    </imgdir>
+    <imgdir name="q13_32">
+      <string name="hint" value="전사 2차 스킬" />
+      <string name="question" value="ㅎㅇㅍㅂㄷ" />
+      <string name="solution" value="하이퍼바디" />
+    </imgdir>
+    <imgdir name="q13_33">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅁㄷㅌㅇㅅ" />
+      <string name="solution" value="메디테이션" />
+    </imgdir>
+    <imgdir name="q13_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅎㄹㅅㅂ" />
+      <string name="solution" value="홀리심볼" />
+    </imgdir>
+    <imgdir name="q13_35">
+      <string name="hint" value="궁수 1차 스킬" />
+      <string name="question" value="ㅍㅋㅅ" />
+      <string name="solution" value="포커스" />
+    </imgdir>
+    <imgdir name="q13_36">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㅎㅅㅌㄹ" />
+      <string name="solution" value="햄스트링" />
+    </imgdir>
+    <imgdir name="q13_37">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅅㄷㅇㅇ" />
+      <string name="solution" value="쉐도우웹" />
+    </imgdir>
+    <imgdir name="q13_38">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅍㅇㅌ" />
+      <string name="solution" value="파이터" />
+    </imgdir>
+    <imgdir name="q13_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅇㅋㅁㅇㅈ" />
+      <string name="solution" value="아크메이지" />
+    </imgdir>
+    <imgdir name="q13_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄴㅇㅌㄹㄷ" />
+      <string name="solution" value="나이트로드" />
+    </imgdir>
+    <imgdir name="q13_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㄹㄷㅂㄹㅇ" />
+      <string name="solution" value="루디브리엄" />
+    </imgdir>
+    <imgdir name="q13_42">
+      <string name="hint" value="단축키 R" />
+      <string name="question" value="ㅊㄱ" />
+      <string name="solution" value="친구" />
+    </imgdir>
+    <imgdir name="q13_43">
+      <string name="hint" value="단축키 M" />
+      <string name="question" value="ㅁㄴㅁ" />
+      <string name="solution" value="미니맵" />
+    </imgdir>
+    <imgdir name="q13_44">
+      <string name="hint" value="트릭스터의 전리품" />
+      <string name="question" value="ㄱㅁㅈ" />
+      <string name="solution" value="거미줄" />
+    </imgdir>
+    <imgdir name="q13_45">
+      <string name="hint" value="레츠의 전리품" />
+      <string name="question" value="ㅎㅂㄹㄱㅆ" />
+      <string name="solution" value="해바라기씨" />
+    </imgdir>
+    <imgdir name="q13_46">
+      <string name="hint" value="블록골렘의 전리품" />
+      <string name="question" value="ㄴㄹㅅㅈㄴㄱㅂㄹ" />
+      <string name="solution" value="노란색장난감블록" />
+    </imgdir>
+    <imgdir name="q13_47">
+      <string name="hint" value="광석" />
+      <string name="question" value="ㅁㅅㄹ" />
+      <string name="solution" value="미스릴" />
+    </imgdir>
+    <imgdir name="q13_48">
+      <string name="hint" value="이벤트" />
+      <string name="question" value="ㄴㄷㅇㄱㄹㄱ" />
+      <string name="solution" value="눈덩이굴리기" />
+    </imgdir>
+    <imgdir name="q13_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅇㅋㄴㅇ" />
+      <string name="solution" value="아케니아" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz2">
+    <imgdir name="q2_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㄹㅇㅇㄴ" />
+      <string name="solution" value="주니어라이오너" />
+    </imgdir>
+    <imgdir name="q2_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅊㄹㅇㄷㄲㅂ" />
+      <string name="solution" value="초록왕도깨비" />
+    </imgdir>
+    <imgdir name="q2_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅋㅍㄷㄹㅇㅋ" />
+      <string name="solution" value="카파드레이크" />
+    </imgdir>
+    <imgdir name="q2_03">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㅋㄱㄹㅇㅇ" />
+      <string name="solution" value="큰구름여우" />
+    </imgdir>
+    <imgdir name="q2_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㅇㅇㅅㅌㅂ" />
+      <string name="solution" value="파이어스톤볼" />
+    </imgdir>
+    <imgdir name="q2_05">
+      <string name="hint" value="몬스터 이름 (대만)" />
+      <string name="question" value="ㅍㅈㅈㅇㅅㅇ" />
+      <string name="solution" value="폭주족원숭이" />
+    </imgdir>
+    <imgdir name="q2_06">
+      <string name="hint" value="몬스터 이름 (대만)" />
+      <string name="question" value="ㅎㅇㅎㄷㄱ" />
+      <string name="solution" value="험악한들개" />
+    </imgdir>
+    <imgdir name="q2_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅍㄹㅌㅋㄹㄴㅅ" />
+      <string name="solution" value="플래툰크로노스" />
+    </imgdir>
+    <imgdir name="q2_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅎㅇㅌㅍ" />
+      <string name="solution" value="화이트팽" />
+    </imgdir>
+    <imgdir name="q2_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅎㄹㅇㅈㅇㅎ" />
+      <string name="solution" value="훈련용짚인형" />
+    </imgdir>
+    <imgdir name="q2_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㄴㄴ" />
+      <string name="solution" value="니나" />
+    </imgdir>
+    <imgdir name="q2_11">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅋㅁㄹ" />
+      <string name="solution" value="카밀라" />
+    </imgdir>
+    <imgdir name="q2_12">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅇㅈㅇㄹㅇ" />
+      <string name="solution" value="요정아르웬" />
+    </imgdir>
+    <imgdir name="q2_13">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅈㅊㅂㅁㅇㄱㄴ" />
+      <string name="solution" value="정체불명의그녀" />
+    </imgdir>
+    <imgdir name="q2_14">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅊㅇ" />
+      <string name="solution" value="철이" />
+    </imgdir>
+    <imgdir name="q2_15">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅅㄹㅇㅈㅍㅋ" />
+      <string name="solution" value="메소레인저핑크" />
+    </imgdir>
+    <imgdir name="q2_16">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅂㅊㅈ" />
+      <string name="solution" value="박첨지" />
+    </imgdir>
+    <imgdir name="q2_17">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅍㄹ" />
+      <string name="solution" value="폰라" />
+    </imgdir>
+    <imgdir name="q2_18">
+      <string name="hint" value="중국 NPC 이름" />
+      <string name="question" value="ㄱㅊㅊㅈㅈㅆ" />
+      <string name="solution" value="경찰처장주씨" />
+    </imgdir>
+    <imgdir name="q2_19">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㅅㅇㅈ" />
+      <string name="solution" value="손연주" />
+    </imgdir>
+    <imgdir name="q2_20">
+      <string name="hint" value="HP 300 회복" />
+      <string name="question" value="ㅎㅇㅍㅅ" />
+      <string name="solution" value="하얀포션" />
+    </imgdir>
+    <imgdir name="q2_21">
+      <string name="hint" value="이동속도 증가" />
+      <string name="question" value="ㅅㄷㅎㅅㅇㅁㅇ" />
+      <string name="solution" value="속도향상의물약" />
+    </imgdir>
+    <imgdir name="q2_22">
+      <string name="hint" value="MP 50 회복" />
+      <string name="question" value="ㅇㄹㅈ" />
+      <string name="solution" value="오렌지" />
+    </imgdir>
+    <imgdir name="q2_23">
+      <string name="hint" value="HP 600 회복" />
+      <string name="question" value="ㅁㄹㅇㅈㅇ" />
+      <string name="solution" value="마른오징어" />
+    </imgdir>
+    <imgdir name="q2_24">
+      <string name="hint" value="마력 10 증가(리프레)" />
+      <string name="question" value="ㅍㄹㅇㅁ" />
+      <string name="solution" value="파란열매" />
+    </imgdir>
+    <imgdir name="q2_25">
+      <string name="hint" value="봉인, 저주 상태이상 회복" />
+      <string name="question" value="ㅅㅅ" />
+      <string name="solution" value="성수" />
+    </imgdir>
+    <imgdir name="q2_26">
+      <string name="hint" value="자쿰 제단의 제물" />
+      <string name="question" value="ㅂㅇㄴ" />
+      <string name="solution" value="불의눈" />
+    </imgdir>
+    <imgdir name="q2_27">
+      <string name="hint" value="미니게임" />
+      <string name="question" value="ㅂㅅㅇㅁㅇ" />
+      <string name="solution" value="버섯오목알" />
+    </imgdir>
+    <imgdir name="q2_28">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄹㄷㅍ" />
+      <string name="solution" value="루돌프" />
+    </imgdir>
+    <imgdir name="q2_29">
+      <string name="hint" value="모자" />
+      <string name="question" value="ㄷㅂㅈㅇㅁㅈ" />
+      <string name="solution" value="데비존의모자" />
+    </imgdir>
+    <imgdir name="q2_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㄸㄱㄱㄱㄹ" />
+      <string name="solution" value="딸기귀고리" />
+    </imgdir>
+    <imgdir name="q2_31">
+      <string name="hint" value="한손검" />
+      <string name="question" value="ㅁㅇㅍㅅㄷ" />
+      <string name="solution" value="메이플소드" />
+    </imgdir>
+    <imgdir name="q2_32">
+      <string name="hint" value="초보자 스킬" />
+      <string name="question" value="ㄷㅍㅇㅅㅁㄹ" />
+      <string name="solution" value="달팽이세마리" />
+    </imgdir>
+    <imgdir name="q2_33">
+      <string name="hint" value="전사 3차 스킬" />
+      <string name="question" value="ㅊㅈㅂㄹㅇ" />
+      <string name="solution" value="차지블로우" />
+    </imgdir>
+    <imgdir name="q2_34">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅅㄹㅇ" />
+      <string name="solution" value="슬로우" />
+    </imgdir>
+    <imgdir name="q2_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅂㅂ" />
+      <string name="solution" value="빅뱅" />
+    </imgdir>
+    <imgdir name="q2_36">
+      <string name="hint" value="궁수 2차 스킬" />
+      <string name="question" value="ㅂㅇㅂㅅㅌ" />
+      <string name="solution" value="보우부스터" />
+    </imgdir>
+    <imgdir name="q2_37">
+      <string name="hint" value="궁수 4차 스킬" />
+      <string name="question" value="ㅍㅍㅇㅅ" />
+      <string name="solution" value="폭풍의시" />
+    </imgdir>
+    <imgdir name="q2_38">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅍㅍㅋ" />
+      <string name="solution" value="픽파킷" />
+    </imgdir>
+    <imgdir name="q2_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅋㄹㅅㅇㄷ" />
+      <string name="solution" value="크루세이더" />
+    </imgdir>
+    <imgdir name="q2_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅎㅌ" />
+      <string name="solution" value="헌터" />
+    </imgdir>
+    <imgdir name="q2_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅅㅇㅅㅍㄹ" />
+      <string name="solution" value="사우스페리" />
+    </imgdir>
+    <imgdir name="q2_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㄹㅍㄹ" />
+      <string name="solution" value="리프레" />
+    </imgdir>
+    <imgdir name="q2_43">
+      <string name="hint" value="단축키 [" />
+      <string name="question" value="ㅅㅋ" />
+      <string name="solution" value="숏컷" />
+    </imgdir>
+    <imgdir name="q2_44">
+      <string name="hint" value="단축키 Esc" />
+      <string name="question" value="ㅁㄴ" />
+      <string name="solution" value="메뉴" />
+    </imgdir>
+    <imgdir name="q2_45">
+      <string name="hint" value="핀붐의 전리품" />
+      <string name="question" value="ㅂㄴ" />
+      <string name="solution" value="바늘" />
+    </imgdir>
+    <imgdir name="q2_46">
+      <string name="hint" value="주니어 레이스의 전리품" />
+      <string name="question" value="ㅅㅌㅂ" />
+      <string name="solution" value="식탁보" />
+    </imgdir>
+    <imgdir name="q2_47">
+      <string name="hint" value="틱톡의 전리품" />
+      <string name="question" value="ㅈㅇㅅㄱ" />
+      <string name="solution" value="작은시계" />
+    </imgdir>
+    <imgdir name="q2_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㄱㄴ" />
+      <string name="solution" value="가넷" />
+    </imgdir>
+    <imgdir name="q2_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅅㅋㄴㅇ" />
+      <string name="solution" value="스카니아" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz3">
+    <imgdir name="q3_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄴㅍㄷㅅ" />
+      <string name="solution" value="네펜데스" />
+    </imgdir>
+    <imgdir name="q3_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄴㅇㄷㄹㅈ" />
+      <string name="solution" value="늙은도라지" />
+    </imgdir>
+    <imgdir name="q3_02">
+      <string name="hint" value="몬스터 이름 (태국)" />
+      <string name="question" value="ㄷㄲㅂ" />
+      <string name="solution" value="두꺼비" />
+    </imgdir>
+    <imgdir name="q3_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅇㅈㅂㅍ" />
+      <string name="solution" value="레이지버피" />
+    </imgdir>
+    <imgdir name="q3_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅇㄴㅈㅂ" />
+      <string name="solution" value="마이너좀비" />
+    </imgdir>
+    <imgdir name="q3_05">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅁㄹㄷ" />
+      <string name="solution" value="멜러디" />
+    </imgdir>
+    <imgdir name="q3_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄷㄹㅈ" />
+      <string name="solution" value="별다람쥐" />
+    </imgdir>
+    <imgdir name="q3_07">
+      <string name="hint" value="몬스터 이름 (대만)" />
+      <string name="question" value="ㄹㄷㅂㅂㅌ" />
+      <string name="solution" value="레드버블티" />
+    </imgdir>
+    <imgdir name="q3_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅋㄷ" />
+      <string name="solution" value="스퀴드" />
+    </imgdir>
+    <imgdir name="q3_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅇㅌㅇㅍㅍ" />
+      <string name="solution" value="예티와페페" />
+    </imgdir>
+    <imgdir name="q3_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅁㄹㅇ" />
+      <string name="solution" value="마리아" />
+    </imgdir>
+    <imgdir name="q3_11">
+      <string name="hint" value="리스항구 NPC 이름" />
+      <string name="question" value="ㄹㅅㅎㄱㅁㅂㅌㅅ" />
+      <string name="solution" value="리스항구모범택시" />
+    </imgdir>
+    <imgdir name="q3_12">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㅇㅅㅌ" />
+      <string name="solution" value="윈스턴" />
+    </imgdir>
+    <imgdir name="q3_13">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅇㅅㅌ" />
+      <string name="solution" value="에스텔" />
+    </imgdir>
+    <imgdir name="q3_14">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㄱㅈㅂㅇㅁ" />
+      <string name="solution" value="가정부엘마" />
+    </imgdir>
+    <imgdir name="q3_15">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅅㅁㅅ" />
+      <string name="solution" value="샤모스" />
+    </imgdir>
+    <imgdir name="q3_16">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅅㄹㄱㄹㅋ" />
+      <string name="solution" value="수리공로키" />
+    </imgdir>
+    <imgdir name="q3_17">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅇㄱㅇㄱㄹㅇ" />
+      <string name="solution" value="외계인그레이" />
+    </imgdir>
+    <imgdir name="q3_18">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅇㅅㅌㅈㄱ" />
+      <string name="solution" value="마에스터장군" />
+    </imgdir>
+    <imgdir name="q3_19">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㅋㄹㅌ" />
+      <string name="solution" value="카르타" />
+    </imgdir>
+    <imgdir name="q3_20">
+      <string name="hint" value="MP 100 회복" />
+      <string name="question" value="ㅍㄹㅍㅅ" />
+      <string name="solution" value="파란포션" />
+    </imgdir>
+    <imgdir name="q3_21">
+      <string name="hint" value="마력 5 증가" />
+      <string name="question" value="ㅁㅂㅅㅇㅁㅇ" />
+      <string name="solution" value="마법사의물약" />
+    </imgdir>
+    <imgdir name="q3_22">
+      <string name="hint" value="MP 150 회복" />
+      <string name="question" value="ㄹㅁ" />
+      <string name="solution" value="레몬" />
+    </imgdir>
+    <imgdir name="q3_23">
+      <string name="hint" value="HP 1200 회복" />
+      <string name="question" value="ㅊㅎㅈㅅ" />
+      <string name="solution" value="천하장사" />
+    </imgdir>
+    <imgdir name="q3_24">
+      <string name="hint" value="공격력 8 증가" />
+      <string name="question" value="ㅇㄱㅇㅇㅇㅇㅅ" />
+      <string name="solution" value="아기용의이유식" />
+    </imgdir>
+    <imgdir name="q3_25">
+      <string name="hint" value="모든 상태이상 회복" />
+      <string name="question" value="ㅁㅂㅌㅊㅇ" />
+      <string name="solution" value="만병통치약" />
+    </imgdir>
+    <imgdir name="q3_26">
+      <string name="hint" value="떡" />
+      <string name="question" value="ㅇㅁㅇㄸ" />
+      <string name="solution" value="월묘의떡" />
+    </imgdir>
+    <imgdir name="q3_27">
+      <string name="hint" value="미니게임" />
+      <string name="question" value="ㅂㄷㅍ" />
+      <string name="solution" value="바둑판" />
+    </imgdir>
+    <imgdir name="q3_28">
+      <string name="hint" value="거울" />
+      <string name="question" value="ㅅㄹㅇㄱㅇ" />
+      <string name="solution" value="세라의거울" />
+    </imgdir>
+    <imgdir name="q3_29">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅁㄴㅇㅌ" />
+      <string name="solution" value="미니예티" />
+    </imgdir>
+    <imgdir name="q3_30">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅈㄴㅇㅂㄹ" />
+      <string name="solution" value="주니어발록" />
+    </imgdir>
+    <imgdir name="q3_31">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㄴㅁㅇㄱㄱㄹ" />
+      <string name="solution" value="나뭇잎귀고리" />
+    </imgdir>
+    <imgdir name="q3_32">
+      <string name="hint" value="한손검" />
+      <string name="question" value="ㅁㅇㅍㅋㅌㅅㄷ" />
+      <string name="solution" value="메이플켈트소드" />
+    </imgdir>
+    <imgdir name="q3_33">
+      <string name="hint" value="초보자 스킬" />
+      <string name="question" value="ㅎㅂ" />
+      <string name="solution" value="회복" />
+    </imgdir>
+    <imgdir name="q3_34">
+      <string name="hint" value="전사 3차 스킬" />
+      <string name="question" value="ㄷㄹㄱㄹㅇ" />
+      <string name="solution" value="드래곤로어" />
+    </imgdir>
+    <imgdir name="q3_35">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅍㅇㅈㅂㄹㅅ" />
+      <string name="solution" value="포이즌브레스" />
+    </imgdir>
+    <imgdir name="q3_36">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅇㅍㄴㅌ" />
+      <string name="solution" value="인피니티" />
+    </imgdir>
+    <imgdir name="q3_37">
+      <string name="hint" value="궁수 2차 스킬" />
+      <string name="question" value="ㅍㅇㄴㅂ" />
+      <string name="solution" value="파워넉백" />
+    </imgdir>
+    <imgdir name="q3_38">
+      <string name="hint" value="도적 1차 스킬" />
+      <string name="question" value="ㅋㅇㅇㅈ" />
+      <string name="solution" value="킨아이즈" />
+    </imgdir>
+    <imgdir name="q3_39">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅁㅅㅇㅅㅍㄹㅈ" />
+      <string name="solution" value="메소익스플로전" />
+    </imgdir>
+    <imgdir name="q3_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄴㅇㅌ" />
+      <string name="solution" value="나이트" />
+    </imgdir>
+    <imgdir name="q3_41">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㅅ" />
+      <string name="solution" value="사수" />
+    </imgdir>
+    <imgdir name="q3_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅎㄴㅅㅅ" />
+      <string name="solution" value="헤네시스" />
+    </imgdir>
+    <imgdir name="q3_43">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅁㄹ" />
+      <string name="solution" value="무릉" />
+    </imgdir>
+    <imgdir name="q3_44">
+      <string name="hint" value="단축키 ]" />
+      <string name="question" value="ㅋㅅㄹ" />
+      <string name="solution" value="퀵슬롯" />
+    </imgdir>
+    <imgdir name="q3_45">
+      <string name="hint" value="달팽이의 전리품" />
+      <string name="question" value="ㄷㅍㅇㅇㄲㅈ" />
+      <string name="solution" value="달팽이의껍질" />
+    </imgdir>
+    <imgdir name="q3_46">
+      <string name="hint" value="플라워피쉬의 전리품" />
+      <string name="question" value="ㅎㄹㅎㄲㅇ" />
+      <string name="solution" value="화려한꽃잎" />
+    </imgdir>
+    <imgdir name="q3_47">
+      <string name="hint" value="로랑의 전리품" />
+      <string name="question" value="ㄹㄹㅇㅈㄱㅂ" />
+      <string name="solution" value="로랑의집게발" />
+    </imgdir>
+    <imgdir name="q3_48">
+      <string name="hint" value="바나드 그레이의 전리품" />
+      <string name="question" value="ㅇㅈㅅㄹ" />
+      <string name="solution" value="우주식량" />
+    </imgdir>
+    <imgdir name="q3_49">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅈㅅㅈ" />
+      <string name="solution" value="자수정" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz4">
+    <imgdir name="q4_00">
+      <string name="hint" value="몬스터 이름 (대만)" />
+      <string name="question" value="ㄱㄷㅇㅅㅇ" />
+      <string name="solution" value="광대원숭이" />
+    </imgdir>
+    <imgdir name="q4_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄴㅅㅌㄱㄹ" />
+      <string name="solution" value="네스트골렘" />
+    </imgdir>
+    <imgdir name="q4_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㅇㅇㅂ" />
+      <string name="solution" value="다크와이번" />
+    </imgdir>
+    <imgdir name="q4_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㄷㅇㅇㅂ" />
+      <string name="solution" value="레드와이번" />
+    </imgdir>
+    <imgdir name="q4_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅅㅌㄷㅅㅌㄴ" />
+      <string name="solution" value="마스터데스테니" />
+    </imgdir>
+    <imgdir name="q4_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㅇㅋ" />
+      <string name="solution" value="바이킹" />
+    </imgdir>
+    <imgdir name="q4_06">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㅂㄴㄱㄹ" />
+      <string name="solution" value="불너구리" />
+    </imgdir>
+    <imgdir name="q4_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㄷㅎㅍ" />
+      <string name="solution" value="블러드하프" />
+    </imgdir>
+    <imgdir name="q4_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅌㅍㅅ" />
+      <string name="solution" value="스타픽시" />
+    </imgdir>
+    <imgdir name="q4_09">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅇㄷㅋㄱ" />
+      <string name="solution" value="와일드카고" />
+    </imgdir>
+    <imgdir name="q4_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㄹㅈ" />
+      <string name="solution" value="로저" />
+    </imgdir>
+    <imgdir name="q4_11">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㄷㄱㅁㅇㅈㅇㅇ" />
+      <string name="solution" value="뒷골목의제이엠" />
+    </imgdir>
+    <imgdir name="q4_12">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅈㅇㄷ" />
+      <string name="solution" value="제이드" />
+    </imgdir>
+    <imgdir name="q4_13">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅈㄴㄱㅂㅈㄷㅂ" />
+      <string name="solution" value="장난감병정델브" />
+    </imgdir>
+    <imgdir name="q4_14">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄱㅈㅅㄱ" />
+      <string name="solution" value="괘종시계" />
+    </imgdir>
+    <imgdir name="q4_15">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄱㅅㅌㅎㅌㅂ" />
+      <string name="solution" value="고스트헌터밥" />
+    </imgdir>
+    <imgdir name="q4_16">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅂㅅㅋㅂ" />
+      <string name="solution" value="병사케빈" />
+    </imgdir>
+    <imgdir name="q4_17">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㄹㅂㅅ" />
+      <string name="solution" value="로빈슨" />
+    </imgdir>
+    <imgdir name="q4_18">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅋㅈ" />
+      <string name="solution" value="콩쥐" />
+    </imgdir>
+    <imgdir name="q4_19">
+      <string name="hint" value="중국 NPC 이름" />
+      <string name="question" value="ㄴㅈㅅㅈㅇㅇㅆ" />
+      <string name="solution" value="노점상주인여씨" />
+    </imgdir>
+    <imgdir name="q4_20">
+      <string name="hint" value="HP, MP 50% 회복" />
+      <string name="question" value="ㅇㄹㅅ" />
+      <string name="solution" value="엘릭서" />
+    </imgdir>
+    <imgdir name="q4_21">
+      <string name="hint" value="마력 10 증가" />
+      <string name="question" value="ㅎㅈㅇㅁㅇ" />
+      <string name="solution" value="현자의물약" />
+    </imgdir>
+    <imgdir name="q4_22">
+      <string name="hint" value="HP 30 회복" />
+      <string name="question" value="ㄹㅈㅇㅅㄱ" />
+      <string name="solution" value="로저의사과" />
+    </imgdir>
+    <imgdir name="q4_23">
+      <string name="hint" value="MP 450 회복" />
+      <string name="question" value="ㅇㄹㅈㅈㅅ" />
+      <string name="solution" value="오렌지주스" />
+    </imgdir>
+    <imgdir name="q4_24">
+      <string name="hint" value="HP, MP 120 회복" />
+      <string name="question" value="ㅊㄷㅂㅅㅇ" />
+      <string name="solution" value="천도복숭아" />
+    </imgdir>
+    <imgdir name="q4_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㅅㅂㅍㅊ" />
+      <string name="solution" value="수비표창" />
+    </imgdir>
+    <imgdir name="q4_26">
+      <string name="hint" value="재료" />
+      <string name="question" value="ㄴㅅ" />
+      <string name="solution" value="나사" />
+    </imgdir>
+    <imgdir name="q4_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄱㅅㄱㅇㅇ" />
+      <string name="solution" value="갈색고양이" />
+    </imgdir>
+    <imgdir name="q4_28">
+      <string name="hint" value="채널 전체 말하기" />
+      <string name="question" value="ㅎㅅㄱ" />
+      <string name="solution" value="확성기" />
+    </imgdir>
+    <imgdir name="q4_29">
+      <string name="hint" value="얼굴장식" />
+      <string name="question" value="ㄹㄷㅍㅇㅃㄱㅋ" />
+      <string name="solution" value="루돌프의빨간코" />
+    </imgdir>
+    <imgdir name="q4_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅅㄷㅇㅇㄹ" />
+      <string name="solution" value="소드이어링" />
+    </imgdir>
+    <imgdir name="q4_31">
+      <string name="hint" value="장갑" />
+      <string name="question" value="ㄴㄱㄷㅁㅈㄱ" />
+      <string name="solution" value="노가다목장갑" />
+    </imgdir>
+    <imgdir name="q4_32">
+      <string name="hint" value="한손검" />
+      <string name="question" value="ㄱㅅㅊㅉ" />
+      <string name="solution" value="광선채찍" />
+    </imgdir>
+    <imgdir name="q4_33">
+      <string name="hint" value="초보자 스킬" />
+      <string name="question" value="ㅁㅊㅎㅁㄴㄹ" />
+      <string name="solution" value="민첩한몸놀림" />
+    </imgdir>
+    <imgdir name="q4_34">
+      <string name="hint" value="전사 3차 스킬" />
+      <string name="question" value="ㄷㄹㄱㅆㄹㅅ" />
+      <string name="solution" value="드래곤쓰레셔" />
+    </imgdir>
+    <imgdir name="q4_35">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅋㄷㅂ" />
+      <string name="solution" value="콜드빔" />
+    </imgdir>
+    <imgdir name="q4_36">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅁㅌㅇ" />
+      <string name="solution" value="메테오" />
+    </imgdir>
+    <imgdir name="q4_37">
+      <string name="hint" value="궁수 2차 스킬" />
+      <string name="question" value="ㅅㅇㅇㄹㅇ" />
+      <string name="solution" value="소울에로우" />
+    </imgdir>
+    <imgdir name="q4_38">
+      <string name="hint" value="도적 1차 스킬" />
+      <string name="question" value="ㄹㅋㅅㅂ" />
+      <string name="solution" value="럭키세븐" />
+    </imgdir>
+    <imgdir name="q4_39">
+      <string name="hint" value="도적 3차 스킬" />
+      <string name="question" value="ㅅㅂㅈ" />
+      <string name="solution" value="시브즈" />
+    </imgdir>
+    <imgdir name="q4_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄷㄹㄱㄴㅇㅌ" />
+      <string name="solution" value="드래곤나이트" />
+    </imgdir>
+    <imgdir name="q4_41">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄹㅇㅈ" />
+      <string name="solution" value="레인저" />
+    </imgdir>
+    <imgdir name="q4_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㄹㄴㅇ" />
+      <string name="solution" value="엘리니아" />
+    </imgdir>
+    <imgdir name="q4_43">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅂㅊㅁㅇ" />
+      <string name="solution" value="백초마을" />
+    </imgdir>
+    <imgdir name="q4_44">
+      <string name="hint" value="단축키 \" />
+      <string name="question" value="ㅋㅅㅈ" />
+      <string name="solution" value="키설정" />
+    </imgdir>
+    <imgdir name="q4_45">
+      <string name="hint" value="스포아의 전리품" />
+      <string name="question" value="ㅂㅅㅇㅍㅈ" />
+      <string name="solution" value="버섯의포자" />
+    </imgdir>
+    <imgdir name="q4_46">
+      <string name="hint" value="스티지의 전리품" />
+      <string name="question" value="ㅅㅌㅈㅇㄴㄱ" />
+      <string name="solution" value="스티지의날개" />
+    </imgdir>
+    <imgdir name="q4_47">
+      <string name="hint" value="킹 블록퍼스의 전리품" />
+      <string name="question" value="ㅍㄹㅅㅌㅇㄱ" />
+      <string name="solution" value="플라스틱왕관" />
+    </imgdir>
+    <imgdir name="q4_48">
+      <string name="hint" value="제타 그레이의 전리품" />
+      <string name="question" value="ㅅㅎㅇㅈㅅ" />
+      <string name="solution" value="소형우주선" />
+    </imgdir>
+    <imgdir name="q4_49">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅇㅋㅇㅁㄹ" />
+      <string name="solution" value="아쿠아마린" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz5">
+    <imgdir name="q5_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㄱㅌㅂㅇㅋ" />
+      <string name="solution" value="기간틱바이킹" />
+    </imgdir>
+    <imgdir name="q5_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄴㄹㅇㄷㄲㅂ" />
+      <string name="solution" value="노란왕도깨비" />
+    </imgdir>
+    <imgdir name="q5_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄷㅋㅇㅅㅌㅍ" />
+      <string name="solution" value="다크엑스텀프" />
+    </imgdir>
+    <imgdir name="q5_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅇㅍㅇㄹ" />
+      <string name="solution" value="듀얼파이렛" />
+    </imgdir>
+    <imgdir name="q5_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㅂㅍㅅ" />
+      <string name="solution" value="버블피쉬" />
+    </imgdir>
+    <imgdir name="q5_05">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅅㅋㄹㅌㅈㄱ" />
+      <string name="solution" value="스켈레톤장교" />
+    </imgdir>
+    <imgdir name="q5_06">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅇㅅㄷㄹㅇㅋ" />
+      <string name="solution" value="아이스드레이크" />
+    </imgdir>
+    <imgdir name="q5_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅇㅇㅅㅅㅌㅂ" />
+      <string name="solution" value="아이스스톤볼" />
+    </imgdir>
+    <imgdir name="q5_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㄱㄹㅍ" />
+      <string name="solution" value="주니어그류핀" />
+    </imgdir>
+    <imgdir name="q5_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅈㄴㅇㅅㅌㅂ" />
+      <string name="solution" value="주니어스톤볼" />
+    </imgdir>
+    <imgdir name="q5_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅇㄴ" />
+      <string name="solution" value="유나" />
+    </imgdir>
+    <imgdir name="q5_11">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㄱㅂㅅ" />
+      <string name="solution" value="김박사" />
+    </imgdir>
+    <imgdir name="q5_12">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅇㅇㅎㅁㄴ" />
+      <string name="solution" value="연이할머니" />
+    </imgdir>
+    <imgdir name="q5_13">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㄴㅁㄲ" />
+      <string name="solution" value="나무꾼" />
+    </imgdir>
+    <imgdir name="q5_14">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅋㄷ" />
+      <string name="solution" value="키드" />
+    </imgdir>
+    <imgdir name="q5_15">
+      <string name="hint" value="태국 NPC 이름" />
+      <string name="question" value="ㅈㅌ" />
+      <string name="solution" value="지트" />
+    </imgdir>
+    <imgdir name="q5_16">
+      <string name="hint" value="중국 NPC 이름" />
+      <string name="question" value="ㅇㅆㅇㅈㅆ" />
+      <string name="solution" value="양씨아저씨" />
+    </imgdir>
+    <imgdir name="q5_17">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㅇㄹㅅㅇㅈ" />
+      <string name="solution" value="요리사아종" />
+    </imgdir>
+    <imgdir name="q5_18">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㄲㅍㅇㅅㄴ" />
+      <string name="solution" value="껌팔이소녀" />
+    </imgdir>
+    <imgdir name="q5_19">
+      <string name="hint" value="대만 NPC 이름" />
+      <string name="question" value="ㅂㄹㅊㅅㄴ" />
+      <string name="solution" value="불량청소년" />
+    </imgdir>
+    <imgdir name="q5_20">
+      <string name="hint" value="HP, MP 모두 회복" />
+      <string name="question" value="ㅍㅇㅇㄹㅅ" />
+      <string name="solution" value="파워엘릭서" />
+    </imgdir>
+    <imgdir name="q5_21">
+      <string name="hint" value="공격력 5 증가" />
+      <string name="question" value="ㅈㅅㅇㅁㅇ" />
+      <string name="solution" value="전사의물약" />
+    </imgdir>
+    <imgdir name="q5_22">
+      <string name="hint" value="공격력 8 증가" />
+      <string name="question" value="ㄷㄹㅇㅋㅇㅍ" />
+      <string name="solution" value="드레이크의피" />
+    </imgdir>
+    <imgdir name="q5_23">
+      <string name="hint" value="MP 900 회복" />
+      <string name="question" value="ㅍㄷㅈㅅ" />
+      <string name="solution" value="포도주스" />
+    </imgdir>
+    <imgdir name="q5_24">
+      <string name="hint" value="가까운 마을로 귀환" />
+      <string name="question" value="ㅁㅇㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="마을귀환주문서" />
+    </imgdir>
+    <imgdir name="q5_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㅇㅂㅍㅊ" />
+      <string name="solution" value="월비표창" />
+    </imgdir>
+    <imgdir name="q5_26">
+      <string name="hint" value="재료" />
+      <string name="question" value="ㄱㄱㄷㄴㅁ" />
+      <string name="solution" value="가공된나무" />
+    </imgdir>
+    <imgdir name="q5_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄱㅅㄱㅇㅈ" />
+      <string name="solution" value="갈색강아지" />
+    </imgdir>
+    <imgdir name="q5_28">
+      <string name="hint" value="월드 전체 말하기" />
+      <string name="question" value="ㄱㅅㄴㅎㅅㄱ" />
+      <string name="solution" value="고성능확성기" />
+    </imgdir>
+    <imgdir name="q5_29">
+      <string name="hint" value="상점 검색" />
+      <string name="question" value="ㅁㄴㄹㅂㅇㅂㅇㅇ" />
+      <string name="solution" value="미네르바의부엉이" />
+    </imgdir>
+    <imgdir name="q5_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅊㄱㄱㄹ" />
+      <string name="solution" value="추귀고리" />
+    </imgdir>
+    <imgdir name="q5_31">
+      <string name="hint" value="신발" />
+      <string name="question" value="ㄹㄷㅇㅇㅈ" />
+      <string name="solution" value="레드아이젠" />
+    </imgdir>
+    <imgdir name="q5_32">
+      <string name="hint" value="한손검" />
+      <string name="question" value="ㅂㅇㅊㅉ" />
+      <string name="solution" value="붉은채찍" />
+    </imgdir>
+    <imgdir name="q5_33">
+      <string name="hint" value="몬스터 탑승 스킬" />
+      <string name="question" value="ㅁㅅㅌㄹㅇㄷ" />
+      <string name="solution" value="몬스터라이딩" />
+    </imgdir>
+    <imgdir name="q5_34">
+      <string name="hint" value="4차 공통 스킬" />
+      <string name="question" value="ㅁㅇㅍㅇㅅ" />
+      <string name="solution" value="메이플용사" />
+    </imgdir>
+    <imgdir name="q5_35">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅂㄹㅅ" />
+      <string name="solution" value="블레스" />
+    </imgdir>
+    <imgdir name="q5_36">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅇㅇㅅㄷㅁ" />
+      <string name="solution" value="아이스데몬" />
+    </imgdir>
+    <imgdir name="q5_37">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㅆㄹㅅㅌ" />
+      <string name="solution" value="쓰러스트" />
+    </imgdir>
+    <imgdir name="q5_38">
+      <string name="hint" value="도적 1차 스킬" />
+      <string name="question" value="ㄷㅂㅅㅌ" />
+      <string name="solution" value="더블스탭" />
+    </imgdir>
+    <imgdir name="q5_39">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅍㅇㅋ" />
+      <string name="solution" value="페이크" />
+    </imgdir>
+    <imgdir name="q5_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅎㅇㄹ" />
+      <string name="solution" value="히어로" />
+    </imgdir>
+    <imgdir name="q5_41">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅈㄱㅅ" />
+      <string name="solution" value="저격수" />
+    </imgdir>
+    <imgdir name="q5_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅍㄹㅇ" />
+      <string name="solution" value="페리온" />
+    </imgdir>
+    <imgdir name="q5_43">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅂㅅㅅㅅ" />
+      <string name="solution" value="버섯신사" />
+    </imgdir>
+    <imgdir name="q5_44">
+      <string name="hint" value="단축키 S" />
+      <string name="question" value="ㄴㄹㅊ" />
+      <string name="solution" value="능력치" />
+    </imgdir>
+    <imgdir name="q5_45">
+      <string name="hint" value="스텀프의 전리품" />
+      <string name="question" value="ㄴㅁㄱㅈ" />
+      <string name="solution" value="나뭇가지" />
+    </imgdir>
+    <imgdir name="q5_46">
+      <string name="hint" value="페어리의 전리품" />
+      <string name="question" value="ㅍㅇㄹㅇㄷㄷㅇ" />
+      <string name="solution" value="페어리의더듬이" />
+    </imgdir>
+    <imgdir name="q5_47">
+      <string name="hint" value="블록퍼스의 전리품" />
+      <string name="question" value="ㅁㅇㅇㅅㄱㄹ" />
+      <string name="solution" value="문어열쇠고리" />
+    </imgdir>
+    <imgdir name="q5_48">
+      <string name="hint" value="푸퍼의 전리품" />
+      <string name="question" value="ㅍㅍㅇㅇ" />
+      <string name="solution" value="푸퍼의알" />
+    </imgdir>
+    <imgdir name="q5_49">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅇㅁㄹㄷ" />
+      <string name="solution" value="에메랄드" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz6">
+    <imgdir name="q6_00">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㅇㅌㅋㅍ" />
+      <string name="solution" value="게이트키퍼" />
+    </imgdir>
+    <imgdir name="q6_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄱㄹㅌㄹㅅㅌ" />
+      <string name="solution" value="그린트릭스터" />
+    </imgdir>
+    <imgdir name="q6_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄷㅋㄷㄹㅇㅋ" />
+      <string name="solution" value="다크드레이크" />
+    </imgdir>
+    <imgdir name="q6_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㄷㄷㄹㄱㅌㅌ" />
+      <string name="solution" value="레드드래곤터틀" />
+    </imgdir>
+    <imgdir name="q6_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅂㅌㅇ" />
+      <string name="solution" value="로보토이" />
+    </imgdir>
+    <imgdir name="q6_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅅㅌㅋㄹㄴㅅ" />
+      <string name="solution" value="마스터크로노스" />
+    </imgdir>
+    <imgdir name="q6_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㅇㅇㅂ" />
+      <string name="solution" value="블루와이번" />
+    </imgdir>
+    <imgdir name="q6_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㄷㅈ" />
+      <string name="solution" value="삼단지" />
+    </imgdir>
+    <imgdir name="q6_08">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅅㅍㅇ" />
+      <string name="solution" value="스포아" />
+    </imgdir>
+    <imgdir name="q6_09">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㅈㄷㄱㅅ" />
+      <string name="solution" value="제등귀신" />
+    </imgdir>
+    <imgdir name="q6_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅍㅌ" />
+      <string name="solution" value="피터" />
+    </imgdir>
+    <imgdir name="q6_11">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅈㄹㅅㅌ" />
+      <string name="solution" value="장로스탄" />
+    </imgdir>
+    <imgdir name="q6_12">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅁㅁㅂㅇ" />
+      <string name="solution" value="밍밍부인" />
+    </imgdir>
+    <imgdir name="q6_13">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅂㄹㅅ" />
+      <string name="solution" value="브루스" />
+    </imgdir>
+    <imgdir name="q6_14">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅅㅇ" />
+      <string name="solution" value="쉐인" />
+    </imgdir>
+    <imgdir name="q6_15">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅌㅋㅅ" />
+      <string name="solution" value="툴카스" />
+    </imgdir>
+    <imgdir name="q6_16">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅇㅅㅅㅂ" />
+      <string name="solution" value="윌슨상병" />
+    </imgdir>
+    <imgdir name="q6_17">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅇㅈㅇㅋ" />
+      <string name="solution" value="요정웡키" />
+    </imgdir>
+    <imgdir name="q6_18">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㄱㅈㅈㅋㅎ" />
+      <string name="solution" value="공장장카호" />
+    </imgdir>
+    <imgdir name="q6_19">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅅㄹㅇㅈㅇㄹㅇ" />
+      <string name="solution" value="메소레인저옐로우" />
+    </imgdir>
+    <imgdir name="q6_20">
+      <string name="hint" value="MP 300 회복" />
+      <string name="question" value="ㅁㄴㅇㄹㅅ" />
+      <string name="solution" value="마나엘릭서" />
+    </imgdir>
+    <imgdir name="q6_21">
+      <string name="hint" value="명중률 5 증가" />
+      <string name="question" value="ㅁㅅㅅㅇㅁㅇ" />
+      <string name="solution" value="명사수의물약" />
+    </imgdir>
+    <imgdir name="q6_22">
+      <string name="hint" value="회피율 10 증가" />
+      <string name="question" value="ㅇㅈㅇㄲ" />
+      <string name="solution" value="요정의꿀" />
+    </imgdir>
+    <imgdir name="q6_23">
+      <string name="hint" value="HP 4000 회복" />
+      <string name="question" value="ㅅㅅㄴㄴㅊㅈ" />
+      <string name="solution" value="살살녹는치즈" />
+    </imgdir>
+    <imgdir name="q6_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㄹㅅㅎㄱㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="리스항구귀환주문서" />
+    </imgdir>
+    <imgdir name="q6_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㅁㅂㅍㅊ" />
+      <string name="solution" value="목비표창" />
+    </imgdir>
+    <imgdir name="q6_26">
+      <string name="hint" value="재료" />
+      <string name="question" value="ㅃㅃㅎㄱㅌ" />
+      <string name="solution" value="뻣뻣한깃털" />
+    </imgdir>
+    <imgdir name="q6_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅂㅎㅅㅌㄲ" />
+      <string name="solution" value="분홍색토끼" />
+    </imgdir>
+    <imgdir name="q6_28">
+      <string name="hint" value="펫먹이" />
+      <string name="question" value="ㅂㄴㄴ" />
+      <string name="solution" value="바나나" />
+    </imgdir>
+    <imgdir name="q6_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅅㅍㅇㅇㄱㄱㄹ" />
+      <string name="solution" value="사파이어귀고리" />
+    </imgdir>
+    <imgdir name="q6_30">
+      <string name="hint" value="신발" />
+      <string name="question" value="ㅍㄹㅇㅅㄹㅍ" />
+      <string name="solution" value="폰라의슬리퍼" />
+    </imgdir>
+    <imgdir name="q6_31">
+      <string name="hint" value="한손둔기" />
+      <string name="question" value="ㅍㄹㅇㅍ" />
+      <string name="solution" value="프라이팬" />
+    </imgdir>
+    <imgdir name="q6_32">
+      <string name="hint" value="전사 1차 스킬" />
+      <string name="question" value="ㅇㄷㅇ" />
+      <string name="solution" value="인듀어" />
+    </imgdir>
+    <imgdir name="q6_33">
+      <string name="hint" value="4차 공통 스킬" />
+      <string name="question" value="ㅇㅅㅇㅇㅈ" />
+      <string name="solution" value="용사의의지" />
+    </imgdir>
+    <imgdir name="q6_34">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅎ" />
+      <string name="solution" value="힐" />
+    </imgdir>
+    <imgdir name="q6_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅊㅇㄹㅇㅌㄴ" />
+      <string name="solution" value="체인라이트닝" />
+    </imgdir>
+    <imgdir name="q6_36">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㅍㅍ" />
+      <string name="solution" value="퍼펫" />
+    </imgdir>
+    <imgdir name="q6_37">
+      <string name="hint" value="도적 1차 스킬" />
+      <string name="question" value="ㄷㅋㅅㅇㅌ" />
+      <string name="solution" value="다크사이트" />
+    </imgdir>
+    <imgdir name="q6_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅂㄴ" />
+      <string name="solution" value="베놈" />
+    </imgdir>
+    <imgdir name="q6_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅍㄹㄷ" />
+      <string name="solution" value="팔라딘" />
+    </imgdir>
+    <imgdir name="q6_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅂㅇㅁㅅㅌ" />
+      <string name="solution" value="보우마스터" />
+    </imgdir>
+    <imgdir name="q6_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅋㄴㅅㅌ" />
+      <string name="solution" value="커닝시티" />
+    </imgdir>
+    <imgdir name="q6_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅅㅎㅇㅇㅌ" />
+      <string name="solution" value="상해와이탄" />
+    </imgdir>
+    <imgdir name="q6_43">
+      <string name="hint" value="단축키 G" />
+      <string name="question" value="ㄱㄷ" />
+      <string name="solution" value="길드" />
+    </imgdir>
+    <imgdir name="q6_44">
+      <string name="hint" value="슬라임의 전리품" />
+      <string name="question" value="ㅁㅋㅁㅋㅎㅇㅊ" />
+      <string name="solution" value="물컹물컹한액체" />
+    </imgdir>
+    <imgdir name="q6_45">
+      <string name="hint" value="브라운 테니의 전리품" />
+      <string name="question" value="ㄱㅇㅎㅇㅅㅁㅊ" />
+      <string name="solution" value="곰인형의솜뭉치" />
+    </imgdir>
+    <imgdir name="q6_46">
+      <string name="hint" value="장난감 목마의 전리품" />
+      <string name="question" value="ㅈㄴㄱㅂㅈㅇㅋ" />
+      <string name="solution" value="장난감병정의칼" />
+    </imgdir>
+    <imgdir name="q6_47">
+      <string name="hint" value="월묘의 전리품" />
+      <string name="question" value="ㅈㄱㄱㅇ" />
+      <string name="solution" value="절구공이" />
+    </imgdir>
+    <imgdir name="q6_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅇㅍ" />
+      <string name="solution" value="오팔" />
+    </imgdir>
+    <imgdir name="q6_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅋㄹㄴ" />
+      <string name="solution" value="칼루나" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz7">
+    <imgdir name="q7_00">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄱㅅㅌㅍ" />
+      <string name="solution" value="고스텀프" />
+    </imgdir>
+    <imgdir name="q7_01">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㄱㄹㅇㅇ" />
+      <string name="solution" value="구름여우" />
+    </imgdir>
+    <imgdir name="q7_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅅㅌㄴ" />
+      <string name="solution" value="데스테니" />
+    </imgdir>
+    <imgdir name="q7_03">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄹㅂㄷㅈ" />
+      <string name="solution" value="리본돼지" />
+    </imgdir>
+    <imgdir name="q7_04">
+      <string name="hint" value="몬스터 이름 (태국)" />
+      <string name="question" value="ㅃㄱㄷㅁㅂ" />
+      <string name="solution" value="빨간도마뱀" />
+    </imgdir>
+    <imgdir name="q7_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅋㄹㄱ" />
+      <string name="solution" value="스켈레곤" />
+    </imgdir>
+    <imgdir name="q7_06">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅌㅍㅅ" />
+      <string name="solution" value="옥토퍼스" />
+    </imgdir>
+    <imgdir name="q7_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅇㅇㅇㅍ" />
+      <string name="solution" value="웨어울프" />
+    </imgdir>
+    <imgdir name="q7_08">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅂㅇㅇ" />
+      <string name="solution" value="이블아이" />
+    </imgdir>
+    <imgdir name="q7_09">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅈㄴㅇㄴㅋ" />
+      <string name="solution" value="주니어네키" />
+    </imgdir>
+    <imgdir name="q7_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㄹㅂ" />
+      <string name="solution" value="로빈" />
+    </imgdir>
+    <imgdir name="q7_11">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅇㅌ" />
+      <string name="solution" value="유타" />
+    </imgdir>
+    <imgdir name="q7_12">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅈㅇ" />
+      <string name="solution" value="제이" />
+    </imgdir>
+    <imgdir name="q7_13">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㅁㅈ" />
+      <string name="solution" value="만지" />
+    </imgdir>
+    <imgdir name="q7_14">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅇㅈㄹㅇ" />
+      <string name="solution" value="요정로웬" />
+    </imgdir>
+    <imgdir name="q7_15">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅋㄴㅅㅌㅈㅎㅌㅅ" />
+      <string name="solution" value="커닝시티중형택시" />
+    </imgdir>
+    <imgdir name="q7_16">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅎㄹㅋ" />
+      <string name="solution" value="헤라클" />
+    </imgdir>
+    <imgdir name="q7_17">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅂㄱ" />
+      <string name="solution" value="보겐" />
+    </imgdir>
+    <imgdir name="q7_18">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅅㅋㄷㄹ" />
+      <string name="solution" value="스카두르" />
+    </imgdir>
+    <imgdir name="q7_19">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅈㄴㄱㅂㅈㅇㅅ" />
+      <string name="solution" value="장난감병정올슨" />
+    </imgdir>
+    <imgdir name="q7_20">
+      <string name="hint" value="HP 50 회복" />
+      <string name="question" value="ㅃㄱㅍㅅㅇㅇ" />
+      <string name="solution" value="빨간포션알약" />
+    </imgdir>
+    <imgdir name="q7_21">
+      <string name="hint" value="공격력 5 증가" />
+      <string name="question" value="ㅈㅅㅇㅇㅇ" />
+      <string name="solution" value="전사의알약" />
+    </imgdir>
+    <imgdir name="q7_22">
+      <string name="hint" value="마력 10 증가" />
+      <string name="question" value="ㄱㅁㄴㅁㅇㅅㅇ" />
+      <string name="solution" value="고목나무의수액" />
+    </imgdir>
+    <imgdir name="q7_23">
+      <string name="hint" value="HP 5000 회복" />
+      <string name="question" value="ㅅㄹㅇㅇㅇ" />
+      <string name="solution" value="순록의우유" />
+    </imgdir>
+    <imgdir name="q7_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅇㄹㄴㅇㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="엘리니아귀환주문서" />
+    </imgdir>
+    <imgdir name="q7_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㄱㅂㅍㅊ" />
+      <string name="solution" value="금비표창" />
+    </imgdir>
+    <imgdir name="q7_26">
+      <string name="hint" value="재료" />
+      <string name="question" value="ㅂㄷㄹㅇㄱㅌ" />
+      <string name="solution" value="부드러운깃털" />
+    </imgdir>
+    <imgdir name="q7_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅁㄴㅋㄱ" />
+      <string name="solution" value="미니카고" />
+    </imgdir>
+    <imgdir name="q7_28">
+      <string name="hint" value="펫먹이" />
+      <string name="question" value="ㅃㄷㄱ" />
+      <string name="solution" value="뼈다귀" />
+    </imgdir>
+    <imgdir name="q7_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅈㅅㅈㄱㄱㄹ" />
+      <string name="solution" value="자수정귀고리" />
+    </imgdir>
+    <imgdir name="q7_30">
+      <string name="hint" value="신발" />
+      <string name="question" value="ㄱㄹㅇㅇㅈ" />
+      <string name="solution" value="그린아이젠" />
+    </imgdir>
+    <imgdir name="q7_31">
+      <string name="hint" value="한손둔기" />
+      <string name="question" value="ㅅㄱㅇㄷㅈㄷㄱ" />
+      <string name="solution" value="세계의돼지도감" />
+    </imgdir>
+    <imgdir name="q7_32">
+      <string name="hint" value="전사 1차 스킬" />
+      <string name="question" value="ㅇㅇㅇㅂㄷ" />
+      <string name="solution" value="아이언바디" />
+    </imgdir>
+    <imgdir name="q7_33">
+      <string name="hint" value="전사 4차 스킬" />
+      <string name="question" value="ㅂㄹㄷㅅ" />
+      <string name="solution" value="브랜디쉬" />
+    </imgdir>
+    <imgdir name="q7_34">
+      <string name="hint" value="마법사 2차 스킬" />
+      <string name="question" value="ㅎㄹㅇㄹㅇ" />
+      <string name="solution" value="홀리에로우" />
+    </imgdir>
+    <imgdir name="q7_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅂㄹㅈㄷ" />
+      <string name="solution" value="블리자드" />
+    </imgdir>
+    <imgdir name="q7_36">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㅅㅂㅎㅋ" />
+      <string name="solution" value="실버호크" />
+    </imgdir>
+    <imgdir name="q7_37">
+      <string name="hint" value="도적 2차 스킬" />
+      <string name="question" value="ㅇㄷㅇ" />
+      <string name="solution" value="인듀어" />
+    </imgdir>
+    <imgdir name="q7_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅌㄹㅍㅅㄹㅇ" />
+      <string name="solution" value="트리플스로우" />
+    </imgdir>
+    <imgdir name="q7_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄷㅋㄴㅇㅌ" />
+      <string name="solution" value="다크나이트" />
+    </imgdir>
+    <imgdir name="q7_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅅㄱ" />
+      <string name="solution" value="신궁" />
+    </imgdir>
+    <imgdir name="q7_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㄹㅅㅎㄱ" />
+      <string name="solution" value="리스항구" />
+    </imgdir>
+    <imgdir name="q7_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅅㅁㅈ" />
+      <string name="solution" value="서문정" />
+    </imgdir>
+    <imgdir name="q7_43">
+      <string name="hint" value="단축키 H" />
+      <string name="question" value="ㄱㅅㅁ" />
+      <string name="solution" value="귓속말" />
+    </imgdir>
+    <imgdir name="q7_44">
+      <string name="hint" value="초록버섯의 전리품" />
+      <string name="question" value="ㅊㄹㅂㅅㅇㄱ" />
+      <string name="solution" value="초록버섯의갓" />
+    </imgdir>
+    <imgdir name="q7_45">
+      <string name="hint" value="크립의 전리품" />
+      <string name="question" value="ㅅㅇㅅ" />
+      <string name="solution" value="새우살" />
+    </imgdir>
+    <imgdir name="q7_46">
+      <string name="hint" value="크로노스의 전리품" />
+      <string name="question" value="ㅌㄴㅂㅋ" />
+      <string name="solution" value="톱니바퀴" />
+    </imgdir>
+    <imgdir name="q7_47">
+      <string name="hint" value="호돌이의 전리품" />
+      <string name="question" value="ㅎㄹㅇㅂㄷㅈ" />
+      <string name="solution" value="호랑이발도장" />
+    </imgdir>
+    <imgdir name="q7_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅅㅍㅇㅇ" />
+      <string name="solution" value="사파이어" />
+    </imgdir>
+    <imgdir name="q7_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㄱㄹㅅㅇ" />
+      <string name="solution" value="갈리시아" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz8">
+    <imgdir name="q8_00">
+      <string name="hint" value="몬스터 이름 (태국)" />
+      <string name="question" value="ㄱㄹㅇ" />
+      <string name="solution" value="구렁이" />
+    </imgdir>
+    <imgdir name="q8_01">
+      <string name="hint" value="몬스터 이름 (일본)" />
+      <string name="question" value="ㄲㅁㄱ" />
+      <string name="solution" value="까마귀" />
+    </imgdir>
+    <imgdir name="q8_02">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㄷㅋㅅㅌㄱㄹ" />
+      <string name="solution" value="다크스톤골렘" />
+    </imgdir>
+    <imgdir name="q8_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅊ" />
+      <string name="solution" value="라츠" />
+    </imgdir>
+    <imgdir name="q8_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅅㅌㅍㅅ" />
+      <string name="solution" value="러스터픽시" />
+    </imgdir>
+    <imgdir name="q8_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㄴㅍㅅ" />
+      <string name="solution" value="루나픽시" />
+    </imgdir>
+    <imgdir name="q8_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅅㅌㅅㅇㅌㄴ" />
+      <string name="solution" value="마스터소울테니" />
+    </imgdir>
+    <imgdir name="q8_07">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅁㅁㄷ" />
+      <string name="solution" value="머미독" />
+    </imgdir>
+    <imgdir name="q8_08">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㅍㅅ" />
+      <string name="solution" value="본피쉬" />
+    </imgdir>
+    <imgdir name="q8_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㅊㄴㅌㄲ" />
+      <string name="solution" value="북치는토끼" />
+    </imgdir>
+    <imgdir name="q8_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅌㄷ" />
+      <string name="solution" value="토드" />
+    </imgdir>
+    <imgdir name="q8_11">
+      <string name="hint" value="페리온 NPC 이름" />
+      <string name="question" value="ㅍㄹㅇㅈㅎㅌㅅ" />
+      <string name="solution" value="페리온중형택시" />
+    </imgdir>
+    <imgdir name="q8_12">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅇㄹㅅ" />
+      <string name="solution" value="알렉스" />
+    </imgdir>
+    <imgdir name="q8_13">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㅅㅁ" />
+      <string name="solution" value="슈미" />
+    </imgdir>
+    <imgdir name="q8_14">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㄹㅅ" />
+      <string name="solution" value="리사" />
+    </imgdir>
+    <imgdir name="q8_15">
+      <string name="hint" value="엘나스 NPC 이름" />
+      <string name="question" value="ㅇㄹㅋ" />
+      <string name="solution" value="아레크" />
+    </imgdir>
+    <imgdir name="q8_16">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅎㄹ" />
+      <string name="solution" value="할리" />
+    </imgdir>
+    <imgdir name="q8_17">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅈㄹㄱㅎㅅ" />
+      <string name="solution" value="조립공한스" />
+    </imgdir>
+    <imgdir name="q8_18">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㄱㅇ" />
+      <string name="solution" value="건이" />
+    </imgdir>
+    <imgdir name="q8_19">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅂㅅㄱㅁㄷ" />
+      <string name="solution" value="부사관메딘" />
+    </imgdir>
+    <imgdir name="q8_20">
+      <string name="hint" value="HP 150 회복" />
+      <string name="question" value="ㅈㅎㅍㅅㅇㅇ" />
+      <string name="solution" value="주황포션알약" />
+    </imgdir>
+    <imgdir name="q8_21">
+      <string name="hint" value="마력 5 증가" />
+      <string name="question" value="ㅁㅂㅅㅇㅇㅇ" />
+      <string name="solution" value="마법사의알약" />
+    </imgdir>
+    <imgdir name="q8_22">
+      <string name="hint" value="물리 방어력 10 증가" />
+      <string name="question" value="ㄷㄹㅇㅋㅇㄱㄱ" />
+      <string name="solution" value="드레이크의고기" />
+    </imgdir>
+    <imgdir name="q8_23">
+      <string name="hint" value="MP 4000 회복" />
+      <string name="question" value="ㅅㅂㅇㅇㅅ" />
+      <string name="solution" value="새벽의이슬" />
+    </imgdir>
+    <imgdir name="q8_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅍㄹㅇㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="페리온귀환주문서" />
+    </imgdir>
+    <imgdir name="q8_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㅌㅂㅍㅊ" />
+      <string name="solution" value="토비표창" />
+    </imgdir>
+    <imgdir name="q8_26">
+      <string name="hint" value="힘의 기운" />
+      <string name="question" value="ㅎㅇㅋㄹㅅㅌ" />
+      <string name="solution" value="힘의크리스탈" />
+    </imgdir>
+    <imgdir name="q8_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㄱㅇㅅㄱㅇㅇ" />
+      <string name="solution" value="검은색고양이" />
+    </imgdir>
+    <imgdir name="q8_28">
+      <string name="hint" value="펫먹이" />
+      <string name="question" value="ㅅㅅ" />
+      <string name="solution" value="생선" />
+    </imgdir>
+    <imgdir name="q8_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅇㅁㄹㄷㄱㄱㄹ" />
+      <string name="solution" value="에메랄드귀고리" />
+    </imgdir>
+    <imgdir name="q8_30">
+      <string name="hint" value="방패" />
+      <string name="question" value="ㄴㅂㄹㅅㅌ" />
+      <string name="solution" value="님블리스트" />
+    </imgdir>
+    <imgdir name="q8_31">
+      <string name="hint" value="단검" />
+      <string name="question" value="ㅁㅇㅍㅂㄱㄴ" />
+      <string name="solution" value="메이플바그나" />
+    </imgdir>
+    <imgdir name="q8_32">
+      <string name="hint" value="전사 1차 스킬" />
+      <string name="question" value="ㅍㅇㅅㅌㄹㅇㅋ" />
+      <string name="solution" value="파워스트라이크" />
+    </imgdir>
+    <imgdir name="q8_33">
+      <string name="hint" value="전사 4차 스킬" />
+      <string name="question" value="ㄷㅈ" />
+      <string name="solution" value="돌진" />
+    </imgdir>
+    <imgdir name="q8_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅇㅅㅍㄹㅈ" />
+      <string name="solution" value="익스플로젼" />
+    </imgdir>
+    <imgdir name="q8_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅂㅎㅁㅌ" />
+      <string name="solution" value="바하뮤트" />
+    </imgdir>
+    <imgdir name="q8_36">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㄱㄷㅇㄱ" />
+      <string name="solution" value="골든이글" />
+    </imgdir>
+    <imgdir name="q8_37">
+      <string name="hint" value="도적 2차 스킬" />
+      <string name="question" value="ㅎㅇㅅㅌ" />
+      <string name="solution" value="헤이스트" />
+    </imgdir>
+    <imgdir name="q8_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅅㄷㅇ" />
+      <string name="solution" value="쇼다운" />
+    </imgdir>
+    <imgdir name="q8_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅁㅈㅅ" />
+      <string name="solution" value="매지션" />
+    </imgdir>
+    <imgdir name="q8_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㄹㄱ" />
+      <string name="solution" value="로그" />
+    </imgdir>
+    <imgdir name="q8_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅅㄹㅍㅇㄷ" />
+      <string name="solution" value="슬리피우드" />
+    </imgdir>
+    <imgdir name="q8_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㅅㅈ" />
+      <string name="solution" value="야시장" />
+    </imgdir>
+    <imgdir name="q8_43">
+      <string name="hint" value="단축키 K" />
+      <string name="question" value="ㅅㅋ" />
+      <string name="solution" value="스킬" />
+    </imgdir>
+    <imgdir name="q8_44">
+      <string name="hint" value="옥토퍼스의 전리품" />
+      <string name="question" value="ㅇㅌㅍㅅㅇㄷㄹ" />
+      <string name="solution" value="옥토퍼스의다리" />
+    </imgdir>
+    <imgdir name="q8_45">
+      <string name="hint" value="핑크 테니의 전리품" />
+      <string name="question" value="ㄱㅇㅎㅇㄴㄹㄹㅂ" />
+      <string name="solution" value="곰인형의노란리본" />
+    </imgdir>
+    <imgdir name="q8_46">
+      <string name="hint" value="처프의 전리품" />
+      <string name="question" value="ㄴㅇㄱㄱ" />
+      <string name="solution" value="낡은고글" />
+    </imgdir>
+    <imgdir name="q8_47">
+      <string name="hint" value="스톤골렘의 전리품" />
+      <string name="question" value="ㅅㅌㄱㄹㅇㄷㅈㄱ" />
+      <string name="solution" value="스톤골렘의돌조각" />
+    </imgdir>
+    <imgdir name="q8_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㅌㅍㅈ" />
+      <string name="solution" value="토파즈" />
+    </imgdir>
+    <imgdir name="q8_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅇㄷㅇ" />
+      <string name="solution" value="윈디아" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="Quiz9">
+    <imgdir name="q9_00">
+      <string name="hint" value="몬스터 이름 (대만)" />
+      <string name="question" value="ㅇㄹㅇㅂㅂㅌ" />
+      <string name="solution" value="옐로우버블티" />
+    </imgdir>
+    <imgdir name="q9_01">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅋㅈㄴㅇㅇㅌ" />
+      <string name="solution" value="다크주니어예티" />
+    </imgdir>
+    <imgdir name="q9_02">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄷㅇㅂㅌ" />
+      <string name="solution" value="듀얼비틀" />
+    </imgdir>
+    <imgdir name="q9_03">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅌㄴㅌㅅ" />
+      <string name="solution" value="타나토스" />
+    </imgdir>
+    <imgdir name="q9_04">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㄹㅂㄷ" />
+      <string name="solution" value="롬바드" />
+    </imgdir>
+    <imgdir name="q9_05">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅁㅅㅋㅍㅅ" />
+      <string name="solution" value="마스크피쉬" />
+    </imgdir>
+    <imgdir name="q9_06">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅂㄹㅇㅌㄴ" />
+      <string name="solution" value="브라운테니" />
+    </imgdir>
+    <imgdir name="q9_07">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅅㅋㅇㅅㅇㅂ" />
+      <string name="solution" value="스카이세이버" />
+    </imgdir>
+    <imgdir name="q9_08">
+      <string name="hint" value="몬스터 이름 (빅토리아)" />
+      <string name="question" value="ㅇㅇㅇㅎㄱ" />
+      <string name="solution" value="아이언호그" />
+    </imgdir>
+    <imgdir name="q9_09">
+      <string name="hint" value="몬스터 이름 (오시리아)" />
+      <string name="question" value="ㅇㅌㄹㄱㄹㅇ" />
+      <string name="solution" value="울트라그레이" />
+    </imgdir>
+    <imgdir name="q9_10">
+      <string name="hint" value="메이플아일랜드 NPC이름" />
+      <string name="question" value="ㅍㅇ" />
+      <string name="solution" value="피오" />
+    </imgdir>
+    <imgdir name="q9_11">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅁㅇ" />
+      <string name="solution" value="마야" />
+    </imgdir>
+    <imgdir name="q9_12">
+      <string name="hint" value="헤네시스 NPC 이름" />
+      <string name="question" value="ㅌㄹ" />
+      <string name="solution" value="토리" />
+    </imgdir>
+    <imgdir name="q9_13">
+      <string name="hint" value="엘리니아 NPC 이름" />
+      <string name="question" value="ㅇㅈㅇ" />
+      <string name="solution" value="요정윙" />
+    </imgdir>
+    <imgdir name="q9_14">
+      <string name="hint" value="커닝시티 NPC 이름" />
+      <string name="question" value="ㄴㄹ" />
+      <string name="solution" value="넬라" />
+    </imgdir>
+    <imgdir name="q9_15">
+      <string name="hint" value="오르비스 NPC 이름" />
+      <string name="question" value="ㅇㄴㅅㅁㅂㅅ" />
+      <string name="solution" value="엘나스마법석" />
+    </imgdir>
+    <imgdir name="q9_16">
+      <string name="hint" value="루디브리엄 NPC 이름" />
+      <string name="question" value="ㅌㅇ" />
+      <string name="solution" value="톨이" />
+    </imgdir>
+    <imgdir name="q9_17">
+      <string name="hint" value="지구방위본부 NPC 이름" />
+      <string name="question" value="ㅁㅅㄹㅇㅈㅂㄹ" />
+      <string name="solution" value="메소레인저블랙" />
+    </imgdir>
+    <imgdir name="q9_18">
+      <string name="hint" value="아쿠아리움 NPC 이름" />
+      <string name="question" value="ㅋㅌ" />
+      <string name="solution" value="켄타" />
+    </imgdir>
+    <imgdir name="q9_19">
+      <string name="hint" value="아랫마을 NPC 이름" />
+      <string name="question" value="ㅎㅂ" />
+      <string name="solution" value="흥부" />
+    </imgdir>
+    <imgdir name="q9_20">
+      <string name="hint" value="HP 300 회복" />
+      <string name="question" value="ㅎㅇㅍㅅㅇㅇ" />
+      <string name="solution" value="하얀포션알약" />
+    </imgdir>
+    <imgdir name="q9_21">
+      <string name="hint" value="명중률 10 증가" />
+      <string name="question" value="ㅁㅅㅅㅇㅇㅇ" />
+      <string name="solution" value="명사수의알약" />
+    </imgdir>
+    <imgdir name="q9_22">
+      <string name="hint" value="MP 200 회복" />
+      <string name="question" value="ㅅㄹㄷ" />
+      <string name="solution" value="샐러드" />
+    </imgdir>
+    <imgdir name="q9_23">
+      <string name="hint" value="MP 5000 회복" />
+      <string name="question" value="ㅎㅎㅇㅇㅅ" />
+      <string name="solution" value="황혼의이슬" />
+    </imgdir>
+    <imgdir name="q9_24">
+      <string name="hint" value="귀환주문서" />
+      <string name="question" value="ㅎㄴㅅㅅㄱㅎㅈㅁㅅ" />
+      <string name="solution" value="헤네시스귀환주문서" />
+    </imgdir>
+    <imgdir name="q9_25">
+      <string name="hint" value="표창" />
+      <string name="question" value="ㄴㅈㅅㄹㄱ" />
+      <string name="solution" value="뇌전수리검" />
+    </imgdir>
+    <imgdir name="q9_26">
+      <string name="hint" value="지혜의 기운" />
+      <string name="question" value="ㅈㅎㅇㅋㄹㅅㅌ" />
+      <string name="solution" value="지혜의크리스탈" />
+    </imgdir>
+    <imgdir name="q9_27">
+      <string name="hint" value="펫" />
+      <string name="question" value="ㅎㅅㅌㄲ" />
+      <string name="solution" value="흰색토끼" />
+    </imgdir>
+    <imgdir name="q9_28">
+      <string name="hint" value="펫먹이" />
+      <string name="question" value="ㅇㄱ" />
+      <string name="solution" value="양갱" />
+    </imgdir>
+    <imgdir name="q9_29">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅋㅊㅇㅇ" />
+      <string name="solution" value="캣츠아이" />
+    </imgdir>
+    <imgdir name="q9_30">
+      <string name="hint" value="귀고리" />
+      <string name="question" value="ㅂㄹㅁ" />
+      <string name="solution" value="블루문" />
+    </imgdir>
+    <imgdir name="q9_31">
+      <string name="hint" value="완드" />
+      <string name="question" value="ㅎㅌㅇㄷ" />
+      <string name="solution" value="하트완드" />
+    </imgdir>
+    <imgdir name="q9_32">
+      <string name="hint" value="전사 2차 스킬" />
+      <string name="question" value="ㅂㄴ" />
+      <string name="solution" value="분노" />
+    </imgdir>
+    <imgdir name="q9_33">
+      <string name="hint" value="전사 4차 스킬" />
+      <string name="question" value="ㅅㅊㅇㄹ" />
+      <string name="solution" value="생츄어리" />
+    </imgdir>
+    <imgdir name="q9_34">
+      <string name="hint" value="마법사 3차 스킬" />
+      <string name="question" value="ㅆ" />
+      <string name="solution" value="씰" />
+    </imgdir>
+    <imgdir name="q9_35">
+      <string name="hint" value="마법사 4차 스킬" />
+      <string name="question" value="ㅎㄹㅅㄷ" />
+      <string name="solution" value="홀리실드" />
+    </imgdir>
+    <imgdir name="q9_36">
+      <string name="hint" value="궁수 3차 스킬" />
+      <string name="question" value="ㅇㄹㅇㅇㄹㅅ" />
+      <string name="solution" value="에로우이럽션" />
+    </imgdir>
+    <imgdir name="q9_37">
+      <string name="hint" value="도적 2차 스킬" />
+      <string name="question" value="ㄷㄹㅇ" />
+      <string name="solution" value="드레인" />
+    </imgdir>
+    <imgdir name="q9_38">
+      <string name="hint" value="도적 4차 스킬" />
+      <string name="question" value="ㅇㅅ" />
+      <string name="solution" value="암살" />
+    </imgdir>
+    <imgdir name="q9_39">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅇㅈㄷ" />
+      <string name="solution" value="위자드" />
+    </imgdir>
+    <imgdir name="q9_40">
+      <string name="hint" value="직업" />
+      <string name="question" value="ㅇㅆㅅ" />
+      <string name="solution" value="어쌔신" />
+    </imgdir>
+    <imgdir name="q9_41">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅇㄹㅂㅅ" />
+      <string name="solution" value="오르비스" />
+    </imgdir>
+    <imgdir name="q9_42">
+      <string name="hint" value="마을" />
+      <string name="question" value="ㅍㄹㅌㅁㅋ" />
+      <string name="solution" value="플로팅마켓" />
+    </imgdir>
+    <imgdir name="q9_43">
+      <string name="hint" value="단축키 L" />
+      <string name="question" value="ㅇㄹㅇ" />
+      <string name="solution" value="알림이" />
+    </imgdir>
+    <imgdir name="q9_44">
+      <string name="hint" value="리본돼지의 전리품" />
+      <string name="question" value="ㄷㅈㅇㄹㅂ" />
+      <string name="solution" value="돼지의리본" />
+    </imgdir>
+    <imgdir name="q9_45">
+      <string name="hint" value="라츠의 전리품" />
+      <string name="question" value="ㅈㄷ" />
+      <string name="solution" value="쥐덫" />
+    </imgdir>
+    <imgdir name="q9_46">
+      <string name="hint" value="북치는 토끼의 전리품" />
+      <string name="question" value="ㅈㄴㄱㅂ" />
+      <string name="solution" value="장난감북" />
+    </imgdir>
+    <imgdir name="q9_47">
+      <string name="hint" value="헥터의 전리품" />
+      <string name="question" value="ㅎㅌㅇㄲㄹ" />
+      <string name="solution" value="헥터의꼬리" />
+    </imgdir>
+    <imgdir name="q9_48">
+      <string name="hint" value="보석" />
+      <string name="question" value="ㄷㅇㅇㅁㄷ" />
+      <string name="solution" value="다이아몬드" />
+    </imgdir>
+    <imgdir name="q9_49">
+      <string name="hint" value="메이플스토리 월드이름" />
+      <string name="question" value="ㅋㄷㅇ" />
+      <string name="solution" value="카디아" />
+    </imgdir>
+  </imgdir>
+</imgdir>

@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="0209.img">
+  <imgdir name="02090000">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <canvas name="icon">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="0" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/snow" />
+      <int name="type" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090001">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="30" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="30" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/flower" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090002">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <canvas name="icon">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="0" y="32" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/soap" />
+      <int name="type" value="1" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090003">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="2" />
+      <canvas name="icon">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/snowCrystal" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090004">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="1" />
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/present" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090005">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="3" />
+      <canvas name="icon">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-2" y="30" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/chocolate" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090006">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="4" />
+      <canvas name="icon">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-2" y="29" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/flowerage" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090007">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="5" />
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/candy" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090008">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="6" />
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/maple" />
+      <int name="type" value="2" />
+    </imgdir>
+  </imgdir>
+  <imgdir name="02090009">
+    <imgdir name="info">
+      <int name="cash" value="1" />
+      <int name="floatType" value="7" />
+      <canvas name="icon">
+        <vector name="origin" x="0" y="31" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="30" />
+        <int name="z" value="0" />
+      </canvas>
+      <string name="path" value="Map/MapHelper.img/weather/squib/squib" />
+      <int name="type" value="3" />
+    </imgdir>
+  </imgdir>
+</imgdir>

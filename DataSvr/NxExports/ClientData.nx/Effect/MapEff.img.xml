@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="MapEff.img">
+  <imgdir name="Bubbling">
+    <canvas name="0">
+      <int name="delay" value="100" />
+      <vector name="origin" x="-11" y="22" />
+    </canvas>
+    <canvas name="1">
+      <int name="delay" value="100" />
+      <vector name="origin" x="-11" y="31" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="100" />
+      <vector name="origin" x="-12" y="78" />
+    </canvas>
+    <canvas name="3">
+      <int name="delay" value="100" />
+      <vector name="origin" x="-7" y="103" />
+    </canvas>
+    <canvas name="4">
+      <int name="delay" value="400" />
+      <vector name="origin" x="-11" y="20" />
+    </canvas>
+  </imgdir>
+</imgdir>

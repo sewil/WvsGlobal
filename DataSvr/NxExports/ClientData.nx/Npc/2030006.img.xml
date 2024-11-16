@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="2030006.img">
+  <imgdir name="info">
+    <int name="dcBottom" value="-37" />
+    <int name="dcLeft" value="-90" />
+    <int name="dcRight" value="90" />
+    <int name="dcTop" value="-320" />
+    <canvas name="default">
+      <vector name="origin" x="59" y="166" />
+      <int name="z" value="0" />
+    </canvas>
+    <string name="quest" value="holyStone" />
+  </imgdir>
+  <imgdir name="stand">
+    <canvas name="0">
+      <vector name="origin" x="116" y="323" />
+    </canvas>
+  </imgdir>
+</imgdir>

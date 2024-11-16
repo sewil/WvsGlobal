@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Bgm01.img">
+  <sound name="AncientMove" />
+  <sound name="BadGuys" />
+  <sound name="CavaBien" />
+  <sound name="HighlandStar" />
+  <sound name="MoonlightShadow" />
+  <sound name="WhereTheBarlogFrom" />
+</imgdir>

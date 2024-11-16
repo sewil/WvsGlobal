@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="smap.img">
+  <string name="accessoryEar" value="Ae" />
+  <string name="accessoryEye" value="Ay" />
+  <string name="accessoryEyeOverCap" value="Af" />
+  <string name="accessoryEyeShadow" value="As" />
+  <string name="accessoryFace" value="Af" />
+  <string name="accessoryFaceBelowFace" value="Af" />
+  <string name="accessoryFaceOverFaceBelowCap" value="Af" />
+  <imgdir name="Ae" />
+  <imgdir name="Af" />
+  <imgdir name="Am" />
+  <string name="arm" value="Bd" />
+  <string name="armBelowHead" value="Bd" />
+  <string name="armBelowHeadOverMailChest" value="Bd" />
+  <string name="armOverHair" value="Bd" />
+  <string name="armOverHairBelowWeapon" value="Bd" />
+  <imgdir name="As" />
+  <imgdir name="At" />
+  <imgdir name="Ay" />
+  <string name="backAccessoryEar" value="Ae" />
+  <string name="backAccessoryFace" value="Af" />
+  <string name="backAccessoryFaceOverHead" value="Af" />
+  <string name="backBody" value="Bd" />
+  <string name="backCap" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="backCapAccessory" value="CcH5" />
+  <string name="backCape" value="Sr" />
+  <string name="backCapOverHair" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="backGlove" value="Gl" />
+  <string name="backGloveWrist" value="Gw" />
+  <string name="backHair" value="H1" />
+  <string name="backHairBelowCap" value="H6" />
+  <string name="backHairBelowCapNarrow" value="H5" />
+  <string name="backHairBelowCapWide" value="H4" />
+  <string name="backHairBelowHead" value="Hf" />
+  <string name="backHairOverCape" value="Hc" />
+  <string name="backHead" value="Bd" />
+  <string name="backMailChest" value="MaGw" />
+  <string name="backMailChestAccessory" value="Ma" />
+  <string name="backMailChestBelowPants" value="MaGw" />
+  <string name="backMailChestOverPants" value="MaGw" />
+  <string name="backPants" value="PnSo" />
+  <string name="backPantsBelowShoes" value="PnSo" />
+  <string name="backPantsOverMailChest" value="PnSo" />
+  <string name="backShield" value="Si" />
+  <string name="backShieldBelowBody" value="Si" />
+  <string name="backShoes" value="So" />
+  <string name="backShoesBelowPants" value="So" />
+  <string name="backWeapon" value="Wp" />
+  <string name="backWeaponOverGlove" value="Wp" />
+  <string name="backWeaponOverHead" value="Wp" />
+  <string name="backWeaponOverShield" value="Wp" />
+  <string name="backWing" value="Wg" />
+  <imgdir name="Bd" />
+  <string name="body" value="Bd" />
+  <string name="cap" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="capAccessory" value="Cc" />
+  <string name="capAccessoryBelowAccFace" value="Cc" />
+  <string name="capAccessoryBelowBody" value="Cc" />
+  <string name="capBelowAccessory" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <string name="cape" value="Sr" />
+  <string name="capeBelowBody" value="Sr" />
+  <string name="capeOverHead" value="Sr" />
+  <string name="capOverHair" value="CpHdH1H2H3H4H5H6HsHfHbAfAyAsAe" />
+  <imgdir name="Cp" />
+  <imgdir name="emotionOverBody" />
+  <string name="face" value="Fc" />
+  <imgdir name="Fc" />
+  <string name="glove" value="Gl" />
+  <string name="gloveBelowBody" value="Gl" />
+  <string name="gloveBelowHead" value="Gl" />
+  <string name="gloveBelowMailArm" value="Gl" />
+  <string name="gloveBelowWeapon" value="Gl" />
+  <string name="gloveOverBody" value="Gl" />
+  <string name="gloveOverHair" value="Gl" />
+  <string name="gloveWrist" value="Gw" />
+  <string name="gloveWristBelowBody" value="Gw" />
+  <string name="gloveWristBelowHead" value="Gw" />
+  <string name="gloveWristBelowMailArm" value="Gw" />
+  <string name="gloveWristBelowWeapon" value="Gw" />
+  <string name="gloveWristOverBody" value="Gw" />
+  <string name="gloveWristOverHair" value="Gw" />
+  <imgdir name="Gv" />
+  <string name="hair" value="H2" />
+  <string name="hairBelowBody" value="Hb" />
+  <string name="hairOverHead" value="H1" />
+  <string name="hairShade" value="Hs" />
+  <string name="hand" value="Bd" />
+  <string name="handBelowWeapon" value="Bd" />
+  <string name="handOverHair" value="Bd" />
+  <imgdir name="Hd" />
+  <string name="head" value="Hd" />
+  <imgdir name="Hr" />
+  <imgdir name="Ma" />
+  <string name="mailArm" value="MaGw" />
+  <string name="mailArmBelowHead" value="MaGw" />
+  <string name="mailArmBelowHeadOverMailChest" value="MaGw" />
+  <string name="mailArmOverHair" value="MaGw" />
+  <string name="mailArmOverHairBelowWeapon" value="MaGw" />
+  <string name="mailChest" value="MaGw" />
+  <string name="mailChestBelowPants" value="MaGw" />
+  <string name="mailChestOverHighest" value="MaGw" />
+  <string name="mailChestOverPants" value="MaGw" />
+  <string name="mailChestTop" value="MaGw" />
+  <string name="pants" value="PnSo" />
+  <string name="pantsBelowShoes" value="PnSo" />
+  <string name="pantsOverMailChest" value="PnSo" />
+  <imgdir name="Pn" />
+  <imgdir name="Ri" />
+  <string name="shield" value="Si" />
+  <string name="shieldBelowBody" value="Si" />
+  <string name="shieldOverHair" value="Si" />
+  <string name="shoes" value="So" />
+  <string name="shoesOverPants" value="So" />
+  <string name="shoesTop" value="So" />
+  <imgdir name="Si" />
+  <imgdir name="So" />
+  <imgdir name="Sr" />
+  <string name="weapon" value="Wp" />
+  <string name="weaponBelowArm" value="Wp" />
+  <string name="weaponBelowBody" value="Wp" />
+  <string name="weaponOverArm" value="Wp" />
+  <string name="weaponOverArmBelowHead" value="Wp" />
+  <string name="weaponOverBody" value="Wp" />
+  <string name="weaponOverGlove" value="Wp" />
+  <string name="weaponOverHand" value="Wp" />
+  <string name="weaponWristOverGlove" value="Wp" />
+  <imgdir name="Wg" />
+  <imgdir name="Wp" />
+  <imgdir name="Ws" />
+</imgdir>

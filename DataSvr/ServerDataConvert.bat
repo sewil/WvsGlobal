@@ -1,2 +1,6 @@
 @echo off
 ..\wz2nx\bin\Release\WZ2NX /in:ServerData.wz /out:ServerData.nx /wzv:Classic /wzn
+echo Removing exports directory...
+rmdir /S /Q NxExports\ServerData.nx
+echo Exporting...
+..\WvsBeta.NXWriter\bin\Release\WvsBeta.NXWriter.exe ServerData.nx NxExports true

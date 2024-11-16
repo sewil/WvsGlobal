@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="AreaCode.img">
+  <int name="00" value="0" />
+  <int name="10" value="1" />
+  <int name="11" value="2" />
+  <int name="19" value="1" />
+  <int name="20" value="3" />
+  <int name="21" value="3" />
+  <int name="22" value="4" />
+  <int name="23" value="5" />
+  <int name="28" value="3" />
+  <int name="91" value="90" />
+</imgdir>

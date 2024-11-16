@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="BlockedMapList.img">
+  <imgdir name="0">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="222" />
+  </imgdir>
+  <imgdir name="1">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="229" />
+  </imgdir>
+  <imgdir name="2">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="230" />
+  </imgdir>
+  <imgdir name="3">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="240" />
+  </imgdir>
+  <imgdir name="4">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="250" />
+  </imgdir>
+  <imgdir name="5">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="260" />
+  </imgdir>
+  <imgdir name="6">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="261" />
+  </imgdir>
+  <imgdir name="7">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="500" />
+  </imgdir>
+  <imgdir name="8">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="701" />
+  </imgdir>
+  <imgdir name="9">
+    <int name="Divider" value="10000000" />
+    <int name="FieldID" value="74" />
+  </imgdir>
+  <imgdir name="10">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="800" />
+  </imgdir>
+  <imgdir name="11">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="2800" />
+  </imgdir>
+  <imgdir name="12">
+    <int name="Divider" value="100000" />
+    <string name="FieldID" value="2190" />
+  </imgdir>
+  <imgdir name="13">
+    <int name="Divider" value="1" />
+    <int name="FieldID" value="20082301" />
+  </imgdir>
+  <imgdir name="14">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9211" />
+  </imgdir>
+  <imgdir name="15">
+    <int name="Divider" value="10000" />
+    <int name="FieldID" value="92202" />
+  </imgdir>
+  <imgdir name="16">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9230" />
+  </imgdir>
+  <imgdir name="17">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="924" />
+  </imgdir>
+  <imgdir name="18">
+    <int name="Divider" value="10000" />
+    <int name="FieldID" value="92501" />
+  </imgdir>
+  <imgdir name="19">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="926" />
+  </imgdir>
+  <imgdir name="20">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9102" />
+  </imgdir>
+  <imgdir name="21">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9103" />
+  </imgdir>
+  <imgdir name="22">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9105" />
+  </imgdir>
+  <imgdir name="23">
+    <int name="Divider" value="10000000" />
+    <int name="FieldID" value="60" />
+  </imgdir>
+  <imgdir name="24">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="219" />
+  </imgdir>
+  <imgdir name="25">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="209" />
+  </imgdir>
+  <imgdir name="26">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="251" />
+  </imgdir>
+  <imgdir name="27">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="300" />
+  </imgdir>
+  <imgdir name="28">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="680" />
+  </imgdir>
+  <imgdir name="29">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9900" />
+  </imgdir>
+  <imgdir name="30">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9800" />
+  </imgdir>
+  <imgdir name="31">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9700" />
+  </imgdir>
+  <imgdir name="32">
+    <int name="Divider" value="100000" />
+    <int name="FieldID" value="9300" />
+  </imgdir>
+  <imgdir name="33">
+    <int name="Divider" value="1000000" />
+    <int name="FieldID" value="926" />
+  </imgdir>
+  <imgdir name="34">
+    <int name="Divider" value="10000" />
+    <int name="FieldID" value="22100" />
+  </imgdir>
+  <imgdir name="35">
+    <int name="Divider" value="10000" />
+    <int name="FieldID" value="22103" />
+  </imgdir>
+  <imgdir name="36">
+    <int name="Divider" value="10000" />
+    <int name="FieldID" value="22104" />
+  </imgdir>
+  <imgdir name="37">
+    <int name="Divider" value="1" />
+    <int name="FieldID" value="211042300" />
+  </imgdir>
+  <imgdir name="38">
+    <int name="Divider" value="1" />
+    <int name="FieldID" value="211042400" />
+  </imgdir>
+  <imgdir name="39">
+    <int name="Divider" value="1" />
+    <int name="FieldID" value="220080001" />
+  </imgdir>
+</imgdir>

@@ -1,0 +1,1487 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="0210.img">
+  <imgdir name="02100000">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="0" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100001">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="100100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="100101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="120100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="210100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="1210100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="7">
+        <string name="id" value="1210102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="100100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="100101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="id" value="120100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="id" value="130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="12">
+        <int name="id" value="130101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="13">
+        <int name="id" value="210100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="14">
+        <int name="id" value="1210100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="15">
+        <string name="id" value="1210102" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100002">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="1110101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="1210101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="1120100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="1110100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="1210103" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="1130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="1110101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="1210101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="1120100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="1110100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="id" value="1210103" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="id" value="1130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100003">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="2220100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="2300100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="2130103" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="2110200" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="2130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="2230101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="2230102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="2230100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="2220100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="2300100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="id" value="2130103" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="id" value="2110200" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="12">
+        <int name="id" value="2130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="13">
+        <int name="id" value="2230101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="14">
+        <int name="id" value="2230102" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="15">
+        <int name="id" value="2230100" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100004">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="3110100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="3210100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="3230100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="3230101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="3210800" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="3230102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="3110100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="3210100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="3230100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="3230101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="id" value="3210800" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="id" value="3230102" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100005">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="4230100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="4230101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="4230103" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="4130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="4130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="4230102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="4230104" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="4230100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="4230101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="4230103" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="10">
+        <int name="id" value="4130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="11">
+        <int name="id" value="4130101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="12">
+        <int name="id" value="4230102" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="13">
+        <int name="id" value="4230104" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100006">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="5130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="5130103" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="5300100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="5130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="5130102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="5130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="5130103" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="5300100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="5130101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="5130102" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100007">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="6130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="6230100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="7130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="7130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="6130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="6230100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="7130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="7130101" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100008">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="6130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9300003" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="8130100" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="6130101" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="9300003" />
+        <int name="prob" value="50" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100009">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="10" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8150000" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="8150000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100010">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9001000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100011">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9001001" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100012">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9001002" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100013">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9001003" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100014">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="2230107" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100015">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="2230105" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="3230104" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="2230106" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100016">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="3000005" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="3110101" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="3210204" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="3210205" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="3210207" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="3230302" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="3210203" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="4230113" />
+        <int name="prob" value="70" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="4230112" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="3230306" />
+        <int name="prob" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100017">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="4230116" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="4230117" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="4230117" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="4230118" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="4230118" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="4240000" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="4230116" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="8">
+        <int name="id" value="4230116" />
+        <int name="prob" value="10" />
+      </imgdir>
+      <imgdir name="9">
+        <int name="id" value="4230116" />
+        <int name="prob" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100018">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="4230111" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="4230111" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="4230112" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="4230111" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="4230112" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="4230111" />
+        <int name="prob" value="20" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="4230112" />
+        <int name="prob" value="20" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="4230111" />
+        <int name="prob" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100019">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="5" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="3230305" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="3230305" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="3210203" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="3230305" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="3210203" />
+        <int name="prob" value="50" />
+      </imgdir>
+      <imgdir name="5">
+        <int name="id" value="3230305" />
+        <int name="prob" value="20" />
+      </imgdir>
+      <imgdir name="6">
+        <int name="id" value="3210203" />
+        <int name="prob" value="20" />
+      </imgdir>
+      <imgdir name="7">
+        <int name="id" value="3230305" />
+        <int name="prob" value="10" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100020">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100021">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500001" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100022">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="3" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500002" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100023">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="5" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500003" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100024">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="5" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500004" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100025">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="quest" value="1" />
+      <int name="slotMax" value="5" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9500005" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100026">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="10" />
+      <int name="type" value="9" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9300036" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02100027">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="10" />
+      <int name="type" value="10" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9300037" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101000">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="6130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101001">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8150000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101002">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="7130200" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101003">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="7130102" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101004">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9300003" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101005">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="7130100" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101006">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="7130101" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101007">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8140000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101008">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="8140100" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101009">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400005" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="9400005" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9400005" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="9400005" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="9400005" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101010">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400006" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="9400006" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9400006" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="9400006" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="9400006" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101011">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400007" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="9400007" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9400007" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="9400007" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="9400007" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101012">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400008" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="9400008" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9400008" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="9400008" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="9400008" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101013">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400120" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101014">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="0" y="31" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400000" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="9400001" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="9400002" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="9400001" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="9400000" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101015">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="9400112" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="02101020">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="32" />
+        <int name="z" value="0" />
+      </canvas>
+      <int name="slotMax" value="100" />
+      <int name="type" value="1" />
+    </imgdir>
+    <imgdir name="mob">
+      <imgdir name="0">
+        <int name="id" value="5300100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="1">
+        <int name="id" value="3230101" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="2">
+        <int name="id" value="4230102" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="3">
+        <int name="id" value="2300100" />
+        <int name="prob" value="100" />
+      </imgdir>
+      <imgdir name="4">
+        <int name="id" value="5130107" />
+        <int name="prob" value="100" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+</imgdir>

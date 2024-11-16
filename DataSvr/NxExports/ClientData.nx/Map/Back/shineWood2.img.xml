@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="shineWood2.img">
+  <imgdir name="back">
+    <canvas name="0">
+      <vector name="origin" x="300" y="175" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="167" y="350" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="130" y="350" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="145" y="350" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

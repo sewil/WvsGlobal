@@ -1,0 +1,76 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="9208000.img">
+  <imgdir name="0">
+    <canvas name="0">
+      <vector name="origin" x="53" y="176" />
+      <int name="z" value="0" />
+    </canvas>
+    <imgdir name="event">
+      <imgdir name="0">
+        <int name="state" value="0" />
+        <int name="type" value="0" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="hit">
+      <canvas name="0">
+        <int name="delay" value="150" />
+        <vector name="origin" x="53" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="1">
+        <int name="delay" value="150" />
+        <vector name="origin" x="53" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="2">
+        <int name="delay" value="150" />
+        <vector name="origin" x="53" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="3">
+        <int name="delay" value="150" />
+        <vector name="origin" x="77" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="4">
+        <int name="delay" value="150" />
+        <vector name="origin" x="77" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="5">
+        <int name="delay" value="150" />
+        <vector name="origin" x="77" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="6">
+        <int name="delay" value="150" />
+        <vector name="origin" x="78" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="7">
+        <int name="delay" value="150" />
+        <vector name="origin" x="67" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="8">
+        <int name="delay" value="150" />
+        <vector name="origin" x="70" y="176" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="9">
+        <int name="delay" value="150" />
+        <vector name="origin" x="72" y="186" />
+        <int name="z" value="0" />
+      </canvas>
+      <canvas name="10">
+        <int name="delay" value="150" />
+        <vector name="origin" x="77" y="228" />
+        <int name="z" value="0" />
+      </canvas>
+    </imgdir>
+  </imgdir>
+  <string name="action" value="syarenStatue" />
+  <imgdir name="info">
+    <string name="info" value="인간형 석상" />
+  </imgdir>
+</imgdir>

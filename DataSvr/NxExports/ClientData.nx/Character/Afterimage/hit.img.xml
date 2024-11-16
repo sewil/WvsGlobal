@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="hit.img">
+  <imgdir name="anniversary">
+    <canvas name="0">
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+      <int name="delay" value="100" />
+      <vector name="origin" x="81" y="61" />
+    </canvas>
+    <int name="fixed" value="1" />
+    <canvas name="1">
+      <int name="delay" value="110" />
+      <vector name="origin" x="86" y="68" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="120" />
+      <vector name="origin" x="91" y="74" />
+    </canvas>
+    <canvas name="3">
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+      <int name="delay" value="130" />
+      <vector name="origin" x="85" y="72" />
+    </canvas>
+  </imgdir>
+  <imgdir name="anniversary2">
+    <canvas name="0">
+      <int name="a0" value="0" />
+      <int name="a1" value="255" />
+      <int name="delay" value="120" />
+      <vector name="origin" x="65" y="65" />
+    </canvas>
+    <int name="fixed" value="1" />
+    <canvas name="1">
+      <int name="delay" value="130" />
+      <vector name="origin" x="65" y="65" />
+    </canvas>
+    <canvas name="2">
+      <int name="delay" value="140" />
+      <vector name="origin" x="65" y="65" />
+    </canvas>
+    <canvas name="3">
+      <int name="a0" value="255" />
+      <int name="a1" value="0" />
+      <int name="delay" value="150" />
+      <vector name="origin" x="65" y="66" />
+    </canvas>
+  </imgdir>
+  <imgdir name="mace1">
+    <canvas name="0">
+      <int name="delay" value="20" />
+      <vector name="origin" x="17" y="17" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="17" y="17" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="mace2">
+    <canvas name="0">
+      <int name="delay" value="20" />
+      <vector name="origin" x="14" y="16" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="14" y="16" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="maceF">
+    <canvas name="0">
+      <int name="delay" value="20" />
+      <vector name="origin" x="29" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="29" y="29" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="23" y="22" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="31" y="31" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <vector name="origin" x="43" y="42" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="sword1">
+    <canvas name="0">
+      <vector name="origin" x="18" y="44" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="25" y="58" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="31" y="69" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+  <imgdir name="sword2">
+    <canvas name="0">
+      <vector name="origin" x="18" y="44" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="21" y="61" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="-13" y="80" />
+      <int name="z" value="1" />
+    </canvas>
+  </imgdir>
+  <imgdir name="swordF">
+    <canvas name="0">
+      <vector name="origin" x="43" y="25" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="34" y="9" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="43" y="-8" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="53" y="-28" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

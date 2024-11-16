@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="snowyLightrock.img">
+  <imgdir name="back">
+    <canvas name="0">
+      <vector name="origin" x="89" y="85" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="1">
+      <vector name="origin" x="128" y="34" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="2">
+      <vector name="origin" x="152" y="36" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="3">
+      <vector name="origin" x="249" y="141" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="4">
+      <vector name="origin" x="341" y="144" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="5">
+      <vector name="origin" x="253" y="133" />
+      <int name="z" value="0" />
+    </canvas>
+    <canvas name="6">
+      <vector name="origin" x="116" y="123" />
+      <int name="z" value="0" />
+    </canvas>
+  </imgdir>
+</imgdir>

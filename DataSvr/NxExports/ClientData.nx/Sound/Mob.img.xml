@@ -1,0 +1,1996 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="Mob.img">
+  <imgdir name="0100100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="0100101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="0120100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="0130100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="0130101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="0210100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1110100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1110101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1120100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1130100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1140100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1210100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1210101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1210102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="1210103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2110200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2130100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2130103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2220100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230104">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230105">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230106">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230107">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230108">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230109">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230110">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230111">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2230200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="2300100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3000000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3000001">
+    <imgdir name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+  </imgdir>
+  <imgdir name="3000002">
+    <imgdir name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+  </imgdir>
+  <imgdir name="3000003">
+    <imgdir name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+  </imgdir>
+  <imgdir name="3000004">
+    <imgdir name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+  </imgdir>
+  <imgdir name="3000005">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3000006">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3110100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3110101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3110102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210201">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210202">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210203">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210204">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210205">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210206">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210207">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210208">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210450">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3210800">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230103">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230104">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230200">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230300">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230301">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230302">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230303">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230304">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230305">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230306">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230307">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230308">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230400">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="3230405">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4130100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4130101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4130102">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4130103">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4130104">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230104">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230105">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230106">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230107">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230108">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230109">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230110">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230111">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230112">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230113">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230114">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230115">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230116">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230117">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230118">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230119">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230120">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230121">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230122">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230123">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230124">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230125">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230126">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230200">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230201">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230300">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4230400">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="4240000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5100000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5100001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5100002">
+    <sound name="Attack1" />
+    <imgdir name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="5100003">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5100004">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="5100005">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="5120000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5120001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5120002">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5120003">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5120100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130104">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130105">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130106">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130107">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5130108">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5140000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5150000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5150001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5200000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5200001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5200002">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5300000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5300001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5300100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="5400000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130104">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="6130200">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130201">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6130202">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="6230100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230201">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230300">
+    <sound name="Attack1" />
+    <imgdir name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230400">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230500">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230600">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230601">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6230602">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300002">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300003">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300004">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300005">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6300100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400002">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400003">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400004">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="6400100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130000">
+    <sound name="Attack1" />
+    <imgdir name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130001">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130010">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130020">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130100">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130101">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130102">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130103">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="7130200">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130300">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130400">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130401">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7130402">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="7140000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="7160000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8130100">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="AttackF" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDamF" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8140000">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8140100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8140200">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8140300">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8140500">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8140555">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8140600">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="skill1" />
+  </imgdir>
+  <imgdir name="8141000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8141100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8141300">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="skill1" />
+  </imgdir>
+  <imgdir name="8142000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8142100">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8143000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8150000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8150100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8150101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8160000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8170000">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+    <sound name="Skill4" />
+  </imgdir>
+  <imgdir name="8500000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8500001">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="Attack4" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+  </imgdir>
+  <imgdir name="8500002">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8500003">
+    <sound name="Attack" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8500004">
+    <sound name="Attack" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8510000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+    <sound name="Skill4" />
+    <sound name="Skill5" />
+  </imgdir>
+  <imgdir name="8510100">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8520000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+    <sound name="Skill4" />
+    <sound name="Skill5" />
+  </imgdir>
+  <imgdir name="8800000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Regen" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+  </imgdir>
+  <imgdir name="8800001">
+    <imgdir name="Attack1" />
+    <imgdir name="Attack2" />
+    <imgdir name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+    <imgdir name="Skill2" />
+    <imgdir name="Skill3" />
+  </imgdir>
+  <imgdir name="8800002">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+  </imgdir>
+  <imgdir name="8800003">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8800004">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8800005">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="8800006">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8800007">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+    <sound name="Skill4" />
+  </imgdir>
+  <imgdir name="8800008">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="8800009">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="8800010">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000002">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000201">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000300">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9000301">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9001000">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="9001001">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="AttackF" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDamF" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="9001002">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="9001003">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="9100007">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200002">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200003">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200004">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200005">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200006">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200007">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200008">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200009">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200010">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200011">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200012">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200013">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200014">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200015">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200016">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200017">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200018">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200019">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200020">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200021">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9200022">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300002">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300003">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300004">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300005">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300006">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300007">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300008">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300009">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300010">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300011">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300012">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300013">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300014">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300015">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300016">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300017">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300018">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300019">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300020">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300021">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300022">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300023">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300024">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300025">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300026">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300027">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300028">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Attack3" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDam3" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+    <sound name="Skill3" />
+  </imgdir>
+  <imgdir name="9300029">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300030">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300031">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300032">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+    <sound name="Skill2" />
+  </imgdir>
+  <imgdir name="9300033">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300034">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300035">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9300036">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9300037">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400000">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400001">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400002">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400003">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400004">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400005">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400006">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400007">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400008">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400100">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400101">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400102">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400103">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400110">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Regen" />
+  </imgdir>
+  <imgdir name="9400111">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Regen" />
+  </imgdir>
+  <imgdir name="9400112">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400113">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400120">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Regen" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400121">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400122">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill1" />
+  </imgdir>
+  <imgdir name="9400200">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400201">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400300">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Regen" />
+  </imgdir>
+  <imgdir name="9400506">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400507">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9400509">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500100">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500101">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500102">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500103">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500104">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500105">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500106">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500107">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500108">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500109">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500110">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500111">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500112">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500113">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500114">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500115">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500116">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500117">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500118">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500119">
+    <sound name="Damage" />
+    <sound name="Die" />
+    <imgdir name="Skill1" />
+  </imgdir>
+  <imgdir name="9500120">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500121">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500122">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500123">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500124">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500125">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500126">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500127">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500128">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500129">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500130">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500131">
+    <sound name="Attack1" />
+    <imgdir name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500132">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500133">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500134">
+    <sound name="Attack1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+    <sound name="Skill" />
+  </imgdir>
+  <imgdir name="9500135">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500136">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500137">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500138">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500139">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="AttackF" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="CharDamF" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500140">
+    <sound name="Attack1" />
+    <sound name="Attack2" />
+    <sound name="CharDam1" />
+    <sound name="CharDam2" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500141">
+    <sound name="Attack1" />
+    <sound name="CharDam1" />
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+  <imgdir name="9500142">
+    <sound name="Damage" />
+    <sound name="Die" />
+  </imgdir>
+</imgdir>
