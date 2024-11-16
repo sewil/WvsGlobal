@@ -699,7 +699,7 @@ namespace WvsBeta.Game
                 }
                 catch (ControlledException e)
                 {
-                    
+                    Program.MainForm.LogAppend($"Field set error: {e.Message}");
                 }
             }
         }

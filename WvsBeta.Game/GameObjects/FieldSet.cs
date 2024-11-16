@@ -94,7 +94,7 @@ namespace WvsBeta.Game
                 FieldSetScriptHost.RunScript(this, Owner, Data.Script, (err) =>
                 {
 #if DEBUG
-                    Owner.Notice("Error running fieldset script + " + err);
+                    Owner.Notice("Error running fieldset script " + err);
 #else
                     Program.MainForm.LogAppend("Error running fieldset script " + err);
 #endif
