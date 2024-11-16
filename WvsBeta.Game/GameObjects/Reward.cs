@@ -1,6 +1,7 @@
 ﻿using Org.BouncyCastle.Asn1.X509;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
@@ -57,8 +58,11 @@ namespace WvsBeta.Game
             {
                 if ((Drop.Premium && !PremiumMap))
                     continue;
-                if (Drop.Quest > 0 && !Owner.Quests.HasQuestState(Drop.Quest, QuestState.InProgress))
-                    continue;
+
+                if (
+                    GameDataProvider.QuestItems.TryGetValue(Drop.ItemID, out var itemQuests) && 
+                    !itemQuests.Any(itemQuest => Owner.Quests.HasQuestState(itemQuest, QuestState.InProgress))
+                ) continue;
 
                 var itemDropRate = 1.0;
                 if (Drop.Mesos == 0)

@@ -105,23 +105,20 @@ namespace WvsBeta.Game
                         return false;
                 }
 
-
-                if (!Reward.Mesos && GameDataProvider.QuestItems.TryGetValue(Reward.ItemID, out HashSet<short> questIDs))
+                if (!Reward.Mesos && GameDataProvider.QuestItems.TryGetValue(Reward.ItemID, out HashSet<short> quests))
                 {
-                    bool hasQuest = questIDs.Any(questID => user.Quests.Quests.TryGetValue(questID, out QuestData questData) && questData.State == QuestState.InProgress);
-                    if (hasQuest)
-                    {
-                        if (DropType == DropType.Normal && user.ID == OwnerID ||
-                            DropType == DropType.Party && user.PartyID == OwnPartyID ||
-                            DropType == DropType.FreeForAll ||
-                            DropType == DropType.Explosive)
-                        {
-                            isShown = true;
-                        }
-                    }
+                    bool hasQuest = quests.Any(quest => user.Quests.HasQuestState(quest, QuestState.InProgress));
+                    isShown = hasQuest && (
+                        DropType == DropType.Normal && user.ID == OwnerID ||
+                        DropType == DropType.Party && user.PartyID == OwnPartyID ||
+                        DropType == DropType.FreeForAll ||
+                        DropType == DropType.Explosive
+                    );
                 }
                 else
+                {
                     isShown = true;
+                }
             }
 
             return isShown;
