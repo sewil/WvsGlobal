@@ -135,14 +135,14 @@ namespace WvsBeta.Game
         public void ChangeState(GameCharacter chr, byte state, bool sendPacket = true, short delay = 0)
         {
             Owner = chr;
+            int animationTime = State.Hit?.AnimationTime ?? 0;
             SetState(state);
             bool isLast = state == Reactor.States.Count - 1;
             if (sendPacket)
             {
-                if (isLast) ReactorPacket.DestroyReactor(this);
-                else ReactorPacket.ReactorChangedState(this);
+                ReactorPacket.ReactorChangedState(this);
             }
-            QueueStateChange(Guid.NewGuid(), state, delay);
+            QueueStateChange(Guid.NewGuid(), state, delay, animationTime);
         }
 
         class StateChange
@@ -156,7 +156,7 @@ namespace WvsBeta.Game
                 Delay = delay;
             }
         }
-        private void QueueStateChange(Guid guid, byte state, short delay)
+        private void QueueStateChange(Guid guid, byte state, short delay, int animationTime)
         {
             bool isLast = state == Reactor.States.Count - 1;
             var stateChange = new StateChange(guid, delay);
@@ -166,15 +166,17 @@ namespace WvsBeta.Game
             stateChange.RepeatingAction = RepeatingAction.Start(() =>
             {
                 stateChanges.Remove(guid);
-                if (isLast) DestroyReactor();
+                if (isLast) DestroyReactor(animationTime);
                 else if (Reactor.States.Count == 1) RunAction();
             }, totalDelay, 0);
         }
 
-        private void DestroyReactor()
+        private void DestroyReactor(int animationTime)
         {
             Program.MainForm.LogDebug("Destroyed reactor " + ID + " (" + Reactor.ID + ") at " + Position.ToString() + " in map " + Field.ID + ". " + (ReactorTime > 0 ? "Respawn in " + ReactorTime + " seconds" : ""));
             RunAction();
+
+            RepeatingAction.Start(() => ReactorPacket.DestroyReactor(this), animationTime, 0);
 
             if (ReactorTime > 0)
             {
