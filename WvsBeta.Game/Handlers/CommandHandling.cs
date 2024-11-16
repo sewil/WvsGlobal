@@ -336,7 +336,7 @@ namespace WvsBeta.Game.Handlers
             { "itempack", new CommandData($"/itempack <itemid>", "Give yourself an item pack.") },
             { "spawn", new CommandData($"/spawn <mobid> [amount] [summonType] [summonOption]", "Spawn a mob.") },
             { "spawnpos", new CommandData("/spawnpos <mobid> <x> <y> [fh] [summonType] [summonOption]", "Spawn a mob at a given position.") },
-            { "fieldset", new CommandData("/fieldset <minmembers/maxmembers> [amount]", "Configure field set properties.") },
+            { "fieldset", new CommandData("/fieldset <fieldsetname> <minmembers/maxmembers> [amount]", "Configure field set properties.") },
             { "fieldsetvar", new CommandData("/fieldsetvar <fieldsetname> <key> <value>", "Set a value to a field set variable.") },
             { "removefieldsetvar", new CommandData("/removefieldsetvar <fieldsetname> <key>", "Unset a field set variable.") },
             { "getid", new CommandData("/getid <charname>", "Get the character id from a player.") },
@@ -1497,9 +1497,25 @@ namespace WvsBeta.Game.Handlers
                     #region FieldSet
                     case "fieldset":
                         {
-                            var fs = FieldSet.Instances[Args[0]];
-                            if (Args[1] == "minmembers") fs.Data.MinMembers = int.Parse(Args[2]);
-                            else if (Args[1] == "maxmembers") fs.Data.MaxMembers = int.Parse(Args[2]);
+                            if (Args.Count < 3 || (Args[1] != "minmembers" && Args[1] != "maxmembers"))
+                            {
+                                character.Message(GetUsage(Args));
+                            }
+                            else if (!FieldSet.Instances.TryGetValue(Args[0], out var fs))
+                            {
+                                character.Message($"Unknown field set '{Args[0]}'!");
+                            }
+                            else if (!int.TryParse(Args[2], out int value))
+                            {
+                                character.Message($"Invalid value!");
+                            }
+                            else
+                            {
+                                if (Args[1] == "minmembers") fs.Data.MinMembers = value;
+                                else if (Args[1] == "maxmembers") fs.Data.MaxMembers = value;
+                                character.Message($"Set '{Args[1]}' to {value} in fieldset '{fs.Data.Name}'.");
+                            }
+
                             return true;
                         }
                     case "fieldsetvar":
