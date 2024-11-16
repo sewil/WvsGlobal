@@ -48,130 +48,130 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\cny.cs">
+    <Compile Include="Scripts\cny.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\contimove.cs">
+    </Compile>
+    <Compile Include="Scripts\contimove.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\event.cs">
+    </Compile>
+    <Compile Include="Scripts\event.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\face.cs">
+    </Compile>
+    <Compile Include="Scripts\face.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\florina0.cs">
+    </Compile>
+    <Compile Include="Scripts\florina0.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\friend.cs">
+    </Compile>
+    <Compile Include="Scripts\friend.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\guildquest1.cs">
+    </Compile>
+    <Compile Include="Scripts\guildquest1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\hair.cs">
+    </Compile>
+    <Compile Include="Scripts\hair.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\job.cs">
+    </Compile>
+    <Compile Include="Scripts\job.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\job2.cs">
+    </Compile>
+    <Compile Include="Scripts\job2.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\job3.cs">
+    </Compile>
+    <Compile Include="Scripts\job3.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\ludibrium0.cs">
+    </Compile>
+    <Compile Include="Scripts\ludibrium0.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make0.cs">
+    </Compile>
+    <Compile Include="Scripts\make0.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make1.cs">
+    </Compile>
+    <Compile Include="Scripts\make1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make2.cs">
+    </Compile>
+    <Compile Include="Scripts\make2.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make3.cs">
+    </Compile>
+    <Compile Include="Scripts\make3.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make4.cs">
+    </Compile>
+    <Compile Include="Scripts\make4.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make5.cs">
+    </Compile>
+    <Compile Include="Scripts\make5.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make6.cs">
+    </Compile>
+    <Compile Include="Scripts\make6.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\make7.cs">
+    </Compile>
+    <Compile Include="Scripts\make7.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\mapleIsland.cs">
+    </Compile>
+    <Compile Include="Scripts\mapleIsland.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\minigame.cs">
+    </Compile>
+    <Compile Include="Scripts\minigame.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\ossyria0.cs">
+    </Compile>
+    <Compile Include="Scripts\ossyria0.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\ossyria1.cs">
+    </Compile>
+    <Compile Include="Scripts\ossyria1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\ossyria2.cs">
+    </Compile>
+    <Compile Include="Scripts\ossyria2.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\aqua.cs">
+    </Compile>
+    <Compile Include="Scripts\aqua.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\party2.cs">
+    </Compile>
+    <Compile Include="Scripts\party2.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\populatus.cs">
+    </Compile>
+    <Compile Include="Scripts\populatus.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\xmas.cs">
+    </Compile>
+    <Compile Include="Scripts\xmas.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\zakum.cs">
+    </Compile>
+    <Compile Include="Scripts\zakum.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\etc.cs">
+    </Compile>
+    <Compile Include="Scripts\etc.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\easter.cs">
+    </Compile>
+    <Compile Include="Scripts\easter.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Content Include="Scripts\market.cs">
+    <Compile Include="Scripts\market.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\party.cs">
+    </Compile>
+    <Compile Include="Scripts\party.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\skin.cs">
+    </Compile>
+    <Compile Include="Scripts\skin.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\standard.cs">
+    </Compile>
+    <Compile Include="Scripts\standard.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\taxi.cs">
+    </Compile>
+    <Compile Include="Scripts\taxi.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\victoria0.cs">
+    </Compile>
+    <Compile Include="Scripts\victoria0.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\victoria1.cs">
+    </Compile>
+    <Compile Include="Scripts\victoria1.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\victoria2.cs">
+    </Compile>
+    <Compile Include="Scripts\victoria2.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Scripts\victoria3.cs">
+    </Compile>
+    <Compile Include="Scripts\victoria3.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
