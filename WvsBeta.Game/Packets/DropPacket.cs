@@ -181,7 +181,7 @@ namespace WvsBeta.Game
             if (chr != null)
                 chr.SendPacket(pw);
             else
-                drop.Field.SendPacket(drop, pw);
+                drop.Field.SendPacket(drop, pw, force: EnterType == RewardEnterType.DisappearDuringDrop);
         }
 
         public static void SendMakeLeaveFieldPacket(Drop Drop, RewardLeaveType LeaveType, int Option = 0)

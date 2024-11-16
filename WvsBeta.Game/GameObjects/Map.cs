@@ -901,11 +901,11 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
             });
         }
 
-        public void SendPacket(IFieldObj Obj, Packet packet, GameCharacter skipme = null)
+        public void SendPacket(IFieldObj Obj, Packet packet, GameCharacter skipme = null, bool force = false)
         {
             Characters.ForEach(p =>
             {
-                if (Obj.IsShownTo(p) && p != skipme)
+                if (force || (Obj.IsShownTo(p) && p != skipme))
                     p.SendPacket(packet);
             });
         }
