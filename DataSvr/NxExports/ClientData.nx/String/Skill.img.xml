@@ -4741,8 +4741,8 @@
     <string name="name" value="Super Dragon Roar" />
   </imgdir>
   <imgdir name="5001007">
-    <string name="desc" value="[Master Level : 1]\n Teleport" />
-    <string name="h1" value="Teleport " />
-    <string name="name" value="Teleport" />
+    <string name="desc" value="[Master Level : 1]\n Teleport across the map without boundaries" />
+    <string name="h1" value="Teleport across the map without boundaries" />
+    <string name="name" value="Super Teleport" />
   </imgdir>
 </imgdir>
