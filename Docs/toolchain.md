@@ -1,0 +1,12 @@
+## Toolchain
+- MySQL Server 8.0
+- Visual Studio Community 2022
+- HeidiSQL
+- Harepacker
+  - Harepacker-resurrected 5.1: https://github.com/lastbattle/Harepacker-resurrected/releases/tag/5.1
+  - HaCreator 2.1.1: https://forum.ragezone.com/threads/release-hasuite-hacreator-2-1-harepacker-4-2-3-yes-hc-is-working-now.1068988/
+- Ida Pro 6.8
+- Mpress: https://github.com/gerardbalaoro/MpressGUI
+- Detect It Easy: https://github.com/horsicq/Detect-It-Easy
+- Inno Setup: https://jrsoftware.org/isinfo.php
+- STREDIT for Old Maplestory: https://forum.ragezone.com/threads/release-stredit-for-old-maplestory-clients-with-edit.949305/
