@@ -255,7 +255,7 @@ namespace WvsBeta.Game.Handlers
 
         static bool shuttingDown = false;
         static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
-        static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", /*"mob", "quest", "npc", "skill"*/ };
+        static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", "mob", /*"quest", "npc", "skill"*/ };
 
         readonly struct CommandData
         {
@@ -506,6 +506,10 @@ namespace WvsBeta.Game.Handlers
                                     else if (lookupType == "map")
                                     {
                                         query = GameDataProvider.Maps.Select(i => (i.Value.ID, i.Value.Name));
+                                    }
+                                    else if (lookupType == "mob")
+                                    {
+                                        query = GameDataProvider.Mobs.Select(i => (i.Value.ID, i.Value.Name));
                                     }
 
                                     var results = query.Where(i => findItem(i.name, searchQuery)).Take(10).ToList();

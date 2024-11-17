@@ -262,8 +262,14 @@ namespace WvsBeta.Game
 
                 data.ID = (int)Utils.ConvertNameToID(pNode.Name);
 
-                if (!pClientFile.ContainsPath("String/Mob.img/" + data.ID))
+                string stringPath = "String/Mob.img/" + data.ID;
+                if (!pClientFile.ContainsPath(stringPath))
                     Program.MainForm.LogAppend("Missing string for mob " + data.ID);
+                else
+                {
+                    string name = pClientFile.ResolvePath(stringPath)["name"].ValueString();
+                    data.Name = name;
+                }
 
                 var infoNode = pNode["info"];
                 var nonInfoNodes = pNode;
