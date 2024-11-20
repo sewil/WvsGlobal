@@ -76,7 +76,7 @@ namespace WvsBeta.Game
 
             if (Data.OpenDelay > 0)
             {
-                openAction = MasterThread.RepeatingAction.Start(() => Open(), Data.OpenDelay * 1000, 0);
+                openAction = MasterThread.RepeatingAction.Start(() => Open(owner), Data.OpenDelay * 1000, 0);
             }
             else Open(owner);
         }

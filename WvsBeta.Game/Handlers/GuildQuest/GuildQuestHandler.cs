@@ -16,17 +16,14 @@ namespace WvsBeta.Game.Handlers.GuildQuest
             if (chr.GPQRegistration != null) return -(chr.GPQRegistration.ChannelID + 1);
             else if (!chr.CanChangeRank || !fs.CheckLevel(chr)) return 0;
 
-            var members = chr.Field.Characters.Where(i => i.GuildID == gid && fs.CheckLevel(i)).ToList();
-            if (!Tools.CheckRange(members.Count, fs.MinMembers, fs.MaxMembers)) return 0;
-
             var pw = new Packet(ISServerMessages.GuildQuestRegister);
-            var registration = new GuildQuestRegistration(Server.Instance.ID, chr.GuildID, chr.ID, members.Select(i => i.ID).ToArray());
+            var registration = new GuildQuestRegistration(Server.Instance.ID, chr.GuildID, chr.ID);
             registration.Encode(pw);
 
             Server.Instance.BroadcastPacket(pw, HandleRegister);
-            NotifyRegistration(registration, registration.QueueIndex, members);
+            NotifyRegistration(registration, registration.QueueIndex);
 
-            TryStartFieldSet();
+            TryStartFieldSet(chr);
 
             return 1;
         }
@@ -68,19 +65,40 @@ namespace WvsBeta.Game.Handlers.GuildQuest
         {
             int guildId = pr.ReadInt();
             byte channelId = pr.ReadByte();
-            if (!Server.Instance.GuildQuestRegistrations.TryGetValue(channelId, out var registrations)) return;
-            int idx = registrations.FindIndex(i => i.GuildID == guildId);
+            if (!Server.Instance.GuildQuestRegistrations.TryGetValue(channelId, out var channelRegistrations)) return;
+            int idx = channelRegistrations.FindIndex(i => i.GuildID == guildId);
             if (idx == -1) return;
-            var registration = registrations[idx];
+            var registration = channelRegistrations[idx];
             if (registration.Guild != null)
             {
                 registration.Guild.GPQRegistration = null;
             }
-            registrations.RemoveAt(idx);
+            channelRegistrations.RemoveAt(idx);
 
-            if (registration.ChannelID == Server.Instance.ID) TryStartFieldSet();
+            // The registration was on this channel and was first in line
+            if (registration.ChannelID == Server.Instance.ID && idx == 0)
+            {
+                // Attempt to find the next registration in line (if any)
+                StartNextRegistration(channelRegistrations);
+            }
 
             NotifyChannelRegistrations(registration.ChannelID);
+        }
+
+        private static void StartNextRegistration(List<GuildQuestRegistration> channelRegistrations)
+        {
+            var nextRegistration = channelRegistrations.FirstOrDefault();
+            if (nextRegistration == null) return;
+            var leader = Server.Instance.GetCharacter(nextRegistration.Leader);
+            if (leader == null || !leader.IsOnline)
+            {
+                channelRegistrations.RemoveAt(0);
+                StartNextRegistration(channelRegistrations);
+            }
+            else
+            {
+                TryStartFieldSet(leader);
+            }
         }
 
         private static void NotifyChannelRegistrations(byte channelID)
@@ -93,26 +111,25 @@ namespace WvsBeta.Game.Handlers.GuildQuest
             }
         }
 
-        private static void NotifyRegistration(GuildQuestRegistration registration, int idx, IEnumerable<GameCharacter> members = null)
+        private static void NotifyRegistration(GuildQuestRegistration registration, int idx)
         {
             string message;
-            members = members ?? registration.Members.Select(Server.Instance.GetCharacter);
             string channelName = $"{registration.ChannelID + 1}";
             if (idx == 0) message = $"Please go see the Guild Quest NPC at Channel {channelName} immediately to enter.";
             else if (idx == 1) message = $"Your guild is up next. Please head to the Guild Quest map at Channel {channelName} and wait.";
             else message = $"There's currently 1 guild participating in the Guild Quest, and your guild is number {idx + 1} on the waitlist.";
-            members.Where(m => m != null).ForEach(m => m.Message(message));
+            Server.Instance.GetCharacter(registration.Leader)?.Message(message);
         }
 
         /// <summary>
         /// Attempts to start the GPQ fieldset. If there are no registrations queued, or if the fieldset is already started, nothing will happen. The registration is only set when the owner Enters, and only the owner of the first registration in queue can enter the fieldset.
         /// </summary>
-        private static void TryStartFieldSet()
+        private static void TryStartFieldSet(GameCharacter owner)
         {
             var r = Server.Instance.GuildQuestChannelRegistrations;
             if ((r?.Count ?? 0) == 0) return;
             var fs = FieldSet.Instances["Guild1"];
-            fs.Start();
+            fs.Start(owner);
         }
     }
 }

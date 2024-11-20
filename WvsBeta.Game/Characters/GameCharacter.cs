@@ -801,7 +801,6 @@ namespace WvsBeta.Game
             {
                 if (GPQRegistration == null) return 0;
                 else if (GPQRegistration.ChannelID != Server.Instance.ID) return 0;
-                else if (!GPQRegistration.Members.Contains(ID)) return 0;
                 else if (GPQRegistration.QueueIndex != 0) return 0;
                 else if (!FieldSet.Instances["Guild1"].Started && !IsGuildQuestLeader) return 0;
                 else if (FieldSet.Instances["Guild1"].Opened) return 0;
@@ -838,11 +837,10 @@ namespace WvsBeta.Game
             }
             else if (action == 3)
             {
-                if (GPQRegistration == null) return 0;
-                else if (!GPQRegistration.Members.Contains(ID)) return -1;
+                if (GPQRegistration == null) return -1;
                 else
                 {
-                    return registrations[GPQRegistration.ChannelID].FindIndex(i => i.GuildID == GuildID) + 1;
+                    return registrations[GPQRegistration.ChannelID].FindIndex(i => i.GuildID == GuildID);
                 }
             }
             return 0;
