@@ -23,7 +23,7 @@ namespace WvsBeta.Scripts.Scripts
                 if (target.Inventory.Exchange(-fee) == 0) self.Say("You do not have enough mesos. With your skills, you should have more than that!");
                 else target.ChangeMap(mapNum);
             }
-            self.Say("There's a lot to see in this town too. Let me know if you want to go somewhere else.");
+            else self.Say("There's a lot to see in this town too. Let me know if you want to go somewhere else.");
         }
         public void Run(INpcHost self, GameCharacter target)
         {
