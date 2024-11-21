@@ -1526,7 +1526,7 @@
       <string name="name" value="Scroll for Earring for INT" />
     </imgdir>
     <imgdir name="2040303">
-      <string name="desc" value="Improves INT on ear accessory.\nSuccess rate:30%, magic attack +5, INT+3, magic def. +1" />
+      <string name="desc" value="Improves INT on ear accessory.\nSuccess rate:100%, magic attack +5, INT+3, magic def. +1" />
       <string name="name" value="Scroll for Earring for INT" />
     </imgdir>
     <imgdir name="2040304">
