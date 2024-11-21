@@ -10,3 +10,4 @@
 - Detect It Easy: https://github.com/horsicq/Detect-It-Easy
 - Inno Setup: https://jrsoftware.org/isinfo.php
 - STREDIT for Old Maplestory: https://forum.ragezone.com/threads/release-stredit-for-old-maplestory-clients-with-edit.949305/
+- Types converter: https://www.simonv.fr/TypesConvert/?integers
