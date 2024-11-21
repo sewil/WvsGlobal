@@ -142,18 +142,17 @@
     <canvas name="iconRaw">
       <vector name="origin" x="-4" y="31" />
     </canvas>
-    <int name="incINT" value="2" />
-    <int name="incLUK" value="6" />
-    <int name="incMDD" value="34" />
-    <int name="incMMP" value="35" />
-    <int name="incPDD" value="68" />
+    <int name="incEVA" value="2" />
+    <int name="incLUK" value="3" />
+    <int name="incPDD" value="105" />
+    <int name="incSTR" value="7" />
     <string name="islot" value="MaPn" />
-    <int name="price" value="160000" />
-    <int name="reqDEX" value="0" />
-    <int name="reqINT" value="235" />
-    <int name="reqJob" value="2" />
-    <int name="reqLevel" value="78" />
-    <int name="reqLUK" value="80" />
+    <int name="price" value="240000" />
+    <int name="reqDEX" value="140" />
+    <int name="reqINT" value="0" />
+    <int name="reqJob" value="8" />
+    <int name="reqLevel" value="100" />
+    <int name="reqLUK" value="260" />
     <int name="reqSTR" value="0" />
     <int name="tuc" value="10" />
     <string name="vslot" value="MaPn" />
