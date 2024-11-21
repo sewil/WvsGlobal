@@ -1242,6 +1242,13 @@
     <string name="n1" value="Making scrolls is even easier than hunting down slimes." />
     <string name="name" value="Barun" />
   </imgdir>
+  <imgdir name="2022003">
+    <string name="d0" value="Hehe...I need to gather up the strength right now!" />
+    <string name="d1" value="Hehe...the masterplan is well underway." />
+    <string name="name" value="Shammos" />
+    <string name="s0" value="Hehe..." />
+    <string name="s1" value="There will be a time when... I'll get out of here... out of this darkness" />
+  </imgdir>
   <imgdir name="2030000">
     <string name="n0" value="Don't even think about entering here...it's not some place where anyone can just waltz in..." />
     <string name="n1" value="Only the strongest can enter here...if you want in, talk to me" />
