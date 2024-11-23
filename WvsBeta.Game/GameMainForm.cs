@@ -5,6 +5,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Properties;
+using WvsBeta.Game.Scripting;
 
 namespace WvsBeta.Game
 {
@@ -26,6 +27,7 @@ namespace WvsBeta.Game
         {
             Server.Init(Program.IMGFilename);
             GameDataProvider.Load();
+            ScriptAccessor.PrecompileAllScripts();
 
             for (var reconnects = 0; reconnects < 8; reconnects++)
             {

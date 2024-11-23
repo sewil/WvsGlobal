@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using WvsBeta.Common.Characters;
 
 namespace WvsBeta.Game.Scripting
 {
@@ -58,6 +59,16 @@ namespace WvsBeta.Game.Scripting
             }
             if (!File.Exists(scriptPath)) return null;
             return scriptPath;
+        }
+        public static void PrecompileAllScripts()
+        {
+            var scriptFiles = Directory.GetFiles("Scripts");
+            foreach (var scriptFile in scriptFiles)
+            {
+                var scriptFileName = Path.GetFileNameWithoutExtension(scriptFile);
+                Program.MainForm.LogAppend($"Precompiling script file '{scriptFileName}.cs'...");
+                GetScript(Server.Instance, scriptFileName, null);
+            }
         }
     }
 }
