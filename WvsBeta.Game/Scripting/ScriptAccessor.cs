@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Management.Instrumentation;
 using System.Reflection;
-using WvsBeta.Common.Characters;
 
 namespace WvsBeta.Game.Scripting
 {
