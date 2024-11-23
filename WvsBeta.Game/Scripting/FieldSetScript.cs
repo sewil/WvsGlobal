@@ -33,10 +33,18 @@ namespace WvsBeta.Game.Scripting
 
         public void RunScript()
         {
+            try
+            {
 #if DEBUG
-            target.Notice("Run fieldset script " + scriptName);
+                target.Notice("Run fieldset script " + scriptName);
 #endif
-            script.Run(this, target);
+                script.Run(this, target);
+
+            }
+            catch (Exception ex)
+            {
+                Program.MainForm.LogAppend("Script run exception @ FieldSetScriptHost::RunScript : {0}", ex.ToString());
+            }
         }
     }
 }

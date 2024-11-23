@@ -111,6 +111,10 @@ namespace WvsBeta.Game
                 compiledScript.Run(s, s.mCharacter);
             }
             catch (ThreadAbortException) { }
+            catch (Exception ex)
+            {
+                Program.MainForm.LogAppend("Script run exception @ NpcChatSession::RunScript : {0}", ex.ToString());
+            }
             finally
             {
                 s.Stop();

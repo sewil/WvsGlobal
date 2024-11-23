@@ -35,10 +35,17 @@ namespace WvsBeta.Game.Scripting
 
         public void RunScript()
         {
+            try
+            {
 #if DEBUG
-            mCharacter.Notice("Run portal script " + scriptName);
+                mCharacter.Notice("Run portal script " + scriptName);
 #endif
-            _compiledScript.Run(this, mCharacter);
+                _compiledScript.Run(this, mCharacter);
+            }
+            catch (Exception ex)
+            {
+                Program.MainForm.LogAppend("Script run exception @ PortalScriptSession::RunScript : {0}", ex.ToString());
+            }
         }
     }
 }
