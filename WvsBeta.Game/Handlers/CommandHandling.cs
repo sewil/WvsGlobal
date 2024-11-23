@@ -323,6 +323,7 @@ namespace WvsBeta.Game.Handlers
             { "level", new CommandData("/level <value>", "Set your level.") },
             { "fame", new CommandData("/fame <value>", "Set your fame.") },
             { "maxslots", new CommandData("/maxslots", "Max all your inventory slots.") },
+            { "setslots", new CommandData("/setslots <inventory> <slots>", "Set the number of slots for an inventory.") },
             { "maxstats", new CommandData("/maxstats", "Max all your stats.") },
             { "pos", new CommandData("/pos", "Get current position info.") },
             { "undercover", new CommandData("/undercover <true/false>", "Set undercover status.") },
@@ -1236,6 +1237,23 @@ namespace WvsBeta.Game.Handlers
                                 character.Inventory.SetInventorySlots(InventoryType.Setup, 100);
                                 character.Inventory.SetInventorySlots(InventoryType.Etc, 100);
                                 character.Inventory.SetInventorySlots(InventoryType.Cash, 100);
+                                return true;
+                            }
+                        case "setslots":
+                            {
+                                if (Args.Count < 2 || !byte.TryParse(Args[0], out byte inventory) || !byte.TryParse(Args[1], out byte slots))
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (!System.Enum.IsDefined(typeof(InventoryType), inventory))
+                                {
+                                    character.Message($"Invalid inventory type {inventory}!");
+                                }
+                                else
+                                {
+                                    var inventoryType = (InventoryType)inventory;
+                                    character.Inventory.SetInventorySlots(inventoryType, slots);
+                                }
                                 return true;
                             }
 
