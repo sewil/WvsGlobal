@@ -826,7 +826,9 @@ namespace WvsBeta.Game
 
         public void IncSlotCount(byte inventory, byte slots)
         {
-            SetInventorySlots((Common.Enums.InventoryType)inventory, slots);
+            var inventoryType = (InventoryType)inventory;
+            var newSlots = (byte)(MaxSlots[inventoryType] + slots);
+            SetInventorySlots(inventoryType, newSlots);
         }
         /// <summary>
         /// Remove equipped item
