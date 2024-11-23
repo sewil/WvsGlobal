@@ -233,7 +233,6 @@ namespace WvsBeta.Scripts.Scripts
     [Script("fighter")]
     class fighter : INpcScript
     {
-        dynamic v2, v, nSec, nRet, ret;
         public void Run(INpcHost self, GameCharacter target)
         {
             var inventory = target.Inventory;
@@ -252,7 +251,7 @@ namespace WvsBeta.Scripts.Scripts
 
                         if (!Job2.AskJobDescriptionMenu(self, jobs))
                         {
-                            v2 = self.AskMenu($"Hmmmm, have you made up your mind? Then choose the 2nd job advancement of your liking.{Job2.JobMenu(jobs)}");
+                            var v2 = self.AskMenu($"Hmmmm, have you made up your mind? Then choose the 2nd job advancement of your liking.{Job2.JobMenu(jobs)}");
                             short jobId = jobs[v2];
                             var jobName = Job2.JobStrings[jobId].name;
                             short incMMP = 0;
@@ -285,12 +284,12 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        nSec = self.AskYesNo("Wow, you've really grown up! You're not small and weak anymore... Now I can feel your Warrior presence! Impressive... so what do you think? Do you want to become stronger than you already are? Just do a simple test! Accepted?");
+                        var nSec = self.AskYesNo("Wow, you've really grown up! You're not small and weak anymore... Now I can feel your Warrior presence! Impressive... so what do you think? Do you want to become stronger than you already are? Just do a simple test! Accepted?");
                         if (nSec == 0) self.Say(Job2.StartDeny);
                         else if (nSec == 1)
                         {
                             self.Say("Good thinking. You are strong, don't get me wrong, but there is still a need to test your strength and see if your power is real. The test isn't too hard, you'll do just fine... Here, take this letter. Don't lose it.");
-                            ret = inventory.Exchange(0, 4031008, 1);
+                            var ret = inventory.Exchange(0, 4031008, 1);
                             if (ret == 0) self.Say("Hmm... I can't give you the letter because you don't have enough space in your etc. inventory. Come back after you've cleared a space or two in your inventory, as you can only take the test with the letter.");
                             else self.Say("Deliver this letter to #b#p1072000##k who may be close to #b#m102020300##k near #m102000000#. He's replacing me as instructor as I've been busy around here. Give him the letter and he will administer the test on my behalf. More information will be passed directly by him to you. Best of luck to you.");
                         }
@@ -298,7 +297,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    v = self.AskMenu("Oh, you have a question? \r\n#b#L0#What are the general characteristics of a Warrior?#l\r\n#L1#What are the weapons of a Warrior?#l\r\n#L2#What are the armors of a Warrior?#l\r\n#L3#What skills are available for a Warrior?#l");
+                    var v = self.AskMenu("Oh, you have a question? \r\n#b#L0#What are the general characteristics of a Warrior?#l\r\n#L1#What are the weapons of a Warrior?#l\r\n#L2#What are the armors of a Warrior?#l\r\n#L3#What skills are available for a Warrior?#l");
                     if (v == 0)
                     {
                         self.Say("Let me explain the role of the Warrior. Warriors possess incredible physical strength and power. They also know how to defend themselves against monster attacks, so they are the best to fight in close combat with monsters. With a high level of health, you won't die easily.");
@@ -327,7 +326,7 @@ namespace WvsBeta.Scripts.Scripts
                 self.Say("Do you want to become a Warrior? You need to meet certain criteria for this. #bYou must be at least level 10, with at least 35 STR#k. We will see...");
                 if (target.Level > 9 && target.STR > 34)
                 {
-                    nRet = self.AskYesNo("You definitely have the potential to be a Warrior. You may not be there yet, but I can already see a Warrior in you. What do you think? Do you want to become a Warrior?");
+                    var nRet = self.AskYesNo("You definitely have the potential to be a Warrior. You may not be there yet, but I can already see a Warrior in you. What do you think? Do you want to become a Warrior?");
                     if (nRet == 0) self.Say("Really? Need more time to think it through? Make yourself at home... it's not something you should do lightly anyway. Come talk to me when you make your decision.");
                     else if (nRet == 1)
                     {
@@ -359,7 +358,6 @@ namespace WvsBeta.Scripts.Scripts
     [Script("magician")]
     class magician : INpcScript
     {
-        dynamic v2, v, nSec, nRet, ret;
         public void Run(INpcHost self, GameCharacter target)
         {
             var inventory = target.Inventory;
@@ -376,7 +374,7 @@ namespace WvsBeta.Scripts.Scripts
                         self.Say("You got back here safely. Well done. I knew you'd pass the tests very easily...alright, I'll make you much stronger now. Before that, though...you need to choose one of the three paths that will be given to you. It will be a tough decision for you to make, but...if you have any questions about it, feel free to ask.");
                         if (!Job2.AskJobDescriptionMenu(self, jobs))
                         {
-                            v2 = self.AskMenu("Now, have you made up your mind? Please select your occupation for your 2nd job advancement.\r\n#b#L0#The Wizard of Fire and Poison#k#l\r\n#b#L1#The Wizard of Ice and Lightening#k#l\r\n#b#L2#Cleric#k#l");
+                            var v2 = self.AskMenu("Now, have you made up your mind? Please select your occupation for your 2nd job advancement.\r\n#b#L0#The Wizard of Fire and Poison#k#l\r\n#b#L1#The Wizard of Ice and Lightening#k#l\r\n#b#L2#Cleric#k#l");
                             var jobName = Job2.JobStrings[jobs[v2]].name;
                             short jobId = jobs[v2];
                             short incMMP = (short)Rand32.NextBetween(450, 500);
@@ -405,12 +403,12 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        nSec = self.AskYesNo("Hmmm...you have grown quite a bit since last time. You\r\nlook much different from before, where you looked weak\r\nand small...instead now I can definitely feel you presence\r\nas the Magician...so...what do you think? Do you want to\r\nget even stronger than you are right now? Pass a simple\r\ntest and I can do just that for you...do you want to do it?");
+                        var nSec = self.AskYesNo("Hmmm...you have grown quite a bit since last time. You\r\nlook much different from before, where you looked weak\r\nand small...instead now I can definitely feel you presence\r\nas the Magician...so...what do you think? Do you want to\r\nget even stronger than you are right now? Pass a simple\r\ntest and I can do just that for you...do you want to do it?");
                         if (nSec == 0) self.Say(Job2.StartDeny);
                         else if (nSec == 1)
                         {
                             self.Say("Good...you look strong, alright, but I need to see if it is for\r\nreal. The test isn't terribly difficult, and you should be able\r\nto pass it. Here, take my letter first. Make sure you don't\r\nlose it.");
-                            ret = inventory.Exchange(0, 4031009, 1);
+                            var ret = inventory.Exchange(0, 4031009, 1);
                             if (ret == 0) self.Say("I believe you do not have enough space in your inventory to receive my letter. Free up space in your etc. inventory and talk to me again. After all, you will only be able to take the test with the letter.");
                             else self.Say("Please get this letter to #b#p1072001##k around #b#m101020000##k near #m101000000#. He's doing the role of\r\nan instructor in place of me ... Get him the letter and he'll\r\ntest you in place of me. He'll give you all the details about it.\r\nBest of luck to you...");
                         }
@@ -418,7 +416,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    v = self.AskMenu("Any questions about how to be a Magician?\r\n#b#L0#What are the basic characteristics of a Magician?\r\n#L1#What are the weapons of a Magician?\r\n#L2#What are the armors of a Magician?\r\n#L3#What are the skills available for a Magician?#l");
+                    var v = self.AskMenu("Any questions about how to be a Magician?\r\n#b#L0#What are the basic characteristics of a Magician?\r\n#L1#What are the weapons of a Magician?\r\n#L2#What are the armors of a Magician?\r\n#L3#What are the skills available for a Magician?#l");
                     if (v == 0)
                     {
                         self.Say("I'll tell you more about being a Magician. Magicians use very high levels of magic and intelligence. They can use the power of nature around them to kill enemies, but they are very weak in melee combat. Their health isn't high either, so be careful and avoid dying by any means.");
@@ -448,7 +446,7 @@ namespace WvsBeta.Scripts.Scripts
                 self.Say("Do you want to be a Magician? You need to meet some requirements in order to do so. You need to be at least at\r\n#bLevel 8, and INT 20#k. Let's see if you have what it takes to become a Magician...");
                 if (target.Level > 7 && target.INT > 19)
                 {
-                    nRet = self.AskYesNo("You definitely have the look of a Magician. You may not be there yet, but I can see the Magician in you... what do you think? Do you want to become the Magician?");
+                    var nRet = self.AskYesNo("You definitely have the look of a Magician. You may not be there yet, but I can see the Magician in you... what do you think? Do you want to become the Magician?");
                     if (nRet == 0) self.Say(Job.AdvanceDeny);
                     else if (nRet == 1)
                     {
@@ -477,11 +475,9 @@ namespace WvsBeta.Scripts.Scripts
     [Script("bowman")]
     class bowman : INpcScript
     {
-        dynamic info, inven, v2, nPSP, valm, valh, ret1, v1, v, rank, incval2, nSec, esTime, ret, v0, cTime, qr, mJob, eeTime, cJob, inventory, ret2, val, quest, nRet, incval1;
-
         public void Run(INpcHost self, GameCharacter target)
         {
-            inventory = target.Inventory;
+            var inventory = target.Inventory;
             if (Job3.Test1(self, target, Tracks.Bowman)) return;
 
             if (target.Job == 300)
@@ -497,7 +493,7 @@ namespace WvsBeta.Scripts.Scripts
 
                         if (!Job2.AskJobDescriptionMenu(self, jobs))
                         {
-                            v2 = self.AskMenu($"Now... have you made up your mind? Please choose the job you'd like to select for your 2nd job advancement.{Job2.JobMenu(jobs)}");
+                            var v2 = self.AskMenu($"Now... have you made up your mind? Please choose the job you'd like to select for your 2nd job advancement.{Job2.JobMenu(jobs)}");
                             short jobid = jobs[v2];
                             var job = Job2.JobStrings[jobid];
                             short incMHP = (short)Rand32.NextBetween(300, 350);
@@ -515,12 +511,12 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        nSec = self.AskYesNo("Hmmm...you have grown a lot since I last saw you. I don't see the weakling I saw before, and instead, look much more like a bowman now. Well, what do you think? Don't you want to get even more powerful than that? Pass a simple test and I'll do just that for you. Do you want to do it?");
+                        var nSec = self.AskYesNo("Hmmm...you have grown a lot since I last saw you. I don't see the weakling I saw before, and instead, look much more like a bowman now. Well, what do you think? Don't you want to get even more powerful than that? Pass a simple test and I'll do just that for you. Do you want to do it?");
                         if (nSec == 0) self.Say(Job.AdvanceDeny);
                         else if (nSec == 1)
                         {
                             self.Say("Good decision. You look strong, but I need to see if you really are strong enough to pass the test. It's not a difficult test, so you'll do just fine. Here, take my letter first...make sure you don't lose it!");
-                            ret = inventory.Exchange(0, 4031010, 1);
+                            var ret = inventory.Exchange(0, 4031010, 1);
                             if (ret == 0) self.Say("Hmm... your inventory looks full... free up some space in your etc. inventory and talk to me again. Without the letter, you won't be able to take the test.");
                             else self.Say("Please get this letter to #b#p1072002##k who's around #b#m106010000##k near #m100000000#. She's taking care of the job of an instructor in place of me. Give her the letter and she'll test you in place of me. Best of luck to you.");
                         }
@@ -528,7 +524,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    v = self.AskMenu("Do you have any questions about life as a Bowman? \r\n#b#L0#What are the basic characteristics of a Bowman?#l\r\n#L1#What are the weapons of a Bowman?#l\r\n#L2#What are the armors of a Bowman?#l\r\n#L3#What are the skills of a Bowman?#l");
+                    var v = self.AskMenu("Do you have any questions about life as a Bowman? \r\n#b#L0#What are the basic characteristics of a Bowman?#l\r\n#L1#What are the weapons of a Bowman?#l\r\n#L2#What are the armors of a Bowman?#l\r\n#L3#What are the skills of a Bowman?#l");
                     if (v == 0)
                     {
                         self.Say("Here's what it's like to be a Bowman. The Bowman has a decent amount of health and strength. Their most important skill is DEX. They don't have a lot of health, so avoid close range combat if possible.");
@@ -558,7 +554,7 @@ namespace WvsBeta.Scripts.Scripts
                 self.Say("So you wish to become an Archer??? Well... you need to meet certain requirements for that... at least #bLevel 10 and DEX 25#k. Let's see... hmm...");
                 if (target.Level > 9 && target.DEX > 24)
                 {
-                    nRet = self.AskYesNo("You are qualified. You have a great pair of eyes to see the real monsters and the necessary skills to put an arrow through them... we needed someone like that. Do you wish to become a Bowman?");
+                    var nRet = self.AskYesNo("You are qualified. You have a great pair of eyes to see the real monsters and the necessary skills to put an arrow through them... we needed someone like that. Do you wish to become a Bowman?");
                     if (nRet == 0) self.Say(Job.AdvanceDeny);
                     else if (nRet == 1)
                     {
@@ -566,8 +562,8 @@ namespace WvsBeta.Scripts.Scripts
                         inventory.IncSlotCount(1, 4);
                         inventory.IncSlotCount(2, 4);
                         target.SetJob(300);
-                        valh = Rand32.NextBetween(100, 150);
-                        valm = Rand32.NextBetween(30, 50);
+                        var valh = (short)Rand32.NextBetween(100, 150);
+                        var valm = (short)Rand32.NextBetween(30, 50);
                         target.IncMHP(valh, 0);
                         target.IncMMP(valm, 0);
                         target.IncSP(1, 0);
@@ -590,10 +586,9 @@ namespace WvsBeta.Scripts.Scripts
     [Script("rogue")]
     class rogue : INpcScript
     {
-        dynamic info, inven, v2, nPSP, valm, valh, ret1, v1, v, rank, incval2, nSec, esTime, ret, v0, cTime, mJob, eeTime, inventory, ret2, quest, nRet, incval1;
         public void Run(INpcHost self, GameCharacter target)
         {
-            inventory = target.Inventory;
+            var inventory = target.Inventory;
 
             if (Job3.Test1(self, target, Tracks.Thief)) return;
 
@@ -610,7 +605,7 @@ namespace WvsBeta.Scripts.Scripts
 
                         if (Job2.AskJobDescriptionMenu(self, jobs)) return;
 
-                        v2 = self.AskMenu($"Okay... have you made your decision yet? Choose the job you would like to select for your 2nd job advancement.{Job2.JobMenu(jobs)}");
+                        var v2 = self.AskMenu($"Okay... have you made your decision yet? Choose the job you would like to select for your 2nd job advancement.{Job2.JobMenu(jobs)}");
                         var jobId = jobs[v2];
                         var job = Job2.JobStrings[jobId];
                         short incMHP = (short)Rand32.NextBetween(300, 350);
@@ -637,12 +632,12 @@ namespace WvsBeta.Scripts.Scripts
                     }
                     else
                     {
-                        nSec = self.AskYesNo("Hmm... you look a lot stronger. You got rid of that mediocre, weak look and look much more like a thief now. Well, what do you think? Want to become even more powerful? Just do a simple test. You accept?");
+                        var nSec = self.AskYesNo("Hmm... you look a lot stronger. You got rid of that mediocre, weak look and look much more like a thief now. Well, what do you think? Want to become even more powerful? Just do a simple test. You accept?");
                         if (nSec == 0) self.Say(Job2.StartDeny);
                         else if (nSec == 1)
                         {
                             self.Say("Good thinking. But I need to know if you're as strong as you look. It's not a difficult test, you can pass it. First, take this letter... don't lose it.");
-                            ret = inventory.Exchange(0, 4031011, 1);
+                            var ret = inventory.Exchange(0, 4031011, 1);
                             if (ret == 0) self.Say("Well... it looks like there's no room in your inventory for this letter. Free up some space in your etc. inventory and come talk to me. You will only be able to take the test with the letter.");
                             else self.Say("Take this letter to #b#p1072003##k who is around #b#m102040000##k near #m103000000#. He is replacing me as instructor. Give him the letter and he will administer the test on my behalf. If you want more details, ask him directly. I wish you good luck.");
                         }
@@ -650,7 +645,7 @@ namespace WvsBeta.Scripts.Scripts
                 }
                 else
                 {
-                    v = self.AskMenu("Do you want to know something about Thieves?\r\n#b#L0#What are the basic characteristics of a Thief?#l\r\n#L1#What are the weapons of a Thief?#l\r\n# L2#What are the armors of a Thief?#l\r\n#L3#What are the skills available to a Thief?#l");
+                    var v = self.AskMenu("Do you want to know something about Thieves?\r\n#b#L0#What are the basic characteristics of a Thief?#l\r\n#L1#What are the weapons of a Thief?#l\r\n# L2#What are the armors of a Thief?#l\r\n#L3#What are the skills available to a Thief?#l");
                     if (v == 0)
                     {
                         self.Say("Let me explain what it means to be a Thief. The Thieves have just enough stamina and strength to survive. We do not recommend that you train your strength like the Warriors. You need LUK and DEX...");
@@ -681,7 +676,7 @@ namespace WvsBeta.Scripts.Scripts
                 self.Say("Want to be a Thief? You will have to meet certain criteria. We can't accept just ANYONE... #bYour level must be at least 10, with DEX greater than 25#k. Let's see...");
                 if (target.Level > 9 && target.DEX > 24)
                 {
-                    nRet = self.AskYesNo("Oh...! You look like someone who could definitely be one of us... all you need is an evil mind and... yes, yes... so what do you think? Want to be a Thief?");
+                    var nRet = self.AskYesNo("Oh...! You look like someone who could definitely be one of us... all you need is an evil mind and... yes, yes... so what do you think? Want to be a Thief?");
                     if (nRet == 0) self.Say("I see... well, choosing your job is a very important step. But don't you want to live a more fun life? Let me know when you make your decision, okay?");
                     else if (nRet == 1)
                     {
@@ -689,8 +684,8 @@ namespace WvsBeta.Scripts.Scripts
                         inventory.IncSlotCount(1, 4);
                         inventory.IncSlotCount(4, 4);
                         target.SetJob(400);
-                        valh = Rand32.NextBetween(100, 150);
-                        valm = Rand32.NextBetween(30, 50);
+                        var valh = (short)Rand32.NextBetween(100, 150);
+                        var valm = (short)Rand32.NextBetween(30, 50);
                         target.IncMHP(valh, 0);
                         target.IncMMP(valm, 0);
                         target.IncSP(1, 0);
