@@ -178,6 +178,7 @@ namespace WvsBeta.Game
                 {
                     var items = _items[inventory];
                     Array.Resize(ref items, MaxSlots);
+                    _items[inventory] = items;
                 }
             }
 

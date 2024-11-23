@@ -477,6 +477,7 @@ namespace WvsBeta.Common.Characters
             {
                 var items = Items[inventory];
                 Array.Resize(ref items, invArraySlots);
+                Items[inventory] = items;
             }
 
             MaxSlots[inventory] = slots;
