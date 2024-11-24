@@ -87,6 +87,7 @@ namespace WvsBeta.Game.Scripting
                 var scriptFileName = Path.GetFileName(scriptFile);
                 Program.MainForm.LogAppend($"Precompiling script file '{scriptFileName}'...");
                 var dll = ScriptCompiler.CompileScript(scriptPath, null);
+                if (dll == null) continue;
                 var scriptNames = GetScriptNames(dll);
                 foreach (var scriptName in scriptNames)
                 {
