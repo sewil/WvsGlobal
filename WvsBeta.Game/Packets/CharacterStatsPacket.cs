@@ -206,7 +206,7 @@ namespace WvsBeta.Game
             HandleStats(chr, up, upValue, false, false);
             HandleStats(chr, down, downValue, false, false);
 
-            chr.Inventory.TakeItem(ItemUseIds.APReset, 1);
+            chr.Inventory.TakeItemOperations(ItemUseIds.APReset, 1);
 
             // TODO: HP/MP validation (crazy formula, ap/class/level/skill dependent)
         }
@@ -255,7 +255,7 @@ namespace WvsBeta.Game
             {
                 chr.Skills.AddSkillPoint(upSkillID);
                 chr.Skills.SetSkillPoint(downSkillID, (byte)(downSP - 1));
-                chr.Inventory.TakeItem(itemid, 1);
+                chr.Inventory.TakeItemOperations(itemid, 1);
             }
         }
         public static void HandleHeal(GameCharacter chr, Packet packet)

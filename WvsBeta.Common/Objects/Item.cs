@@ -320,6 +320,21 @@ namespace WvsBeta.Common.Objects
             IsOnly = data.IsOnly;
             IsTradeBlock = data.IsTradeBlock;
             Slots = data.Slots;
+            Str = data.Strength;
+            Dex = data.Dexterity;
+            Int = data.Intellect;
+            Luk = data.Luck;
+            HP = data.HP;
+            MP = data.MP;
+            Watk = data.WeaponAttack;
+            Wdef = data.WeaponDefense;
+            Matk = data.MagicAttack;
+            Mdef = data.MagicDefense;
+            Acc = data.Accuracy;
+            Avo = data.Avoidance;
+            Hands = data.Hands;
+            Speed = data.Speed;
+            Jump = data.Jump;
         }
 
         public EquipItem(EquipItem itemBase) : base(itemBase)
@@ -371,24 +386,6 @@ namespace WvsBeta.Common.Objects
                 Hands = GetVariation(data.Hands, enOption);
                 Speed = GetVariation(data.Speed, enOption);
                 Jump = GetVariation(data.Jump, enOption);
-            }
-            else
-            {
-                Str = data.Strength;
-                Dex = data.Dexterity;
-                Int = data.Intellect;
-                Luk = data.Luck;
-                HP = data.HP;
-                MP = data.MP;
-                Watk = data.WeaponAttack;
-                Wdef = data.WeaponDefense;
-                Matk = data.MagicAttack;
-                Mdef = data.MagicDefense;
-                Acc = data.Accuracy;
-                Avo = data.Avoidance;
-                Hands = data.Hands;
-                Speed = data.Speed;
-                Jump = data.Jump;
             }
         }
 

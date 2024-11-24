@@ -130,7 +130,7 @@ namespace WvsBeta.Game
                 bool isStar = Constants.isStar(reward.ItemID);
                 bool full = isStar && !chr.Inventory.HasSlotsFreeForItem(reward.ItemID, reward.Amount);
                 short amountLeft = 0;
-                if (!full) chr.Inventory.AddItem(drop.Reward.Data, out amountLeft, true, !isPet);
+                if (!full) chr.Inventory.AddItemOperations(drop.Reward.Data, out amountLeft, true, !isPet);
                 if (full || amountLeft == drop.Reward.Amount)
                 {
                     CannotLoot(chr, CannotLootDropReason.YouCantGetAnymoreItems);

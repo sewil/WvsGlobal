@@ -9,6 +9,7 @@ using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Game.Packets;
 using static WvsBeta.Common.Constants;
+using static WvsBeta.Game.GameInventory;
 
 namespace WvsBeta.Game
 {
@@ -33,17 +34,7 @@ namespace WvsBeta.Game
             UpdateChocoCount(false);
         }
 
-        public IList<OperationOut> AddItem(int itemId, short amount, bool sendOperations = true)
-        {
-            var item = Item.CreateFromItemID(itemId, amount);
-            return AddItem(item, out short _, sendOperations);
-        }
-        public IList<OperationOut> AddItem(ExchangeItem exchangeItem, bool sendOperations = true)
-        {
-            var item = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes, exchangeItem.variation);
-            return AddItem(item, out short _, sendOperations);
-        }
-        public override void AddItem(Common.Enums.InventoryType inventory, short slot, Item item, bool isLoading)
+        public override void AddItem(InventoryType inventory, short slot, Item item, bool isLoading)
         {
             base.AddItem(inventory, slot, item, isLoading);
 
@@ -100,7 +91,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public IList<OperationOut> AddItem(Item item, out short amountLeft, bool sendOperations = true, bool isSelf = true)
+        public IList<OperationOut> AddItemOperations(Item item, out short amountLeft, bool sendOperations = true, bool isSelf = true)
         {
             Common.Enums.InventoryType inventory = Constants.getInventory(item.ItemID);
             short freeSlot = 0;
@@ -215,10 +206,8 @@ namespace WvsBeta.Game
             {
                 var item = Item.CreateFromItemID(id);
                 item.Amount = thisAmount;
-                if (item is EquipItem)
-                    (item as EquipItem).GiveStats(ItemVariation.None);
                 givenAmount += thisAmount;
-                AddItem(item, out short amountLeft);
+                AddItemOperations(item, out short amountLeft);
                 if (amountLeft == 0 && amount > 0)
                 {
                     givenAmount += AddNewItem(id, amount);
@@ -406,7 +395,7 @@ namespace WvsBeta.Game
         /// <param name="amount">Amount</param>
         /// <param name="sendOperations">Send operations</param>
         /// <returns>Amount of items that were _not_ taken away</returns>
-        public IList<OperationOut> TakeItem(int itemid, short amount, bool sendOperations = true)
+        public IList<OperationOut> TakeItemOperations(int itemid, short amount, bool sendOperations = true)
         {
             var operations = new List<OperationOut>();
             if (amount == 0) return operations;
@@ -738,9 +727,9 @@ namespace WvsBeta.Game
             var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount)).ToList();
             return MassExchange(mesos, itemsList);
         }
-        public bool MassExchange(int mesos, IList<ExchangeItem> items)
+        public bool MassExchange(int mesos, IList<ExchangeItem> exchangeItems)
         {
-            if (!CanExchange(mesos, items)) return false;
+            if (!CanExchange(mesos, exchangeItems)) return false;
 
             AddMesos(mesos);
             if (mesos != 0)
@@ -748,24 +737,24 @@ namespace WvsBeta.Game
                 Character.SendPacket(MessagePacket.GainMesos(mesos));
             }
             var operations = new List<OperationOut>();
-            foreach(var item in items)
+            foreach(var exchangeItem in exchangeItems)
             {
-                short amount = item.amount;
-                int itemid = item.itemID;
+                short amount = exchangeItem.amount;
+                int itemid = exchangeItem.itemID;
                 if (amount < 0) // Take item
                 {
-                    operations.AddRange(TakeItem(itemid, (short)-amount, false));
+                    operations.AddRange(TakeItemOperations(itemid, (short)-amount, false));
                 }
                 else // Give item
                 {
-                    operations.AddRange(AddItem(item, false));
+                    var createdItem = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes, exchangeItem.variation);
+                    operations.AddRange(AddItemOperations(createdItem, out short _, false));
                 }
             }
             InventoryOperationPacket.Run(Character, false, operations.ToArray());
-            PlayerEffectPacket.SendInventoryChanged(Character, items);
+            PlayerEffectPacket.SendInventoryChanged(Character, exchangeItems);
             return true;
         }
-
         public class ExchangeItem
         {
             public int itemID;

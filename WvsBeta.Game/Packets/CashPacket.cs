@@ -224,7 +224,7 @@ namespace WvsBeta.Game
             if (used)
             {
                 ItemTransfer.ItemUsed(chr.ID, item.ItemID, 1, "");
-                chr.Inventory.TakeItem(item.ItemID, 1);
+                chr.Inventory.TakeItemOperations(item.ItemID, 1);
             }
             else
             {

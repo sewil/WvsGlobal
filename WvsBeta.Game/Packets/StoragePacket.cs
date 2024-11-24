@@ -73,7 +73,7 @@ namespace WvsBeta.Game
                         if (chr.Inventory.HasSlotsFreeForItem(item.ItemID, amount))
                         {
                             // AddItem2 will distribute stackable items
-                            chr.Inventory.AddItem(item, out short _);
+                            chr.Inventory.AddItemOperations(item, out short _);
                             chr.Storage.TakeItemOut(inventory, slot);
 
                             ItemTransfer.PlayerStorageWithdraw(chr.ID, chr.TrunkNPCID, item.ItemID, item.Amount, null, item);

@@ -57,7 +57,7 @@ namespace WvsBeta.Scripts
                     if (nRet != 0)
                     {
                         self.Say("Good deal! Hope you get some good EXP!");
-                        inventory.TakeItem(4031284, 1);
+                        inventory.TakeItemOperations(4031284, 1);
                         var exp = 0;
                         var rn1 = Rand32.NextBetween(1, 10000);
                         if (1 <= rn1 && rn1 <= 5000) exp = 100;

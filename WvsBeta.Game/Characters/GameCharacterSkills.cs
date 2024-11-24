@@ -103,7 +103,7 @@ namespace WvsBeta.Game
                 if (Character.AssertForHack(slotsAvailable < data.ItemAmountUsage,
                     "Player tried to use skill with item consumption. Not enough items to consume.")) return;
 
-                Character.Inventory.TakeItem(item, data.ItemAmountUsage);
+                Character.Inventory.TakeItemOperations(item, data.ItemAmountUsage);
                 ItemTransfer.PlayerUsedSkill(Character.ID, skillid, item, data.ItemAmountUsage);
             }
 

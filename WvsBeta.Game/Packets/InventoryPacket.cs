@@ -441,7 +441,7 @@ namespace WvsBeta.Game
                 map = data.MoveTo;
             }
 
-            chr.Inventory.TakeItem(itemid, 1);
+            chr.Inventory.TakeItemOperations(itemid, 1);
 
             chr.ChangeMap(map);
         }
@@ -497,7 +497,7 @@ namespace WvsBeta.Game
                 return;
             }
 
-            chr.Inventory.TakeItem(scroll.ItemID, 1);
+            chr.Inventory.TakeItemOperations(scroll.ItemID, 1);
             var chanceRoll = Rand32.Next() % 100;
 
             bool scrollSuccess = false;

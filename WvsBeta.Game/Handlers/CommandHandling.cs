@@ -2336,7 +2336,6 @@ namespace WvsBeta.Game.Handlers
 
                                         var dropItem = Item.CreateFromItemID(ItemID);
                                         dropItem.Amount = Amount;
-                                        if (dropItem is EquipItem) (dropItem as EquipItem).GiveStats(ItemVariation.None);
 
                                         character.Field.DropPool.Create(Reward.Create(dropItem), character.ID, 0, DropType.Normal, 0, new Pos(character.Position), character.Position.X, 0, false, true);
                                     }
@@ -2586,7 +2585,7 @@ namespace WvsBeta.Game.Handlers
                                     }
                                     else
                                     {
-                                        character.Inventory.AddItem(drop.Reward.Data, out short amountLeft);
+                                        character.Inventory.AddItemOperations(drop.Reward.Data, out short amountLeft);
                                         if (amountLeft == drop.Reward.Amount) continue;
                                     }
                                     if (drop.Reward.Mesos) character.SendPacket(MessagePacket.DropPickup(true, drop.Reward.Drop, 0));
