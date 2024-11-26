@@ -50,7 +50,8 @@ namespace WvsBeta.Center
 
         public int ID { get; set; }
         public MessengerMember Owner { get; set; }
-        public IList<MessengerMember> Members { get; } = new List<MessengerMember>(MAX_MEMBERS);
+        public MessengerMember[] Members { get; } = new MessengerMember[MAX_MEMBERS];
+        private int MemberCount => Members.Where(i => i != null).Count();
         public const int MAX_MEMBERS = 3;
 
         public Messenger(MessengerMember pOwner)
@@ -67,9 +68,11 @@ namespace WvsBeta.Center
             foreach (var messenger in Messengers)
             {
                 messenger.Owner.Encode(pw);
-                pw.WriteByte((byte)messenger.Members.Count);
-                foreach (var member in messenger.Members)
+                for (byte slot = 0; slot < MAX_MEMBERS; slot++)
                 {
+                    var member = messenger.Members[slot];
+                    pw.WriteBool(member == null);
+                    if (member == null) continue;
                     member.Encode(pw);
                 }
             }
@@ -85,11 +88,13 @@ namespace WvsBeta.Center
                 if (owner.Character == null) continue;
                 var messenger = new Messenger(owner);
 
-                for (int j = 0; j < pr.ReadByte(); j++)
+                for (byte slot = 0; slot < MAX_MEMBERS; slot++)
                 {
+                    var isNull = pr.ReadBool();
+                    if (isNull) continue;
                     var member = MessengerMember.Decode(pr);
                     if (member.Character == null) continue;
-                    messenger.AddMember(member);
+                    messenger.AddMember(member, slot);
                 }
             }
         }
@@ -153,6 +158,7 @@ namespace WvsBeta.Center
 
             foreach (var member in messenger.Members)
             {
+                if (member == null) continue;
                 if (member.Character.ID != chr.ID) empty = false;
                 member.Character.SendPacket(MessengerPacket.Leave(slot));
             }
@@ -167,18 +173,13 @@ namespace WvsBeta.Center
             }
         }
 
-        private int usersInChat()
-        {
-            return Members.Count(e => e != null); // Max was here
-        }
-
-        public static void SendInvite(int senderID, String recipientName)
+        public static void SendInvite(int senderID, string recipientName)
         {
             CenterCharacter recipient = CenterServer.Instance.FindCharacter(recipientName);
             CenterCharacter sender = CenterServer.Instance.FindCharacter(senderID);
             Messenger messenger = sender.Messenger;
 
-            if (sender == null || messenger == null || messenger.usersInChat() >= MAX_MEMBERS)
+            if (sender == null || messenger == null || messenger.MemberCount >= MAX_MEMBERS)
             {
                 return;
             }
@@ -216,14 +217,20 @@ namespace WvsBeta.Center
             return member;
         }
 
+        public bool AddMember(MessengerMember member, byte slot)
+        {
+            if (Members[slot] != null) return false;
+            Members[slot] = member;
+            member.Character.Messenger = this;
+            member.Character.MessengerSlot = slot;
+            return true;
+        }
         public bool AddMember(MessengerMember member)
         {
-            if (Members.Count < MAX_MEMBERS)
+            for (byte slot = 0; slot < MAX_MEMBERS; slot++)
             {
-                member.Character.Messenger = this;
-                Members.Add(member);
-                member.Character.MessengerSlot = (byte)(Members.Count - 1);
-                return true;
+                if (AddMember(member, slot))
+                    return true;
             }
             return false;
         }
