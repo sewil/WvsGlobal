@@ -521,6 +521,7 @@ namespace WvsBeta.Game
                 equip.Speed += scrollData.IncSpeed;
                 equip.Scrolls++;
                 equip.Slots--;
+                chr.PrimaryStats.UpdateEquipStats((sbyte)itemslot, equip, false);
 
                 scrollSuccess = true;
 

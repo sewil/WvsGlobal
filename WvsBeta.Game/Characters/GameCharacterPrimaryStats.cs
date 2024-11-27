@@ -93,7 +93,7 @@ namespace WvsBeta.Game
             BuffDragonBlood = new BuffStat_DragonBlood(Common.Enums.BuffValueTypes.DragonBlood, Char);
         }
 
-        public override void AddEquipStats(sbyte slot, EquipItem equip, bool isLoading)
+        public override void UpdateEquipStats(sbyte slot, EquipItem equip, bool isLoading)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace WvsBeta.Game
                 {
                     EquipStats.Remove(realSlot);
                 }
-                CalculateAdditions(true, isLoading);
+                UpdateEquipBonuses(true, isLoading);
             }
             catch (Exception ex)
             {
@@ -136,7 +136,7 @@ namespace WvsBeta.Game
             }
         }
 
-        public override void CalculateAdditions(bool updateEquips, bool isLoading)
+        public override void UpdateEquipBonuses(bool updateEquips, bool isLoading)
         {
             if (updateEquips)
             {

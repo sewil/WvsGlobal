@@ -176,7 +176,7 @@ namespace WvsBeta.Game
             }
 
             if (deductAp) chr.AddAP(-1, true);
-            chr.PrimaryStats.CalculateAdditions(false, false);
+            chr.PrimaryStats.UpdateEquipBonuses(false, false);
         }
 
         public static void HandleAPReset(GameCharacter chr, StatFlags up, StatFlags down)

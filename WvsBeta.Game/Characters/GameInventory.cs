@@ -41,7 +41,7 @@ namespace WvsBeta.Game
             if (slot < 0 && item is EquipItem equipItem)
             {
                 slot = Math.Abs(slot);
-                Character.PrimaryStats.AddEquipStats((sbyte)slot, equipItem, isLoading);
+                Character.PrimaryStats.UpdateEquipStats((sbyte)slot, equipItem, isLoading);
             }
 
             if (!isLoading)
@@ -55,7 +55,7 @@ namespace WvsBeta.Game
             {
                 if (slot < 0 && Math.Abs(slot) <= 100)
                 {
-                    Character.PrimaryStats.AddEquipStats((sbyte)slot, item as EquipItem, false);
+                    Character.PrimaryStats.UpdateEquipStats((sbyte)slot, item as EquipItem, false);
                 }
                 UpdateChocoCount();
             }

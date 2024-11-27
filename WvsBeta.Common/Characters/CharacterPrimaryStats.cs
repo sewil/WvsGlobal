@@ -87,12 +87,12 @@ namespace WvsBeta.Common.Characters
             return CharacterStat.MaxMP;
         }
         public virtual void Reset(bool sendPacket) { throw new NotImplementedException(); }
-        public virtual void AddEquipStats(sbyte slot, EquipItem equip, bool isLoading)
+        public virtual void UpdateEquipStats(sbyte slot, EquipItem equip, bool isLoading)
         {
             throw new NotImplementedException();
         }
 
-        public virtual void CalculateAdditions(bool updateEquips, bool isLoading)
+        public virtual void UpdateEquipBonuses(bool updateEquips, bool isLoading)
         {
             throw new NotImplementedException();
         }
