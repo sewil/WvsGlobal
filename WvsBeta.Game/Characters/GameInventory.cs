@@ -682,18 +682,21 @@ namespace WvsBeta.Game
                 bool canExchangeMesos = 0 <= newM && newM <= int.MaxValue;
                 if (!canExchangeMesos) return false;
             }
-            foreach (var item in items)
+            if (items != null)
             {
-                short amount = item.amount;
-                int itemid = item.itemID;
-                if (amount == 0) continue;
-                if (amount < 0 && !HasItemAmount(itemid, Math.Abs(amount))) // Take item
+                foreach (var item in items)
                 {
-                    return false;
-                }
-                else if (amount > 0 && !HasSlotsFreeForItem(itemid, amount)) // Give item
-                {
-                    return false;
+                    short amount = item.amount;
+                    int itemid = item.itemID;
+                    if (amount == 0) continue;
+                    if (amount < 0 && !HasItemAmount(itemid, Math.Abs(amount))) // Take item
+                    {
+                        return false;
+                    }
+                    else if (amount > 0 && !HasSlotsFreeForItem(itemid, amount)) // Give item
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -727,32 +730,40 @@ namespace WvsBeta.Game
             var itemsList = items.Select(i => new ExchangeItem(i.itemid, i.amount)).ToList();
             return MassExchange(mesos, itemsList);
         }
-        public bool MassExchange(int mesos, IList<ExchangeItem> exchangeItems)
+        public bool MassExchange(int mesos, IList<ExchangeItem> exchangeItems, MessageAppearType appearType = MessageAppearType.ChatGrey)
         {
             if (!CanExchange(mesos, exchangeItems)) return false;
 
             AddMesos(mesos);
             if (mesos != 0)
             {
-                Character.SendPacket(MessagePacket.GainMesos(mesos));
+                if (appearType == MessageAppearType.SideWhite)
+                    Character.SendPacket(MessagePacket.DropPickup(true, mesos, 0));
+                else if (appearType == MessageAppearType.ChatGrey)
+                    Character.SendPacket(MessagePacket.GainMesos(mesos));
+
             }
-            var operations = new List<OperationOut>();
-            foreach(var exchangeItem in exchangeItems)
+            if (exchangeItems != null)
             {
-                short amount = exchangeItem.amount;
-                int itemid = exchangeItem.itemID;
-                if (amount < 0) // Take item
+                var operations = new List<OperationOut>();
+                foreach(var exchangeItem in exchangeItems)
                 {
-                    operations.AddRange(TakeItemOperations(itemid, (short)-amount, false));
+                    short amount = exchangeItem.amount;
+                    int itemid = exchangeItem.itemID;
+                    if (amount < 0) // Take item
+                    {
+                        operations.AddRange(TakeItemOperations(itemid, (short)-amount, false));
+                    }
+                    else // Give item
+                    {
+                        var createdItem = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes, exchangeItem.variation);
+                        operations.AddRange(AddItemOperations(createdItem, out short _, false));
+                    }
                 }
-                else // Give item
-                {
-                    var createdItem = Item.CreateFromItemID(exchangeItem.itemID, exchangeItem.amount, exchangeItem.periodMinutes, exchangeItem.variation);
-                    operations.AddRange(AddItemOperations(createdItem, out short _, false));
-                }
+                InventoryOperationPacket.Run(Character, false, operations.ToArray());
+                if (appearType == MessageAppearType.ChatGrey)
+                    PlayerEffectPacket.SendInventoryChanged(Character, exchangeItems);
             }
-            InventoryOperationPacket.Run(Character, false, operations.ToArray());
-            PlayerEffectPacket.SendInventoryChanged(Character, exchangeItems);
             return true;
         }
         public class ExchangeItem

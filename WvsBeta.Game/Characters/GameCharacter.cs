@@ -686,11 +686,7 @@ namespace WvsBeta.Game
         }
         public bool IncMoney(int inc, MessageAppearType appearType = MessageAppearType.None)
         {
-            if (!Inventory.CanExchange(inc)) return false;
-            if (appearType == MessageAppearType.ChatGrey) MessagePacket.GainMesos(inc);
-            else if (appearType == MessageAppearType.SideWhite) MessagePacket.DropPickup(true, inc, 0);
-            Inventory.AddMesos(inc, false);
-            return true;
+            return Inventory.MassExchange(inc, null, appearType);
         }
         public void IncPOP(short inc, int isSelf)
         {
