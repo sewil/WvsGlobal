@@ -369,6 +369,7 @@ namespace WvsBeta.Game.Handlers
             { "snowballhelp", new CommandData("/snowballhelp", "Display the Snowball event help menu.") },
             { "fitnesshelp", new CommandData("/fitnesshelp", "Display the Fitness event help menu.") },
             { "quizhelp", new CommandData("/quizhelp", "Display the Quiz event help menu.") },
+            { "questremove", new CommandData("/questremove <qid>", "Remove a quest from your quest log (Set it as available).") },
         };
         static Dictionary<string, CommandData> adminCommands = new Dictionary<string, CommandData>
         {
@@ -1374,6 +1375,22 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 #endregion
+
+                        case "questremove":
+                            {
+                                if (Args.Count < 2)
+                                    character.Message(GetUsage(Args));
+                                else if (!short.TryParse(Args[0], out short qid) || DataProvider.Quests.ContainsKey(qid))
+                                    character.Message("Invalid quest id!");
+                                else if (!character.Quests.GetQuests().ContainsKey(qid))
+                                    character.Message("You don't have that quest!");
+                                else
+                                {
+                                    character.Quests.RemoveQuest(qid);
+                                    character.Message("Quest removed!");
+                                }
+                                return true;
+                            }
                     }
                 }
 
