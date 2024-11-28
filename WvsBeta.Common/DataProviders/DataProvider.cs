@@ -232,6 +232,92 @@ namespace WvsBeta.Common.DataProviders
             }, x => x.ID, x => x);
         }
 
+        private static NXNode ReadItemString(int itemID)
+        {
+            var inventory = Constants.getInventory(itemID);
+            var itemType = Constants.getItemType(itemID);
+            string itemCat = null;
+            switch (inventory)
+            {
+                case InventoryType.Equip:
+                    itemCat = "Eqp";
+                    switch (itemType)
+                    {
+                        case 101:
+                            itemCat += "/Accessory";
+                            break;
+                        case 100:
+                            itemCat += "/Cap";
+                            break;
+                        case 110:
+                            itemCat += "/Cape";
+                            break;
+                        case 104:
+                            itemCat += "/Coat";
+                            break;
+                        case 200:
+                            itemCat += "/Face";
+                            break;
+                        case 108:
+                            itemCat += "/Glove";
+                            break;
+                        case 300:
+                            itemCat += "/Hair";
+                            break;
+                        case 105:
+                            itemCat += "/Longcoat";
+                            break;
+                        case 106:
+                            itemCat += "/Pants";
+                            break;
+                        case 180:
+                            itemCat += "/PetEquip";
+                            break;
+                        case 111:
+                            itemCat += "/Ring";
+                            break;
+                        case 109:
+                            itemCat += "/Shield";
+                            break;
+                        case 107:
+                            itemCat += "/Shoes";
+                            break;
+                        case 130:
+                            itemCat += "/Weapon";
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case InventoryType.Use:
+                    itemCat = "Con";
+                    break;
+                case InventoryType.Setup:
+                    itemCat = "Ins";
+                    break;
+                case InventoryType.Etc:
+                    itemCat = "Etc";
+                    break;
+                case InventoryType.Cash:
+                    if (itemType == 500)
+                        itemCat = "Pet";
+                    else
+                        itemCat = "Cash";
+                    break;
+                default:
+                    return null;
+            }
+            try
+            {
+                NXNode stringNode = pClientFile.ResolvePath(string.Format("String/Item.img/{0}/{1}", itemCat, itemID));
+                return stringNode;
+            }
+            catch
+            {
+                Console.WriteLine("Missing strings for item {0}", itemID);
+                return null;
+            }
+        }
         protected static void ReadItems()
         {
             var items =
@@ -247,6 +333,8 @@ namespace WvsBeta.Common.DataProviders
                 ItemData item = new ItemData();
                 int ID = (int)Utils.ConvertNameToID(iNode.Name);
                 item.ID = ID;
+
+                NXNode itemString = ReadItemString(ID);
 
                 if (iNode.ContainsChild("info"))
                 {

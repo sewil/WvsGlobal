@@ -183,11 +183,21 @@ namespace WvsBeta.Game
                         // Add quest items and check non-existing items
                         foreach (var questItem in questStage.Value.Check.Items)
                         {
-                            if (!Items.TryGetValue(questItem.Key, out ItemData itemData))
+                            bool isEquip = Constants.isEquip(questItem.Key);
+                            bool isQuestItem = false;
+                            if (isEquip && Equips.TryGetValue(questItem.Key, out EquipData equipData))
                             {
-                                Program.MainForm.LogAppend("Unknown item {0} in quest {1} (stage {2})!", questItem.Key, quest.Key, (byte)questStage.Key);
+                                isQuestItem = equipData.IsQuest;
                             }
-                            else if (itemData.IsQuest)
+                            else if (!isEquip && Items.TryGetValue(questItem.Key, out ItemData itemData))
+                            {
+                                isQuestItem = itemData.IsQuest;
+                            }
+                            else
+                            {
+                                Program.MainForm.LogAppend("Unknown {3} {0} in quest {1} (stage {2})!", questItem.Key, quest.Key, (byte)questStage.Key, isEquip ? "equip" : "item");
+                            }
+                            if (isQuestItem)
                             {
                                 QuestItems.SafeAdd(questItem.Key, quest.Key);
                             }
