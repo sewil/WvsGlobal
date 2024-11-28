@@ -864,6 +864,11 @@ namespace WvsBeta.Game
             Quests = new Dictionary<short, WZQuestData>();
             foreach (var cQuest in pClientFile.ResolvePath("Quest/Check.img"))
             {
+                // Ensure connected nodes exist
+                pClientFile.ResolvePath($"Quest/Act.img/{cQuest.Name}");
+                pClientFile.ResolvePath($"Quest/QuestInfo.img/{cQuest.Name}");
+                pClientFile.ResolvePath($"Quest/Say.img/{cQuest.Name}");
+
                 WZQuestData qd = new WZQuestData(pClientFile, cQuest);
                 Quests.Add(qd.QuestID, qd);
             }
@@ -1192,7 +1197,7 @@ namespace WvsBeta.Game
                                 }
 
                             default:
-                                Console.WriteLine($"Unhandled skill level node {nxNode.Name} for id {SkillID}");
+                                Console.WriteLine($"Unhandled skill level node {nxNode.Name} for id {SkillID} (level {sld.Level})");
                                 break;
                         }
                     }
