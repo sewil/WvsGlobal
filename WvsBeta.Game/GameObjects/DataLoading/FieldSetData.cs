@@ -112,7 +112,8 @@ namespace WvsBeta.Game.GameObjects.DataLoading
                             if (int.TryParse(subNode.Name, out int mapIdx))
                             {
                                 int mapID = subNode.ValueInt32();
-                                if (!GameDataProvider.Maps.TryGetValue(mapID, out Map map)) throw new ControlledException("Map " + mapID + " not found in FieldSet " + Name);
+                                if (!GameDataProvider.Maps.TryGetValue(mapID, out Map map))
+                                    throw new ControlledException("Map " + mapID + " not found");
                                 maps[mapIdx] = map;
                             }
                         }

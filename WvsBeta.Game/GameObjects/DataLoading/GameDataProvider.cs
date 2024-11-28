@@ -176,15 +176,37 @@ namespace WvsBeta.Game
                     }
                 }
 
-                // Add quest items
                 foreach (var quest in Quests)
                 {
                     foreach (var questStage in quest.Value.Stages)
                     {
+                        // Add quest items and check non-existing items
                         foreach (var questItem in questStage.Value.Check.Items)
                         {
-                            if (!Items.TryGetValue(questItem.Key, out ItemData itemData) || !itemData.IsQuest) continue;
-                            QuestItems.SafeAdd(questItem.Key, quest.Key);
+                            if (!Items.TryGetValue(questItem.Key, out ItemData itemData))
+                            {
+                                Program.MainForm.LogAppend("Unknown item {0} in quest {1} (stage {2})!", questItem.Key, quest.Key, (byte)questStage.Key);
+                            }
+                            else if (itemData.IsQuest)
+                            {
+                                QuestItems.SafeAdd(questItem.Key, quest.Key);
+                            }
+                        }
+
+                        // Check non-existing NPCs
+                        int npcID = questStage.Value.Check.NpcID;
+                        if (npcID != 0 && !NPCs.ContainsKey(npcID))
+                        {
+                            Program.MainForm.LogAppend("Unknown NPC {0} in quest {1} (stage {2})!", npcID, quest.Key, (byte)questStage.Key);
+                        }
+
+                        // Check non-existing quest triggers
+                        foreach (var trigger in questStage.Value.Check.Quests)
+                        {
+                            if (!Quests.ContainsKey(trigger.QuestID))
+                            {
+                                Program.MainForm.LogAppend("Unknown quest reference {0} in quest {1} (stage {2})!", trigger.QuestID, quest.Key, (byte)questStage.Key);
+                            }
                         }
                     }
                 }
@@ -705,7 +727,7 @@ namespace WvsBeta.Game
                 }
                 catch (ControlledException e)
                 {
-                    Program.MainForm.LogAppend($"Field set error: {e.Message}");
+                    Program.MainForm.LogAppend("Field set {0} not loaded due to error: {1}", pNode.Name, e.Message);
                 }
             }
         }
