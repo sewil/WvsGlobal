@@ -5759,6 +5759,50 @@
       </imgdir>
     </imgdir>
   </imgdir>
+  <imgdir name="8829">
+    <imgdir name="0">
+      <string name="0" value="Greetings, traveler. My name is Hannah and I'm currently organizing a Festival of Lights for the Holidays. If you could help me out, I'd greatly appreciate it!" />
+      <imgdir name="no">
+        <string name="0" value="Truly a shame, I suppose that I will have to find another good soul to assist me...Fare thee well!" />
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="Excellent. I'd like to build an altar for the festival, so we'll need 25 Altar Pieces. Some others attempted to help me, but their axes got stuck in the wood. Fighting those monsters should give you the needed pieces. Thank you and hurry back!" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="0" value="Wonderful! These should be enough pieces to build the Altar. Thanks for your help! I've got one other thing for you when you get a chance..." />
+      <imgdir name="stop">
+        <imgdir name="item">
+          <string name="0" value="Oh my, it looks like you don't have enough pieces to build the altar yet. Be sure to hurry back when you do!" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="Ok, I'll start building the Altar. In the meantime, I'll need you to gather 9 Sabbath Candles so we can officially start the festival. They can be found on those strange horned mushroom creatures. " />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="8830">
+    <imgdir name="0">
+      <string name="0" value="I'll start building the Altar. In the meantime, I'll need you to gather 9 Sabbath Candles so we can officially start the festival. If you could help me out, I'd greatly appreciate it! " />
+      <imgdir name="no">
+        <string name="0" value="Alright. I still need your help, though, so be sure to come back!" />
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="Glad to hear it. Ok, They can be found on those strange horned mushroom creatures. Come back here when you've got 9!" />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="0" value="Great job! I think these candles will be enough to being the Festival of Lights! Thanks for your hard work, please take this present as a token of my appreciation." />
+      <imgdir name="stop">
+        <imgdir name="item">
+          <string name="0" value="Ah, you've returned...with not enough candles, I see. I'll need 9 to start the Festival. See you when you get them!" />
+        </imgdir>
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="Thanks again! If you want to open this present box, then would you like me to help you open up the present?" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
   <imgdir name="8843">
     <imgdir name="0">
       <string name="0" value="No one knows what's inside this Hanukkah Present Box. Would you like to find out for yourself?" />
@@ -5869,6 +5913,79 @@
       </imgdir>
       <imgdir name="yes">
         <string name="0" value="Tada! Isn't it pretty? Take a look! #bYour name#k is inscribed on #t4140200#. This will protect the owner of #t4140200# for #b5 days#k. Oh, and I also made a chocolate out of leftovers, so please take it. Have a lovely Valentine's Day with your special someone!" />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="9391">
+    <imgdir name="0">
+      <string name="0" value="안녕하세요? 저는 올해도 어김없이 찾아온 어린이날 준비로 정신이 없답니다. 어린이날 선물로 메이플 월드의 어린이들을 아쿠아리움 동물원으로 초대하려고 하는데 그만 초대권을 잃어버린 아이들이 있다고 하네요. 저는 여러가지 준비로 분주해서 초대권을 다시 가져다 줄 시간이 없는데, 저 대신 #b#t04031301##k을 구해서 어린이에게 가져다 주시지 않으시겠어요? " />
+      <imgdir name="no">
+        <string name="0" value="#b#t04031301##k을 잃어버리고 풀이 죽어있는 아이가 너무 불쌍해요." />
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="정말 감사드립니다. 초대권을 잃어버린 아이는 커닝시티에서 살고 있는 #b#p1052106##k입니다. #b#p1052106##k가 #b#t04031301##k을 잃어버린 곳은 근처 사냥터라고 알려주었습니다. 근처 사냥터에서 #b#t04031301##k 1개를 구해서 커닝시티에서 살고 있는 #b#p1052106##k에게 가져다 주시기 바랍니다. 그럼 부탁드릴께요." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="0" value="어린이날 선물로 받은 #b#t04031301##k을 잃어버리다니.. 저는 혼자 이 곳을 지켜야 할 것 같아요 .. 아니, 그건 #b#t04031301##k이 아닌가요? 저에게 주시지 않으시겠어요? 그럼 저도 동물원에 갈 수 있을 텐데.." />
+      <imgdir name="stop">
+        <imgdir name="item">
+          <string name="0" value="#b#t04031301##k 1개가 있어야 동물원에 갈수 있을텐데.." />
+        </imgdir>
+        <imgdir name="npc">
+          <string name="0" value="#b#t04031301##k을 구해서 커닝시티의 #b#p1052106##k에게 가져다 주세요." />
+        </imgdir>
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="와 정말 감사해요. 그런데 같이 갈 친구가 없어서 걱정이에요. 실은 제 친구와 함께 동물원에 가기로 했는데. 친구도 #b#t04031301##k을 잃어버렸거든요. 제 친구에게도 도움을 주시지 않으시겠어요? 그렇다면 저에게 다시 말을 걸어주세요." />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="9392">
+    <imgdir name="0">
+      <string name="0" value="어쩌죠.. 동물원에 함께 갈 친구가 없어요. 제 친구도 #b#t04031304##k을 잃어버렸거든요.. 제가 친구와 함께 동물원에 갈 수 있도록 도와주시지 않겠어요?" />
+      <imgdir name="no">
+        <string name="0" value="#b#p1022101##k와 함께 꼭 아쿠아리움 동물원에 가고 싶었는데.." />
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="정말 감사드려요. 제 친구는 엘리니아 북쪽 숲 어딘가에 살고 있는 #b#p1061004##k에요.. 근처 사냥터에서 #b#t04031304##k 1개를 구해서 엘리니아의 제 친구 #b#p1061004##k에게 가져다 주세요. 그럼 부탁드려요." />
+      </imgdir>
+    </imgdir>
+    <imgdir name="1">
+      <string name="0" value="#b#p1052106##k와 함께 동물원에 가기로 약속했는데.. 그만 #b#t04031304##k을 잃어버리고 말았어요.. 어쩌죠... 뭐라구요? 그게 정말이신가요? 저에게 #b#t04031304##k을 주신다니 정말 감사드려요." />
+      <imgdir name="stop">
+        <imgdir name="item">
+          <string name="0" value="#b#t04031304##k 1개가 있어야 동물원에 갈수 있을 텐데.." />
+        </imgdir>
+        <imgdir name="npc">
+          <string name="0" value="#b#t04031304##k을 찾아서 엘리니아 북쪽 숲 어딘가에 살고 있는 #b#p1061004##k에게 가져다 주세요." />
+        </imgdir>
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="드디어 저도 #b#p1052106##k와 함께 동물원에 갈 수 있겠어요. 어서 #b#p1052106##k를 만나러 가야겠어요. 참 동물원에 초대해주신 #b#p9010000##k님께 감사의 뜻을 전하고 싶은데.. 저 대신 #b#p9010000##k님을 찾아서 감사의 뜻을 전해주세요. 그럼 부탁드릴께요." />
+      </imgdir>
+    </imgdir>
+  </imgdir>
+  <imgdir name="9393">
+    <imgdir name="0">
+      <string name="0" value="안녕하세요? 또 뵙게 되어서 너무 반가워요. 아니 #b#p1061004##k가 저에게 감사의 인사를 전해달라고 했다구요? 인사를 받으려고 했던건 아닌데.. #b#p1061004##k가 기뻐했다니 정말 좋네요.. 여행자님도 기쁘시죠? " />
+      <imgdir name="no">
+        <string name="0" value="어린이들이 다치기라도 하면 큰일인데.." />
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="정말 감사합니다. 여행자님께서 도와주신다니 이제 걱정이 없겠네요.여행자님께서 퇴치해야 할 몬스터는  #b#o0130101##k 40마리, #b#o0210100##k 30마리, #b#o0130100##k 20마리 입니다. 그럼 부디 꼭 몬스터들을 물리치고 무사히 저를 찾아와주세요." />
+      </imgdir>
+      <string name="1" value="이 세상 모든 어린이들이 즐겁길 바라는데, 요즘 몬스터들이 어린이들을 괴롭힌다는 소식이 있어 걱정이랍니다. 저는 어린이날 준비로 정신이 없는데, 저 대신 어린이들을 괴롭히는 몬스터들을 물리쳐 주시지 않으시겠어요?" />
+    </imgdir>
+    <imgdir name="1">
+      <string name="0" value="드디어 몬스터들을 전부다 퇴치 하셨다구요? 휴 ~ 정말 수고 많으셨어요..이제 어린이들이 맘놓고 여행을 다닐 수 있겠어요. 어린이들을 위해 도움을 주셔서 너무 감사 드리며 감사의 선물을 준비했습니다." />
+      <imgdir name="stop">
+        <imgdir name="mob">
+          <string name="0" value="여행자님께서 퇴치해야 할 몬스터는  #b#o0130101##k 40마리, #b#o0210100##k 30마리, #b#o0130100##k 20마리 입니다.  어린이들을 괴롭히는 몬스터들을 물리쳐 주세요." />
+        </imgdir>
+      </imgdir>
+      <imgdir name="yes">
+        <string name="0" value="#b#t04140103##k는 여행자님께서 남들을 잘 돕는 분이라는 것을 증명하는 문서입니다. 또한 #b#t04140103##k는 호신부적과 같이 캐릭터가 죽었을 때 자동으로 사용되며, 대신 경험치가 떨어지지 않는 신비한 기능이 있습니다. 그럼 부디 유용하게 사용하시기 바라며, 앞으로도 꼭 어려운 사람을 돕고 , 남을 먼저 배려하는 착한 마음으로 여행하시기 바랍니다. " />
       </imgdir>
     </imgdir>
   </imgdir>

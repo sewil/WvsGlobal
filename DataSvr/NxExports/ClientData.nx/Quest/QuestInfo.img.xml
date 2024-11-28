@@ -2101,6 +2101,24 @@
     <string name="name" value="Nanuke and the Chair" />
     <string name="1" value="Nanuke and his huskies greeted me with open arms. He proceeded to give me a resting chair as a way of celebrating the summer. Pretty ironic, considering he lives in perhaps the coldest place in MapleStory. Anyway, I should sit on this chair and relax for a bit..." />
   </imgdir>
+  <imgdir name="8829">
+    <string name="0" value="Hmm, that woman looks like she's preparing some sort of celebration... I should check it out." />
+    <int name="area" value="1" />
+    <string name="name" value="Festival of Lights - Building the Altar" />
+    <int name="order" value="1" />
+    <string name="parent" value="Festival of Lights" />
+    <string name="1" value="I spoke with Hannah, and she's preparing a Festival of Lights. I've agreed to help her build the Altar by gathering 25 Altar Pieces. She mentioned that the monsters would already have an axe stuck in them, so I should hunt those." />
+    <string name="2" value="I collected the 25 Altar Pieces and returned to Hannah. She was happy, and began building the Altar. She also mentioned that I could come back for more work when I have a chance" />
+  </imgdir>
+  <imgdir name="8830">
+    <string name="0" value="I promised Hannah I'd return to her once I was rested up. I should head back soon." />
+    <int name="area" value="1" />
+    <string name="name" value="Festival of Lights - Blessing the Festival " />
+    <int name="order" value="2" />
+    <string name="parent" value="Festival of Lights" />
+    <string name="1" value="Upon my return, Hannah was joyous, having finished the Altar. She now needs candles to signal the start of the ceremony. I'll have to get 9 candles (she mentioned Horned Mushrooms) and bring them back so the Festival of Lights can begin. " />
+    <string name="2" value="I acquired the nine candles and gave them to Hannah. The Festival of Lights has begun!" />
+  </imgdir>
   <imgdir name="8843">
     <string name="0" value="Now that I have the Hanukkah Present Box, I'll need to get this opened to see what's inside. Better go talk to Hannah." />
     <int name="area" value="1" />
@@ -2137,6 +2155,27 @@
     <string name="name" value="Valentine Day : Chocolate Basket" />
     <string name="1" value="[#p2041017#] said with #t4140100# and additional materials, he can make a #b#t4140200##k that expires at a later date. Apparently, it's good for #r5 days#k, longer than that of #t4140100#.\n\n#t4140100# #c4140100# / #r1#k\n#t4031110# #c4031110# / #r1#k\n#t4031109# #c4031110# / #r1#k\n#t4031113# #c4031113# / #r1#k\n#t4031114# #c4031114# / #r1#k" />
     <string name="2" value="I was able to make a chocolate basket for the person I dearly love for the Valentine's Day through [#p2041017#]." />
+  </imgdir>
+  <imgdir name="9391">
+    <string name="0" value="올해도 어김없이 어린이날이 돌아왔다. #b#p9010000##k는 어린이날 준비로 정신이 없다고 한다. 일손이 많이 부족 할 것 같은데 #b#p9010000##k를 찾아가보자." />
+    <int name="area" value="1" />
+    <string name="name" value="이카루스의 잃어버린 초대권" />
+    <string name="1" value="#b#t04031301##k을 구해서 커닝시티의 #b#p1052106##k에게 가져다주자. \n\n#b#t04031301:# #k#c04031301#/1#k" />
+    <string name="2" value="#b#p1052106##k가 잃어버린 #b#t04031301##k을 찾아주었다." />
+  </imgdir>
+  <imgdir name="9392">
+    <string name="0" value="#b#p1052106##k는 동물원에 함께갈 친구가 없다고 했다. #b#p1052106##k가 친구와 함께 동물원에 가는 것을 도와주자." />
+    <int name="area" value="1" />
+    <string name="name" value="로니의 잃어버린 초대권" />
+    <string name="1" value="#b#t04031304##k을 찾아서 엘리니아 북쪽 숲 어딘가에 살고 있는 #b#p1061004##k에게 가져다 주자. \n\n#b#t04031304:# #k#c04031304#/1#k" />
+    <string name="2" value="#b#p1061004##k가 어린이날을 맞아 아쿠아리움 동물원에 갈 수 있게 도와주었다. " />
+  </imgdir>
+  <imgdir name="9393">
+    <string name="0" value="#b#p9010000##k는 어린이날 준비로 매우 분주하다고 한다. 도움이 필요할 것만 같은데.. #b#p9010000##k를 찾아가보자." />
+    <int name="area" value="1" />
+    <string name="name" value="어린이들을 위한 몬스터 퇴치" />
+    <string name="1" value="메이플 월드를 여행하는 어린이들을 괴롭히는 몬스터들을 물리쳐 달라고 했다.\n\n#o0130101# #r#a93933##k \n#o0210100# #r#a93931##k\n#o0130100# #r#a93932##k " />
+    <string name="2" value="#b#p9010000##k의 부탁을 들어 주고 #b#t4140103##k를 받았다." />
   </imgdir>
   <imgdir name="9394">
     <string name="0" value="얼마 전 #b#p1061004##k가 잃어버린 아쿠아리움 초대권을 찾아준 적이 있는데 #b#p1061004##k는 #b#p9010000##k님께 감사의 뜻을 전해 달라고 했었다. #b#p9010000##k를 찾아가 보자." />

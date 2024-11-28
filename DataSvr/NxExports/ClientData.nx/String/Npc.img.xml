@@ -1994,6 +1994,13 @@
     <string name="s0" value="Some strange things have been happening here lately." />
     <string name="s1" value="Hopefully all of the men that have gone to the bottom of the ocean return safely." />
   </imgdir>
+  <imgdir name="2071007">
+    <string name="d0" value="낚시하러 간다고 바다로 나가더니 별 일 없는지 모르겠네..." />
+    <string name="d1" value="나중에 항아리가 필요하면 나를 찾아와요~" />
+    <string name="n0" value="내가 만든 항아리는 어떤 음식을 담아두어도 쉬 상하지 않는답니다." />
+    <string name="n1" value="우리집 영감은 늘 바다에 나가 명상을 하며 낚시를 한답니다.." />
+    <string name="name" value="연이 할머니" />
+  </imgdir>
   <imgdir name="9000000">
     <string name="n0" value="Where's my brother...?" />
     <string name="n1" value="I need to get to where the event takes place..." />
@@ -2412,6 +2419,13 @@
     <string name="n0" value="I've got a new plan for Easter this year. Talk to me..." />
     <string name="n1" value="Find a Golden Egg? Let's talk..." />
     <string name="name" value="Mad Bunny" />
+  </imgdir>
+  <imgdir name="9201031">
+    <string name="d0" value="I have to get ready for the Festival of Lights! I just need some help with preparations!" />
+    <string name="d1" value="I've started building the Altar. If you would like to help me with the final preparations for the ceremony, please let me know. " />
+    <string name="n0" value="I have to get ready for the Festival of Lights! I just need some help with preparations!" />
+    <string name="n1" value="Well, hello there! I've started building the Altar. If you would like to help me with the final preparations for the ceremony, please let me know. " />
+    <string name="name" value="Hannah" />
   </imgdir>
   <imgdir name="9201038">
     <string name="d0" value="I miss my wife, but I can't stop working. " />
