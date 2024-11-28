@@ -10,11 +10,14 @@ namespace WvsBeta.Common.Objects
 {
     public class WZQuestData
     {
+        public WZQuestInfo QuestInfo { get; private set; }
         public short QuestID { get; private set; }
         public IDictionary<QuestStage, WZQuestStage> Stages { get; private set; } = new Dictionary<QuestStage, WZQuestStage>();
         public WZQuestData(NXFile pFile, NXNode checkNode)
         {
             short qid = short.Parse(checkNode.Name);
+            NXNode questInfoNode = pFile.ResolvePath($"Quest/QuestInfo.img/{qid}");
+            QuestInfo = new WZQuestInfo(questInfoNode);
             foreach (NXNode cStage in checkNode)
             {
                 NXNode aStage = pFile.ResolvePath($"Quest/Act.img/{qid}/{cStage.Name}");
@@ -150,6 +153,41 @@ namespace WvsBeta.Common.Objects
             // Compare with now
             var cdate = MasterThread.CurrentDate;
             return edate <= cdate;
+        }
+    }
+    public class WZQuestInfo
+    {
+        public IDictionary<byte, string> Stages { get; private set; } = new Dictionary<byte, string>();
+        public byte Area { get; private set; }
+        public string Name { get; private set; }
+        public byte Order { get; private set; }
+        public string Parent { get; private set; }
+        public WZQuestInfo(NXNode node)
+        {
+            foreach (var subnode in node)
+            {
+                switch (subnode.Name)
+                {
+                    case "area":
+                        Area = subnode.ValueByte();
+                        break;
+                    case "name":
+                        Name = subnode.ValueString();
+                        break;
+                    case "order":
+                        Order = subnode.ValueByte();
+                        break;
+                    case "parent":
+                        Parent = subnode.ValueString();
+                        break;
+                    default:
+                        if (byte.TryParse(subnode.Name, out byte stage))
+                        {
+                            Stages[stage] = subnode.ValueString();
+                        }
+                        break;
+                }
+            }
         }
     }
     public enum QuestStage : byte
