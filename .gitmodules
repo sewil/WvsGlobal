@@ -8,3 +8,6 @@
 [submodule "wz2nx"]
 	path = wz2nx
 	url = https://github.com/sewil/wz2nx
+[submodule "OpenMGClient"]
+	path = OpenMGClient
+	url = https://github.com/sewil/OpenMGClient

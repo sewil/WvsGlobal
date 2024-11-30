@@ -1,4 +1,9 @@
 # Client configuration
+## Building ijl15.dll
+1. Open OpenMGClient\MapleClientCollection.sln
+2. Set CTemplate as startup project, set configuration to Release mode.
+3. Build. ijl15.dll will be generated in ClientBin.
+
 ## Signing and packing
 Signing:
 1. Install the Windows SDK which contains signtool: https://developer.microsoft.com/sv-se/windows/downloads/windows-sdk/ (Don't forget to add signtool to PATH!)
