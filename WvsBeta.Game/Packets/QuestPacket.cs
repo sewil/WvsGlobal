@@ -108,6 +108,7 @@ namespace WvsBeta.Game
             if (check.Mesos > 0 && !chr.Inventory.CanExchange(-check.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
             if (check.LvMin > 0 && chr.Level < check.LvMin) throw new QuestException(QuestActionResult.UnknownError);
             if (check.LvMax > 0 && chr.Level > check.LvMax) throw new QuestException(QuestActionResult.UnknownError);
+            if (check.Fame > 0 && chr.CharacterStat.Fame < check.Fame) throw new QuestException(QuestActionResult.UnknownError);
 
             foreach (var qt in check.Quests)
             {

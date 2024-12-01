@@ -94,6 +94,7 @@ namespace WvsBeta.Common.Objects
         public int LvMin { get; private set; }
         public int LvMax { get; private set; }
         public string End { get; private set; }
+        public short Fame { get; private set; }
         public int IntervalMins { get; private set; }
         public WZQuestCheck(WZQuestStage stage, NXNode node)
         {
@@ -140,6 +141,9 @@ namespace WvsBeta.Common.Objects
                         break;
                     case "end":
                         End = subNode.ValueString();
+                        break;
+                    case "pop":
+                        Fame = subNode.ValueInt16();
                         break;
                     case "interval":
                         IntervalMins = subNode.ValueInt32();
