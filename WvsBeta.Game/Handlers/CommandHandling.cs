@@ -370,6 +370,7 @@ namespace WvsBeta.Game.Handlers
             { "fitnesshelp", new CommandData("/fitnesshelp", "Display the Fitness event help menu.") },
             { "quizhelp", new CommandData("/quizhelp", "Display the Quiz event help menu.") },
             { "questremove", new CommandData("/questremove <qid>", "Remove a quest from your quest log (Set it as available).") },
+            { "questadd", new CommandData("/questadd <qid> [questdata]", "Add a quest to your quest log.") },
         };
         static Dictionary<string, CommandData> adminCommands = new Dictionary<string, CommandData>
         {
@@ -1382,9 +1383,9 @@ namespace WvsBeta.Game.Handlers
 
                         case "questremove":
                             {
-                                if (Args.Count < 2)
+                                if (Args.Count < 1)
                                     character.Message(GetUsage(Args));
-                                else if (!short.TryParse(Args[0], out short qid) || DataProvider.Quests.ContainsKey(qid))
+                                else if (!short.TryParse(Args[0], out short qid) || !DataProvider.Quests.ContainsKey(qid))
                                     character.Message("Invalid quest id!");
                                 else if (!character.Quests.GetQuests().ContainsKey(qid))
                                     character.Message("You don't have that quest!");
@@ -1392,6 +1393,32 @@ namespace WvsBeta.Game.Handlers
                                 {
                                     character.Quests.RemoveQuest(qid);
                                     character.Message("Quest removed!");
+                                }
+                                return true;
+                            }
+                        case "questadd":
+                            {
+                                if (Args.Count < 1)
+                                    character.Message(GetUsage(Args));
+                                else if (!short.TryParse(Args[0], out short qid) || !DataProvider.Quests.ContainsKey(qid))
+                                    character.Message("Invalid quest id!");
+                                else if (character.Quests.GetQuests().ContainsKey(qid))
+                                    character.Message("You already have that quest!");
+                                else
+                                {
+                                    string questData = "";
+                                    if (Args.Count > 2)
+                                    {
+                                        questData = Args.GetString(2);
+                                    }
+                                    if (character.Quests.StartQuest(qid, questData))
+                                    {
+                                        character.Message("Quest added!");
+                                    }
+                                    else
+                                    {
+                                        character.Message("Something went wrong, couldn't start the quest... Either it has expired or it can't be repeated just yet.");
+                                    }
                                 }
                                 return true;
                             }
