@@ -56,5 +56,12 @@ namespace WvsBeta.Game.Packets
             pw.WriteBool(type == MessageAppearType.ChatGrey);
             return pw;
         }
+
+        public static MessagePacket GainFame(short amount)
+        {
+            var pw = new MessagePacket(MessageType.GainFame);
+            pw.WriteInt(amount);
+            return pw;
+        }
     }
 }

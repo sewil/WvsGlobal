@@ -201,7 +201,7 @@ namespace WvsBeta.Game
                 GuildHandler.SendUpdatePlayerJob(this);
         }
 
-        public void AddFame(short value)
+        public void AddFame(short value, bool sendMessage = false)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = true });
             if (CharacterStat.Fame + value > Int16.MaxValue)
@@ -211,6 +211,10 @@ namespace WvsBeta.Game
             else
             {
                 SetFame((short)(CharacterStat.Fame + value));
+            }
+            if (sendMessage)
+            {
+                SendPacket(MessagePacket.GainFame(value));
             }
         }
 

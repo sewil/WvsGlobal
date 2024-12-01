@@ -155,6 +155,7 @@ namespace WvsBeta.Game
                 chr.IncMoney(act.Mesos, MessageAppearType.ChatGrey);
             }
             if (act.Exp != 0) chr.IncEXP(act.Exp, 0);
+            if (act.Fame != 0) chr.AddFame(act.Fame, true);
 
             if (act.Stage.Stage == QuestStage.Start)
             {

@@ -43,6 +43,7 @@ namespace WvsBeta.Common.Objects
         public short NextQuest { get; }
         public uint Exp { get; }
         public int Mesos { get; }
+        public short Fame { get; }
         /// <summary>
         /// Important that it's a list rather than a dictionary. Needs to be indexed correctly for item selection.
         /// </summary>
@@ -68,6 +69,9 @@ namespace WvsBeta.Common.Objects
                             var item = new QuestItem(itemNode);
                             Items.Add(item);
                         }
+                        break;
+                    case "pop":
+                        Fame = subNode.ValueInt16();
                         break;
                     case "nextQuest":
                         NextQuest = subNode.ValueInt16();
