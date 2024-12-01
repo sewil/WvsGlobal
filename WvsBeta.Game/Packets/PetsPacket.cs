@@ -46,10 +46,11 @@ namespace WvsBeta.Game
             {
                 chr.PetLastHunger = MasterThread.CurrentTime;
             }
-            if ((type & PetSpawnFlags.ResetStat) != 0)
+            if ((type & PetSpawnFlags.ResetStat) != 0 && pet.IsInitialSpawn()) // Open cloy dialogue window
             {
                 CharacterStatsPacket.SendStatChanged(chr, StatFlags.Pet);
             }
+            pet.SpawnedDate = MasterThread.CurrentTime;
         }
 
         public static void RemovePet(GameCharacter chr, PetRemoveReason reason, bool despawn)

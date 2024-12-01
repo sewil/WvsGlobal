@@ -576,6 +576,7 @@ namespace WvsBeta.Game
                             PetsPacket.RemovePet(Character, PetRemoveReason.Expire, true);
                         }
                         pi.DeadDate = Item.NoItemExpiration;
+                        pi.SpawnedDate = 0;
                         Pet.UpdatePet(Character, pi);
                     }
                     else

@@ -574,6 +574,7 @@ namespace WvsBeta.Common.Objects
         public short Closeness { get; set; }
         public byte Fullness { get; set; }
         public long DeadDate { get; set; }
+        public long SpawnedDate { get; set; }
 
         public MovableLife MovableLife { get; } = new MovableLife();
 
@@ -586,6 +587,7 @@ namespace WvsBeta.Common.Objects
             Closeness = itemBase.Closeness;
             Fullness = itemBase.Fullness;
             DeadDate = itemBase.DeadDate;
+            SpawnedDate = itemBase.DeadDate;
         }
 
         public PetItem(int itemId) : base (itemId) { }
@@ -600,6 +602,7 @@ namespace WvsBeta.Common.Objects
             Closeness = data.GetInt16("closeness");
             Fullness = data.GetByte("fullness");
             DeadDate = data.GetInt64("deaddate");
+            SpawnedDate = data.GetInt64("spawneddate");
         }
 
         public override void Encode(Packet packet)
@@ -626,33 +629,42 @@ namespace WvsBeta.Common.Objects
 
         public override string GetFullSaveColumns()
         {
-            return
-                CashId + "," +
-                ItemID + "," +
-                "'" + MySqlHelper.EscapeString(Name) + "'," +
-                Level + "," +
-                Closeness + "," +
-                Fullness + "," +
-                Expiration + "," +
-                DeadDate + "";
+            return string.Join(",", new string[] {
+                CashId.ToString(),
+                ItemID.ToString(),
+                "'" + MySqlHelper.EscapeString(Name) + "'",
+                Level.ToString(),
+                Closeness.ToString(),
+                Fullness.ToString(),
+                Expiration.ToString(),
+                DeadDate.ToString(),
+                SpawnedDate.ToString(),
+            });
         }
 
         public override string GetFullUpdateColumns()
         {
-            return
-                "cashid = " + CashId + "," +
-                "itemid = " + ItemID + "," +
-                "name = '" + MySqlHelper.EscapeString(Name) + "'," +
-                "level = " + Level + "," +
-                "closeness = " + Closeness + "," +
-                "fullness = " + Fullness + "," +
-                "expiration = " + Expiration + "," +
-                "deaddate = " + DeadDate + "";
+            return string.Join(",", new string[] {
+                "cashid = " + CashId,
+                "itemid = " + ItemID,
+                "name = '" + MySqlHelper.EscapeString(Name) + "'",
+                "level = " + Level,
+                "closeness = " + Closeness,
+                "fullness = " + Fullness,
+                "expiration = " + Expiration,
+                "deaddate = " + DeadDate,
+                "spawneddate = " + SpawnedDate,
+            });
         }
 
         public override bool HasExpired(long pNow)
         {
             return DeadDate == NoItemExpiration || DeadDate < pNow;
+        }
+
+        public bool IsInitialSpawn()
+        {
+            return SpawnedDate == 0;
         }
     }
 }

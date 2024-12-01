@@ -180,6 +180,7 @@ CREATE TABLE `cashitem_pet` (
   `fullness` tinyint(3) NOT NULL,
   `expiration` bigint(20) NOT NULL,
   `deaddate` bigint(20) NOT NULL,
+  `spawneddate` bigint(20) NOT NULL,
   PRIMARY KEY (`cashid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
