@@ -255,7 +255,7 @@ namespace WvsBeta.Game.Handlers
 
         static bool shuttingDown = false;
         static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
-        static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", "mob", "quest", /*"npc", "skill"*/ };
+        static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", "mob", "quest", "npc", /*"skill"*/ };
 
         readonly struct CommandData
         {
@@ -288,6 +288,7 @@ namespace WvsBeta.Game.Handlers
         static Dictionary<string, CommandData> testerCommands = new Dictionary<string, CommandData>
         {
             { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, or maps.") },
+            { "npc", new CommandData($"/npc <info> <ID>", "Get info on an NPC.") },
         };
         static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
         {
@@ -401,9 +402,9 @@ namespace WvsBeta.Game.Handlers
             { "triggerreactorbyname", new CommandData("/triggerreactorbyname <reactor name>", "Trigger a field reactor by name.") },
             { "reactor", new CommandData("/reactor <int reactorId> <byte state> <bool facesLeft>", "Add a new reactor at your position.") }
         };
-        public static string GetUsage(CommandArgs args)
+        public static string GetUsage(CommandArgs args, string key = null)
         {
-            var key = args.Command.ToLowerInvariant();
+            key = key ?? args.Command.ToLowerInvariant();
             if (
                 !regularCommands.TryGetValue(key, out CommandData value) &&
                 !testerCommands.TryGetValue(key, out value) &&
@@ -517,6 +518,10 @@ namespace WvsBeta.Game.Handlers
                                     else if (lookupType == "quest")
                                     {
                                         query = DataProvider.Quests.Select(i => ((int)i.Key, i.Value.QuestInfo.Name));
+                                    }
+                                    else if (lookupType == "npc")
+                                    {
+                                        query = GameDataProvider.NPCs.Select(i => (i.Key, i.Value.Name));
                                     }
 
                                     var results = query.Where(i => findItem(i.name, searchQuery)).Take(10).ToList();

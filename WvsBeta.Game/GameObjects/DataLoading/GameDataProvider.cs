@@ -880,67 +880,7 @@ namespace WvsBeta.Game
 
             NPCs = IterateAllToDict(npcs, pNode =>
             {
-                var infoNode = pNode["info"];
-
-                NPCData npc = new NPCData();
-                int ID = (int)Utils.ConvertNameToID(pNode.Name);
-                npc.ID = ID;
-                npc.Shop = new List<ShopItemData>();
-
-                if (!pClientFile.ContainsPath($"String/Npc.img/{ID}"))
-                    Program.MainForm.LogAppend("String not found for NPC " + ID);
-                
-                var nonInfoNodes = pNode;
-                if (infoNode.ContainsChild("link"))
-                {
-                    var linkedNpcID = infoNode["link"].ValueString();
-
-                    Trace.WriteLine($"NPC {npc.ID} has a link to NPC {linkedNpcID}");
-                    linkedNpcID += ".img";
-                    nonInfoNodes = npcs.First(y => y.Name == linkedNpcID);
-                }
-
-                foreach (var node in infoNode)
-                {
-                    switch (node.Name)
-                    {
-                        case "hideName":
-                        case "link":
-                        case "float": // Floating NPC
-                        case "default": // Icon used for npc chat dialog, see NPC 2030006
-                        case "dcTop": // Double Click mark
-                        case "dcRight":
-                        case "dcBottom":
-                        case "dcLeft":
-                        case "dcMark": break;
-                        case "reg":
-                            {
-                                // subnodes /varset /varget variable for the NPC
-
-                                foreach (var regNode in node)
-                                {
-                                    Console.WriteLine($"reg node {regNode.Name} in npc {npc.ID}");
-                                }
-                                break;
-                            }
-                        case "quest":
-                            npc.Quest = node.ValueString();
-                            break;
-                        case "trunk":
-                            npc.Trunk = node.ValueInt32();
-                            break;
-                        case "speed":
-                            npc.Speed = node.ValueInt16();
-                            break;
-                        case "speak":
-                            npc.SpeakLineCount = (byte)node.ChildCount;
-                            break;
-                        default:
-                            Console.WriteLine($"Unhandled node {node.Name} for NPC {npc.ID}");
-                            break;
-                    }
-                }
-
+                NPCData npc = new NPCData(pClientFile, pNode);
                 return npc;
             }, x => x.ID);
         }
