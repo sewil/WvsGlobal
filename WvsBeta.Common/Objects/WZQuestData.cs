@@ -27,13 +27,13 @@ namespace WvsBeta.Common.Objects
             QuestID = qid;
         }
     }
-    public class WZQuestTrigger
+    public class WZQuestState
     {
         public short QuestID { get; private set; }
-        public QuestState NewState { get; private set; }
-        public WZQuestTrigger(NXNode node)
+        public QuestState State { get; private set; }
+        public WZQuestState(NXNode node)
         {
-            NewState = (QuestState)node["state"].ValueByte();
+            State = (QuestState)node["state"].ValueByte();
             QuestID = node["id"].ValueInt16();
         }
     }
@@ -85,7 +85,7 @@ namespace WvsBeta.Common.Objects
     public class WZQuestCheck
     {
         public WZQuestStage Stage { get; private set; }
-        public List<WZQuestTrigger> Quests { get; private set; } = new List<WZQuestTrigger>();
+        public List<WZQuestState> Quests { get; private set; } = new List<WZQuestState>();
         public IDictionary<int, QuestMob> Mobs { get; private set; } = new Dictionary<int, QuestMob>();
         public IDictionary<int, QuestItem> Items { get; private set; } = new Dictionary<int, QuestItem>();
         public int NpcID { get; private set; }
@@ -113,7 +113,7 @@ namespace WvsBeta.Common.Objects
                     case "quest":
                         foreach (var qtNode in subNode)
                         {
-                            var trigger = new WZQuestTrigger(qtNode);
+                            var trigger = new WZQuestState(qtNode);
                             Quests.Add(trigger);
                         }
                         break;

@@ -112,9 +112,9 @@ namespace WvsBeta.Game
 
             foreach (var qt in check.Quests)
             {
-                if (qt.NewState == QuestState.Completed)
+                if (!chr.Quests.HasQuestState(qt.QuestID, qt.State))
                 {
-                    chr.Quests.SetComplete(qt.QuestID);
+                    throw new QuestException(QuestActionResult.UnknownError);
                 }
             }
         }
