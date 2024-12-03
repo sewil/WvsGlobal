@@ -3772,6 +3772,12 @@
       </imgdir>
     </imgdir>
     <imgdir name="1">
+      <imgdir name="item">
+        <imgdir name="0">
+          <int name="count" value="300" />
+          <int name="id" value="4000088" />
+        </imgdir>
+      </imgdir>
       <int name="npc" value="2012019" />
     </imgdir>
   </imgdir>
