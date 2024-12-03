@@ -289,6 +289,7 @@ namespace WvsBeta.Game.Handlers
         {
             { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, or maps.") },
             { "npc", new CommandData($"/npc <info> <ID>", "Get info on an NPC.") },
+            { "quest", new CommandData($"/quest <info|start|end> <ID> [questdata]", "Get info on a quest, or start/end it.") },
         };
         static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
         {
@@ -370,8 +371,6 @@ namespace WvsBeta.Game.Handlers
             { "snowballhelp", new CommandData("/snowballhelp", "Display the Snowball event help menu.") },
             { "fitnesshelp", new CommandData("/fitnesshelp", "Display the Fitness event help menu.") },
             { "quizhelp", new CommandData("/quizhelp", "Display the Quiz event help menu.") },
-            { "questremove", new CommandData("/questremove <qid>", "Remove a quest from your quest log (Set it as available).") },
-            { "questadd", new CommandData("/questadd <qid> [questdata]", "Add a quest to your quest log.") },
         };
         static Dictionary<string, CommandData> adminCommands = new Dictionary<string, CommandData>
         {
@@ -482,6 +481,122 @@ namespace WvsBeta.Game.Handlers
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
+                        case "quest":
+                            {
+                                if (Args.Count < 2)
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (!short.TryParse(Args[1], out short id) || !DataProvider.Quests.TryGetValue(id, out var quest))
+                                {
+                                    character.Message("Invalid quest id!");
+                                }
+                                else if (Args[0] == "start")
+                                {
+                                    if(character.Quests.GetQuests().ContainsKey(id))
+                                    {
+                                        character.Message("You already have that quest!");
+                                    }
+                                    else
+                                    {
+                                        string questData = "";
+                                        if (Args.Count > 2)
+                                        {
+                                            questData = Args.GetString(2);
+                                        }
+                                        if (character.Quests.StartQuest(id, questData))
+                                        {
+                                            character.Message("Quest added!");
+                                        }
+                                        else
+                                        {
+                                            character.Message("Something went wrong, couldn't start the quest... Either it has expired or it can't be repeated just yet.");
+                                        }
+                                    }
+                                }
+                                else if (Args[0] == "end")
+                                {
+                                    if (!character.Quests.GetQuests().ContainsKey(id))
+                                    {
+                                        character.Message("You don't have that quest!");
+                                    }
+                                    else
+                                    {
+                                        character.Quests.RemoveQuest(id);
+                                        character.Message("Quest removed!");
+                                    }
+                                }
+                                else if (Args[0] == "info")
+                                {
+                                    character.Message($"--------- QUEST {id} ---------");
+                                    character.Message($"Name: {quest.QuestInfo.Name}");
+                                    var start = quest.Stages[QuestStage.Start].Check;
+                                    character.Message($"NPC: {start.NpcID}");
+
+                                    character.Message(" ");
+                                    character.Message("--- Prerequisites ---");
+                                    character.Message($"Level: {start.LvMin}-{(start.LvMax == 0 ? 200 : start.LvMax)}");
+                                    if (start.Job > 0) character.Message($"Job: {start.Job}");
+                                    if (start.Fame > 0) character.Message($"Fame: {start.Fame}");
+                                    if (start.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", start.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
+                                    if (start.Mesos > 0) character.Message($"Mesos: {start.Mesos}");
+                                    if (start.Items.Count > 0) character.Message($"Items: {string.Join(", ", start.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
+                                    if (start.IntervalMins > 0) character.Message($"Repeatable (mins): {start.IntervalMins}");
+
+                                    character.Message(" ");
+                                    character.Message("--- Requirements ---");
+                                    var req = quest.Stages[QuestStage.Complete].Check;
+                                    if (req.Items.Count > 0) character.Message($"Items: {string.Join(", ", req.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
+                                    if (req.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", req.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
+                                    if (req.Mesos > 0) character.Message($"Mesos: {req.Mesos}");
+                                    if (req.Fame > 0) character.Message($"Fame: {req.Fame}");
+
+                                    character.Message(" ");
+                                    character.Message("--- Rewards ---");
+                                    var end = quest.Stages[QuestStage.Complete].Act;
+                                    character.Message($"EXP: {end.Exp}");
+                                    if (end.Fame > 0) character.Message($"Fame: {end.Fame}");
+                                    if (end.Mesos > 0) character.Message($"Mesos: {end.Mesos}");
+                                    if (end.Items.Count > 0) character.Message($"Items: {string.Join(", ", end.Items.Select(i => $"{i.Amount}x {i.ItemID}{(i.Prop > 0 ? $" ({i.Prop}%)" : "")}"))}");
+                                    if (end.NextQuest > 0) character.Message($"Next quest: {end.NextQuest}");
+                                }
+                                return true;
+                            }
+                        case "npc":
+                            {
+                                if (Args.Count < 2)
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (!int.TryParse(Args[1], out int id))
+                                {
+                                    character.Message($"Invalid ID '{id}'!");
+                                }
+                                else if (Args[0] == "info")
+                                {
+                                    if (GameDataProvider.NPCs.TryGetValue(id, out var npc))
+                                    {
+                                        character.Message($"--------- NPC {id} ---------");
+                                        character.Message($"Name: {npc.Name}");
+                                        var maps = string.Join(", ", GameDataProvider.Maps
+                                            .Where(i => i.Value.NPC.Any(j => j.ID == id))
+                                            .Select(i => $"{i.Key}")
+                                        );
+                                        character.Message($"Map(s): {maps}");
+                                        var quests = string.Join(", ", DataProvider.Quests
+                                            .Where(i => i.Value.Stages[QuestStage.Start].Check.NpcID == id)
+                                            .Select(i => $"{i.Key}")
+                                        );
+                                        character.Message($"Quest(s): {quests}");
+                                        if (npc.Quest != null) character.Message($"Script: {npc.Quest}");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"Couldn't find NPC with ID '{id}'!");
+                                    }
+                                }
+                                return true;
+                            }
                         case "lu":
                         case "lookup":
                             {
@@ -1385,48 +1500,6 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 #endregion
-
-                        case "questremove":
-                            {
-                                if (Args.Count < 1)
-                                    character.Message(GetUsage(Args));
-                                else if (!short.TryParse(Args[0], out short qid) || !DataProvider.Quests.ContainsKey(qid))
-                                    character.Message("Invalid quest id!");
-                                else if (!character.Quests.GetQuests().ContainsKey(qid))
-                                    character.Message("You don't have that quest!");
-                                else
-                                {
-                                    character.Quests.RemoveQuest(qid);
-                                    character.Message("Quest removed!");
-                                }
-                                return true;
-                            }
-                        case "questadd":
-                            {
-                                if (Args.Count < 1)
-                                    character.Message(GetUsage(Args));
-                                else if (!short.TryParse(Args[0], out short qid) || !DataProvider.Quests.ContainsKey(qid))
-                                    character.Message("Invalid quest id!");
-                                else if (character.Quests.GetQuests().ContainsKey(qid))
-                                    character.Message("You already have that quest!");
-                                else
-                                {
-                                    string questData = "";
-                                    if (Args.Count > 2)
-                                    {
-                                        questData = Args.GetString(2);
-                                    }
-                                    if (character.Quests.StartQuest(qid, questData))
-                                    {
-                                        character.Message("Quest added!");
-                                    }
-                                    else
-                                    {
-                                        character.Message("Something went wrong, couldn't start the quest... Either it has expired or it can't be repeated just yet.");
-                                    }
-                                }
-                                return true;
-                            }
                     }
                 }
 
