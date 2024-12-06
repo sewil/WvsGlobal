@@ -449,6 +449,10 @@ namespace WvsBeta.Game.Handlers
                             }
                             if (character.IsGM)
                             {
+                                commands.AddRange(internCommands);
+                            }
+                            if (character.IsFullGM)
+                            {
                                 commands.AddRange(gmCommands);
                             }
                             if (character.IsAdmin)

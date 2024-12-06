@@ -27,6 +27,7 @@ namespace WvsBeta.Common.Characters
         public GMLevel GMLevel { get; set; }
         public bool IsTester => GMLevel.HasFlag(GMLevel.Tester);
         public bool IsGM => GMLevel >= GMLevel.GMIntern;
+        public bool IsFullGM => GMLevel >= GMLevel.GM;
         public bool IsAdmin => GMLevel.HasFlag(GMLevel.Admin);
         public Inventory Inventory { get; set; }
         public CharacterSkills Skills { get; protected set; }
