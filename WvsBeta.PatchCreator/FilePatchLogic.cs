@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text.RegularExpressions;
 
 namespace WvsBeta.PatchCreator
@@ -75,7 +76,8 @@ namespace WvsBeta.PatchCreator
             WriteProgress(ref lpOld, 0, 100);
             WriteProgress(ref lpNew, 0, 100);
             var process = new Process();
-            process.StartInfo.FileName = Path.Combine(Environment.CurrentDirectory, "jdiff.exe");
+            var binDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            process.StartInfo.FileName = Path.Combine(binDirectory, "jdiff.exe");
             process.StartInfo.Arguments = $"-b -lr \"{OldFile}\" \"{NewFile}\"";
             process.StartInfo.RedirectStandardOutput = true;
             process.StartInfo.UseShellExecute = false;

@@ -1,0 +1,1 @@
+Place in this file the version folders to patch from and to. (If patching from v22 to v23 for example, create the folders named v22 and v23). Place in these folders the files to change (from and to). Make sure to also put the notice file in the version folders like so: `v23\00023.txt`.
