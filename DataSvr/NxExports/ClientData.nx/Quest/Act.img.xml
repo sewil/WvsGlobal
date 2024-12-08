@@ -1703,7 +1703,7 @@
       <int name="exp" value="300" />
       <imgdir name="item">
         <imgdir name="0">
-          <int name="count" value="0" />
+          <int name="count" value="-10" />
           <int name="id" value="4031025" />
         </imgdir>
         <imgdir name="1">
