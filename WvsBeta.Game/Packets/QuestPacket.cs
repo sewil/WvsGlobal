@@ -129,24 +129,24 @@ namespace WvsBeta.Game
         public static void HandleQuestAct(GameCharacter chr, int npcID, int selectIdx, WZQuestAct act)
         {
             var questJob = Constants.GetQuestJob(chr.Job);
-            var items = act.Items.Where(i => i.Job == null || questJob.HasFlag(i.Job)).ToList();
-            int nMax = items.Sum(i => i.Prop);
-            int n = Rand32.NextBetween(0, nMax);
+            var items = act.Items
+                .Where(item => item.Job == null || questJob.HasFlag(item.Job))
+                // Nothing selected, or item is not selectable, or item is selected
+                .Where((item, itemIdx) => selectIdx == -1 || item.Prop != -1 || itemIdx == selectIdx)
+                .Where(item => item.Gender == PlayerGender.NotApplicable || chr.Gender == item.Gender)
+                .ToList();
+            int randMax = items.Sum(i => i.Prop);
+            int rand = Rand32.NextBetween(0, randMax);
             int from = 0;
             int to = 0;
             var itemsToGive = new List<QuestItem>();
             for (int itemIdx = 0; itemIdx < items.Count; itemIdx++)
             {
                 QuestItem item = items[itemIdx];
-                if (selectIdx > -1 && itemIdx != selectIdx) continue;
-                if ((item.Gender == PlayerGender.Female && chr.Gender == PlayerGender.Male) || (item.Gender == PlayerGender.Male && chr.Gender == PlayerGender.Female))
-                {
-                    continue;
-                }
                 if (item.Prop > 0)
                 {
                     to += item.Prop;
-                    bool win = from <= n && n < to;
+                    bool win = from <= rand && rand < to;
                     from += item.Prop;
                     if (!win) continue;
                 }

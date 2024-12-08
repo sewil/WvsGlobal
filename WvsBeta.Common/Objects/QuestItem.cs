@@ -18,6 +18,9 @@ namespace WvsBeta.Common.Objects
     {
         public int ItemID { get; }
         public short Amount { get; }
+        /// <summary>
+        /// The chance to get the item, -1 means it is a selectable item in the dialog menu.
+        /// </summary>
         public int Prop { get; }
         public PlayerGender Gender { get; } = PlayerGender.NotApplicable;
         public QuestJob? Job { get; }
