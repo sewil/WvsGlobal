@@ -289,7 +289,7 @@ namespace WvsBeta.Game.Handlers
         {
             { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, or maps.") },
             { "npc", new CommandData($"/npc <info> <ID>", "Get info on an NPC.") },
-            { "quest", new CommandData($"/quest <info|start|end> <ID> [questdata]", "Get info on a quest, or start/end it.") },
+            { "quest", new CommandData($"/quest <info|start|remove|complete> <ID> [questdata]", "Get info on a quest, or start/remove/complete it.") },
         };
         static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
         {
@@ -518,7 +518,7 @@ namespace WvsBeta.Game.Handlers
                                         }
                                     }
                                 }
-                                else if (Args[0] == "end")
+                                else if (Args[0] == "remove")
                                 {
                                     if (!character.Quests.GetQuests().ContainsKey(id))
                                     {
@@ -528,6 +528,18 @@ namespace WvsBeta.Game.Handlers
                                     {
                                         character.Quests.RemoveQuest(id);
                                         character.Message("Quest removed!");
+                                    }
+                                }
+                                else if (Args[0] == "complete")
+                                {
+                                    if (!character.Quests.GetQuests().ContainsKey(id))
+                                    {
+                                        character.Message("You don't have that quest!");
+                                    }
+                                    else
+                                    {
+                                        character.Quests.SetQuestComplete(id);
+                                        character.Message("Quest completed!");
                                     }
                                 }
                                 else if (Args[0] == "info")
@@ -557,6 +569,7 @@ namespace WvsBeta.Game.Handlers
 
                                     character.Message(" ");
                                     character.Message("--- Rewards ---");
+                                    character.Message("Turn in NPC: " + req.NpcID);
                                     var end = quest.Stages[QuestStage.Complete].Act;
                                     character.Message($"EXP: {end.Exp}");
                                     if (end.Fame > 0) character.Message($"Fame: {end.Fame}");
@@ -564,7 +577,7 @@ namespace WvsBeta.Game.Handlers
                                     if (end.Items.Count > 0)
                                     {
                                         Func<QuestItem, string> itemStr = (i) => {
-                                            var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : "";
+                                            var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : i.Prop == -1 ? " (Selectable)" : "";
                                             var gender = i.Gender != PlayerGender.NotApplicable ? $" (Gender: {i.Gender})" : "";
                                             return string.Format("{0}x {1}{2}{3}", i.Amount, i.ItemID, prop, gender);
                                         };
