@@ -1,6 +1,7 @@
 ﻿using Google.Protobuf.Collections;
 using Google.Protobuf.WellKnownTypes;
 using MySql.Data.MySqlClient;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Database;
 
@@ -11,7 +12,7 @@ namespace WvsBeta.Common.Characters
         public int ID { get; set; }
         public string Name { get; set; }
 
-        public byte Gender { get; set; }
+        public PlayerGender Gender { get; set; }
         public byte Skin { get; set; }
         public int Face { get; set; }
         public int Hair { get; set; }
@@ -40,7 +41,7 @@ namespace WvsBeta.Common.Characters
         {
             ID = data.GetInt32("id");
             Name = data.GetString("name");
-            Gender = data.GetByte("gender");
+            Gender = (PlayerGender)data.GetByte("gender");
             Skin = data.GetByte("skin");
             Hair = data.GetInt32("hair");
             Face = data.GetInt32("eyes");
@@ -69,7 +70,7 @@ namespace WvsBeta.Common.Characters
             pPacket.WriteInt(ID);
             pPacket.WriteString(Name, 13);
 
-            pPacket.WriteByte(Gender); // Gender
+            pPacket.WriteByte((byte)Gender); // Gender
             pPacket.WriteByte(Skin); // Skin
             pPacket.WriteInt(Face); // Face
             pPacket.WriteInt(Hair); // Hair
@@ -100,7 +101,7 @@ namespace WvsBeta.Common.Characters
             ID = pPacket.ReadInt();
             Name = pPacket.ReadString(13);
 
-            Gender = pPacket.ReadByte();
+            Gender = (PlayerGender)pPacket.ReadByte();
             Skin = pPacket.ReadByte();
             Face = pPacket.ReadInt();
             Hair = pPacket.ReadInt();

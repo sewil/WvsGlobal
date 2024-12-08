@@ -14,7 +14,7 @@ namespace WvsBeta.Common.Characters
         public short Job { get => CharacterStat.Job; set => CharacterStat.Job = value; }
         public byte Level { get => CharacterStat.Level; set => CharacterStat.Level = value; }
 
-        public byte Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
+        public PlayerGender Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
         public byte Skin { get => CharacterStat.Skin; set => CharacterStat.Skin = value; }
         public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
         public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
@@ -42,7 +42,7 @@ namespace WvsBeta.Common.Characters
             pw.WriteShort(CharacterStat.Job);
             pw.WriteByte(CharacterStat.Level);
 
-            pw.WriteByte(CharacterStat.Gender);
+            pw.WriteByte((byte)CharacterStat.Gender);
             pw.WriteByte(CharacterStat.Skin);
             pw.WriteInt(CharacterStat.Face);
             pw.WriteInt(CharacterStat.Hair);
@@ -60,7 +60,7 @@ namespace WvsBeta.Common.Characters
             CharacterStat.Job = pr.ReadShort();
             CharacterStat.Level = pr.ReadByte();
 
-            CharacterStat.Gender = pr.ReadByte();
+            CharacterStat.Gender = (PlayerGender)pr.ReadByte();
             CharacterStat.Skin = pr.ReadByte();
             CharacterStat.Face = pr.ReadInt();
             CharacterStat.Hair = pr.ReadInt();

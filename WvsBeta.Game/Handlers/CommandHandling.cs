@@ -561,7 +561,15 @@ namespace WvsBeta.Game.Handlers
                                     character.Message($"EXP: {end.Exp}");
                                     if (end.Fame > 0) character.Message($"Fame: {end.Fame}");
                                     if (end.Mesos > 0) character.Message($"Mesos: {end.Mesos}");
-                                    if (end.Items.Count > 0) character.Message($"Items: {string.Join(", ", end.Items.Select(i => $"{i.Amount}x {i.ItemID}{(i.Prop > 0 ? $" ({i.Prop}%)" : "")}"))}");
+                                    if (end.Items.Count > 0)
+                                    {
+                                        Func<QuestItem, string> itemStr = (i) => {
+                                            var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : "";
+                                            var gender = i.Gender != PlayerGender.NotApplicable ? $" (Gender: {i.Gender})" : "";
+                                            return string.Format("{0}x {1}{2}{3}", i.Amount, i.ItemID, prop, gender);
+                                        };
+                                        character.Message($"Items: {string.Join(", ", end.Items.Select(i => itemStr(i)))}");
+                                    }
                                     if (end.NextQuest > 0) character.Message($"Next quest: {end.NextQuest}");
                                 }
                                 return true;

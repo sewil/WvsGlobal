@@ -118,6 +118,14 @@ namespace WvsBeta.Game
                 }
             }
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="chr"></param>
+        /// <param name="npcID"></param>
+        /// <param name="selectIdx">The index for the selected reward by the user.</param>
+        /// <param name="act"></param>
+        /// <exception cref="QuestException"></exception>
         public static void HandleQuestAct(GameCharacter chr, int npcID, int selectIdx, WZQuestAct act)
         {
             var questJob = Constants.GetQuestJob(chr.Job);
@@ -131,6 +139,10 @@ namespace WvsBeta.Game
             {
                 QuestItem item = items[itemIdx];
                 if (selectIdx > -1 && itemIdx != selectIdx) continue;
+                if ((item.Gender == PlayerGender.Female && chr.Gender == PlayerGender.Male) || (item.Gender == PlayerGender.Male && chr.Gender == PlayerGender.Female))
+                {
+                    continue;
+                }
                 if (item.Prop > 0)
                 {
                     to += item.Prop;

@@ -36,7 +36,7 @@ namespace WvsBeta.Scripts.Scripts
         }
         public static int[] GetFaces()
         {
-            int teye = (target.Gender * 1000) + (target.Face / 100 % 10 * 100);
+            int teye = ((byte)target.Gender * 1000) + (target.Face / 100 % 10 * 100);
             int[] faces = new int[10];
             for (int i = 0; i < faces.Length; i++)
             {

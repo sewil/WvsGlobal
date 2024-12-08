@@ -383,7 +383,7 @@ namespace WvsBeta.Shop
                 recipientGender = mdr.GetInt32(2);
             }
 
-            if (ci.Gender != CommodityGenders.Both && recipientGender != (int)ci.Gender)
+            if (ci.Gender != PlayerGender.Unisex && recipientGender != (int)ci.Gender)
             {
                 _log.Warn($"Gifting failed: receipient not {ci.Gender}"); ;
                 SendError(chr, CashPacketOpcodes.S_Gift_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);
@@ -646,7 +646,7 @@ namespace WvsBeta.Shop
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.OutOfStock);
                 return false;
             }
-            else if ((ci.Gender != CommodityGenders.NotApplicable && ci.Gender != CommodityGenders.Both) && (byte)ci.Gender != chr.Gender)
+            else if ((ci.Gender != PlayerGender.NotApplicable && ci.Gender != PlayerGender.Unisex) && ci.Gender != chr.Gender)
             {
                 _log.Warn("Buying failed: invalid gender");
                 SendError(chr, CashPacketOpcodes.S_Buy_Failed, CashErrors.CheckCharacterNameOrItemGenderRestrictions);

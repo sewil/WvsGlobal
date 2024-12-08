@@ -1,5 +1,6 @@
 ﻿using reNX.NXProperties;
 using System;
+using WvsBeta.Common.Enums;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Sessions;
 
@@ -14,7 +15,7 @@ namespace WvsBeta.Shop.GameObjects
         public bool OnSale { get; }
         public int Price { get; }
         public int Priority { get; }
-        public CommodityGenders Gender { get; }
+        public PlayerGender Gender { get; }
         public CommodityClass Class { get; }
         public StockState StockState { get; }
         public CommodityCategory Category { get; }
@@ -24,7 +25,7 @@ namespace WvsBeta.Shop.GameObjects
             SerialNumber = node["SN"].ValueInt32();
             ItemID = node["ItemId"].ValueInt32();
             Count = node["Count"].ValueInt16();
-            Gender = (CommodityGenders)node["Gender"].ValueSByte();
+            Gender = (PlayerGender)node["Gender"].ValueByte();
             Period = node["Period"].ValueInt16();
             OnSale = node["OnSale"].ValueBool();
             Price = node["Price"].ValueInt16();

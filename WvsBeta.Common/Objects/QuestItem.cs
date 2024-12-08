@@ -19,7 +19,7 @@ namespace WvsBeta.Common.Objects
         public int ItemID { get; }
         public short Amount { get; }
         public int Prop { get; }
-        public PlayerGender Gender { get; }
+        public PlayerGender Gender { get; } = PlayerGender.NotApplicable;
         public QuestJob? Job { get; }
         public QuestItem(NXNode node)
         {

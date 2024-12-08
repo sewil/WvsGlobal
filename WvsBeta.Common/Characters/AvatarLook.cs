@@ -11,7 +11,7 @@ namespace WvsBeta.Common.Characters
     public class AvatarLook
     {
         public GW_CharacterStat CharacterStat { get; private set; } = new GW_CharacterStat();
-        public byte Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
+        public PlayerGender Gender { get => CharacterStat.Gender; set => CharacterStat.Gender = value; }
         public byte Skin { get => CharacterStat.Skin; set => CharacterStat.Skin = value; }
         public int Face { get => CharacterStat.Face; set => CharacterStat.Face = value; }
         public int Hair { get => CharacterStat.Hair; set => CharacterStat.Hair = value; }
@@ -52,7 +52,7 @@ namespace WvsBeta.Common.Characters
 
         public void Encode(Packet packet)
         {
-            packet.WriteByte(Gender);
+            packet.WriteByte((byte)Gender);
             packet.WriteByte(Skin);
             packet.WriteInt(Face);
             packet.WriteBool(Messenger);
@@ -80,7 +80,7 @@ namespace WvsBeta.Common.Characters
 
         public AvatarLook(Packet packet)
         {
-            Gender = packet.ReadByte();
+            Gender = (PlayerGender)packet.ReadByte();
             Skin = packet.ReadByte();
             Face = packet.ReadInt();
             Messenger = packet.ReadBool();

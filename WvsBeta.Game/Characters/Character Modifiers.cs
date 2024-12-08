@@ -14,7 +14,7 @@ namespace WvsBeta.Game
         private static ILog _levelLog = LogManager.GetLogger("LevelLog");
 
         // Do not remove: is used by NPCs
-        public byte GetGender() => Gender;
+        public byte GetGender() => (byte)Gender;
 
         public void SetJob(short value)
         {

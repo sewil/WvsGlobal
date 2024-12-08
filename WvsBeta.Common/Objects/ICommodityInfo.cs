@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using WvsBeta.Common.Enums;
 
 namespace WvsBeta.Common.Objects
 {
@@ -9,14 +10,6 @@ namespace WvsBeta.Common.Objects
         DefaultState = 0,
         OutOfStock = 1,
         NotAvailable = 2,
-    }
-
-    public enum CommodityGenders : sbyte
-    {
-        NotApplicable = -1,
-        Male = 0,
-        Female = 1,
-        Both = 2
     }
 
     public enum CommodityCategory
@@ -55,7 +48,7 @@ namespace WvsBeta.Common.Objects
         short Period { get; }
         bool OnSale { get; }
         int Price { get; }
-        CommodityGenders Gender { get; }
+        PlayerGender Gender { get; }
         CommodityClass Class { get; }
         StockState StockState { get; }
         CommodityCategory Category { get; }

@@ -1,4 +1,5 @@
 ﻿using System;
+using WvsBeta.Common.Enums;
 using WvsBeta.Game;
 using WvsBeta.Game.Scripting;
 
@@ -107,12 +108,12 @@ namespace WvsBeta.Scripts.Scripts
                 inventory = target.Inventory;
                 if (val == 0)
                 {
-                    if (target.Gender == 0)
+                    if (target.Gender == PlayerGender.Male)
                     {
                         self.Say("Hey, you there! Can I talk to you for a minute? Hahah! I'm #p2000#, an instructor helping new travelers like you.");
                         self.Say("Who told you to do THIS? HAHAHAH! You are a VERY curious traveler! Good, good, good... I do it because I want to. That's it.");
                     }
-                    else if (target.Gender == 1)
+                    else if (target.Gender == PlayerGender.Female)
                     {
                         self.Say("Hey! You there! Are you free? Hehe... I'm #p2000#, the instructor, and I love chatting with nice girls like you, and of course helping out during the game.# I");
                         self.Say("Hey! Give me a minute of your time. I'll give you lots of valuable information. Anything for a cutie like you. Hahaha!!!#I");

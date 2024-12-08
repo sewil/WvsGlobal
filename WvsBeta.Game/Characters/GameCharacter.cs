@@ -713,13 +713,13 @@ namespace WvsBeta.Game
                 SetSkin((byte)avatarID);
                 return AvatarSelectState.Success;
             }
-            else if (avatarID % (20000 + (Gender * 1000)) < 1000) // Face
+            else if (avatarID % (20000 + ((byte)Gender * 1000)) < 1000) // Face
             {
                 if (!Inventory.MassExchange(0, (coupon, -1))) return AvatarSelectState.MissingCoupon;
                 SetFace(avatarID);
                 return AvatarSelectState.Success;
             }
-            else if (avatarID % (30000 + (Gender * 1000)) < 1000) // Hair & hair color
+            else if (avatarID % (30000 + ((byte)Gender * 1000)) < 1000) // Hair & hair color
             {
                 if (!Inventory.MassExchange(0, (coupon, -1))) return AvatarSelectState.MissingCoupon;
                 SetHair(avatarID);
