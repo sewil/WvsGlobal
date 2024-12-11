@@ -324,7 +324,7 @@ namespace WvsBeta.Game
                 saveQuery.Append("UPDATE characters SET ");
                 saveQuery.Append("skin = '" + CharacterStat.Skin + "', ");
                 saveQuery.Append("hair = '" + CharacterStat.Hair + "', ");
-                saveQuery.Append("gender = '" + CharacterStat.Gender + "', ");
+                saveQuery.Append("gender = '" + (byte)CharacterStat.Gender + "', ");
                 saveQuery.Append("eyes = '" + CharacterStat.Face + "', ");
                 saveQuery.Append("map = '" + CharacterStat.MapID + "', ");
                 saveQuery.Append("pos = '" + PortalID + "', ");
