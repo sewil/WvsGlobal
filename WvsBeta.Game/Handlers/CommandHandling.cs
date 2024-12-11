@@ -339,7 +339,7 @@ namespace WvsBeta.Game.Handlers
             { "itempack", new CommandData($"/itempack <itemid>", "Give yourself an item pack.") },
             { "spawn", new CommandData($"/spawn <mobid> [amount] [summonType] [summonOption]", "Spawn a mob.") },
             { "spawnpos", new CommandData("/spawnpos <mobid> <x> <y> [fh] [summonType] [summonOption]", "Spawn a mob at a given position.") },
-            { "fieldset", new CommandData("/fieldset <fieldsetname> <minmembers/maxmembers> [amount]", "Configure field set properties.") },
+            { "fieldset", new CommandData("/fieldset <fieldsetname> <minmembers/maxmembers/timer> [value]", "Configure field set properties.") },
             { "fieldsetvar", new CommandData("/fieldsetvar <fieldsetname> <key> <value>", "Set a value to a field set variable.") },
             { "removefieldsetvar", new CommandData("/removefieldsetvar <fieldsetname> <key>", "Unset a field set variable.") },
             { "getid", new CommandData("/getid <charname>", "Get the character id from a player.") },
@@ -1670,7 +1670,7 @@ namespace WvsBeta.Game.Handlers
                     #region FieldSet
                     case "fieldset":
                         {
-                            if (Args.Count < 3 || (Args[1] != "minmembers" && Args[1] != "maxmembers"))
+                            if (Args.Count < 3)
                             {
                                 character.Message(GetUsage(Args));
                             }
@@ -1678,15 +1678,30 @@ namespace WvsBeta.Game.Handlers
                             {
                                 character.Message($"Unknown field set '{Args[0]}'!");
                             }
-                            else if (!int.TryParse(Args[2], out int value))
+                            else if (Args[1] == "timer")
                             {
-                                character.Message($"Invalid value!");
+                                if (!int.TryParse(Args[2], out int timeOut) || timeOut <= 0)
+                                {
+                                    character.Message($"Invalid timer value!");
+                                }
+                                else
+                                {
+                                    fs.SetTimer(timeOut);
+                                }
+                            }
+                            else if (Args[1] == "minmembers" || Args[1] == "maxmembers")
+                            {
+                                if (!int.TryParse(Args[2], out int value))
+                                {
+                                    character.Message($"Invalid value!");
+                                }
+                                else if (Args[1] == "minmembers") fs.Data.MinMembers = value;
+                                else if (Args[1] == "maxmembers") fs.Data.MaxMembers = value;
+                                character.Message($"Set '{Args[1]}' to {value} in fieldset '{fs.Data.Name}'.");
                             }
                             else
                             {
-                                if (Args[1] == "minmembers") fs.Data.MinMembers = value;
-                                else if (Args[1] == "maxmembers") fs.Data.MaxMembers = value;
-                                character.Message($"Set '{Args[1]}' to {value} in fieldset '{fs.Data.Name}'.");
+                                character.Message(GetUsage(Args));
                             }
 
                             return true;
