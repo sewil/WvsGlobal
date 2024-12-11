@@ -48,7 +48,7 @@ namespace WvsBeta.Scripts.Scripts
                     else if (nRet == 1)
                     {
                         var ret = inventory.Exchange(-30000, 4001006, -1, 4021008, -1, 4011007, -1, 4031042, 1);
-                        if (ret == 0) self.Say("Are you sure you have enough money? Veja se você tem #b1 #t4001006#, 1 #t4011007# e 1 #t4021008##k prontos para mim.");
+                        if (ret == 0) self.Say("Are you sure you have enough money? Please see if you have #b1 #t4001006#, 1 #t4011007# and 1 #t4021008##k ready for me.");
                         else nNewItemID1 = "#t4031042#";
                     }
                 }
