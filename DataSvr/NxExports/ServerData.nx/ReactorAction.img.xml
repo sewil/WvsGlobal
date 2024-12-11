@@ -1168,9 +1168,9 @@
       <int name="state" value="4" />
       <int name="type" value="0" />
       <int name="1" value="922000020" />
-      <string name="2" value="st00" />
+      <string name="2" value="sp" />
       <int name="3" value="922000021" />
-      <string name="4" value="st00" />
+      <string name="4" value="sp" />
     </imgdir>
   </imgdir>
   <imgdir name="ludiquest0">
