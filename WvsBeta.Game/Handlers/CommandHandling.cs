@@ -358,6 +358,7 @@ namespace WvsBeta.Game.Handlers
             { "heal", new CommandData("/heal", "Recover all your HP/MP.") },
             { "resurrect", new CommandData("/resurrect <charname>", "Resurrect a player.") },
             { "exp", new CommandData("/exp <value>", "Give yourself EXP.") },
+            { "setexp", new CommandData("/setexp <value>", "Set current EXP to a specified value.") },
             { "mesos", new CommandData("/mesos <value>", "Give yourself mesos.") },
             { "pton", new CommandData("/pton <portal id>", "Enable a portal in your map.") },
             { "ptoff", new CommandData("/ptoff <portal id>", "Disable a portal in your map.") },
@@ -2053,7 +2054,18 @@ namespace WvsBeta.Game.Handlers
                                     character.AddEXP(Args[0].GetInt32(), MessageAppearType.SideWhite);
                                 return true;
                             }
-
+                        case "setexp":
+                            {
+                                if (Args.Count < 1 || int.TryParse(Args[0], out var exp))
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else
+                                {
+                                    character.SetEXP(exp);
+                                }
+                                return true;
+                            }
                         #endregion
 
                         #region Mesos
