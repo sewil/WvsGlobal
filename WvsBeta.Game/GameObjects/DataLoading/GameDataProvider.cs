@@ -896,7 +896,11 @@ namespace WvsBeta.Game
                 foreach (var itemNode in shopNode)
                 {
                     var shopItem = new ShopItemData(itemNode);
-                    if (!Items.ContainsKey(shopItem.ItemID) && !Equips.ContainsKey(shopItem.ItemID)) continue;
+                    if (!Items.ContainsKey(shopItem.ItemID) && !Equips.ContainsKey(shopItem.ItemID))
+                    {
+                        Program.MainForm.LogAppend("Unknown shop item {0} for npc {1}", shopItem.ItemID, npcID);
+                        continue;
+                    }
                     npcData.Shop.Add(shopItem);
                 }
             }
