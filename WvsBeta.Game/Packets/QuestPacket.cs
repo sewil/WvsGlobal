@@ -133,7 +133,7 @@ namespace WvsBeta.Game
                 .Where(item => item.Job == null || questJob.HasFlag(item.Job))
                 // Nothing selected, or item is not selectable, or item is selected
                 .Where((item, itemIdx) => selectIdx == -1 || item.Prop != -1 || itemIdx == selectIdx)
-                .Where(item => item.Gender == PlayerGender.NotApplicable || chr.Gender == item.Gender)
+                .Where(item => (item.Gender != PlayerGender.Male && item.Gender != PlayerGender.Female) || chr.Gender == item.Gender)
                 .ToList();
             int randMax = items.Sum(i => i.Prop);
             int rand = Rand32.NextBetween(0, randMax);
