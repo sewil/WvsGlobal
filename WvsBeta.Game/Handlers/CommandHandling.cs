@@ -497,7 +497,7 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 else if (Args[0] == "start")
                                 {
-                                    if(character.Quests.GetQuests().ContainsKey(id))
+                                    if (character.Quests.GetQuests().ContainsKey(id))
                                     {
                                         character.Message("You already have that quest!");
                                     }
@@ -576,7 +576,8 @@ namespace WvsBeta.Game.Handlers
                                     if (end.Mesos > 0) character.Message($"Mesos: {end.Mesos}");
                                     if (end.Items.Count > 0)
                                     {
-                                        Func<QuestItem, string> itemStr = (i) => {
+                                        Func<QuestItem, string> itemStr = (i) =>
+                                        {
                                             var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : i.Prop == -1 ? " (Selectable)" : "";
                                             var gender = i.Gender != PlayerGender.NotApplicable ? $" (Gender: {i.Gender})" : "";
                                             return string.Format("{0}x {1}{2}{3}", i.Amount, i.ItemID, prop, gender);
@@ -688,15 +689,15 @@ namespace WvsBeta.Game.Handlers
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
-#region Whereami
+                        #region Whereami
                         case "whereami":
                         case "currentmap":
                             {
                                 character.Notice(string.Format("You are currently at map {0}.", character.Field.ID));
                                 return true;
                             }
-#endregion
-#region Map / Goto
+                        #endregion
+                        #region Map / Goto
 
                         case "m":
                         case "map":
@@ -742,16 +743,16 @@ namespace WvsBeta.Game.Handlers
                         case "fsmap":
                         case "mfs":
                         case "fsm":
-                        {
-                            if (Args.Count < 2) character.Message("Usage: /mapfs <fieldset> <map index>");
-                            else if (!FieldSet.Instances.TryGetValue(Args[0], out FieldSet fs)) character.Message("Unknown fieldset.");
-                            else if (!int.TryParse(Args[1], out int mapIdx) || fs.Maps.Length - 1 < mapIdx || mapIdx < 0) character.Message("Invalid map index.");
-                            else character.ChangeMap(fs.Maps[mapIdx]);
-                            return true;
-                        }
-#endregion
+                            {
+                                if (Args.Count < 2) character.Message("Usage: /mapfs <fieldset> <map index>");
+                                else if (!FieldSet.Instances.TryGetValue(Args[0], out FieldSet fs)) character.Message("Unknown fieldset.");
+                                else if (!int.TryParse(Args[1], out int mapIdx) || fs.Maps.Length - 1 < mapIdx || mapIdx < 0) character.Message("Invalid map index.");
+                                else character.ChangeMap(fs.Maps[mapIdx]);
+                                return true;
+                            }
+                        #endregion
 
-#region Chase / Warp
+                        #region Chase / Warp
 
                         case "chase":
                         case "warp":
@@ -766,9 +767,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region ChaseHere / WarpHere
+                        #region ChaseHere / WarpHere
 
                         case "chasehere":
                         case "warphere":
@@ -783,9 +784,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Online
+                        #region Online
 
                         case "online":
                             {
@@ -800,9 +801,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region DC / Kick
+                        #region DC / Kick
 
                         case "dc":
                         case "kick":
@@ -820,9 +821,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Ban
+                        #region Ban
 
                         case "ban":
                         case "banhelp":
@@ -906,9 +907,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Unban
+                        #region Unban
 
                         case "unban":
                             {
@@ -945,9 +946,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Muting
+                        #region Muting
 
                         case "muteban":
                         case "mute":
@@ -1055,9 +1056,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Hackmute / Hackunmute
+                        #region Hackmute / Hackunmute
 
                         case "hackmute":
                             {
@@ -1104,9 +1105,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MoveTrace
+                        #region MoveTrace
 
                         case "movetracepet":
                         case "movetraceplayer":
@@ -1167,9 +1168,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Warn
+                        #region Warn
 
                         case "w":
                         case "warn":
@@ -1207,9 +1208,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MaxSkills
+                        #region MaxSkills
 
                         case "maxskills":
                             {
@@ -1225,9 +1226,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Job
+                        #region Job
 
                         case "job":
                             {
@@ -1246,40 +1247,40 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MP/MP
-                    case "mp":
-                    {
-                        if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
-                            character.SetMP(mp);
-                        return true;
-                    }
-                    case "maxmp":
-                    {
-                        if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
-                            character.SetMPAndMaxMP(mp);
-                        return true;
-                    }
-                    case "hp":
-                    {
-                        if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
-                        {
-                            character.SetHP(hp);
-                        }
-                        return true;
-                    }
-                    case "maxhp":
-                    {
-                        if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
-                        {
-                            character.SetHPAndMaxHP(hp);
-                        }
-                        return true;
-                    }
-#endregion
+                        #region MP/MP
+                        case "mp":
+                            {
+                                if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
+                                    character.SetMP(mp);
+                                return true;
+                            }
+                        case "maxmp":
+                            {
+                                if (Args.Count > 0 && short.TryParse(Args[0], out short mp))
+                                    character.SetMPAndMaxMP(mp);
+                                return true;
+                            }
+                        case "hp":
+                            {
+                                if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
+                                {
+                                    character.SetHP(hp);
+                                }
+                                return true;
+                            }
+                        case "maxhp":
+                            {
+                                if (Args.Count > 0 && short.TryParse(Args[0], out short hp))
+                                {
+                                    character.SetHPAndMaxHP(hp);
+                                }
+                                return true;
+                            }
+                        #endregion
 
-#region Str
+                        #region Str
 
                         case "str":
                             {
@@ -1288,9 +1289,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Dex
+                        #region Dex
 
                         case "dex":
                             {
@@ -1299,9 +1300,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Int
+                        #region Int
 
                         case "int":
                             {
@@ -1310,9 +1311,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Luk
+                        #region Luk
 
                         case "luk":
                             {
@@ -1321,9 +1322,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region AP
+                        #region AP
 
                         case "ap":
                             {
@@ -1332,9 +1333,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region SP
+                        #region SP
 
                         case "sp":
                             {
@@ -1343,9 +1344,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region AddSP
+                        #region AddSP
 
                         case "addsp":
                             {
@@ -1354,9 +1355,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region level/lvl
+                        #region level/lvl
 
                         case "level":
                         case "lvl":
@@ -1366,20 +1367,20 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-                    #region Fame
-                    case "fame":
-                        {
-                            if (short.TryParse(Args[0], out short fame))
+                        #region Fame
+                        case "fame":
                             {
-                                character.SetFame(fame);
+                                if (short.TryParse(Args[0], out short fame))
+                                {
+                                    character.SetFame(fame);
+                                }
+                                return true;
                             }
-                            return true;
-                        }
-                    #endregion
+                        #endregion
 
-#region MaxSlots
+                        #region MaxSlots
 
                         case "maxslots":
                             {
@@ -1408,9 +1409,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MaxStats
+                        #region MaxStats
 
                         case "maxstats":
                             {
@@ -1425,9 +1426,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Pos
+                        #region Pos
 
                         case "pos":
                         case "pos1": //prevent client limitation when spamming this command during testing.
@@ -1440,9 +1441,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Undercover
+                        #region Undercover
 
                         case "undercover":
                             if (Args.Count == 1)
@@ -1458,9 +1459,9 @@ namespace WvsBeta.Game.Handlers
                             character.Message("Usage: !undercover <true/false>");
                             return true;
 
-#endregion
+                        #endregion
 
-#region reportlog/reports
+                        #region reportlog/reports
 
                         case "reportlog":
                         case "reports":
@@ -1471,9 +1472,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region whowashere
+                        #region whowashere
 
                         case "whowashere":
                             {
@@ -1494,9 +1495,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Cash Shop
+                        #region Cash Shop
                         case "cash":
                         case "nxcash":
                         case "givecash":
@@ -1518,13 +1519,13 @@ namespace WvsBeta.Game.Handlers
                                     });
                                     victim.Message($"You have been gifted {amount.Culture()} NX cash.");
                                 }
-                                catch(Exception e)
+                                catch (Exception e)
                                 {
                                     character.Message(e.Message);
                                 }
                                 return true;
                             }
-#endregion
+                            #endregion
                     }
                 }
 
@@ -1532,7 +1533,7 @@ namespace WvsBeta.Game.Handlers
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
-#region Create / Item
+                        #region Create / Item
 
                         case "create":
                         case "item":
@@ -1592,17 +1593,18 @@ namespace WvsBeta.Game.Handlers
                                     return true;
                                 }
                             }
-                    case "itempack":
-                        {
-                            if (ItemPacks.TryGetValue(Args[0], out var items))
+                        case "itempack":
                             {
-                                character.Inventory.MassExchange(0, items);
-                            } else character.Message("Unknown item pack \"" + Args[0] + "\"");
-                            return true;
-                        }
-#endregion
+                                if (ItemPacks.TryGetValue(Args[0], out var items))
+                                {
+                                    character.Inventory.MassExchange(0, items);
+                                }
+                                else character.Message("Unknown item pack \"" + Args[0] + "\"");
+                                return true;
+                            }
+                        #endregion
 
-#region Summon / Spawn
+                        #region Summon / Spawn
 
                         case "summon":
                         case "spawn":
@@ -1623,7 +1625,7 @@ namespace WvsBeta.Game.Handlers
 
                                     if (Args.Count > 2 && sbyte.TryParse(Args[2], out sbyte soption))
                                         summonType = (SummonType)soption;
-                                    if (Args.Count > 3 && int.TryParse(Args[3], out summonOption)){ }
+                                    if (Args.Count > 3 && int.TryParse(Args[3], out summonOption)) { }
 
                                     Amount = character.IsAdmin ? Amount : Math.Min(Amount, 100);
 
@@ -1642,100 +1644,100 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 return true;
                             }
-                    case "summonpos":
-                    case "summonxy":
-                    case "spawnpos":
-                    case "spawnxy":
-                        {
-                            if (Args.Count < 3) character.Notice("Usage: /spawnxy <mobid> <x> <y> [fh] [summonType] [summonOption]");
-                            else if (!int.TryParse(Args[0], out int mobID) || !GameDataProvider.Mobs.ContainsKey(mobID))
-                                character.Notice("Invalid mob id " + Args[0]);
-                            else if (!short.TryParse(Args[1], out short x) || !short.TryParse(Args[2], out short y))
-                                character.Notice("Invalid pos " + Args[1] + "," + Args[2]);
-                            else
+                        case "summonpos":
+                        case "summonxy":
+                        case "spawnpos":
+                        case "spawnxy":
                             {
-                                var pos = new Pos(x, y);
-                                short fh;
-                                int summonOption;
-                                SummonType st = SummonType.Instant;
-                                if (Args.Count < 4 || !short.TryParse(Args[3], out fh)) fh = (short)(character.Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY)?.ID ?? 0);
-                                if (Args.Count >= 5 && sbyte.TryParse(Args[4], out sbyte _st)) st = (SummonType)_st;
-                                if (Args.Count < 6 || !int.TryParse(Args[5], out summonOption)) summonOption = 0;
-                                character.Field.SpawnMobWithoutRespawning(mobID, pos, fh, summonType: st, summonOption: summonOption);
-                            }
-                            return true;
-                        }
-                    #endregion
-
-                    #region FieldSet
-                    case "fieldset":
-                        {
-                            if (Args.Count < 3)
-                            {
-                                character.Message(GetUsage(Args));
-                            }
-                            else if (!FieldSet.Instances.TryGetValue(Args[0], out var fs))
-                            {
-                                character.Message($"Unknown field set '{Args[0]}'!");
-                            }
-                            else if (Args[1] == "timer")
-                            {
-                                if (!int.TryParse(Args[2], out int timeOut) || timeOut <= 0)
+                                if (Args.Count < 3) character.Notice("Usage: /spawnxy <mobid> <x> <y> [fh] [summonType] [summonOption]");
+                                else if (!int.TryParse(Args[0], out int mobID) || !GameDataProvider.Mobs.ContainsKey(mobID))
+                                    character.Notice("Invalid mob id " + Args[0]);
+                                else if (!short.TryParse(Args[1], out short x) || !short.TryParse(Args[2], out short y))
+                                    character.Notice("Invalid pos " + Args[1] + "," + Args[2]);
+                                else
                                 {
-                                    character.Message($"Invalid timer value!");
+                                    var pos = new Pos(x, y);
+                                    short fh;
+                                    int summonOption;
+                                    SummonType st = SummonType.Instant;
+                                    if (Args.Count < 4 || !short.TryParse(Args[3], out fh)) fh = (short)(character.Field.GetFootholdUnderneath(pos.X, pos.Y, out int maxY)?.ID ?? 0);
+                                    if (Args.Count >= 5 && sbyte.TryParse(Args[4], out sbyte _st)) st = (SummonType)_st;
+                                    if (Args.Count < 6 || !int.TryParse(Args[5], out summonOption)) summonOption = 0;
+                                    character.Field.SpawnMobWithoutRespawning(mobID, pos, fh, summonType: st, summonOption: summonOption);
+                                }
+                                return true;
+                            }
+                        #endregion
+
+                        #region FieldSet
+                        case "fieldset":
+                            {
+                                if (Args.Count < 3)
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (!FieldSet.Instances.TryGetValue(Args[0], out var fs))
+                                {
+                                    character.Message($"Unknown field set '{Args[0]}'!");
+                                }
+                                else if (Args[1] == "timer")
+                                {
+                                    if (!int.TryParse(Args[2], out int timeOut) || timeOut <= 0)
+                                    {
+                                        character.Message($"Invalid timer value!");
+                                    }
+                                    else
+                                    {
+                                        fs.SetTimer(timeOut);
+                                    }
+                                }
+                                else if (Args[1] == "minmembers" || Args[1] == "maxmembers")
+                                {
+                                    if (!int.TryParse(Args[2], out int value))
+                                    {
+                                        character.Message($"Invalid value!");
+                                    }
+                                    else if (Args[1] == "minmembers") fs.Data.MinMembers = value;
+                                    else if (Args[1] == "maxmembers") fs.Data.MaxMembers = value;
+                                    character.Message($"Set '{Args[1]}' to {value} in fieldset '{fs.Data.Name}'.");
                                 }
                                 else
                                 {
-                                    fs.SetTimer(timeOut);
+                                    character.Message(GetUsage(Args));
                                 }
+
+                                return true;
                             }
-                            else if (Args[1] == "minmembers" || Args[1] == "maxmembers")
+                        case "fieldsetvar":
                             {
-                                if (!int.TryParse(Args[2], out int value))
+                                if (Args.Count < 3)
                                 {
-                                    character.Message($"Invalid value!");
+                                    character.Message("Usage: /fieldsetvar <fieldsetname> <key> <value>");
+                                    return true;
                                 }
-                                else if (Args[1] == "minmembers") fs.Data.MinMembers = value;
-                                else if (Args[1] == "maxmembers") fs.Data.MaxMembers = value;
-                                character.Message($"Set '{Args[1]}' to {value} in fieldset '{fs.Data.Name}'.");
-                            }
-                            else
-                            {
-                                character.Message(GetUsage(Args));
-                            }
-
-                            return true;
-                        }
-                    case "fieldsetvar":
-                        {
-                            if (Args.Count < 3)
-                            {
-                                character.Message("Usage: /fieldsetvar <fieldsetname> <key> <value>");
+                                var set = FieldSet.Instances[Args[0]];
+                                string key = Args[1];
+                                var value = string.Join(" ", Args.Args.Skip(2));
+                                set.SetVar(key, value);
                                 return true;
                             }
-                            var set = FieldSet.Instances[Args[0]];
-                            string key = Args[1];
-                            var value = string.Join(" ", Args.Args.Skip(2));
-                            set.SetVar(key, value);
-                            return true;
-                    }
-                    case "removefieldsetvar":
-                        {
-                            if (Args.Count < 2)
+                        case "removefieldsetvar":
                             {
-                                character.Message("Usage: /removefieldsetvar <fieldsetname> <key>");
+                                if (Args.Count < 2)
+                                {
+                                    character.Message("Usage: /removefieldsetvar <fieldsetname> <key>");
+                                    return true;
+                                }
+                                var set = FieldSet.Instances[Args[0]];
+                                string key = Args[1];
+                                set.SetVar(key, "");
                                 return true;
                             }
-                            var set = FieldSet.Instances[Args[0]];
-                            string key = Args[1];
-                            set.SetVar(key, "");
-                            return true;
-                        }
-                    #endregion
+                        #endregion
 
-                    #region GetID
+                        #region GetID
 
-                    case "getid":
+                        case "getid":
                             {
                                 if (Args.Count > 0)
                                 {
@@ -1750,9 +1752,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region d / delete
+                        #region d / delete
 
                         case "d":
                         case "delete":
@@ -1775,9 +1777,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region ClearDrops
+                        #region ClearDrops
 
                         case "cleardrops":
                             {
@@ -1785,9 +1787,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region KillMobs / KillAll
+                        #region KillMobs / KillAll
 
                         case "killmobs":
                         case "killall":
@@ -1803,9 +1805,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region KillMobsDMG
+                        #region KillMobsDMG
 
                         case "killalldmg":
                         case "killmobsdmg":
@@ -1817,83 +1819,83 @@ namespace WvsBeta.Game.Handlers
                             }
                         case "dmgmobs":
                         case "dmgall":
-                        {
+                            {
                                 int dmg = Args.Count == 0 ? 0 : Args[0].GetInt32();
                                 int amount = character.Field.DamageAllMobs(character, dmg);
                                 character.Message("Amount of mobs damaged: " + amount.ToString());
                                 return true;
-                        }
-                    case "dmgmob":
-                    case "dmg":
-                    case "damage":
-                        {
-                            if (Args.Count < 2)
+                            }
+                        case "dmgmob":
+                        case "dmg":
+                        case "damage":
                             {
-                                character.Message("Usage: /dmgmob <mobid> <dmg>");
+                                if (Args.Count < 2)
+                                {
+                                    character.Message("Usage: /dmgmob <mobid> <dmg>");
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[0], out int mobid) || !character.Field.Mobs.Select(m => m.Value).TryFind(m => m.MobID == mobid, out Mob mob))
+                                {
+                                    character.Message("Mob " + Args[0] + " not found in current field");
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[1], out int dmg))
+                                {
+                                    character.Message("Invalid dmg " + Args[1]);
+                                    return true;
+                                }
+                                MobPacket.SendMobDamageOrHeal(character.Field, mob, dmg, false, false);
+                                if (!mob.GiveDamage(character, dmg))
+                                {
+                                    mob.ForceDead();
+                                }
                                 return true;
                             }
-                            if (!int.TryParse(Args[0], out int mobid) || !character.Field.Mobs.Select(m => m.Value).TryFind(m => m.MobID == mobid, out Mob mob))
-                            {
-                                character.Message("Mob " + Args[0] + " not found in current field");
-                                return true;
-                            }
-                            if (!int.TryParse(Args[1], out int dmg))
-                            {
-                                character.Message("Invalid dmg " + Args[1]);
-                                return true;
-                            }
-                            MobPacket.SendMobDamageOrHeal(character.Field, mob, dmg, false, false);
-                            if (!mob.GiveDamage(character, dmg))
-                            {
-                                mob.ForceDead();
-                            }
-                            return true;
-                        }
-                    #endregion
+                        #endregion
 
-                    #region Boss HP Bar
-                    case "bosshpbar":
-                    case "hpbar":
-                    {
-                            ///packet 3F 05 00 47 86 00 E1 8D ED 03 80 14 EF 03 01 03 }
-                            if (Args.Count < 5)
+                        #region Boss HP Bar
+                        case "bosshpbar":
+                        case "hpbar":
                             {
-                                character.Message("Usage: /hpbar <mobid> <hp> <maxhp> <colorBottom> <colorTop>");
+                                ///packet 3F 05 00 47 86 00 E1 8D ED 03 80 14 EF 03 01 03 }
+                                if (Args.Count < 5)
+                                {
+                                    character.Message("Usage: /hpbar <mobid> <hp> <maxhp> <colorBottom> <colorTop>");
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[0], out int mobid))
+                                {
+                                    character.Message("Invalid mobid " + mobid);
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[1], out int hp))
+                                {
+                                    character.Message("Invalid hp " + hp);
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[2], out int mhp))
+                                {
+                                    character.Message("Invalid mhp " + mhp);
+                                    return true;
+                                }
+                                if (!byte.TryParse(Args[3], out byte colorBottom))
+                                {
+                                    character.Message("Invalid colorBottom " + colorBottom);
+                                    return true;
+                                }
+                                if (!byte.TryParse(Args[4], out byte colorTop))
+                                {
+                                    character.Message("Invalid colorTop " + colorTop);
+                                    return true;
+                                }
+                                character.Field.SendPacket(FieldEffectPacket.BossHPBar(mobid, hp, mhp, colorBottom, colorTop));
                                 return true;
                             }
-                            if (!int.TryParse(Args[0], out int mobid))
-                            {
-                                character.Message("Invalid mobid " + mobid);
-                                return true;
-                            }
-                            if (!int.TryParse(Args[1], out int hp))
-                            {
-                                character.Message("Invalid hp " + hp);
-                                return true;
-                            }
-                            if (!int.TryParse(Args[2], out int mhp))
-                            {
-                                character.Message("Invalid mhp " + mhp);
-                                return true;
-                            }
-                            if (!byte.TryParse(Args[3], out byte colorBottom))
-                            {
-                                character.Message("Invalid colorBottom " + colorBottom);
-                                return true;
-                            }
-                            if (!byte.TryParse(Args[4], out byte colorTop))
-                            {
-                                character.Message("Invalid colorTop " + colorTop);
-                                return true;
-                            }
-                            character.Field.SendPacket(FieldEffectPacket.BossHPBar(mobid, hp, mhp, colorBottom, colorTop));
-                            return true;
-                    }
-                    #endregion
+                        #endregion
 
-                    #region MapNotice
+                        #region MapNotice
 
-                    case "mapnotice":
+                        case "mapnotice":
                             {
                                 if (Args.Count > 0)
                                 {
@@ -1902,9 +1904,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region ditto/datto
+                        #region ditto/datto
 
                         case "ditto":
                             {
@@ -1939,9 +1941,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Notice
+                        #region Notice
 
                         case "notice":
                             {
@@ -1952,9 +1954,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region SetSP
+                        #region SetSP
 
                         case "setsp":
                             {
@@ -1983,9 +1985,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Heal
+                        #region Heal
 
                         case "heal":
                             {
@@ -1995,21 +1997,21 @@ namespace WvsBeta.Game.Handlers
                                 // CharacterStatsPacket.SendCharacterDamage(character, 0, -hpHealed, 0, 0, 0, 0, null);
                                 return true;
                             }
-                    case "resurrect":
-                    case "revive":
-                        {
-                            if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
+                        case "resurrect":
+                        case "revive":
                             {
-                                PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, skillOnOther: true);
-                                victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                                if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
+                                {
+                                    PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, skillOnOther: true);
+                                    victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                                }
+                                else character.Message($"Dead player \"{Args[0]}\" not found.");
+                                return true;
                             }
-                            else character.Message($"Dead player \"{Args[0]}\" not found.");
-                            return true;
-                        }
 
-#endregion
+                        #endregion
 
-#region AP
+                        #region AP
 
                         case "ap":
                             {
@@ -2018,9 +2020,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region SP
+                        #region SP
 
                         case "sp":
                             {
@@ -2029,9 +2031,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region AddSP
+                        #region AddSP
 
                         case "addsp":
                             {
@@ -2040,9 +2042,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region GiveEXP
+                        #region GiveEXP
 
                         case "exp":
                         case "giveexp":
@@ -2052,9 +2054,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Mesos
+                        #region Mesos
 
                         case "mesos":
                             {
@@ -2063,9 +2065,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region pton/ptoff
+                        #region pton/ptoff
 
                         case "pton":
                         case "ptoff":
@@ -2086,9 +2088,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region portals
+                        #region portals
 
                         case "portals":
                             {
@@ -2108,9 +2110,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Event
+                        #region Event
 
                         case "event":
                         case "events":
@@ -2132,63 +2134,63 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-                    case "eventdesc":
-                        MapPacket.SendGMEventInstructions(character.Field);
-                        character.Message("Sent event description to everybody");
-                        return true;
-                    case "eventstart":
-                    case "startevent":
-                        {
-                            if (character.Field is EventMap eventMap)
+                        case "eventdesc":
+                            MapPacket.SendGMEventInstructions(character.Field);
+                            character.Message("Sent event description to everybody");
+                            return true;
+                        case "eventstart":
+                        case "startevent":
                             {
-                                if (eventMap.Started)
+                                if (character.Field is EventMap eventMap)
                                 {
-                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
-                                    return true;
+                                    if (eventMap.Started)
+                                    {
+                                        character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                        return true;
+                                    }
+                                    else eventMap.Start();
                                 }
-                                else eventMap.Start();
-                            }
-                            else if (character.Field.FieldSet != null)
-                            {
-                                var fs = character.Field.FieldSet;
-                                if (fs.Opened)
+                                else if (character.Field.FieldSet != null)
                                 {
-                                    character.Notice("Event already started!", BroadcastMessageType.Notice);
-                                    return true;
+                                    var fs = character.Field.FieldSet;
+                                    if (fs.Opened)
+                                    {
+                                        character.Notice("Event already started!", BroadcastMessageType.Notice);
+                                        return true;
+                                    }
+                                    else
+                                    {
+                                        character.Field.FieldSet?.Start(character);
+                                    }
                                 }
                                 else
                                 {
-                                    character.Field.FieldSet?.Start(character);
+                                    character.Notice("No event found in this map!", BroadcastMessageType.Notice);
+                                    return true;
                                 }
-                            }
-                            else
-                            {
-                                character.Notice("No event found in this map!", BroadcastMessageType.Notice);
                                 return true;
                             }
-                            return true;
-                        }
-                    case "eventstop":
-                    case "stopevent":
-                    case "endevent":
-                    case "eventend":
-                        {
-                            ChatPacket.SendBroadcastMessageToGMs($"Event stopped early. Kicking everyone if event was in progress...");
-                            if (character.Field is EventMap eventMap) eventMap.End();
-                            else character.Field.FieldSet?.End();
-                            return true;
-                        }
-                    case "resetcoconuts":
-                        {
-                            if (character.Field is Map_Coconut map) map.ResetCoconuts();
-                            else character.Message("Invalid map!");
-                            return true;
-                        }
-                    #endregion
+                        case "eventstop":
+                        case "stopevent":
+                        case "endevent":
+                        case "eventend":
+                            {
+                                ChatPacket.SendBroadcastMessageToGMs($"Event stopped early. Kicking everyone if event was in progress...");
+                                if (character.Field is EventMap eventMap) eventMap.End();
+                                else character.Field.FieldSet?.End();
+                                return true;
+                            }
+                        case "resetcoconuts":
+                            {
+                                if (character.Field is Map_Coconut map) map.ResetCoconuts();
+                                else character.Message("Invalid map!");
+                                return true;
+                            }
+                        #endregion
 
-                    #region Find The Jewel
+                        #region Find The Jewel
 
-                    case "ftjhelp":
+                        case "ftjhelp":
                             {
                                 List<string> HelpMessages = new List<string>()
                             {
@@ -2267,9 +2269,9 @@ namespace WvsBeta.Game.Handlers
                         //        return true;
                         //    }
 
-#endregion
+                        #endregion
 
-#region Snowball
+                        #region Snowball
 
                         case "snowballhelp":
                             {
@@ -2287,9 +2289,9 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-#endregion
+                        #endregion
 
-#region Fitness
+                        #region Fitness
 
                         case "fitnesshelp":
                         case "fithelp":
@@ -2306,9 +2308,9 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-#endregion
+                        #endregion
 
-#region Quiz
+                        #region Quiz
 
                         case "quizhelp":
                             {
@@ -2323,7 +2325,7 @@ namespace WvsBeta.Game.Handlers
                                 HelpMessages.ForEach(m => character.Message(m));
                                 return true;
                             }
-#endregion
+                            #endregion
                     }
                 }
 
@@ -2331,7 +2333,7 @@ namespace WvsBeta.Game.Handlers
                 {
                     switch (Args.Command.ToLowerInvariant())
                     {
-#region Shutdown
+                        #region Shutdown
 
                         case "shutdown":
                             {
@@ -2359,9 +2361,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Clock
+                        #region Clock
 
                         case "clock":
                             {
@@ -2370,9 +2372,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Header
+                        #region Header
 
                         case "header":
                             {
@@ -2391,9 +2393,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Packet
+                        #region Packet
 
                         case "beginpacket":
                             {
@@ -2468,9 +2470,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Drop
+                        #region Drop
 
                         case "drop":
                             {
@@ -2585,9 +2587,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region TogglePortal
+                        #region TogglePortal
 
                         case "toggleportals":
                             {
@@ -2596,9 +2598,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MakeDonator
+                        #region MakeDonator
 
                         case "makedonator":
                             {
@@ -2618,9 +2620,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Participate
+                        #region Participate
 
                         case "participate":
                             {
@@ -2641,9 +2643,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region GetID2
+                        #region GetID2
 
                         case "getid2":
                             {
@@ -2657,9 +2659,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region Save
+                        #region Save
 
                         case "save":
                             {
@@ -2668,9 +2670,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region SaveAll
+                        #region SaveAll
 
                         case "saveall":
                             {
@@ -2685,9 +2687,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region PetName
+                        #region PetName
 
                         case "petname":
                             {
@@ -2713,9 +2715,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region VAC
+                        #region VAC
 
                         case "vac":
                             {
@@ -2771,9 +2773,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MobInfo
+                        #region MobInfo
 
                         case "mobinfo":
                             {
@@ -2787,9 +2789,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region MobChase
+                        #region MobChase
 
                         case "mobchase":
                             {
@@ -2808,9 +2810,9 @@ namespace WvsBeta.Game.Handlers
                                 return true;
                             }
 
-#endregion
+                        #endregion
 
-#region npcreload
+                        #region npcreload
 
                         case "scriptreload":
                         case "reloadscript":
@@ -2836,7 +2838,8 @@ namespace WvsBeta.Game.Handlers
 
                                         character.Notice("Sent request to reload the script to all channels.");
                                     }
-                                    else if (ScriptAccessor.GetScript(Server.Instance, scriptName, (script) => {
+                                    else if (ScriptAccessor.GetScript(Server.Instance, scriptName, (script) =>
+                                    {
                                         character.Notice("Error while recompiling " + scriptName + ". See logs. Script: " + script);
                                     }, true) != null)
                                     {
@@ -2853,9 +2856,9 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 return true;
                             }
-#endregion
+                        #endregion
 
-#region reload cashshop data
+                        #region reload cashshop data
 
                         case "csreload":
                         case "cashshopreload":
@@ -2870,9 +2873,9 @@ namespace WvsBeta.Game.Handlers
                             }
                             return true;
 
-#endregion
+                        #endregion
 
-#region reload world events
+                        #region reload world events
 
                         case "reloadevents":
                         case "eventsreload":
@@ -2884,91 +2887,91 @@ namespace WvsBeta.Game.Handlers
                             }
                             return true;
 
-                    #endregion
+                        #endregion
 
-                    #region Reactors
-                    case "reactorstate":
-                    case "setreactorstate":
-                    case "setreactor":
-                        {
-                            if (Args.Count<2)
+                        #region Reactors
+                        case "reactorstate":
+                        case "setreactorstate":
+                        case "setreactor":
                             {
-                                character.Message("Usage: /reactorstate <rid> <state>");
-                            }
-                            else if (!int.TryParse(Args[0], out int rid))
-                            {
-                                character.Message("Invalid rid " + Args[0]);
-                            }
-                            else if (!character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
-                            {
-                                character.Message($"Reactor {rid} not found!");
-                            }
-                            else if (!byte.TryParse(Args[1], out byte state))
-                            {
-                                character.Message($"Invalid state {Args[1]}!");
-                            }
-                            else
-                            {
-                                reactor.ChangeState(character, state);
-                            }
-                            return true;
-                        }
-                    case "triggerreactor":
-                        {
-                            if (Args.Count == 0) character.Message("Usage: /triggerreractor <reactor id>");
-                            else if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
-                            {
-                                character.Message($"Reactor {rid} not found.");
+                                if (Args.Count < 2)
+                                {
+                                    character.Message("Usage: /reactorstate <rid> <state>");
+                                }
+                                else if (!int.TryParse(Args[0], out int rid))
+                                {
+                                    character.Message("Invalid rid " + Args[0]);
+                                }
+                                else if (!character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
+                                {
+                                    character.Message($"Reactor {rid} not found!");
+                                }
+                                else if (!byte.TryParse(Args[1], out byte state))
+                                {
+                                    character.Message($"Invalid state {Args[1]}!");
+                                }
+                                else
+                                {
+                                    reactor.ChangeState(character, state);
+                                }
                                 return true;
                             }
-                            else if (!reactor.Shown)
+                        case "triggerreactor":
                             {
-                                character.Message("This reactor is not shown!");
-                            }
-                            else
-                            {
-                                reactor.Trigger(character);
-                            }
-                            return true;
-                        }
-                    case "triggerreactorbyname":
-                        {
-                            if (!character.Field.ReactorPool.Reactors.Values.TryFind(i => i.Name == Args[0], out FieldReactor reactor))
-                            {
-                                character.Message($"Reactor {Args[0]} not found.");
+                                if (Args.Count == 0) character.Message("Usage: /triggerreractor <reactor id>");
+                                else if (!int.TryParse(Args[0], out int rid) || !character.Field.ReactorPool.Reactors.TryGetValue(rid, out FieldReactor reactor))
+                                {
+                                    character.Message($"Reactor {rid} not found.");
+                                    return true;
+                                }
+                                else if (!reactor.Shown)
+                                {
+                                    character.Message("This reactor is not shown!");
+                                }
+                                else
+                                {
+                                    reactor.Trigger(character);
+                                }
                                 return true;
                             }
-                            else if (!reactor.Shown)
+                        case "triggerreactorbyname":
                             {
-                                character.Message("This reactor is not shown!");
-                            }
-                            else
-                            {
-                                reactor.Trigger();
-                            }
-                            return true;
-                        }
-                    case "reactor":
-                        {
-                            if (Args.Count < 3)
-                            {
-                                character.Notice("Usage: <int reactorId> <byte state> <bool facesLeft>");
+                                if (!character.Field.ReactorPool.Reactors.Values.TryFind(i => i.Name == Args[0], out FieldReactor reactor))
+                                {
+                                    character.Message($"Reactor {Args[0]} not found.");
+                                    return true;
+                                }
+                                else if (!reactor.Shown)
+                                {
+                                    character.Message("This reactor is not shown!");
+                                }
+                                else
+                                {
+                                    reactor.Trigger();
+                                }
                                 return true;
                             }
-                            if (!int.TryParse(Args[0], out int rid) || !GameDataProvider.Reactors.TryGetValue(rid, out Reactor reactor))
+                        case "reactor":
                             {
-                                character.Notice("Unknown reactor id " + Args[0]);
+                                if (Args.Count < 3)
+                                {
+                                    character.Notice("Usage: <int reactorId> <byte state> <bool facesLeft>");
+                                    return true;
+                                }
+                                if (!int.TryParse(Args[0], out int rid) || !GameDataProvider.Reactors.TryGetValue(rid, out Reactor reactor))
+                                {
+                                    character.Notice("Unknown reactor id " + Args[0]);
+                                    return true;
+                                }
+                                var pos = character.Position;
+                                byte id = (byte)character.Field.ReactorPool.Reactors.Count;
+                                var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
+                                character.Field.ReactorPool.AddReactor(mr, true);
+                                Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
                                 return true;
                             }
-                            var pos = character.Position;
-                            byte id = (byte)character.Field.ReactorPool.Reactors.Count;
-                            var mr = new FieldReactor(id, character.Field, reactor, byte.Parse(Args[1]), pos.X, (short)(pos.Y - 80), bool.Parse(Args[2]));
-                            character.Field.ReactorPool.AddReactor(mr, true);
-                            Program.MainForm.LogAppend("Added reactor with ID " + reactor.ID + " (" + mr.ID + ") on map " + character.Field.ID);
-                            return true;
-                        }
-#endregion
-                }
+                            #endregion
+                    }
                 }
 
                 character.Message($"Unknown command: {text}");
