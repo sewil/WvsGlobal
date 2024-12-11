@@ -177,6 +177,7 @@ namespace WvsBeta.Game
             }
             else if (act.Stage.Stage == QuestStage.Complete)
             {
+                chr.Quests.SetComplete(act.Stage.Quest.QuestID);
                 if (act.NextQuest > 0)
                 {
                     if (!GameDataProvider.Quests.TryGetValue(act.NextQuest, out WZQuestData nextQuest)) throw new QuestException(QuestActionResult.UnknownError);
@@ -184,7 +185,6 @@ namespace WvsBeta.Game
                 }
                 else
                 {
-                    chr.Quests.SetComplete(act.Stage.Quest.QuestID);
                     SendQuestActionResult(chr, QuestActionResult.Success, npcID, act.Stage.Quest.QuestID);
                 }
             }
