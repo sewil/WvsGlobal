@@ -1088,4 +1088,27 @@
       <int name="mp" value="200" />
     </imgdir>
   </imgdir>
+  <imgdir name="02022121">
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="-1" y="29" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="-1" y="29" />
+      </canvas>
+      <int name="price" value="8000" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+    <imgdir name="spec">
+      <int name="acc" value="30" />
+      <int name="eva" value="30" />
+      <int name="hp" value="100" />
+      <int name="jump" value="10" />
+      <int name="mp" value="100" />
+      <int name="pad" value="120" />
+      <int name="pdd" value="100" />
+      <int name="speed" value="10" />
+      <int name="time" value="600000" />
+    </imgdir>
+  </imgdir>
 </imgdir>

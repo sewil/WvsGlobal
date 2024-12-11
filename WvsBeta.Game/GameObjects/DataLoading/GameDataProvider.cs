@@ -181,30 +181,32 @@ namespace WvsBeta.Game
                     foreach (var questStage in quest.Value.Stages)
                     {
                         // Add quest items and check non-existing items
-                        foreach (var questItem in questStage.Value.Check.Items)
+                        var items = questStage.Value.Check.Items.Select(i => i.Value).ToList();
+                        items.AddRange(questStage.Value.Act.Items);
+                        foreach (var questItem in items)
                         {
-                            bool isEquip = Constants.isEquip(questItem.Key);
+                            bool isEquip = Constants.isEquip(questItem.ItemID);
                             bool isQuestItem = false;
-                            if (isEquip && Equips.TryGetValue(questItem.Key, out EquipData equipData))
+                            if (isEquip && Equips.TryGetValue(questItem.ItemID, out EquipData equipData))
                             {
                                 isQuestItem = equipData.IsQuest;
                             }
-                            else if (!isEquip && Items.TryGetValue(questItem.Key, out ItemData itemData))
+                            else if (!isEquip && Items.TryGetValue(questItem.ItemID, out ItemData itemData))
                             {
                                 isQuestItem = itemData.IsQuest;
                             }
                             else
                             {
-                                Program.MainForm.LogAppend("Unknown {3} {0} in quest {1} (stage {2})!", questItem.Key, quest.Key, (byte)questStage.Key, isEquip ? "equip" : "item");
+                                Program.MainForm.LogAppend("Unknown {3} {0} in quest {1} (stage {2})!", questItem.ItemID, quest.Key, (byte)questStage.Key, isEquip ? "equip" : "item");
                             }
                             if (isQuestItem)
                             {
-                                QuestItems.SafeAdd(questItem.Key, quest.Key);
+                                QuestItems.SafeAdd(questItem.ItemID, quest.Key);
                             }
                         }
 
                         // Check non-existing NPCs
-                        int npcID = questStage.Value.Check.NpcID;
+                        var npcID = questStage.Value.Check.NpcID;
                         if (npcID != 0 && !NPCs.ContainsKey(npcID))
                         {
                             Program.MainForm.LogAppend("Unknown NPC {0} in quest {1} (stage {2})!", npcID, quest.Key, (byte)questStage.Key);

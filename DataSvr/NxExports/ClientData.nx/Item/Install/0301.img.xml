@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<imgdir name="0301.img">
+  <imgdir name="03010000">
+    <imgdir name="effect">
+      <canvas name="0">
+        <vector name="origin" x="21" y="-16" />
+      </canvas>
+      <int name="pos" value="1" />
+      <int name="z" value="-1" />
+    </imgdir>
+    <imgdir name="info">
+      <canvas name="icon">
+        <vector name="origin" x="1" y="30" />
+      </canvas>
+      <canvas name="iconRaw">
+        <vector name="origin" x="1" y="30" />
+      </canvas>
+      <int name="notSale" value="1" />
+      <int name="price" value="100" />
+      <int name="recoveryHP" value="50" />
+      <int name="slotMax" value="1" />
+      <int name="tradeBlock" value="1" />
+    </imgdir>
+  </imgdir>
+</imgdir>
