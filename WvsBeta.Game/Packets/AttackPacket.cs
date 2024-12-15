@@ -386,26 +386,12 @@ namespace WvsBeta.Game
                 }
             }
 
-            if (chr.PrimaryStats.BuffComboAttack.IsSet() && TotalDamage > 0)
+            var (curr, next, update) = GetComboAttackN(chr, ad.SkillID, TotalDamage > 0);
+            if (update)
             {
-                if (ad.SkillID == Constants.Crusader.Skills.AxeComa ||
-                    ad.SkillID == Constants.Crusader.Skills.SwordComa ||
-                    ad.SkillID == Constants.Crusader.Skills.AxePanic ||
-                    ad.SkillID == Constants.Crusader.Skills.SwordPanic)
-                {
-                    chr.PrimaryStats.BuffComboAttack.N = 1;
-                    BuffPacket.AddBuffs(chr, Common.Enums.BuffValueTypes.ComboAttack);
-                    MapPacket.SendPlayerBuffed(chr, Common.Enums.BuffValueTypes.ComboAttack);
-                }
-                else if (ad.SkillID != Constants.Crusader.Skills.Shout)
-                {
-                    if (chr.PrimaryStats.BuffComboAttack.N <= chr.PrimaryStats.BuffComboAttack.MaxOrbs)
-                    {
-                        chr.PrimaryStats.BuffComboAttack.N++;
-                        BuffPacket.AddBuffs(chr, Common.Enums.BuffValueTypes.ComboAttack);
-                        MapPacket.SendPlayerBuffed(chr, Common.Enums.BuffValueTypes.ComboAttack);
-                    }
-                }
+                chr.PrimaryStats.BuffComboAttack.N = next;
+                BuffPacket.AddBuffs(chr, Common.Enums.BuffValueTypes.ComboAttack);
+                MapPacket.SendPlayerBuffed(chr, Common.Enums.BuffValueTypes.ComboAttack);
             }
 
 
@@ -462,7 +448,7 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffCharges.Set(
                             ad.SkillID,
                             sld.XValue,
-                            MasterThread.CurrentTime + 1000*sld.BuffSeconds
+                            MasterThread.CurrentTime + 1000 * sld.BuffSeconds
                         );
                         BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
@@ -475,7 +461,7 @@ namespace WvsBeta.Game
                         var buff = chr.PrimaryStats.BuffStun.Set(
                             ad.SkillID,
                             1,
-                            MasterThread.CurrentTime + 1000*sld.YValue
+                            MasterThread.CurrentTime + 1000 * sld.YValue
                         );
                         BuffPacket.AddBuffs(chr, buff);
                         MapPacket.SendPlayerBuffed(chr, buff);
@@ -483,6 +469,33 @@ namespace WvsBeta.Game
                     }
             }
 
+        }
+
+        public static (short curr, short next, bool update) GetComboAttackN(GameCharacter chr, int skillID, bool hasDamage)
+        {
+            if (!chr.PrimaryStats.BuffComboAttack.IsSet()) return (0, 0, false);
+            else if (skillID == Constants.Crusader.Skills.AxeComa ||
+                skillID == Constants.Crusader.Skills.SwordComa ||
+                skillID == Constants.Crusader.Skills.AxePanic ||
+                skillID == Constants.Crusader.Skills.SwordPanic)
+            {
+                return (chr.PrimaryStats.BuffComboAttack.N, 1, true);
+            }
+            if (!hasDamage) return (0, 0, false);
+            else
+            {
+                bool update = skillID != Constants.Crusader.Skills.Shout;
+                short next;
+                if (update)
+                {
+                    next = (short)Math.Min(chr.PrimaryStats.BuffComboAttack.MaxOrbs + 1, chr.PrimaryStats.BuffComboAttack.N + 1);
+                }
+                else
+                {
+                    next = chr.PrimaryStats.BuffComboAttack.N;
+                }
+                return (chr.PrimaryStats.BuffComboAttack.N, next, update);
+            }
         }
 
         public static void HandleRangedAttack(GameCharacter chr, Packet packet)
@@ -644,7 +657,7 @@ namespace WvsBeta.Game
             }
         }
 
-        
+
         public static void HandleSummonAttack(GameCharacter chr, Packet packet)
         {
             if (!ParseAttackData(chr, packet, out AttackData ad, AttackTypes.Summon)) return;
@@ -674,7 +687,7 @@ namespace WvsBeta.Game
 
                             if (!dead)
                             {
-                                switch(summon.SkillId)
+                                switch (summon.SkillId)
                                 {
                                     case Constants.Ranger.Skills.SilverHawk:
                                     case Constants.Sniper.Skills.GoldenEagle:

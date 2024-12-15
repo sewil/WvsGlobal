@@ -9,7 +9,6 @@ namespace WvsBeta.Game
     public class CharacterBuffs
     {
         public GameCharacter Character { get; set; }
-        public byte mComboCount { get; set; }
 
         public CharacterBuffs(GameCharacter chr)
         {

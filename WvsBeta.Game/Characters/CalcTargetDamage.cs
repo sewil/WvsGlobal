@@ -918,15 +918,16 @@ namespace WvsBeta.Game.Characters
         private void ApplyComboAttack()
         {
             var comboSkill = chr.Skills.GetSkillLevelData(Crusader.Skills.ComboAttack);
-            var orbs = chr.Buffs.mComboCount;
-            if (comboSkill == null || orbs <= 0) return;
+            var (currN, _, _) = AttackPacket.GetComboAttackN(chr, skillID, true);
+            var currOrbs = currN - 1;
+            if (comboSkill == null || currOrbs <= 0) return;
             var comboDmg = comboSkill.Damage;
             double modifier;
 
-            if (orbs == 1) modifier = comboDmg;
+            if (currOrbs == 1) modifier = comboDmg;
             else if (skillID >= Crusader.Skills.SwordPanic && skillID <= Crusader.Skills.AxeComa)
             {
-                switch (orbs)
+                switch (currOrbs)
                 {
                     case 2:
                         modifier = (24 * comboSkill.Level - 24) / 29 + comboDmg + 6;
@@ -946,7 +947,7 @@ namespace WvsBeta.Game.Characters
             else
             {
                 double dmgBonus;
-                switch (orbs)
+                switch (currOrbs)
                 {
                     case 2:
                         dmgBonus = 5 * comboSkill.Level - 5;

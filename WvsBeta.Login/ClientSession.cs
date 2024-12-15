@@ -124,7 +124,7 @@ namespace WvsBeta.Login
                             break;
                         case ClientMessages.CLIENT_CRASH_REPORT:
                             crashLogTmp = packet.ReadString();
-                            Program.MainForm.LogAppend("Received a crashlog!!!", crashLogTmp);
+                            Program.MainForm.LogAppend("Received a crashlog!!! {0}", crashLogTmp);
                             if (crashLogTmp.Contains("LdrShutdownProcess"))
                             {
                                 // Ignore
