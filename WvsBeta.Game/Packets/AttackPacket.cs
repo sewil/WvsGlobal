@@ -266,7 +266,7 @@ namespace WvsBeta.Game
 
             SendMeleeAttack(chr, ad);
             Mob mob;
-            bool died;
+            bool mobDied;
             int TotalDamage = 0;
 
             if (ad.SkillID != 0)
@@ -311,10 +311,10 @@ namespace WvsBeta.Game
 
                     if (TotalDamage == 0) continue;
 
-                    died = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? ad.MesoExplosionKillDelay : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
+                    mobDied = mob.CheckDead(ai.HitPosition, ad.IsMesoExplosion ? ad.MesoExplosionKillDelay : ai.HitDelay, chr.PrimaryStats.BuffMesoUP.N);
 
                     //TODO sometimes when attacking without using a skill this gets triggered and throws a exception?
-                    if (died || ad.SkillID <= 0) continue;
+                    if (ad.SkillID <= 0) continue;
 
                     if (ad.SkillID != 0)
                     {
@@ -339,16 +339,18 @@ namespace WvsBeta.Game
                             // Debuffs
 
                             case Constants.Rogue.Skills.Disorder:
-
-                                addedStats = mob.Status.BuffPhysicalDamage.Set(ad.SkillID, (short)sld.XValue, buffExpireTime);
-                                addedStats |= mob.Status.BuffPhysicalDefense.Set(ad.SkillID, (short)sld.XValue, buffExpireTime);
+                                if (!mobDied)
+                                {
+                                    addedStats = mob.Status.BuffPhysicalDamage.Set(ad.SkillID, (short)sld.XValue, buffExpireTime);
+                                    addedStats |= mob.Status.BuffPhysicalDefense.Set(ad.SkillID, (short)sld.XValue, buffExpireTime);
+                                }
                                 break;
 
                             case Constants.WhiteKnight.Skills.ChargeBlow: // Not sure if this should add the stun
                             case Constants.Crusader.Skills.AxeComa:
                             case Constants.Crusader.Skills.SwordComa:
                             case Constants.Crusader.Skills.Shout:
-                                if (!boss && IsSuccessRoll())
+                                if (!mobDied && !boss && IsSuccessRoll())
                                 {
                                     addedStats = mob.Status.BuffStun.Set(ad.SkillID, (short)-sld.BuffSeconds, buffExpireTime);
                                 }
@@ -357,7 +359,7 @@ namespace WvsBeta.Game
 
                             case Constants.Crusader.Skills.AxePanic:
                             case Constants.Crusader.Skills.SwordPanic:
-                                if (!boss && IsSuccessRoll())
+                                if (!mobDied && !boss && IsSuccessRoll())
                                 {
                                     addedStats = mob.Status.BuffDarkness.Set(ad.SkillID, (short)1, buffExpireTime);
                                     //darkness animation doesnt show in this ver?
@@ -366,7 +368,7 @@ namespace WvsBeta.Game
 
                         }
 
-                        if (addedStats != 0)
+                        if (!mobDied && addedStats != 0)
                         {
                             MobPacket.SendMobStatsTempSet(mob, ai.HitDelay, addedStats);
                         }
