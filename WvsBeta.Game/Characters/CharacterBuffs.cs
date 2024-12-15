@@ -97,18 +97,18 @@ namespace WvsBeta.Game
             primaryStats.BuffBonuses.MaxMP = 0;
 
 
-            if (Character.HP > primaryStats.GetMaxHP(false))
+            if (Character.HP > primaryStats.TotalMaxHP)
             {
-                Character.ModifyHP(primaryStats.GetMaxHP(false));
+                Character.ModifyHP(primaryStats.TotalMaxHP);
             }
 
-            if (Character.CharacterStat.MP > primaryStats.GetMaxMP(false))
+            if (Character.CharacterStat.MP > primaryStats.TotalMaxMP)
             {
-                Character.ModifyMP(primaryStats.GetMaxMP(false));
+                Character.ModifyMP(primaryStats.TotalMaxMP);
             }
 
-            //mCharacter.SetMaxHP(primaryStats.GetMaxHP(false));
-            //mCharacter.SetMaxMP(primaryStats.GetMaxMP(false));
+            //mCharacter.SetMaxHP(primaryStats.TotalMaxHP);
+            //mCharacter.SetMaxMP(primaryStats.TotalMaxMP);
         }
 
 

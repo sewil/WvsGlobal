@@ -1992,9 +1992,9 @@ namespace WvsBeta.Game.Handlers
 
                         case "heal":
                             {
-                                int hpHealed = character.PrimaryStats.GetMaxHP(false) - character.HP;
-                                character.ModifyHP(character.PrimaryStats.GetMaxHP(false));
-                                character.ModifyMP(character.PrimaryStats.GetMaxMP(false));
+                                int hpHealed = character.PrimaryStats.TotalMaxHP - character.HP;
+                                character.ModifyHP(character.PrimaryStats.TotalMaxHP);
+                                character.ModifyMP(character.PrimaryStats.TotalMaxMP);
                                 // CharacterStatsPacket.SendCharacterDamage(character, 0, -hpHealed, 0, 0, 0, 0, null);
                                 return true;
                             }
@@ -2004,7 +2004,7 @@ namespace WvsBeta.Game.Handlers
                                 if (character.Field.Characters.TryFind(i => i.Name.ToLower() == Args[0].ToString().ToLower(), out var victim) && victim.HP == 0)
                                 {
                                     PlayerEffectPacket.SendSkill(victim, Constants.Gm.Skills.Resurrection, 1, skillOnOther: true);
-                                    victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                                    victim.ModifyHP(victim.PrimaryStats.TotalMaxHP, true);
                                 }
                                 else character.Message($"Dead player \"{Args[0]}\" not found.");
                                 return true;

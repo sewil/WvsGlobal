@@ -229,12 +229,12 @@ namespace WvsBeta.Game
 
                         var bigHeal = Math.Min(((long)healRate / (count == 0 ? 1 : count)), short.MaxValue); //prevent integer overflow caused by high stats. Set count to 1 when not in party
                         var heal = (short)bigHeal;
-                        chr.ModifyHP((short)Math.Min(heal, (chr.PrimaryStats.GetMaxHP() - chr.HP)));
+                        chr.ModifyHP((short)Math.Min(heal, (chr.PrimaryStats.TotalMaxHP - chr.HP)));
 
                         handlePartyEffectsWithPlayers(members, Delay, victim =>
                         {
                             int oldHP = victim.HP;
-                            victim.ModifyHP((short)Math.Min(heal, (victim.PrimaryStats.GetMaxHP() - victim.HP)));
+                            victim.ModifyHP((short)Math.Min(heal, (victim.PrimaryStats.TotalMaxHP - victim.HP)));
                             chr.AddEXP(20 * ((victim.HP - oldHP) / (8 * victim.Level + 190)), MessageAppearType.SideWhite);
                         });
 
@@ -314,12 +314,12 @@ namespace WvsBeta.Game
                         getFullMapPlayersForGMSkill().ForEach(victim =>
                         {
                             PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, skillOnOther: true);
-                            victim.ModifyHP(victim.PrimaryStats.GetMaxMP(false), true);
-                            victim.ModifyMP(victim.PrimaryStats.GetMaxMP(false), true);
+                            victim.ModifyHP(victim.PrimaryStats.TotalMaxMP, true);
+                            victim.ModifyMP(victim.PrimaryStats.TotalMaxMP, true);
                             victim.Buffs.Dispell();
                         });
-                        chr.ModifyHP(chr.PrimaryStats.GetMaxMP(false), true);
-                        chr.ModifyMP(chr.PrimaryStats.GetMaxMP(false), true);
+                        chr.ModifyHP(chr.PrimaryStats.TotalMaxMP, true);
+                        chr.ModifyMP(chr.PrimaryStats.TotalMaxMP, true);
                         chr.Buffs.Dispell();
                         break;
                     }
@@ -330,7 +330,7 @@ namespace WvsBeta.Game
                             if (victim.HP <= 0)
                             {
                                 PlayerEffectPacket.SendSkill(victim, SkillID, SkillLevel, skillOnOther: true);
-                                victim.ModifyHP(victim.PrimaryStats.GetMaxHP(false), true);
+                                victim.ModifyHP(victim.PrimaryStats.TotalMaxHP, true);
                             }
                         });
                         break;

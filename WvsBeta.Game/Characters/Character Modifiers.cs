@@ -42,7 +42,7 @@ namespace WvsBeta.Game
             }
 
             SetMaxHP(value);
-            HP = value;
+            HP = PrimaryStats.TotalMaxHP;
 
             if (sendPacket == true)
             {
@@ -62,20 +62,7 @@ namespace WvsBeta.Game
         public void ModifyHP(short value, bool sendPacket = true)
         {
             var startValue = HP;
-
-            if ((HP + value) < 0)
-            {
-                HP = 0;
-            }
-            else if ((HP + value) > PrimaryStats.GetMaxHP(false))
-            {
-                HP = PrimaryStats.GetMaxHP(false);
-            }
-            else
-            {
-                HP = (short)(HP + value);
-            }
-
+            HP = (short)IntExtensions.Clamp(HP + value, 0, PrimaryStats.TotalMaxHP);
 
             if (sendPacket)
             {
@@ -104,13 +91,8 @@ namespace WvsBeta.Game
 
         public void SetMPAndMaxMP(short value, bool isBySelf = false, bool sendPacket = true)
         {
-            if (value < 0)
-            {
-                value = 0;
-            }
-
             SetMaxMP(value);
-            CharacterStat.MP = value;
+            CharacterStat.MP = PrimaryStats.TotalMaxMP;
 
             if (sendPacket == true)
             {
@@ -124,9 +106,9 @@ namespace WvsBeta.Game
             {
                 CharacterStat.MP = 0;
             }
-            else if ((CharacterStat.MP + value) > PrimaryStats.GetMaxMP(false))
+            else if ((CharacterStat.MP + value) > PrimaryStats.TotalMaxMP)
             {
-                CharacterStat.MP = PrimaryStats.GetMaxMP(false);
+                CharacterStat.MP = PrimaryStats.TotalMaxMP;
             }
             else
             {
@@ -166,19 +148,17 @@ namespace WvsBeta.Game
 
         public void SetMaxHP(short value)
         {
-            _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxhp", add = false });
-            if (value > Constants.MaxMaxHp) value = Constants.MaxMaxHp;
-            else if (value < Constants.MinMaxHp) value = Constants.MinMaxHp;
-            CharacterStat.MaxHP = value;
+            var clampedValue = (short)IntExtensions.Clamp(value, Constants.MinMaxHp, Constants.MaxMaxHp);
+            _characterLog.Info(new StatChangeLogRecord { value = clampedValue, type = "maxhp", add = false });
+            CharacterStat.MaxHP = clampedValue;
             CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxHp);
         }
 
         public void SetMaxMP(short value)
         {
-            _characterLog.Info(new StatChangeLogRecord { value = value, type = "maxmp", add = false });
-            if (value > Constants.MaxMaxMp) value = Constants.MaxMaxMp;
-            else if (value < Constants.MinMaxMp) value = Constants.MinMaxMp;
-            CharacterStat.MaxMP = value;
+            var clampedValue = (short)IntExtensions.Clamp(value, Constants.MinMaxMp, Constants.MaxMaxMp);
+            _characterLog.Info(new StatChangeLogRecord { value = clampedValue, type = "maxmp", add = false });
+            CharacterStat.MaxMP = clampedValue;
             CharacterStatsPacket.SendStatChanged(this, StatFlags.MaxMp);
         }
 
@@ -204,14 +184,9 @@ namespace WvsBeta.Game
         public void AddFame(short value, bool sendMessage = false)
         {
             _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = true });
-            if (CharacterStat.Fame + value > Int16.MaxValue)
-            {
-                SetFame(Int16.MaxValue);
-            }
-            else
-            {
-                SetFame((short)(CharacterStat.Fame + value));
-            }
+            var fame = (short)IntExtensions.Clamp(CharacterStat.Fame + value, Constants.MinFame, Constants.MaxFame);
+            if (fame == CharacterStat.Fame) return; // Unchanged
+            SetFame(fame);
             if (sendMessage)
             {
                 SendPacket(MessagePacket.GainFame(value));
@@ -220,8 +195,9 @@ namespace WvsBeta.Game
 
         public void SetFame(short value)
         {
-            _characterLog.Info(new StatChangeLogRecord { value = value, type = "fame", add = false });
-            CharacterStat.Fame = value;
+            short fame = (short)IntExtensions.Clamp(value, Constants.MinFame, Constants.MaxFame);
+            _characterLog.Info(new StatChangeLogRecord { value = fame, type = "fame", add = false });
+            CharacterStat.Fame = fame;
             CharacterStatsPacket.SendStatChanged(this, StatFlags.Fame);
         }
 
@@ -339,8 +315,8 @@ namespace WvsBeta.Game
                 SetLevel(level);
                 AddAP(apgain);
                 AddSP(spgain);
-                ModifyHP(PrimaryStats.GetMaxHP(false));
-                ModifyMP(PrimaryStats.GetMaxMP(false));
+                ModifyHP(PrimaryStats.TotalMaxHP);
+                ModifyMP(PrimaryStats.TotalMaxMP);
                 save = true;
             }
 

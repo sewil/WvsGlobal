@@ -43,11 +43,11 @@ namespace WvsBeta.Game
             }
             if (data.HPRate > 0)
             {
-                chr.ModifyHP((short)(data.HPRate * chr.PrimaryStats.GetMaxHP(false) / 100), true);
+                chr.ModifyHP((short)(data.HPRate * chr.PrimaryStats.TotalMaxHP / 100), true);
             }
             if (data.MPRate > 0)
             {
-                chr.ModifyMP((short)(data.MPRate * chr.PrimaryStats.GetMaxMP(false) / 100), true);
+                chr.ModifyMP((short)(data.MPRate * chr.PrimaryStats.TotalMaxMP / 100), true);
             }
 
             if (data.BuffTime > 0 || data.Cures != 0)

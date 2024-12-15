@@ -1,4 +1,5 @@
 ﻿using System;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.BuffStats;
 using WvsBeta.Common.Sessions;
@@ -50,8 +51,8 @@ namespace WvsBeta.Common.Characters
         public int TotalDex => CharacterStat.Dex + EquipBonuses.Dex;
         public int TotalInt => CharacterStat.Int + EquipBonuses.Int;
         public int TotalLuk => CharacterStat.Luk + EquipBonuses.Luk;
-        public int TotalMaxHP => CharacterStat.MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP;
-        public int TotalMaxMP => CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP;
+        public short TotalMaxHP => (short)IntExtensions.Clamp(CharacterStat.MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP, Constants.MinMaxHp, Constants.MaxMaxHp);
+        public short TotalMaxMP => (short)IntExtensions.Clamp(CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP, Constants.MinMaxMp, Constants.MaxMaxMp);
         public virtual int EVA { get { throw new NotImplementedException(); } }
         public short MDD => CharacterStat.Int;
         public short TotalMAD => (short)Math.Max(0, Math.Min(TotalInt + EquipBonuses.MAD + BuffBonuses.MAD, 1999));
@@ -68,23 +69,6 @@ namespace WvsBeta.Common.Characters
         public CharacterPrimaryStats(GW_CharacterStat characterStat)
         {
             CharacterStat = characterStat;
-        }
-
-        public short GetMaxHP(bool nobonus = false)
-        {
-            if (!nobonus)
-            {
-                return (short)((CharacterStat.MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP) > short.MaxValue ? short.MaxValue : (CharacterStat.MaxHP + EquipBonuses.MaxHP + BuffBonuses.MaxHP));
-            }
-            return CharacterStat.MaxHP;
-        }
-        public short GetMaxMP(bool nobonus = false)
-        {
-            if (!nobonus)
-            {
-                return (short)((CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP) > short.MaxValue ? short.MaxValue : (CharacterStat.MaxMP + EquipBonuses.MaxMP + BuffBonuses.MaxMP));
-            }
-            return CharacterStat.MaxMP;
         }
         public virtual void Reset(bool sendPacket) { throw new NotImplementedException(); }
         public virtual void UpdateEquipStats(sbyte slot, EquipItem equip, bool isLoading)

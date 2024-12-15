@@ -195,8 +195,8 @@ namespace WvsBeta.Game
 
         public override void CheckHPMP()
         {
-            short mhp = GetMaxHP(false);
-            short mmp = GetMaxMP(false);
+            short mhp = TotalMaxHP;
+            short mmp = TotalMaxMP;
             if (Char.HP > mhp)
             {
                 Char.ModifyHP(mhp);

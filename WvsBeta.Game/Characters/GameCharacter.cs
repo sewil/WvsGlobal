@@ -388,7 +388,7 @@ namespace WvsBeta.Game
             Field
                 .GetInParty(PartyID)
                 .Where(p => p.CharacterStat.ID != CharacterStat.ID)
-                .ForEach(p => p.SendPacket(PartyPacket.SendHpUpdate(HP, PrimaryStats.GetMaxHP(), CharacterStat.ID)));
+                .ForEach(p => p.SendPacket(PartyPacket.SendHpUpdate(HP, PrimaryStats.TotalMaxHP, CharacterStat.ID)));
 
         }
 
@@ -402,8 +402,8 @@ namespace WvsBeta.Game
                 .Select(p => Tuple.Create(this, p))
                 .ForEach(pair =>
                 {
-                    pair.Item1.SendPacket(PartyPacket.SendHpUpdate(pair.Item2.HP, pair.Item2.PrimaryStats.GetMaxHP(), pair.Item2.CharacterStat.ID));
-                    pair.Item2.SendPacket(PartyPacket.SendHpUpdate(pair.Item1.HP, pair.Item1.PrimaryStats.GetMaxHP(), pair.Item1.CharacterStat.ID));
+                    pair.Item1.SendPacket(PartyPacket.SendHpUpdate(pair.Item2.HP, pair.Item2.PrimaryStats.TotalMaxHP, pair.Item2.CharacterStat.ID));
+                    pair.Item2.SendPacket(PartyPacket.SendHpUpdate(pair.Item1.HP, pair.Item1.PrimaryStats.TotalMaxHP, pair.Item1.CharacterStat.ID));
                 });
         }
 

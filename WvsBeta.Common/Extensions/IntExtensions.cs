@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 
 namespace WvsBeta.Common.Extensions
 {
@@ -11,6 +12,10 @@ namespace WvsBeta.Common.Extensions
         public static string Pluralis(this int value, string plural, string singular)
         {
             return value == 1 ? singular : plural;
+        }
+        public static int Clamp(int n, int min, int max)
+        {
+            return Math.Max(min, Math.Min(max, n));
         }
     }
 }
