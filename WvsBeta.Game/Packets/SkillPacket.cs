@@ -194,9 +194,27 @@ namespace WvsBeta.Game
                     }
                 case Constants.ChiefBandit.Skills.Chakra:
                     {
-                        var mpCon = (short)IntExtensions.Clamp(chr.HP * (sld.YValue / 100), 0, chr.CharacterStat.MP);
+                        //var mpCon = (short)IntExtensions.Clamp(chr.HP * (sld.YValue / 100), 0, chr.CharacterStat.MP);
+                        ///*
+                        // MapleTip:
+                        // The minimum amount recovered is given by (Luck*3.3 + Dex) * 0.2, and the maximum amount is (Luck*6.6 + Dex) * 0.2.
+                        // A random number is chosen between the minimum amount and the maximum amount, then modified by the "Amount Recovered" percentage.
+                        // So with 500 Luck and 100 Dex, at max Chakra you would recover 1050-2040 HP.
+                        // */
+                        //var min = (int)((chr.PrimaryStats.TotalLuk * 3.3 + chr.PrimaryStats.TotalDex) * 0.2);
+                        //var max = (int)((chr.PrimaryStats.TotalLuk * 6.6 + chr.PrimaryStats.TotalDex) * 0.2);
+                        //var randVal = Rand32.NextBetween(min, max);
+                        //var mpCon = (short)IntExtensions.Clamp(randVal * (sld.YValue / 100), 0, chr.CharacterStat.MP);
+
+                        // Taken from Cosmic
+                        var stat = chr.PrimaryStats.TotalLuk;
+                        var lowerfactor = 2.3;
+                        var rate = sld.YValue / 100;
+                        var upperfactor = 3.5;
+                        var mpCon = (short)((new Random().NextDouble() * ((int)(stat * upperfactor * rate) - (int)(stat * lowerfactor * rate) + 1)) + (int)(stat * lowerfactor * rate));
                         chr.ModifyHP(mpCon);
                         chr.ModifyMP((short)-mpCon);
+
                         break;
                     }
                 case Constants.Spearman.Skills.HyperBody:
