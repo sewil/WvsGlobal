@@ -517,7 +517,7 @@ namespace WvsBeta.Game
                         }
                     }
                 }
-                
+
                 SendCharacterDamageByMob(
                     chr,
                     attack,

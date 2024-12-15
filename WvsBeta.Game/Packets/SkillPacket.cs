@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Sessions;
 using WvsBeta.Game.GameObjects;
 using WvsBeta.Game.Packets;
@@ -189,6 +190,13 @@ namespace WvsBeta.Game
                         {
                             victim.Buffs.AddBuff(SkillID, SkillLevel);
                         });
+                        break;
+                    }
+                case Constants.ChiefBandit.Skills.Chakra:
+                    {
+                        var mpCon = (short)IntExtensions.Clamp(chr.HP * (sld.YValue / 100), 0, chr.CharacterStat.MP);
+                        chr.ModifyHP(mpCon);
+                        chr.ModifyMP((short)-mpCon);
                         break;
                     }
                 case Constants.Spearman.Skills.HyperBody:
