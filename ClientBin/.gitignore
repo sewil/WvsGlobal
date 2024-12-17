@@ -4,5 +4,8 @@
 !*.csv
 !*.iss.example
 !*.bat
+!*.py
 !Data.wz.z*
 !HaCreator/
+!Patches
+!Patches/*

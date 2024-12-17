@@ -25,3 +25,6 @@ You may verify the client's signature and packing status with Detect-It-Easy.
 signtool sign /f <path to your .pfx file> /fd sha512 /p <password> $f
 ```
 4. Make any remaining changes to the installer file as you see fit, and press run to generate it.
+
+## Patching Data.wz
+With the original v22 installed in `ClientBin\`, run `python DataWZ_ApplyPatches.py`, and it will apply the patches located in `ClientBin\Patches\` using [Courgette](https://www.chromium.org/developers/design-documents/software-updates-courgette/).
