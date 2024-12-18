@@ -564,6 +564,16 @@ namespace WvsBeta.Game
                                     hp = Math.Min(hp, chr.CharacterStat.MaxHP / 2);
                                     chr.ModifyHP((short)(hp));
                                 }
+                                else if (ad.SkillID == Constants.Hermit.Skills.ShadowMeso)
+                                {
+                                    var damages = ai.Damages.Count;
+                                    var conDelta = 85 + ((ad.SkillLevel - 1) * 5);
+                                    var moneyCon = sld.MesosUsage;
+                                    var minCon = moneyCon - conDelta;
+                                    var maxCon = moneyCon + conDelta;
+                                    var randCon = Rand32.NextBetween(minCon, maxCon) * damages;
+                                    chr.Inventory.AddMesos(-randCon);
+                                }
                             }
                         }
                     }
