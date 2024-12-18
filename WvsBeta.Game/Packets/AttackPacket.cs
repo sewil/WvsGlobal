@@ -541,6 +541,8 @@ namespace WvsBeta.Game
                             {
                                 long buffTime = sld.BuffSeconds * 1000;
 
+                                SetMobFreeze(sld, ai, mob, died);
+
                                 if (!died)
                                 {
                                     if (ad.SkillID == Constants.Hunter.Skills.ArrowBomb && !mob.IsBoss)
@@ -621,12 +623,7 @@ namespace WvsBeta.Game
                         var sld = GameDataProvider.Skills[ad.SkillID].Levels[ad.SkillLevel];
                         long buffTime = sld.BuffSeconds * 1000;
 
-                        //TODO refactor element code when we get the proper element loading with calcdamage branch
-                        if ((sld.ElementFlags == SkillElement.Ice || ad.SkillID == Constants.ILMage.Skills.ElementComposition) && !mob.IsBoss)
-                        {
-                            var stat = mob.Status.BuffFreeze.Set(ad.SkillID, 1, MasterThread.CurrentTime + buffTime);
-                            MobPacket.SendMobStatsTempSet(mob, ai.HitDelay, stat);
-                        }
+                        SetMobFreeze(sld, ai, mob, died);
 
                         if (ad.SkillID == Constants.FPMage.Skills.ElementComposition && !mob.IsBoss)
                         {
@@ -659,6 +656,16 @@ namespace WvsBeta.Game
             }
         }
 
+        private static void SetMobFreeze(SkillLevelData sld, AttackData.AttackInfo ai, Mob mob, bool mobDied)
+        {
+            long buffTime = sld.BuffSeconds * 1000;
+            var ad = ai.Data;
+            if ((sld.ElementFlags == SkillElement.Ice || ad.SkillID == Constants.ILMage.Skills.ElementComposition) && !mob.IsBoss && !mobDied)
+            {
+                var stat = mob.Status.BuffFreeze.Set(ad.SkillID, 1, MasterThread.CurrentTime + buffTime);
+                MobPacket.SendMobStatsTempSet(mob, ai.HitDelay, stat);
+            }
+        }
 
         public static void HandleSummonAttack(GameCharacter chr, Packet packet)
         {
