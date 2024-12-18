@@ -158,7 +158,7 @@ namespace WvsBeta.Game
             if (flags.HasFlag(Common.Enums.BuffValueTypes.HolySymbol)) added |= ps.BuffHolySymbol.Set(SkillID, data.XValue, expireTime);
             if (flags.HasFlag(Common.Enums.BuffValueTypes.MesoUP)) added |= ps.BuffMesoUP.Set(SkillID, data.XValue, expireTime);
             if (flags.HasFlag(Common.Enums.BuffValueTypes.ShadowPartner)) added |= ps.BuffShadowPartner.Set(SkillID, data.XValue, expireTime);
-            if (flags.HasFlag(Common.Enums.BuffValueTypes.PickPocketMesoUP)) added |= ps.BuffPickPocketMesoUP.Set(SkillID, data.XValue, expireTime);
+            if (flags.HasFlag(Common.Enums.BuffValueTypes.PickPocket)) added |= ps.BuffPickPocket.Set(SkillID, data.XValue, expireTime);
             if (flags.HasFlag(Common.Enums.BuffValueTypes.MesoGuard))
             {
                 added |= ps.BuffMesoGuard.Set(SkillID, data.XValue, expireTime);

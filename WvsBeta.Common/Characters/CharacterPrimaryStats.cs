@@ -38,7 +38,7 @@ namespace WvsBeta.Common.Characters
         public Objects.Stats.BuffStat BuffHolySymbol { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.HolySymbol);
         public Objects.Stats.BuffStat BuffMesoUP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.MesoUP);
         public Objects.Stats.BuffStat BuffShadowPartner { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.ShadowPartner);
-        public Objects.Stats.BuffStat BuffPickPocketMesoUP { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.PickPocketMesoUP);
+        public Objects.Stats.BuffStat BuffPickPocket { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.PickPocket);
         public BuffStat_MesoGuard BuffMesoGuard { get; } = new BuffStat_MesoGuard(Enums.BuffValueTypes.MesoGuard);
         public Objects.Stats.BuffStat BuffThaw { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Thaw);
         public Objects.Stats.BuffStat BuffWeakness { get; } = new Objects.Stats.BuffStat(Enums.BuffValueTypes.Weakness);

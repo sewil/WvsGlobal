@@ -62,8 +62,8 @@ namespace WvsBeta.Game
             {Constants.Priest.Skills.HolySymbol, BuffValueTypes.HolySymbol},
             {Constants.Gm.Skills.HolySymbol, BuffValueTypes.HolySymbol},
 
-            {Constants.ChiefBandit.Skills.Pickpocket, BuffValueTypes.PickPocketMesoUP},
-            {Constants.Hermit.Skills.MesoUp, BuffValueTypes.PickPocketMesoUP},
+            {Constants.ChiefBandit.Skills.Pickpocket, BuffValueTypes.PickPocket},
+            {Constants.Hermit.Skills.MesoUp, BuffValueTypes.MesoUP},
 
             {Constants.DragonKnight.Skills.DragonRoar, BuffValueTypes.Stun},
 

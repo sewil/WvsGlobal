@@ -291,7 +291,7 @@ namespace WvsBeta.Game
             flags |= BuffHolySymbol.Reset();
             flags |= BuffMesoUP.Reset();
             flags |= BuffShadowPartner.Reset();
-            flags |= BuffPickPocketMesoUP.Reset();
+            flags |= BuffPickPocket.Reset();
             flags |= BuffMesoGuard.Reset();
             flags |= BuffThaw.Reset();
             flags |= BuffWeakness.Reset();
@@ -339,7 +339,7 @@ namespace WvsBeta.Game
             BuffHolySymbol.DecodeForCC(packet, flags);
             BuffMesoUP.DecodeForCC(packet, flags);
             BuffShadowPartner.DecodeForCC(packet, flags);
-            BuffPickPocketMesoUP.DecodeForCC(packet, flags);
+            BuffPickPocket.DecodeForCC(packet, flags);
             BuffMesoGuard.DecodeForCC(packet, flags);
             BuffThaw.DecodeForCC(packet, flags);
             BuffWeakness.DecodeForCC(packet, flags);
@@ -399,7 +399,7 @@ namespace WvsBeta.Game
             BuffHolySymbol.EncodeForCC(packet, ref flags, currentTime);
             BuffMesoUP.EncodeForCC(packet, ref flags, currentTime);
             BuffShadowPartner.EncodeForCC(packet, ref flags, currentTime);
-            BuffPickPocketMesoUP.EncodeForCC(packet, ref flags, currentTime);
+            BuffPickPocket.EncodeForCC(packet, ref flags, currentTime);
             BuffMesoGuard.EncodeForCC(packet, ref flags, currentTime);
             BuffThaw.EncodeForCC(packet, ref flags, currentTime);
             BuffWeakness.EncodeForCC(packet, ref flags, currentTime);
@@ -441,7 +441,7 @@ namespace WvsBeta.Game
             BuffHolySymbol.TryReset(currentTime, ref endFlag);
             BuffMesoUP.TryReset(currentTime, ref endFlag);
             BuffShadowPartner.TryReset(currentTime, ref endFlag);
-            BuffPickPocketMesoUP.TryReset(currentTime, ref endFlag);
+            BuffPickPocket.TryReset(currentTime, ref endFlag);
             BuffMesoGuard.TryReset(currentTime, ref endFlag);
             BuffThaw.TryReset(currentTime, ref endFlag);
             BuffWeakness.TryReset(currentTime, ref endFlag);
@@ -482,7 +482,7 @@ namespace WvsBeta.Game
             flags |= BuffHolySymbol.GetState(currentTime);
             flags |= BuffMesoUP.GetState(currentTime);
             flags |= BuffShadowPartner.GetState(currentTime);
-            flags |= BuffPickPocketMesoUP.GetState(currentTime);
+            flags |= BuffPickPocket.GetState(currentTime);
             flags |= BuffMesoGuard.GetState(currentTime);
             flags |= BuffThaw.GetState(currentTime);
             flags |= BuffWeakness.GetState(currentTime);
@@ -526,7 +526,7 @@ namespace WvsBeta.Game
             BuffHolySymbol.TryResetByReference(pBuffValue, ref endFlag);
             BuffMesoUP.TryResetByReference(pBuffValue, ref endFlag);
             BuffShadowPartner.TryResetByReference(pBuffValue, ref endFlag);
-            BuffPickPocketMesoUP.TryResetByReference(pBuffValue, ref endFlag);
+            BuffPickPocket.TryResetByReference(pBuffValue, ref endFlag);
             BuffMesoGuard.TryResetByReference(pBuffValue, ref endFlag);
             BuffThaw.TryResetByReference(pBuffValue, ref endFlag);
             BuffWeakness.TryResetByReference(pBuffValue, ref endFlag);
@@ -578,7 +578,7 @@ namespace WvsBeta.Game
             BuffHolySymbol.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffMesoUP.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffShadowPartner.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
-            BuffPickPocketMesoUP.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
+            BuffPickPocket.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffMesoGuard.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffThaw.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
             BuffWeakness.EncodeForLocal(pPacket, ref endFlag, currentTime, pSpecificFlag);
@@ -619,7 +619,7 @@ namespace WvsBeta.Game
                 BuffHolySymbol.HasReferenceId(referenceId, currentTime) ||
                 BuffMesoUP.HasReferenceId(referenceId, currentTime) ||
                 BuffShadowPartner.HasReferenceId(referenceId, currentTime) ||
-                BuffPickPocketMesoUP.HasReferenceId(referenceId, currentTime) ||
+                BuffPickPocket.HasReferenceId(referenceId, currentTime) ||
                 BuffMesoGuard.HasReferenceId(referenceId, currentTime) ||
                 BuffThaw.HasReferenceId(referenceId, currentTime) ||
                 BuffWeakness.HasReferenceId(referenceId, currentTime) ||

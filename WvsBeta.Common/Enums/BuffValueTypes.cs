@@ -43,7 +43,7 @@ namespace WvsBeta.Common.Enums
         HolySymbol = 0x1000000,
         MesoUP = 0x2000000,
         ShadowPartner = 0x4000000,
-        PickPocketMesoUP = 0x8000000,
+        PickPocket = 0x8000000,
 
         MesoGuard = 0x10_000_000,
         Thaw = 0x20_000_000,
