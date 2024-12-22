@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using WvsBeta.Common;
 using WvsBeta.Common.Enums;
+using WvsBeta.Common.Objects;
 using WvsBeta.Common.Objects.Stats;
 
 namespace WvsBeta.Game
@@ -20,13 +21,11 @@ namespace WvsBeta.Game
             return Character.PrimaryStats.HasBuff(Constants.Gm.Skills.Hide);
         }
 
-        public void AddItemBuff(int itemid)
+        public void AddItemBuff(ItemData data, int buffTime)
         {
-            var data = GameDataProvider.Items[itemid];
-
-            var expireTime = MasterThread.CurrentTime + data.BuffTime;
+            var expireTime = MasterThread.CurrentTime + buffTime;
             var ps = Character.PrimaryStats;
-            var value = -itemid;
+            var value = -data.ID;
             Common.Enums.BuffValueTypes added = 0;
 
             if (data.Accuracy > 0)

@@ -33,13 +33,22 @@ namespace WvsBeta.Game
                 return;
             }
 
+            var sld = chr.Skills.GetSkillLevelData(Constants.Hermit.Skills.Alchemist);
+            double recoveryRate = 1.0;
+            double buffRate = 1.0;
+            if (sld != null)
+            {
+                recoveryRate = sld.XValue / 100.0;
+                buffRate = sld.YValue / 100.0;
+            }
+
             if (data.HP > 0)
             {
-                chr.ModifyHP(data.HP);
+                chr.ModifyHP((short)(data.HP * recoveryRate));
             }
             if (data.MP > 0)
             {
-                chr.ModifyMP(data.MP);
+                chr.ModifyMP((short)(data.MP * recoveryRate));
             }
             if (data.HPRate > 0)
             {
@@ -52,7 +61,7 @@ namespace WvsBeta.Game
 
             if (data.BuffTime > 0 || data.Cures != 0)
             {
-                chr.Buffs.AddItemBuff(itemid);
+                chr.Buffs.AddItemBuff(data, (int)(data.BuffTime * buffRate));
             }
 
             bool delete = false;
