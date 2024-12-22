@@ -310,7 +310,8 @@ namespace WvsBeta.Game.Handlers
             { "movetracepet", new CommandData("/movetrace(pet|player|mob|summon) <userid/charname/charid> <value> <amount>", "Tracing a given trace type for a given amount.") },
             { "warn", new CommandData("/warn <charname> <text>", "Send a warning to a player.") },
             { "warnmap", new CommandData("/warnmap <text>", "Send a warning to all players in the current map.") },
-            { "maxskills", new CommandData("/maxskills", "Max all skills.") },
+            { "maxskills", new CommandData("/maxskills [jobid]", "Max skills for a given job or all jobs if job id is omitted.") },
+            { "resetskills", new CommandData("/resetskills [jobid]", "Clear all skills for a given job or all jobs if job id is omitted.") },
             { "job", new CommandData("/job <job id>", "Set your job.") },
             { "mp", new CommandData("/mp <value>", "Set your MP.") },
             { "maxmp", new CommandData("/maxmp <value>", "Set your Max MP.") },
@@ -1215,18 +1216,50 @@ namespace WvsBeta.Game.Handlers
 
                         case "maxskills":
                             {
-                                var mMaxedSkills = new Dictionary<int, byte>();
-                                foreach (var kvp in GameDataProvider.Skills)
+                                short jobID = 0;
+                                if (Args.Count > 0 && !short.TryParse(Args[0], out jobID))
                                 {
-                                    var level = kvp.Value.MaxLevel;
-                                    character.Skills.SetSkillPoint(kvp.Key, level, false);
-                                    mMaxedSkills.Add(kvp.Key, level);
+                                    character.Message(GetUsage(Args));
                                 }
-                                SkillPacket.SendSetSkillPoints(character, mMaxedSkills); // 1 packet for all skills
-                                mMaxedSkills.Clear();
+                                else
+                                {
+                                    var mMaxedSkills = new Dictionary<int, byte>();
+                                    var skills = GameDataProvider.Skills.Select(skill => skill.Value);
+                                    if (jobID > 0)
+                                    {
+                                        skills = skills.Where(skill => Constants.getSkillJob(skill.ID) == jobID);
+                                    }
+                                    foreach (var skill in skills)
+                                    {
+                                        var level = skill.MaxLevel;
+                                        character.Skills.SetSkillPoint(skill.ID, level, false);
+                                        mMaxedSkills.Add(skill.ID, level);
+                                    }
+                                    SkillPacket.SendSetSkillPoints(character, mMaxedSkills); // 1 packet for all skills
+                                    mMaxedSkills.Clear();
+                                }
                                 return true;
                             }
-
+                        case "resetskills":
+                            {
+                                short jobID = 0;
+                                if (Args.Count > 0 && !short.TryParse(Args[0], out jobID))
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else
+                                {
+                                    foreach (var skill in character.Skills.Skills.ToDictionary(i => i.Key, i=>i.Value))
+                                    {
+                                        if (jobID == 0 || Constants.getSkillJob(skill.Key) == jobID)
+                                        {
+                                            character.Skills.SetSkillPoint(skill.Key, 0, false);
+                                        }
+                                    }
+                                    SkillPacket.SendSetSkillPoints(character, character.Skills.Skills);
+                                }
+                                return true;
+                            }
                         #endregion
 
                         #region Job
