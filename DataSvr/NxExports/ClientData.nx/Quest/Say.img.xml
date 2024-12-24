@@ -2139,7 +2139,7 @@
       <string name="0" value="Are you ready to become a magician like me?" />
       <imgdir name="stop">
         <imgdir name="npc">
-          <string name="0" value="At the very top of the biggest tree in the biggest forest of Victoria Island, #rEllnia#k, you'll meet #b#p1032001##k. Why? Haven't seen him yet?" />
+          <string name="0" value="At the very top of the biggest tree in the biggest forest of Victoria Island, #rEllinia#k, you'll meet #b#p1032001##k. Why? Haven't seen him yet?" />
         </imgdir>
       </imgdir>
       <imgdir name="yes">
@@ -2154,7 +2154,7 @@
       <string name="2" value="Wasn't it short and sweet? These are veerrry important information, and you must take them to heart! Talk to me once you're ready to take on some questions." />
     </imgdir>
     <imgdir name="1">
-      <string name="0" value="Here's the first question. I have told you this earlier, but just to make sure. To become either #ba warrior, a bowman, or a thief#k, you'll have to reach at least a certain level. #bWhat level is that?#k\n\n#L0##blevel 8#l\n#L1#level 1#l\n#L2#level 10#l" />
+      <string name="0" value="Here's the first question. I have told you this earlier, but just to make sure. To become either #ba warrior, a bowman, or a thief#k, you'll have to reach at least a certain level. #bWhat level is that?#k\n\n#L0##bLevel 8#l\n#L1#Level 1#l\n#L2#Level 10#l" />
       <int name="ask" value="1" />
       <imgdir name="stop">
         <imgdir name="0">
@@ -2177,7 +2177,7 @@
       <imgdir name="yes">
         <string name="0" value="I think you've passed the test. Now it's time for you to decide which of the four occupations (warrior, thief, magician, bowman) you're willing to choose. Once you've made up your mind, then come talk to me! I'll help you find your way there!" />
       </imgdir>
-      <string name="1" value="Great job.\nHere's the second question. To become a #bmagician#k, you'll have to reach at least a certain level. #bWhat level is that?#k? \n\n#L0##blevel 8#l\n#L1#1level 1#l\n#L2#level 10#l" />
+      <string name="1" value="Great job.\nHere's the second question. To become a #bmagician#k, you'll have to reach at least a certain level. #bWhat level is that?#k? \n\n#L0##bLevel 8#l\n#L1#Level 1#l\n#L2#Level 10#l" />
       <string name="2" value="You're doing a good job answering these questions! Are you using a cheat sheet by any chance?\nAnyway, I always thought of myself as a warrior material, but then again, every once in a while, I envision myself shooting arrows with a cool bow.\n\nHere's the next question. #bWhere#k will you have to go in order to become the #bbowman#k? \n\n#L0##bPerion#l\n#L1#Henesys#l\n#L2#Kerning City#l\n#L3#Ellinia#l" />
       <string name="3" value="Obviously you get what I'm saying! That's good!" />
     </imgdir>
