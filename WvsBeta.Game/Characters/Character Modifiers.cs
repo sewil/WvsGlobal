@@ -229,7 +229,7 @@ namespace WvsBeta.Game
             if (value == 0 || PrimaryStats.Level >= 200 || HP <= 0) return;
 
             var amount = (int)(value > Int32.MaxValue ? Int32.MaxValue : value);
-            var amnt = (uint)(CharacterStat.EXP + amount);
+            var currentExp = (uint)(CharacterStat.EXP + amount);
 
             SendPacket(MessagePacket.GainEXP(amount, appearType));
             var level = PrimaryStats.Level;
@@ -237,7 +237,7 @@ namespace WvsBeta.Game
             var save = false;
             var expRequired = Constants.GetLevelEXP(PrimaryStats.Level);
 
-            if (amnt >= expRequired)
+            if (currentExp >= expRequired)
             {
                 short apgain = 0;
                 short spgain = 0;
@@ -247,7 +247,7 @@ namespace WvsBeta.Game
 
                 var intt = PrimaryStats.GetIntAddition(true);
 
-                amnt -= (uint)expRequired;
+                currentExp -= (uint)expRequired;
 
                 level++;
 
@@ -293,14 +293,13 @@ namespace WvsBeta.Game
 
                 if (level >= 200)
                 {
-                    amnt = 0;
+                    currentExp = 0;
                     // TODO: Announce max level!
                 }
-
                 // Overflow? lets reduce it
-                if (amnt >= expRequired)
+                else if (currentExp >= expRequired)
                 {
-                    amnt = (uint)(expRequired - 1);
+                    currentExp = (uint)(expRequired - 1);
                 }
 
                 _levelLog.Info(new LevelLogRecord
@@ -320,7 +319,7 @@ namespace WvsBeta.Game
                 save = true;
             }
 
-            CharacterStat.EXP = (int)amnt;
+            CharacterStat.EXP = (int)currentExp;
 
             // Calculate savepoints
 
