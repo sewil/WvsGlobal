@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
@@ -15,6 +16,7 @@ using WvsBeta.Common.Sessions;
 using WvsBeta.Game.Events;
 using WvsBeta.Game.Events.GMEvents;
 using WvsBeta.Game.GameObjects;
+using WvsBeta.Game.GameObjects.DataLoading;
 using WvsBeta.Game.Packets;
 using WvsBeta.Game.Scripting;
 
@@ -256,6 +258,7 @@ namespace WvsBeta.Game.Handlers
         static bool shuttingDown = false;
         static IDictionary<GameCharacter, Packet> pendingPackets = new Dictionary<GameCharacter, Packet>();
         static HashSet<string> lookupTypes = new HashSet<string> { "item", "equip", "map", "mob", "quest", "npc", /*"skill"*/ };
+        static HashSet<string> infoTypes = new HashSet<string> { "item", "equip", "map", "mob", "quest", "npc", "skill" };
 
         readonly struct CommandData
         {
@@ -287,9 +290,10 @@ namespace WvsBeta.Game.Handlers
         };
         static Dictionary<string, CommandData> testerCommands = new Dictionary<string, CommandData>
         {
-            { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, or maps.") },
+            { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, maps, and more.") },
+            { "info", new CommandData($"/info <{string.Join("|", infoTypes)}> <id>", "Get info for items, equips, maps, and more.") },
             { "npc", new CommandData($"/npc <info> <ID>", "Get info on an NPC.") },
-            { "quest", new CommandData($"/quest <info|start|remove|complete> <ID> [questdata]", "Get info on a quest, or start/remove/complete it.") },
+            { "quest", new CommandData($"/quest <start|remove|complete> <ID> [questdata]", "Start/remove/complete a quest.") },
         };
         static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
         {
@@ -544,85 +548,6 @@ namespace WvsBeta.Game.Handlers
                                         character.Message("Quest completed!");
                                     }
                                 }
-                                else if (Args[0] == "info")
-                                {
-                                    character.Message($"--------- QUEST {id} ---------");
-                                    character.Message($"Name: {quest.QuestInfo.Name}");
-                                    var start = quest.Stages[QuestStage.Start].Check;
-                                    character.Message($"NPC: {start.NpcID}");
-
-                                    character.Message(" ");
-                                    character.Message("--- Prerequisites ---");
-                                    character.Message($"Level: {start.LvMin}-{(start.LvMax == 0 ? 200 : start.LvMax)}");
-                                    if (start.Job > 0) character.Message($"Job: {start.Job}");
-                                    if (start.Fame > 0) character.Message($"Fame: {start.Fame}");
-                                    if (start.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", start.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
-                                    if (start.Mesos > 0) character.Message($"Mesos: {start.Mesos}");
-                                    if (start.Items.Count > 0) character.Message($"Items: {string.Join(", ", start.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
-                                    if (start.IntervalMins > 0) character.Message($"Repeatable (mins): {start.IntervalMins}");
-
-                                    character.Message(" ");
-                                    character.Message("--- Requirements ---");
-                                    var req = quest.Stages[QuestStage.Complete].Check;
-                                    if (req.Items.Count > 0) character.Message($"Items: {string.Join(", ", req.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
-                                    if (req.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", req.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
-                                    if (req.Mesos > 0) character.Message($"Mesos: {req.Mesos}");
-                                    if (req.Fame > 0) character.Message($"Fame: {req.Fame}");
-
-                                    character.Message(" ");
-                                    character.Message("--- Rewards ---");
-                                    character.Message("Turn in NPC: " + req.NpcID);
-                                    var end = quest.Stages[QuestStage.Complete].Act;
-                                    character.Message($"EXP: {end.Exp}");
-                                    if (end.Fame > 0) character.Message($"Fame: {end.Fame}");
-                                    if (end.Mesos > 0) character.Message($"Mesos: {end.Mesos}");
-                                    if (end.Items.Count > 0)
-                                    {
-                                        Func<QuestItem, string> itemStr = (i) =>
-                                        {
-                                            var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : i.Prop == -1 ? " (Selectable)" : "";
-                                            var gender = i.Gender != PlayerGender.NotApplicable ? $" (Gender: {i.Gender})" : "";
-                                            return string.Format("{0}x {1}{2}{3}", i.Amount, i.ItemID, prop, gender);
-                                        };
-                                        character.Message($"Items: {string.Join(", ", end.Items.Select(i => itemStr(i)))}");
-                                    }
-                                    if (end.NextQuest > 0) character.Message($"Next quest: {end.NextQuest}");
-                                }
-                                return true;
-                            }
-                        case "npc":
-                            {
-                                if (Args.Count < 2)
-                                {
-                                    character.Message(GetUsage(Args));
-                                }
-                                else if (!int.TryParse(Args[1], out int id))
-                                {
-                                    character.Message($"Invalid ID '{id}'!");
-                                }
-                                else if (Args[0] == "info")
-                                {
-                                    if (GameDataProvider.NPCs.TryGetValue(id, out var npc))
-                                    {
-                                        character.Message($"--------- NPC {id} ---------");
-                                        character.Message($"Name: {npc.Name}");
-                                        var maps = string.Join(", ", GameDataProvider.Maps
-                                            .Where(i => i.Value.NPC.Any(j => j.ID == id))
-                                            .Select(i => $"{i.Key}")
-                                        );
-                                        character.Message($"Map(s): {maps}");
-                                        var quests = string.Join(", ", DataProvider.Quests
-                                            .Where(i => i.Value.Stages[QuestStage.Start].Check.NpcID == id)
-                                            .Select(i => $"{i.Key}")
-                                        );
-                                        character.Message($"Quest(s): {quests}");
-                                        if (npc.Quest != null) character.Message($"Script: {npc.Quest}");
-                                    }
-                                    else
-                                    {
-                                        character.Message($"Couldn't find NPC with ID '{id}'!");
-                                    }
-                                }
                                 return true;
                             }
                         case "lu":
@@ -676,6 +601,196 @@ namespace WvsBeta.Game.Handlers
                                     {
                                         character.Notice($"Lookup query returned {results.Count} results:");
                                         results.Select(i => $"({i.id}) {i.name}").ForEach(msg => character.Notice(msg));
+                                    }
+                                }
+                                return true;
+                            }
+                        case "info":
+                            {
+                                if (Args.Count < 2 || !infoTypes.Contains(Args[0]) || !int.TryParse(Args[1], out int id))
+                                {
+                                    character.Message(GetUsage(Args));
+                                }
+                                else if (Args[0] == "mob")
+                                {
+                                    if (!GameDataProvider.Mobs.TryGetValue(id, out var mob))
+                                    {
+                                        character.Message($"Unknown mob '{id}'!");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"--------- MOB {id} ---------");
+                                        character.Message($"Name: {mob.Name}");
+                                        character.Message($"Level: {mob.Level}, EXP: {mob.EXP}");
+                                        character.Message($"MaxHP: {mob.MaxHP}, MaxMP: {mob.MaxMP}");
+                                        character.Message($"PAD: {mob.PAD}, PDD: {mob.PDD}");
+                                        character.Message($"MAD: {mob.MAD}, MDD: {mob.MDD}");
+                                        character.Message($"Acc: {mob.Acc}, Eva: {mob.Eva}");
+                                        character.Message($"Flying: {mob.Flies}, Undead: {mob.Undead}");
+                                        character.Message($"SummonType: {mob.SummonType}, NoRegen: {mob.NoRegen}");
+                                        character.Message($"Boss: {mob.Boss}, ElemAttr: {mob.elemAttr}");
+                                        character.Message("Maps:");
+                                        var maps = GameDataProvider.Maps
+                                            .Select(kvp => kvp.Value)
+                                            .Where(map => map.MobGen.Any(m => m.ID == id));
+                                        foreach (var map in maps)
+                                        {
+                                            character.Message($"  {map.ID}");
+                                        }
+                                        var reactorActions = GameDataProvider.ReactorActions
+                                            .Select(kvp => kvp.Value)
+                                            .Where(reactor => reactor.ActionSets.Any(ra => ra.Actions.Any(raa =>
+                                            {
+                                                return (raa is SpawnMobReactorAction mra) && mra.MobID == id;
+                                            })));
+                                        var reactors = GameDataProvider.Reactors
+                                            .Select(kvp => kvp.Value)
+                                            .Where(reactor => reactorActions.Any(i => i.Name == reactor.Action));
+                                        if (reactors.Count() > 0)
+                                        {
+                                            character.Message("Reactors:");
+                                            foreach (var reactor in reactors)
+                                            {
+                                                character.Message($"  {reactor.ID} (Action:{reactor.Action})");
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (Args[0] == "quest")
+                                {
+                                    if (!DataProvider.Quests.TryGetValue((short)id, out var quest))
+                                    {
+                                        character.Message($"Unknown quest '{id}'!");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"--------- QUEST {id} ---------");
+                                        character.Message($"Name: {quest.QuestInfo.Name}");
+                                        var start = quest.Stages[QuestStage.Start].Check;
+                                        character.Message($"NPC: {start.NpcID}");
+
+                                        character.Message(" ");
+                                        character.Message("--- Prerequisites ---");
+                                        character.Message($"Level: {start.LvMin}-{(start.LvMax == 0 ? 200 : start.LvMax)}");
+                                        if (start.Job > 0) character.Message($"Job: {start.Job}");
+                                        if (start.Fame > 0) character.Message($"Fame: {start.Fame}");
+                                        if (start.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", start.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
+                                        if (start.Mesos > 0) character.Message($"Mesos: {start.Mesos}");
+                                        if (start.Items.Count > 0) character.Message($"Items: {string.Join(", ", start.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
+                                        if (start.IntervalMins > 0) character.Message($"Repeatable (mins): {start.IntervalMins}");
+
+                                        character.Message(" ");
+                                        character.Message("--- Requirements ---");
+                                        var req = quest.Stages[QuestStage.Complete].Check;
+                                        if (req.Items.Count > 0) character.Message($"Items: {string.Join(", ", req.Items.Select(i => $"{i.Value.Amount}x {i.Key}"))}");
+                                        if (req.Quests.Count > 0) character.Message($"Quests: {string.Join(", ", req.Quests.Select(i => $"{i.QuestID} ({i.State})"))}");
+                                        if (req.Mesos > 0) character.Message($"Mesos: {req.Mesos}");
+                                        if (req.Fame > 0) character.Message($"Fame: {req.Fame}");
+
+                                        character.Message(" ");
+                                        character.Message("--- Rewards ---");
+                                        character.Message("Turn in NPC: " + req.NpcID);
+                                        var end = quest.Stages[QuestStage.Complete].Act;
+                                        character.Message($"EXP: {end.Exp}");
+                                        if (end.Fame > 0) character.Message($"Fame: {end.Fame}");
+                                        if (end.Mesos > 0) character.Message($"Mesos: {end.Mesos}");
+                                        if (end.Items.Count > 0)
+                                        {
+                                            Func<QuestItem, string> itemStr = (i) =>
+                                            {
+                                                var prop = i.Prop > 0 ? $" (Chance: {i.Prop}%)" : i.Prop == -1 ? " (Selectable)" : "";
+                                                var gender = i.Gender != PlayerGender.NotApplicable ? $" (Gender: {i.Gender})" : "";
+                                                return string.Format("{0}x {1}{2}{3}", i.Amount, i.ItemID, prop, gender);
+                                            };
+                                            character.Message($"Items: {string.Join(", ", end.Items.Select(i => itemStr(i)))}");
+                                        }
+                                        if (end.NextQuest > 0) character.Message($"Next quest: {end.NextQuest}");
+                                    }
+                                }
+                                else if (Args[0] == "npc")
+                                {
+                                    if (!GameDataProvider.NPCs.TryGetValue(id, out var npc))
+                                    {
+                                        character.Message($"Unknown NPC '{id}'!");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"--------- NPC {id} ---------");
+                                        character.Message($"Name: {npc.Name}");
+                                        var maps = string.Join(", ", GameDataProvider.Maps
+                                            .Where(i => i.Value.NPC.Any(j => j.ID == id))
+                                            .Select(i => $"{i.Key}")
+                                        );
+                                        character.Message($"Map(s): {maps}");
+                                        var quests = string.Join(", ", DataProvider.Quests
+                                            .Where(i => i.Value.Stages[QuestStage.Start].Check.NpcID == id)
+                                            .Select(i => $"{i.Key}")
+                                        );
+                                        character.Message($"Quest(s): {quests}");
+                                        if (npc.Quest != null) character.Message($"Script: {npc.Quest}");
+                                    }
+                                }
+                                else if (Args[0] == "map")
+                                {
+                                    if (!GameDataProvider.Maps.TryGetValue(id, out var map))
+                                    {
+                                        character.Message($"Unknown map '{id}'!");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"--------- MAP {id} ---------");
+                                        character.Message($"Name: {map.Name}");
+                                        character.Message("Mobs:");
+                                        foreach (var mob in map.MobGen)
+                                        {
+                                            character.Message($"  {mob.ID} (Count:{mob.MobCount} X:{mob.X} Y:{mob.Y} RegenInterval:{mob.RegenInterval})");
+                                        }
+                                        character.Message("NPCs:");
+                                        foreach (var npc in map.NPC)
+                                        {
+                                            character.Message($"  {npc.ID} (X:{npc.X} Y:{npc.Y} Type:{npc.Type} SpawnID:{npc.SpawnID})");
+                                        }
+                                        character.Message("Reactors:");
+                                        foreach (var reactor in map.ReactorPool.Reactors.Select(kvp => kvp.Value))
+                                        {
+                                            character.Message($"  {reactor.ID} (ReactorID:{reactor.Reactor.ID} {reactor.Position}{(!string.IsNullOrEmpty(reactor.Reactor.Action) ? " ReactorAction:" + reactor.Reactor.Action : "")})");
+                                        }
+                                        character.Message("Portals:");
+                                        foreach (var portal in map.Portals.Select(kvp => kvp.Value))
+                                        {
+                                            character.Message($"  {portal.ID} (Name:{portal.Name} ToField:{portal.ToMapID} ToName:{portal.ToName} Script:{portal.Script} Type:{portal.Type} X:{portal.X} Y:{portal.Y} IsEnabled:{portal.Enabled})");
+                                        }
+                                    }
+                                }
+                                else if (Args[0] == "item")
+                                {
+                                    if (!GameDataProvider.Items.TryGetValue(id, out var item))
+                                    {
+                                        character.Message($"Unknown item '{id}'!");
+                                    }
+                                    else
+                                    {
+                                        character.Message($"--------- ITEM {id} ---------");
+                                        character.Message($"Name: {item.Name}");
+                                        var drops = GameDataProvider.Drops.Where(i => i.Value.Any(j => j.ItemID == id));
+                                        if (drops.Count() > 0)
+                                        {
+                                            character.Message("Dropped by:");
+                                            foreach (var drop in drops)
+                                            {
+                                                var itemDrop = drop.Value.FirstOrDefault(i => i.ItemID == id);
+                                                character.Message($"  {drop.Key}: {(itemDrop.Max > 0 ? $"{itemDrop.Min}-{itemDrop.Max}" : "")} Period: {itemDrop.Period} (1 in {(1000000000.0 / (double)itemDrop.Chance).ToString(CultureInfo.InvariantCulture)})");
+                                            }
+                                        }
+                                        if (item.IsQuest)
+                                        {
+                                            var quests = GameDataProvider.QuestItems
+                                                .Where(i => i.Key == id)
+                                                .SelectMany(i => i.Value)
+                                                .Distinct()
+                                            ;
+                                            character.Message($"Quest(s): {string.Join(", ", quests)}");
+                                        }
                                     }
                                 }
                                 return true;
@@ -1249,7 +1364,7 @@ namespace WvsBeta.Game.Handlers
                                 }
                                 else
                                 {
-                                    foreach (var skill in character.Skills.Skills.ToDictionary(i => i.Key, i=>i.Value))
+                                    foreach (var skill in character.Skills.Skills.ToDictionary(i => i.Key, i => i.Value))
                                     {
                                         if (jobID == 0 || Constants.getSkillJob(skill.Key) == jobID)
                                         {

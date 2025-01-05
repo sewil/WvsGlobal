@@ -224,7 +224,7 @@ namespace WvsBeta.Game
             {
                 if (GameDataProvider.ReactorActions.TryGetValue(Reactor.Action, out var rAction))
                 {
-                    rAction.Actions.ForEach(a => a.RunAction(this));
+                    rAction.ActionSets.ForEach(a => a.RunAction(this));
                 }
                 else
                 {
