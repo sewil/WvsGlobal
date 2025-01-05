@@ -57,9 +57,9 @@ namespace WvsBeta.Game
             pw.WriteShort(qid);
             chr.SendPacket(pw);
         }
-        public static void SendQuestActionResultError(GameCharacter chr, QuestActionResult result)
+        public static void SendQuestActionResultError(GameCharacter chr, QuestActionResult result, short currentQuest)
         {
-            SendQuestActionResult(chr, result, 0, 0);
+            SendQuestActionResult(chr, result, 0, currentQuest);
         }
         public static void SendQuestActionResult(GameCharacter chr, QuestActionResult result, int npcID, short currentQuest, params short[] nextQuests)
         {
@@ -133,12 +133,21 @@ namespace WvsBeta.Game
         public static void HandleQuestAct(GameCharacter chr, int npcID, int selectIdx, WZQuestAct act)
         {
             var questJob = Constants.GetQuestJob(chr.Job);
-            var items = act.Items
-                .Where(item => item.Job == null || questJob.HasFlag(item.Job))
-                // Nothing selected, or item is not selectable, or item is selected
-                .Where((item, itemIdx) => selectIdx == -1 || item.Prop != -1 || itemIdx == selectIdx)
+            var filteredItems = act.Items
+                .Where(item => item.Job > 0 || questJob.HasFlag(item.Job))
                 .Where(item => (item.Gender != PlayerGender.Male && item.Gender != PlayerGender.Female) || chr.Gender == item.Gender)
-                .ToList();
+            ;
+
+            var items = filteredItems.Where(item => item.Prop != -1).ToList();
+            if (selectIdx > -1)
+            {
+                var selectedItem = filteredItems
+                    .Where(item => item.Prop == -1)
+                    .Where((item, itemIdx) => itemIdx == selectIdx)
+                ;
+                items.AddRange(selectedItem);
+            }
+
             int randMax = items.Sum(i => i.Prop);
             int rand = Rand32.NextBetween(0, randMax);
             int from = 0;
@@ -202,7 +211,7 @@ namespace WvsBeta.Game
             }
             catch (QuestException e)
             {
-                SendQuestActionResultError(chr, e.Result);
+                SendQuestActionResultError(chr, e.Result, stage.Quest.QuestID);
             }
         }
         public static void HandleAction(GameCharacter chr, Packet packet)
@@ -218,7 +227,7 @@ namespace WvsBeta.Game
                         int itemid = packet.ReadInt();
                         if (!chr.Inventory.MassExchange(0, (itemid, (short)amount)))
                         {
-                            SendQuestActionResultError(chr, QuestActionResult.InventoryFull);
+                            SendQuestActionResultError(chr, QuestActionResult.InventoryFull, 0);
                         }
                         break;
                     }
@@ -228,7 +237,7 @@ namespace WvsBeta.Game
                         // start quest [42] [01] [E8 03] [35 08 00 00]
                         if (!GameDataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
-                            SendQuestActionResultError(chr, QuestActionResult.UnknownError);
+                            SendQuestActionResultError(chr, QuestActionResult.UnknownError, 0);
                             return;
                         }
                         HandleQuestStage(chr, npcid, qd.Stages[QuestStage.Start]);
@@ -242,7 +251,7 @@ namespace WvsBeta.Game
 
                         if (!GameDataProvider.Quests.TryGetValue(qid, out WZQuestData qd))
                         {
-                            SendQuestActionResultError(chr, QuestActionResult.UnknownError);
+                            SendQuestActionResultError(chr, QuestActionResult.UnknownError, 0);
                             return;
                         }
                         HandleQuestStage(chr, npcID, qd.Stages[QuestStage.Complete], selectIdx);

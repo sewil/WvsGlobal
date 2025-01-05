@@ -89,7 +89,7 @@ namespace WvsBeta.Common.Objects
         public IDictionary<int, QuestMob> Mobs { get; private set; } = new Dictionary<int, QuestMob>();
         public IDictionary<int, QuestItem> Items { get; private set; } = new Dictionary<int, QuestItem>();
         public int NpcID { get; private set; }
-        public short Job { get; private set; }
+        public QuestJob Job { get; private set; }
         public int Mesos { get; private set; }
         public int LvMin { get; private set; }
         public int LvMax { get; private set; }
@@ -125,7 +125,7 @@ namespace WvsBeta.Common.Objects
                         }
                         break;
                     case "job":
-                        Job = subNode.ValueInt16();
+                        Job = (QuestJob)subNode.ValueByte();
                         break;
                     case "npc":
                         NpcID = subNode.ValueInt32();

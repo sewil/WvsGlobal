@@ -7,6 +7,7 @@ namespace WvsBeta.Common.Objects
     [Flags]
     public enum QuestJob : byte
     {
+        None = 0,
         Beginner = 1,
         Warrior = 2,
         Magician = 4,
@@ -23,7 +24,7 @@ namespace WvsBeta.Common.Objects
         /// </summary>
         public int Prop { get; }
         public PlayerGender Gender { get; } = PlayerGender.NotApplicable;
-        public QuestJob? Job { get; }
+        public QuestJob Job { get; }
         public QuestItem(NXNode node)
         {
             foreach (var subNode in node)
