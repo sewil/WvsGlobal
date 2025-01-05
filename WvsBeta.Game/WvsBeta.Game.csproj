@@ -125,6 +125,7 @@
     <Compile Include="ClientSession.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="CheatInspector.cs" />
+    <Compile Include="GameObjects\DataLoading\ReactorAction.cs" />
     <Compile Include="GameObjects\DataLoading\ReactorActionData.cs" />
     <Compile Include="GameObjects\EventMap.cs" />
     <Compile Include="Packets\MessagePacket.cs" />
