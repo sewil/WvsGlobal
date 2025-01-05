@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Eventing.Reader;
 using System.IO;
@@ -2089,7 +2089,7 @@ namespace WvsBeta.Game.Handlers
                             }
                         case "setexp":
                             {
-                                if (Args.Count < 1 || int.TryParse(Args[0], out var exp))
+                                if (Args.Count < 1 || !int.TryParse(Args[0], out var exp))
                                 {
                                     character.Message(GetUsage(Args));
                                 }
