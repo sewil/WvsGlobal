@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Management.Instrumentation;
+using System.Runtime.ConstrainedExecution;
 using MySql.Data.MySqlClient;
 using WvsBeta.Common;
 using WvsBeta.Common.Characters;
@@ -293,7 +294,7 @@ namespace WvsBeta.Game.Handlers
             { "lookup", new CommandData($"/lookup <{string.Join("|", lookupTypes)}> <name>", "Lookup the IDs for items, equips, maps, and more.") },
             { "info", new CommandData($"/info <{string.Join("|", infoTypes)}> <id>", "Get info for items, equips, maps, and more.") },
             { "npc", new CommandData($"/npc <info> <ID>", "Get info on an NPC.") },
-            { "quest", new CommandData($"/quest <start|remove|complete> <ID> [questdata]", "Start/remove/complete a quest.") },
+            { "quest", new CommandData($"/quest <start|remove|complete|setkillcount|clear> <ID> [questdata]", "Start/remove/complete a quest.") },
         };
         static Dictionary<string, CommandData> internCommands = new Dictionary<string, CommandData>
         {
@@ -522,6 +523,80 @@ namespace WvsBeta.Game.Handlers
                                         {
                                             character.Message("Something went wrong, couldn't start the quest... Either it has expired or it can't be repeated just yet.");
                                         }
+                                    }
+                                }
+                                else if (Args[0] == "setkillcount")
+                                {
+                                    if (!character.Quests.Quests.TryGetValue(id, out var questData))
+                                    {
+                                        character.Message("You don't have this quest!");
+                                    }
+                                    else if (Args.Count < 4 || !int.TryParse(Args[2], out int mobidx) || !int.TryParse(Args[3], out int kills))
+                                    {
+                                        character.Message("Usage: /quest setkillcount <questid> <mob index> <kills>");
+                                    }
+                                    else
+                                    {
+                                        var mobs = quest.Stages[QuestStage.Complete].Check.Mobs;
+                                        if (mobidx >= mobs.Count || mobidx < 0)
+                                        {
+                                            character.Message($"Invalid mob index! There are {mobs.Count} mob counters for this quest.");
+                                        }
+                                        else if (kills < 0 || kills > 999)
+                                        {
+                                            character.Message($"Kills must be between 0-999!");
+                                        }
+                                        else
+                                        {
+                                            var mob = mobs[mobidx];
+                                            questData.UpdateMobKills(mobidx, kills);
+                                            character.Message($"Mob kill count for mob {mobidx} ({mob.MobID}) set to {kills} for quest {id}.");
+                                        }
+                                    }
+                                }
+                                else if (Args[0] == "clear")
+                                {
+                                    if (!character.Quests.Quests.TryGetValue(id, out var questData))
+                                    {
+                                        character.Message("You don't have this quest!");
+                                    }
+                                    else
+                                    {
+                                        var check = quest.Stages[QuestStage.Complete].Check;
+                                        if (check.Fame > 0 && character.CharacterStat.Fame < check.Fame)
+                                        {
+                                            character.AddFame((short)(check.Fame - character.CharacterStat.Fame), true);
+                                        }
+                                        if (check.LvMin > 0 && character.Level < check.LvMin)
+                                        {
+                                            character.SetLevel((byte)check.LvMin);
+                                        }
+                                        else if (check.LvMax > 0 && character.Level > check.LvMax)
+                                        {
+                                            character.SetLevel((byte)check.LvMax);
+                                        }
+                                        var questJob = Constants.GetQuestJob(character.Job);
+                                        if (check.Job > 0 && !questJob.HasFlag(check.Job))
+                                        {
+                                            var jobTrack = Constants.GetJobTrackFromQuestJob(check.Job);
+                                            character.SetJob((short)(jobTrack * 100));
+                                        }
+                                        var requiredItems = check.Items.Select(i => i.Value);
+                                        var missingItems = requiredItems
+                                            .Where(item => !character.Inventory.CanExchange(0, (item.ItemID, (short)-item.Amount)))
+                                            .Select(item => (item.ItemID, item.Amount))
+                                            .ToArray()
+                                        ;
+                                        var missingMesos = check.Mesos > 0 ? character.Inventory.Mesos - check.Mesos : 0;
+                                        if (!character.Inventory.MassExchange(missingMesos, missingItems))
+                                        {
+                                            character.Message("Inventory full!");
+                                        }
+                                        foreach (var mob in check.Mobs.Select(kvp => kvp.Value))
+                                        {
+                                            questData.UpdateMobKills(mob.ID, mob.Count);
+                                        }
+                                        QuestPacket.SendQuestUpdateData(character, id, questData.Data);
                                     }
                                 }
                                 else if (Args[0] == "remove")

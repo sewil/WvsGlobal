@@ -84,7 +84,7 @@ namespace WvsBeta.Game.GameObjects
             if (!int.TryParse(Data.Substring(stridx, 3), out int count)) return 0;
             return count;
         }
-        private void UpdateMobKills(int mobidx, int kills)
+        public void UpdateMobKills(int mobidx, int kills)
         {
             int stridx = mobidx * 3;
             if (stridx > Data.Length - 1) return;

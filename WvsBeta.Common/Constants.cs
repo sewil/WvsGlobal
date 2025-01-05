@@ -381,6 +381,14 @@ namespace WvsBeta.Common
             return (QuestJob)Math.Pow(2, jobTrack);
         }
 
+        public static short? GetJobTrackFromQuestJob(QuestJob questJob)
+        {
+            if (questJob == QuestJob.None) return null;
+            else if (questJob == QuestJob.GM) return 500;
+            var jobTrack = (short)Math.Log((byte)questJob, 2);
+            return jobTrack;
+        }
+
         public static bool IsThirdJob(short jobid)
         {
             return !IsSecondJob(jobid) && jobid % 10 == 1;
