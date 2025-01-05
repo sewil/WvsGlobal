@@ -23,8 +23,15 @@ namespace WvsBeta.Game
         }
         public Dictionary<short, QuestData> GetQuests(bool wzFilter = true)
         {
-            if (wzFilter) return Quests.Where((i) => DataProvider.Quests.ContainsKey(i.Key)).ToDictionary(x => x.Key, x => x.Value);
-            else return Quests;
+            IEnumerable<KeyValuePair<short, QuestData>> quests = Quests;
+            if (wzFilter)
+            {
+                quests = quests.Where((i) => DataProvider.Quests.ContainsKey(i.Key));
+            }
+            return quests
+                .OrderBy(quest => quest.Key)
+                .ToDictionary(x => x.Key, x => x.Value)
+            ;
         }
         public CharacterQuests(GameCharacter character)
         {
