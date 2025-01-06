@@ -11,6 +11,21 @@ namespace WvsBeta.Game.Packets
         SideWhite,
         SideYellow
     }
+    public enum MessageColor : byte
+    {
+        Green = 1,
+        Pink = 2,
+        Orange = 3,
+        Purple = 4,
+        Grey = 5,
+        Yellow = 6,
+        Beige = 7,
+        Blue = 8,
+        Red = 9,
+        BlueOpaque = 10,
+        PinkOpaque = 11,
+        WhiteSmall = 12,
+    }
     public class MessagePacket : Packet
     {
         private MessagePacket(MessageType type) : base(ServerMessages.MESSAGE)
