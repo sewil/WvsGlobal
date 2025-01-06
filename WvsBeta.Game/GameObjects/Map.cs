@@ -1518,6 +1518,10 @@ public void AddMinigame(Character ch, string name, byte function, int x, int y, 
 
             // Reset mobs
             Mobs.Clear();
+            foreach (var mgi in MobGen)
+            {
+                mgi.Reset();
+            }
         }
 
         public virtual void SetFieldSet(FieldSet fs)
