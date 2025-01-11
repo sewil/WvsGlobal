@@ -166,20 +166,11 @@ namespace WvsBeta.Game
                 if (!chr.Inventory.CanExchange(0, (item.ItemID, item.Amount))) throw new QuestException(QuestActionResult.InventoryFull);
                 itemsToGive.Add(item);
             }
-            if (act.Mesos > 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.UnknownError);
-            if (act.Exp > 0 && chr.Level == 200) throw new QuestException(QuestActionResult.UnknownError);
+            if (act.Mesos < 0 && !chr.Inventory.CanExchange(act.Mesos)) throw new QuestException(QuestActionResult.NotEnoughMesos);
 
-            if (items.Count > 0)
-            {
-                foreach (QuestItem item in itemsToGive)
-                {
-                    chr.Inventory.MassExchange(0, (item.ItemID, item.Amount));
-                }
-            }
-            if (act.Mesos != 0)
-            {
-                chr.IncMoney(act.Mesos, MessageAppearType.ChatGrey);
-            }
+            var exchangeItems = itemsToGive.Count > 0 ? itemsToGive.Select(item => new GameInventory.ExchangeItem(item.ItemID, item.Amount)).ToArray() : null;
+            chr.Inventory.MassExchange(act.Mesos, exchangeItems);
+
             if (act.Exp != 0) chr.IncEXP(act.Exp, 0);
             if (act.Fame != 0) chr.AddFame(act.Fame, true);
 
