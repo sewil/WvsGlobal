@@ -5,16 +5,17 @@ namespace WvsBeta.Game
 {
     public class MobGenItem
     {
-        public int ID { get; }
+        public int ID { get; private set; }
         public int RegenInterval { get; set; }
         public long RegenAfter { get; set; }
-        public short Foothold { get; }
-        public bool FacesLeft { get; }
+        public short Foothold { get; private set; }
+        public bool FacesLeft { get; private set; }
         public int MobCount { get; set; }
 
+        private readonly Life _life;
         private bool _initializedYAxis;
         private short _y, _cy;
-        public short X { get; }
+        public short X { get; private set; }
 
         public short Y
         {
@@ -39,18 +40,23 @@ namespace WvsBeta.Game
 
         public MobGenItem(Life life, long? currentTime)
         {
-            ID = life.ID;
-            Foothold = (short)life.Foothold;
-            FacesLeft = life.FacesLeft;
-            X = life.X;
+            _life = life;
+            Reset();
+        }
+
+        public void Reset()
+        {
+            ID = _life.ID;
+            Foothold = (short)_life.Foothold;
+            FacesLeft = _life.FacesLeft;
+            X = _life.X;
             _initializedYAxis = false;
-            _y = life.Y;
-            _cy = life.Cy;
+            _y = _life.Y;
+            _cy = _life.Cy;
             MobCount = 0;
+            RegenInterval = _life.RespawnTime * 1000;
 
-            if (currentTime == null) currentTime = MasterThread.CurrentTime;
-
-            RegenInterval = life.RespawnTime * 1000;
+            //if (currentTime == null) currentTime = MasterThread.CurrentTime;
             //var regenInterval = RegenInterval = life.RespawnTime * 1000;
             //if (regenInterval >= 0)
             //{
