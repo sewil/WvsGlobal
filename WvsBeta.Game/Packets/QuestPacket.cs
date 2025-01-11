@@ -134,7 +134,7 @@ namespace WvsBeta.Game
         {
             var questJob = Constants.GetQuestJob(chr.Job);
             var filteredItems = act.Items
-                .Where(item => item.Job > 0 || questJob.HasFlag(item.Job))
+                .Where(item => item.Job == 0 || questJob.HasFlag(item.Job))
                 .Where(item => (item.Gender != PlayerGender.Male && item.Gender != PlayerGender.Female) || chr.Gender == item.Gender)
             ;
 
