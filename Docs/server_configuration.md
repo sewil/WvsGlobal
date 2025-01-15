@@ -8,7 +8,8 @@ In `DataSvr\` you'll see a bunch of .example files which are the configuration f
 
 Before launching the servers, you'll also need the `ClientData.nx` file which is converted by running ClientDataConvert.bat. The batch file expects a Data.wz file inside `ClientBin\`, so make sure you have a fresh MapleStory v22 installation in there first. `ServerData.nx` is another file you'll need, which contains the server data such as drop tables, field set data, reactor actions, npc shops, etc. The file is generated from ServerData.wz, which is small enough to be hosted on GitHub, so to generate the file you just have to run `ServerDataConvert.bat`.
 
-The SQL for the database is located in `SQLs\wvsbeta_sql_compatible.sql`. 
+## Database
+The SQL for the database is located in `SQLs\wvsbeta_sql_compatible.sql`. Once the database has been generated, create an admin account in the `users` table, and set yourself as an admin and a tester (`gm` column to `144`)
 
 ## Running
 To run the servers, you'll first need to build them to `BinSvr\`, so open up `WvsBeta_REVAMP.sln` with Visual Studio and then hit `Ctrl+Shift+B` to build your solution. To run the servers in Debug mode, go into the project properties of WvsBeta.Center, go to Debug, and in command line arguments, enter the name of the `Center.img` configuration file from above (without the `.img` extension). For example, if your file is named `Center.img`, you would put in `Center`. Repeat these steps for `WvsBeta.Game`, `WvsBeta.Login`, and `WvsBeta.Shop`.
