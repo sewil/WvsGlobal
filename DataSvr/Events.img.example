@@ -1,0 +1,11 @@
+events = {
+  LaunchEvent = {
+    DROP_Rate = 2.0
+    EXP_Rate = 2.0
+    MESO_Rate = 2.0
+    start = 2024-01-01T00:00:00.000Z
+    end = 2024-01-02T00:00:00.000Z
+    name = Celebration event!
+    header = Celebration event in progress!
+  }
+}
