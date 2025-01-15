@@ -22,7 +22,7 @@ dbCouponSource = 127.0.0.1,7890
 userLimitITC = 10
 
 login = {
-	Login0 = { 
+	Login = { 
 		PublicIP = 127.0.0.1
 		PrivateIP = 127.0.0.1
 		port = 8484
