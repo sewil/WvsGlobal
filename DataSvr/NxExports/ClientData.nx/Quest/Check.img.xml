@@ -3837,7 +3837,7 @@
   </imgdir>
   <imgdir name="3065">
     <imgdir name="0">
-      <int name="lvmin" value="201" />
+      <int name="lvmin" value="35" />
       <int name="npc" value="2012017" />
     </imgdir>
     <imgdir name="1">
@@ -5448,7 +5448,7 @@
   </imgdir>
   <imgdir name="7100">
     <imgdir name="0">
-      <int name="lvmin" value="201" />
+      <int name="lvmin" value="60" />
       <int name="npc" value="2041021" />
     </imgdir>
     <imgdir name="1">
