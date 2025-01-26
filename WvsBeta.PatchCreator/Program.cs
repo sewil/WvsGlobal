@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WvsBeta.PatchCreator
 {
@@ -11,33 +12,47 @@ namespace WvsBeta.PatchCreator
     {
         struct InstalledVersion
         {
+            public string directoryName;
             public short version;
             public short subVersion;
+            public string prefix;
             public override string ToString()
             {
-                if (subVersion == 0) return "" + version;
-                return $"{version}.{subVersion}";
+                string prefixStr = (string.IsNullOrWhiteSpace(prefix) ? "" : prefix + "_");
+                if (subVersion == 0) return prefixStr + version;
+                return $"{prefixStr}{version}.{subVersion}";
             }
             
-            public static InstalledVersion FromFolderName(string name)
+            public static InstalledVersion FromFolderName(string directoryName)
             {
-                name = Path.GetFileName(name);
-                if (!name.StartsWith("v")) throw new Exception("Invalid folder name.");
-                var y = name.Substring(1).Split('.');
+                directoryName = Path.GetFileName(directoryName);
+                string[] prefixSplit = directoryName.Split('_');
+                string versionName = directoryName;
+                string prefix = null;
+                if (prefixSplit.Length == 2)
+                {
+                    prefix = prefixSplit[0];
+                    versionName = prefixSplit[1];
+                }
+                var y = versionName.Substring(1).Split('.');
                 if (y.Length == 1)
                 {
                     return new InstalledVersion
                     {
+                        directoryName = directoryName,
                         version = short.Parse(y[0]),
                         subVersion = 0,
+                        prefix = prefix,
                     };
                 }
                 else
                 {
                     return new InstalledVersion
                     {
+                        directoryName = directoryName,
                         version = short.Parse(y[0]),
                         subVersion = short.Parse(y[1]),
+                        prefix = prefix,
                     };
                 }
             }
@@ -117,20 +132,15 @@ namespace WvsBeta.PatchCreator
             else if (args[0] == "make-patches")
             {
                 var patchesDir = Path.Combine(Environment.CurrentDirectory, "patches");
+                var reg = new Regex(@"^([^_\s]+_)?v\d+$");
                 
-                var availableMapleInstallations = Directory.GetDirectories(Environment.CurrentDirectory, "v*")
+                var availableMapleInstallations = Directory.GetDirectories(Environment.CurrentDirectory)
                     .Select(Path.GetFileName)
-                    .Where(x => x.StartsWith("v"))
+                    .Where(x => reg.IsMatch(x))
                     .Select(InstalledVersion.FromFolderName)
                     .ToList();
 
-
                 var basePatchfileBinary = File.ReadAllBytes(Path.Combine(patchesDir, "patch.base"));
-
-
-                // Build Version.info files
-                var newPatcherChecksum = CRC32.CalculateChecksumFile(Path.Combine(patchesDir, "NewPatcher.dat"));
-
 
                 foreach (var currentMapleInstall in availableMapleInstallations)
                 {
@@ -141,18 +151,29 @@ namespace WvsBeta.PatchCreator
                     if (!Directory.Exists(mapleDir))
                         Directory.CreateDirectory(mapleDir);
 
-                    var noticeFile = Path.Combine(mapleDir, $"{currentMapleInstall.version:D5}.txt");
+                    string noticeFileName = $"{currentMapleInstall.version:D5}.txt";
+                    var noticeFile = Path.Combine(mapleDir, noticeFileName);
                     var noticeText = Encoding.ASCII.GetBytes("Please make " + noticeFile);
+
                     if (File.Exists(noticeFile))
                     {
                         noticeText = File.ReadAllBytes(noticeFile);
                     }
                     else
                     {
-                        Console.WriteLine("Did not find the noticefile! " + noticeFile);
+                        string sourceNoticeFile = Path.Combine(Environment.CurrentDirectory, currentMapleInstall.directoryName, noticeFileName);
+                        if (File.Exists(sourceNoticeFile))
+                        {
+                            noticeText = File.ReadAllBytes(sourceNoticeFile);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Did not find the noticefile! " + noticeFile);
+                        }
                     }
 
-                    var patchables = availableMapleInstallations;
+                    var prefixInstallations = availableMapleInstallations.Where(a => a.prefix == currentMapleInstall.prefix).ToList();
+                    var patchables = prefixInstallations;
                     if (!subPatch)
                     {
                         // Main version, so all 'latest' versions
@@ -188,8 +209,8 @@ namespace WvsBeta.PatchCreator
                             Console.WriteLine("Creating patchfile for {0} to {1}", olderMapleInstall, currentMapleInstall);
 
                             CreatePatches(
-                                Path.Combine(Environment.CurrentDirectory, "v" + olderMapleInstall),
-                                Path.Combine(Environment.CurrentDirectory, "v" + currentMapleInstall),
+                                Path.Combine(Environment.CurrentDirectory, olderMapleInstall.directoryName),
+                                Path.Combine(Environment.CurrentDirectory, currentMapleInstall.directoryName),
                                 Path.Combine(mapleDir, patchFilename + ".patch")
                             );
 
@@ -207,19 +228,27 @@ namespace WvsBeta.PatchCreator
                         }
                      }
 
+                    var newPatcherPath = Path.Combine(mapleDir, "NewPatcher.dat");
 
-                    uint patcherChecksum = newPatcherChecksum;
-                    if (File.Exists(Path.Combine(mapleDir, "NewPatcher.dat")))
+                    // Find latest patcher
+                    if (!File.Exists(newPatcherPath))
                     {
-                        patcherChecksum = CRC32.CalculateChecksumFile(Path.Combine(mapleDir, "NewPatcher.dat"));
+                        for (int i = prefixInstallations.Count - 1; i >= 0; i--)
+                        {
+                            var latestInstallation = prefixInstallations[i];
+                            var latestPatcher = Path.Combine(Environment.CurrentDirectory, latestInstallation.directoryName, "Patcher.exe");
+                            Console.WriteLine(latestPatcher);
+                            if (File.Exists(latestPatcher))
+                            {
+                                Console.WriteLine($"Copying '{latestPatcher}' to '{newPatcherPath}'");
+                                File.Copy(latestPatcher, newPatcherPath);
+                                break;
+                            }
+                        }
                     }
-                    else
-                    {
-                        File.Copy(
-                            Path.Combine(patchesDir, "NewPatcher.dat"),
-                            Path.Combine(mapleDir, "NewPatcher.dat")
-                        );
-                    }
+
+                    // Build Version.info files
+                    uint patcherChecksum = CRC32.CalculateChecksumFile(newPatcherPath);
 
                     using (var fs = File.Open(Path.Combine(mapleDir, "Version.info"), FileMode.Create))
                     using (var sw = new StreamWriter(fs))
@@ -286,13 +315,18 @@ namespace WvsBeta.PatchCreator
                 return;
             }
 
+            Func<string, int, bool> ignoreSystemFiles = (file, index) =>
+                !file.Contains(Path.DirectorySeparatorChar + "unins") && 
+                !file.Contains(Path.DirectorySeparatorChar + "Patcher.exe")
+            ;
+
             var currentVersionFiles =
                 Directory.EnumerateFiles(curdir, "*", SearchOption.AllDirectories)
-                    .Where(x => !x.Contains(Path.DirectorySeparatorChar + "unins"))
+                    .Where(ignoreSystemFiles)
                     .ToList();
             var newVersionFiles =
                 Directory.EnumerateFiles(newdir, "*", SearchOption.AllDirectories)
-                    .Where(x => !x.Contains(Path.DirectorySeparatorChar + "unins"))
+                    .Where(ignoreSystemFiles)
                     .ToList();
 
             var currentVersionFilesWithoutDir = currentVersionFiles.Select(x => x.Replace(curdir, "")).ToList();

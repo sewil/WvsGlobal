@@ -4,7 +4,7 @@
 #define MyAppName "OpenMG"
 #define MyAppVersion "22.0"
 #define MyAppPublisher "OpenMG, Inc."
-#define MyAppURL "https://openmg.com"
+#define MyAppURL "https://openmg.net"
 #define MyAppExeName "MapleStory.exe"
 #define MyAppAssocName MyAppName + "Setup-" + MyAppVersion
 #define MyAppAssocExt ".exe"
@@ -24,6 +24,7 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
+DisableDirPage=no
 DisableWelcomePage=no
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
