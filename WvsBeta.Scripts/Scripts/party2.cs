@@ -140,7 +140,7 @@ namespace WvsBeta.Scripts.Scripts
                 else
                 {
                     var qr = target.QuestRecord;
-                    qr.Set(7010, "1");
+                    //qr.Set(7010, "1");
                     qr.RemoveQuest(7011);
                     target.ChangeMap(221024500, "");
                 }
@@ -177,7 +177,8 @@ namespace WvsBeta.Scripts.Scripts
             field.EffectPartyClear();
             field.EffectObject("gate");
             quest.SetVar("stage", nextStage);
-            quest.IncExpAll(exp, 7010);
+            //quest.IncExpAll(exp, 7010);
+            quest.IncExpAll(exp);
             if (nextStage != "clear")
             {
                 field.EnablePortal("next00", 1);

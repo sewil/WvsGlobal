@@ -90,41 +90,53 @@ namespace WvsBeta.Center
 
         public void Request(BuddyData requestor)
         {
-            if (requestor.GetBuddyList().IsFull())
+            if (Owner == null)
+            {
+                log.Warn("Buddylist invite failed: Owner is null");
+            }
+            else if (requestor == null)
+            {
+                log.Warn("Buddylist invite failed: requestor is null");
+            }
+            else if (Owner.GetChar() == null)
+            {
+                log.Warn("Buddylist invite failed: Owner char is null");
+            }
+            else if (requestor.GetChar() == null)
+            {
+                log.Warn("Buddylist invite failed: requestor char is null");
+            }
+            else if (requestor.GetBuddyList().IsFull())
             {
                 log.Warn($"[{Owner.charName}] Buddylist invite failed: its full");
                 requestor.GetBuddyList().SendRequestError(11);
-                return;
             }
-
-            if (Owner.GetChar().IsGM && requestor.GetChar().IsGM == false)
+            else if (Owner.GetChar().IsGM && requestor.GetChar().IsGM == false)
             {
                 log.Warn($"[{Owner.charName}] Buddylist invite failed: nonadmin to admin invite");
                 requestor.GetBuddyList().SendRequestError(14);
-                return;
             }
-
-            if (HasBuddy(requestor))
+            else if (HasBuddy(requestor))
             {
                 log.Warn($"[{Owner.charName}] Buddylist invite failed: already as buddy");
                 requestor.GetBuddyList().Add(Owner);
                 SendBuddyList(); //TODO test sending Update. Sometimes we send full buddylist when it seems like only an update is necessary
-                return;
             }
-            if (IsFull())
+            else if (IsFull())
             {
                 log.Warn($"[{Owner.charName}] Buddylist invite failed: own is full");
                 requestor.GetBuddyList().SendRequestError(12);
-                return;
             }
-
-            log.Warn($"[{Owner.charName}] invited {requestor.charName}");
-
-            requestor.GetBuddyList().Add(Owner);
-            BuddyRequests.Enqueue(requestor);
-            if (BuddyRequests.Count == 1)
+            else
             {
-                PollRequests();
+                log.Warn($"[{Owner.charName}] invited {requestor.charName}");
+
+                requestor.GetBuddyList().Add(Owner);
+                BuddyRequests.Enqueue(requestor);
+                if (BuddyRequests.Count == 1)
+                {
+                    PollRequests();
+                }
             }
         }
 

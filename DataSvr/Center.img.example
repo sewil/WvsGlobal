@@ -22,22 +22,12 @@ dbCouponSource = 127.0.0.1,7890
 userLimitITC = 10
 
 login = {
-	Login0 = { 
+	Login = { 
 		PublicIP = 127.0.0.1
 		PrivateIP = 127.0.0.1
 		port = 8484
 	}
 }
-
-#events = {
-#	DROP_Rate = 2.0
-#	EXP_Rate = 2.0
-#	MESO_Rate = 2.0
-#	start = 2024-01-01T00:00:00.000Z
-#	end = 2024-01-02T00:00:00.000Z
-#	name = Celebration event!
-#	header = Celebration event in progress!
-#}
 
 game = {
 	Game0 = {
