@@ -106,8 +106,8 @@ namespace WvsBeta.Center
         public void Load()
         {
             Program.MainForm.LogAppend("Reading Config File... ", false);
-            LoadConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", ConfigName + ".img"));
-            LoadDBConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Database.img"));
+            LoadConfig(Path.Combine(ConfigReader.DataSvrPath, ConfigName + ".img"));
+            LoadDBConfig(Path.Combine(ConfigReader.DataSvrPath, "Database.img"));
             ReloadEvents();
             Program.MainForm.UpdateServerList();
 
@@ -313,7 +313,7 @@ namespace WvsBeta.Center
 
         public void ReloadEvents()
         {
-            var filename = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Events.img");
+            var filename = Path.Combine(ConfigReader.DataSvrPath, "Events.img");
             if (File.Exists(filename) == false)
             {
                 Program.MainForm.LogAppend("Unable to load events; Events.img not found.");

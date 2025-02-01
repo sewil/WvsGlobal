@@ -114,9 +114,9 @@ namespace WvsBeta.Shop
 
         public void Load()
         {
-            ConfigFilePath = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", Name + ".img");
+            ConfigFilePath = Path.Combine(ConfigReader.DataSvrPath, Name + ".img");
             LoadConfig(ConfigFilePath);
-            LoadDBConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Database.img"));
+            LoadDBConfig(Path.Combine(ConfigReader.DataSvrPath, "Database.img"));
 
             ConnectToCenter();
 

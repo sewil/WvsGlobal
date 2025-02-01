@@ -1,3 +1,3 @@
 @echo off
-cd ..\BinSvr
+cd BinSvr\Debug
 powershell -WindowStyle Hidden -Command "Start-Process 'WvsBeta.Login.exe' -ArgumentList 'DebugLogin'"

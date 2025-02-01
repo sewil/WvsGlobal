@@ -10,7 +10,7 @@ namespace WvsBeta.Common
 {
     public class ConfigReader
     {
-
+        public static string DataSvrPath = Path.Combine(Environment.CurrentDirectory, "..", "..", "DataSvr");
         public class Node : IEnumerable<Node>
         {
             public List<Node> SubNodes { get; set; }

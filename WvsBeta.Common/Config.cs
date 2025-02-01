@@ -29,7 +29,7 @@ namespace WvsBeta.Common
 
         private Config()
         {
-            ConfigReader reader = new ConfigReader(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Config.img"));
+            ConfigReader reader = new ConfigReader(Path.Combine(ConfigReader.DataSvrPath, "Config.img"));
             MapleVersion = reader["MapleVersion"].GetUShort();
             MapleCryptoVersion = reader["MapleCryptoVersion"].GetUShort();
             MaplePatchLocation = reader["MaplePatchLocation"].GetString();

@@ -97,7 +97,7 @@ namespace WvsBeta.Login
             Instance.Load();
         }
 
-        private string ServerConfigFile => Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", Name + ".img");
+        private string ServerConfigFile => Path.Combine(ConfigReader.DataSvrPath, Name + ".img");
 
 
         public void Load()
@@ -105,7 +105,7 @@ namespace WvsBeta.Login
             Program.MainForm.LogAppend("Reading Config File... ", false);
             LoadConfig(ServerConfigFile);
             LoadClientPatchData(ServerConfigFile);
-            LoadDBConfig(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "Database.img"));
+            LoadDBConfig(Path.Combine(ConfigReader.DataSvrPath, "Database.img"));
             Program.MainForm.LogAppend(" Done!", false);
             
             MasterThread.RepeatingAction.Start("Center Reconnect Timer", time =>

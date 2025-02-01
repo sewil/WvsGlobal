@@ -28,8 +28,8 @@ namespace WvsBeta.Common.DataProviders
 
         public static KeyValuePair<NXFile, List<NXFile>> GetMergedDatafiles()
         {
-            var mainFile = new NXFile(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "ClientData.nx"));
-            var overrideFolder = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "data");
+            var mainFile = new NXFile(Path.Combine(ConfigReader.DataSvrPath, "ClientData.nx"));
+            var overrideFolder = Path.Combine(ConfigReader.DataSvrPath, "data");
             var otherFiles = new List<NXFile>();
             if (Directory.Exists(overrideFolder))
             {

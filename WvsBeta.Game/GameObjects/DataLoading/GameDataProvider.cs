@@ -43,8 +43,7 @@ namespace WvsBeta.Game
         {
             StartInit();
 
-            var dataPath = Path.Combine(Environment.CurrentDirectory, "..", "DataSvr");
-            using (pServerFile = new NXFile(Path.Combine(dataPath, "ServerData.nx"), NXReadSelection.None))
+            using (pServerFile = new NXFile(Path.Combine(ConfigReader.DataSvrPath, "ServerData.nx"), NXReadSelection.None))
             {
                 var funcs = new Action[] {
                     LoadBase,

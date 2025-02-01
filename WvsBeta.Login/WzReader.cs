@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using reNX;
 using reNX.NXProperties;
+using WvsBeta.Common;
 
 namespace WvsBeta.Login
 {
@@ -15,7 +16,7 @@ namespace WvsBeta.Login
         
         public static void Load()
         {
-            using (var pFile = new NXFile(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "ClientData.nx")))
+            using (var pFile = new NXFile(Path.Combine(ConfigReader.DataSvrPath, "ClientData.nx")))
             {
                 ForbiddenName = pFile.BaseNode["Etc"]["ForbiddenName.img"].Select(x => x.ValueString()).ToList();
                 Program.MainForm.LogAppend("Loaded {0} forbidden names.", ForbiddenName.Count);
