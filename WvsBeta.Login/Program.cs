@@ -25,7 +25,7 @@ namespace WvsBeta.Login
                 return;
             }
             log4net.GlobalContext.Properties["ImgName"] = args[0];
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "logging-config-login.xml")));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(ConfigReader.DataSvrPath, "logging-config-login.xml")));
 
 
             IMGFilename = args[0];

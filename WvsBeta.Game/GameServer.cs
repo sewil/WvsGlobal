@@ -204,7 +204,7 @@ namespace WvsBeta.Game
         }
 
         public string GetConfigPath(string filename) =>
-            Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", filename);
+            Path.Combine(ConfigReader.DataSvrPath, filename);
 
         void Load()
         {

@@ -27,7 +27,7 @@ namespace WvsBeta.Game
                 return;
             }
             log4net.GlobalContext.Properties["ImgName"] = args[0];
-            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(Environment.CurrentDirectory, "..", "DataSvr", "logging-config-game.xml")));
+            XmlConfigurator.ConfigureAndWatch(new FileInfo(Path.Combine(ConfigReader.DataSvrPath, "logging-config-game.xml")));
 
             IMGFilename = args[0];
             UnhandledExceptionHandler.Set(args, IMGFilename, LogFile);

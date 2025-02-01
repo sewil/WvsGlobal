@@ -1,5 +1,5 @@
 @echo off
-cd ..\BinSvr
+cd BinSvr\Release
 powershell -WindowStyle Hidden -Command "Start-Process 'WvsBeta.Center.exe' -ArgumentList 'ScaniaCenter'"
 powershell -WindowStyle Hidden -Command "Start-Process 'WvsBeta.Game.exe' -ArgumentList 'ScaniaGame0'"
 powershell -WindowStyle Hidden -Command "Start-Process 'WvsBeta.Shop.exe' -ArgumentList 'ScaniaShop'"
