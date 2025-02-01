@@ -1,6 +1,7 @@
 ﻿using System;
 using log4net;
 using WvsBeta.Common;
+using WvsBeta.Common.Characters;
 using WvsBeta.Common.Enums;
 using WvsBeta.Common.Extensions;
 using WvsBeta.Common.Objects;
@@ -631,7 +632,23 @@ namespace WvsBeta.Game
             Summons.MigrateSummons(prevMap, newMap);
             Server.Instance.CenterConnection.PlayerUpdateMap(this);
             PartyHPUpdate();
+            MobBuffsUpdate();
             CleanupInstances();
+        }
+
+        public void MobBuffsUpdate()
+        {
+            var stat = BuffValueTypes.None;
+            if (PrimaryStats.BuffSeal.IsSet()) stat |= PrimaryStats.BuffSeal.Flag;
+            if (PrimaryStats.BuffDarkness.IsSet()) stat |= PrimaryStats.BuffDarkness.Flag;
+            if (PrimaryStats.BuffWeakness.IsSet()) stat |= PrimaryStats.BuffWeakness.Flag;
+            if (PrimaryStats.BuffStun.IsSet()) stat |= PrimaryStats.BuffStun.Flag;
+            if (PrimaryStats.BuffCurse.IsSet()) stat |= PrimaryStats.BuffCurse.Flag;
+            if (PrimaryStats.BuffSlow.IsSet()) stat |= PrimaryStats.BuffSlow.Flag;
+            if (stat != BuffValueTypes.None)
+            {
+                Buffs.FinalizeBuff(stat, 0);
+            }
         }
 
         // Change map, but take random spawn
