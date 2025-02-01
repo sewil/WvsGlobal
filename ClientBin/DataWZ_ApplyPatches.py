@@ -12,6 +12,10 @@ def apply_patch(patch_file, old_file):
     return f"{patch_file}_Data.wz"
 
 original_file = "Data.wz"
+
+if (os.path.exists("Data.wz") == False):
+    raise FileNotFoundError("Data.wz not found! Please ensure you have a valid v22 installation in ClientBin before running this script.")
+
 shutil.copy(original_file, f'{original_file}.bak')
 patched_file = original_file
 for patch_file in glob.glob("Patches\\*.patch"):
