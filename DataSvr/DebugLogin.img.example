@@ -5,8 +5,8 @@ adminPort = 7071
 dbCatalogAccounts = wvsbeta
 dbAccountsSource = 127.0.0.1,3306
 requiresEULA = 1
-requiresPIN = 1
-tespia = 0
+requiresPIN = 0
+tespia = 1
 disableMultiIP = 1
 
 PublicIP = 127.0.0.1
@@ -19,24 +19,24 @@ logaccount = {
 }
 
 center = {
-	Scania = {
+	Tespia = {
 		ip = 127.0.0.1
 		port = 8383
-		world = 0
+		world = 20
 		channelNo = 1
-		tespia = 0
-		worldRibbon = 2 # Normal = 1, Event = 1, New = 2, Hot = 3
+		tespia = 1
+		worldRibbon = 1 # Normal = 1, Event = 1, New = 2, Hot = 3
 		worldMessage = Welcome to MapleStory!
 		userWarning = 6
 		userLimit = 10
 	}
-	Tespia = {
+	Scania = {
 		ip = 127.0.0.1
 		port = 8384
-		world = 20
+		world = 0
 		channelNo = 1
 		tespia = 1
-		worldRibbon = 2 # Normal = 1, Event = 1, New = 2, Hot = 3
+		worldRibbon = 1 # Normal = 1, Event = 1, New = 2, Hot = 3
 		worldMessage = Welcome to MapleStory!
 		userWarning = 6
 		userLimit = 10

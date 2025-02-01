@@ -1,24 +1,22 @@
 #Property
 
-port = 8585
+port = 8788
 
-gameWorldId = 0
+gameWorldId = 20
+tespia = 1
 
 PublicIP = 127.0.0.1
 PrivateIP = 127.0.0.1
-tespia = 1
-# scrollingHeader = Welcome to MapleStory!
-
 #redis = 127.0.0.1:6379
 
 logcharacter = {
-	0 = 294
+	0 = 23668
 }
 
 center = {
 	ip = 127.0.0.1
-	port = 8383
-	worldName = Tespia1
+	port = 8384
+	worldName = Tespia
 }
 
 hackingAutoBlock = {

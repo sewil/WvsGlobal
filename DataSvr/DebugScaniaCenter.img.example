@@ -1,0 +1,62 @@
+#Property
+
+port = 8384
+adminPort = 7070
+gameWorldId = 0
+tespia = 1
+dbCatalogGlobalAccount = GlobalAccount
+dbCatalogGameWorld = GameWorld
+dbCatalogCoupon = Coupon
+dbGameWorldSource = 127.0.0.1,7890
+dbGlobalAccountSource = 127.0.0.1,7890
+dbCouponSource = 127.0.0.1,7890
+#redis = 127.0.0.1:6379
+
+userLimitITC = 10
+
+login = {
+	DebugLogin = { 
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8484
+	}
+}
+
+game = {
+	DebugScaniaGame0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8586
+		EXP_Rate = 1
+	}
+}
+
+shop = {
+	DebugScaniaShop = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8788
+	}
+}
+
+mapgen = {
+	MapGen0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8989
+	}
+}
+
+claim = {
+	PublicIP = 127.0.0.1
+	PrivateIP = 127.0.0.1
+	port = 8888
+}
+
+itc = {
+	ITC0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8999
+	}
+}

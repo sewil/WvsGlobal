@@ -1,0 +1,62 @@
+#Property
+
+port = 8383
+adminPort = 7070
+gameWorldId = 20
+tespia = 1
+dbCatalogGlobalAccount = GlobalAccount
+dbCatalogGameWorld = GameWorld
+dbCatalogCoupon = Coupon
+dbGameWorldSource = 127.0.0.1,7890
+dbGlobalAccountSource = 127.0.0.1,7890
+dbCouponSource = 127.0.0.1,7890
+#redis = 127.0.0.1:6379
+
+userLimitITC = 10
+
+login = {
+	DebugLogin = { 
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8484
+	}
+}
+
+game = {
+	DebugTespiaGame0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8585
+		EXP_Rate = 1
+	}
+}
+
+shop = {
+	DebugTespiaShop = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8787
+	}
+}
+
+mapgen = {
+	MapGen0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8989
+	}
+}
+
+claim = {
+	PublicIP = 127.0.0.1
+	PrivateIP = 127.0.0.1
+	port = 8888
+}
+
+itc = {
+	ITC0 = {
+		PublicIP = 127.0.0.1
+		PrivateIP = 127.0.0.1
+		port = 8999
+	}
+}
